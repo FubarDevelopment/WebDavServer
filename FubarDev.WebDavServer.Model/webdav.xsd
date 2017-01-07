@@ -84,14 +84,6 @@
     </sequence>
   </complexType>
 
-  <simpleType name="depth">
-    <restriction base="string">
-      <enumeration value="0" />
-      <enumeration value="1" />
-      <enumeration value="infinity" />
-    </restriction>
-  </simpleType>
-
   <complexType name="propstat">
     <sequence>
       <element name="prop" type="dav:prop" />
