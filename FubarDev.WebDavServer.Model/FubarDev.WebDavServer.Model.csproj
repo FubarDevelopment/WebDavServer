@@ -12,10 +12,6 @@
     <EmbeddedResource Include="**\*.resx" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Remove="Depth.cs" />
-    <Compile Remove="DepthComparer.cs" />
-  </ItemGroup>
-  <ItemGroup>
     <None Include="webdav.xsd" />
   </ItemGroup>
   <ItemGroup>
