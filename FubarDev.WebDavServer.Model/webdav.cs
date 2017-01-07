@@ -58,11 +58,11 @@ namespace FubarDev.WebDavServer.Model {
     [System.Xml.Serialization.XmlTypeAttribute(Namespace="DAV:")]
     public partial class include {
         
-        private System.Xml.XmlElement[] anyField;
+        private System.Xml.Linq.XElement[] anyField;
         
         /// <remarks/>
         [System.Xml.Serialization.XmlAnyElementAttribute()]
-        public System.Xml.XmlElement[] Any {
+        public System.Xml.Linq.XElement[] Any {
             get {
                 return this.anyField;
             }
@@ -80,11 +80,11 @@ namespace FubarDev.WebDavServer.Model {
     [System.Xml.Serialization.XmlTypeAttribute(Namespace="DAV:")]
     public partial class prop {
         
-        private System.Xml.XmlElement[] anyField;
+        private System.Xml.Linq.XElement[] anyField;
         
         /// <remarks/>
         [System.Xml.Serialization.XmlAnyElementAttribute()]
-        public System.Xml.XmlElement[] Any {
+        public System.Xml.Linq.XElement[] Any {
             get {
                 return this.anyField;
             }
@@ -304,11 +304,11 @@ namespace FubarDev.WebDavServer.Model {
     [System.Xml.Serialization.XmlTypeAttribute(Namespace="DAV:")]
     public partial class error {
         
-        private System.Xml.XmlElement[] anyField;
+        private System.Xml.Linq.XElement[] anyField;
         
         /// <remarks/>
         [System.Xml.Serialization.XmlAnyElementAttribute()]
-        public System.Xml.XmlElement[] Any {
+        public System.Xml.Linq.XElement[] Any {
             get {
                 return this.anyField;
             }
