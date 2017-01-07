@@ -1,0 +1,110 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<schema xmlns="http://www.w3.org/2001/XMLSchema" targetNamespace="DAV:" xmlns:dav="DAV:" elementFormDefault="qualified">
+  <element name="propfind">
+    <complexType>
+      <choice>
+        <sequence>
+          <element name="allprop" />
+          <element name="include" type="dav:include" minOccurs="0" />
+        </sequence>
+        <element name="propname" />
+        <element name="prop" type="dav:prop" />
+      </choice>
+    </complexType>
+  </element>
+
+  <element name="multistatus">
+    <complexType>
+      <sequence maxOccurs="1">
+        <element ref="dav:response" minOccurs="0" maxOccurs="unbounded" />
+        <element name="responsedescription" type="string" minOccurs="0" />
+      </sequence>
+    </complexType>
+  </element>
+
+  <element name="response">
+    <complexType>
+      <sequence>
+        <element name="href" type="anyURI" />
+        <choice>
+          <sequence>
+            <element name="href" type="anyURI" minOccurs="0" maxOccurs="unbounded" />
+            <element name="status" type="string" />
+          </sequence>
+          <element name="propstat" type="dav:propstat" maxOccurs="unbounded" />
+        </choice>
+        <element name="error" type="dav:error" minOccurs="0" />
+        <element name="responsedescription" type="string" minOccurs="0" />
+      </sequence>
+    </complexType>
+  </element>
+
+  <element name="error">
+    <complexType>
+      <choice maxOccurs="unbounded">
+        <element name="lock-token-matches-request-uri" />
+        <element name="lock-token-submitted">
+          <complexType>
+            <sequence>
+              <element name="href" type="anyURI" maxOccurs="unbounded" />
+            </sequence>
+          </complexType>
+        </element>
+        <element name="no-conflicting-lock">
+          <complexType>
+            <sequence>
+              <element name="href" type="anyURI" minOccurs="0" maxOccurs="unbounded" />
+            </sequence>
+          </complexType>
+        </element>
+        <element name="no-external-entities" />
+        <element name="preserved-live-properties" />
+        <element name="propfind-finite-depth" />
+        <element name="cannot-modify-protected-property" />
+        <any namespace="##other" />
+      </choice>
+    </complexType>
+  </element>
+
+  <complexType name="prop">
+    <sequence>
+      <any namespace="##any" minOccurs="0" maxOccurs="unbounded" />
+    </sequence>
+  </complexType>
+
+  <complexType name="include">
+    <sequence>
+      <any namespace="##any" minOccurs="0" maxOccurs="unbounded" />
+    </sequence>
+  </complexType>
+
+  <complexType name="error">
+    <sequence>
+      <any namespace="##any" maxOccurs="unbounded" />
+    </sequence>
+  </complexType>
+
+  <simpleType name="depth">
+    <restriction base="string">
+      <enumeration value="0" />
+      <enumeration value="1" />
+      <enumeration value="infinity" />
+    </restriction>
+  </simpleType>
+
+  <complexType name="propstat">
+    <sequence>
+      <element name="prop" type="dav:prop" />
+      <element name="status" type="string" />
+      <element name="error" type="dav:error" minOccurs="0" />
+      <element name="responsedescription" type="string" minOccurs="0" />
+      <element name="location" type="dav:location" minOccurs="0" />
+    </sequence>
+  </complexType>
+
+  <complexType name="location">
+    <sequence>
+      <element name="href" type="anyURI" />
+    </sequence>
+  </complexType>
+</schema>
