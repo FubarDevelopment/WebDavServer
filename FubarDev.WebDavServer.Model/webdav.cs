@@ -11,7 +11,6 @@ namespace FubarDev.WebDavServer.Model {
     
     /// <remarks/>
     [System.CodeDom.Compiler.GeneratedCodeAttribute("Xsd2", "1.0.0.0")]
-    [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
     [System.Xml.Serialization.XmlTypeAttribute(AnonymousType=true, Namespace="DAV:")]
@@ -52,7 +51,6 @@ namespace FubarDev.WebDavServer.Model {
     
     /// <remarks/>
     [System.CodeDom.Compiler.GeneratedCodeAttribute("Xsd2", "1.0.0.0")]
-    [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
     [System.Xml.Serialization.XmlTypeAttribute(Namespace="DAV:")]
@@ -74,7 +72,6 @@ namespace FubarDev.WebDavServer.Model {
     
     /// <remarks/>
     [System.CodeDom.Compiler.GeneratedCodeAttribute("Xsd2", "1.0.0.0")]
-    [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
     [System.Xml.Serialization.XmlTypeAttribute(Namespace="DAV:")]
@@ -96,7 +93,6 @@ namespace FubarDev.WebDavServer.Model {
     
     /// <remarks/>
     [System.CodeDom.Compiler.GeneratedCodeAttribute("Xsd2", "1.0.0.0")]
-    [System.SerializableAttribute()]
     [System.Xml.Serialization.XmlTypeAttribute(Namespace="DAV:", IncludeInSchema=false)]
     public enum ItemsChoiceType {
         
@@ -115,7 +111,6 @@ namespace FubarDev.WebDavServer.Model {
     
     /// <remarks/>
     [System.CodeDom.Compiler.GeneratedCodeAttribute("Xsd2", "1.0.0.0")]
-    [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
     [System.Xml.Serialization.XmlTypeAttribute(AnonymousType=true, Namespace="DAV:")]
@@ -150,7 +145,6 @@ namespace FubarDev.WebDavServer.Model {
     
     /// <remarks/>
     [System.CodeDom.Compiler.GeneratedCodeAttribute("Xsd2", "1.0.0.0")]
-    [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
     [System.Xml.Serialization.XmlTypeAttribute(AnonymousType=true, Namespace="DAV:")]
@@ -229,7 +223,6 @@ namespace FubarDev.WebDavServer.Model {
     
     /// <remarks/>
     [System.CodeDom.Compiler.GeneratedCodeAttribute("Xsd2", "1.0.0.0")]
-    [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
     [System.Xml.Serialization.XmlTypeAttribute(Namespace="DAV:")]
@@ -298,7 +291,6 @@ namespace FubarDev.WebDavServer.Model {
     
     /// <remarks/>
     [System.CodeDom.Compiler.GeneratedCodeAttribute("Xsd2", "1.0.0.0")]
-    [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
     [System.Xml.Serialization.XmlTypeAttribute(Namespace="DAV:")]
@@ -320,7 +312,6 @@ namespace FubarDev.WebDavServer.Model {
     
     /// <remarks/>
     [System.CodeDom.Compiler.GeneratedCodeAttribute("Xsd2", "1.0.0.0")]
-    [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
     [System.Xml.Serialization.XmlTypeAttribute(Namespace="DAV:")]
@@ -342,7 +333,6 @@ namespace FubarDev.WebDavServer.Model {
     
     /// <remarks/>
     [System.CodeDom.Compiler.GeneratedCodeAttribute("Xsd2", "1.0.0.0")]
-    [System.SerializableAttribute()]
     [System.Xml.Serialization.XmlTypeAttribute(Namespace="DAV:", IncludeInSchema=false)]
     public enum ItemsChoiceType1 {
         
@@ -358,7 +348,6 @@ namespace FubarDev.WebDavServer.Model {
     
     /// <remarks/>
     [System.CodeDom.Compiler.GeneratedCodeAttribute("Xsd2", "1.0.0.0")]
-    [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
     [System.Xml.Serialization.XmlTypeAttribute(AnonymousType=true, Namespace="DAV:")]
@@ -403,7 +392,6 @@ namespace FubarDev.WebDavServer.Model {
     
     /// <remarks/>
     [System.CodeDom.Compiler.GeneratedCodeAttribute("Xsd2", "1.0.0.0")]
-    [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
     [System.Xml.Serialization.XmlTypeAttribute(AnonymousType=true, Namespace="DAV:")]
@@ -425,7 +413,6 @@ namespace FubarDev.WebDavServer.Model {
     
     /// <remarks/>
     [System.CodeDom.Compiler.GeneratedCodeAttribute("Xsd2", "1.0.0.0")]
-    [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
     [System.Xml.Serialization.XmlTypeAttribute(AnonymousType=true, Namespace="DAV:")]
@@ -447,7 +434,6 @@ namespace FubarDev.WebDavServer.Model {
     
     /// <remarks/>
     [System.CodeDom.Compiler.GeneratedCodeAttribute("Xsd2", "1.0.0.0")]
-    [System.SerializableAttribute()]
     [System.Xml.Serialization.XmlTypeAttribute(Namespace="DAV:", IncludeInSchema=false)]
     public enum ItemsChoiceType2 {
         
