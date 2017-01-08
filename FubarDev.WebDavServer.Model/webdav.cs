@@ -14,7 +14,7 @@ namespace FubarDev.WebDavServer.Model {
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
     [System.Xml.Serialization.XmlTypeAttribute(AnonymousType=true, Namespace="DAV:")]
-    [System.Xml.Serialization.XmlRootAttribute(Namespace="DAV:", IsNullable=false)]
+    [System.Xml.Serialization.XmlRootAttribute("propfind", Namespace="DAV:", IsNullable=false)]
     public partial class Propfind {
         
         private object[] itemsField;
@@ -117,8 +117,8 @@ namespace FubarDev.WebDavServer.Model {
     [System.CodeDom.Compiler.GeneratedCodeAttribute("Xsd2", "1.0.0.0")]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
-    [System.Xml.Serialization.XmlTypeAttribute(AnonymousType=true, Namespace="DAV:")]
-    [System.Xml.Serialization.XmlRootAttribute(Namespace="DAV:", IsNullable=false)]
+    [System.Xml.Serialization.XmlTypeAttribute("multistatus", AnonymousType=true, Namespace="DAV:")]
+    [System.Xml.Serialization.XmlRootAttribute("multistatus", Namespace="DAV:", IsNullable=false)]
     public partial class Multistatus {
         
         private Response[] responseField;
@@ -152,8 +152,8 @@ namespace FubarDev.WebDavServer.Model {
     [System.CodeDom.Compiler.GeneratedCodeAttribute("Xsd2", "1.0.0.0")]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
-    [System.Xml.Serialization.XmlTypeAttribute(AnonymousType=true, Namespace="DAV:")]
-    [System.Xml.Serialization.XmlRootAttribute(Namespace="DAV:", IsNullable=false)]
+    [System.Xml.Serialization.XmlTypeAttribute("response", AnonymousType=true, Namespace="DAV:")]
+    [System.Xml.Serialization.XmlRootAttribute("response", Namespace="DAV:", IsNullable=false)]
     public partial class Response {
         
         private string hrefField;
@@ -363,7 +363,7 @@ namespace FubarDev.WebDavServer.Model {
     [System.CodeDom.Compiler.GeneratedCodeAttribute("Xsd2", "1.0.0.0")]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
-    [System.Xml.Serialization.XmlTypeAttribute(AnonymousType=true, Namespace="DAV:")]
+    [System.Xml.Serialization.XmlTypeAttribute("error", AnonymousType=true, Namespace="DAV:")]
     [System.Xml.Serialization.XmlRootAttribute("error", Namespace="DAV:", IsNullable=false)]
     public partial class Error1 {
         

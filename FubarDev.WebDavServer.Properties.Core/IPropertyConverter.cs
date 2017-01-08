@@ -1,10 +1,15 @@
 ﻿using System.Xml.Linq;
 
+using JetBrains.Annotations;
+
 namespace FubarDev.WebDavServer.Properties
 {
     public interface IPropertyConverter<T>
     {
-        T FromElement(XElement element);
-        XElement ToElement(T value);
+        [NotNull]
+        T FromElement([NotNull] XElement element);
+
+        [NotNull]
+        XElement ToElement([NotNull] T value);
     }
 }

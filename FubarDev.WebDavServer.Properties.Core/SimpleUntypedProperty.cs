@@ -2,11 +2,13 @@
 using System.Threading.Tasks;
 using System.Xml.Linq;
 
+using JetBrains.Annotations;
+
 namespace FubarDev.WebDavServer.Properties
 {
     public abstract class SimpleUntypedProperty : IUntypedReadableProperty, IUntypedWriteableProperty
     {
-        protected SimpleUntypedProperty(XName name, int cost)
+        protected SimpleUntypedProperty([NotNull] XName name, int cost)
         {
             Name = name;
             Cost = cost;
