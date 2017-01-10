@@ -11,9 +11,10 @@ namespace FubarDev.WebDavServer.FileSystem.DotNet
         public DotNetFileSystem(DotNetDirectory rootDirectory)
         {
             _root = rootDirectory;
+            Root = new AsyncLazy<ICollection>(() => _root);
         }
 
-        public ICollection Root => _root;
+        public AsyncLazy<ICollection> Root { get; }
 
         public Task<SelectionResult> SelectAsync(string path, CancellationToken ct)
         {
