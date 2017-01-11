@@ -8,5 +8,6 @@ namespace FubarDev.WebDavServer.Model
         MultiStatus = 207,
         Forbidden = HttpStatusCode.Forbidden,
         NotImplemented = HttpStatusCode.NotImplemented,
+        NotFound = HttpStatusCode.NotFound,
     }
 }

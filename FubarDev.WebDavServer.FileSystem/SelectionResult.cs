@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Text;
 
 using JetBrains.Annotations;
 
@@ -10,7 +11,7 @@ namespace FubarDev.WebDavServer.FileSystem
         private readonly IDocument _document;
         private readonly IReadOnlyCollection<string> _pathEntries;
 
-        internal SelectionResult(SelectionResultType resultType, [NotNull] ICollection collection, IDocument document, IReadOnlyCollection<string> pathEntries)
+        internal SelectionResult(SelectionResultType resultType, [NotNull] ICollection collection, IDocument document, [CanBeNull] IReadOnlyCollection<string> pathEntries)
         {
             ResultType = resultType;
             Collection = collection;
@@ -19,6 +20,10 @@ namespace FubarDev.WebDavServer.FileSystem
         }
 
         public SelectionResultType ResultType { get; }
+
+        public bool IsMissing =>
+            ResultType == SelectionResultType.MissingCollection ||
+            ResultType == SelectionResultType.MissingDocumentOrCollection;
 
         [NotNull]
         public ICollection Collection { get; }
@@ -34,7 +39,7 @@ namespace FubarDev.WebDavServer.FileSystem
             }
         }
 
-        [NotNull]
+        [CanBeNull]
         [ItemNotNull]
         public IReadOnlyCollection<string> PathEntries
         {
@@ -43,6 +48,28 @@ namespace FubarDev.WebDavServer.FileSystem
                 if (ResultType != SelectionResultType.MissingCollection && ResultType != SelectionResultType.MissingDocumentOrCollection)
                     throw new InvalidOperationException();
                 return _pathEntries;
+            }
+        }
+
+        [NotNull]
+        public string FullPath
+        {
+            get
+            {
+                switch (ResultType)
+                {
+                    case SelectionResultType.FoundCollection:
+                        return Collection.Path;
+                    case SelectionResultType.FoundDocument:
+                        return Document.Path;
+                }
+
+                var result = new StringBuilder();
+                result.Append(Collection.Path);
+                result.Append(string.Join("/", PathEntries));
+                if (ResultType == SelectionResultType.MissingCollection)
+                    result.Append("/");
+                return result.ToString();
             }
         }
 

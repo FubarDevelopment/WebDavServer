@@ -6,6 +6,6 @@ namespace FubarDev.WebDavServer.FileSystem
 {
     public interface IFileSystemFactory
     {
-        IFileSystem CreateFileSystem(IIdentity identity, CancellationToken ct);
+        IFileSystem CreateFileSystem(IIdentity identity);
     }
 }

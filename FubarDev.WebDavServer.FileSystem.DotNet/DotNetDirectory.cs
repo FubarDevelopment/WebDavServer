@@ -15,28 +15,34 @@ namespace FubarDev.WebDavServer.FileSystem.DotNet
 
         public DirectoryInfo DirectoryInfo { get; }
 
+        public Task<IEntry> GetChildAsync(string name, CancellationToken ct)
+        {
+            var items = DirectoryInfo.GetFileSystemInfos(name);
+            if (items.Length != 1)
+                return null;
+            return Task.FromResult(CreateEntry(items[0]));
+        }
+
         public Task<IReadOnlyCollection<IEntry>> GetChildrenAsync(CancellationToken ct)
         {
             var result = new List<IEntry>();
             foreach (var info in DirectoryInfo.EnumerateFileSystemInfos())
             {
                 ct.ThrowIfCancellationRequested();
-
-                var fileInfo = info as FileInfo;
-                if (fileInfo != null)
-                {
-                    var path = this.Path + fileInfo.Name;
-                    result.Add(new DotNetFile(FileSystem, fileInfo, path));
-                }
-                else
-                {
-                    var dirInfo = (DirectoryInfo) info;
-                    var path = this.Path + dirInfo.Name + "/";
-                    result.Add(new DotNetDirectory(FileSystem, dirInfo, path));
-                }
+                result.Add(CreateEntry(info));
             }
 
             return Task.FromResult<IReadOnlyCollection<IEntry>>(result);
+        }
+
+        private IEntry CreateEntry(FileSystemInfo fsInfo)
+        {
+            var fileInfo = fsInfo as FileInfo;
+            if (fileInfo != null)
+                return new DotNetFile(FileSystem, fileInfo, this.Path + fileInfo.Name);
+
+            var dirInfo = (DirectoryInfo) fsInfo;
+            return new DotNetDirectory(FileSystem, dirInfo, this.Path + dirInfo.Name + "/");
         }
     }
 }

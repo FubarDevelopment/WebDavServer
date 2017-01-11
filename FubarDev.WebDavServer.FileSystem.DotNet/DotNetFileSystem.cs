@@ -1,4 +1,5 @@
 ﻿using System;
+using System.IO;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -6,19 +7,17 @@ namespace FubarDev.WebDavServer.FileSystem.DotNet
 {
     public class DotNetFileSystem : IFileSystem
     {
-        private readonly DotNetDirectory _root;
-
-        public DotNetFileSystem(DotNetDirectory rootDirectory)
+        public DotNetFileSystem(string rootFolder)
         {
-            _root = rootDirectory;
-            Root = new AsyncLazy<ICollection>(() => _root);
+            var root = new AsyncLazy<DotNetDirectory>(() => new DotNetDirectory(this, new DirectoryInfo(rootFolder), "/"));
+            Root = new AsyncLazy<ICollection>(async () => await root);
         }
 
         public AsyncLazy<ICollection> Root { get; }
 
         public Task<SelectionResult> SelectAsync(string path, CancellationToken ct)
         {
-            throw new NotImplementedException();
+            return new PathTraversalEngine(this).TraverseAsync(path, ct);
         }
     }
 }

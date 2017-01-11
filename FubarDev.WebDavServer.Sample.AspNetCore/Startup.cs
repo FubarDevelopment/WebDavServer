@@ -1,7 +1,14 @@
-﻿using FubarDev.WebDavServer.AspNetCore;
+﻿using System;
+using System.IO;
+using System.Linq;
+
+using FubarDev.WebDavServer.AspNetCore;
+using FubarDev.WebDavServer.FileSystem;
+using FubarDev.WebDavServer.Sample.AspNetCore.Support;
 
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
@@ -27,6 +34,13 @@ namespace FubarDev.WebDavServer.Sample.AspNetCore
         public void ConfigureServices(IServiceCollection services)
         {
             services
+                .AddSingleton<IFileSystemFactory>(new TestFileSystemFactory(GetHomePath()))
+                .AddTransient(sp =>
+                {
+                    var factory = sp.GetRequiredService<IFileSystemFactory>();
+                    var context = sp.GetRequiredService<IHttpContextAccessor>();
+                    return factory.CreateFileSystem(context.HttpContext.User.Identity);
+                })
                 .AddMvcCore()
                 .AddAuthorization()
                 .AddWebDav();
@@ -44,6 +58,13 @@ namespace FubarDev.WebDavServer.Sample.AspNetCore
             }
 
             app.UseMvc();
+        }
+
+        private static string GetHomePath()
+        {
+            var homeEnvVars = new[] {"HOME", "USERPROFILE", "PUBLIC"};
+            var home = homeEnvVars.Select(Environment.GetEnvironmentVariable).First(x => !string.IsNullOrEmpty(x));
+            return Path.GetDirectoryName(home);
         }
     }
 }

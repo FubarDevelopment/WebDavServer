@@ -1,4 +1,5 @@
 ﻿using System.Threading;
+using System.Threading.Tasks;
 
 using FubarDev.WebDavServer.Model;
 
@@ -8,6 +9,6 @@ namespace FubarDev.WebDavServer.Handlers
     {
         Depth Depth { get; set; }
 
-        IWebDavResult HandleAsync(string path, Propfind request, CancellationToken cancellationToken);
+        Task<IWebDavResult> HandleAsync(string path, Propfind request, CancellationToken cancellationToken);
     }
 }
