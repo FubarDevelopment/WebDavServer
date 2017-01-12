@@ -1,7 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -9,25 +7,22 @@ using FubarDev.WebDavServer.FileSystem;
 using FubarDev.WebDavServer.Handlers;
 using FubarDev.WebDavServer.Model;
 
+using JetBrains.Annotations;
+
 namespace FubarDev.WebDavServer.DefaultHandlers
 {
     public class PropFindHandler : IPropFindHandler
     {
-        private readonly IWebDavHost _host;
-
-        public PropFindHandler(IFileSystem fileSystem, IWebDavHost host)
+        public PropFindHandler(IFileSystem fileSystem)
         {
-            _host = host;
             FileSystem = fileSystem;
         }
 
         public IFileSystem FileSystem { get; }
 
-        public Depth Depth { get; set; } = Depth.Infinity;
-
-        public async Task<IWebDavResult> HandleAsync(string path, Propfind request, CancellationToken cancellationToken)
+        public async Task<IWebDavResult> HandleAsync(string path, Propfind request, Depth depth, CancellationToken cancellationToken)
         {
-            if (Depth == Depth.Infinity)
+            if (depth == Depth.Infinity)
             {
                 // Not supported yet
                 return new WebDavResult<Error1>(WebDavStatusCodes.Forbidden, new Error1()
@@ -37,14 +32,29 @@ namespace FubarDev.WebDavServer.DefaultHandlers
                 });
             }
 
-            var elements = new List<IEntry>();
-            var remainingDepth = Depth.OrderValue;
             var selectionResult = await FileSystem.SelectAsync(path, cancellationToken);
             if (selectionResult.IsMissing)
             {
                 throw new WebDavException(WebDavStatusCodes.NotFound);
             }
 
+            switch (request.ItemsElementName[0])
+            {
+                case ItemsChoiceType.Allprop:
+                    return await HandleAllProp(request, selectionResult, depth);
+            }
+
+            throw new WebDavException(WebDavStatusCodes.Forbidden);
+        }
+
+        private Task<IWebDavResult> HandleAllProp(Propfind request, SelectionResult selectionResult, Depth depth)
+        {
+            var include = request.ItemsElementName.Select((x, i) => Tuple.Create(x, i)).Where(x => x.Item1 == ItemsChoiceType.Include).Select(x => (Include)request.Items[x.Item2]).FirstOrDefault();
+            return HandleAllProp(include, selectionResult, depth);
+        }
+
+        private async Task<IWebDavResult> HandleAllProp([CanBeNull] Include include, [NotNull] SelectionResult selectionResult, Depth depth)
+        {
             throw new NotImplementedException();
         }
     }

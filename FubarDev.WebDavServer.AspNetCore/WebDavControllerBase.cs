@@ -3,6 +3,7 @@ using System.Threading;
 using System.Threading.Tasks;
 
 using FubarDev.WebDavServer.AspNetCore.Routing;
+using FubarDev.WebDavServer.Model;
 
 using Microsoft.AspNetCore.Mvc;
 
@@ -10,6 +11,13 @@ namespace FubarDev.WebDavServer.AspNetCore
 {
     public class WebDavControllerBase : ControllerBase
     {
+        private IWebDavDispatcher _dispatcher;
+
+        public WebDavControllerBase(IWebDavDispatcher dispatcher)
+        {
+            _dispatcher = dispatcher;
+        }
+
         [HttpOptions]
         public IActionResult QueryOptionsAsync(string path, CancellationToken cancellationToken)
         {
@@ -45,9 +53,11 @@ namespace FubarDev.WebDavServer.AspNetCore
         }
 
         [HttpPropFind()]
-        public Task<IActionResult> PropFindAsync(string path, [FromBody]Model.Propfind request, [FromHeader(Name = "Depth")] string depth, CancellationToken cancellationToken)
+        public async Task<IActionResult> PropFindAsync(string path, [FromBody]Model.Propfind request, [FromHeader(Name = "Depth")] string depth, CancellationToken cancellationToken)
         {
-            throw new NotImplementedException();
+            var parsedDepth = Depth.Parse(depth);
+            var result = await _dispatcher.Class1.PropFindAsync(path, request, parsedDepth, cancellationToken);
+            return new WebDavIndirectResult(result);
         }
 
         [HttpPropPatch]

@@ -7,5 +7,9 @@ namespace FubarDev.WebDavServer.Sample.AspNetCore.Controllers
     [Route("{*path}")]
     public class WebDavController : WebDavControllerBase
     {
+        public WebDavController(IWebDavDispatcher dispatcher)
+            : base(dispatcher)
+        {
+        }
     }
 }

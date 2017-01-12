@@ -8,9 +8,6 @@ namespace FubarDev.WebDavServer.Model
 
         public int Compare(Depth x, Depth y)
         {
-            if (ReferenceEquals(x, y)) return 0;
-            if (ReferenceEquals(null, y)) return 1;
-            if (ReferenceEquals(null, x)) return -1;
             return x.OrderValue.CompareTo(y.OrderValue);
         }
 
@@ -21,7 +18,7 @@ namespace FubarDev.WebDavServer.Model
 
         public int GetHashCode(Depth obj)
         {
-            return obj?.OrderValue.GetHashCode() ?? 0;
+            return obj.OrderValue.GetHashCode();
         }
     }
 }

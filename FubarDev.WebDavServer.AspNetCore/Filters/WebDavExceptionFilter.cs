@@ -44,7 +44,7 @@ namespace FubarDev.WebDavServer.AspNetCore.Filters
                             },
                         }
                     });
-                context.Result = new WebDavResultResult<Multistatus>(result);
+                context.Result = new WebDavIndirectResult(result);
             }
 
             _logger.LogError(Logging.EventIds.Unspecified, context.Exception, context.Exception.Message);

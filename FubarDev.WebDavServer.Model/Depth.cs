@@ -2,7 +2,7 @@
 
 namespace FubarDev.WebDavServer.Model
 {
-    public class Depth : IComparable<Depth>, IEquatable<Depth>
+    public struct Depth : IComparable<Depth>, IEquatable<Depth>
     {
         public static readonly Depth Zero = new Depth("0", 0);
         public static readonly Depth One = new Depth("1", 1);
@@ -18,11 +18,6 @@ namespace FubarDev.WebDavServer.Model
 
         public string Value { get; }
 
-        public static bool TryParse(string depthText, out Depth depth)
-        {
-            return TryParse(depthText, null, out depth);
-        }
-
         public static Depth Parse(string depth)
         {
             return Parse(depth, Infinity);
@@ -34,6 +29,30 @@ namespace FubarDev.WebDavServer.Model
             if (!TryParse(depth, defaultDepth, out result))
                 throw new ArgumentException("Argument must be one of \"0\", \"1\", or \"infinity\"", nameof(depth));
             return result;
+        }
+
+        public static bool TryParse(string depthText, out Depth depth)
+        {
+            return TryParse(depthText, Depth.Infinity, out depth);
+        }
+
+        public static bool TryParse(string depthText, Depth defaultDepth, out Depth depth)
+        {
+            switch (depthText)
+            {
+                case "0":
+                    depth = Zero;
+                    return true;
+                case "1":
+                    depth = One;
+                    return true;
+                case "infinity":
+                    depth = Infinity;
+                    return true;
+            }
+
+            depth = defaultDepth;
+            return string.IsNullOrEmpty(depthText);
         }
 
         public static bool operator ==(Depth x, Depth y)
@@ -64,31 +83,6 @@ namespace FubarDev.WebDavServer.Model
         public static bool operator <=(Depth x, Depth y)
         {
             return DepthComparer.Default.Compare(x, y) <= 0;
-        }
-
-        private static bool TryParse(string depthText, Depth defaultDepth, out Depth depth)
-        {
-            switch (depthText)
-            {
-                case "0":
-                    depth = Zero;
-                    return true;
-                case "1":
-                    depth = One;
-                    return true;
-                case "infinity":
-                    depth = Infinity;
-                    return true;
-            }
-
-            if (string.IsNullOrEmpty(depthText) && defaultDepth != null)
-            {
-                depth = defaultDepth;
-                return true;
-            }
-
-            depth = null;
-            return false;
         }
 
         public bool Equals(Depth other)

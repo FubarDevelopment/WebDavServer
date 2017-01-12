@@ -7,8 +7,6 @@ namespace FubarDev.WebDavServer.Handlers
 {
     public interface IPropFindHandler
     {
-        Depth Depth { get; set; }
-
-        Task<IWebDavResult> HandleAsync(string path, Propfind request, CancellationToken cancellationToken);
+        Task<IWebDavResult> HandleAsync(string path, Propfind request, Depth depth, CancellationToken cancellationToken);
     }
 }

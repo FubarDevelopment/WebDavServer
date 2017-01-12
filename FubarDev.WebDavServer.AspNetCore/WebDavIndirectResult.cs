@@ -1,15 +1,16 @@
-﻿using System.Threading;
+﻿using System;
+using System.Threading;
 using System.Threading.Tasks;
 
 using Microsoft.AspNetCore.Mvc;
 
 namespace FubarDev.WebDavServer.AspNetCore
 {
-    public class WebDavResultResult<T> : StatusCodeResult
+    public class WebDavIndirectResult : StatusCodeResult
     {
-        private readonly WebDavResult<T> _result;
+        private readonly IWebDavResult _result;
 
-        public WebDavResultResult(WebDavResult<T> result) 
+        public WebDavIndirectResult(IWebDavResult result)
             : base((int)result.StatusCode)
         {
             _result = result;

@@ -16,7 +16,7 @@ namespace FubarDev.WebDavServer.FileSystem
 
         public Task<SelectionResult> TraverseAsync(string path, CancellationToken ct)
         {
-            return TraverseAsync(SplitPath(path), ct);
+            return TraverseAsync(SplitPath(path ?? string.Empty), ct);
         }
 
         public async Task<SelectionResult> TraverseAsync(IEnumerable<string> pathParts, CancellationToken ct)
@@ -27,7 +27,7 @@ namespace FubarDev.WebDavServer.FileSystem
 
         public Task<SelectionResult> TraverseAsync(ICollection currentCollection, string path, CancellationToken ct)
         {
-            return TraverseAsync(currentCollection, SplitPath(path), ct);
+            return TraverseAsync(currentCollection, SplitPath(path ?? string.Empty), ct);
         }
 
         public Task<SelectionResult> TraverseAsync(ICollection currentCollection, IEnumerable<string> pathParts, CancellationToken ct)
@@ -45,7 +45,7 @@ namespace FubarDev.WebDavServer.FileSystem
             for (var i = 0; i != pathPartsArr.Length; ++i)
             {
                 var pathPart = pathPartsArr[i];
-                if (pathPart.OriginalName == "./")
+                if (pathPart.OriginalName == "./" || pathPart.OriginalName == string.Empty)
                     continue;
                 if (pathPart.OriginalName == "../")
                 {
