@@ -22,7 +22,7 @@ namespace FubarDev.WebDavServer.FileSystem
         public async Task<SelectionResult> TraverseAsync(IEnumerable<string> pathParts, CancellationToken ct)
         {
             var current = await _fileSystem.Root;
-            return await TraverseAsync(current, pathParts, ct);
+            return await TraverseAsync(current, pathParts, ct).ConfigureAwait(false);
         }
 
         public Task<SelectionResult> TraverseAsync(ICollection currentCollection, string path, CancellationToken ct)
@@ -53,7 +53,7 @@ namespace FubarDev.WebDavServer.FileSystem
                     continue;
                 }
 
-                var next = await currentCollection.GetChildAsync(pathPart.Name, ct);
+                var next = await currentCollection.GetChildAsync(pathPart.Name, ct).ConfigureAwait(false);
                 if (next == null)
                 {
                     // missing

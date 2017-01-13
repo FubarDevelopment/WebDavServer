@@ -32,7 +32,7 @@ namespace FubarDev.WebDavServer.DefaultHandlers
                 });
             }
 
-            var selectionResult = await FileSystem.SelectAsync(path, cancellationToken);
+            var selectionResult = await FileSystem.SelectAsync(path, cancellationToken).ConfigureAwait(false);
             if (selectionResult.IsMissing)
             {
                 throw new WebDavException(WebDavStatusCodes.NotFound);
@@ -41,7 +41,7 @@ namespace FubarDev.WebDavServer.DefaultHandlers
             switch (request.ItemsElementName[0])
             {
                 case ItemsChoiceType.Allprop:
-                    return await HandleAllProp(request, selectionResult, depth);
+                    return await HandleAllProp(request, selectionResult, depth).ConfigureAwait(false);
             }
 
             throw new WebDavException(WebDavStatusCodes.Forbidden);

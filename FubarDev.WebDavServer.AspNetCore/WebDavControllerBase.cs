@@ -56,7 +56,7 @@ namespace FubarDev.WebDavServer.AspNetCore
         public async Task<IActionResult> PropFindAsync(string path, [FromBody]Model.Propfind request, [FromHeader(Name = "Depth")] string depth, CancellationToken cancellationToken)
         {
             var parsedDepth = Depth.Parse(depth);
-            var result = await _dispatcher.Class1.PropFindAsync(path, request, parsedDepth, cancellationToken);
+            var result = await _dispatcher.Class1.PropFindAsync(path, request, parsedDepth, cancellationToken).ConfigureAwait(false);
             return new WebDavIndirectResult(result);
         }
 

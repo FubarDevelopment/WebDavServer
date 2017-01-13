@@ -19,7 +19,7 @@ namespace FubarDev.WebDavServer.Properties
 
         public override async Task<XElement> GetXmlValueAsync(CancellationToken ct)
         {
-            var result = await GetValueAsync(ct);
+            var result = await GetValueAsync(ct).ConfigureAwait(false);
             return Converter.ToElement(result);
         }
 

@@ -18,8 +18,8 @@ namespace FubarDev.WebDavServer.AspNetCore
 
         public override async Task ExecuteResultAsync(ActionContext context)
         {
-            await base.ExecuteResultAsync(context);
-            await _result.WriteResponseAsync(context.HttpContext.Response.Body, CancellationToken.None);
+            await base.ExecuteResultAsync(context).ConfigureAwait(false);
+            await _result.WriteResponseAsync(context.HttpContext.Response.Body, CancellationToken.None).ConfigureAwait(false);
         }
     }
 }
