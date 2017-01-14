@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 
 using FubarDev.WebDavServer.Properties;
 
@@ -9,6 +10,7 @@ namespace FubarDev.WebDavServer.FileSystem
         string Name { get; }
         IFileSystem RootFileSystem { get; }
         string Path { get; }
+        DateTime LastWriteTimeUtc { get; }
         IEnumerable<IProperty> Properties { get; }
     }
 }

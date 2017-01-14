@@ -19,7 +19,7 @@ namespace FubarDev.WebDavServer.FileSystem.DotNet
         {
             var items = DirectoryInfo.GetFileSystemInfos(name);
             if (items.Length != 1)
-                return null;
+                return Task.FromResult<IEntry>(null);
             return Task.FromResult(CreateEntry(items[0]));
         }
 

@@ -28,16 +28,21 @@ namespace FubarDev.WebDavServer.AspNetCore.Filters
             if (context.Exception is NotImplementedException || context.Exception is NotSupportedException)
             {
                 context.Result = new StatusCodeResult(StatusCodes.Status501NotImplemented);
+                return;
             }
-            else if (context.Exception is WebDavException)
+
+            var webDavException = context.Exception as WebDavException;
+            if (webDavException != null)
             {
-                var ex = (WebDavException)context.Exception;
-                context.Result = BuildResultForStatusCode(context, ex.StatusCode, ex.Message);
+                context.Result = BuildResultForStatusCode(context, webDavException.StatusCode, webDavException.Message);
+                return;
             }
-            else if (context.Exception is UnauthorizedAccessException)
+
+            var unauthorizedAccessException = context.Exception as UnauthorizedAccessException;
+            if (unauthorizedAccessException != null)
             {
-                var ex = (UnauthorizedAccessException)context.Exception;
-                context.Result = BuildResultForStatusCode(context, WebDavStatusCodes.Forbidden, ex.Message);
+                context.Result = BuildResultForStatusCode(context, WebDavStatusCodes.Forbidden, unauthorizedAccessException.Message);
+                return;
             }
 
             _logger.LogError(Logging.EventIds.Unspecified, context.Exception, context.Exception.Message);

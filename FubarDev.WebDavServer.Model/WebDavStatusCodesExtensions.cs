@@ -10,6 +10,7 @@ namespace FubarDev.WebDavServer.Model
         private static readonly ConcurrentDictionary<WebDavStatusCodes, string> _reasonPhrases = new ConcurrentDictionary<WebDavStatusCodes, string>()
         {
             [WebDavStatusCodes.MultiStatus] = "Multi-Status",
+            [WebDavStatusCodes.OK] = "OK",
         };
 
         public static string GetReasonPhrase(this WebDavStatusCodes statusCode, string additionalMessage = "")
@@ -50,7 +51,7 @@ namespace FubarDev.WebDavServer.Model
             {
                 if (char.IsUpper(name, currentIndex))
                 {
-                    yield return name.Substring(startIndex, currentIndex - 1);
+                    yield return name.Substring(startIndex, currentIndex - startIndex);
                     startIndex = currentIndex;
                 }
 

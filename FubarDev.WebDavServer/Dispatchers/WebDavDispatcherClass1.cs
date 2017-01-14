@@ -13,14 +13,20 @@ namespace FubarDev.WebDavServer.Dispatchers
     {
         private readonly IPropFindHandler _propFindHandler;
 
+        private readonly IGetHandler _getHandler;
+
+        private readonly IHeadHandler _headHandler;
+
         private readonly IOptionsHandler _optionsHandler;
 
-        public WebDavDispatcherClass1(IPropFindHandler propFindHandler, IOptionsHandler optionsHandler)
+        public WebDavDispatcherClass1(IOptionsHandler optionsHandler, IGetHandler getHandler, IHeadHandler headHandler, IPropFindHandler propFindHandler)
         {
             _propFindHandler = propFindHandler;
+            _getHandler = getHandler;
+            _headHandler = headHandler;
             _optionsHandler = optionsHandler;
 
-            HttpMethods = new IHandler[] { propFindHandler, optionsHandler }
+            HttpMethods = new IHandler[] { optionsHandler, getHandler, headHandler, propFindHandler }
                 .Where(x => x != null)
                 .SelectMany(x => x.HttpMethods)
                 .Distinct().ToList();
@@ -29,6 +35,16 @@ namespace FubarDev.WebDavServer.Dispatchers
         public int Version { get; } = 1;
 
         public IEnumerable<string> HttpMethods { get; }
+
+        public Task<IWebDavResult> GetAsync(string path, CancellationToken cancellationToken)
+        {
+            return _getHandler.HandleAsync(path, cancellationToken);
+        }
+
+        public Task<IWebDavResult> HeadAsync(string path, CancellationToken cancellationToken)
+        {
+            return _headHandler.HandleAsync(path, cancellationToken);
+        }
 
         public Task<IWebDavResult> OptionsAsync(string path, CancellationToken cancellationToken)
         {

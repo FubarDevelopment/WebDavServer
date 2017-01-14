@@ -26,9 +26,10 @@ namespace FubarDev.WebDavServer.AspNetCore
         }
 
         [HttpGet]
-        public Task<IActionResult> GetAsync(string path, CancellationToken cancellationToken)
+        public async Task<IActionResult> GetAsync(string path, CancellationToken cancellationToken)
         {
-            throw new NotImplementedException();
+            var result = await _dispatcher.Class1.GetAsync(path, cancellationToken).ConfigureAwait(false);
+            return new WebDavIndirectResult(_dispatcher, result);
         }
 
         // POST api/values
@@ -67,9 +68,10 @@ namespace FubarDev.WebDavServer.AspNetCore
         }
 
         [HttpHead]
-        public Task<IActionResult> HeadAsync(string path, [FromBody]string value, CancellationToken cancellationToken)
+        public async Task<IActionResult> HeadAsync(string path, [FromBody]string value, CancellationToken cancellationToken)
         {
-            throw new NotImplementedException();
+            var result = await _dispatcher.Class1.HeadAsync(path, cancellationToken).ConfigureAwait(false);
+            return new WebDavIndirectResult(_dispatcher, result);
         }
 
         [HttpCopy]
