@@ -58,15 +58,7 @@ namespace FubarDev.WebDavServer.DefaultHandlers
                 entries.Add(selectionResult.Collection);
                 if (depth != Depth.Zero)
                 {
-                    IReadOnlyCollection<IEntry> children;
-                    try
-                    {
-                        children = await selectionResult.Collection.GetChildrenAsync(cancellationToken).ConfigureAwait(false);
-                    }
-                    catch (Exception)
-                    {
-                        return new WebDavResult(WebDavStatusCodes.Forbidden);
-                    }
+                    var children = await selectionResult.Collection.GetChildrenAsync(cancellationToken).ConfigureAwait(false);
 
                     using (var entriesEnumerator = selectionResult.Collection.GetEntries(children, depth.OrderValue - 1).GetEnumerator())
                     {

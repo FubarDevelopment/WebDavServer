@@ -39,7 +39,7 @@ namespace FubarDev.WebDavServer.Model
             if (string.IsNullOrEmpty(additionalMessage))
                 return reasonPhrase;
 
-            return $"{reasonPhrase} {additionalMessage}";
+            return $"{reasonPhrase} ({additionalMessage})";
         }
 
         private static IEnumerable<string> GetParts(string name)
