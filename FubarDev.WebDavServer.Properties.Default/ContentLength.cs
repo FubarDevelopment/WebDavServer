@@ -9,20 +9,17 @@ namespace FubarDev.WebDavServer.Properties
 {
     public class ContentLength : ITypedReadableProperty<long>
     {
-        private readonly GetPropertyValueAsyncDelegate<long> _getPropertyValueAsync;
+        public static readonly XName PropertyName = WebDavXml.Dav + "getcontentlength";
 
         private static readonly LongConverter _converter = new LongConverter();
+
+        private readonly GetPropertyValueAsyncDelegate<long> _getPropertyValueAsync;
 
         public ContentLength(GetPropertyValueAsyncDelegate<long> getPropertyValueAsync)
         {
             Cost = 0;
-            Name = WebDavXml.Dav + "getcontentlength";
+            Name = PropertyName;
             _getPropertyValueAsync = getPropertyValueAsync;
-        }
-
-        public Task<long> GetValueAsync(CancellationToken ct)
-        {
-            return _getPropertyValueAsync(ct);
         }
 
         public XName Name { get; }
@@ -31,8 +28,12 @@ namespace FubarDev.WebDavServer.Properties
 
         public async Task<XElement> GetXmlValueAsync(CancellationToken ct)
         {
-            var length = await GetValueAsync(ct).ConfigureAwait(false);
-            return _converter.ToElement(Name, length);
+            return _converter.ToElement(Name, await GetValueAsync(ct).ConfigureAwait(false));
+        }
+
+        public Task<long> GetValueAsync(CancellationToken ct)
+        {
+            return _getPropertyValueAsync(ct);
         }
     }
 }

@@ -178,16 +178,21 @@ namespace FubarDev.WebDavServer.DefaultHandlers
                 }
 
                 var propElements = new List<XElement>();
-                foreach (var property in entry.Properties.Where(p => _filters.All(f => f.IsAllowed(p))))
+                using (var propsEnumerator = entry.GetProperties().GetEnumerator())
                 {
-                    foreach (var filter in _filters)
+                    while (await propsEnumerator.MoveNext(cancellationToken).ConfigureAwait(false))
                     {
-                        filter.NotifyOfSelection(property);
-                    }
+                        var property = propsEnumerator.Current;
 
-                    var readableProp = (IUntypedReadableProperty)property;
-                    var element = await readableProp.GetXmlValueAsync(cancellationToken).ConfigureAwait(false);
-                    propElements.Add(element);
+                        foreach (var filter in _filters)
+                        {
+                            filter.NotifyOfSelection(property);
+                        }
+
+                        var readableProp = (IUntypedReadableProperty)property;
+                        var element = await readableProp.GetXmlValueAsync(cancellationToken).ConfigureAwait(false);
+                        propElements.Add(element);
+                    }
                 }
 
                 var result = new List<Propstat>();

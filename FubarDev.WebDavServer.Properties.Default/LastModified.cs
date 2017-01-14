@@ -1,7 +1,6 @@
 ﻿using System;
-using System.Threading.Tasks;
+using System.Xml.Linq;
 
-using FubarDev.WebDavServer.FileSystem;
 using FubarDev.WebDavServer.Model;
 using FubarDev.WebDavServer.Properties.Generic;
 
@@ -9,8 +8,10 @@ namespace FubarDev.WebDavServer.Properties
 {
     public class LastModified : GenericDateTimeRfc1123Property
     {
-        public LastModified(IEntry entry, SetPropertyValueAsyncDelegate<DateTime> setValueAsyncFunc)
-            : base(WebDavXml.Dav + "getlastmodified", 0, ct => Task.FromResult(entry.LastWriteTimeUtc), setValueAsyncFunc)
+        public static readonly XName PropertyName = WebDavXml.Dav + "getlastmodified";
+
+        public LastModified(GetPropertyValueAsyncDelegate<DateTime> getPropertyValueAsync, SetPropertyValueAsyncDelegate<DateTime> setValueAsyncFunc)
+            : base(PropertyName, 0, getPropertyValueAsync, setValueAsyncFunc)
         {
         }
     }

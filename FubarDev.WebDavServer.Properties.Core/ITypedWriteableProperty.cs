@@ -5,7 +5,7 @@ using JetBrains.Annotations;
 
 namespace FubarDev.WebDavServer.Properties
 {
-    public interface ITypedWriteableProperty<T> : IUntypedWriteableProperty
+    public interface ITypedWriteableProperty<T> : ITypedReadableProperty<T>, IUntypedWriteableProperty
     {
         [NotNull]
         Task SetValueAsync([NotNull] T value, CancellationToken ct);

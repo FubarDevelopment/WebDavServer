@@ -6,7 +6,7 @@ using JetBrains.Annotations;
 
 namespace FubarDev.WebDavServer.Properties
 {
-    public interface IUntypedWriteableProperty : IProperty
+    public interface IUntypedWriteableProperty : IUntypedReadableProperty
     {
         [NotNull]
         Task SetXmlValueAsync([NotNull] XElement element, CancellationToken ct);

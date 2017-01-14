@@ -6,7 +6,7 @@ using JetBrains.Annotations;
 
 namespace FubarDev.WebDavServer.Properties
 {
-    public abstract class SimpleTypedProperty<T> : SimpleUntypedProperty, ITypedReadableProperty<T>, ITypedWriteableProperty<T>
+    public abstract class SimpleTypedProperty<T> : SimpleUntypedProperty, ITypedWriteableProperty<T>
     {
         protected SimpleTypedProperty([NotNull] XName name, int cost)
             : base(name, cost)

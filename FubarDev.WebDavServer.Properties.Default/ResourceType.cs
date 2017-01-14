@@ -9,6 +9,8 @@ namespace FubarDev.WebDavServer.Properties
 {
     public abstract class ResourceType : IUntypedReadableProperty
     {
+        public static readonly XName PropertyName = WebDavXml.Dav + "resourcetype";
+
         private readonly XElement _element;
 
         protected ResourceType(XElement element)
@@ -20,7 +22,7 @@ namespace FubarDev.WebDavServer.Properties
 
         public static ResourceType Collection { get; } = new CollectionResourceType();
 
-        public XName Name { get; } = WebDavXml.Dav + "resourcetype";
+        public XName Name { get; } = PropertyName;
 
         public int Cost { get; } = 0;
 

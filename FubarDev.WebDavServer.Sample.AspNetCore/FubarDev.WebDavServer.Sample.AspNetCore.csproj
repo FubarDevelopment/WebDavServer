@@ -8,6 +8,7 @@
     <Folder Include="wwwroot\" />
   </ItemGroup>
   <ItemGroup>
+    <PackageReference Include="Microsoft.Extensions.Caching.Memory" Version="1.1.0" />
     <PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="1.1.0" />
     <PackageReference Include="Microsoft.Extensions.Logging.Debug" Version="1.1.0" />
     <PackageReference Include="Microsoft.NETCore.App" Version="1.0.3" />
@@ -23,6 +24,8 @@
     <ProjectReference Include="..\FubarDev.WebDavServer.Model\FubarDev.WebDavServer.Model.csproj" />
     <ProjectReference Include="..\FubarDev.WebDavServer.Properties.Core\FubarDev.WebDavServer.Properties.Core.csproj" />
     <ProjectReference Include="..\FubarDev.WebDavServer.Properties.Default\FubarDev.WebDavServer.Properties.Default.csproj" />
+    <ProjectReference Include="..\FubarDev.WebDavServer.Properties.Store.TextFile\FubarDev.WebDavServer.Properties.Store.TextFile.csproj" />
+    <ProjectReference Include="..\FubarDev.WebDavServer.Properties.Store\FubarDev.WebDavServer.Properties.Store.csproj" />
     <ProjectReference Include="..\FubarDev.WebDavServer\FubarDev.WebDavServer.csproj" />
   </ItemGroup>
 </Project>

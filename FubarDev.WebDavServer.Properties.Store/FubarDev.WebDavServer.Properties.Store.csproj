@@ -1,6 +1,6 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk" ToolsVersion="15.0">
   <PropertyGroup>
-    <TargetFrameworks>netstandard1.3;net451</TargetFrameworks>
+    <TargetFrameworks>net451;netstandard1.3</TargetFrameworks>
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="**\*.cs" />
@@ -8,14 +8,11 @@
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="NETStandard.Library" Version="1.6.1" />
-    <PackageReference Include="System.Interactive.Async" Version="3.1.1" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\FubarDev.WebDavServer.FileSystem\FubarDev.WebDavServer.FileSystem.csproj" />
     <ProjectReference Include="..\FubarDev.WebDavServer.Model\FubarDev.WebDavServer.Model.csproj" />
     <ProjectReference Include="..\FubarDev.WebDavServer.Properties.Core\FubarDev.WebDavServer.Properties.Core.csproj" />
     <ProjectReference Include="..\FubarDev.WebDavServer.Properties.Default\FubarDev.WebDavServer.Properties.Default.csproj" />
-    <ProjectReference Include="..\FubarDev.WebDavServer.Properties.Store.TextFile\FubarDev.WebDavServer.Properties.Store.TextFile.csproj" />
-    <ProjectReference Include="..\FubarDev.WebDavServer.Properties.Store\FubarDev.WebDavServer.Properties.Store.csproj" />
   </ItemGroup>
 </Project>
