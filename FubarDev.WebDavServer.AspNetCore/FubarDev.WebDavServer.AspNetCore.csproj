@@ -20,6 +20,7 @@
     <ProjectReference Include="..\FubarDev.WebDavServer.FileSystem\FubarDev.WebDavServer.FileSystem.csproj" />
     <ProjectReference Include="..\FubarDev.WebDavServer.Model\FubarDev.WebDavServer.Model.csproj" />
     <ProjectReference Include="..\FubarDev.WebDavServer.Properties.Core\FubarDev.WebDavServer.Properties.Core.csproj" />
+    <ProjectReference Include="..\FubarDev.WebDavServer.Properties.Default\FubarDev.WebDavServer.Properties.Default.csproj" />
     <ProjectReference Include="..\FubarDev.WebDavServer\FubarDev.WebDavServer.csproj" />
   </ItemGroup>
 </Project>
