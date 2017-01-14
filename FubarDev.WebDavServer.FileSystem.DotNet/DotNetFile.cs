@@ -5,7 +5,6 @@ using System.Threading;
 using System.Threading.Tasks;
 
 using FubarDev.WebDavServer.Properties;
-using FubarDev.WebDavServer.Properties.Default;
 
 namespace FubarDev.WebDavServer.FileSystem.DotNet
 {

@@ -5,7 +5,7 @@ using System.Xml.Linq;
 
 using FubarDev.WebDavServer.Model;
 
-namespace FubarDev.WebDavServer.Properties.Default
+namespace FubarDev.WebDavServer.Properties
 {
     public abstract class ResourceType : IUntypedReadableProperty
     {

@@ -3,7 +3,7 @@
 using FubarDev.WebDavServer.Model;
 using FubarDev.WebDavServer.Properties.Generic;
 
-namespace FubarDev.WebDavServer.Properties.Default
+namespace FubarDev.WebDavServer.Properties
 {
     public class DisplayName : GenericStringProperty
     {

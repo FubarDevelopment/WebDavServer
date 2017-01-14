@@ -2,7 +2,7 @@
 
 using FubarDev.WebDavServer.FileSystem;
 
-namespace FubarDev.WebDavServer.Properties.Default
+namespace FubarDev.WebDavServer.Properties
 {
     public static class EntryExtensions
     {

@@ -5,7 +5,7 @@ using System.Xml.Linq;
 using FubarDev.WebDavServer.Model;
 using FubarDev.WebDavServer.Properties.Converters;
 
-namespace FubarDev.WebDavServer.Properties.Default
+namespace FubarDev.WebDavServer.Properties
 {
     public class ContentLength : ITypedReadableProperty<long>
     {
