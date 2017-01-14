@@ -6,7 +6,7 @@ namespace FubarDev.WebDavServer.AspNetCore
     {
         public static IMvcCoreBuilder AddWebDav(this IMvcCoreBuilder builder)
         {
-            builder.Services.AddWebDavServices();
+            builder.Services.AddWebDav();
             return builder;
         }
     }

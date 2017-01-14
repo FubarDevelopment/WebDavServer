@@ -1,6 +1,6 @@
-﻿<Project Sdk="Microsoft.NET.Sdk" ToolsVersion="15.0">
+<Project Sdk="Microsoft.NET.Sdk" ToolsVersion="15.0">
   <PropertyGroup>
-    <TargetFrameworks>netstandard1.3;net451</TargetFrameworks>
+    <TargetFrameworks>net451;netstandard1.3</TargetFrameworks>
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="**\*.cs" />
@@ -13,6 +13,5 @@
     <ProjectReference Include="..\FubarDev.WebDavServer.FileSystem\FubarDev.WebDavServer.FileSystem.csproj" />
     <ProjectReference Include="..\FubarDev.WebDavServer.Model\FubarDev.WebDavServer.Model.csproj" />
     <ProjectReference Include="..\FubarDev.WebDavServer.Properties.Core\FubarDev.WebDavServer.Properties.Core.csproj" />
-    <ProjectReference Include="..\FubarDev.WebDavServer.Properties.Default\FubarDev.WebDavServer.Properties.Default.csproj" />
   </ItemGroup>
 </Project>

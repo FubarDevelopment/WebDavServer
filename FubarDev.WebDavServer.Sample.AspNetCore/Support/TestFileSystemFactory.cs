@@ -5,21 +5,23 @@ using System.Threading;
 using FubarDev.WebDavServer.FileSystem;
 using FubarDev.WebDavServer.FileSystem.DotNet;
 
+using Microsoft.Extensions.Options;
+
 namespace FubarDev.WebDavServer.Sample.AspNetCore.Support
 {
     public class TestFileSystemFactory : IFileSystemFactory
     {
-        private readonly string _rootPath;
+        private readonly DotNetFileSystemOptions _options;
 
-        public TestFileSystemFactory(string rootPath)
+        public TestFileSystemFactory(IOptions<DotNetFileSystemOptions> options)
         {
-            _rootPath = rootPath;
+            _options = options.Value;
         }
 
         public IFileSystem CreateFileSystem(IIdentity identity)
         {
-            var userHomeDirectory = Path.Combine(_rootPath, identity.IsAuthenticated ? identity.Name : "Public");
-            return new DotNetFileSystem(userHomeDirectory);
+            var userHomeDirectory = Path.Combine(_options.RootPath, identity.IsAuthenticated ? identity.Name : _options.AnonymousUserName);
+            return new DotNetFileSystem(_options, userHomeDirectory);
         }
     }
 }

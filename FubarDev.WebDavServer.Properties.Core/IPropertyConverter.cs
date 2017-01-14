@@ -10,6 +10,6 @@ namespace FubarDev.WebDavServer.Properties
         T FromElement([NotNull] XElement element);
 
         [NotNull]
-        XElement ToElement([NotNull] T value);
+        XElement ToElement(XName name, [NotNull] T value);
     }
 }

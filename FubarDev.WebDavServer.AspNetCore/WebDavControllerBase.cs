@@ -19,12 +19,12 @@ namespace FubarDev.WebDavServer.AspNetCore
         }
 
         [HttpOptions]
-        public IActionResult QueryOptionsAsync(string path, CancellationToken cancellationToken)
+        public  async Task<IActionResult> QueryOptionsAsync(string path, CancellationToken cancellationToken)
         {
-            throw new NotImplementedException();
+            var result = await _dispatcher.Class1.OptionsAsync(path, cancellationToken).ConfigureAwait(false);
+            return new WebDavIndirectResult(_dispatcher, result);
         }
 
-        // GET api/values
         [HttpGet]
         public Task<IActionResult> GetAsync(string path, CancellationToken cancellationToken)
         {
@@ -53,11 +53,11 @@ namespace FubarDev.WebDavServer.AspNetCore
         }
 
         [HttpPropFind()]
-        public async Task<IActionResult> PropFindAsync(string path, [FromBody]Model.Propfind request, [FromHeader(Name = "Depth")] string depth, CancellationToken cancellationToken)
+        public async Task<IActionResult> PropFindAsync(string path, [FromBody]Propfind request, [FromHeader(Name = "Depth")] string depth, CancellationToken cancellationToken)
         {
             var parsedDepth = Depth.Parse(depth);
             var result = await _dispatcher.Class1.PropFindAsync(path, request, parsedDepth, cancellationToken).ConfigureAwait(false);
-            return new WebDavIndirectResult(result);
+            return new WebDavIndirectResult(_dispatcher, result);
         }
 
         [HttpPropPatch]

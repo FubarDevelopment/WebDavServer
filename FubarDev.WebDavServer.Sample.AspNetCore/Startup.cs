@@ -4,6 +4,7 @@ using System.Linq;
 
 using FubarDev.WebDavServer.AspNetCore;
 using FubarDev.WebDavServer.FileSystem;
+using FubarDev.WebDavServer.FileSystem.DotNet;
 using FubarDev.WebDavServer.Sample.AspNetCore.Support;
 
 using Microsoft.AspNetCore.Builder;
@@ -34,7 +35,9 @@ namespace FubarDev.WebDavServer.Sample.AspNetCore
         public void ConfigureServices(IServiceCollection services)
         {
             services
-                .AddSingleton<IFileSystemFactory>(new TestFileSystemFactory(GetHomePath()))
+                .AddOptions()
+                .Configure<DotNetFileSystemOptions>(opt => { opt.HideExtensionsForDisplayName = false; })
+                .AddSingleton<IFileSystemFactory, TestFileSystemFactory>()
                 .AddTransient(sp =>
                 {
                     var factory = sp.GetRequiredService<IFileSystemFactory>();
@@ -58,13 +61,6 @@ namespace FubarDev.WebDavServer.Sample.AspNetCore
             }
 
             app.UseMvc();
-        }
-
-        private static string GetHomePath()
-        {
-            var homeEnvVars = new[] {"HOME", "USERPROFILE", "PUBLIC"};
-            var home = homeEnvVars.Select(Environment.GetEnvironmentVariable).First(x => !string.IsNullOrEmpty(x));
-            return Path.GetDirectoryName(home);
         }
     }
 }

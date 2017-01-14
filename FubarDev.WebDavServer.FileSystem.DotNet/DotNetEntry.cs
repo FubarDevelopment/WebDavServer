@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 
 using FubarDev.WebDavServer.Properties;
+using FubarDev.WebDavServer.Properties.Default;
 
 namespace FubarDev.WebDavServer.FileSystem.DotNet
 {
@@ -27,9 +27,15 @@ namespace FubarDev.WebDavServer.FileSystem.DotNet
         public string Path { get; }
         public IEnumerable<IProperty> Properties => _properties.Value;
 
-        private IEnumerable<IProperty> CreateProperties()
+        protected virtual IEnumerable<IProperty> CreateProperties()
         {
-            return Enumerable.Empty<IProperty>();
+            yield return this.GetResourceTypeProperty();
+
+            // Display name is should not move the file or collection, but it also should not be protected.
+            // The usual file systems can only handle this by extended attributes which aren't available
+            // through the standard .NET IO API. For this to work, we have to implement an alternate
+            // property store which isn't there yet.
+            yield return new DisplayName(this, FileSystem.Options.HideExtensionsForDisplayName);
         }
     }
 }
