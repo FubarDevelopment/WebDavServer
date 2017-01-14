@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using System.Text;
 
 using Microsoft.AspNetCore.Http;
@@ -30,6 +31,21 @@ namespace FubarDev.WebDavServer.AspNetCore
             if (!pathBase.EndsWith("/", StringComparison.Ordinal))
                 result.Append("/");
             return new Uri(result.ToString());
+        }
+
+        public DetectedClient DetectedClient
+        {
+            get
+            {
+                var userAgent = _httpContextAccessor.HttpContext.Request.Headers["User-Agent"].FirstOrDefault();
+                if (string.IsNullOrEmpty(userAgent))
+                    return DetectedClient.Any;
+
+                if (userAgent.StartsWith("Microsoft-WebDAV-MiniRedir"))
+                    return DetectedClient.MicrosoftExplorer;
+
+                return DetectedClient.Any;
+            }
         }
     }
 }

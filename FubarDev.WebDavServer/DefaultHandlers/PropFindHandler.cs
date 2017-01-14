@@ -93,7 +93,7 @@ namespace FubarDev.WebDavServer.DefaultHandlers
                 var href = new Uri(_host.BaseUrl, entry.Path);
 
                 var collector = new PropertyCollector(_host, new ReadableFilter(), new PropFilter(prop));
-                var propStats = await collector.GetPropertiesAsync(entry, code => code == WebDavStatusCodes.OK, cancellationToken).ConfigureAwait(false);
+                var propStats = await collector.GetPropertiesAsync(entry, code => code != WebDavStatusCodes.NotFound, cancellationToken).ConfigureAwait(false);
 
                 var response = new Response()
                 {
@@ -167,7 +167,7 @@ namespace FubarDev.WebDavServer.DefaultHandlers
 
             public Task<IReadOnlyCollection<Propstat>> GetPropertiesAsync(IEntry entry, CancellationToken cancellationToken)
             {
-                return GetPropertiesAsync(entry, code => true, cancellationToken);
+                return GetPropertiesAsync(entry, code => code != WebDavStatusCodes.NotFound, cancellationToken);
             }
 
             public async Task<IReadOnlyCollection<Propstat>> GetPropertiesAsync(IEntry entry, Func<WebDavStatusCodes, bool> statusCodeFilter, CancellationToken cancellationToken)

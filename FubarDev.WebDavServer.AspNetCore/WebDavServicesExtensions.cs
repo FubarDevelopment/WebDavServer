@@ -1,6 +1,10 @@
-﻿using FubarDev.WebDavServer.AspNetCore.Filters;
+﻿using System.Linq;
+
+using FubarDev.WebDavServer.AspNetCore.Filters;
 using FubarDev.WebDavServer.AspNetCore.Filters.Internal;
 using FubarDev.WebDavServer.AspNetCore.Formatters.Internal;
+using FubarDev.WebDavServer.Dispatchers;
+using FubarDev.WebDavServer.Formatters;
 using FubarDev.WebDavServer.Handlers;
 
 using Microsoft.AspNetCore.Http;
@@ -21,9 +25,11 @@ namespace FubarDev.WebDavServer.AspNetCore
             services.TryAddEnumerable(ServiceDescriptor.Transient<IConfigureOptions<MvcOptions>, WebDavExceptionFilterMvcOptionsSetup>());
             services.TryAddSingleton<IHttpContextAccessor, HttpContextAccessor>();
             services
+                .AddOptions()
                 .AddScoped<IWebDavDispatcher, WebDavServer>()
                 .AddScoped<IWebDavHost, WebDavHost>()
-                .AddSingleton<WebDavExceptionFilter>();
+                .AddSingleton<WebDavExceptionFilter>()
+                .AddScoped<IWebDavOutputFormatter, WebDavXmlOutputFormatter>();
             services.Scan(
                 scan => scan
                     .FromAssemblyOf<IHandler>()

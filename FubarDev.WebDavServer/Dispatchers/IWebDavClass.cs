@@ -2,7 +2,7 @@
 
 using JetBrains.Annotations;
 
-namespace FubarDev.WebDavServer
+namespace FubarDev.WebDavServer.Dispatchers
 {
     public interface IWebDavClass
     {

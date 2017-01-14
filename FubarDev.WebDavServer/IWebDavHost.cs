@@ -7,5 +7,7 @@ namespace FubarDev.WebDavServer
         string RequestProtocol { get; }
 
         Uri BaseUrl { get; }
+
+        DetectedClient DetectedClient { get; }
     }
 }

@@ -5,6 +5,8 @@ using System.Threading.Tasks;
 
 using FubarDev.WebDavServer.Model;
 
+using Microsoft.Extensions.DependencyInjection;
+
 namespace FubarDev.WebDavServer
 {
     public class WebDavResult : IWebDavResult

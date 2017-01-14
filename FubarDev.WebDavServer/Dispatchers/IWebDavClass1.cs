@@ -3,7 +3,7 @@ using System.Threading.Tasks;
 
 using FubarDev.WebDavServer.Model;
 
-namespace FubarDev.WebDavServer
+namespace FubarDev.WebDavServer.Dispatchers
 {
     public interface IWebDavClass1 : IWebDavClass
     {
