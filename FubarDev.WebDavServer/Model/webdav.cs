@@ -11,8 +11,6 @@ namespace FubarDev.WebDavServer.Model {
     
     /// <remarks/>
     [System.CodeDom.Compiler.GeneratedCodeAttribute("Xsd2", "1.0.0.0")]
-    [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.ComponentModel.DesignerCategoryAttribute("code")]
     [System.Xml.Serialization.XmlTypeAttribute(AnonymousType=true, Namespace="DAV:")]
     [System.Xml.Serialization.XmlRootAttribute("propfind", Namespace="DAV:", IsNullable=false)]
     public partial class Propfind {
@@ -51,8 +49,6 @@ namespace FubarDev.WebDavServer.Model {
     
     /// <remarks/>
     [System.CodeDom.Compiler.GeneratedCodeAttribute("Xsd2", "1.0.0.0")]
-    [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.ComponentModel.DesignerCategoryAttribute("code")]
     [System.Xml.Serialization.XmlTypeAttribute("include", Namespace="DAV:")]
     public partial class Include {
         
@@ -72,8 +68,6 @@ namespace FubarDev.WebDavServer.Model {
     
     /// <remarks/>
     [System.CodeDom.Compiler.GeneratedCodeAttribute("Xsd2", "1.0.0.0")]
-    [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.ComponentModel.DesignerCategoryAttribute("code")]
     [System.Xml.Serialization.XmlTypeAttribute("prop", Namespace="DAV:")]
     public partial class Prop {
         
@@ -115,9 +109,7 @@ namespace FubarDev.WebDavServer.Model {
     
     /// <remarks/>
     [System.CodeDom.Compiler.GeneratedCodeAttribute("Xsd2", "1.0.0.0")]
-    [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.ComponentModel.DesignerCategoryAttribute("code")]
-    [System.Xml.Serialization.XmlTypeAttribute("multistatus", AnonymousType=true, Namespace="DAV:")]
+    [System.Xml.Serialization.XmlTypeAttribute(AnonymousType=true, Namespace="DAV:")]
     [System.Xml.Serialization.XmlRootAttribute("multistatus", Namespace="DAV:", IsNullable=false)]
     public partial class Multistatus {
         
@@ -150,9 +142,7 @@ namespace FubarDev.WebDavServer.Model {
     
     /// <remarks/>
     [System.CodeDom.Compiler.GeneratedCodeAttribute("Xsd2", "1.0.0.0")]
-    [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.ComponentModel.DesignerCategoryAttribute("code")]
-    [System.Xml.Serialization.XmlTypeAttribute("response", AnonymousType=true, Namespace="DAV:")]
+    [System.Xml.Serialization.XmlTypeAttribute(AnonymousType=true, Namespace="DAV:")]
     [System.Xml.Serialization.XmlRootAttribute("response", Namespace="DAV:", IsNullable=false)]
     public partial class Response {
         
@@ -228,8 +218,6 @@ namespace FubarDev.WebDavServer.Model {
     
     /// <remarks/>
     [System.CodeDom.Compiler.GeneratedCodeAttribute("Xsd2", "1.0.0.0")]
-    [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.ComponentModel.DesignerCategoryAttribute("code")]
     [System.Xml.Serialization.XmlTypeAttribute("propstat", Namespace="DAV:")]
     public partial class Propstat {
         
@@ -301,8 +289,6 @@ namespace FubarDev.WebDavServer.Model {
     
     /// <remarks/>
     [System.CodeDom.Compiler.GeneratedCodeAttribute("Xsd2", "1.0.0.0")]
-    [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.ComponentModel.DesignerCategoryAttribute("code")]
     [System.Xml.Serialization.XmlTypeAttribute("error", Namespace="DAV:")]
     public partial class Error {
         
@@ -322,8 +308,6 @@ namespace FubarDev.WebDavServer.Model {
     
     /// <remarks/>
     [System.CodeDom.Compiler.GeneratedCodeAttribute("Xsd2", "1.0.0.0")]
-    [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.ComponentModel.DesignerCategoryAttribute("code")]
     [System.Xml.Serialization.XmlTypeAttribute("location", Namespace="DAV:")]
     public partial class Location {
         
@@ -361,9 +345,7 @@ namespace FubarDev.WebDavServer.Model {
     
     /// <remarks/>
     [System.CodeDom.Compiler.GeneratedCodeAttribute("Xsd2", "1.0.0.0")]
-    [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.ComponentModel.DesignerCategoryAttribute("code")]
-    [System.Xml.Serialization.XmlTypeAttribute("error", AnonymousType=true, Namespace="DAV:")]
+    [System.Xml.Serialization.XmlTypeAttribute(AnonymousType=true, Namespace="DAV:")]
     [System.Xml.Serialization.XmlRootAttribute("error", Namespace="DAV:", IsNullable=false)]
     public partial class Error1 {
         
@@ -405,8 +387,6 @@ namespace FubarDev.WebDavServer.Model {
     
     /// <remarks/>
     [System.CodeDom.Compiler.GeneratedCodeAttribute("Xsd2", "1.0.0.0")]
-    [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.ComponentModel.DesignerCategoryAttribute("code")]
     [System.Xml.Serialization.XmlTypeAttribute(AnonymousType=true, Namespace="DAV:")]
     public partial class LockTokenSubmitted {
         
@@ -426,8 +406,6 @@ namespace FubarDev.WebDavServer.Model {
     
     /// <remarks/>
     [System.CodeDom.Compiler.GeneratedCodeAttribute("Xsd2", "1.0.0.0")]
-    [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.ComponentModel.DesignerCategoryAttribute("code")]
     [System.Xml.Serialization.XmlTypeAttribute(AnonymousType=true, Namespace="DAV:")]
     public partial class NoConflictingLock {
         
@@ -481,5 +459,64 @@ namespace FubarDev.WebDavServer.Model {
         /// <remarks/>
         [System.Xml.Serialization.XmlEnumAttribute("propfind-finite-depth")]
         PropfindFiniteDepth,
+    }
+    
+    /// <remarks/>
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("Xsd2", "1.0.0.0")]
+    [System.Xml.Serialization.XmlTypeAttribute(AnonymousType=true, Namespace="DAV:")]
+    [System.Xml.Serialization.XmlRootAttribute("propertyupdate", Namespace="DAV:", IsNullable=false)]
+    public partial class Propertyupdate {
+        
+        private object[] itemsField;
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute("remove", typeof(Propremove))]
+        [System.Xml.Serialization.XmlElementAttribute("set", typeof(Propset))]
+        public object[] Items {
+            get {
+                return this.itemsField;
+            }
+            set {
+                this.itemsField = value;
+            }
+        }
+    }
+    
+    /// <remarks/>
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("Xsd2", "1.0.0.0")]
+    [System.Xml.Serialization.XmlTypeAttribute("propremove", TypeName="prop-remove", Namespace="DAV:")]
+    public partial class Propremove {
+        
+        private Prop propField;
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute("prop")]
+        public Prop Prop {
+            get {
+                return this.propField;
+            }
+            set {
+                this.propField = value;
+            }
+        }
+    }
+    
+    /// <remarks/>
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("Xsd2", "1.0.0.0")]
+    [System.Xml.Serialization.XmlTypeAttribute("propset", TypeName="prop-set", Namespace="DAV:")]
+    public partial class Propset {
+        
+        private Prop propField;
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute("prop")]
+        public Prop Prop {
+            get {
+                return this.propField;
+            }
+            set {
+                this.propField = value;
+            }
+        }
     }
 }

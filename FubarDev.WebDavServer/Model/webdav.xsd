@@ -66,6 +66,27 @@
     </complexType>
   </element>
 
+  <element name="propertyupdate">
+    <complexType>
+      <choice minOccurs="0" maxOccurs="unbounded">
+        <element name="remove" type="dav:prop-remove" />
+        <element name="set" type="dav:prop-set" />
+      </choice>
+    </complexType>
+  </element>
+
+  <complexType name="prop-remove">
+    <sequence>
+      <element name="prop" type="dav:prop" />
+    </sequence>
+  </complexType>
+
+  <complexType name="prop-set">
+    <sequence>
+      <element name="prop" type="dav:prop" />
+    </sequence>
+  </complexType>
+
   <complexType name="prop">
     <sequence>
       <any namespace="##any" minOccurs="0" maxOccurs="unbounded" />
