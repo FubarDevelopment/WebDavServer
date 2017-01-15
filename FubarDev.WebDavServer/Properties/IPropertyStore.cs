@@ -19,6 +19,8 @@ namespace FubarDev.WebDavServer.Properties
 
         Task SaveRawAsync(IEntry entry, XElement element, CancellationToken cancellationToken);
 
+        Task RemoveAsync(IEntry entry, CancellationToken cancellationToken);
+
         Task<bool> RemoveRawAsync(IEntry entry, XName name, CancellationToken cancellationToken);
 
         Task<EntityTag> GetETagAsync(IDocument document, CancellationToken cancellationToken);

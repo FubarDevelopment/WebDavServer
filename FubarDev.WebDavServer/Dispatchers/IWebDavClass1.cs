@@ -1,4 +1,5 @@
-﻿using System.Threading;
+﻿using System.IO;
+using System.Threading;
 using System.Threading.Tasks;
 
 using FubarDev.WebDavServer.Model;
@@ -10,6 +11,8 @@ namespace FubarDev.WebDavServer.Dispatchers
         Task<IWebDavResult> OptionsAsync(string path, CancellationToken cancellationToken);
 
         Task<IWebDavResult> GetAsync(string path, CancellationToken cancellationToken);
+
+        Task<IWebDavResult> PutAsync(string path, Stream data, CancellationToken cancellationToken);
 
         Task<IWebDavResult> HeadAsync(string path, CancellationToken cancellationToken);
 

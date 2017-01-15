@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
@@ -19,17 +20,20 @@ namespace FubarDev.WebDavServer.Dispatchers
 
         private readonly IHeadHandler _headHandler;
 
+        private readonly IPutHandler _putHandler;
+
         private readonly IOptionsHandler _optionsHandler;
 
-        public WebDavDispatcherClass1(IOptionsHandler optionsHandler, IGetHandler getHandler, IHeadHandler headHandler, IPropFindHandler propFindHandler, IPropPatchHandler propPatchHandler)
+        public WebDavDispatcherClass1(IOptionsHandler optionsHandler, IGetHandler getHandler, IHeadHandler headHandler, IPutHandler putHandler, IPropFindHandler propFindHandler, IPropPatchHandler propPatchHandler)
         {
             _propFindHandler = propFindHandler;
             _propPatchHandler = propPatchHandler;
             _getHandler = getHandler;
             _headHandler = headHandler;
+            _putHandler = putHandler;
             _optionsHandler = optionsHandler;
 
-            HttpMethods = new IHandler[] { optionsHandler, getHandler, headHandler, propFindHandler, _propPatchHandler }
+            HttpMethods = new IHandler[] { optionsHandler, getHandler, headHandler, _putHandler, propFindHandler, _propPatchHandler }
                 .Where(x => x != null)
                 .SelectMany(x => x.HttpMethods)
                 .Distinct().ToList();
@@ -47,6 +51,11 @@ namespace FubarDev.WebDavServer.Dispatchers
         public Task<IWebDavResult> HeadAsync(string path, CancellationToken cancellationToken)
         {
             return _headHandler.HeadAsync(path, cancellationToken);
+        }
+
+        public Task<IWebDavResult> PutAsync(string path, Stream data, CancellationToken cancellationToken)
+        {
+            return _putHandler.PutAsync(path, data, cancellationToken);
         }
 
         public Task<IWebDavResult> OptionsAsync(string path, CancellationToken cancellationToken)

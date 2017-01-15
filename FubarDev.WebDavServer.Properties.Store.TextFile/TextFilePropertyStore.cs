@@ -93,6 +93,14 @@ namespace FubarDev.WebDavServer.Properties.Store.TextFile
             return Task.FromResult(couldRemove);
         }
 
+        public Task RemoveAsync(IEntry entry, CancellationToken cancellationToken)
+        {
+            var data = Load(entry, true);
+            if (data.Entries.Remove(GetEntryKey(entry)))
+                Save(entry, data);
+            return Task.FromResult(0);
+        }
+
         public async Task<EntityTag> GetETagAsync(IDocument document, CancellationToken cancellationToken)
         {
             var etag = await LoadRawAsync(document, EntityTag.PropertyName, cancellationToken).ConfigureAwait(false);

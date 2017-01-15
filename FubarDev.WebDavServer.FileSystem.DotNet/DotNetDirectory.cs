@@ -43,6 +43,20 @@ namespace FubarDev.WebDavServer.FileSystem.DotNet
             return Task.FromResult<IReadOnlyCollection<IEntry>>(result);
         }
 
+        public Task<IDocument> CreateDocumentAsync(string name, CancellationToken cancellationToken)
+        {
+            var info = new FileInfo(System.IO.Path.Combine(DirectoryInfo.FullName, name));
+            info.Create().Dispose();
+            return Task.FromResult((IDocument)CreateEntry(info));
+        }
+
+        public Task<ICollection> CreateCollectionAsync(string name, CancellationToken cancellationToken)
+        {
+            var info = new DirectoryInfo(System.IO.Path.Combine(DirectoryInfo.FullName, name));
+            info.Create();
+            return Task.FromResult((ICollection)CreateEntry(info));
+        }
+
         private IEntry CreateEntry(FileSystemInfo fsInfo)
         {
             var fileInfo = fsInfo as FileInfo;

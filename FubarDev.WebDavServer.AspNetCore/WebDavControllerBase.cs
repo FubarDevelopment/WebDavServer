@@ -41,9 +41,10 @@ namespace FubarDev.WebDavServer.AspNetCore
 
         // PUT api/values/5
         [HttpPut]
-        public Task PutAsync(string path, [FromBody]string value, CancellationToken cancellationToken)
+        public async Task<IActionResult> PutAsync(string path, CancellationToken cancellationToken)
         {
-            throw new NotImplementedException();
+            var result = await _dispatcher.Class1.PutAsync(path, HttpContext.Request.Body, cancellationToken).ConfigureAwait(false);
+            return new WebDavIndirectResult(_dispatcher, result);
         }
 
         // DELETE api/values/5

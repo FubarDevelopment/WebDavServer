@@ -8,5 +8,8 @@ namespace FubarDev.WebDavServer.FileSystem
     {
         Task<IEntry> GetChildAsync(string name, CancellationToken ct);
         Task<IReadOnlyCollection<IEntry>> GetChildrenAsync(CancellationToken ct);
+
+        Task<IDocument> CreateDocumentAsync(string name, CancellationToken ct);
+        Task<ICollection> CreateCollectionAsync(string name, CancellationToken ct);
     }
 }
