@@ -3,13 +3,18 @@ using System.IO;
 using System.Threading;
 using System.Threading.Tasks;
 
+using FubarDev.WebDavServer.Properties;
+
 namespace FubarDev.WebDavServer.FileSystem.DotNet
 {
     public class DotNetDirectory : DotNetEntry, ICollection
     {
+        private readonly IFileSystemPropertyStore _fileSystemPropertyStore;
+
         public DotNetDirectory(DotNetFileSystem fileSystem, DirectoryInfo info, string path)
             : base(fileSystem, info, path)
         {
+            _fileSystemPropertyStore = fileSystem.PropertyStore as IFileSystemPropertyStore;
             DirectoryInfo = info;
         }
 
@@ -29,7 +34,10 @@ namespace FubarDev.WebDavServer.FileSystem.DotNet
             foreach (var info in DirectoryInfo.EnumerateFileSystemInfos())
             {
                 ct.ThrowIfCancellationRequested();
-                result.Add(CreateEntry(info));
+                var entry = CreateEntry(info);
+                var ignoreEntry = _fileSystemPropertyStore?.IgnoreEntry(entry) ?? false;
+                if (!ignoreEntry)
+                    result.Add(entry);
             }
 
             return Task.FromResult<IReadOnlyCollection<IEntry>>(result);
@@ -39,10 +47,10 @@ namespace FubarDev.WebDavServer.FileSystem.DotNet
         {
             var fileInfo = fsInfo as FileInfo;
             if (fileInfo != null)
-                return new DotNetFile(FileSystem, fileInfo, this.Path + fileInfo.Name);
+                return new DotNetFile(FileSystem, fileInfo, Path + fileInfo.Name);
 
             var dirInfo = (DirectoryInfo) fsInfo;
-            return new DotNetDirectory(FileSystem, dirInfo, this.Path + dirInfo.Name + "/");
+            return new DotNetDirectory(FileSystem, dirInfo, Path + dirInfo.Name + "/");
         }
     }
 }

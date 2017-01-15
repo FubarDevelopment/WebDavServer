@@ -38,7 +38,7 @@ namespace FubarDev.WebDavServer.FileSystem.DotNet
             }
 
             yield return new ContentLengthProperty(ct => Task.FromResult(Length));
-            yield return new GetETagProperty(FileSystem.PropertyStore, this);
+            yield return new GetETagProperty(FileSystem.PropertyStore, this, 0);
         }
     }
 }

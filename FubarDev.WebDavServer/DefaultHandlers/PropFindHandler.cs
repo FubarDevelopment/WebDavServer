@@ -184,12 +184,15 @@ namespace FubarDev.WebDavServer.DefaultHandlers
                     {
                         var property = propsEnumerator.Current;
 
+                        if (!_filters.All(x => x.IsAllowed(property)))
+                            continue;
+
                         foreach (var filter in _filters)
                         {
                             filter.NotifyOfSelection(property);
                         }
 
-                        var readableProp = (IUntypedReadableProperty)property;
+                        var readableProp = property;
                         var element = await readableProp.GetXmlValueAsync(cancellationToken).ConfigureAwait(false);
                         propElements.Add(element);
                     }

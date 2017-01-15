@@ -22,6 +22,8 @@ namespace FubarDev.WebDavServer.Properties.Store.TextFile
 
         private readonly TextFilePropertyStoreOptions _options;
 
+        private readonly string _storeEntryName = ".properties";
+
         public TextFilePropertyStore(IOptions<TextFilePropertyStoreOptions> options, IMemoryCache cache)
             : this(options.Value, cache)
         {
@@ -34,9 +36,14 @@ namespace FubarDev.WebDavServer.Properties.Store.TextFile
             RootPath = options.RootFolder;
         }
 
+        public int Cost => _options.EstimatedCost;
+
         public string RootPath { get; set; }
 
-        public int Cost => _options.EstimatedCost;
+        public bool IgnoreEntry(IEntry entry)
+        {
+            return entry is IDocument && entry.Name == _storeEntryName;
+        }
 
         public Task<IReadOnlyCollection<IUntypedReadableProperty>> LoadAndCreateAsync(IEntry entry, CancellationToken cancellationToken)
         {
@@ -91,7 +98,7 @@ namespace FubarDev.WebDavServer.Properties.Store.TextFile
             var etag = await LoadRawAsync(document, EntityTag.PropertyName, cancellationToken).ConfigureAwait(false);
             if (etag == null)
             {
-                etag = EntityTag.FromXml(null).ToXml();
+                etag = new EntityTag().ToXml();
                 await SaveRawAsync(document, etag, cancellationToken).ConfigureAwait(false);
             }
 
@@ -226,9 +233,9 @@ namespace FubarDev.WebDavServer.Properties.Store.TextFile
         private string GetFileNameFor(string path, bool isCollection)
         {
             if (isCollection)
-                return Path.Combine(RootPath, path, ".properties");
+                return Path.Combine(RootPath, path, _storeEntryName);
 
-            return Path.Combine(RootPath, Path.GetDirectoryName(path), ".properties");
+            return Path.Combine(RootPath, Path.GetDirectoryName(path), _storeEntryName);
         }
 
         private IUntypedWriteableProperty CreateDeadProperty(IEntry entry, XElement element)

@@ -71,6 +71,7 @@ namespace FubarDev.WebDavServer.Properties
                         continue;
                     }
 
+                    _emittedProperties.Add(result.Name, result);
                     Current = result;
                     return true;
                 }

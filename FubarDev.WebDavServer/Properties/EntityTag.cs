@@ -1,7 +1,5 @@
 ﻿using System;
-using System.Linq;
 using System.Text;
-using System.Xml;
 using System.Xml.Linq;
 
 using FubarDev.WebDavServer.Model;
@@ -15,7 +13,12 @@ namespace FubarDev.WebDavServer.Properties
         public static readonly XName PropertyName = WebDavXml.Dav + "getetag";
 
         public EntityTag()
-            : this(false, Guid.NewGuid().ToString("D"))
+            : this(false)
+        {
+        }
+
+        public EntityTag(bool isWeak)
+            : this(isWeak, Guid.NewGuid().ToString("D"))
         {
         }
 
@@ -54,10 +57,7 @@ namespace FubarDev.WebDavServer.Properties
 
         public XElement ToXml()
         {
-            return new XElement(
-                GetETagProperty.PropertyName,
-                new XAttribute("is-weak", XmlConvert.ToString(IsWeak)),
-                Value);
+            return new XElement(GetETagProperty.PropertyName, ToString());
         }
 
         public static EntityTag FromXml([CanBeNull] XElement element)
@@ -65,8 +65,17 @@ namespace FubarDev.WebDavServer.Properties
             if (element == null)
                 return new EntityTag();
 
-            var isWeak = element.Attributes("is-weak").Select(x => XmlConvert.ToBoolean(x.Value)).FirstOrDefault();
-            return new EntityTag(isWeak, element.Value);
+            return Parse(element.Value);
+        }
+
+        public static EntityTag Parse(string value)
+        {
+            var isWeak = value.StartsWith("W/");
+            if (isWeak)
+                value = value.Substring(2);
+            if (value.StartsWith("\"") && value.EndsWith("\""))
+                value = value.Substring(1, value.Length - 2);
+            return new EntityTag(isWeak, value);
         }
     }
 }

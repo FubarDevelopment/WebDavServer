@@ -30,6 +30,7 @@ namespace FubarDev.WebDavServer.Sample.AspNetCore.Support
             var fileSystemPropStore = propertyStore as IFileSystemPropertyStore;
             if (fileSystemPropStore != null)
                 fileSystemPropStore.RootPath = userHomeDirectory;
+            Directory.CreateDirectory(userHomeDirectory);
             return new DotNetFileSystem(_options, userHomeDirectory, propertyStore);
         }
     }

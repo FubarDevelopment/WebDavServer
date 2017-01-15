@@ -19,16 +19,17 @@ namespace FubarDev.WebDavServer.Properties
 
         private XElement _element;
 
-        public GetETagProperty(IPropertyStore propertyStore, IEntry entry)
+        public GetETagProperty(IPropertyStore propertyStore, IEntry entry, int? cost = null)
         {
             _propertyStore = propertyStore;
             _entry = entry;
             Name = PropertyName;
+            Cost = cost ?? _propertyStore.Cost;
         }
 
         public XName Name { get; }
 
-        public int Cost => _propertyStore.Cost;
+        public int Cost { get; }
 
         public IPropertyConverter<EntityTag> Converter { get; } = new EntityTagConverter();
 
@@ -43,7 +44,8 @@ namespace FubarDev.WebDavServer.Properties
                 }
                 else
                 {
-                    _element = await _propertyStore.LoadRawAsync(document, Name, ct).ConfigureAwait(false);
+                    var etag = await _propertyStore.GetETagAsync(document, ct).ConfigureAwait(false);
+                    _element = Converter.ToElement(Name, etag);
                 }
             }
 

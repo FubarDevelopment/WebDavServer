@@ -1,12 +1,10 @@
 ﻿using System;
 using System.IO;
-using System.Linq;
 
 using FubarDev.WebDavServer.AspNetCore;
 using FubarDev.WebDavServer.FileSystem;
 using FubarDev.WebDavServer.FileSystem.DotNet;
 using FubarDev.WebDavServer.Properties;
-using FubarDev.WebDavServer.Properties.Store;
 using FubarDev.WebDavServer.Properties.Store.TextFile;
 using FubarDev.WebDavServer.Sample.AspNetCore.Support;
 
@@ -39,7 +37,13 @@ namespace FubarDev.WebDavServer.Sample.AspNetCore
         {
             services
                 .AddOptions()
-                .Configure<DotNetFileSystemOptions>(opt => { opt.HideExtensionsForDisplayName = false; })
+                .Configure<DotNetFileSystemOptions>(
+                    opt =>
+                    {
+                        opt.HideExtensionsForDisplayName = false;
+                        opt.RootPath = Path.Combine(Path.GetTempPath(), "webdav");
+                        opt.AnonymousUserName = "anonymous";
+                    })
                 .AddMemoryCache()
                 .AddTransient<IPropertyStore, TextFilePropertyStore>()
                 .AddSingleton<IFileSystemFactory, TestFileSystemFactory>()

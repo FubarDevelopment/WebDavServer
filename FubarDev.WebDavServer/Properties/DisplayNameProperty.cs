@@ -17,13 +17,16 @@ namespace FubarDev.WebDavServer.Properties
 
         private readonly IPropertyStore _store;
 
+        private readonly bool _hideExtension;
+
         private string _value;
 
-        public DisplayNameProperty(IEntry entry, IPropertyStore store)
-            : base(PropertyName, store.Cost, null, null)
+        public DisplayNameProperty(IEntry entry, IPropertyStore store, bool hideExtension, int? cost = null)
+            : base(PropertyName, cost ?? store.Cost, null, null)
         {
             _entry = entry;
             _store = store;
+            _hideExtension = hideExtension;
         }
 
         public override async Task<string> GetValueAsync(CancellationToken ct)
@@ -37,7 +40,7 @@ namespace FubarDev.WebDavServer.Properties
                 return displayName.Value;
             }
 
-            var newName = _value = Path.GetFileNameWithoutExtension(_entry.Name);
+            var newName = _value = _hideExtension ? Path.GetFileNameWithoutExtension(_entry.Name) : _entry.Name;
             await SetValueAsync(newName, ct).ConfigureAwait(false);
             return newName;
         }
