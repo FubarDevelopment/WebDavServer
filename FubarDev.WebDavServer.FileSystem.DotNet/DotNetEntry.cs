@@ -13,14 +13,15 @@ namespace FubarDev.WebDavServer.FileSystem.DotNet
         public DotNetEntry(DotNetFileSystem fileSystem, FileSystemInfo info, string path)
         {
             Info = info;
-            FileSystem = fileSystem;
+            DotNetFileSystem = fileSystem;
             Path = path;
         }
 
         public FileSystemInfo Info { get; }
-        public DotNetFileSystem FileSystem { get; }
+        public DotNetFileSystem DotNetFileSystem { get; }
         public string Name => Info.Name;
-        public IFileSystem RootFileSystem => FileSystem;
+        public IFileSystem RootFileSystem => DotNetFileSystem;
+        public IFileSystem FileSystem => DotNetFileSystem;
         public string Path { get; }
         public DateTime LastWriteTimeUtc => Info.LastWriteTimeUtc;
 
@@ -34,7 +35,7 @@ namespace FubarDev.WebDavServer.FileSystem.DotNet
             var properties = new List<IUntypedReadableProperty>()
             {
                 this.GetResourceTypeProperty(),
-                new DisplayNameProperty(this, FileSystem.PropertyStore, FileSystem.Options.HideExtensionsForDisplayName),
+                new DisplayNameProperty(this, FileSystem.PropertyStore, DotNetFileSystem.Options.HideExtensionsForDisplayName),
                 new LastModifiedProperty(ct => Task.FromResult(Info.LastWriteTimeUtc), SetLastWriteTimeUtc),
                 new CreationDateProperty(ct => Task.FromResult(Info.CreationTimeUtc), SetCreateTimeUtc),
             };

@@ -52,9 +52,9 @@ namespace FubarDev.WebDavServer.DefaultHandlers
                 await data.CopyToAsync(fileStream).ConfigureAwait(false);
             }
 
-            if (selectionResult.ResultType == SelectionResultType.FoundDocument && selectionResult.Document != null && _fileSystem.PropertyStore != null)
+            if (selectionResult.ResultType == SelectionResultType.FoundDocument && selectionResult.Document?.FileSystem.PropertyStore != null)
             {
-                await _fileSystem.PropertyStore.RemoveAsync(selectionResult.Document, cancellationToken).ConfigureAwait(false);
+                await selectionResult.Document.FileSystem.PropertyStore.RemoveAsync(selectionResult.Document, cancellationToken).ConfigureAwait(false);
             }
 
             return new WebDavResult(selectionResult.ResultType != SelectionResultType.FoundDocument ? WebDavStatusCodes.Created : WebDavStatusCodes.OK);

@@ -12,6 +12,7 @@ namespace FubarDev.WebDavServer.FileSystem
     {
         string Name { get; }
         IFileSystem RootFileSystem { get; }
+        IFileSystem FileSystem { get; }
         string Path { get; }
         DateTime LastWriteTimeUtc { get; }
 

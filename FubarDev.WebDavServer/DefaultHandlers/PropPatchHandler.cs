@@ -112,14 +112,14 @@ namespace FubarDev.WebDavServer.DefaultHandlers
                 switch (changeItem.Status)
                 {
                     case ChangeStatus.Added:
-                        Debug.Assert(_fileSystem.PropertyStore != null);
-                        await _fileSystem.PropertyStore.RemoveRawAsync(entry, changeItem.Name, cancellationToken).ConfigureAwait(false);
+                        Debug.Assert(entry.FileSystem.PropertyStore != null);
+                        await entry.FileSystem.PropertyStore.RemoveRawAsync(entry, changeItem.Name, cancellationToken).ConfigureAwait(false);
                         newChangeItem = ChangeItem.FailedDependency(changeItem.Name);
                         properties.Remove(changeItem.Name);
                         break;
                     case ChangeStatus.Modified:
-                        Debug.Assert(_fileSystem.PropertyStore != null);
-                        await _fileSystem.PropertyStore.SaveRawAsync(entry, changeItem.OldValue, cancellationToken).ConfigureAwait(false);
+                        Debug.Assert(entry.FileSystem.PropertyStore != null);
+                        await entry.FileSystem.PropertyStore.SaveRawAsync(entry, changeItem.OldValue, cancellationToken).ConfigureAwait(false);
                         newChangeItem = ChangeItem.FailedDependency(changeItem.Name);
                         break;
                     case ChangeStatus.Removed:
@@ -192,7 +192,7 @@ namespace FubarDev.WebDavServer.DefaultHandlers
                 IUntypedReadableProperty property;
                 if (properties.TryGetValue(element.Name, out property))
                 {
-                    if (_fileSystem.PropertyStore == null)
+                    if (entry.FileSystem.PropertyStore == null)
                     {
                         result.Add(ChangeItem.ReadOnly(property, element, "No property store"));
                     }
@@ -205,7 +205,7 @@ namespace FubarDev.WebDavServer.DefaultHandlers
                         try
                         {
                             var oldValue = await property.GetXmlValueAsync(cancellationToken).ConfigureAwait(false);
-                            var success = await _fileSystem.PropertyStore.RemoveRawAsync(entry, element.Name, cancellationToken).ConfigureAwait(false);
+                            var success = await entry.FileSystem.PropertyStore.RemoveRawAsync(entry, element.Name, cancellationToken).ConfigureAwait(false);
                             if (!success)
                             {
                                 result.Add(ChangeItem.Failed(property, "Cannot remove live property"));
@@ -272,14 +272,14 @@ namespace FubarDev.WebDavServer.DefaultHandlers
                 }
                 else
                 {
-                    if (_fileSystem.PropertyStore == null)
+                    if (entry.FileSystem.PropertyStore == null)
                     {
                         result.Add(ChangeItem.InsufficientStorage(element, "No property store"));
                         failed = true;
                     }
                     else
                     {
-                        var newProperty = new DeadProperty(_fileSystem.PropertyStore, entry, element);
+                        var newProperty = new DeadProperty(entry.FileSystem.PropertyStore, entry, element);
                         properties.Add(newProperty.Name, newProperty);
                         result.Add(ChangeItem.Added(newProperty, element));
                     }

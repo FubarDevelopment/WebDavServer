@@ -61,10 +61,10 @@ namespace FubarDev.WebDavServer.FileSystem.DotNet
         {
             var fileInfo = fsInfo as FileInfo;
             if (fileInfo != null)
-                return new DotNetFile(FileSystem, fileInfo, Path + fileInfo.Name);
+                return new DotNetFile(DotNetFileSystem, fileInfo, Path + fileInfo.Name);
 
             var dirInfo = (DirectoryInfo) fsInfo;
-            return new DotNetDirectory(FileSystem, dirInfo, Path + dirInfo.Name + "/");
+            return new DotNetDirectory(DotNetFileSystem, dirInfo, Path + dirInfo.Name + "/");
         }
     }
 }
