@@ -8,11 +8,11 @@ using FubarDev.WebDavServer.Properties.Generic;
 
 namespace FubarDev.WebDavServer.Properties
 {
-    public class CreationDate : GenericDateTimeRfc1123Property
+    public class CreationDateProperty : GenericDateTimeRfc1123Property
     {
         public static readonly XName PropertyName = WebDavXml.Dav + "creationdate";
 
-        public CreationDate(GetPropertyValueAsyncDelegate<DateTime> getPropertyValueAsync, SetPropertyValueAsyncDelegate<DateTime> setValueAsyncFunc)
+        public CreationDateProperty(GetPropertyValueAsyncDelegate<DateTime> getPropertyValueAsync, SetPropertyValueAsyncDelegate<DateTime> setValueAsyncFunc)
             : base(PropertyName, 0, getPropertyValueAsync, setValueAsyncFunc)
         {
         }

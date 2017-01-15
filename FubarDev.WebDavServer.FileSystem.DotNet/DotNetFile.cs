@@ -34,7 +34,7 @@ namespace FubarDev.WebDavServer.FileSystem.DotNet
         public override IAsyncEnumerable<IProperty> GetProperties()
         {
             return base.GetProperties()
-                       .Append(new ContentLength(ct => Task.FromResult(Length)));
+                       .Append(new ContentLengthProperty(ct => Task.FromResult(Length)));
         }
     }
 }

@@ -7,7 +7,7 @@ using FubarDev.WebDavServer.Properties.Converters;
 
 namespace FubarDev.WebDavServer.Properties
 {
-    public class ContentLength : ITypedReadableProperty<long>
+    public class ContentLengthProperty : ITypedReadableProperty<long>
     {
         public static readonly XName PropertyName = WebDavXml.Dav + "getcontentlength";
 
@@ -15,7 +15,7 @@ namespace FubarDev.WebDavServer.Properties
 
         private readonly GetPropertyValueAsyncDelegate<long> _getPropertyValueAsync;
 
-        public ContentLength(GetPropertyValueAsyncDelegate<long> getPropertyValueAsync)
+        public ContentLengthProperty(GetPropertyValueAsyncDelegate<long> getPropertyValueAsync)
         {
             Cost = 0;
             Name = PropertyName;

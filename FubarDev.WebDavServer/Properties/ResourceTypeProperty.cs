@@ -7,20 +7,20 @@ using FubarDev.WebDavServer.Model;
 
 namespace FubarDev.WebDavServer.Properties
 {
-    public abstract class ResourceType : IUntypedReadableProperty
+    public abstract class ResourceTypeProperty : IUntypedReadableProperty
     {
         public static readonly XName PropertyName = WebDavXml.Dav + "resourcetype";
 
         private readonly XElement _element;
 
-        protected ResourceType(XElement element)
+        protected ResourceTypeProperty(XElement element)
         {
             _element = element;
         }
 
-        public static ResourceType Document { get; } = new DocumentResourceType();
+        public static ResourceTypeProperty Document { get; } = new DocumentResourceType();
 
-        public static ResourceType Collection { get; } = new CollectionResourceType();
+        public static ResourceTypeProperty Collection { get; } = new CollectionResourceType();
 
         public XName Name { get; } = PropertyName;
 
@@ -34,7 +34,7 @@ namespace FubarDev.WebDavServer.Properties
             return Task.FromResult(result);
         }
 
-        private class DocumentResourceType : ResourceType
+        private class DocumentResourceType : ResourceTypeProperty
         {
             public DocumentResourceType()
                 : base(null)
@@ -42,7 +42,7 @@ namespace FubarDev.WebDavServer.Properties
             }
         }
 
-        private class CollectionResourceType : ResourceType
+        private class CollectionResourceType : ResourceTypeProperty
         {
             public CollectionResourceType()
                 : base(new XElement(WebDavXml.Dav + "collection"))
