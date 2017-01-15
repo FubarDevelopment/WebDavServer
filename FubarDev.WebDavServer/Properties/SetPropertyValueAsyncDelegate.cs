@@ -3,5 +3,5 @@ using System.Threading.Tasks;
 
 namespace FubarDev.WebDavServer.Properties
 {
-    public delegate Task SetPropertyValueAsyncDelegate<T>(T value, CancellationToken cancellationToken);
+    public delegate Task SetPropertyValueAsyncDelegate<in T>(T value, CancellationToken cancellationToken);
 }

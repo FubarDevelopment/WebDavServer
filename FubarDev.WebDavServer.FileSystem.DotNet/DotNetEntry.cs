@@ -8,9 +8,9 @@ using FubarDev.WebDavServer.Properties;
 
 namespace FubarDev.WebDavServer.FileSystem.DotNet
 {
-    public class DotNetEntry : IEntry
+    public abstract class DotNetEntry : IEntry
     {
-        public DotNetEntry(DotNetFileSystem fileSystem, FileSystemInfo info, string path)
+        protected DotNetEntry(DotNetFileSystem fileSystem, FileSystemInfo info, string path)
         {
             Info = info;
             DotNetFileSystem = fileSystem;
@@ -53,5 +53,7 @@ namespace FubarDev.WebDavServer.FileSystem.DotNet
             Info.LastWriteTimeUtc = timestamp;
             return Task.FromResult(0);
         }
+
+        public abstract Task<DeleteResult> DeleteAsync(CancellationToken cancellationToken);
     }
 }

@@ -1,6 +1,4 @@
 ﻿using System.Security.Principal;
-using System.Threading;
-using System.Threading.Tasks;
 
 namespace FubarDev.WebDavServer.FileSystem
 {

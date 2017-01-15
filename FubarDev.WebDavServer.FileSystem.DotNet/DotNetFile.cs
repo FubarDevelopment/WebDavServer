@@ -4,6 +4,7 @@ using System.IO;
 using System.Threading;
 using System.Threading.Tasks;
 
+using FubarDev.WebDavServer.Model;
 using FubarDev.WebDavServer.Properties;
 
 namespace FubarDev.WebDavServer.FileSystem.DotNet
@@ -28,6 +29,12 @@ namespace FubarDev.WebDavServer.FileSystem.DotNet
         public Task<Stream> CreateAsync(CancellationToken cancellationToken)
         {
             return Task.FromResult<Stream>(FileInfo.Open(FileMode.Create, FileAccess.Write));
+        }
+
+        public override Task<DeleteResult> DeleteAsync(CancellationToken cancellationToken)
+        {
+            FileInfo.Delete();
+            return Task.FromResult(new DeleteResult(WebDavStatusCodes.OK, null));
         }
 
         protected override IEnumerable<IUntypedReadableProperty> GetLiveProperties()

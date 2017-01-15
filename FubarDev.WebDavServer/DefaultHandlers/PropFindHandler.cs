@@ -59,6 +59,7 @@ namespace FubarDev.WebDavServer.DefaultHandlers
                 entries.Add(selectionResult.Collection);
                 if (depth != Depth.Zero)
                 {
+                    Debug.Assert(selectionResult.Collection != null, "selectionResult.Collection != null");
                     var children = await selectionResult.Collection.GetChildrenAsync(cancellationToken).ConfigureAwait(false);
 
                     using (var entriesEnumerator = selectionResult.Collection.GetEntries(children, depth.OrderValue - 1).GetEnumerator())
@@ -124,6 +125,7 @@ namespace FubarDev.WebDavServer.DefaultHandlers
             return HandleAllPropAsync((Include)null, entries, cancellationToken);
         }
 
+        // ReSharper disable once UnusedParameter.Local
         private async Task<IWebDavResult> HandleAllPropAsync([CanBeNull] Include include, IReadOnlyCollection<IEntry> entries, CancellationToken cancellationToken)
         {
             var responses = new List<Response>();

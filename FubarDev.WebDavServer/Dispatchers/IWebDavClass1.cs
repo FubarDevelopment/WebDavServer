@@ -12,9 +12,11 @@ namespace FubarDev.WebDavServer.Dispatchers
 
         Task<IWebDavResult> GetAsync(string path, CancellationToken cancellationToken);
 
+        Task<IWebDavResult> HeadAsync(string path, CancellationToken cancellationToken);
+
         Task<IWebDavResult> PutAsync(string path, Stream data, CancellationToken cancellationToken);
 
-        Task<IWebDavResult> HeadAsync(string path, CancellationToken cancellationToken);
+        Task<IWebDavResult> DeleteAsync(string path, CancellationToken cancellationToken);
 
         Task<IWebDavResult> PropFindAsync(string path, Propfind request, Depth depth, CancellationToken cancellationToken);
 

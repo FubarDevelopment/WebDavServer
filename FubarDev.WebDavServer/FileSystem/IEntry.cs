@@ -1,10 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Threading;
 using System.Threading.Tasks;
 
 using FubarDev.WebDavServer.Properties;
+
+using JetBrains.Annotations;
 
 namespace FubarDev.WebDavServer.FileSystem
 {
@@ -17,5 +18,9 @@ namespace FubarDev.WebDavServer.FileSystem
         DateTime LastWriteTimeUtc { get; }
 
         IAsyncEnumerable<IUntypedReadableProperty> GetProperties();
+
+        [NotNull]
+        [ItemNotNull]
+        Task<DeleteResult> DeleteAsync(CancellationToken cancellationToken);
     }
 }

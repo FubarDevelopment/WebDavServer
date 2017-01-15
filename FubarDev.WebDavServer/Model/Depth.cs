@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics;
 
 namespace FubarDev.WebDavServer.Model
 {
@@ -33,7 +34,7 @@ namespace FubarDev.WebDavServer.Model
 
         public static bool TryParse(string depthText, out Depth depth)
         {
-            return TryParse(depthText, Depth.Infinity, out depth);
+            return TryParse(depthText, Infinity, out depth);
         }
 
         public static bool TryParse(string depthText, Depth defaultDepth, out Depth depth)
@@ -92,6 +93,7 @@ namespace FubarDev.WebDavServer.Model
 
         public override bool Equals(object obj)
         {
+            Debug.Assert(obj != null, "obj != null");
             return DepthComparer.Default.Equals(this, (Depth) obj);
         }
 

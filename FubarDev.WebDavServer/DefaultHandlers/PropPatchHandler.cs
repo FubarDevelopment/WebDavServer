@@ -37,6 +37,7 @@ namespace FubarDev.WebDavServer.DefaultHandlers
 
             var entry = (IEntry)selectionResult.Document ?? selectionResult.Collection;
             var propertiesList = new List<IUntypedReadableProperty>();
+            Debug.Assert(entry != null, "entry != null");
             using (var propEnum = entry.GetProperties().GetEnumerator())
             {
                 while (await propEnum.MoveNext(cancellationToken).ConfigureAwait(false))

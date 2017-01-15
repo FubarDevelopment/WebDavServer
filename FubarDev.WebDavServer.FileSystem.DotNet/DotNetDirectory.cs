@@ -3,6 +3,7 @@ using System.IO;
 using System.Threading;
 using System.Threading.Tasks;
 
+using FubarDev.WebDavServer.Model;
 using FubarDev.WebDavServer.Properties;
 
 namespace FubarDev.WebDavServer.FileSystem.DotNet
@@ -55,6 +56,12 @@ namespace FubarDev.WebDavServer.FileSystem.DotNet
             var info = new DirectoryInfo(System.IO.Path.Combine(DirectoryInfo.FullName, name));
             info.Create();
             return Task.FromResult((ICollection)CreateEntry(info));
+        }
+
+        public override Task<DeleteResult> DeleteAsync(CancellationToken cancellationToken)
+        {
+            DirectoryInfo.Delete(true);
+            return Task.FromResult(new DeleteResult(WebDavStatusCodes.OK, null));
         }
 
         private IEntry CreateEntry(FileSystemInfo fsInfo)

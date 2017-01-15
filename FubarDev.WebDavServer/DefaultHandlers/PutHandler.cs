@@ -2,7 +2,6 @@
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
-using System.Net;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -42,6 +41,7 @@ namespace FubarDev.WebDavServer.DefaultHandlers
                 Debug.Assert(selectionResult.ResultType == SelectionResultType.MissingDocumentOrCollection);
                 Debug.Assert(selectionResult.PathEntries != null, "selectionResult.PathEntries != null");
                 Debug.Assert(selectionResult.PathEntries.Count == 1);
+                Debug.Assert(selectionResult.Collection != null, "selectionResult.Collection != null");
                 var newName = selectionResult.PathEntries.Single();
                 var entry = await selectionResult.Collection.CreateDocumentAsync(newName, cancellationToken).ConfigureAwait(false);
                 fileStream = await entry.CreateAsync(cancellationToken).ConfigureAwait(false);

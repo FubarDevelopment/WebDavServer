@@ -22,18 +22,21 @@ namespace FubarDev.WebDavServer.Dispatchers
 
         private readonly IPutHandler _putHandler;
 
+        private readonly IDeleteHandler _deleteHandler;
+
         private readonly IOptionsHandler _optionsHandler;
 
-        public WebDavDispatcherClass1(IOptionsHandler optionsHandler, IGetHandler getHandler, IHeadHandler headHandler, IPutHandler putHandler, IPropFindHandler propFindHandler, IPropPatchHandler propPatchHandler)
+        public WebDavDispatcherClass1(IOptionsHandler optionsHandler, IGetHandler getHandler, IHeadHandler headHandler, IPutHandler putHandler, IDeleteHandler deleteHandler, IPropFindHandler propFindHandler, IPropPatchHandler propPatchHandler)
         {
             _propFindHandler = propFindHandler;
             _propPatchHandler = propPatchHandler;
             _getHandler = getHandler;
             _headHandler = headHandler;
             _putHandler = putHandler;
+            _deleteHandler = deleteHandler;
             _optionsHandler = optionsHandler;
 
-            HttpMethods = new IHandler[] { optionsHandler, getHandler, headHandler, _putHandler, propFindHandler, _propPatchHandler }
+            HttpMethods = new IHandler[] { optionsHandler, getHandler, headHandler, _putHandler, _deleteHandler, propFindHandler, _propPatchHandler }
                 .Where(x => x != null)
                 .SelectMany(x => x.HttpMethods)
                 .Distinct().ToList();
@@ -71,6 +74,11 @@ namespace FubarDev.WebDavServer.Dispatchers
         public Task<IWebDavResult> PropPatch(string path, Propertyupdate request, CancellationToken cancellationToken)
         {
             return _propPatchHandler.PropPatchAsync(path, request, cancellationToken);
+        }
+
+        public Task<IWebDavResult> DeleteAsync(string path, CancellationToken cancellationToken)
+        {
+            return _deleteHandler.DeleteAsync(path, cancellationToken);
         }
     }
 }

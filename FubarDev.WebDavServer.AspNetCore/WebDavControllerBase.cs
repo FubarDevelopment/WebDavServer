@@ -49,9 +49,10 @@ namespace FubarDev.WebDavServer.AspNetCore
 
         // DELETE api/values/5
         [HttpDelete()]
-        public Task DeleteAsync(string path, CancellationToken cancellationToken)
+        public async Task<IActionResult> DeleteAsync(string path, CancellationToken cancellationToken)
         {
-            throw new NotImplementedException();
+            var result = await _dispatcher.Class1.DeleteAsync(path, cancellationToken).ConfigureAwait(false);
+            return new WebDavIndirectResult(_dispatcher, result);
         }
 
         [HttpPropFind()]

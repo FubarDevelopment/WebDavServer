@@ -1,6 +1,4 @@
-﻿using System.Linq;
-
-using FubarDev.WebDavServer.AspNetCore.Filters;
+﻿using FubarDev.WebDavServer.AspNetCore.Filters;
 using FubarDev.WebDavServer.AspNetCore.Filters.Internal;
 using FubarDev.WebDavServer.AspNetCore.Formatters.Internal;
 using FubarDev.WebDavServer.Dispatchers;

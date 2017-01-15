@@ -4,8 +4,6 @@ using System.Linq;
 using FubarDev.WebDavServer.Dispatchers;
 using FubarDev.WebDavServer.Formatters;
 
-using Microsoft.Extensions.Options;
-
 namespace FubarDev.WebDavServer
 {
     public class WebDavServer : IWebDavDispatcher

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Text;
 
 using JetBrains.Annotations;
@@ -25,7 +26,7 @@ namespace FubarDev.WebDavServer.FileSystem
             ResultType == SelectionResultType.MissingCollection ||
             ResultType == SelectionResultType.MissingDocumentOrCollection;
 
-        [NotNull]
+        [CanBeNull]
         public ICollection Collection { get; }
 
         [CanBeNull]
@@ -59,12 +60,15 @@ namespace FubarDev.WebDavServer.FileSystem
                 switch (ResultType)
                 {
                     case SelectionResultType.FoundCollection:
+                        Debug.Assert(Collection != null, "Collection != null");
                         return Collection.Path;
                     case SelectionResultType.FoundDocument:
+                        Debug.Assert(Document != null, "Document != null");
                         return Document.Path;
                 }
 
                 var result = new StringBuilder();
+                Debug.Assert(Collection != null, "Collection != null");
                 result.Append(Collection.Path);
                 result.Append(string.Join("/", PathEntries));
                 if (ResultType == SelectionResultType.MissingCollection)
