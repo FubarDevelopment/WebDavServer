@@ -6,6 +6,7 @@ using FubarDev.WebDavServer.FileSystem;
 using FubarDev.WebDavServer.FileSystem.DotNet;
 using FubarDev.WebDavServer.Properties;
 using FubarDev.WebDavServer.Properties.Store.TextFile;
+using FubarDev.WebDavServer.Sample.AspNetCore.BasicAuth;
 using FubarDev.WebDavServer.Sample.AspNetCore.Support;
 
 using Microsoft.AspNetCore.Builder;
@@ -37,6 +38,7 @@ namespace FubarDev.WebDavServer.Sample.AspNetCore
         {
             services
                 .AddOptions()
+                .AddAuthentication()
                 .Configure<DotNetFileSystemOptions>(
                     opt =>
                     {
@@ -68,6 +70,15 @@ namespace FubarDev.WebDavServer.Sample.AspNetCore
             {
                 app.UseDeveloperExceptionPage();
             }
+
+            app.UseBasicAuthentication(
+                confg =>
+                {
+                    confg.Credentials = new[]
+                    {
+                        new BasicCredential() { Username = "tester", Password = "noGh2eefabohgohc" }
+                    };
+                });
 
             app.UseMvc();
         }
