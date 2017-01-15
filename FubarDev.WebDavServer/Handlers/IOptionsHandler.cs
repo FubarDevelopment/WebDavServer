@@ -5,6 +5,6 @@ namespace FubarDev.WebDavServer.Handlers
 {
     public interface IOptionsHandler : IHandler
     {
-        Task<IWebDavResult> HandleAsync(string path, CancellationToken cancellationToken);
+        Task<IWebDavResult> OptionsAsync(string path, CancellationToken cancellationToken);
     }
 }

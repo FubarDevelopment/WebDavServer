@@ -13,18 +13,28 @@ using JetBrains.Annotations;
 
 namespace FubarDev.WebDavServer.DefaultHandlers
 {
-    public class GetHandler : IGetHandler
+    public class GetHandler : IGetHandler, IHeadHandler
     {
         public GetHandler(IFileSystem fileSystem)
         {
             FileSystem = fileSystem;
         }
 
-        public IEnumerable<string> HttpMethods { get; } = new[] { "GET" };
+        public IEnumerable<string> HttpMethods { get; } = new[] { "GET", "HEAD" };
 
         public IFileSystem FileSystem { get; }
 
-        public async Task<IWebDavResult> HandleAsync(string path, CancellationToken cancellationToken)
+        public Task<IWebDavResult> GetAsync(string path, CancellationToken cancellationToken)
+        {
+            return HandleAsync(path, true, cancellationToken);
+        }
+
+        public Task<IWebDavResult> HeadAsync(string path, CancellationToken cancellationToken)
+        {
+            return HandleAsync(path, false, cancellationToken);
+        }
+
+        private async Task<IWebDavResult> HandleAsync(string path, bool returnFile, CancellationToken cancellationToken)
         {
             var searchResult = await FileSystem.SelectAsync(path, cancellationToken).ConfigureAwait(false);
             if (searchResult.IsMissing)
@@ -32,10 +42,10 @@ namespace FubarDev.WebDavServer.DefaultHandlers
             if (searchResult.ResultType != SelectionResultType.FoundDocument)
                 throw new NotSupportedException();
             var doc = searchResult.Document;
-            return new WebDavGetResult(FileSystem.PropertyStore, doc);
+            return new WebDavHandlerResult(FileSystem.PropertyStore, doc, returnFile);
         }
 
-        private class WebDavGetResult : WebDavResult
+        private class WebDavHandlerResult : WebDavResult
         {
             [CanBeNull]
             private readonly IPropertyStore _propertyStore;
@@ -43,11 +53,14 @@ namespace FubarDev.WebDavServer.DefaultHandlers
             [NotNull]
             private readonly IDocument _document;
 
-            public WebDavGetResult([CanBeNull] IPropertyStore propertyStore, [NotNull] IDocument document)
+            private readonly bool _returnFile;
+
+            public WebDavHandlerResult([CanBeNull] IPropertyStore propertyStore, [NotNull] IDocument document, bool returnFile)
                 : base(WebDavStatusCodes.OK)
             {
                 _propertyStore = propertyStore;
                 _document = document;
+                _returnFile = returnFile;
             }
 
             public override async Task ExecuteResultAsync(IWebDavResponse response, CancellationToken ct)
@@ -61,6 +74,10 @@ namespace FubarDev.WebDavServer.DefaultHandlers
 
                 response.Headers["Last-Modified"] = new[] { _document.LastWriteTimeUtc.ToString("R") };
                 response.ContentType = "application/octet-stream";
+
+                if (!_returnFile)
+                    return;
+
                 using (var stream = await _document.OpenReadAsync(ct).ConfigureAwait(false))
                 {
                     await stream.CopyToAsync(response.Body, 65536, ct).ConfigureAwait(false);

@@ -30,7 +30,7 @@ namespace FubarDev.WebDavServer.DefaultHandlers
 
         public IFileSystem FileSystem { get; }
 
-        public async Task<IWebDavResult> HandleAsync(string path, Propfind request, Depth depth, CancellationToken cancellationToken)
+        public async Task<IWebDavResult> PropFindAsync(string path, Propfind request, Depth depth, CancellationToken cancellationToken)
         {
             if (depth == Depth.Infinity)
             {

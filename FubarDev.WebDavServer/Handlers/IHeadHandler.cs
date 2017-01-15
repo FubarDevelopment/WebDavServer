@@ -5,6 +5,6 @@ namespace FubarDev.WebDavServer.Handlers
 {
     public interface IHeadHandler : IHandler
     {
-        Task<IWebDavResult> HandleAsync(string path, CancellationToken cancellationToken);
+        Task<IWebDavResult> HeadAsync(string path, CancellationToken cancellationToken);
     }
 }

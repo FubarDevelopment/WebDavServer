@@ -12,7 +12,7 @@ namespace FubarDev.WebDavServer.DefaultHandlers
     {
         public IEnumerable<string> HttpMethods { get; } = new[] { "OPTIONS" };
 
-        public Task<IWebDavResult> HandleAsync(string path, CancellationToken cancellationToken)
+        public Task<IWebDavResult> OptionsAsync(string path, CancellationToken cancellationToken)
         {
             return Task.FromResult<IWebDavResult>(new WebDavOptionsResult());
         }

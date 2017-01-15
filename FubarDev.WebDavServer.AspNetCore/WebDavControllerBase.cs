@@ -62,9 +62,10 @@ namespace FubarDev.WebDavServer.AspNetCore
         }
 
         [HttpPropPatch]
-        public Task PropPatchAsync(string path, [FromBody]string value, CancellationToken cancellationToken)
+        public async Task<IActionResult> PropPatchAsync(string path, [FromBody]Propertyupdate request, CancellationToken cancellationToken)
         {
-            throw new NotImplementedException();
+            var result = await _dispatcher.Class1.PropPatch(path, request, cancellationToken).ConfigureAwait(false);
+            return new WebDavIndirectResult(_dispatcher, result);
         }
 
         [HttpHead]

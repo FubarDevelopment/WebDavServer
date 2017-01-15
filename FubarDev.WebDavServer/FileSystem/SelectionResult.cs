@@ -28,7 +28,7 @@ namespace FubarDev.WebDavServer.FileSystem
         [NotNull]
         public ICollection Collection { get; }
 
-        [NotNull]
+        [CanBeNull]
         public IDocument Document
         {
             get
