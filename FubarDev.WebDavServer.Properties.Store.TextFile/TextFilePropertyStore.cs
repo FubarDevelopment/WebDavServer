@@ -189,9 +189,16 @@ namespace FubarDev.WebDavServer.Properties.Store.TextFile
 
         private void Save(string fileName, StoreData data)
         {
-            var key = fileName.ToLower();
-            File.WriteAllText(fileName, JsonConvert.SerializeObject(data));
-            _cache.Set(key, data);
+            try
+            {
+                var key = fileName.ToLower();
+                File.WriteAllText(fileName, JsonConvert.SerializeObject(data));
+                _cache.Set(key, data);
+            }
+            catch (Exception)
+            {
+                // Ignore all exceptions for directories that cannot be modified
+            }
         }
 
         private StoreData Load(string fileName, bool useCache)
