@@ -11,7 +11,7 @@ namespace FubarDev.WebDavServer.AspNetCore
 {
     public class WebDavControllerBase : ControllerBase
     {
-        private IWebDavDispatcher _dispatcher;
+        private readonly IWebDavDispatcher _dispatcher;
 
         public WebDavControllerBase(IWebDavDispatcher dispatcher)
         {
