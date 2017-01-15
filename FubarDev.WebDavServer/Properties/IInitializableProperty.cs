@@ -2,7 +2,7 @@
 
 namespace FubarDev.WebDavServer.Properties
 {
-    public interface IInitializableProperty
+    public interface IInitializableProperty : IProperty
     {
         void Init(XElement initialValue);
     }

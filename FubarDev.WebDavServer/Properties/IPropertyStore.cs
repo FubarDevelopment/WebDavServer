@@ -5,9 +5,9 @@ using System.Threading.Tasks;
 using System.Xml.Linq;
 
 using FubarDev.WebDavServer.FileSystem;
-using FubarDev.WebDavServer.Properties.Store.Events;
+using FubarDev.WebDavServer.Properties.Events;
 
-namespace FubarDev.WebDavServer.Properties.Store
+namespace FubarDev.WebDavServer.Properties
 {
     public interface IPropertyStore
     {

@@ -6,7 +6,7 @@ namespace FubarDev.WebDavServer.Properties
 {
     public static class EntryExtensions
     {
-        public static IProperty GetResourceTypeProperty(this IEntry entry)
+        public static IUntypedReadableProperty GetResourceTypeProperty(this IEntry entry)
         {
             var coll = entry as ICollection;
 

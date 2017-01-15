@@ -1,4 +1,4 @@
-﻿namespace FubarDev.WebDavServer.Properties.Store
+﻿namespace FubarDev.WebDavServer.Properties
 {
     public interface IFileSystemPropertyStore : IPropertyStore
     {

@@ -7,6 +7,9 @@ using System.Threading.Tasks;
 using FubarDev.WebDavServer.FileSystem;
 using FubarDev.WebDavServer.Handlers;
 using FubarDev.WebDavServer.Model;
+using FubarDev.WebDavServer.Properties;
+
+using JetBrains.Annotations;
 
 namespace FubarDev.WebDavServer.DefaultHandlers
 {
@@ -29,22 +32,33 @@ namespace FubarDev.WebDavServer.DefaultHandlers
             if (searchResult.ResultType != SelectionResultType.FoundDocument)
                 throw new NotSupportedException();
             var doc = searchResult.Document;
-            return new WebDavGetResult(doc);
+            return new WebDavGetResult(FileSystem.PropertyStore, doc);
         }
 
         private class WebDavGetResult : WebDavResult
         {
+            [CanBeNull]
+            private readonly IPropertyStore _propertyStore;
+
+            [NotNull]
             private readonly IDocument _document;
 
-            public WebDavGetResult(IDocument document)
+            public WebDavGetResult([CanBeNull] IPropertyStore propertyStore, [NotNull] IDocument document)
                 : base(WebDavStatusCodes.OK)
             {
+                _propertyStore = propertyStore;
                 _document = document;
             }
 
             public override async Task ExecuteResultAsync(IWebDavResponse response, CancellationToken ct)
             {
                 await base.ExecuteResultAsync(response, ct).ConfigureAwait(false);
+                if (_propertyStore != null)
+                {
+                    var etag = await _propertyStore.GetETagAsync(_document, ct).ConfigureAwait(false);
+                    response.Headers["ETag"] = new[] { etag.ToString() };
+                }
+
                 response.Headers["Last-Modified"] = new[] { _document.LastWriteTimeUtc.ToString("R") };
                 response.ContentType = "application/octet-stream";
                 using (var stream = await _document.OpenReadAsync(ct).ConfigureAwait(false))

@@ -3,10 +3,8 @@ using System.Collections.Generic;
 using System.IO;
 using System.Threading;
 using System.Threading.Tasks;
-using System.Xml.Linq;
 
 using FubarDev.WebDavServer.Properties;
-using FubarDev.WebDavServer.Properties.Store;
 
 namespace FubarDev.WebDavServer.FileSystem.DotNet
 {
@@ -26,17 +24,21 @@ namespace FubarDev.WebDavServer.FileSystem.DotNet
         public string Path { get; }
         public DateTime LastWriteTimeUtc => Info.LastWriteTimeUtc;
 
-        public virtual IAsyncEnumerable<IProperty> GetProperties()
+        public IAsyncEnumerable<IUntypedReadableProperty> GetProperties()
         {
-            var properties = new List<IProperty>()
+            return new EntryProperties(this, GetLiveProperties(), FileSystem.PropertyStore);
+        }
+
+        protected virtual IEnumerable<IUntypedReadableProperty> GetLiveProperties()
+        {
+            var properties = new List<IUntypedReadableProperty>()
             {
                 this.GetResourceTypeProperty(),
                 new DisplayNameProperty(this, FileSystem.PropertyStore),
                 new LastModifiedProperty(ct => Task.FromResult(Info.LastWriteTimeUtc), SetLastWriteTimeUtc),
                 new CreationDateProperty(ct => Task.FromResult(Info.CreationTimeUtc), SetCreateTimeUtc),
             };
-
-            return new PropertiesEnumerable(this, properties, FileSystem.PropertyStore);
+            return properties;
         }
 
         private Task SetCreateTimeUtc(DateTime value, CancellationToken cancellationToken)

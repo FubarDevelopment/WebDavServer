@@ -5,6 +5,7 @@ using System.Linq;
 using FubarDev.WebDavServer.AspNetCore;
 using FubarDev.WebDavServer.FileSystem;
 using FubarDev.WebDavServer.FileSystem.DotNet;
+using FubarDev.WebDavServer.Properties;
 using FubarDev.WebDavServer.Properties.Store;
 using FubarDev.WebDavServer.Properties.Store.TextFile;
 using FubarDev.WebDavServer.Sample.AspNetCore.Support;
@@ -41,7 +42,6 @@ namespace FubarDev.WebDavServer.Sample.AspNetCore
                 .Configure<DotNetFileSystemOptions>(opt => { opt.HideExtensionsForDisplayName = false; })
                 .AddMemoryCache()
                 .AddTransient<IPropertyStore, TextFilePropertyStore>()
-                .AddTransient<IPropertyFactory, DefaultPropertyFactory>()
                 .AddSingleton<IFileSystemFactory, TestFileSystemFactory>()
                 .AddTransient(sp =>
                 {

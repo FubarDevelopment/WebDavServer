@@ -6,7 +6,6 @@ using System.Xml.Linq;
 using FubarDev.WebDavServer.FileSystem;
 using FubarDev.WebDavServer.Model;
 using FubarDev.WebDavServer.Properties.Generic;
-using FubarDev.WebDavServer.Properties.Store;
 
 namespace FubarDev.WebDavServer.Properties
 {

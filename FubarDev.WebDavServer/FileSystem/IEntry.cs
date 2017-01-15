@@ -12,6 +12,6 @@ namespace FubarDev.WebDavServer.FileSystem
         string Path { get; }
         DateTime LastWriteTimeUtc { get; }
 
-        IAsyncEnumerable<IProperty> GetProperties();
+        IAsyncEnumerable<IUntypedReadableProperty> GetProperties();
     }
 }

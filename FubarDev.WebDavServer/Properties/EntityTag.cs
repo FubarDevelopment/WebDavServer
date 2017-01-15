@@ -8,7 +8,7 @@ using FubarDev.WebDavServer.Model;
 
 using JetBrains.Annotations;
 
-namespace FubarDev.WebDavServer.Properties.Store
+namespace FubarDev.WebDavServer.Properties
 {
     public class EntityTag
     {

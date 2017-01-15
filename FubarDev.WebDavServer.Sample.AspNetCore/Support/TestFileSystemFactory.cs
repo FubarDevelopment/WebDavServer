@@ -1,12 +1,10 @@
 ﻿using System;
 using System.IO;
 using System.Security.Principal;
-using System.Threading;
 
 using FubarDev.WebDavServer.FileSystem;
 using FubarDev.WebDavServer.FileSystem.DotNet;
-using FubarDev.WebDavServer.Properties.Store;
-using FubarDev.WebDavServer.Properties.Store.TextFile;
+using FubarDev.WebDavServer.Properties;
 
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Options;
@@ -28,11 +26,11 @@ namespace FubarDev.WebDavServer.Sample.AspNetCore.Support
         public IFileSystem CreateFileSystem(IIdentity identity)
         {
             var userHomeDirectory = Path.Combine(_options.RootPath, identity.IsAuthenticated ? identity.Name : _options.AnonymousUserName);
-            var propertyStore = _serviceProvider.GetRequiredService<IPropertyStore>();
+            var propertyStore = _serviceProvider.GetService<IPropertyStore>();
             var fileSystemPropStore = propertyStore as IFileSystemPropertyStore;
             if (fileSystemPropStore != null)
                 fileSystemPropStore.RootPath = userHomeDirectory;
-            return new DotNetFileSystem(_options, propertyStore, userHomeDirectory);
+            return new DotNetFileSystem(_options, userHomeDirectory, propertyStore);
         }
     }
 }

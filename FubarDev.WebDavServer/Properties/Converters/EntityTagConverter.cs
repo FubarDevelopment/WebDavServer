@@ -3,8 +3,6 @@ using System.Linq;
 using System.Xml;
 using System.Xml.Linq;
 
-using FubarDev.WebDavServer.Properties.Store;
-
 namespace FubarDev.WebDavServer.Properties.Converters
 {
     public class EntityTagConverter : IPropertyConverter<EntityTag>

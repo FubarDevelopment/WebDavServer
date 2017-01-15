@@ -2,7 +2,7 @@
 
 using FubarDev.WebDavServer.FileSystem;
 
-namespace FubarDev.WebDavServer.Properties.Store.Events
+namespace FubarDev.WebDavServer.Properties.Events
 {
     public class EntryMoved
     {

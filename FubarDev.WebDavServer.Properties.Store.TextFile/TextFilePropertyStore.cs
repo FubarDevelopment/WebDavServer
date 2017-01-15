@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 using System.Xml.Linq;
 
 using FubarDev.WebDavServer.FileSystem;
-using FubarDev.WebDavServer.Properties.Store.Events;
+using FubarDev.WebDavServer.Properties.Events;
 
 using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Extensions.Options;
@@ -20,19 +20,16 @@ namespace FubarDev.WebDavServer.Properties.Store.TextFile
     {
         private readonly IMemoryCache _cache;
 
-        private readonly IPropertyFactory _propertyFactory;
-
         private readonly TextFilePropertyStoreOptions _options;
 
-        public TextFilePropertyStore(IOptions<TextFilePropertyStoreOptions> options, IMemoryCache cache, IPropertyFactory propertyFactory)
-            : this(options.Value, cache, propertyFactory)
+        public TextFilePropertyStore(IOptions<TextFilePropertyStoreOptions> options, IMemoryCache cache)
+            : this(options.Value, cache)
         {
         }
 
-        public TextFilePropertyStore(TextFilePropertyStoreOptions options, IMemoryCache cache, IPropertyFactory propertyFactory)
+        public TextFilePropertyStore(TextFilePropertyStoreOptions options, IMemoryCache cache)
         {
             _cache = cache;
-            _propertyFactory = propertyFactory;
             _options = options;
             RootPath = options.RootFolder;
         }
@@ -48,7 +45,7 @@ namespace FubarDev.WebDavServer.Properties.Store.TextFile
             EntryInfo info;
             if (storeData.Entries.TryGetValue(GetEntryKey(entry), out info))
             {
-                result = info.Attributes.Select(x => _propertyFactory.Create(x.Value, entry, this)).ToList();
+                result = info.Attributes.Select(x => CreateDeadProperty(entry, x.Value)).ToList();
             }
             else
             {
@@ -225,6 +222,11 @@ namespace FubarDev.WebDavServer.Properties.Store.TextFile
                 return Path.Combine(RootPath, path, ".properties");
 
             return Path.Combine(RootPath, Path.GetDirectoryName(path), ".properties");
+        }
+
+        private IUntypedWriteableProperty CreateDeadProperty(IEntry entry, XElement element)
+        {
+            return new DeadProperty(this, entry, element);
         }
 
         // ReSharper disable once ClassNeverInstantiated.Local

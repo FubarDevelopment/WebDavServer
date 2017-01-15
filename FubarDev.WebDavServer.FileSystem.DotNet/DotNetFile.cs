@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -31,10 +30,15 @@ namespace FubarDev.WebDavServer.FileSystem.DotNet
             return Task.FromResult<Stream>(FileInfo.Open(FileMode.Create, FileAccess.Write));
         }
 
-        public override IAsyncEnumerable<IProperty> GetProperties()
+        protected override IEnumerable<IUntypedReadableProperty> GetLiveProperties()
         {
-            return base.GetProperties()
-                       .Append(new ContentLengthProperty(ct => Task.FromResult(Length)));
+            foreach (var liveProperty in base.GetLiveProperties())
+            {
+                yield return liveProperty;
+            }
+
+            yield return new ContentLengthProperty(ct => Task.FromResult(Length));
+            yield return new GetETagProperty(FileSystem.PropertyStore, this);
         }
     }
 }
