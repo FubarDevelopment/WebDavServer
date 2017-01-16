@@ -19,7 +19,7 @@ namespace FubarDev.WebDavServer.Sample.AspNetCore
                 .AddCommandLine(args)
                 .Build();
 
-            var forceKestrelUse = config["use-kestrel"] != null;
+            var forceKestrelUse = config.GetValue<bool>("use-kestrel");
 
             IWebHost host;
             if (!forceKestrelUse && IsWindows())
