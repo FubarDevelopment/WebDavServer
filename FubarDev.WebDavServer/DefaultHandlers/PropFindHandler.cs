@@ -98,7 +98,7 @@ namespace FubarDev.WebDavServer.DefaultHandlers
 
                 var response = new Response()
                 {
-                    Href = href.GetComponents(UriComponents.HttpRequestUrl, UriFormat.UriEscaped),
+                    Href = href.ToEncoded(),
                     ItemsElementName = propStats.Select(x => ItemsChoiceType1.Propstat).ToArray(),
                     Items = propStats.Cast<object>().ToArray(),
                 };
@@ -139,7 +139,7 @@ namespace FubarDev.WebDavServer.DefaultHandlers
 
                 var response = new Response()
                 {
-                    Href = href.GetComponents(UriComponents.HttpRequestUrl, UriFormat.UriEscaped),
+                    Href = href.ToEncoded(),
                     ItemsElementName = propStats.Select(x => ItemsChoiceType1.Propstat).ToArray(),
                     Items = propStats.Cast<object>().ToArray(),
                 };
