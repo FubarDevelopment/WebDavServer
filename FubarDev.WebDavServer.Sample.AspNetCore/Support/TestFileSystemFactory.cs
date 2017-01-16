@@ -26,12 +26,13 @@ namespace FubarDev.WebDavServer.Sample.AspNetCore.Support
         public IFileSystem CreateFileSystem(IIdentity identity)
         {
             var userHomeDirectory = Path.Combine(_options.RootPath, identity.IsAuthenticated ? identity.Name : _options.AnonymousUserName);
+            var pathTraversalEngine = _serviceProvider.GetRequiredService<PathTraversalEngine>();
             var propertyStore = _serviceProvider.GetService<IPropertyStore>();
             var fileSystemPropStore = propertyStore as IFileSystemPropertyStore;
             if (fileSystemPropStore != null)
                 fileSystemPropStore.RootPath = userHomeDirectory;
             Directory.CreateDirectory(userHomeDirectory);
-            return new DotNetFileSystem(_options, userHomeDirectory, propertyStore);
+            return new DotNetFileSystem(_options, userHomeDirectory, pathTraversalEngine, propertyStore);
         }
     }
 }

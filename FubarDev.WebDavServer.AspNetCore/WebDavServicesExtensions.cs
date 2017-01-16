@@ -2,6 +2,7 @@
 using FubarDev.WebDavServer.AspNetCore.Filters.Internal;
 using FubarDev.WebDavServer.AspNetCore.Formatters.Internal;
 using FubarDev.WebDavServer.Dispatchers;
+using FubarDev.WebDavServer.FileSystem;
 using FubarDev.WebDavServer.Formatters;
 using FubarDev.WebDavServer.Handlers;
 
@@ -27,7 +28,8 @@ namespace FubarDev.WebDavServer.AspNetCore
                 .AddScoped<IWebDavDispatcher, WebDavServer>()
                 .AddScoped<IWebDavHost, WebDavHost>()
                 .AddSingleton<WebDavExceptionFilter>()
-                .AddScoped<IWebDavOutputFormatter, WebDavXmlOutputFormatter>();
+                .AddScoped<IWebDavOutputFormatter, WebDavXmlOutputFormatter>()
+                .AddSingleton<PathTraversalEngine>();
             services.Scan(
                 scan => scan
                     .FromAssemblyOf<IHandler>()

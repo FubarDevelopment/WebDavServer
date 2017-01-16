@@ -9,8 +9,11 @@ namespace FubarDev.WebDavServer.FileSystem.DotNet
 {
     public class DotNetFileSystem : IFileSystem
     {
-        public DotNetFileSystem(DotNetFileSystemOptions options, string rootFolder, IPropertyStore propertyStore = null)
+        private readonly PathTraversalEngine _pathTraversalEngine;
+
+        public DotNetFileSystem(DotNetFileSystemOptions options, string rootFolder, PathTraversalEngine pathTraversalEngine, IPropertyStore propertyStore = null)
         {
+            _pathTraversalEngine = pathTraversalEngine;
             var root = new AsyncLazy<DotNetDirectory>(() => new DotNetDirectory(this, new DirectoryInfo(rootFolder), new Uri(string.Empty, UriKind.Relative)));
             Root = new AsyncLazy<ICollection>(async () => await root);
             Options = options;
@@ -25,7 +28,7 @@ namespace FubarDev.WebDavServer.FileSystem.DotNet
 
         public Task<SelectionResult> SelectAsync(string path, CancellationToken ct)
         {
-            return new PathTraversalEngine(this).TraverseAsync(path, ct);
+            return _pathTraversalEngine.TraverseAsync(this, path, ct);
         }
     }
 }

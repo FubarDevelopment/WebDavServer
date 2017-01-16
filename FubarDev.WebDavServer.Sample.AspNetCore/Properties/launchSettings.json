@@ -16,6 +16,7 @@
     },
     "FubarDev.WebDavServer.Sample.AspNetCore": {
       "commandName": "Project",
+      "commandLineArgs": "--use-kestrel=true",
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development"
       },
