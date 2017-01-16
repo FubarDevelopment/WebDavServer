@@ -71,14 +71,17 @@ namespace FubarDev.WebDavServer.Sample.AspNetCore
                 app.UseDeveloperExceptionPage();
             }
 
-            app.UseBasicAuthentication(
-                confg =>
-                {
-                    confg.Credentials = new[]
+            if (Program.IsKestrel)
+            {
+                app.UseBasicAuthentication(
+                    confg =>
                     {
-                        new BasicCredential() { Username = "tester", Password = "noGh2eefabohgohc" }
-                    };
-                });
+                        confg.Credentials = new[]
+                        {
+                            new BasicCredential() {Username = "tester", Password = "noGh2eefabohgohc"}
+                        };
+                    });
+            }
 
             app.UseMvc();
         }
