@@ -52,7 +52,7 @@ namespace FubarDev.WebDavServer.DefaultHandlers
                     {
                         Href = _host.BaseUrl.Append((deleteResult.FailedEntry ?? targetEntry).Path).OriginalString,
                         ItemsElementName = new[] { ItemsChoiceType1.Status, },
-                        Items = new object[] { $"{_host.RequestProtocol} {deleteResult.StatusCode} {deleteResult.StatusCode.GetReasonPhrase()}" }
+                        Items = new object[] { $"{_host.RequestProtocol} {(int)deleteResult.StatusCode} {deleteResult.StatusCode.GetReasonPhrase()}" }
                     }
                 }
             };

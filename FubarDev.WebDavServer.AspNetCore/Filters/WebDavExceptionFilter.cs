@@ -60,7 +60,7 @@ namespace FubarDev.WebDavServer.AspNetCore.Filters
                             {
                                 Href = context.HttpContext.Request.GetEncodedUrl(),
                                 ItemsElementName = new[] {ItemsChoiceType1.Status,},
-                                Items = new object[] {$"{(int)statusCode} {statusCode.GetReasonPhrase(optionalMessge)}"},
+                                Items = new object[] {$"{context.HttpContext.Request.Protocol} {(int)statusCode} {statusCode.GetReasonPhrase(optionalMessge)}"},
                             },
                     }
                 });
