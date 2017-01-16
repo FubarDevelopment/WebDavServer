@@ -24,10 +24,16 @@ namespace FubarDev.WebDavServer.FileSystem.DotNet
 
         public Task<IEntry> GetChildAsync(string name, CancellationToken ct)
         {
-            var items = DirectoryInfo.GetFileSystemInfos(name);
-            if (items.Length != 1)
+            var newPath = System.IO.Path.Combine(DirectoryInfo.FullName, name);
+
+            FileSystemInfo item = new FileInfo(newPath);
+            if (!item.Exists)
+                item = new DirectoryInfo(newPath);
+
+            if (!item.Exists)
                 return Task.FromResult<IEntry>(null);
-            return Task.FromResult(CreateEntry(items[0]));
+
+            return Task.FromResult(CreateEntry(item));
         }
 
         public Task<IReadOnlyCollection<IEntry>> GetChildrenAsync(CancellationToken ct)
