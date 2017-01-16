@@ -11,7 +11,7 @@ namespace FubarDev.WebDavServer.FileSystem.DotNet
     {
         public DotNetFileSystem(DotNetFileSystemOptions options, string rootFolder, IPropertyStore propertyStore = null)
         {
-            var root = new AsyncLazy<DotNetDirectory>(() => new DotNetDirectory(this, new DirectoryInfo(rootFolder), string.Empty));
+            var root = new AsyncLazy<DotNetDirectory>(() => new DotNetDirectory(this, new DirectoryInfo(rootFolder), new Uri(string.Empty, UriKind.Relative)));
             Root = new AsyncLazy<ICollection>(async () => await root);
             Options = options;
             PropertyStore = propertyStore;

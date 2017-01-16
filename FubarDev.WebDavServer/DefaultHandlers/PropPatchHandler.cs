@@ -93,7 +93,7 @@ namespace FubarDev.WebDavServer.DefaultHandlers
                 {
                     new Response()
                     {
-                        Href = new Uri(_host.BaseUrl, path).ToEncoded(),
+                        Href = _host.BaseUrl.Append(path).OriginalString,
                         ItemsElementName = propStats.Select(x => ItemsChoiceType1.Propstat).ToArray(),
                         Items = propStats.Cast<object>().ToArray()
                     }

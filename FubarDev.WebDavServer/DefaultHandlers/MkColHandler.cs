@@ -28,11 +28,11 @@ namespace FubarDev.WebDavServer.DefaultHandlers
             if (!selectionResult.IsMissing)
                 throw new WebDavException(WebDavStatusCodes.Forbidden);
 
-            Debug.Assert(selectionResult.PathEntries != null, "selectionResult.PathEntries != null");
-            if (selectionResult.PathEntries.Count != 1)
+            Debug.Assert(selectionResult.MissingNames != null, "selectionResult.PathEntries != null");
+            if (selectionResult.MissingNames.Count != 1)
                 throw new WebDavException(WebDavStatusCodes.Conflict);
 
-            var newName = selectionResult.PathEntries.Single();
+            var newName = selectionResult.MissingNames.Single();
             var collection = selectionResult.Collection;
             Debug.Assert(collection != null, "collection != null");
             try

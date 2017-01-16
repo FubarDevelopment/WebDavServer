@@ -10,7 +10,7 @@ namespace FubarDev.WebDavServer.FileSystem.DotNet
 {
     public abstract class DotNetEntry : IEntry
     {
-        protected DotNetEntry(DotNetFileSystem fileSystem, FileSystemInfo info, string path)
+        protected DotNetEntry(DotNetFileSystem fileSystem, FileSystemInfo info, Uri path)
         {
             Info = info;
             DotNetFileSystem = fileSystem;
@@ -22,7 +22,7 @@ namespace FubarDev.WebDavServer.FileSystem.DotNet
         public string Name => Info.Name;
         public IFileSystem RootFileSystem => DotNetFileSystem;
         public IFileSystem FileSystem => DotNetFileSystem;
-        public string Path { get; }
+        public Uri Path { get; }
         public DateTime LastWriteTimeUtc => Info.LastWriteTimeUtc;
 
         public IAsyncEnumerable<IUntypedReadableProperty> GetProperties()

@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
@@ -104,7 +105,7 @@ namespace FubarDev.WebDavServer.FileSystem
             {
                 var isDirectory = pathPart.EndsWith("/");
                 var name = isDirectory ? pathPart.Substring(0, pathPart.Length - 1) : pathPart;
-                yield return new PathElement(pathPart, name, isDirectory);
+                yield return new PathElement(pathPart, Uri.UnescapeDataString(name), isDirectory);
             }
         }
 

@@ -9,8 +9,8 @@ namespace FubarDev.WebDavServer.Sample.AspNetCore.Controllers
     [Authorize]
     public class WebDavController : WebDavControllerBase
     {
-        public WebDavController(IWebDavDispatcher dispatcher, IWebDavHost host)
-            : base(dispatcher, host)
+        public WebDavController(IWebDavDispatcher dispatcher)
+            : base(dispatcher)
         {
         }
     }

@@ -39,10 +39,10 @@ namespace FubarDev.WebDavServer.DefaultHandlers
             else
             {
                 Debug.Assert(selectionResult.ResultType == SelectionResultType.MissingDocumentOrCollection);
-                Debug.Assert(selectionResult.PathEntries != null, "selectionResult.PathEntries != null");
-                Debug.Assert(selectionResult.PathEntries.Count == 1);
+                Debug.Assert(selectionResult.MissingNames != null, "selectionResult.PathEntries != null");
+                Debug.Assert(selectionResult.MissingNames.Count == 1);
                 Debug.Assert(selectionResult.Collection != null, "selectionResult.Collection != null");
-                var newName = selectionResult.PathEntries.Single();
+                var newName = selectionResult.MissingNames.Single();
                 var entry = await selectionResult.Collection.CreateDocumentAsync(newName, cancellationToken).ConfigureAwait(false);
                 fileStream = await entry.CreateAsync(cancellationToken).ConfigureAwait(false);
             }

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Linq;
 using System.Text;
 
 using JetBrains.Annotations;
@@ -42,7 +43,7 @@ namespace FubarDev.WebDavServer.FileSystem
 
         [CanBeNull]
         [ItemNotNull]
-        public IReadOnlyCollection<string> PathEntries
+        public IReadOnlyCollection<string> MissingNames
         {
             get
             {
@@ -53,7 +54,7 @@ namespace FubarDev.WebDavServer.FileSystem
         }
 
         [NotNull]
-        public string FullPath
+        public Uri FullPath
         {
             get
             {
@@ -69,11 +70,12 @@ namespace FubarDev.WebDavServer.FileSystem
 
                 var result = new StringBuilder();
                 Debug.Assert(Collection != null, "Collection != null");
-                result.Append(Collection.Path);
-                result.Append(string.Join("/", PathEntries));
+                result.Append(Collection.Path.OriginalString);
+                Debug.Assert(MissingNames != null, "MissingNames != null");
+                result.Append(string.Join("/", MissingNames.Select(Uri.EscapeDataString)));
                 if (ResultType == SelectionResultType.MissingCollection)
                     result.Append("/");
-                return result.ToString();
+                return new Uri(result.ToString(), UriKind.Relative);
             }
         }
 

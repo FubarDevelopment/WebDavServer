@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Threading;
 using System.Threading.Tasks;
@@ -12,7 +13,7 @@ namespace FubarDev.WebDavServer.FileSystem.DotNet
     {
         private readonly IFileSystemPropertyStore _fileSystemPropertyStore;
 
-        public DotNetDirectory(DotNetFileSystem fileSystem, DirectoryInfo info, string path)
+        public DotNetDirectory(DotNetFileSystem fileSystem, DirectoryInfo info, Uri path)
             : base(fileSystem, info, path)
         {
             _fileSystemPropertyStore = fileSystem.PropertyStore as IFileSystemPropertyStore;
@@ -68,10 +69,10 @@ namespace FubarDev.WebDavServer.FileSystem.DotNet
         {
             var fileInfo = fsInfo as FileInfo;
             if (fileInfo != null)
-                return new DotNetFile(DotNetFileSystem, fileInfo, Path + fileInfo.Name);
+                return new DotNetFile(DotNetFileSystem, fileInfo, Path.Append(Uri.EscapeDataString(fileInfo.Name)));
 
             var dirInfo = (DirectoryInfo) fsInfo;
-            return new DotNetDirectory(DotNetFileSystem, dirInfo, Path + dirInfo.Name + "/");
+            return new DotNetDirectory(DotNetFileSystem, dirInfo, Path.Append(Uri.EscapeDataString(dirInfo.Name) + "/"));
         }
     }
 }

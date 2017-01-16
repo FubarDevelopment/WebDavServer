@@ -91,14 +91,14 @@ namespace FubarDev.WebDavServer.DefaultHandlers
             var responses = new List<Response>();
             foreach (var entry in entries)
             {
-                var href = new Uri(_host.BaseUrl, entry.Path);
+                var href = _host.BaseUrl.Append(entry.Path);
 
                 var collector = new PropertyCollector(_host, new ReadableFilter(), new PropFilter(prop));
                 var propStats = await collector.GetPropertiesAsync(entry, code => code != WebDavStatusCodes.NotFound, cancellationToken).ConfigureAwait(false);
 
                 var response = new Response()
                 {
-                    Href = href.ToEncoded(),
+                    Href = href.OriginalString,
                     ItemsElementName = propStats.Select(x => ItemsChoiceType1.Propstat).ToArray(),
                     Items = propStats.Cast<object>().ToArray(),
                 };
@@ -131,15 +131,15 @@ namespace FubarDev.WebDavServer.DefaultHandlers
             var responses = new List<Response>();
             foreach (var entry in entries)
             {
-                var entryPath = entry.Path.TrimEnd('/');
-                var href = new Uri(_host.BaseUrl, entryPath);
+                var entryPath = entry.Path.OriginalString.TrimEnd('/');
+                var href = _host.BaseUrl.Append(entryPath);
 
                 var collector = new PropertyCollector(_host, new ReadableFilter(), new CostFilter(0));
                 var propStats = await collector.GetPropertiesAsync(entry, cancellationToken).ConfigureAwait(false);
 
                 var response = new Response()
                 {
-                    Href = href.ToEncoded(),
+                    Href = href.OriginalString,
                     ItemsElementName = propStats.Select(x => ItemsChoiceType1.Propstat).ToArray(),
                     Items = propStats.Cast<object>().ToArray(),
                 };

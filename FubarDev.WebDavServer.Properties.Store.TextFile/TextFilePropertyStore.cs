@@ -238,6 +238,11 @@ namespace FubarDev.WebDavServer.Properties.Store.TextFile
             return GetFileNameFor(entry.Path, isCollection);
         }
 
+        private string GetFileNameFor(Uri path, bool isCollection)
+        {
+            return GetFileNameFor(path.OriginalString, isCollection);
+        }
+
         private string GetFileNameFor(string path, bool isCollection)
         {
             if (isCollection)
