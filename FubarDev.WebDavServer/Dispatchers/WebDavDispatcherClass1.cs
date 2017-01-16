@@ -16,6 +16,8 @@ namespace FubarDev.WebDavServer.Dispatchers
 
         private readonly IPropPatchHandler _propPatchHandler;
 
+        private readonly IMkColHandler _mkColHandler;
+
         private readonly IGetHandler _getHandler;
 
         private readonly IHeadHandler _headHandler;
@@ -26,17 +28,18 @@ namespace FubarDev.WebDavServer.Dispatchers
 
         private readonly IOptionsHandler _optionsHandler;
 
-        public WebDavDispatcherClass1(IOptionsHandler optionsHandler, IGetHandler getHandler, IHeadHandler headHandler, IPutHandler putHandler, IDeleteHandler deleteHandler, IPropFindHandler propFindHandler, IPropPatchHandler propPatchHandler)
+        public WebDavDispatcherClass1(IOptionsHandler optionsHandler, IGetHandler getHandler, IHeadHandler headHandler, IPutHandler putHandler, IDeleteHandler deleteHandler, IPropFindHandler propFindHandler, IPropPatchHandler propPatchHandler, IMkColHandler mkColHandler)
         {
             _propFindHandler = propFindHandler;
             _propPatchHandler = propPatchHandler;
+            _mkColHandler = mkColHandler;
             _getHandler = getHandler;
             _headHandler = headHandler;
             _putHandler = putHandler;
             _deleteHandler = deleteHandler;
             _optionsHandler = optionsHandler;
 
-            HttpMethods = new IHandler[] { optionsHandler, getHandler, headHandler, _putHandler, _deleteHandler, propFindHandler, _propPatchHandler }
+            HttpMethods = new IHandler[] { optionsHandler, getHandler, headHandler, putHandler, deleteHandler, propFindHandler, propPatchHandler, mkColHandler }
                 .Where(x => x != null)
                 .SelectMany(x => x.HttpMethods)
                 .Distinct().ToList();
@@ -79,6 +82,11 @@ namespace FubarDev.WebDavServer.Dispatchers
         public Task<IWebDavResult> DeleteAsync(string path, CancellationToken cancellationToken)
         {
             return _deleteHandler.DeleteAsync(path, cancellationToken);
+        }
+
+        public Task<IWebDavResult> MkColAsync(string path, CancellationToken cancellationToken)
+        {
+            return _mkColHandler.MkColAsync(path, cancellationToken);
         }
     }
 }

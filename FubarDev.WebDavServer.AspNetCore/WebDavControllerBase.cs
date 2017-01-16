@@ -25,6 +25,13 @@ namespace FubarDev.WebDavServer.AspNetCore
             return new WebDavIndirectResult(_dispatcher, result);
         }
 
+        [HttpMkCol]
+        public async Task<IActionResult> MkColAsync(string path, CancellationToken cancellationToken)
+        {
+            var result = await _dispatcher.Class1.MkColAsync(path, cancellationToken).ConfigureAwait(false);
+            return new WebDavIndirectResult(_dispatcher, result);
+        }
+
         [HttpGet]
         public async Task<IActionResult> GetAsync(string path, CancellationToken cancellationToken)
         {

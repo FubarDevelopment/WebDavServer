@@ -21,5 +21,7 @@ namespace FubarDev.WebDavServer.Dispatchers
         Task<IWebDavResult> PropFindAsync(string path, Propfind request, Depth depth, CancellationToken cancellationToken);
 
         Task<IWebDavResult> PropPatch(string path, Propertyupdate request, CancellationToken cancellationToken);
+
+        Task<IWebDavResult> MkColAsync(string path, CancellationToken cancellationToken);
     }
 }
