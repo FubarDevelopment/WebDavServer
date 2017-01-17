@@ -78,7 +78,7 @@ namespace FubarDev.WebDavServer.AspNetCore
         }
 
         [HttpHead]
-        public async Task<IActionResult> HeadAsync(string path, [FromBody]string value, CancellationToken cancellationToken)
+        public async Task<IActionResult> HeadAsync(string path, CancellationToken cancellationToken)
         {
             var result = await _dispatcher.Class1.HeadAsync(path, cancellationToken).ConfigureAwait(false);
             return new WebDavIndirectResult(_dispatcher, result);
