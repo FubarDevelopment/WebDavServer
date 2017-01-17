@@ -32,16 +32,6 @@ namespace FubarDev.WebDavServer.DefaultHandlers
 
         public async Task<IWebDavResult> PropFindAsync(string path, Propfind request, Depth depth, CancellationToken cancellationToken)
         {
-            if (depth == Depth.Infinity && !FileSystem.AllowInfiniteDepth)
-            {
-                // File system forbids infinite depth
-                return new WebDavResult<Error1>(WebDavStatusCodes.Forbidden, new Error1()
-                {
-                    ItemsElementName = new[] {ItemsChoiceType2.PropfindFiniteDepth,},
-                    Items = new[] {new object(),}
-                });
-            }
-
             var selectionResult = await FileSystem.SelectAsync(path, cancellationToken).ConfigureAwait(false);
             if (selectionResult.IsMissing)
             {
@@ -55,15 +45,28 @@ namespace FubarDev.WebDavServer.DefaultHandlers
             }
             else
             {
+                Debug.Assert(selectionResult.Collection != null, "selectionResult.Collection != null");
                 Debug.Assert(selectionResult.ResultType == SelectionResultType.FoundCollection);
                 entries.Add(selectionResult.Collection);
-                if (depth != Depth.Zero)
+                if (depth == Depth.One)
                 {
-                    Debug.Assert(selectionResult.Collection != null, "selectionResult.Collection != null");
-                    var children = await selectionResult.Collection.GetChildrenAsync(cancellationToken).ConfigureAwait(false);
+                    entries.AddRange(await selectionResult.Collection.GetChildrenAsync(cancellationToken).ConfigureAwait(false));
+                }
+                else if (depth == Depth.Infinity)
+                {
+                    var collector = selectionResult.Collection as IRecusiveChildrenCollector;
+                    if (collector == null)
+                    {
+                        // Cannot recursively collect the children with infinite depth
+                        return new WebDavResult<Error1>(WebDavStatusCodes.Forbidden, new Error1()
+                        {
+                            ItemsElementName = new[] { ItemsChoiceType2.PropfindFiniteDepth, },
+                            Items = new[] { new object(), }
+                        });
+                    }
 
                     var remainingDepth = depth.OrderValue - (depth != Depth.Infinity ? 1 : 0);
-                    using (var entriesEnumerator = selectionResult.Collection.GetEntries(children, remainingDepth).GetEnumerator())
+                    using (var entriesEnumerator = collector.GetEntries(remainingDepth).GetEnumerator())
                     {
                         while (await entriesEnumerator.MoveNext(cancellationToken).ConfigureAwait(false))
                         {

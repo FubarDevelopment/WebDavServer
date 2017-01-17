@@ -20,8 +20,6 @@ namespace FubarDev.WebDavServer.FileSystem.DotNet
             PropertyStore = propertyStore;
         }
 
-        public bool AllowInfiniteDepth => Options.AllowInfiniteDepth;
-
         public AsyncLazy<ICollection> Root { get; }
 
         public DotNetFileSystemOptions Options { get; }

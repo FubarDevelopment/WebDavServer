@@ -10,8 +10,6 @@ namespace FubarDev.WebDavServer.FileSystem
 {
     public interface IFileSystem
     {
-        bool AllowInfiniteDepth { get; }
-
         [NotNull]
         AsyncLazy<ICollection> Root { get; }
 

@@ -9,7 +9,7 @@ using FubarDev.WebDavServer.Properties;
 
 namespace FubarDev.WebDavServer.FileSystem.DotNet
 {
-    public class DotNetDirectory : DotNetEntry, ICollection
+    public class DotNetDirectory : DotNetEntry, ICollection, IRecusiveChildrenCollector
     {
         private readonly IFileSystemPropertyStore _fileSystemPropertyStore;
 
@@ -79,6 +79,11 @@ namespace FubarDev.WebDavServer.FileSystem.DotNet
 
             var dirInfo = (DirectoryInfo) fsInfo;
             return new DotNetDirectory(DotNetFileSystem, dirInfo, Path.Append(Uri.EscapeDataString(dirInfo.Name) + "/"));
+        }
+
+        public IAsyncEnumerable<IEntry> GetEntries(int maxDepth)
+        {
+            return this.EnumerateEntries(maxDepth);
         }
     }
 }

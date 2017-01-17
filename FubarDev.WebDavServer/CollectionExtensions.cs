@@ -5,6 +5,8 @@ using System.Threading.Tasks;
 
 using FubarDev.WebDavServer.FileSystem;
 
+using JetBrains.Annotations;
+
 namespace FubarDev.WebDavServer
 {
     public static class CollectionExtensions
@@ -16,9 +18,20 @@ namespace FubarDev.WebDavServer
         /// <param name="children">Child items for the given <paramref name="collection"/></param>
         /// <param name="maxDepth">The maximum depth (0 = only entries of the <paramref name="collection"/>, but not of its sub collections)</param>
         /// <returns>An async enumerable to collect all the entries recursively</returns>
-        public static IAsyncEnumerable<IEntry> GetEntries(this ICollection collection, IReadOnlyCollection<IEntry> children, int maxDepth)
+        public static IAsyncEnumerable<IEntry> EnumerateEntries(this ICollection collection, IReadOnlyCollection<IEntry> children, int maxDepth)
         {
-            return new FileSystemEntries(collection, children, maxDepth);
+            return new FileSystemEntries(collection, children, 0, maxDepth);
+        }
+
+        /// <summary>
+        /// Gets all entries of a collection recursively
+        /// </summary>
+        /// <param name="collection">The collection to get the entries from</param>
+        /// <param name="maxDepth">The maximum depth (0 = only entries of the <paramref name="collection"/>, but not of its sub collections)</param>
+        /// <returns>An async enumerable to collect all the entries recursively</returns>
+        public static IAsyncEnumerable<IEntry> EnumerateEntries(this ICollection collection, int maxDepth)
+        {
+            return new FileSystemEntries(collection, null, 0, maxDepth);
         }
 
         private class FileSystemEntries : IAsyncEnumerable<IEntry>
@@ -29,16 +42,19 @@ namespace FubarDev.WebDavServer
 
             private readonly int _remainingDepth;
 
-            public FileSystemEntries(ICollection collection, IReadOnlyCollection<IEntry> children, int remainingDepth)
+            private readonly int _startDepth;
+
+            public FileSystemEntries([NotNull] ICollection collection, [CanBeNull][ItemNotNull] IReadOnlyCollection<IEntry> children, int startDepth, int remainingDepth)
             {
                 _collection = collection;
                 _children = children;
+                _startDepth = startDepth;
                 _remainingDepth = remainingDepth;
             }
 
             public IAsyncEnumerator<IEntry> GetEnumerator()
             {
-                return new FileSystemEntriesEnumerator(_collection, _children, _remainingDepth);
+                return new FileSystemEntriesEnumerator(_collection, _children, _startDepth, _remainingDepth);
             }
 
             private class FileSystemEntriesEnumerator : IAsyncEnumerator<IEntry>
@@ -53,11 +69,11 @@ namespace FubarDev.WebDavServer
 
                 private IEnumerator<IEntry> _entries;
 
-                public FileSystemEntriesEnumerator(ICollection collection, IReadOnlyCollection<IEntry> children, int maxDepth)
+                public FileSystemEntriesEnumerator([NotNull] ICollection collection, [CanBeNull][ItemNotNull] IReadOnlyCollection<IEntry> children, int startDepth, int maxDepth)
                 {
                     _maxDepth = maxDepth;
-                    _currentDepth = 0;
-                    _collections.Enqueue(new CollectionInfo(collection, children, 0));
+                    _currentDepth = startDepth;
+                    _collections.Enqueue(new CollectionInfo(collection, children, startDepth));
                 }
 
                 public IEntry Current { get; private set; }
@@ -105,9 +121,12 @@ namespace FubarDev.WebDavServer
                                 _collections.Enqueue(collectionInfo);
                             }
 
-                            Current = _entries.Current;
-                            resultFound = true;
-                            hasCurrent = true;
+                            if (_currentDepth >= 0)
+                            {
+                                Current = _entries.Current;
+                                resultFound = true;
+                                hasCurrent = true;
+                            }
                         }
                         else
                         {
@@ -123,15 +142,18 @@ namespace FubarDev.WebDavServer
 
                 private struct CollectionInfo
                 {
-                    public CollectionInfo(ICollection collection, IReadOnlyCollection<IEntry> children, int depth)
+                    public CollectionInfo([NotNull] ICollection collection, [CanBeNull][ItemNotNull] IReadOnlyCollection<IEntry> children, int depth)
                     {
                         Collection = collection;
                         Children = children;
                         Depth = depth;
                     }
 
+                    [NotNull]
                     public ICollection Collection { get; }
 
+                    [CanBeNull]
+                    [ItemNotNull]
                     public IReadOnlyCollection<IEntry> Children { get; }
 
                     public int Depth { get; }
