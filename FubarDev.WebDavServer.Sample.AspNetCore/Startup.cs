@@ -1,5 +1,7 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Threading.Tasks;
 
 using FubarDev.WebDavServer.AspNetCore;
@@ -102,16 +104,14 @@ namespace FubarDev.WebDavServer.Sample.AspNetCore
 
             public Task Invoke(HttpContext context)
             {
-                var requestId = Guid.NewGuid();
-                using (_logger.BeginScope($"Received request ({requestId}): URL {context.Request.GetDisplayUrl()}"))
+                using (_logger.BeginScope("RequestInfo"))
                 {
-                    foreach (var requestHeader in context.Request.Headers)
+                    var info = new List<string>()
                     {
-                        foreach (var value in requestHeader.Value)
-                        {
-                            _logger.LogDebug($"Header {requestHeader.Key} = {value}");
-                        }
-                    }
+                        $"{context.Request.Protocol} {context.Request.Method} {context.Request.GetDisplayUrl()}"
+                    };
+                    info.AddRange(context.Request.Headers.Select(x => $"{x.Key}: {x.Value}"));
+                    _logger.LogInformation(string.Join("\r\n", info));
                 }
 
                 return _next(context);
