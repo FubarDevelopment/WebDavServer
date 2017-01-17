@@ -18,7 +18,7 @@ namespace FubarDev.WebDavServer.FileSystem
             ResultType = resultType;
             Collection = collection;
             _document = document;
-            _pathEntries = pathEntries;
+            _pathEntries = pathEntries ?? Array.Empty<string>();
         }
 
         public SelectionResultType ResultType { get; }
@@ -41,7 +41,7 @@ namespace FubarDev.WebDavServer.FileSystem
             }
         }
 
-        [CanBeNull]
+        [NotNull]
         [ItemNotNull]
         public IReadOnlyCollection<string> MissingNames
         {

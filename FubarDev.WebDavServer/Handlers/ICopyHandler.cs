@@ -6,6 +6,6 @@ namespace FubarDev.WebDavServer.Handlers
 {
     public interface ICopyHandler : IClass1Handler
     {
-        Task<IWebDavResult> CopyAsync(string path, Uri destination, bool forbidOverwrite, CancellationToken cancellationToken);
+        Task<IWebDavResult> CopyAsync(string sourcePath, Uri destination, bool forbidOverwrite, CancellationToken cancellationToken);
     }
 }
