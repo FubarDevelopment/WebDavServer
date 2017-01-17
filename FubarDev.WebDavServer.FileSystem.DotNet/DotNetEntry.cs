@@ -30,6 +30,8 @@ namespace FubarDev.WebDavServer.FileSystem.DotNet
             return new EntryProperties(this, GetLiveProperties(), FileSystem.PropertyStore);
         }
 
+        public abstract Task<DeleteResult> DeleteAsync(CancellationToken cancellationToken);
+
         protected virtual IEnumerable<IUntypedReadableProperty> GetLiveProperties()
         {
             var properties = new List<IUntypedReadableProperty>()
@@ -53,7 +55,5 @@ namespace FubarDev.WebDavServer.FileSystem.DotNet
             Info.LastWriteTimeUtc = timestamp;
             return Task.FromResult(0);
         }
-
-        public abstract Task<DeleteResult> DeleteAsync(CancellationToken cancellationToken);
     }
 }

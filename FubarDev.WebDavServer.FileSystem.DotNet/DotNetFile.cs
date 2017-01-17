@@ -37,6 +37,24 @@ namespace FubarDev.WebDavServer.FileSystem.DotNet
             return Task.FromResult(new DeleteResult(WebDavStatusCodes.OK, null));
         }
 
+        public Task<IEntry> CopyToAsync(ICollection collection, string name, CancellationToken cancellationToken)
+        {
+            var dir = (DotNetDirectory) collection;
+            var targetFileName = System.IO.Path.Combine(dir.DirectoryInfo.FullName, name);
+            File.Copy(FileInfo.FullName, targetFileName, true);
+            return dir.GetChildAsync(name, cancellationToken);
+        }
+
+        public Task<IEntry> MoveToAsync(ICollection collection, string name, CancellationToken cancellationToken)
+        {
+            var dir = (DotNetDirectory)collection;
+            var targetFileName = System.IO.Path.Combine(dir.DirectoryInfo.FullName, name);
+            if (File.Exists(targetFileName))
+                File.Delete(targetFileName);
+            File.Move(FileInfo.FullName, targetFileName);
+            return dir.GetChildAsync(name, cancellationToken);
+        }
+
         protected override IEnumerable<IUntypedReadableProperty> GetLiveProperties()
         {
             foreach (var liveProperty in base.GetLiveProperties())

@@ -10,15 +10,16 @@ namespace FubarDev.WebDavServer.FileSystem
 {
     public class SelectionResult
     {
+        private static readonly IReadOnlyCollection<string> _emptyCollection = new string[0];
         private readonly IDocument _document;
         private readonly IReadOnlyCollection<string> _pathEntries;
-
+        
         internal SelectionResult(SelectionResultType resultType, [NotNull] ICollection collection, IDocument document, [CanBeNull] IReadOnlyCollection<string> pathEntries)
         {
             ResultType = resultType;
             Collection = collection;
             _document = document;
-            _pathEntries = pathEntries ?? Array.Empty<string>();
+            _pathEntries = pathEntries ?? _emptyCollection;
         }
 
         public SelectionResultType ResultType { get; }

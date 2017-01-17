@@ -40,7 +40,9 @@ namespace FubarDev.WebDavServer.DefaultHandlers
             var destinationPath = _host.BaseUrl.MakeRelativeUri(destinationUrl).ToString();
             var destinationSelectionResult = await _rootFileSystem.SelectAsync(destinationPath, cancellationToken).ConfigureAwait(false);
             if (destinationSelectionResult.IsMissing && destinationSelectionResult.MissingNames.Count != 1)
-                throw new 
+                throw new WebDavException(WebDavStatusCodes.NotFound);
+
+            throw new NotImplementedException();
         }
     }
 }
