@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -38,13 +39,19 @@ namespace FubarDev.WebDavServer.DefaultHandlers
             var searchResult = await FileSystem.SelectAsync(path, cancellationToken).ConfigureAwait(false);
             if (searchResult.IsMissing)
                 throw new WebDavException(WebDavStatusCodes.NotFound);
-            if (searchResult.ResultType != SelectionResultType.FoundDocument)
-                throw new NotSupportedException();
-            var doc = searchResult.Document;
-            return new WebDavHandlerResult(FileSystem.PropertyStore, doc, returnFile);
+            if (searchResult.ResultType == SelectionResultType.FoundCollection)
+            {
+                if (returnFile)
+                    throw new NotSupportedException();
+                Debug.Assert(searchResult.Collection != null, "searchResult.Collection != null");
+                return new WebDavCollectionResult(searchResult.Collection);
+            }
+
+            Debug.Assert(searchResult.Document != null);
+            return new WebDavDocumentResult(FileSystem.PropertyStore, searchResult.Document, returnFile);
         }
 
-        private class WebDavHandlerResult : WebDavResult
+        private class WebDavDocumentResult : WebDavResult
         {
             [CanBeNull]
             private readonly IPropertyStore _propertyStore;
@@ -54,7 +61,7 @@ namespace FubarDev.WebDavServer.DefaultHandlers
 
             private readonly bool _returnFile;
 
-            public WebDavHandlerResult([CanBeNull] IPropertyStore propertyStore, [NotNull] IDocument document, bool returnFile)
+            public WebDavDocumentResult([CanBeNull] IPropertyStore propertyStore, [NotNull] IDocument document, bool returnFile)
                 : base(WebDavStatusCodes.OK)
             {
                 _propertyStore = propertyStore;
@@ -72,15 +79,34 @@ namespace FubarDev.WebDavServer.DefaultHandlers
                 }
 
                 response.Headers["Last-Modified"] = new[] { _document.LastWriteTimeUtc.ToString("R") };
-                response.ContentType = "application/octet-stream";
 
                 if (!_returnFile)
                     return;
+
+                response.ContentType = "application/octet-stream";
 
                 using (var stream = await _document.OpenReadAsync(ct).ConfigureAwait(false))
                 {
                     await stream.CopyToAsync(response.Body, 65536, ct).ConfigureAwait(false);
                 }
+            }
+        }
+
+        private class WebDavCollectionResult : WebDavResult
+        {
+            [NotNull]
+            private readonly ICollection _collection;
+
+            public WebDavCollectionResult([NotNull] ICollection collection)
+                : base(WebDavStatusCodes.OK)
+            {
+                _collection = collection;
+            }
+
+            public override async Task ExecuteResultAsync(IWebDavResponse response, CancellationToken ct)
+            {
+                await base.ExecuteResultAsync(response, ct).ConfigureAwait(false);
+                response.Headers["Last-Modified"] = new[] { _collection.LastWriteTimeUtc.ToString("R") };
             }
         }
     }
