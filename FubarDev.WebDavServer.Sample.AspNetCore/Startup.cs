@@ -1,5 +1,6 @@
 ﻿using System;
 using System.IO;
+using System.Threading.Tasks;
 
 using FubarDev.WebDavServer.AspNetCore;
 using FubarDev.WebDavServer.FileSystem;
@@ -12,6 +13,7 @@ using FubarDev.WebDavServer.Sample.AspNetCore.Support;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Http.Extensions;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
@@ -83,7 +85,37 @@ namespace FubarDev.WebDavServer.Sample.AspNetCore
                     });
             }
 
+            app.UseMiddleware<RequestLogMiddleware>();
             app.UseMvc();
+        }
+
+        private class RequestLogMiddleware
+        {
+            private readonly RequestDelegate _next;
+            private readonly ILogger<RequestLogMiddleware> _logger;
+
+            public RequestLogMiddleware(RequestDelegate next, ILogger<RequestLogMiddleware> logger)
+            {
+                _next = next;
+                _logger = logger;
+            }
+
+            public Task Invoke(HttpContext context)
+            {
+                var requestId = Guid.NewGuid();
+                using (_logger.BeginScope($"Received request ({requestId}): URL {context.Request.GetDisplayUrl()}"))
+                {
+                    foreach (var requestHeader in context.Request.Headers)
+                    {
+                        foreach (var value in requestHeader.Value)
+                        {
+                            _logger.LogDebug($"Header {requestHeader.Key} = {value}");
+                        }
+                    }
+                }
+
+                return _next(context);
+            }
         }
     }
 }
