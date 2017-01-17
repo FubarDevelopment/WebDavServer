@@ -10,9 +10,13 @@ namespace FubarDev.WebDavServer.AspNetCore.Formatters
             if (request.ContentType == null)
             {
                 var contentLength = request.ContentLength;
-                if (request.Method == "PROPFIND" && contentLength.HasValue && contentLength.Value == 0)
+                if (contentLength.HasValue && contentLength.Value == 0)
                 {
-                    return true;
+                    switch (request.Method)
+                    {
+                        case "PROPFIND":
+                            return true;
+                    }
                 }
             }
 
