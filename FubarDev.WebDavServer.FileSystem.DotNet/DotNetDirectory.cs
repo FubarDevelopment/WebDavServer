@@ -71,16 +71,28 @@ namespace FubarDev.WebDavServer.FileSystem.DotNet
             return Task.FromResult(new DeleteResult(WebDavStatusCodes.OK, null));
         }
 
-        public Task<IEntry> CopyToAsync(ICollection collection, string name, CancellationToken cancellationToken)
+        public Task<CollectionActionResult> CopyToAsync(ICollection collection, string name, CancellationToken cancellationToken)
         {
             var dir = (DotNetDirectory)collection;
             var targetDirectoryName = System.IO.Path.Combine(dir.DirectoryInfo.FullName, name);
-            Directory.CreateDirectory(targetDirectoryName);
-            File.Copy(FileInfo.FullName, System.IO.Path.Combine(dir.DirectoryInfo.FullName, name), true);
-            return dir.GetChildAsync(name, cancellationToken);
+            var targetDirInfo = Directory.CreateDirectory(targetDirectoryName);
+            var engine = new ExecuteRecursiveAction(
+                DirectoryInfo,
+                targetDirInfo,
+                (src, dst) =>
+                {
+                    if (dst.Exists)
+                        dst.Delete();
+                    src.MoveTo(dst.FullName);
+                },
+                (src, dst) =>
+                {
+                    dst.Create();
+                });
+            throw new NotImplementedException();
         }
 
-        public Task<IEntry> MoveToAsync(ICollection collection, string name, CancellationToken cancellationToken)
+        public Task<CollectionActionResult> MoveToAsync(ICollection collection, string name, CancellationToken cancellationToken)
         {
             throw new NotImplementedException();
         }
@@ -95,9 +107,49 @@ namespace FubarDev.WebDavServer.FileSystem.DotNet
             return new DotNetDirectory(DotNetFileSystem, dirInfo, Path.Append(Uri.EscapeDataString(dirInfo.Name) + "/"));
         }
 
+        private class ExecuteRecursiveAction
+        {
+            private readonly DirectoryInfo _sourceDirectory;
+            private readonly DirectoryInfo _targetDirectory;
+            private readonly Action<FileInfo, FileInfo> _fileAction;
+            private readonly Action<DirectoryInfo, DirectoryInfo> _directoryAction;
+
+            public ExecuteRecursiveAction(
+                DirectoryInfo sourceDirectory,
+                DirectoryInfo targetDirectory,
+                Action<FileInfo, FileInfo> fileAction,
+                Action<DirectoryInfo, DirectoryInfo> directoryAction)
+            {
+                _sourceDirectory = sourceDirectory;
+                _targetDirectory = targetDirectory;
+                _fileAction = fileAction;
+                _directoryAction = directoryAction;
+            }
+
+            public ActionInfo ActionInfo { get; } = new ActionInfo();
+
+            public Task StartAsync(CancellationToken cancellationToken)
+            {
+                return ExecuteAsync(_sourceDirectory, _targetDirectory, cancellationToken);
+            }
+
+            private Task ExecuteAsync(DirectoryInfo sourceDirectory, DirectoryInfo targetDirectory, CancellationToken cancellationToken)
+            {
+                throw new NotImplementedException();
+            }
+        }
+
         public IAsyncEnumerable<IEntry> GetEntries(int maxDepth)
         {
             return this.EnumerateEntries(maxDepth);
+        }
+
+        private class ActionInfo
+        {
+            public List<Tuple<DirectoryInfo, DirectoryInfo>> Directories { get; } = new List<Tuple<DirectoryInfo, DirectoryInfo>>();
+            public List<Tuple<FileInfo, FileInfo>> Files { get; } = new List<Tuple<FileInfo, FileInfo>>();
+            public FileSystemInfo FailedItem { get; set; }
+            public WebDavStatusCodes ErrorStatusCode { get; set; } = WebDavStatusCodes.OK;
         }
     }
 }
