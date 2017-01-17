@@ -1,4 +1,5 @@
-﻿using System.IO;
+﻿using System;
+using System.IO;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -23,5 +24,9 @@ namespace FubarDev.WebDavServer.Dispatchers
         Task<IWebDavResult> PropPatch(string path, Propertyupdate request, CancellationToken cancellationToken);
 
         Task<IWebDavResult> MkColAsync(string path, CancellationToken cancellationToken);
+
+        Task<IWebDavResult> CopyAsync(string path, Uri destination, bool forbidOverwrite, CancellationToken cancellationToken);
+
+        Task<IWebDavResult> MoveAsync(string path, Uri destination, bool forbidOverwrite, CancellationToken cancellationToken);
     }
 }

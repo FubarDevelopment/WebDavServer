@@ -3,7 +3,7 @@ using System.Threading.Tasks;
 
 namespace FubarDev.WebDavServer.Handlers
 {
-    public interface IDeleteHandler : IHandler
+    public interface IDeleteHandler : IClass1Handler
     {
         Task<IWebDavResult> DeleteAsync(string path, CancellationToken cancellationToken);
     }

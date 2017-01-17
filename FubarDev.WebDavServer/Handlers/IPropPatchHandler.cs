@@ -5,7 +5,7 @@ using FubarDev.WebDavServer.Model;
 
 namespace FubarDev.WebDavServer.Handlers
 {
-    public interface IPropPatchHandler : IHandler
+    public interface IPropPatchHandler : IClass1Handler
     {
         Task<IWebDavResult> PropPatchAsync(string path, Propertyupdate request, CancellationToken cancellationToken);
     }

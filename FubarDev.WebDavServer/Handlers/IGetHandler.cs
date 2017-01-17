@@ -3,7 +3,7 @@ using System.Threading.Tasks;
 
 namespace FubarDev.WebDavServer.Handlers
 {
-    public interface IGetHandler : IHandler
+    public interface IGetHandler : IClass1Handler
     {
         Task<IWebDavResult> GetAsync(string path, CancellationToken cancellationToken);
     }
