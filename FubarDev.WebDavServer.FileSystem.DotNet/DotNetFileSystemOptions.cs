@@ -8,15 +8,15 @@ namespace FubarDev.WebDavServer.FileSystem.DotNet
     {
         public DotNetFileSystemOptions()
         {
-            HideExtensionsForDisplayName = true;
             var info = GetHomePath();
             RootPath = info.RootPath;
             AnonymousUserName = info.IsProbablyUnix ? "anonymous" : "Public";
         }
 
-        public bool HideExtensionsForDisplayName { get; set; }
+        public bool ShowExtensionsForDisplayName { get; set; }
         public string RootPath { get; set; }
         public string AnonymousUserName { get; set; }
+        public bool AllowInfiniteDepth { get; set; }
 
         private static HomePathInfo GetHomePath()
         {

@@ -32,9 +32,9 @@ namespace FubarDev.WebDavServer.DefaultHandlers
 
         public async Task<IWebDavResult> PropFindAsync(string path, Propfind request, Depth depth, CancellationToken cancellationToken)
         {
-            if (depth == Depth.Infinity)
+            if (depth == Depth.Infinity && !FileSystem.AllowInfiniteDepth)
             {
-                // Not supported yet
+                // File system forbids infinite depth
                 return new WebDavResult<Error1>(WebDavStatusCodes.Forbidden, new Error1()
                 {
                     ItemsElementName = new[] {ItemsChoiceType2.PropfindFiniteDepth,},
@@ -62,7 +62,8 @@ namespace FubarDev.WebDavServer.DefaultHandlers
                     Debug.Assert(selectionResult.Collection != null, "selectionResult.Collection != null");
                     var children = await selectionResult.Collection.GetChildrenAsync(cancellationToken).ConfigureAwait(false);
 
-                    using (var entriesEnumerator = selectionResult.Collection.GetEntries(children, depth.OrderValue - 1).GetEnumerator())
+                    var remainingDepth = depth.OrderValue - (depth != Depth.Infinity ? 1 : 0);
+                    using (var entriesEnumerator = selectionResult.Collection.GetEntries(children, remainingDepth).GetEnumerator())
                     {
                         while (await entriesEnumerator.MoveNext(cancellationToken).ConfigureAwait(false))
                         {
@@ -114,19 +115,19 @@ namespace FubarDev.WebDavServer.DefaultHandlers
             return new WebDavResult<Multistatus>(WebDavStatusCodes.MultiStatus, result);
         }
 
-        private Task<IWebDavResult> HandleAllPropAsync([NotNull] Propfind request, IReadOnlyCollection<IEntry> entries, CancellationToken cancellationToken)
+        private Task<IWebDavResult> HandleAllPropAsync([NotNull] Propfind request, IEnumerable<IEntry> entries, CancellationToken cancellationToken)
         {
             var include = request.ItemsElementName.Select((x, i) => Tuple.Create(x, i)).Where(x => x.Item1 == ItemsChoiceType.Include).Select(x => (Include)request.Items[x.Item2]).FirstOrDefault();
             return HandleAllPropAsync(include, entries, cancellationToken);
         }
 
-        private Task<IWebDavResult> HandleAllPropAsync(IReadOnlyCollection<IEntry> entries, CancellationToken cancellationToken)
+        private Task<IWebDavResult> HandleAllPropAsync(IEnumerable<IEntry> entries, CancellationToken cancellationToken)
         {
             return HandleAllPropAsync((Include)null, entries, cancellationToken);
         }
 
         // ReSharper disable once UnusedParameter.Local
-        private async Task<IWebDavResult> HandleAllPropAsync([CanBeNull] Include include, IReadOnlyCollection<IEntry> entries, CancellationToken cancellationToken)
+        private async Task<IWebDavResult> HandleAllPropAsync([CanBeNull] Include include, IEnumerable<IEntry> entries, CancellationToken cancellationToken)
         {
             var responses = new List<Response>();
             foreach (var entry in entries)

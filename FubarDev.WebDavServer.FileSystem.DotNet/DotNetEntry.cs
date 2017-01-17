@@ -35,7 +35,7 @@ namespace FubarDev.WebDavServer.FileSystem.DotNet
             var properties = new List<IUntypedReadableProperty>()
             {
                 this.GetResourceTypeProperty(),
-                new DisplayNameProperty(this, FileSystem.PropertyStore, DotNetFileSystem.Options.HideExtensionsForDisplayName),
+                new DisplayNameProperty(this, FileSystem.PropertyStore, !DotNetFileSystem.Options.ShowExtensionsForDisplayName),
                 new LastModifiedProperty(ct => Task.FromResult(Info.LastWriteTimeUtc), SetLastWriteTimeUtc),
                 new CreationDateProperty(ct => Task.FromResult(Info.CreationTimeUtc), SetCreateTimeUtc),
             };
