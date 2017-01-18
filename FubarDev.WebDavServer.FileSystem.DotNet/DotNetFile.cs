@@ -11,8 +11,8 @@ namespace FubarDev.WebDavServer.FileSystem.DotNet
 {
     public class DotNetFile : DotNetEntry, IDocument
     {
-        public DotNetFile(DotNetFileSystem fileSystem, FileInfo info, Uri path)
-            : base(fileSystem, info, path)
+        public DotNetFile(DotNetFileSystem fileSystem, DotNetDirectory parent, FileInfo info, Uri path)
+            : base(fileSystem, parent, info, path)
         {
             FileInfo = info;
         }

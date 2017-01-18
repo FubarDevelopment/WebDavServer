@@ -11,12 +11,24 @@ namespace FubarDev.WebDavServer.FileSystem
 {
     public interface IEntry
     {
+        [NotNull]
         string Name { get; }
+
+        [NotNull]
         IFileSystem RootFileSystem { get; }
+
+        [NotNull]
         IFileSystem FileSystem { get; }
+
+        [CanBeNull]
+        ICollection Parent { get; }
+
+        [NotNull]
         Uri Path { get; }
+
         DateTime LastWriteTimeUtc { get; }
 
+        [NotNull]
         IAsyncEnumerable<IUntypedReadableProperty> GetProperties();
 
         [NotNull]

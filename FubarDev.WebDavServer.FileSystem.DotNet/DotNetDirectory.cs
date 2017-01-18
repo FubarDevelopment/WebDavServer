@@ -13,8 +13,8 @@ namespace FubarDev.WebDavServer.FileSystem.DotNet
     {
         private readonly IFileSystemPropertyStore _fileSystemPropertyStore;
 
-        public DotNetDirectory(DotNetFileSystem fileSystem, DirectoryInfo info, Uri path)
-            : base(fileSystem, info, path)
+        public DotNetDirectory(DotNetFileSystem fileSystem, DotNetDirectory parent, DirectoryInfo info, Uri path)
+            : base(fileSystem, parent, info, path)
         {
             _fileSystemPropertyStore = fileSystem.PropertyStore as IFileSystemPropertyStore;
             DirectoryInfo = info;
@@ -71,6 +71,11 @@ namespace FubarDev.WebDavServer.FileSystem.DotNet
             return Task.FromResult(new DeleteResult(WebDavStatusCodes.OK, null));
         }
 
+        public IAsyncEnumerable<IEntry> GetEntries(int maxDepth)
+        {
+            return this.EnumerateEntries(maxDepth);
+        }
+
         public Task<CollectionActionResult> CopyToAsync(ICollection collection, string name, CancellationToken cancellationToken)
         {
             var dir = (DotNetDirectory)collection;
@@ -103,10 +108,10 @@ namespace FubarDev.WebDavServer.FileSystem.DotNet
         {
             var fileInfo = fsInfo as FileInfo;
             if (fileInfo != null)
-                return new DotNetFile(DotNetFileSystem, fileInfo, Path.Append(Uri.EscapeDataString(fileInfo.Name)));
+                return new DotNetFile(DotNetFileSystem, this, fileInfo, Path.Append(Uri.EscapeDataString(fileInfo.Name)));
 
             var dirInfo = (DirectoryInfo) fsInfo;
-            return new DotNetDirectory(DotNetFileSystem, dirInfo, Path.Append(Uri.EscapeDataString(dirInfo.Name) + "/"));
+            return new DotNetDirectory(DotNetFileSystem, this, dirInfo, Path.Append(Uri.EscapeDataString(dirInfo.Name) + "/"));
         }
 
         private class DotNetItemInfo
@@ -203,11 +208,6 @@ namespace FubarDev.WebDavServer.FileSystem.DotNet
             {
                 throw new NotImplementedException();
             }
-        }
-
-        public IAsyncEnumerable<IEntry> GetEntries(int maxDepth)
-        {
-            return this.EnumerateEntries(maxDepth);
         }
 
         private class ActionInfo<TItem, TDirectory, TFile>

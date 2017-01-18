@@ -80,6 +80,18 @@ namespace FubarDev.WebDavServer.FileSystem
             }
         }
 
+        [CanBeNull]
+        public IEntry TargetEntry
+        {
+            get
+            {
+                if (IsMissing)
+                    throw new InvalidOperationException();
+                if (ResultType == SelectionResultType.FoundDocument)
+                    return Document;
+                return Collection;
+            }
+        }
 
         [NotNull]
         public static SelectionResult Create([NotNull] ICollection collection, [NotNull] IDocument document)

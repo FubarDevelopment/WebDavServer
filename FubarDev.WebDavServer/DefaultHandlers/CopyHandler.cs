@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -41,6 +42,17 @@ namespace FubarDev.WebDavServer.DefaultHandlers
             var destinationSelectionResult = await _rootFileSystem.SelectAsync(destinationPath, cancellationToken).ConfigureAwait(false);
             if (destinationSelectionResult.IsMissing && destinationSelectionResult.MissingNames.Count != 1)
                 throw new WebDavException(WebDavStatusCodes.NotFound);
+
+            Debug.Assert(sourceSelectionResult.TargetEntry != null, "sourceSelectionResult.TargetEntry != null");
+            Debug.Assert(destinationSelectionResult.TargetEntry != null, "destinationSelectionResult.TargetEntry != null");
+            var isSameFileSystem = ReferenceEquals(sourceSelectionResult.TargetEntry.FileSystem, destinationSelectionResult.TargetEntry.FileSystem);
+            if (isSameFileSystem)
+            {
+                // Copy one item inside the same file system
+                throw new NotSupportedException();
+            }
+
+            // Copy one item to another file system
 
             throw new NotImplementedException();
         }

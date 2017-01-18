@@ -10,8 +10,11 @@ namespace FubarDev.WebDavServer.FileSystem.DotNet
 {
     public abstract class DotNetEntry : IEntry
     {
-        protected DotNetEntry(DotNetFileSystem fileSystem, FileSystemInfo info, Uri path)
+        private readonly DotNetDirectory _parent;
+
+        protected DotNetEntry(DotNetFileSystem fileSystem, DotNetDirectory parent, FileSystemInfo info, Uri path)
         {
+            _parent = parent;
             Info = info;
             DotNetFileSystem = fileSystem;
             Path = path;
@@ -22,6 +25,7 @@ namespace FubarDev.WebDavServer.FileSystem.DotNet
         public string Name => Info.Name;
         public IFileSystem RootFileSystem => DotNetFileSystem;
         public IFileSystem FileSystem => DotNetFileSystem;
+        public ICollection Parent => _parent;
         public Uri Path { get; }
         public DateTime LastWriteTimeUtc => Info.LastWriteTimeUtc;
 
