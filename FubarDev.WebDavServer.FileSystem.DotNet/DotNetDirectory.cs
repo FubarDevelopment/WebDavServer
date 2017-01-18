@@ -76,6 +76,7 @@ namespace FubarDev.WebDavServer.FileSystem.DotNet
             var dir = (DotNetDirectory)collection;
             var targetDirectoryName = System.IO.Path.Combine(dir.DirectoryInfo.FullName, name);
             var targetDirInfo = Directory.CreateDirectory(targetDirectoryName);
+            /*
             var engine = new ExecuteRecursiveAction(
                 DirectoryInfo,
                 targetDirInfo,
@@ -89,6 +90,7 @@ namespace FubarDev.WebDavServer.FileSystem.DotNet
                 {
                     dst.Create();
                 });
+            */
             throw new NotImplementedException();
         }
 
@@ -107,33 +109,97 @@ namespace FubarDev.WebDavServer.FileSystem.DotNet
             return new DotNetDirectory(DotNetFileSystem, dirInfo, Path.Append(Uri.EscapeDataString(dirInfo.Name) + "/"));
         }
 
-        private class ExecuteRecursiveAction
+        private class DotNetItemInfo
         {
-            private readonly DirectoryInfo _sourceDirectory;
-            private readonly DirectoryInfo _targetDirectory;
-            private readonly Action<FileInfo, FileInfo> _fileAction;
-            private readonly Action<DirectoryInfo, DirectoryInfo> _directoryAction;
+            public DotNetItemInfo(FileSystemInfo item)
+            {
+                CreationDateTime = item.CreationTimeUtc;
+                ModificationDateTime = item.LastWriteTimeUtc;
+            }
 
-            public ExecuteRecursiveAction(
-                DirectoryInfo sourceDirectory,
-                DirectoryInfo targetDirectory,
-                Action<FileInfo, FileInfo> fileAction,
-                Action<DirectoryInfo, DirectoryInfo> directoryAction)
+            public DateTime CreationDateTime { get; }
+            public DateTime ModificationDateTime { get; }
+        }
+
+        private class CopyActions : IElementActions<FileSystemInfo, DirectoryInfo, FileInfo, DotNetItemInfo>
+        {
+            public Task<IEnumerable<FileSystemInfo>> GetChildrenAsync(DirectoryInfo directory, CancellationToken ct)
+            {
+                return Task.FromResult(directory.EnumerateFileSystemInfos());
+            }
+
+            public Task<DotNetItemInfo> GetInfoAsync(FileSystemInfo item, CancellationToken ct)
+            {
+                return Task.FromResult(new DotNetItemInfo(item));
+            }
+
+            public Task SetInfoAsync(FileSystemInfo item, DotNetItemInfo info, CancellationToken ct)
+            {
+                item.CreationTimeUtc = info.CreationDateTime;
+                item.LastWriteTimeUtc = info.ModificationDateTime;
+                return Task.FromResult(0);
+            }
+
+            public Task<FileInfo> ExecuteActionAsync(FileInfo item, DirectoryInfo targetDirectory, string targetName, CancellationToken ct)
+            {
+                var targetPath = System.IO.Path.Combine(targetDirectory.FullName, targetName);
+                item.CopyTo(targetPath, true);
+                return Task.FromResult(new FileInfo(targetPath));
+            }
+
+            public Task<DirectoryInfo> ExecuteActionAsync(DirectoryInfo item, DirectoryInfo targetDirectory, string targetName, CancellationToken ct)
+            {
+                var targetPath = System.IO.Path.Combine(targetDirectory.FullName, targetName);
+                return Task.FromResult(targetDirectory.CreateSubdirectory(targetPath));
+            }
+
+            public Task ExecuteActionAsync(DirectoryInfo item, DirectoryInfo targetDirectory, CancellationToken ct)
+            {
+                targetDirectory.Create();
+                return Task.FromResult(0);
+            }
+        }
+
+        private interface IElementActions<TItem, TDirectory, TFile, TItemInfo> 
+            where TItem : class 
+            where TDirectory : class, TItem
+            where TFile : class, TItem
+        {
+            Task<IEnumerable<TItem>> GetChildrenAsync(TDirectory directory, CancellationToken ct);
+            Task<TItemInfo> GetInfoAsync(TItem item, CancellationToken ct);
+            Task SetInfoAsync(TItem item, DotNetItemInfo info, CancellationToken ct);
+            Task<TFile> ExecuteActionAsync(TFile item, TDirectory targetDirectory, string targetName, CancellationToken ct);
+            Task<TDirectory> ExecuteActionAsync(TDirectory item, TDirectory targetDirectory, string targetName, CancellationToken ct);
+            Task ExecuteActionAsync(TDirectory item, TDirectory targetDirectory, CancellationToken ct);
+        }
+
+        private class RecursiveItemEngine<TItem, TDirectory, TFile, TItemInfo>
+            where TItem : class
+            where TDirectory : class, TItem
+            where TFile : class, TItem
+        {
+            private readonly TDirectory _sourceDirectory;
+            private readonly TDirectory _targetDirectory;
+            private readonly IElementActions<TItem, TDirectory, TFile, TItemInfo> _itemHandler;
+
+            public RecursiveItemEngine(
+                TDirectory sourceDirectory,
+                TDirectory targetDirectory,
+                IElementActions<TItem, TDirectory, TFile, TItemInfo> itemHandler)
             {
                 _sourceDirectory = sourceDirectory;
                 _targetDirectory = targetDirectory;
-                _fileAction = fileAction;
-                _directoryAction = directoryAction;
+                _itemHandler = itemHandler;
             }
 
-            public ActionInfo ActionInfo { get; } = new ActionInfo();
+            public ActionInfo<TItem, TDirectory, TFile> ActionInfo { get; } = new ActionInfo<TItem, TDirectory, TFile>();
 
             public Task StartAsync(CancellationToken cancellationToken)
             {
                 return ExecuteAsync(_sourceDirectory, _targetDirectory, cancellationToken);
             }
 
-            private Task ExecuteAsync(DirectoryInfo sourceDirectory, DirectoryInfo targetDirectory, CancellationToken cancellationToken)
+            private Task ExecuteAsync(TDirectory sourceDirectory, TDirectory targetDirectory, CancellationToken cancellationToken)
             {
                 throw new NotImplementedException();
             }
@@ -144,11 +210,14 @@ namespace FubarDev.WebDavServer.FileSystem.DotNet
             return this.EnumerateEntries(maxDepth);
         }
 
-        private class ActionInfo
+        private class ActionInfo<TItem, TDirectory, TFile>
+            where TItem : class
+            where TDirectory : class, TItem
+            where TFile : class, TItem
         {
-            public List<Tuple<DirectoryInfo, DirectoryInfo>> Directories { get; } = new List<Tuple<DirectoryInfo, DirectoryInfo>>();
-            public List<Tuple<FileInfo, FileInfo>> Files { get; } = new List<Tuple<FileInfo, FileInfo>>();
-            public FileSystemInfo FailedItem { get; set; }
+            public List<Tuple<TDirectory, TDirectory>> Directories { get; } = new List<Tuple<TDirectory, TDirectory>>();
+            public List<Tuple<TFile, TFile>> Files { get; } = new List<Tuple<TFile, TFile>>();
+            public TItem FailedItem { get; set; }
             public WebDavStatusCodes ErrorStatusCode { get; set; } = WebDavStatusCodes.OK;
         }
     }
