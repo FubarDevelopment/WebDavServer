@@ -34,6 +34,25 @@ namespace FubarDev.WebDavServer
             return new FileSystemEntries(collection, null, 0, maxDepth);
         }
 
+        public static async Task<Node> GetNodeAsync(this ICollection collection, int maxDepth, CancellationToken cancellationToken)
+        {
+            throw new NotImplementedException();
+        }
+
+        public class Node
+        {
+            public Node(ICollection collection, IReadOnlyCollection<Node> nodes, IReadOnlyCollection<IDocument> documents)
+            {
+                Collection = collection;
+                Nodes = nodes;
+                Documents = documents;
+            }
+
+            public ICollection Collection { get; }
+            public IReadOnlyCollection<Node> Nodes { get; }
+            public IReadOnlyCollection<IDocument> Documents { get; }
+        }
+
         private class FileSystemEntries : IAsyncEnumerable<IEntry>
         {
             private readonly ICollection _collection;
