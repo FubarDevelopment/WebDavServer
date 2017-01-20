@@ -13,26 +13,22 @@ namespace FubarDev.WebDavServer.Sample.AspNetCore.Support
 {
     public class TestFileSystemFactory : IFileSystemFactory
     {
-        private readonly IServiceProvider _serviceProvider;
-
+        private readonly PathTraversalEngine _pathTraversalEngine;
+        private readonly IPropertyStoreFactory _propertyStoreFactory;
         private readonly DotNetFileSystemOptions _options;
 
-        public TestFileSystemFactory(IOptions<DotNetFileSystemOptions> options, IServiceProvider serviceProvider)
+        public TestFileSystemFactory(IOptions<DotNetFileSystemOptions> options, PathTraversalEngine pathTraversalEngine, IPropertyStoreFactory propertyStoreFactory)
         {
-            _serviceProvider = serviceProvider;
+            _pathTraversalEngine = pathTraversalEngine;
+            _propertyStoreFactory = propertyStoreFactory;
             _options = options.Value;
         }
 
         public IFileSystem CreateFileSystem(IIdentity identity)
         {
             var userHomeDirectory = Path.Combine(_options.RootPath, identity.IsAuthenticated ? identity.Name : _options.AnonymousUserName);
-            var pathTraversalEngine = _serviceProvider.GetRequiredService<PathTraversalEngine>();
-            var propertyStore = _serviceProvider.GetService<IPropertyStore>();
-            var fileSystemPropStore = propertyStore as IFileSystemPropertyStore;
-            if (fileSystemPropStore != null)
-                fileSystemPropStore.RootPath = userHomeDirectory;
             Directory.CreateDirectory(userHomeDirectory);
-            return new DotNetFileSystem(_options, userHomeDirectory, pathTraversalEngine, propertyStore);
+            return new DotNetFileSystem(_options, userHomeDirectory, _pathTraversalEngine, _propertyStoreFactory);
         }
     }
 }

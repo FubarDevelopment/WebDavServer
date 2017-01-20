@@ -11,12 +11,16 @@ namespace FubarDev.WebDavServer.FileSystem.DotNet
     {
         private readonly PathTraversalEngine _pathTraversalEngine;
 
-        public DotNetFileSystem(DotNetFileSystemOptions options, string rootFolder, PathTraversalEngine pathTraversalEngine, IPropertyStore propertyStore = null)
+        public DotNetFileSystem(DotNetFileSystemOptions options, string rootFolder, PathTraversalEngine pathTraversalEngine, IPropertyStoreFactory propertyStoreFactory = null)
         {
             _pathTraversalEngine = pathTraversalEngine;
             var root = new AsyncLazy<DotNetDirectory>(() => new DotNetDirectory(this, null, new DirectoryInfo(rootFolder), new Uri(string.Empty, UriKind.Relative)));
             Root = new AsyncLazy<ICollection>(async () => await root);
             Options = options;
+            var propertyStore = propertyStoreFactory?.Create(this);
+            var fileSystemPropStore = propertyStore as IFileSystemPropertyStore;
+            if (fileSystemPropStore != null)
+                fileSystemPropStore.RootPath = rootFolder;
             PropertyStore = propertyStore;
         }
 

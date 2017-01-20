@@ -51,7 +51,7 @@ namespace FubarDev.WebDavServer.Sample.AspNetCore
                         opt.AllowInfiniteDepth = true;
                     })
                 .AddMemoryCache()
-                .AddTransient<IPropertyStore, TextFilePropertyStore>()
+                .AddTransient<IPropertyStoreFactory, TextFilePropertyStoreFactory>()
                 .AddSingleton<IFileSystemFactory, TestFileSystemFactory>()
                 .AddTransient(sp =>
                 {

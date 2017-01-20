@@ -10,11 +10,11 @@ namespace FubarDev.WebDavServer.FileSystem.InMemory
     {
         private readonly PathTraversalEngine _pathTraversalEngine;
 
-        public InMemoryFileSystem(PathTraversalEngine pathTraversalEngine, IPropertyStore propertyStore)
+        public InMemoryFileSystem(PathTraversalEngine pathTraversalEngine, IPropertyStoreFactory propertyStoreFactory = null)
         {
             _pathTraversalEngine = pathTraversalEngine;
             Root = new AsyncLazy<ICollection>(() => new InMemoryDirectory(this, null, new Uri(string.Empty), string.Empty));
-            PropertyStore = propertyStore;
+            PropertyStore = propertyStoreFactory?.Create(this);
         }
 
         public AsyncLazy<ICollection> Root { get; }

@@ -10,12 +10,12 @@ namespace FubarDev.WebDavServer.FileSystem.InMemory
     {
         private readonly Dictionary<string, InMemoryFileSystem> _fileSystems = new Dictionary<string, InMemoryFileSystem>(StringComparer.OrdinalIgnoreCase);
         private readonly PathTraversalEngine _pathTraversalEngine;
-        private readonly IPropertyStore _propertyStore;
+        private readonly IPropertyStoreFactory _propertyStoreFactory;
 
-        public InMemoryFileSystemFactory(PathTraversalEngine pathTraversalEngine, IPropertyStore propertyStore)
+        public InMemoryFileSystemFactory(PathTraversalEngine pathTraversalEngine, IPropertyStoreFactory propertyStoreFactory = null)
         {
             _pathTraversalEngine = pathTraversalEngine;
-            _propertyStore = propertyStore;
+            _propertyStoreFactory = propertyStoreFactory;
         }
 
         public IFileSystem CreateFileSystem(IIdentity identity)
@@ -25,7 +25,7 @@ namespace FubarDev.WebDavServer.FileSystem.InMemory
             InMemoryFileSystem fileSystem;
             if (!_fileSystems.TryGetValue(userName, out fileSystem))
             {
-                fileSystem = new InMemoryFileSystem(_pathTraversalEngine, _propertyStore);
+                fileSystem = new InMemoryFileSystem(_pathTraversalEngine, _propertyStoreFactory);
                 _fileSystems.Add(userName, fileSystem);
             }
 
