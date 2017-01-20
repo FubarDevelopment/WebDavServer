@@ -34,23 +34,46 @@ namespace FubarDev.WebDavServer
             return new FileSystemEntries(collection, null, 0, maxDepth);
         }
 
-        public static async Task<Node> GetNodeAsync(this ICollection collection, int maxDepth, CancellationToken cancellationToken)
+        public static async Task<INode> GetNodeAsync(this ICollection collection, int maxDepth, CancellationToken cancellationToken)
         {
-            throw new NotImplementedException();
-        }
+            var subNodeQueue = new Queue<NodeInfo>();
+            var result = new NodeInfo(collection);
+            var current = result;
 
-        public class Node
-        {
-            public Node(ICollection collection, IReadOnlyCollection<Node> nodes, IReadOnlyCollection<IDocument> documents)
+            using (var entries = EnumerateEntries(collection, maxDepth).GetEnumerator())
             {
-                Collection = collection;
-                Nodes = nodes;
-                Documents = documents;
+                while (await entries.MoveNext(cancellationToken))
+                {
+                    var entry = entries.Current;
+                    var parent = entry.Parent;
+                    while (parent != current.Collection)
+                    {
+                        current = subNodeQueue.Dequeue();
+                    }
+
+                    var doc = entry as IDocument;
+                    if (doc == null)
+                    {
+                        var coll = (ICollection) entry;
+                        var info = new NodeInfo(coll);
+                        current.SubNodes.Add(info);
+                        subNodeQueue.Enqueue(info);
+                    }
+                    else
+                    {
+                        current.Documents.Add(doc);
+                    }
+                }
             }
 
-            public ICollection Collection { get; }
-            public IReadOnlyCollection<Node> Nodes { get; }
-            public IReadOnlyCollection<IDocument> Documents { get; }
+            return result;
+        }
+
+        public interface INode
+        {
+            ICollection Collection { get; }
+            IReadOnlyCollection<INode> Nodes { get; }
+            IReadOnlyCollection<IDocument> Documents { get; }
         }
 
         private class FileSystemEntries : IAsyncEnumerable<IEntry>
@@ -178,6 +201,21 @@ namespace FubarDev.WebDavServer
                     public int Depth { get; }
                 }
             }
+        }
+
+        private class NodeInfo : INode
+        {
+            public NodeInfo(ICollection collection)
+            {
+                Collection = collection;
+            }
+
+            public ICollection Collection { get; }
+            public List<IDocument> Documents { get; } = new List<IDocument>();
+            public List<NodeInfo> SubNodes { get; } = new List<NodeInfo>();
+
+            IReadOnlyCollection<INode> INode.Nodes => SubNodes;
+            IReadOnlyCollection<IDocument> INode.Documents => Documents;
         }
     }
 }
