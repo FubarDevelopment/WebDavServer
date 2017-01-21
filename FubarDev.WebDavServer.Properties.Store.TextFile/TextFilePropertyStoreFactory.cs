@@ -23,6 +23,15 @@ namespace FubarDev.WebDavServer.Properties.Store.TextFile
 
         public IPropertyStore Create(IFileSystem fileSystem)
         {
+            if (_options.StoreInTargetFileSystem)
+            {
+                var localFs = fileSystem as ILocalFileSystem;
+                if (localFs != null)
+                {
+                    return new TextFilePropertyStore(_options, _cache, localFs.RootDirectoryPath);
+                }
+            }
+
             return new TextFilePropertyStore(_options, _cache);
         }
     }

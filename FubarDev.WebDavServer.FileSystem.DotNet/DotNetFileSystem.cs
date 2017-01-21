@@ -7,22 +7,21 @@ using FubarDev.WebDavServer.Properties;
 
 namespace FubarDev.WebDavServer.FileSystem.DotNet
 {
-    public class DotNetFileSystem : IFileSystem
+    public class DotNetFileSystem : ILocalFileSystem
     {
         private readonly PathTraversalEngine _pathTraversalEngine;
 
         public DotNetFileSystem(DotNetFileSystemOptions options, string rootFolder, PathTraversalEngine pathTraversalEngine, IPropertyStoreFactory propertyStoreFactory = null)
         {
+            RootDirectoryPath = rootFolder;
             _pathTraversalEngine = pathTraversalEngine;
             var root = new AsyncLazy<DotNetDirectory>(() => new DotNetDirectory(this, null, new DirectoryInfo(rootFolder), new Uri(string.Empty, UriKind.Relative)));
             Root = new AsyncLazy<ICollection>(async () => await root);
             Options = options;
-            var propertyStore = propertyStoreFactory?.Create(this);
-            var fileSystemPropStore = propertyStore as IFileSystemPropertyStore;
-            if (fileSystemPropStore != null)
-                fileSystemPropStore.RootPath = rootFolder;
-            PropertyStore = propertyStore;
+            PropertyStore = propertyStoreFactory?.Create(this);
         }
+
+        public string RootDirectoryPath { get; }
 
         public AsyncLazy<ICollection> Root { get; }
 

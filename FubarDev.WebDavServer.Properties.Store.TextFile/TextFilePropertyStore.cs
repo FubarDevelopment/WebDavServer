@@ -32,10 +32,15 @@ namespace FubarDev.WebDavServer.Properties.Store.TextFile
         }
 
         public TextFilePropertyStore(TextFilePropertyStoreOptions options, IMemoryCache cache)
+            : this(options, cache, options.RootFolder)
+        {
+        }
+
+        public TextFilePropertyStore(TextFilePropertyStoreOptions options, IMemoryCache cache, string rootFolder)
         {
             _cache = cache;
             _options = options;
-            RootPath = options.RootFolder;
+            RootPath = rootFolder;
         }
 
         public override int Cost => _options.EstimatedCost;

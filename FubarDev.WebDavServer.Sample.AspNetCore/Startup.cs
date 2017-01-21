@@ -50,6 +50,11 @@ namespace FubarDev.WebDavServer.Sample.AspNetCore
                         opt.AnonymousUserName = "anonymous";
                         opt.AllowInfiniteDepth = true;
                     })
+                .Configure<TextFilePropertyStoreOptions>(
+                    opt =>
+                    {
+                        opt.StoreInTargetFileSystem = true;
+                    })
                 .AddMemoryCache()
                 .AddTransient<IPropertyStoreFactory, TextFilePropertyStoreFactory>()
                 .AddSingleton<IFileSystemFactory, TestFileSystemFactory>()
