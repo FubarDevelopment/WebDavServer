@@ -13,7 +13,7 @@ namespace FubarDev.WebDavServer.FileSystem.InMemory
         public InMemoryFileSystem(PathTraversalEngine pathTraversalEngine, IPropertyStoreFactory propertyStoreFactory = null)
         {
             _pathTraversalEngine = pathTraversalEngine;
-            Root = new AsyncLazy<ICollection>(() => new InMemoryDirectory(this, null, new Uri(string.Empty), string.Empty));
+            Root = new AsyncLazy<ICollection>(() => new InMemoryDirectory(this, null, new Uri(string.Empty, UriKind.Relative), string.Empty));
             PropertyStore = propertyStoreFactory?.Create(this);
         }
 
