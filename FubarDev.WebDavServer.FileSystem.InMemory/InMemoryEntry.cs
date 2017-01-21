@@ -42,6 +42,7 @@ namespace FubarDev.WebDavServer.FileSystem.InMemory
             var properties = new List<IUntypedReadableProperty>()
             {
                 this.GetResourceTypeProperty(),
+                new DisplayNameProperty(this, FileSystem.PropertyStore, false),
                 new LastModifiedProperty(ct => Task.FromResult(_lastWriteTime), (v, ct) => Task.FromResult(_lastWriteTime = v)),
                 new CreationDateProperty(ct => Task.FromResult(_creationTime), (v, ct) => Task.FromResult(_creationTime = v)),
             };
