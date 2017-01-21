@@ -61,6 +61,8 @@ namespace FubarDev.WebDavServer.FileSystem.DotNet
         public Task<ICollection> CreateCollectionAsync(string name, CancellationToken cancellationToken)
         {
             var info = new DirectoryInfo(System.IO.Path.Combine(DirectoryInfo.FullName, name));
+            if (info.Exists)
+                throw new IOException("Collection already exists.");
             info.Create();
             return Task.FromResult((ICollection)CreateEntry(info));
         }

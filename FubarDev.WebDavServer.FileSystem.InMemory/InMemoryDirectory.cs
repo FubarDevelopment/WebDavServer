@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
@@ -39,6 +40,8 @@ namespace FubarDev.WebDavServer.FileSystem.InMemory
 
         public Task<IDocument> CreateDocumentAsync(string name, CancellationToken ct)
         {
+            if (_children.ContainsKey(name))
+                throw new IOException("Document or collection with the same name already exists");
             var newItem = new InMemoryFile(FileSystem, this, Path.Append(name), name);
             _children.Add(newItem.Name, newItem);
             return Task.FromResult<IDocument>(newItem);
@@ -46,6 +49,8 @@ namespace FubarDev.WebDavServer.FileSystem.InMemory
 
         public Task<ICollection> CreateCollectionAsync(string name, CancellationToken ct)
         {
+            if (_children.ContainsKey(name))
+                throw new IOException("Document or collection with the same name already exists");
             var newItem = new InMemoryDirectory(FileSystem, this, Path.Append(name), name);
             _children.Add(newItem.Name, newItem);
             return Task.FromResult<ICollection>(newItem);
