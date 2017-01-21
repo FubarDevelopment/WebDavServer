@@ -34,7 +34,7 @@ namespace FubarDev.WebDavServer.Properties
             if (_value != null)
                 return _value;
 
-            var displayName = await _store.LoadRawAsync(_entry, Name, ct).ConfigureAwait(false);
+            var displayName = await _store.GetAsync(_entry, Name, ct).ConfigureAwait(false);
             if (displayName != null)
             {
                 return displayName.Value;
@@ -48,7 +48,7 @@ namespace FubarDev.WebDavServer.Properties
         public override Task SetValueAsync(string value, CancellationToken ct)
         {
             _value = value;
-            return _store.SaveRawAsync(_entry, Converter.ToElement(Name, value), ct);
+            return _store.SetAsync(_entry, Converter.ToElement(Name, value), ct);
         }
 
         public void Init(XElement initialValue)

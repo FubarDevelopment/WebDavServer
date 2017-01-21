@@ -97,7 +97,7 @@ namespace FubarDev.WebDavServer.Properties
                     if (_propertyStore == null)
                         return null;
 
-                    var deadProperties = await _propertyStore.LoadAndCreateAsync(_entry, cancellationToken).ConfigureAwait(false);
+                    var deadProperties = await _propertyStore.LoadAsync(_entry, cancellationToken).ConfigureAwait(false);
                     _deadPropertiesEnumerator = deadProperties.GetEnumerator();
                 }
 

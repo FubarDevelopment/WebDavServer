@@ -1,63 +1,64 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Xml.Linq;
 
 using FubarDev.WebDavServer.FileSystem;
-using FubarDev.WebDavServer.Properties.Events;
 
 namespace FubarDev.WebDavServer.Properties.Store.InMemory
 {
-    public class InMemoryPropertyStore : IPropertyStore
+    public class InMemoryPropertyStore : PropertyStoreBase
     {
-        private IDictionary<Uri, IDictionary<XName, IUntypedReadableProperty>> _properties = new Dictionary<Uri, IDictionary<XName, IUntypedReadableProperty>>();
+        private static readonly IReadOnlyCollection<XElement> _emptyElements = new XElement[0];
+        private readonly IDictionary<Uri, IDictionary<XName, XElement>> _properties = new Dictionary<Uri, IDictionary<XName, XElement>>();
 
-        public int Cost { get; } = 0;
+        public override int Cost { get; } = 0;
 
-        public Task<IReadOnlyCollection<IUntypedReadableProperty>> LoadAndCreateAsync(IEntry entry, CancellationToken cancellationToken)
+        public override Task<IReadOnlyCollection<XElement>> GetAsync(IEntry entry, CancellationToken cancellationToken)
         {
-            throw new NotImplementedException();
+            IDictionary<XName, XElement> properties;
+            if (!_properties.TryGetValue(entry.Path, out properties))
+                return Task.FromResult(_emptyElements);
+
+            return Task.FromResult<IReadOnlyCollection<XElement>>(properties.Values.ToList());
         }
 
-        public Task<XElement> LoadRawAsync(IEntry entry, XName name, CancellationToken cancellationToken)
+        public override Task SetAsync(IEntry entry, IEnumerable<XElement> elements, CancellationToken cancellationToken)
         {
-            throw new NotImplementedException();
+            IDictionary<XName, XElement> properties;
+            if (!_properties.TryGetValue(entry.Path, out properties))
+                _properties.Add(entry.Path, properties = new Dictionary<XName, XElement>());
+
+            foreach (var element in elements)
+            {
+                properties[element.Name] = element;
+            }
+
+            return Task.FromResult(0);
         }
 
-        public Task SaveRawAsync(IEntry entry, XElement element, CancellationToken cancellationToken)
+        public override Task<IReadOnlyCollection<bool>> RemoveAsync(IEntry entry, IEnumerable<XName> names, CancellationToken cancellationToken)
         {
-            throw new NotImplementedException();
-        }
+            var result = new List<bool>();
+            IDictionary<XName, XElement> properties;
+            if (!_properties.TryGetValue(entry.Path, out properties))
+            {
+                result.AddRange(names.Select(x => false));
+            }
+            else
+            {
+                foreach (var name in names)
+                {
+                    result.Add(properties.Remove(name));
+                }
 
-        public Task RemoveAsync(IEntry entry, CancellationToken cancellationToken)
-        {
-            throw new NotImplementedException();
-        }
+                if (properties.Count == 0)
+                    _properties.Remove(entry.Path);
+            }
 
-        public Task<bool> RemoveRawAsync(IEntry entry, XName name, CancellationToken cancellationToken)
-        {
-            throw new NotImplementedException();
-        }
-
-        public Task<EntityTag> GetETagAsync(IDocument document, CancellationToken cancellationToken)
-        {
-            throw new NotImplementedException();
-        }
-
-        public Task<EntityTag> UpdateETagAsync(IDocument document, CancellationToken cancellationToken)
-        {
-            throw new NotImplementedException();
-        }
-
-        public Task HandleMovedEntryAsync(EntryMoved info, CancellationToken ct)
-        {
-            throw new NotImplementedException();
-        }
-
-        public Task HandleModifiedEntryAsync(IEntry entry, CancellationToken ct)
-        {
-            throw new NotImplementedException();
+            return Task.FromResult<IReadOnlyCollection<bool>>(result);
         }
     }
 }
