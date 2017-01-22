@@ -56,16 +56,6 @@ namespace FubarDev.WebDavServer.FileSystem.InMemory
             return Task.FromResult<ICollection>(newItem);
         }
 
-        public Task<CollectionActionResult> CopyToAsync(ICollection collection, string name, CancellationToken cancellationToken)
-        {
-            throw new NotImplementedException();
-        }
-
-        public Task<CollectionActionResult> MoveToAsync(ICollection collection, string name, CancellationToken cancellationToken)
-        {
-            throw new NotImplementedException();
-        }
-
         internal bool Remove(string name)
         {
             return _children.Remove(name);

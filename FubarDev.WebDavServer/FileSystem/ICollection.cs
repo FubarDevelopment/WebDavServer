@@ -23,13 +23,5 @@ namespace FubarDev.WebDavServer.FileSystem
         [NotNull]
         [ItemNotNull]
         Task<ICollection> CreateCollectionAsync([NotNull] string name, CancellationToken ct);
-
-        [NotNull]
-        [ItemNotNull]
-        Task<CollectionActionResult> CopyToAsync([NotNull] ICollection collection, [NotNull] string name, CancellationToken cancellationToken);
-
-        [NotNull]
-        [ItemNotNull]
-        Task<CollectionActionResult> MoveToAsync([NotNull] ICollection collection, [NotNull] string name, CancellationToken cancellationToken);
     }
 }

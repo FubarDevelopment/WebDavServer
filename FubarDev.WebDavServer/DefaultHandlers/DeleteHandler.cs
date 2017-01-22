@@ -45,13 +45,13 @@ namespace FubarDev.WebDavServer.DefaultHandlers
 
             var result = new Multistatus()
             {
-                Response = new[]
+                Response = new List<Response>()
                 {
                     new Response()
                     {
                         Href = _host.BaseUrl.Append((deleteResult.FailedEntry ?? targetEntry).Path).OriginalString,
-                        ItemsElementName = new[] { ItemsChoiceType1.Status, },
-                        Items = new object[] { $"{_host.RequestProtocol} {(int)deleteResult.StatusCode} {deleteResult.StatusCode.GetReasonPhrase()}" }
+                        ItemsElementName = new List<ItemsChoiceType2> { ItemsChoiceType2.Status, },
+                        Items = new List<object> { $"{_host.RequestProtocol} {(int)deleteResult.StatusCode} {deleteResult.StatusCode.GetReasonPhrase()}" }
                     }
                 }
             };

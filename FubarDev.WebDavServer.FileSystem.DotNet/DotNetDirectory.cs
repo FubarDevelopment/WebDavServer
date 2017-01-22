@@ -78,34 +78,6 @@ namespace FubarDev.WebDavServer.FileSystem.DotNet
             return this.EnumerateEntries(maxDepth);
         }
 
-        public Task<CollectionActionResult> CopyToAsync(ICollection collection, string name, CancellationToken cancellationToken)
-        {
-            var dir = (DotNetDirectory)collection;
-            var targetDirectoryName = System.IO.Path.Combine(dir.DirectoryInfo.FullName, name);
-            var targetDirInfo = Directory.CreateDirectory(targetDirectoryName);
-            /*
-            var engine = new ExecuteRecursiveAction(
-                DirectoryInfo,
-                targetDirInfo,
-                (src, dst) =>
-                {
-                    if (dst.Exists)
-                        dst.Delete();
-                    src.MoveTo(dst.FullName);
-                },
-                (src, dst) =>
-                {
-                    dst.Create();
-                });
-            */
-            throw new NotImplementedException();
-        }
-
-        public Task<CollectionActionResult> MoveToAsync(ICollection collection, string name, CancellationToken cancellationToken)
-        {
-            throw new NotImplementedException();
-        }
-
         private IEntry CreateEntry(FileSystemInfo fsInfo)
         {
             var fileInfo = fsInfo as FileInfo;

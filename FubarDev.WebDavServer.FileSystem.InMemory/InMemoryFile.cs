@@ -46,12 +46,12 @@ namespace FubarDev.WebDavServer.FileSystem.InMemory
             return Task.FromResult<Stream>(_data = new MemoryStream());
         }
 
-        public Task<IEntry> CopyToAsync(ICollection collection, string name, CancellationToken cancellationToken)
+        public Task<IDocument> CopyToAsync(ICollection collection, string name, CancellationToken cancellationToken)
         {
             throw new NotImplementedException();
         }
 
-        public Task<IEntry> MoveToAsync(ICollection collection, string name, CancellationToken cancellationToken)
+        public Task<IDocument> MoveToAsync(ICollection collection, string name, CancellationToken cancellationToken)
         {
             throw new NotImplementedException();
         }

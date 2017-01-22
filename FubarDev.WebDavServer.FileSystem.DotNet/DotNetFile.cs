@@ -38,22 +38,26 @@ namespace FubarDev.WebDavServer.FileSystem.DotNet
             return Task.FromResult(new DeleteResult(WebDavStatusCodes.OK, null));
         }
 
-        public Task<IEntry> CopyToAsync(ICollection collection, string name, CancellationToken cancellationToken)
+        public Task<IDocument> CopyToAsync(ICollection collection, string name, CancellationToken cancellationToken)
         {
             var dir = (DotNetDirectory) collection;
             var targetFileName = System.IO.Path.Combine(dir.DirectoryInfo.FullName, name);
             File.Copy(FileInfo.FullName, targetFileName, true);
-            return dir.GetChildAsync(name, cancellationToken);
+            var fileInfo = new FileInfo(targetFileName);
+            var result = new DotNetFile(dir.DotNetFileSystem, dir, fileInfo, dir.Path.Append(Uri.EscapeDataString(fileInfo.Name)));
+            return Task.FromResult<IDocument>(result);
         }
 
-        public Task<IEntry> MoveToAsync(ICollection collection, string name, CancellationToken cancellationToken)
+        public Task<IDocument> MoveToAsync(ICollection collection, string name, CancellationToken cancellationToken)
         {
             var dir = (DotNetDirectory)collection;
             var targetFileName = System.IO.Path.Combine(dir.DirectoryInfo.FullName, name);
             if (File.Exists(targetFileName))
                 File.Delete(targetFileName);
             File.Move(FileInfo.FullName, targetFileName);
-            return dir.GetChildAsync(name, cancellationToken);
+            var fileInfo = new FileInfo(targetFileName);
+            var result = new DotNetFile(dir.DotNetFileSystem, dir, fileInfo, dir.Path.Append(Uri.EscapeDataString(fileInfo.Name)));
+            return Task.FromResult<IDocument>(result);
         }
 
         protected override IEnumerable<ILiveProperty> GetLiveProperties()
