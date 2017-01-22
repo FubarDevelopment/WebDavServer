@@ -6,16 +6,11 @@ using System.Xml.Linq;
 using FubarDev.WebDavServer.FileSystem;
 using FubarDev.WebDavServer.Properties.Dead;
 
-using JetBrains.Annotations;
-
 namespace FubarDev.WebDavServer.Properties.Store
 {
     public interface IPropertyStore
     {
         int Cost { get; }
-
-        [NotNull]
-        IDeadPropertyFactory DeadPropertyFactory { get; }
 
 
         Task<XElement> GetAsync(IEntry entry, XName name, CancellationToken cancellationToken);
@@ -33,6 +28,8 @@ namespace FubarDev.WebDavServer.Properties.Store
 
         Task RemoveAsync(IEntry entry, CancellationToken cancellationToken);
 
+
+        IDeadProperty Create(IEntry entry, XName name);
 
         Task<IDeadProperty> LoadAsync(IEntry entry, XName name, CancellationToken cancellationToken);
 

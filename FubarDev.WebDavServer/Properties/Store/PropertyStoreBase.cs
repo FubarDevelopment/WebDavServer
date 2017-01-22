@@ -20,7 +20,8 @@ namespace FubarDev.WebDavServer.Properties.Store
 
         public abstract int Cost { get; }
 
-        public IDeadPropertyFactory DeadPropertyFactory { get; }
+        [NotNull]
+        protected IDeadPropertyFactory DeadPropertyFactory { get; }
 
         public virtual async Task<XElement> GetAsync(IEntry entry, XName name, CancellationToken cancellationToken)
         {
@@ -46,6 +47,11 @@ namespace FubarDev.WebDavServer.Properties.Store
         {
             var elements = await GetAsync(entry, cancellationToken).ConfigureAwait(false);
             await RemoveAsync(entry, elements.Select(x => x.Name), cancellationToken).ConfigureAwait(false);
+        }
+
+        public IDeadProperty Create(IEntry entry, XName name)
+        {
+            return DeadPropertyFactory.Create(this, entry, name);
         }
 
         public virtual async Task<IDeadProperty> LoadAsync(IEntry entry, XName name, CancellationToken cancellationToken)

@@ -51,10 +51,7 @@ namespace FubarDev.WebDavServer.FileSystem.DotNet
 
         protected virtual IEnumerable<IDeadProperty> GetPredefinedDeadProperties()
         {
-            var displayProperty = FileSystem.PropertyStore?.DeadPropertyFactory.Create(
-                FileSystem.PropertyStore,
-                this,
-                DisplayNameProperty.PropertyName);
+            var displayProperty = FileSystem.PropertyStore?.Create(this, DisplayNameProperty.PropertyName);
             if (displayProperty != null)
                 yield return displayProperty;
         }
