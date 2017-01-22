@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
@@ -9,18 +10,25 @@ using FubarDev.WebDavServer.Properties.Dead;
 using FubarDev.WebDavServer.Properties.Live;
 using FubarDev.WebDavServer.Properties.Store;
 
+using JetBrains.Annotations;
+
 namespace FubarDev.WebDavServer.Properties
 {
     public class EntryProperties : IAsyncEnumerable<IUntypedReadableProperty>
     {
+        [NotNull]
         private readonly IEntry _entry;
 
+        [NotNull, ItemNotNull]
         private readonly IEnumerable<ILiveProperty> _liveProperties;
+
+        [NotNull, ItemNotNull]
         private readonly IEnumerable<IDeadProperty> _predefinedDeadProperties;
 
+        [CanBeNull]
         private readonly IPropertyStore _propertyStore;
 
-        public EntryProperties(IEntry entry, IEnumerable<ILiveProperty> liveProperties, IEnumerable<IDeadProperty> predefinedDeadProperties, IPropertyStore propertyStore)
+        public EntryProperties([NotNull] IEntry entry, [NotNull, ItemNotNull] IEnumerable<ILiveProperty> liveProperties, [NotNull, ItemNotNull] IEnumerable<IDeadProperty> predefinedDeadProperties, [CanBeNull] IPropertyStore propertyStore)
         {
             _entry = entry;
             _liveProperties = liveProperties;
@@ -35,19 +43,23 @@ namespace FubarDev.WebDavServer.Properties
 
         private class PropertiesEnumerator : IAsyncEnumerator<IUntypedReadableProperty>
         {
+            [NotNull]
             private readonly IEntry _entry;
 
+            [CanBeNull]
             private readonly IPropertyStore _propertyStore;
 
+            [NotNull]
             private readonly IEnumerator<IUntypedReadableProperty> _predefinedPropertiesEnumerator;
 
             private readonly Dictionary<XName, IUntypedReadableProperty> _emittedProperties = new Dictionary<XName, IUntypedReadableProperty>();
 
             private bool _predefinedPropertiesFinished;
 
+            [CanBeNull]
             private IEnumerator<IDeadProperty> _deadPropertiesEnumerator;
 
-            public PropertiesEnumerator(IEntry entry, IEnumerable<ILiveProperty> liveProperties, IEnumerable<IDeadProperty> predefinedDeadProperties, IPropertyStore propertyStore)
+            public PropertiesEnumerator([NotNull] IEntry entry, [NotNull, ItemNotNull] IEnumerable<ILiveProperty> liveProperties, [NotNull, ItemNotNull] IEnumerable<IDeadProperty> predefinedDeadProperties, [CanBeNull] IPropertyStore propertyStore)
             {
                 _entry = entry;
                 _propertyStore = propertyStore;
@@ -85,7 +97,7 @@ namespace FubarDev.WebDavServer.Properties
 
             public void Dispose()
             {
-                _predefinedPropertiesEnumerator?.Dispose();
+                _predefinedPropertiesEnumerator.Dispose();
                 _deadPropertiesEnumerator?.Dispose();
             }
 
@@ -110,6 +122,7 @@ namespace FubarDev.WebDavServer.Properties
                 if (_propertyStore == null)
                     return null;
 
+                Debug.Assert(_deadPropertiesEnumerator != null, "_deadPropertiesEnumerator != null");
                 if (!_deadPropertiesEnumerator.MoveNext())
                     return null;
 
