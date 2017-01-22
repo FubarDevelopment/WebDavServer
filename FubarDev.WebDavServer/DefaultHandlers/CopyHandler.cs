@@ -1,12 +1,16 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 
 using FubarDev.WebDavServer.FileSystem;
 using FubarDev.WebDavServer.Handlers;
 using FubarDev.WebDavServer.Model;
+using FubarDev.WebDavServer.Properties.Dead;
+
+using JetBrains.Annotations;
 
 using Microsoft.Extensions.Options;
 
@@ -47,32 +51,84 @@ namespace FubarDev.WebDavServer.DefaultHandlers
             if (destinationSelectionResult.IsMissing && destinationSelectionResult.MissingNames.Count != 1)
                 throw new WebDavException(WebDavStatusCodes.NotFound);
 
-            Debug.Assert(sourceSelectionResult.TargetEntry != null, "sourceSelectionResult.TargetEntry != null");
-            Debug.Assert(destinationSelectionResult.TargetEntry != null, "destinationSelectionResult.TargetEntry != null");
-            var isSameFileSystem = ReferenceEquals(sourceSelectionResult.TargetEntry.FileSystem, destinationSelectionResult.TargetEntry.FileSystem);
+            var targetInfo = TargetInfo.FromSelectionResult(destinationSelectionResult);
+            var isSameFileSystem = ReferenceEquals(sourceSelectionResult.TargetFileSystem, destinationSelectionResult.TargetFileSystem);
             if (isSameFileSystem && _options.Mode == RecursiveProcessingMode.PreferFastest)
             {
                 // Copy one item inside the same file system (fast)
-                return await CopyWithinFileSystem(sourceUrl, destinationUrl, sourceSelectionResult, destinationSelectionResult, forbidOverwrite, cancellationToken).ConfigureAwait(false);
+                return await CopyWithinFileSystem(sourceUrl, destinationUrl, sourceSelectionResult, targetInfo, forbidOverwrite, cancellationToken).ConfigureAwait(false);
             }
 
             // Copy one item to another file system (probably slow)
-            return await CopyBetweenFileSystems(sourceUrl, destinationUrl, sourceSelectionResult, destinationSelectionResult, forbidOverwrite, cancellationToken).ConfigureAwait(false);
+            return await CopyBetweenFileSystems(sourceUrl, destinationUrl, sourceSelectionResult, targetInfo, forbidOverwrite, cancellationToken).ConfigureAwait(false);
         }
 
-        private Task<IWebDavResult> CopyBetweenFileSystems(Uri sourceUrl, Uri destinationUrl, SelectionResult sourceSelectionResult, SelectionResult destinationSelectionResult, bool forbidOverwrite, CancellationToken cancellationToken)
+        private Task<IWebDavResult> CopyBetweenFileSystems(Uri sourceUrl, Uri destinationUrl, SelectionResult sourceSelectionResult, TargetInfo targetInfo, bool forbidOverwrite, CancellationToken cancellationToken)
         {
             throw new NotImplementedException();
         }
 
-        private Task<IWebDavResult> CopyWithinFileSystem(Uri sourceUrl, Uri destinationUrl, SelectionResult sourceSelectionResult, SelectionResult destinationSelectionResult, bool forbidOverwrite, CancellationToken cancellationToken)
+        private async Task<IWebDavResult> CopyWithinFileSystem(Uri sourceUrl, Uri destinationUrl, SelectionResult sourceSelectionResult, TargetInfo targetInfo, bool forbidOverwrite, CancellationToken cancellationToken)
         {
+            if (sourceSelectionResult.Document != null)
+            {
+                throw new NotImplementedException();
+            }
+
+            Debug.Assert(sourceSelectionResult.Collection != null, "sourceSelectionResult.Collection != null");
+            var nodes = await sourceSelectionResult.Collection.GetNodeAsync(Depth.Infinity.OrderValue, cancellationToken).ConfigureAwait(false);
             throw new NotImplementedException();
         }
 
         private Task<IWebDavResult> CopyServerToServerAsync(SelectionResult sourceSelectionResult, Uri destinationUrl, bool forbidOverwrite, CancellationToken cancellationToken)
         {
             throw new NotImplementedException();
+        }
+
+        private interface IEntryHandler
+        {
+            Task<ICollection> ExecuteAsync(ICollection source, ICollection destinationParent, string destinationName, CancellationToken cancellationToken);
+            Task<ICollection> ExecuteAsync(ICollection source, ICollection destination, CancellationToken cancellationToken);
+            Task<IDocument> ExecuteAsync(IDocument source, ICollection destinationParent, string destinationName, CancellationToken cancellationToken);
+            Task<IDocument> ExecuteAsync(IDocument source, IDocument destination, CancellationToken cancellationToken);
+            Task SetPropertiesAsync(IEntry destination, IEnumerable<IDeadProperty> properties, CancellationToken cancellationToken);
+        }
+
+        private class TargetInfo
+        {
+            public TargetInfo([CanBeNull] IEntry parentEntry, [CanBeNull] IEntry targeEntry, [NotNull] string targetName)
+            {
+                ParentEntry = parentEntry;
+                TargetEntry = targeEntry;
+                TargetName = targetName;
+            }
+
+            [CanBeNull]
+            public IEntry ParentEntry { get; }
+
+            [CanBeNull]
+            public IEntry TargetEntry { get; }
+
+            [NotNull]
+            public string TargetName { get; }
+
+            public static TargetInfo FromSelectionResult(SelectionResult selectionResult)
+            {
+                if (selectionResult.IsMissing)
+                {
+                    if (selectionResult.MissingNames.Count != 1)
+                        throw new InvalidOperationException();
+                    return new TargetInfo(selectionResult.Collection, null, selectionResult.MissingNames.Single());
+                }
+
+                if (selectionResult.ResultType == SelectionResultType.FoundCollection)
+                {
+                    return new TargetInfo(selectionResult.Collection.Parent, selectionResult.Collection, selectionResult.Collection.Name);
+                }
+
+                Debug.Assert(selectionResult.Document != null, "selectionResult.Document != null");
+                return new TargetInfo(selectionResult.Collection, selectionResult.Document, selectionResult.Document.Name);
+            }
         }
     }
 }

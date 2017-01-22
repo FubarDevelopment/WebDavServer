@@ -42,7 +42,7 @@ namespace FubarDev.WebDavServer
 
             using (var entries = EnumerateEntries(collection, maxDepth).GetEnumerator())
             {
-                while (await entries.MoveNext(cancellationToken))
+                while (await entries.MoveNext(cancellationToken).ConfigureAwait(false))
                 {
                     var entry = entries.Current;
                     var parent = entry.Parent;
