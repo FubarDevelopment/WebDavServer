@@ -3,6 +3,8 @@ using System.Threading;
 using System.Threading.Tasks;
 using System.Xml.Linq;
 
+using FubarDev.WebDavServer.Properties.Converters;
+
 namespace FubarDev.WebDavServer.Properties.Generic
 {
     public class GenericProperty<T> : SimpleConvertingProperty<T>

@@ -1,6 +1,6 @@
 ﻿using FubarDev.WebDavServer.FileSystem;
 
-namespace FubarDev.WebDavServer.Properties
+namespace FubarDev.WebDavServer.Properties.Store
 {
     public interface IPropertyStoreFactory
     {

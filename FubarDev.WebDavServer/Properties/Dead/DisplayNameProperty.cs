@@ -6,10 +6,11 @@ using System.Xml.Linq;
 using FubarDev.WebDavServer.FileSystem;
 using FubarDev.WebDavServer.Model;
 using FubarDev.WebDavServer.Properties.Generic;
+using FubarDev.WebDavServer.Properties.Store;
 
-namespace FubarDev.WebDavServer.Properties
+namespace FubarDev.WebDavServer.Properties.Dead
 {
-    public class DisplayNameProperty : GenericStringProperty, IInitializableProperty
+    public class DisplayNameProperty : GenericStringProperty, IDeadProperty
     {
         public static readonly XName PropertyName = WebDavXml.Dav + "displayname";
 

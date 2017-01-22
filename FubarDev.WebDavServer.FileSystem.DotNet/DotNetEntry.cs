@@ -5,6 +5,8 @@ using System.Threading;
 using System.Threading.Tasks;
 
 using FubarDev.WebDavServer.Properties;
+using FubarDev.WebDavServer.Properties.Dead;
+using FubarDev.WebDavServer.Properties.Live;
 
 namespace FubarDev.WebDavServer.FileSystem.DotNet
 {
@@ -31,19 +33,27 @@ namespace FubarDev.WebDavServer.FileSystem.DotNet
 
         public IAsyncEnumerable<IUntypedReadableProperty> GetProperties()
         {
-            return new EntryProperties(this, GetLiveProperties(), FileSystem.PropertyStore);
+            return new EntryProperties(this, GetLiveProperties(), GetPredefinedDeadProperties(), FileSystem.PropertyStore);
         }
 
         public abstract Task<DeleteResult> DeleteAsync(CancellationToken cancellationToken);
 
-        protected virtual IEnumerable<IUntypedReadableProperty> GetLiveProperties()
+        protected virtual IEnumerable<ILiveProperty> GetLiveProperties()
         {
-            var properties = new List<IUntypedReadableProperty>()
+            var properties = new List<ILiveProperty>()
             {
                 this.GetResourceTypeProperty(),
-                new DisplayNameProperty(this, FileSystem.PropertyStore, !DotNetFileSystem.Options.ShowExtensionsForDisplayName),
                 new LastModifiedProperty(ct => Task.FromResult(Info.LastWriteTimeUtc), SetLastWriteTimeUtc),
                 new CreationDateProperty(ct => Task.FromResult(Info.CreationTimeUtc), SetCreateTimeUtc),
+            };
+            return properties;
+        }
+
+        protected virtual IEnumerable<IDeadProperty> GetPredefinedDeadProperties()
+        {
+            var properties = new List<IDeadProperty>()
+            {
+                new DisplayNameProperty(this, FileSystem.PropertyStore, !DotNetFileSystem.Options.ShowExtensionsForDisplayName),
             };
             return properties;
         }

@@ -5,7 +5,8 @@ using System.Threading;
 using System.Threading.Tasks;
 
 using FubarDev.WebDavServer.Model;
-using FubarDev.WebDavServer.Properties;
+using FubarDev.WebDavServer.Properties.Dead;
+using FubarDev.WebDavServer.Properties.Live;
 
 namespace FubarDev.WebDavServer.FileSystem.DotNet
 {
@@ -55,14 +56,23 @@ namespace FubarDev.WebDavServer.FileSystem.DotNet
             return dir.GetChildAsync(name, cancellationToken);
         }
 
-        protected override IEnumerable<IUntypedReadableProperty> GetLiveProperties()
+        protected override IEnumerable<ILiveProperty> GetLiveProperties()
         {
-            foreach (var liveProperty in base.GetLiveProperties())
+            foreach (var property in base.GetLiveProperties())
             {
-                yield return liveProperty;
+                yield return property;
             }
 
             yield return new ContentLengthProperty(ct => Task.FromResult(Length));
+        }
+
+        protected override IEnumerable<IDeadProperty> GetPredefinedDeadProperties()
+        {
+            foreach (var property in base.GetPredefinedDeadProperties())
+            {
+                yield return property;
+            }
+
             yield return new GetETagProperty(FileSystem.PropertyStore, this, 0);
         }
     }

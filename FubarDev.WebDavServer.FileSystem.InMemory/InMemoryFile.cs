@@ -1,11 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 
 using FubarDev.WebDavServer.Model;
 using FubarDev.WebDavServer.Properties;
+using FubarDev.WebDavServer.Properties.Dead;
+using FubarDev.WebDavServer.Properties.Live;
 
 namespace FubarDev.WebDavServer.FileSystem.InMemory
 {
@@ -54,15 +57,22 @@ namespace FubarDev.WebDavServer.FileSystem.InMemory
             throw new NotImplementedException();
         }
 
-        protected override IEnumerable<IUntypedReadableProperty> GetLiveProperties()
+        protected override IEnumerable<ILiveProperty> GetLiveProperties()
         {
-            foreach (var liveProperty in base.GetLiveProperties())
-            {
-                yield return liveProperty;
-            }
+            return base.GetLiveProperties()
+                       .Concat(new ILiveProperty[]
+                       {
+                           new ContentLengthProperty(ct => Task.FromResult(Length))
+                       });
+        }
 
-            yield return new ContentLengthProperty(ct => Task.FromResult(Length));
-            yield return new GetETagProperty(FileSystem.PropertyStore, this, 0);
+        protected override IEnumerable<IDeadProperty> GetPredefinedDeadProperties()
+        {
+            return base.GetPredefinedDeadProperties()
+                       .Concat(new IDeadProperty[]
+                       {
+                           new GetETagProperty(FileSystem.PropertyStore, this, 0)
+                       });
         }
     }
 }

@@ -3,10 +3,11 @@ using System.Threading.Tasks;
 using System.Xml.Linq;
 
 using FubarDev.WebDavServer.FileSystem;
+using FubarDev.WebDavServer.Properties.Store;
 
-namespace FubarDev.WebDavServer.Properties
+namespace FubarDev.WebDavServer.Properties.Dead
 {
-    public class DeadProperty : IUntypedWriteableProperty, IInitializableProperty
+    public class DeadProperty : IUntypedWriteableProperty, IDeadProperty
     {
         private readonly IPropertyStore _store;
 
@@ -46,10 +47,6 @@ namespace FubarDev.WebDavServer.Properties
         public void Init(XElement initialValue)
         {
             _cachedValue = initialValue;
-        }
-
-        protected virtual void UpdateProperty(XElement value)
-        {
         }
     }
 }

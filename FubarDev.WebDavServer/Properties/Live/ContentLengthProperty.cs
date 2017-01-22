@@ -5,9 +5,9 @@ using System.Xml.Linq;
 using FubarDev.WebDavServer.Model;
 using FubarDev.WebDavServer.Properties.Converters;
 
-namespace FubarDev.WebDavServer.Properties
+namespace FubarDev.WebDavServer.Properties.Live
 {
-    public class ContentLengthProperty : ITypedReadableProperty<long>
+    public class ContentLengthProperty : ITypedReadableProperty<long>, ILiveProperty
     {
         public static readonly XName PropertyName = WebDavXml.Dav + "getcontentlength";
 

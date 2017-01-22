@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace FubarDev.WebDavServer.Properties
+namespace FubarDev.WebDavServer.Properties.Filters
 {
     public interface IPropertyFilter
     {

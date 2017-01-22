@@ -5,6 +5,7 @@ using System.Security.Principal;
 using FubarDev.WebDavServer.FileSystem;
 using FubarDev.WebDavServer.FileSystem.DotNet;
 using FubarDev.WebDavServer.Properties;
+using FubarDev.WebDavServer.Properties.Store;
 
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Options;

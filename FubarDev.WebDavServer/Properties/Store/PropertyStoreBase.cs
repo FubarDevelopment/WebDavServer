@@ -5,8 +5,9 @@ using System.Threading.Tasks;
 using System.Xml.Linq;
 
 using FubarDev.WebDavServer.FileSystem;
+using FubarDev.WebDavServer.Properties.Dead;
 
-namespace FubarDev.WebDavServer.Properties
+namespace FubarDev.WebDavServer.Properties.Store
 {
     public abstract class PropertyStoreBase : IPropertyStore
     {
@@ -38,13 +39,13 @@ namespace FubarDev.WebDavServer.Properties
             await RemoveAsync(entry, elements.Select(x => x.Name), cancellationToken).ConfigureAwait(false);
         }
 
-        public virtual async Task<IUntypedReadableProperty> LoadAsync(IEntry entry, XName name, CancellationToken cancellationToken)
+        public virtual async Task<IDeadProperty> LoadAsync(IEntry entry, XName name, CancellationToken cancellationToken)
         {
             var element = await GetAsync(entry, name, cancellationToken).ConfigureAwait(false);
             return CreateProperty(entry, element);
         }
 
-        public virtual async Task<IReadOnlyCollection<IUntypedReadableProperty>> LoadAsync(IEntry entry, CancellationToken cancellationToken)
+        public virtual async Task<IReadOnlyCollection<IDeadProperty>> LoadAsync(IEntry entry, CancellationToken cancellationToken)
         {
             var elements = await GetAsync(entry, cancellationToken).ConfigureAwait(false);
             return elements.Select(x => CreateProperty(entry, x)).ToList();
@@ -70,7 +71,7 @@ namespace FubarDev.WebDavServer.Properties
             return etag;
         }
 
-        protected virtual IUntypedReadableProperty CreateProperty(IEntry entry, XElement element)
+        protected virtual IDeadProperty CreateProperty(IEntry entry, XElement element)
         {
             if (element.Name == EntityTag.PropertyName)
             {

@@ -1,13 +1,12 @@
-﻿using System;
-using System.Threading;
+﻿using System.Threading;
 using System.Threading.Tasks;
 using System.Xml.Linq;
 
 using FubarDev.WebDavServer.Model;
 
-namespace FubarDev.WebDavServer.Properties
+namespace FubarDev.WebDavServer.Properties.Live
 {
-    public abstract class ResourceTypeProperty : IUntypedReadableProperty
+    public abstract class ResourceTypeProperty : ILiveProperty
     {
         public static readonly XName PropertyName = WebDavXml.Dav + "resourcetype";
 

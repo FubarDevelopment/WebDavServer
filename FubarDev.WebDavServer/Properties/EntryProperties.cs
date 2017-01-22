@@ -1,9 +1,13 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Xml.Linq;
 
 using FubarDev.WebDavServer.FileSystem;
+using FubarDev.WebDavServer.Properties.Dead;
+using FubarDev.WebDavServer.Properties.Live;
+using FubarDev.WebDavServer.Properties.Store;
 
 namespace FubarDev.WebDavServer.Properties
 {
@@ -11,20 +15,22 @@ namespace FubarDev.WebDavServer.Properties
     {
         private readonly IEntry _entry;
 
-        private readonly IEnumerable<IUntypedReadableProperty> _liveProperties;
+        private readonly IEnumerable<ILiveProperty> _liveProperties;
+        private readonly IEnumerable<IDeadProperty> _predefinedDeadProperties;
 
         private readonly IPropertyStore _propertyStore;
 
-        public EntryProperties(IEntry entry, IEnumerable<IUntypedReadableProperty> liveProperties, IPropertyStore propertyStore)
+        public EntryProperties(IEntry entry, IEnumerable<ILiveProperty> liveProperties, IEnumerable<IDeadProperty> predefinedDeadProperties, IPropertyStore propertyStore)
         {
             _entry = entry;
             _liveProperties = liveProperties;
+            _predefinedDeadProperties = predefinedDeadProperties;
             _propertyStore = propertyStore;
         }
 
         public IAsyncEnumerator<IUntypedReadableProperty> GetEnumerator()
         {
-            return new PropertiesEnumerator(_entry, _liveProperties, _propertyStore);
+            return new PropertiesEnumerator(_entry, _liveProperties, _predefinedDeadProperties, _propertyStore);
         }
 
         private class PropertiesEnumerator : IAsyncEnumerator<IUntypedReadableProperty>
@@ -33,19 +39,19 @@ namespace FubarDev.WebDavServer.Properties
 
             private readonly IPropertyStore _propertyStore;
 
-            private readonly IEnumerator<IUntypedReadableProperty> _livePropertiesEnumerator;
+            private readonly IEnumerator<IUntypedReadableProperty> _predefinedPropertiesEnumerator;
 
             private readonly Dictionary<XName, IUntypedReadableProperty> _emittedProperties = new Dictionary<XName, IUntypedReadableProperty>();
 
-            private bool _livePropertiesFinished;
+            private bool _predefinedPropertiesFinished;
 
-            private IEnumerator<IUntypedReadableProperty> _deadPropertiesEnumerator;
+            private IEnumerator<IDeadProperty> _deadPropertiesEnumerator;
 
-            public PropertiesEnumerator(IEntry entry, IEnumerable<IUntypedReadableProperty> liveProperties, IPropertyStore propertyStore)
+            public PropertiesEnumerator(IEntry entry, IEnumerable<ILiveProperty> liveProperties, IEnumerable<IDeadProperty> predefinedDeadProperties, IPropertyStore propertyStore)
             {
                 _entry = entry;
                 _propertyStore = propertyStore;
-                _livePropertiesEnumerator = liveProperties.GetEnumerator();
+                _predefinedPropertiesEnumerator = liveProperties.Cast<IUntypedReadableProperty>().Concat(predefinedDeadProperties).GetEnumerator();
             }
 
             public IUntypedReadableProperty Current { get; private set; }
@@ -66,8 +72,8 @@ namespace FubarDev.WebDavServer.Properties
                     IUntypedReadableProperty oldProperty;
                     if (_emittedProperties.TryGetValue(result.Name, out oldProperty))
                     {
-                        var initProp = oldProperty as IInitializableProperty;
-                        initProp?.Init(await result.GetXmlValueAsync(cancellationToken).ConfigureAwait(false));
+                        var deadProp = oldProperty as IDeadProperty;
+                        deadProp?.Init(await result.GetXmlValueAsync(cancellationToken).ConfigureAwait(false));
                         continue;
                     }
 
@@ -79,20 +85,20 @@ namespace FubarDev.WebDavServer.Properties
 
             public void Dispose()
             {
-                _livePropertiesEnumerator?.Dispose();
+                _predefinedPropertiesEnumerator?.Dispose();
                 _deadPropertiesEnumerator?.Dispose();
             }
 
             private async Task<IUntypedReadableProperty> GetNextPropertyAsync(CancellationToken cancellationToken)
             {
-                if (!_livePropertiesFinished)
+                if (!_predefinedPropertiesFinished)
                 {
-                    if (_livePropertiesEnumerator.MoveNext())
+                    if (_predefinedPropertiesEnumerator.MoveNext())
                     {
-                        return _livePropertiesEnumerator.Current;
+                        return _predefinedPropertiesEnumerator.Current;
                     }
 
-                    _livePropertiesFinished = true;
+                    _predefinedPropertiesFinished = true;
 
                     if (_propertyStore == null)
                         return null;

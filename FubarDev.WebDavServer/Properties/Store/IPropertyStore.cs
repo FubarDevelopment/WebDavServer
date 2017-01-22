@@ -4,8 +4,9 @@ using System.Threading.Tasks;
 using System.Xml.Linq;
 
 using FubarDev.WebDavServer.FileSystem;
+using FubarDev.WebDavServer.Properties.Dead;
 
-namespace FubarDev.WebDavServer.Properties
+namespace FubarDev.WebDavServer.Properties.Store
 {
     public interface IPropertyStore
     {
@@ -28,9 +29,9 @@ namespace FubarDev.WebDavServer.Properties
         Task RemoveAsync(IEntry entry, CancellationToken cancellationToken);
 
 
-        Task<IUntypedReadableProperty> LoadAsync(IEntry entry, XName name, CancellationToken cancellationToken);
+        Task<IDeadProperty> LoadAsync(IEntry entry, XName name, CancellationToken cancellationToken);
 
-        Task<IReadOnlyCollection<IUntypedReadableProperty>> LoadAsync(IEntry entry, CancellationToken cancellationToken);
+        Task<IReadOnlyCollection<IDeadProperty>> LoadAsync(IEntry entry, CancellationToken cancellationToken);
 
 
         Task<EntityTag> GetETagAsync(IDocument document, CancellationToken cancellationToken);
