@@ -3,7 +3,6 @@ using System.Linq;
 using System.Text;
 
 using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Http.Extensions;
 
 namespace FubarDev.WebDavServer.AspNetCore
 {

@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 using System.Xml.Linq;
 
 using FubarDev.WebDavServer.FileSystem;
+using FubarDev.WebDavServer.Properties.Dead;
 
 using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Extensions.Options;
@@ -26,17 +27,18 @@ namespace FubarDev.WebDavServer.Properties.Store.TextFile
 
         private readonly string _storeEntryName = ".properties";
 
-        public TextFilePropertyStore(IOptions<TextFilePropertyStoreOptions> options, IMemoryCache cache)
-            : this(options.Value, cache)
+        public TextFilePropertyStore(IOptions<TextFilePropertyStoreOptions> options, IMemoryCache cache, IDeadPropertyFactory deadPropertyFactory = null)
+            : this(options.Value, cache, deadPropertyFactory ?? new DeadPropertyFactory())
         {
         }
 
-        public TextFilePropertyStore(TextFilePropertyStoreOptions options, IMemoryCache cache)
-            : this(options, cache, options.RootFolder)
+        public TextFilePropertyStore(TextFilePropertyStoreOptions options, IMemoryCache cache, IDeadPropertyFactory deadPropertyFactory)
+            : this(options, cache, deadPropertyFactory, options.RootFolder)
         {
         }
 
-        public TextFilePropertyStore(TextFilePropertyStoreOptions options, IMemoryCache cache, string rootFolder)
+        public TextFilePropertyStore(TextFilePropertyStoreOptions options, IMemoryCache cache, IDeadPropertyFactory deadPropertyFactory, string rootFolder)
+            : base(deadPropertyFactory)
         {
             _cache = cache;
             _options = options;

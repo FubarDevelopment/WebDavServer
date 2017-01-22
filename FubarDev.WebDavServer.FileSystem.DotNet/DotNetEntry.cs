@@ -51,11 +51,12 @@ namespace FubarDev.WebDavServer.FileSystem.DotNet
 
         protected virtual IEnumerable<IDeadProperty> GetPredefinedDeadProperties()
         {
-            var properties = new List<IDeadProperty>()
-            {
-                new DisplayNameProperty(this, FileSystem.PropertyStore, !DotNetFileSystem.Options.ShowExtensionsForDisplayName),
-            };
-            return properties;
+            var displayProperty = FileSystem.PropertyStore?.DeadPropertyFactory.Create(
+                FileSystem.PropertyStore,
+                this,
+                DisplayNameProperty.PropertyName);
+            if (displayProperty != null)
+                yield return displayProperty;
         }
 
         private Task SetCreateTimeUtc(DateTime value, CancellationToken cancellationToken)

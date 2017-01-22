@@ -52,11 +52,12 @@ namespace FubarDev.WebDavServer.FileSystem.InMemory
 
         protected virtual IEnumerable<IDeadProperty> GetPredefinedDeadProperties()
         {
-            var properties = new List<IDeadProperty>()
-            {
-                new DisplayNameProperty(this, FileSystem.PropertyStore, false),
-            };
-            return properties;
+            var displayProperty = FileSystem.PropertyStore?.DeadPropertyFactory.Create(
+                FileSystem.PropertyStore,
+                this,
+                DisplayNameProperty.PropertyName);
+            if (displayProperty != null)
+                yield return displayProperty;
         }
     }
 }

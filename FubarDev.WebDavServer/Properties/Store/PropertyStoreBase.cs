@@ -7,11 +7,20 @@ using System.Xml.Linq;
 using FubarDev.WebDavServer.FileSystem;
 using FubarDev.WebDavServer.Properties.Dead;
 
+using JetBrains.Annotations;
+
 namespace FubarDev.WebDavServer.Properties.Store
 {
     public abstract class PropertyStoreBase : IPropertyStore
     {
+        protected PropertyStoreBase([NotNull] IDeadPropertyFactory deadPropertyFactory)
+        {
+            DeadPropertyFactory = deadPropertyFactory;
+        }
+
         public abstract int Cost { get; }
+
+        public IDeadPropertyFactory DeadPropertyFactory { get; }
 
         public virtual async Task<XElement> GetAsync(IEntry entry, XName name, CancellationToken cancellationToken)
         {
@@ -71,16 +80,9 @@ namespace FubarDev.WebDavServer.Properties.Store
             return etag;
         }
 
-        protected virtual IDeadProperty CreateProperty(IEntry entry, XElement element)
+        private IDeadProperty CreateProperty(IEntry entry, XElement element)
         {
-            if (element.Name == EntityTag.PropertyName)
-            {
-                var result = new GetETagProperty(this, entry);
-                result.Init(element);
-                return result;
-            }
-
-            return new DeadProperty(this, entry, element);
+            return DeadPropertyFactory.Create(this, entry, element);
         }
     }
 }

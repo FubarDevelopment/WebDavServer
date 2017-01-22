@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
@@ -7,7 +6,6 @@ using System.Threading.Tasks;
 using FubarDev.WebDavServer.AspNetCore;
 using FubarDev.WebDavServer.FileSystem;
 using FubarDev.WebDavServer.FileSystem.DotNet;
-using FubarDev.WebDavServer.Properties;
 using FubarDev.WebDavServer.Properties.Store;
 using FubarDev.WebDavServer.Properties.Store.TextFile;
 using FubarDev.WebDavServer.Sample.AspNetCore.BasicAuth;

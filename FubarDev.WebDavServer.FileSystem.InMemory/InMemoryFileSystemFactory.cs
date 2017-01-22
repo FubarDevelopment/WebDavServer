@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Security.Principal;
 
-using FubarDev.WebDavServer.Properties;
 using FubarDev.WebDavServer.Properties.Store;
 
 namespace FubarDev.WebDavServer.FileSystem.InMemory

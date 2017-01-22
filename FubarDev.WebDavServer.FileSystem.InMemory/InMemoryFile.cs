@@ -6,7 +6,6 @@ using System.Threading;
 using System.Threading.Tasks;
 
 using FubarDev.WebDavServer.Model;
-using FubarDev.WebDavServer.Properties;
 using FubarDev.WebDavServer.Properties.Dead;
 using FubarDev.WebDavServer.Properties.Live;
 

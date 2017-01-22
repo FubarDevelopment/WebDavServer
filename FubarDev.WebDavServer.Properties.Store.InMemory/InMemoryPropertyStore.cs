@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using System.Xml.Linq;
 
 using FubarDev.WebDavServer.FileSystem;
+using FubarDev.WebDavServer.Properties.Dead;
 
 namespace FubarDev.WebDavServer.Properties.Store.InMemory
 {
@@ -13,6 +14,11 @@ namespace FubarDev.WebDavServer.Properties.Store.InMemory
     {
         private static readonly IReadOnlyCollection<XElement> _emptyElements = new XElement[0];
         private readonly IDictionary<Uri, IDictionary<XName, XElement>> _properties = new Dictionary<Uri, IDictionary<XName, XElement>>();
+
+        public InMemoryPropertyStore(IDeadPropertyFactory deadPropertyFactory)
+            : base(deadPropertyFactory)
+        {
+        }
 
         public override int Cost { get; } = 0;
 

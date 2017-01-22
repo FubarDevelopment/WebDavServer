@@ -1,4 +1,5 @@
 ﻿using FubarDev.WebDavServer.FileSystem;
+using FubarDev.WebDavServer.Properties.Dead;
 
 using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Extensions.Options;
@@ -7,12 +8,14 @@ namespace FubarDev.WebDavServer.Properties.Store.TextFile
 {
     public class TextFilePropertyStoreFactory : IPropertyStoreFactory
     {
+        private readonly IDeadPropertyFactory _deadPropertyFactory;
         private readonly TextFilePropertyStoreOptions _options;
         private readonly IMemoryCache _cache;
 
-        public TextFilePropertyStoreFactory(IOptions<TextFilePropertyStoreOptions> options, IMemoryCache cache)
+        public TextFilePropertyStoreFactory(IOptions<TextFilePropertyStoreOptions> options, IMemoryCache cache, IDeadPropertyFactory deadPropertyFactory)
             : this(options.Value, cache)
         {
+            _deadPropertyFactory = deadPropertyFactory;
         }
 
         public TextFilePropertyStoreFactory(TextFilePropertyStoreOptions options, IMemoryCache cache)
@@ -28,11 +31,11 @@ namespace FubarDev.WebDavServer.Properties.Store.TextFile
                 var localFs = fileSystem as ILocalFileSystem;
                 if (localFs != null)
                 {
-                    return new TextFilePropertyStore(_options, _cache, localFs.RootDirectoryPath);
+                    return new TextFilePropertyStore(_options, _cache, _deadPropertyFactory, localFs.RootDirectoryPath);
                 }
             }
 
-            return new TextFilePropertyStore(_options, _cache);
+            return new TextFilePropertyStore(_options, _cache, _deadPropertyFactory);
         }
     }
 }
