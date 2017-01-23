@@ -12,11 +12,11 @@ namespace FubarDev.WebDavServer.Properties
             var coll = entry as ICollection;
 
             if (coll != null)
-                return ResourceTypeProperty.Collection;
+                return ResourceTypeProperty.GetCollectionResourceType();
 
             var doc = entry as IDocument;
             if (doc != null)
-                return ResourceTypeProperty.Document;
+                return ResourceTypeProperty.GetDocumentResourceType();
 
             throw new NotSupportedException();
         }

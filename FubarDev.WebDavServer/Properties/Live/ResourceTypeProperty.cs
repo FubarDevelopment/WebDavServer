@@ -17,13 +17,15 @@ namespace FubarDev.WebDavServer.Properties.Live
             _element = element;
         }
 
-        public static ResourceTypeProperty Document { get; } = new DocumentResourceType();
-
-        public static ResourceTypeProperty Collection { get; } = new CollectionResourceType();
-
         public XName Name { get; } = PropertyName;
 
         public int Cost { get; } = 0;
+
+        public static ResourceTypeProperty GetDocumentResourceType()
+            => new DocumentResourceType();
+
+        public static ResourceTypeProperty GetCollectionResourceType()
+            => new CollectionResourceType();
 
         public Task<XElement> GetXmlValueAsync(CancellationToken ct)
         {
