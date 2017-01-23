@@ -85,26 +85,14 @@ namespace FubarDev.WebDavServer.AspNetCore
         }
 
         [HttpCopy]
-        public Task<IActionResult> CopyAsync(string path, [FromHeader(Name = "Destination")] string destination, CancellationToken cancellationToken)
-        {
-            return CopyAsync(path, destination, null, cancellationToken);
-        }
-
-        [HttpCopy]
-        public async Task<IActionResult> CopyAsync(string path, [FromHeader(Name = "Destination")] string destination, [FromHeader(Name = "Overwrite")] string overwrite, CancellationToken cancellationToken)
+        public async Task<IActionResult> CopyAsync(string path, [FromHeader(Name = "Destination")] string destination, [FromHeader(Name = "Overwrite")] string overwrite = null, CancellationToken cancellationToken = default(CancellationToken))
         {
             var result = await _dispatcher.Class1.CopyAsync(path, new Uri(destination, UriKind.RelativeOrAbsolute), ParseOverwrite(overwrite), cancellationToken).ConfigureAwait(false);
             return new WebDavIndirectResult(_dispatcher, result);
         }
 
         [HttpMove]
-        public Task<IActionResult> MoveAsync(string path, [FromHeader(Name = "Destination")] string destination, CancellationToken cancellationToken)
-        {
-            return MoveAsync(path, destination, null, cancellationToken);
-        }
-
-        [HttpMove]
-        public async Task<IActionResult> MoveAsync(string path, [FromHeader(Name = "Destination")] string destination, [FromHeader(Name = "Overwrite")] string overwrite, CancellationToken cancellationToken)
+        public async Task<IActionResult> MoveAsync(string path, [FromHeader(Name = "Destination")] string destination, [FromHeader(Name = "Overwrite")] string overwrite = null, CancellationToken cancellationToken = default(CancellationToken))
         {
             var result = await _dispatcher.Class1.MoveAsync(path, new Uri(destination, UriKind.RelativeOrAbsolute), ParseOverwrite(overwrite), cancellationToken).ConfigureAwait(false);
             return new WebDavIndirectResult(_dispatcher, result);
