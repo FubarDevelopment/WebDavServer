@@ -1,8 +1,8 @@
 ﻿using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
+using System.Xml.Linq;
 
 using FubarDev.WebDavServer.AspNetCore;
 using FubarDev.WebDavServer.FileSystem;
@@ -16,6 +16,7 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Http.Extensions;
+using Microsoft.AspNetCore.Mvc.Formatters;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
@@ -98,6 +99,7 @@ namespace FubarDev.WebDavServer.Sample.AspNetCore
 
         private class RequestLogMiddleware
         {
+            private readonly IEnumerable<MediaType> _supportedMediaTypes = new[] { "text/xml", "application/xml" }.Select(x => new MediaType(x)).ToList();
             private readonly RequestDelegate _next;
             private readonly ILogger<RequestLogMiddleware> _logger;
 
@@ -118,15 +120,28 @@ namespace FubarDev.WebDavServer.Sample.AspNetCore
 
                     info.AddRange(context.Request.Headers.Select(x => $"{x.Key}: {x.Value}"));
 
-                    if (context.Request.Body != null)
+                    if (context.Request.Body != null && !string.IsNullOrEmpty(context.Request.ContentType))
                     {
-                        var temp = new MemoryStream();
-                        await context.Request.Body.CopyToAsync(temp, 65536).ConfigureAwait(false);
-                        var body = Encoding.UTF8.GetString(temp.ToArray());
-                        info.Add($"Body: {body}");
-                        if (!context.Request.Body.CanSeek)
-                            context.Request.Body = temp;
-                        context.Request.Body.Position = 0;
+                        var contentType = new MediaType(context.Request.ContentType);
+                        var isXml = _supportedMediaTypes.Any(x => contentType.IsSubsetOf(x));
+                        if (isXml)
+                        {
+                            var temp = new MemoryStream();
+                            await context.Request.Body.CopyToAsync(temp, 65536).ConfigureAwait(false);
+
+                            temp.Position = 0;
+                            var doc = XDocument.Load(temp);
+                            info.Add($"Body: {doc}");
+
+                            if (!context.Request.Body.CanSeek)
+                            {
+                                var oldStream = context.Request.Body;
+                                context.Request.Body = temp;
+                                oldStream.Dispose();
+                            }
+
+                            context.Request.Body.Position = 0;
+                        }
                     }
 
                     _logger.LogInformation(string.Join("\r\n", info));
