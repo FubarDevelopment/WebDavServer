@@ -127,7 +127,7 @@ namespace FubarDev.WebDavServer.DefaultHandlers
             }
 
             var resultsByStatus = errorResults.GroupBy(x => x.GetGroupableStatus());
-            var responses = new List<Response>();
+            var responses = new List<Tuple<WebDavStatusCodes, Response>>();
             foreach (var statusResult in resultsByStatus)
             {
                 var templateItem = statusResult.First();
@@ -244,14 +244,26 @@ namespace FubarDev.WebDavServer.DefaultHandlers
                     response.Responsedescription = string.Join(Environment.NewLine, reasons);
                 }
 
-                responses.Add(response);
+                responses.Add(Tuple.Create(templateItem.StatusCode, response));
+            }
+
+            if (responses.Count == 1)
+            {
+                var statusCode = responses.Select(x => x.Item1).Single();
+                var errorResponse = responses.Select(x => x.Item2).Single();
+                if (errorResponse.Error != null)
+                    return new WebDavResult<Error>(statusCode, errorResponse.Error);
+
+                var hrefCount = errorResponse.ItemsElementName.Count(x => x == ItemsChoiceType2.Href) + (errorResponse.Href == null ? 0 : 1);
+                if (hrefCount == 1)
+                    throw new WebDavException(statusCode);
             }
 
             return new WebDavResult<Multistatus>(
                 WebDavStatusCodes.MultiStatus, 
                 new Multistatus()
                 {
-                    Response = responses.ToArray()
+                    Response = responses.Select(x => x.Item2).ToArray()
                 });
         }
 
