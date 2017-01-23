@@ -37,6 +37,11 @@ namespace FubarDev.WebDavServer.DefaultHandlers
             try
             {
                 deleteResult = await targetEntry.DeleteAsync(cancellationToken).ConfigureAwait(false);
+                if (targetEntry.FileSystem.PropertyStore != null)
+                {
+                    // Remove dead properties (if there are any)
+                    await targetEntry.FileSystem.PropertyStore.RemoveAsync(targetEntry, cancellationToken).ConfigureAwait(false);
+                }
             }
             catch
             {
