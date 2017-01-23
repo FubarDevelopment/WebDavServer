@@ -177,12 +177,14 @@ namespace FubarDev.WebDavServer.Properties.Store.TextFile
         private string GetFileSystemPath(IEntry entry)
         {
             var names = new List<string>();
-            do
+
+            while (entry.Parent != null)
             {
                 if (!string.IsNullOrEmpty(entry.Name))
                     names.Add(entry.Name);
                 entry = entry.Parent;
-            } while (entry != null);
+            }
+
             names.Reverse();
             return Path.Combine(RootPath, Path.Combine(names.ToArray()));
         }
