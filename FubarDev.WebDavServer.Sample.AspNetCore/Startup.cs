@@ -129,18 +129,21 @@ namespace FubarDev.WebDavServer.Sample.AspNetCore
                             var temp = new MemoryStream();
                             await context.Request.Body.CopyToAsync(temp, 65536).ConfigureAwait(false);
 
-                            temp.Position = 0;
-                            var doc = XDocument.Load(temp);
-                            info.Add($"Body: {doc}");
-
-                            if (!context.Request.Body.CanSeek)
+                            if (temp.Length != 0)
                             {
-                                var oldStream = context.Request.Body;
-                                context.Request.Body = temp;
-                                oldStream.Dispose();
-                            }
+                                temp.Position = 0;
+                                var doc = XDocument.Load(temp);
+                                info.Add($"Body: {doc}");
 
-                            context.Request.Body.Position = 0;
+                                if (!context.Request.Body.CanSeek)
+                                {
+                                    var oldStream = context.Request.Body;
+                                    context.Request.Body = temp;
+                                    oldStream.Dispose();
+                                }
+
+                                context.Request.Body.Position = 0;
+                            }
                         }
                     }
 
