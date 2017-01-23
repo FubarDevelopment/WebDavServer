@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Diagnostics;
 using System.Linq;
+using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Xml.Linq;
@@ -35,7 +36,7 @@ namespace FubarDev.WebDavServer.DefaultHandlers
 
         public IEnumerable<string> HttpMethods { get; } = new[] {"COPY"};
 
-        public async Task<IWebDavResult> CopyAsync(string sourcePath, Uri destination, bool forbidOverwrite, CancellationToken cancellationToken)
+        public async Task<IWebDavResult> CopyAsync(string sourcePath, Uri destination, bool? overwrite, CancellationToken cancellationToken)
         {
             var sourceSelectionResult = await _rootFileSystem.SelectAsync(sourcePath, cancellationToken).ConfigureAwait(false);
             if (sourceSelectionResult.IsMissing)
@@ -46,7 +47,7 @@ namespace FubarDev.WebDavServer.DefaultHandlers
             if (!_host.BaseUrl.IsBaseOf(destinationUrl) || _options.Mode == RecursiveProcessingMode.PreferCrossServer)
             {
                 // Copy from server to server (slow)
-                return await CopyServerToServerAsync(sourceSelectionResult, destinationUrl, forbidOverwrite, cancellationToken).ConfigureAwait(false);
+                return new WebDavResult(WebDavStatusCodes.BadGateway);
             }
 
             // Copy from one known file system to another
@@ -60,102 +61,438 @@ namespace FubarDev.WebDavServer.DefaultHandlers
             if (isSameFileSystem && _options.Mode == RecursiveProcessingMode.PreferFastest)
             {
                 // Copy one item inside the same file system (fast)
-                return await CopyWithinFileSystemAsync(sourceUrl, destinationUrl, sourceSelectionResult, targetInfo, forbidOverwrite, cancellationToken).ConfigureAwait(false);
+                return await CopyWithinFileSystemAsync(sourceUrl, sourceSelectionResult, targetInfo, overwrite ?? _options.OverwriteAsDefault, cancellationToken).ConfigureAwait(false);
             }
 
             // Copy one item to another file system (probably slow)
-            return await CopyBetweenFileSystemsAsync(sourceUrl, destinationUrl, sourceSelectionResult, targetInfo, forbidOverwrite, cancellationToken).ConfigureAwait(false);
+            return await CopyBetweenFileSystemsAsync(sourceUrl, sourceSelectionResult, targetInfo, overwrite ?? _options.OverwriteAsDefault, cancellationToken).ConfigureAwait(false);
         }
 
-        private Task<IWebDavResult> CopyBetweenFileSystemsAsync(Uri sourceUrl, Uri destinationUrl, SelectionResult sourceSelectionResult, TargetInfo targetInfo, bool forbidOverwrite, CancellationToken cancellationToken)
+        private Task<IWebDavResult> CopyBetweenFileSystemsAsync(
+            Uri sourceUrl,
+            SelectionResult sourceSelectionResult,
+            TargetInfo targetInfo,
+            bool overwrite,
+            CancellationToken cancellationToken)
         {
-            throw new NotImplementedException();
+            var handler = new CopyFromFileSystemToFileSystemHandler();
+            return CopyAsync(handler, sourceUrl, sourceSelectionResult, targetInfo, overwrite, cancellationToken);
         }
 
-        private async Task<IWebDavResult> CopyWithinFileSystemAsync(Uri sourceUrl, Uri destinationUrl, SelectionResult sourceSelectionResult, TargetInfo targetInfo, bool forbidOverwrite, CancellationToken cancellationToken)
+        private Task<IWebDavResult> CopyWithinFileSystemAsync(
+            Uri sourceUrl,
+            SelectionResult sourceSelectionResult,
+            TargetInfo targetInfo,
+            bool overwrite,
+            CancellationToken cancellationToken)
         {
+            var handler = new CopyWithinFileSystemHandler();
+            return CopyAsync(handler, sourceUrl, sourceSelectionResult, targetInfo, overwrite, cancellationToken);
+        }
+
+        private async Task<IWebDavResult> CopyAsync(
+            IEntryHandler handler,
+            Uri sourceUrl,
+            SelectionResult sourceSelectionResult,
+            TargetInfo targetInfo,
+            bool overwrite,
+            CancellationToken cancellationToken)
+        {
+            Debug.Assert(sourceSelectionResult.Collection != null, "sourceSelectionResult.Collection != null");
+
+            var processor = new NodeProcessor(handler, overwrite);
+            IImmutableList<ElementResult> results;
             if (sourceSelectionResult.Document != null)
             {
-                throw new NotImplementedException();
+                var result = await processor
+                    .ExecuteAsync(sourceUrl, sourceSelectionResult.Document, targetInfo, cancellationToken)
+                    .ConfigureAwait(false);
+                results = ImmutableList<ElementResult>.Empty.Add(result);
+            }
+            else
+            {
+                var nodes = await sourceSelectionResult.Collection.GetNodeAsync(Depth.Infinity.OrderValue, cancellationToken).ConfigureAwait(false);
+                results = await processor.ExecuteAsync(sourceUrl, nodes, targetInfo, cancellationToken).ConfigureAwait(false);
             }
 
-            Debug.Assert(sourceSelectionResult.Collection != null, "sourceSelectionResult.Collection != null");
-            var nodes = await sourceSelectionResult.Collection.GetNodeAsync(Depth.Infinity.OrderValue, cancellationToken).ConfigureAwait(false);
-            var processor = new NodeProcessor(new CopyWithinFileSystemHandler(), _host);
-            var errors = await processor.ExecuteAsync(nodes, targetInfo, cancellationToken).ConfigureAwait(false);
+            var errorResults = results
+                .Where(x => x.IsFailure)
+                .ToList();
 
-            if (errors.Count == 0)
+            if (errorResults.Count == 0)
             {
                 if (targetInfo.TargetEntry == null)
                     return new WebDavResult(WebDavStatusCodes.Created);
                 return new WebDavResult(WebDavStatusCodes.NoContent);
             }
 
+            var resultsByStatus = errorResults.GroupBy(x => x.GetGroupableStatus());
+            var responses = new List<Response>();
+            foreach (var statusResult in resultsByStatus)
+            {
+                var templateItem = statusResult.First();
+
+                var itemNames = new List<ItemsChoiceType2>();
+                var items = new List<object>();
+
+                List<string> hrefs;
+                if (templateItem.Error != null)
+                {
+                    if (templateItem.Error.ItemsElementName.Length != 1)
+                        throw new NotSupportedException();
+
+                    var itemElementName = templateItem.Error.ItemsElementName.Single();
+                    switch (itemElementName)
+                    {
+                        case ItemsChoiceType.LockTokenSubmitted:
+                        case ItemsChoiceType.NoConflictingLock:
+                            hrefs = new List<string>();
+                            break;
+                        default:
+                            hrefs = null;
+                            break;
+                    }
+                }
+                else
+                {
+                    hrefs = null;
+                }
+
+                var reasons = new HashSet<string>();
+                foreach (var elementResult in statusResult)
+                {
+                    if (!string.IsNullOrEmpty(elementResult.Reason))
+                        reasons.Add(elementResult.Reason);
+
+                    itemNames.Add(ItemsChoiceType2.Href);
+                    items.Add(elementResult.Href.ToString());
+
+                    if (elementResult.Error != null && hrefs != null)
+                    {
+                        var itemsChoiceType = elementResult.Error.ItemsElementName.Single();
+                        switch (itemsChoiceType)
+                        {
+                            case ItemsChoiceType.LockTokenSubmitted:
+                                hrefs.AddRange(elementResult.Error.Items.Cast<LockTokenSubmitted>().Single().Href);
+                                break;
+                            case ItemsChoiceType.NoConflictingLock:
+                                hrefs.AddRange(elementResult.Error.Items.Cast<NoConflictingLock>().Single().Href);
+                                break;
+                        }
+                    }
+                }
+
+                itemNames.Add(ItemsChoiceType2.Status);
+                items.Add($"{_host.RequestProtocol} {(int)templateItem.StatusCode} {templateItem.StatusCode.GetReasonPhrase()}");
+
+                Error error;
+                if (templateItem.Error != null)
+                {
+                    if (templateItem.Error.ItemsElementName.Length != 1)
+                        throw new NotSupportedException();
+
+                    var itemElementName = templateItem.Error.ItemsElementName.Single();
+                    switch (itemElementName)
+                    {
+                        case ItemsChoiceType.LockTokenSubmitted:
+                            Debug.Assert(hrefs != null, "hrefs != null");
+                            error = new Error()
+                            {
+                                ItemsElementName = new[] {itemElementName},
+                                Items = new object[]
+                                {
+                                    new LockTokenSubmitted()
+                                    {
+                                        Href = hrefs.ToArray()
+                                    }
+                                }
+                            };
+                            break;
+                        case ItemsChoiceType.NoConflictingLock:
+                            Debug.Assert(hrefs != null, "hrefs != null");
+                            error = new Error()
+                            {
+                                ItemsElementName = new[] {itemElementName},
+                                Items = new object[]
+                                {
+                                    new NoConflictingLock()
+                                    {
+                                        Href = hrefs.ToArray()
+                                    }
+                                }
+                            };
+                            break;
+                        default:
+                            error = templateItem.Error;
+                            break;
+                    }
+                }
+                else
+                {
+                    error = null;
+                }
+
+                var response = new Response()
+                {
+                    ItemsElementName = itemNames.ToArray(),
+                    Items = items.ToArray(),
+                    Error = error,
+                };
+
+                if (reasons.Count != 0)
+                {
+                    response.Responsedescription = string.Join(Environment.NewLine, reasons);
+                }
+
+                responses.Add(response);
+            }
+
             return new WebDavResult<Multistatus>(
                 WebDavStatusCodes.MultiStatus, 
                 new Multistatus()
                 {
-                    Response = errors.ToList()
+                    Response = responses.ToArray()
                 });
-        }
-
-        private Task<IWebDavResult> CopyServerToServerAsync(SelectionResult sourceSelectionResult, Uri destinationUrl, bool forbidOverwrite, CancellationToken cancellationToken)
-        {
-            throw new NotImplementedException();
         }
 
         private class NodeProcessor
         {
             private readonly IEntryHandler _handler;
-            private readonly IWebDavHost _host;
+            private readonly bool _allowOverwrite;
 
-            public NodeProcessor(IEntryHandler handler, IWebDavHost host)
+            public NodeProcessor(IEntryHandler handler, bool allowOverwrite)
             {
                 _handler = handler;
-                _host = host;
+                _allowOverwrite = allowOverwrite;
             }
 
-            public async Task<IImmutableList<Response>> ExecuteAsync(CollectionExtensions.INode node, TargetInfo targetInfo, CancellationToken cancellationToken)
+            public async Task<ElementResult> ExecuteAsync(Uri sourceUrl, IDocument source, TargetInfo targetInfo, CancellationToken cancellationToken)
             {
+                if (targetInfo.TargetEntry != null && !_allowOverwrite)
+                {
+                    return new ElementResult()
+                    {
+                        Href = targetInfo.DestinationUri,
+                        StatusCode = WebDavStatusCodes.PreconditionFailed
+                    };
+                }
+
+                var properties = await source.GetProperties().ToList(cancellationToken).ConfigureAwait(false);
+
+                IDocument createdDocument;
+                if (targetInfo.TargetEntry != null)
+                {
+                    var targetDocument = targetInfo.TargetEntry as IDocument;
+                    if (targetDocument == null)
+                    {
+                        return new ElementResult()
+                        {
+                            Href = targetInfo.DestinationUri,
+                            StatusCode = WebDavStatusCodes.Conflict,
+                            Reason = "Cannot overwrite collection with document"
+                        };
+                    }
+
+                    if (_handler.ExistingTargetBehaviour == RecursiveTargetBehaviour.DeleteBeforeCopy)
+                    {
+                        Debug.Assert(targetInfo.ParentEntry != null, "targetInfo.ParentEntry != null");
+                        try
+                        {
+                            await targetDocument.DeleteAsync(cancellationToken).ConfigureAwait(false);
+                        }
+                        catch (Exception ex)
+                        {
+                            return new ElementResult()
+                            {
+                                Href = targetInfo.DestinationUri,
+                                StatusCode = WebDavStatusCodes.Forbidden,
+                                Reason = ex.Message,
+                            };
+                        }
+
+                        try
+                        {
+                            createdDocument = await _handler
+                                .ExecuteAsync(source, targetInfo.ParentEntry, targetInfo.TargetName, cancellationToken)
+                                .ConfigureAwait(false);
+                        }
+                        catch (Exception ex)
+                        {
+                            return new ElementResult()
+                            {
+                                Href = sourceUrl,
+                                StatusCode = WebDavStatusCodes.Conflict,
+                                Reason = ex.Message,
+                            };
+                        }
+                    }
+                    else
+                    {
+                        createdDocument = targetDocument;
+                        try
+                        {
+                            using (var inputStream = await source.OpenReadAsync(cancellationToken).ConfigureAwait(false))
+                            {
+                                using (var outputStream = await targetDocument.CreateAsync(cancellationToken).ConfigureAwait(false))
+                                {
+                                    await inputStream.CopyToAsync(outputStream, 65536, cancellationToken).ConfigureAwait(false);
+                                }
+                            }
+                        }
+                        catch (Exception ex)
+                        {
+                            return new ElementResult()
+                            {
+                                Href = targetInfo.DestinationUri,
+                                StatusCode = WebDavStatusCodes.Forbidden,
+                                Reason = ex.Message,
+                            };
+                        }
+                    }
+                }
+                else
+                {
+                    Debug.Assert(targetInfo.ParentEntry != null, "targetInfo.ParentEntry != null");
+                    try
+                    {
+                        createdDocument = await _handler
+                            .ExecuteAsync(source, targetInfo.ParentEntry, targetInfo.TargetName, cancellationToken)
+                            .ConfigureAwait(false);
+                    }
+                    catch (Exception ex)
+                    {
+                        return new ElementResult()
+                        {
+                            Href = sourceUrl,
+                            StatusCode = WebDavStatusCodes.Conflict,
+                            Reason = ex.Message,
+                        };
+                    }
+                }
+
+                var result = await SetPropertiesAsync(targetInfo.DestinationUri, createdDocument, properties, cancellationToken).ConfigureAwait(false);
+                if (result.StatusCode != WebDavStatusCodes.OK)
+                    return result;
+
+                return new ElementResult()
+                {
+                    Href = targetInfo.DestinationUri,
+                    StatusCode = targetInfo.TargetEntry == null ? WebDavStatusCodes.Created : WebDavStatusCodes.NoContent,
+                };
+            }
+
+            public async Task<IImmutableList<ElementResult>> ExecuteAsync(
+                Uri sourceUrl,
+                CollectionExtensions.INode sourceNode,
+                TargetInfo targetInfo,
+                CancellationToken cancellationToken)
+            {
+                var result = ImmutableList.Create<ElementResult>();
+
+                var targetUrl = targetInfo.DestinationUri;
+
                 ICollection targetCollection;
                 if (targetInfo.TargetEntry == null)
                 {
                     Debug.Assert(targetInfo.ParentEntry != null, "targetInfo.ParentEntry != null");
-                    targetCollection = await targetInfo.ParentEntry.CreateCollectionAsync(targetInfo.TargetName, cancellationToken).ConfigureAwait(false);
+                    try
+                    {
+                        targetCollection = await targetInfo
+                            .ParentEntry
+                            .CreateCollectionAsync(targetInfo.TargetName, cancellationToken)
+                            .ConfigureAwait(false);
+                    }
+                    catch (Exception ex)
+                    {
+                        result = result.Add(new ElementResult()
+                        {
+                            Href = targetInfo.DestinationUri,
+                            StatusCode = WebDavStatusCodes.Forbidden,
+                            Reason = ex.Message,
+                        });
+
+                        return result;
+                    }
                 }
                 else
                 {
                     targetCollection = targetInfo.TargetEntry as ICollection;
+                    if (targetCollection == null)
+                    {
+                        result = result.Add(new ElementResult()
+                        {
+                            Href = targetInfo.DestinationUri,
+                            StatusCode = WebDavStatusCodes.Conflict,
+                            Reason = "Cannot overwrite document with collection"
+                        });
+
+                        return result;
+                    }
                 }
 
-                IImmutableList<Response> result;
-                if (targetCollection == null)
+                var properties = await sourceNode.Collection.GetProperties().ToList(cancellationToken).ConfigureAwait(false);
+
+                foreach (var sourceDocument in sourceNode.Documents)
                 {
-                    var status = WebDavStatusCodes.Conflict;
-                    result = ImmutableList.Create<Response>().Add(new Response()
+                    var sourceDocumentUrl = sourceUrl.Append(sourceDocument);
+                    var targetDocumentUrl = targetUrl.Append(sourceDocument);
+                    var targetDocInfo = await TargetInfo
+                        .FromDestinationAsync(targetCollection, sourceDocument.Name, targetDocumentUrl, cancellationToken)
+                        .ConfigureAwait(false);
+                    var docResult = await ExecuteAsync(sourceDocumentUrl, sourceDocument, targetDocInfo, cancellationToken).ConfigureAwait(false);
+                    result = result.Add(docResult);
+                }
+
+                foreach (var childNode in sourceNode.Nodes)
+                {
+                    var sourceDocumentUrl = sourceUrl.Append(childNode.Collection.Name);
+                    var targetDocumentUrl = targetUrl.Append(childNode.Collection.Name);
+                    var targetNodeInfo = await TargetInfo
+                        .FromDestinationAsync(targetCollection, childNode.Collection.Name, targetDocumentUrl, cancellationToken)
+                        .ConfigureAwait(false);
+                    var nodeResult = await ExecuteAsync(sourceDocumentUrl, childNode, targetNodeInfo, cancellationToken).ConfigureAwait(false);
+                    result = result.AddRange(nodeResult);
+                }
+
+                try
+                {
+                    await _handler.ExecuteAsync(sourceNode.Collection, cancellationToken).ConfigureAwait(false);
+                }
+                catch (Exception ex)
+                {
+                    result = result.Add(new ElementResult()
                     {
-                        Href = targetInfo.DestinationUri.ToString(),
-                        ItemsElementName = new List<ItemsChoiceType2>() {ItemsChoiceType2.Status},
-                        Items = new List<object>() {$"{_host.RequestProtocol} {(int) status} {status.GetReasonPhrase()}"},
+                        Href = sourceUrl,
+                        StatusCode = WebDavStatusCodes.Conflict,
+                        Reason = ex.Message,
+                    });
+                }
+
+                var propResult = await SetPropertiesAsync(targetUrl, targetCollection, properties, cancellationToken).ConfigureAwait(false);
+                if (propResult.StatusCode != WebDavStatusCodes.OK)
+                    result = result.Add(propResult);
+
+                if (targetInfo.TargetEntry == null)
+                {
+                    result = result.Add(new ElementResult()
+                    {
+                        Href = targetUrl,
+                        StatusCode = WebDavStatusCodes.Created,
                     });
                 }
                 else
                 {
-                    result = await ExecuteAsync(node, targetCollection, cancellationToken).ConfigureAwait(false);
+                    result = result.Add(new ElementResult()
+                    {
+                        Href = targetUrl,
+                        StatusCode = WebDavStatusCodes.NoContent,
+                    });
                 }
 
                 return result;
             }
 
-            private async Task<IImmutableList<Response>> ExecuteAsync(CollectionExtensions.INode node, ICollection target,
-                                                                      CancellationToken cancellationToken)
-            {
-                var properties = await node.Collection.GetProperties().ToList(cancellationToken).ConfigureAwait(false);
-                await SetPropertiesAsync(target, properties, cancellationToken).ConfigureAwait(false);
-                throw new NotImplementedException();
-            }
-
-            private async Task SetPropertiesAsync(IEntry destination, IEnumerable<IUntypedReadableProperty> properties, CancellationToken cancellationToken)
+            private async Task<ElementResult> SetPropertiesAsync(Uri destinationUrl, IEntry destination, IEnumerable<IUntypedReadableProperty> properties, CancellationToken cancellationToken)
             {
                 var liveProperties = new List<ILiveProperty>();
                 var deadProperties = new List<IDeadProperty>();
@@ -173,11 +510,12 @@ namespace FubarDev.WebDavServer.DefaultHandlers
                     }
                 }
 
-                if (liveProperties.Count != 0)
-                    await SetPropertiesAsync(destination, liveProperties, cancellationToken).ConfigureAwait(false);
+                var livePropertiesResult = await SetPropertiesAsync(destinationUrl, destination, liveProperties, cancellationToken).ConfigureAwait(false);
 
                 if (deadProperties.Count != 0)
                     await SetPropertiesAsync(destination, deadProperties, cancellationToken).ConfigureAwait(false);
+
+                return livePropertiesResult;
             }
 
             private async Task SetPropertiesAsync(IEntry destination, IEnumerable<IDeadProperty> properties, CancellationToken cancellationToken)
@@ -195,18 +533,30 @@ namespace FubarDev.WebDavServer.DefaultHandlers
                 await propertyStore.SetAsync(destination, elements, cancellationToken).ConfigureAwait(false);
             }
 
-            private async Task SetPropertiesAsync(IEntry destination, IEnumerable<ILiveProperty> properties, CancellationToken cancellationToken)
+            private async Task<ElementResult> SetPropertiesAsync(Uri destinationUrl, IEntry destination, IEnumerable<ILiveProperty> properties, CancellationToken cancellationToken)
             {
+                var isPropUsed = new Dictionary<XName, bool>();
                 var propNameToValue = new Dictionary<XName, XElement>();
                 foreach (var property in properties)
                 {
                     propNameToValue[property.Name] = await property.GetXmlValueAsync(cancellationToken).ConfigureAwait(false);
+                    isPropUsed[property.Name] = false;
+                }
+
+                if (propNameToValue.Count == 0)
+                {
+                    return new ElementResult()
+                    {
+                        Href = destinationUrl,
+                        StatusCode = WebDavStatusCodes.NoContent
+                    };
                 }
 
                 using (var propEnum = destination.GetProperties().GetEnumerator())
                 {
                     while (await propEnum.MoveNext(cancellationToken).ConfigureAwait(false))
                     {
+                        isPropUsed[propEnum.Current.Name] = true;
                         var prop = propEnum.Current as IUntypedWriteableProperty;
                         XElement propValue;
                         if (prop != null && propNameToValue.TryGetValue(prop.Name, out propValue))
@@ -215,11 +565,37 @@ namespace FubarDev.WebDavServer.DefaultHandlers
                         }
                     }
                 }
+
+                var hasUnsetLiveProperties = isPropUsed.Any(x => !x.Value);
+                if (hasUnsetLiveProperties)
+                {
+                    var unsetPropNames = isPropUsed.Where(x => !x.Value).Select(x => x.Key.ToString());
+                    var unsetProperties = $"The following properties couldn't be set: {string.Join(", ", unsetPropNames)}";
+                    return new ElementResult()
+                    {
+                        Href = destinationUrl,
+                        Error = new Error()
+                        {
+                            ItemsElementName = new[] {ItemsChoiceType.PreservedLiveProperties},
+                            Items = new[] {new object()},
+                        },
+                        Reason = unsetProperties,
+                        StatusCode = WebDavStatusCodes.Conflict
+                    };
+                }
+
+                return new ElementResult()
+                {
+                    Href = destinationUrl,
+                    StatusCode = WebDavStatusCodes.OK
+                };
             }
         }
 
-        private class CopyFromFileSyswtemToFileSystemHandler : IEntryHandler
+        private class CopyFromFileSystemToFileSystemHandler : IEntryHandler
         {
+            public RecursiveTargetBehaviour ExistingTargetBehaviour { get; } = RecursiveTargetBehaviour.Overwrite;
+
             public async Task<IDocument> ExecuteAsync(IDocument source, ICollection destinationParent, string destinationName, CancellationToken cancellationToken)
             {
                 var doc = await destinationParent.CreateDocumentAsync(destinationName, cancellationToken).ConfigureAwait(false);
@@ -247,6 +623,8 @@ namespace FubarDev.WebDavServer.DefaultHandlers
 
         private class CopyWithinFileSystemHandler : IEntryHandler
         {
+            public RecursiveTargetBehaviour ExistingTargetBehaviour { get; } = RecursiveTargetBehaviour.DeleteBeforeCopy;
+
             public Task<IDocument> ExecuteAsync(IDocument source, ICollection destinationParent, string destinationName, CancellationToken cancellationToken)
             {
                 return source.CopyToAsync(destinationParent, destinationName, cancellationToken);
@@ -266,6 +644,8 @@ namespace FubarDev.WebDavServer.DefaultHandlers
 
         private interface IEntryHandler
         {
+            RecursiveTargetBehaviour ExistingTargetBehaviour { get; }
+
             [NotNull, ItemNotNull]
             Task<IDocument> ExecuteAsync([NotNull] IDocument source, [NotNull] ICollection destinationParent, [NotNull] string destinationName, CancellationToken cancellationToken);
 
@@ -278,7 +658,7 @@ namespace FubarDev.WebDavServer.DefaultHandlers
 
         private struct TargetInfo
         {
-            public TargetInfo([CanBeNull] ICollection parentEntry, [CanBeNull] IEntry targeEntry, [NotNull] string targetName, [NotNull] Uri destinationUri)
+            private TargetInfo([CanBeNull] ICollection parentEntry, [CanBeNull] IEntry targeEntry, [NotNull] string targetName, [NotNull] Uri destinationUri)
             {
                 ParentEntry = parentEntry;
                 TargetEntry = targeEntry;
@@ -314,6 +694,50 @@ namespace FubarDev.WebDavServer.DefaultHandlers
 
                 Debug.Assert(selectionResult.Document != null, "selectionResult.Document != null");
                 return new TargetInfo(selectionResult.Collection, selectionResult.Document, selectionResult.Document.Name, destinationUri);
+            }
+
+            public static async Task<TargetInfo> FromDestinationAsync([NotNull] ICollection destination, [NotNull] string name, [NotNull] Uri destinationUri, CancellationToken cancellationToken)
+            {
+                var targetEntry = await destination.GetChildAsync(name, cancellationToken).ConfigureAwait(false);
+                return new TargetInfo(destination, targetEntry, name, destinationUri);
+            }
+        }
+
+        private struct ElementResult
+        {
+            public Uri Href { get; set; }
+            public WebDavStatusCodes StatusCode { get; set; }
+            public Error Error { get; set; }
+            public string Reason { get; set; }
+
+            public bool IsFailure => ((int) StatusCode) >= 300;
+
+            public string GetGroupableStatus()
+            {
+                var result = new StringBuilder()
+                    .Append((int)StatusCode);
+
+                if (Error != null)
+                {
+                    result.Append("+error");
+                    for (var i = 0; i != Error.ItemsElementName.Length; ++i)
+                    {
+                        string textToAppend;
+                        switch (Error.ItemsElementName[i])
+                        {
+                            case ItemsChoiceType.Any:
+                                textToAppend = ((XElement) Error.Items[i]).ToString(SaveOptions.OmitDuplicateNamespaces | SaveOptions.DisableFormatting);
+                                break;
+                            default:
+                                textToAppend = Error.ItemsElementName[i].ToString();
+                                break;
+                        }
+
+                        result.Append(':').Append(Uri.EscapeDataString(textToAppend));
+                    }
+                }
+
+                return result.ToString();
             }
         }
     }

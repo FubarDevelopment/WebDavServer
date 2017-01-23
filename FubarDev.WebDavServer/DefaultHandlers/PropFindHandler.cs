@@ -59,8 +59,8 @@ namespace FubarDev.WebDavServer.DefaultHandlers
                         // Cannot recursively collect the children with infinite depth
                         return new WebDavResult<Error>(WebDavStatusCodes.Forbidden, new Error()
                         {
-                            ItemsElementName = new List<ItemsChoiceType>() { ItemsChoiceType.PropfindFiniteDepth, },
-                            Items = new List<object>() { new object(), }
+                            ItemsElementName = new[] { ItemsChoiceType.PropfindFiniteDepth, },
+                            Items = new[] { new object(), }
                         });
                     }
 
@@ -102,8 +102,8 @@ namespace FubarDev.WebDavServer.DefaultHandlers
                 var response = new Response()
                 {
                     Href = href.OriginalString,
-                    ItemsElementName = propStats.Select(x => ItemsChoiceType2.Propstat).ToList(),
-                    Items = propStats.Cast<object>().ToList(),
+                    ItemsElementName = propStats.Select(x => ItemsChoiceType2.Propstat).ToArray(),
+                    Items = propStats.Cast<object>().ToArray(),
                 };
 
                 responses.Add(response);
@@ -111,7 +111,7 @@ namespace FubarDev.WebDavServer.DefaultHandlers
 
             var result = new Multistatus()
             {
-                Response = responses.ToList()
+                Response = responses.ToArray()
             };
 
             return new WebDavResult<Multistatus>(WebDavStatusCodes.MultiStatus, result);
@@ -135,7 +135,7 @@ namespace FubarDev.WebDavServer.DefaultHandlers
             foreach (var entry in entries)
             {
                 var entryPath = entry.Path.OriginalString.TrimEnd('/');
-                var href = _host.BaseUrl.Append(entryPath);
+                var href = _host.BaseUrl.Append(entryPath, true);
 
                 var collector = new PropertyCollector(_host, new ReadableFilter(), new CostFilter(0));
                 var propStats = await collector.GetPropertiesAsync(entry, cancellationToken).ConfigureAwait(false);
@@ -143,8 +143,8 @@ namespace FubarDev.WebDavServer.DefaultHandlers
                 var response = new Response()
                 {
                     Href = href.OriginalString,
-                    ItemsElementName = propStats.Select(x => ItemsChoiceType2.Propstat).ToList(),
-                    Items = propStats.Cast<object>().ToList(),
+                    ItemsElementName = propStats.Select(x => ItemsChoiceType2.Propstat).ToArray(),
+                    Items = propStats.Cast<object>().ToArray(),
                 };
 
                 responses.Add(response);
@@ -152,7 +152,7 @@ namespace FubarDev.WebDavServer.DefaultHandlers
 
             var result = new Multistatus()
             {
-                Response = responses.ToList()
+                Response = responses.ToArray()
             };
 
             return new WebDavResult<Multistatus>(WebDavStatusCodes.MultiStatus, result);
@@ -211,7 +211,7 @@ namespace FubarDev.WebDavServer.DefaultHandlers
                         {
                             Prop = new Prop()
                             {
-                                Any = propElements.ToList(),
+                                Any = propElements.ToArray(),
                             },
                             Status = $"{_host.RequestProtocol} 200 OK"
                         });
@@ -229,7 +229,7 @@ namespace FubarDev.WebDavServer.DefaultHandlers
                         {
                             Prop = new Prop()
                             {
-                                Any = item.Value.Select(x => new XElement(x)).ToList(),
+                                Any = item.Value.Select(x => new XElement(x)).ToArray(),
                             },
                             Status = $"{_host.RequestProtocol} {item.Key} {item.Key.GetReasonPhrase()}"
                         });

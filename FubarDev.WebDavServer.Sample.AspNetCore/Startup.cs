@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Text;
 using System.Threading.Tasks;
 
 using FubarDev.WebDavServer.AspNetCore;
@@ -106,7 +107,7 @@ namespace FubarDev.WebDavServer.Sample.AspNetCore
                 _logger = logger;
             }
 
-            public Task Invoke(HttpContext context)
+            public async Task Invoke(HttpContext context)
             {
                 using (_logger.BeginScope("RequestInfo"))
                 {
@@ -114,11 +115,24 @@ namespace FubarDev.WebDavServer.Sample.AspNetCore
                     {
                         $"{context.Request.Protocol} {context.Request.Method} {context.Request.GetDisplayUrl()}"
                     };
+
                     info.AddRange(context.Request.Headers.Select(x => $"{x.Key}: {x.Value}"));
+
+                    if (context.Request.Body != null)
+                    {
+                        var temp = new MemoryStream();
+                        await context.Request.Body.CopyToAsync(temp, 65536).ConfigureAwait(false);
+                        var body = Encoding.UTF8.GetString(temp.ToArray());
+                        info.Add($"Body: {body}");
+                        if (!context.Request.Body.CanSeek)
+                            context.Request.Body = temp;
+                        context.Request.Body.Position = 0;
+                    }
+
                     _logger.LogInformation(string.Join("\r\n", info));
                 }
 
-                return _next(context);
+                await _next(context).ConfigureAwait(false);
             }
         }
     }

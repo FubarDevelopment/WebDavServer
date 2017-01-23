@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 
 using FubarDev.WebDavServer.Model;
 
@@ -55,13 +54,13 @@ namespace FubarDev.WebDavServer.AspNetCore.Filters
                 statusCode,
                 new Multistatus()
                 {
-                    Response = new List<Response>()
+                    Response = new[]
                     {
                             new Response()
                             {
                                 Href = context.HttpContext.Request.GetEncodedUrl(),
-                                ItemsElementName = new List<ItemsChoiceType2>() {ItemsChoiceType2.Status,},
-                                Items = new List<object>() {$"{context.HttpContext.Request.Protocol} {(int)statusCode} {statusCode.GetReasonPhrase(optionalMessge)}"},
+                                ItemsElementName = new[] {ItemsChoiceType2.Status,},
+                                Items = new object[] {$"{context.HttpContext.Request.Protocol} {(int)statusCode} {statusCode.GetReasonPhrase(optionalMessge)}"},
                             },
                     }
                 });

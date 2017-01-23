@@ -17,9 +17,9 @@ namespace FubarDev.WebDavServer.Model {
     [System.Xml.Serialization.XmlRootAttribute("propfind", Namespace="DAV:", IsNullable=false)]
     public partial class Propfind {
         
-        private System.Collections.Generic.List<object> itemsField;
+        private object[] itemsField;
         
-        private System.Collections.Generic.List<ItemsChoiceType1> itemsElementNameField;
+        private ItemsChoiceType1[] itemsElementNameField;
         
         /// <remarks/>
         [System.Xml.Serialization.XmlElementAttribute("allprop", typeof(object))]
@@ -27,7 +27,7 @@ namespace FubarDev.WebDavServer.Model {
         [System.Xml.Serialization.XmlElementAttribute("prop", typeof(Prop))]
         [System.Xml.Serialization.XmlElementAttribute("propname", typeof(object))]
         [System.Xml.Serialization.XmlChoiceIdentifierAttribute("ItemsElementName")]
-        public System.Collections.Generic.List<object> Items {
+        public object[] Items {
             get {
                 return this.itemsField;
             }
@@ -37,9 +37,8 @@ namespace FubarDev.WebDavServer.Model {
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute("ItemsElementName")]
         [System.Xml.Serialization.XmlIgnoreAttribute()]
-        public System.Collections.Generic.List<ItemsChoiceType1> ItemsElementName {
+        public ItemsChoiceType1[] ItemsElementName {
             get {
                 return this.itemsElementNameField;
             }
@@ -56,11 +55,11 @@ namespace FubarDev.WebDavServer.Model {
     [System.Xml.Serialization.XmlTypeAttribute("include", Namespace="DAV:")]
     public partial class Include {
         
-        private System.Collections.Generic.List<System.Xml.Linq.XElement> anyField;
+        private System.Xml.Linq.XElement[] anyField;
         
         /// <remarks/>
         [System.Xml.Serialization.XmlAnyElementAttribute()]
-        public System.Collections.Generic.List<System.Xml.Linq.XElement> Any {
+        public System.Xml.Linq.XElement[] Any {
             get {
                 return this.anyField;
             }
@@ -77,11 +76,11 @@ namespace FubarDev.WebDavServer.Model {
     [System.Xml.Serialization.XmlTypeAttribute("prop", Namespace="DAV:")]
     public partial class Prop {
         
-        private System.Collections.Generic.List<System.Xml.Linq.XElement> anyField;
+        private System.Xml.Linq.XElement[] anyField;
         
         /// <remarks/>
         [System.Xml.Serialization.XmlAnyElementAttribute()]
-        public System.Collections.Generic.List<System.Xml.Linq.XElement> Any {
+        public System.Xml.Linq.XElement[] Any {
             get {
                 return this.anyField;
             }
@@ -121,13 +120,13 @@ namespace FubarDev.WebDavServer.Model {
     [System.Xml.Serialization.XmlRootAttribute("multistatus", Namespace="DAV:", IsNullable=false)]
     public partial class Multistatus {
         
-        private System.Collections.Generic.List<Response> responseField;
+        private Response[] responseField;
         
         private string responsedescriptionField;
         
         /// <remarks/>
         [System.Xml.Serialization.XmlElementAttribute("response")]
-        public System.Collections.Generic.List<Response> Response {
+        public Response[] Response {
             get {
                 return this.responseField;
             }
@@ -158,9 +157,9 @@ namespace FubarDev.WebDavServer.Model {
         
         private string hrefField;
         
-        private System.Collections.Generic.List<object> itemsField;
+        private object[] itemsField;
         
-        private System.Collections.Generic.List<ItemsChoiceType2> itemsElementNameField;
+        private ItemsChoiceType2[] itemsElementNameField;
         
         private Error errorField;
         
@@ -182,7 +181,7 @@ namespace FubarDev.WebDavServer.Model {
         [System.Xml.Serialization.XmlElementAttribute("propstat", typeof(Propstat), Order=1)]
         [System.Xml.Serialization.XmlElementAttribute("status", typeof(string), Order=1)]
         [System.Xml.Serialization.XmlChoiceIdentifierAttribute("ItemsElementName")]
-        public System.Collections.Generic.List<object> Items {
+        public object[] Items {
             get {
                 return this.itemsField;
             }
@@ -192,9 +191,8 @@ namespace FubarDev.WebDavServer.Model {
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute("ItemsElementName", Order=2)]
         [System.Xml.Serialization.XmlIgnoreAttribute()]
-        public System.Collections.Generic.List<ItemsChoiceType2> ItemsElementName {
+        public ItemsChoiceType2[] ItemsElementName {
             get {
                 return this.itemsElementNameField;
             }
@@ -307,9 +305,9 @@ namespace FubarDev.WebDavServer.Model {
     [System.Xml.Serialization.XmlRootAttribute("error", Namespace="DAV:", IsNullable=false)]
     public partial class Error {
         
-        private System.Collections.Generic.List<object> itemsField;
+        private object[] itemsField;
         
-        private System.Collections.Generic.List<ItemsChoiceType> itemsElementNameField;
+        private ItemsChoiceType[] itemsElementNameField;
         
         /// <remarks/>
         [System.Xml.Serialization.XmlAnyElementAttribute()]
@@ -321,7 +319,7 @@ namespace FubarDev.WebDavServer.Model {
         [System.Xml.Serialization.XmlElementAttribute("preserved-live-properties", typeof(object))]
         [System.Xml.Serialization.XmlElementAttribute("propfind-finite-depth", typeof(object))]
         [System.Xml.Serialization.XmlChoiceIdentifierAttribute("ItemsElementName")]
-        public System.Collections.Generic.List<object> Items {
+        public object[] Items {
             get {
                 return this.itemsField;
             }
@@ -331,9 +329,8 @@ namespace FubarDev.WebDavServer.Model {
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute("ItemsElementName")]
         [System.Xml.Serialization.XmlIgnoreAttribute()]
-        public System.Collections.Generic.List<ItemsChoiceType> ItemsElementName {
+        public ItemsChoiceType[] ItemsElementName {
             get {
                 return this.itemsElementNameField;
             }
@@ -350,11 +347,11 @@ namespace FubarDev.WebDavServer.Model {
     [System.Xml.Serialization.XmlTypeAttribute(AnonymousType=true, Namespace="DAV:")]
     public partial class LockTokenSubmitted {
         
-        private System.Collections.Generic.List<string> hrefField;
+        private string[] hrefField;
         
         /// <remarks/>
         [System.Xml.Serialization.XmlElementAttribute("href", DataType="anyURI")]
-        public System.Collections.Generic.List<string> Href {
+        public string[] Href {
             get {
                 return this.hrefField;
             }
@@ -371,11 +368,11 @@ namespace FubarDev.WebDavServer.Model {
     [System.Xml.Serialization.XmlTypeAttribute(AnonymousType=true, Namespace="DAV:")]
     public partial class NoConflictingLock {
         
-        private System.Collections.Generic.List<string> hrefField;
+        private string[] hrefField;
         
         /// <remarks/>
         [System.Xml.Serialization.XmlElementAttribute("href", DataType="anyURI")]
-        public System.Collections.Generic.List<string> Href {
+        public string[] Href {
             get {
                 return this.hrefField;
             }
@@ -470,12 +467,12 @@ namespace FubarDev.WebDavServer.Model {
     [System.Xml.Serialization.XmlRootAttribute("propertyupdate", Namespace="DAV:", IsNullable=false)]
     public partial class Propertyupdate {
         
-        private System.Collections.Generic.List<object> itemsField;
+        private object[] itemsField;
         
         /// <remarks/>
         [System.Xml.Serialization.XmlElementAttribute("remove", typeof(Propremove))]
         [System.Xml.Serialization.XmlElementAttribute("set", typeof(Propset))]
-        public System.Collections.Generic.List<object> Items {
+        public object[] Items {
             get {
                 return this.itemsField;
             }

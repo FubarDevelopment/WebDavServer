@@ -44,7 +44,7 @@ namespace FubarDev.WebDavServer.FileSystem.DotNet
             var targetFileName = System.IO.Path.Combine(dir.DirectoryInfo.FullName, name);
             File.Copy(FileInfo.FullName, targetFileName, true);
             var fileInfo = new FileInfo(targetFileName);
-            var result = new DotNetFile(dir.DotNetFileSystem, dir, fileInfo, dir.Path.Append(Uri.EscapeDataString(fileInfo.Name)));
+            var result = new DotNetFile(dir.DotNetFileSystem, dir, fileInfo, dir.Path.Append(fileInfo.Name));
             return Task.FromResult<IDocument>(result);
         }
 
@@ -56,7 +56,7 @@ namespace FubarDev.WebDavServer.FileSystem.DotNet
                 File.Delete(targetFileName);
             File.Move(FileInfo.FullName, targetFileName);
             var fileInfo = new FileInfo(targetFileName);
-            var result = new DotNetFile(dir.DotNetFileSystem, dir, fileInfo, dir.Path.Append(Uri.EscapeDataString(fileInfo.Name)));
+            var result = new DotNetFile(dir.DotNetFileSystem, dir, fileInfo, dir.Path.Append(fileInfo.Name));
             return Task.FromResult<IDocument>(result);
         }
 

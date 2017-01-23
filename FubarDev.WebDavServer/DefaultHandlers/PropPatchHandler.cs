@@ -61,8 +61,8 @@ namespace FubarDev.WebDavServer.DefaultHandlers
                 // tried to update a read-only property
                 return new WebDavResult<Error>(WebDavStatusCodes.Forbidden, new Error()
                 {
-                    ItemsElementName = new List<ItemsChoiceType>() { ItemsChoiceType.CannotModifyProtectedProperty, },
-                    Items = new List<object>() { new object(), }
+                    ItemsElementName = new[] { ItemsChoiceType.CannotModifyProtectedProperty, },
+                    Items = new[] { new object(), }
                 });
             }
 
@@ -80,7 +80,7 @@ namespace FubarDev.WebDavServer.DefaultHandlers
                 {
                     Prop = new Prop()
                     {
-                        Any = elements.ToList(),
+                        Any = elements.ToArray(),
                     },
                     Status = $"{_host.RequestProtocol} {(int)changesByStatusCode.Key} {changesByStatusCode.Key.GetReasonPhrase()}"
                 };
@@ -90,13 +90,13 @@ namespace FubarDev.WebDavServer.DefaultHandlers
 
             var status = new Multistatus()
             {
-                Response = new List<Response>()
+                Response = new[]
                 {
                     new Response()
                     {
-                        Href = _host.BaseUrl.Append(path).OriginalString,
-                        ItemsElementName = propStats.Select(x => ItemsChoiceType2.Propstat).ToList(),
-                        Items = propStats.Cast<object>().ToList()
+                        Href = _host.BaseUrl.Append(path, true).OriginalString,
+                        ItemsElementName = propStats.Select(x => ItemsChoiceType2.Propstat).ToArray(),
+                        Items = propStats.Cast<object>().ToArray()
                     }
                 }
             };
