@@ -10,6 +10,7 @@ using FubarDev.WebDavServer.FileSystem;
 using FubarDev.WebDavServer.Handlers;
 using FubarDev.WebDavServer.Model;
 using FubarDev.WebDavServer.Properties;
+using FubarDev.WebDavServer.Properties.Dead;
 
 using JetBrains.Annotations;
 
@@ -58,9 +59,9 @@ namespace FubarDev.WebDavServer.DefaultHandlers
             if (isReadOnly)
             {
                 // tried to update a read-only property
-                return new WebDavResult<Error1>(WebDavStatusCodes.Forbidden, new Error1()
+                return new WebDavResult<Error>(WebDavStatusCodes.Forbidden, new Error()
                 {
-                    ItemsElementName = new[] { ItemsChoiceType2.CannotModifyProtectedProperty, },
+                    ItemsElementName = new[] { ItemsChoiceType.CannotModifyProtectedProperty, },
                     Items = new[] { new object(), }
                 });
             }
@@ -93,8 +94,8 @@ namespace FubarDev.WebDavServer.DefaultHandlers
                 {
                     new Response()
                     {
-                        Href = _host.BaseUrl.Append(path).OriginalString,
-                        ItemsElementName = propStats.Select(x => ItemsChoiceType1.Propstat).ToArray(),
+                        Href = _host.BaseUrl.Append(path, true).OriginalString,
+                        ItemsElementName = propStats.Select(x => ItemsChoiceType2.Propstat).ToArray(),
                         Items = propStats.Cast<object>().ToArray()
                     }
                 }
@@ -114,13 +115,13 @@ namespace FubarDev.WebDavServer.DefaultHandlers
                 {
                     case ChangeStatus.Added:
                         Debug.Assert(entry.FileSystem.PropertyStore != null);
-                        await entry.FileSystem.PropertyStore.RemoveRawAsync(entry, changeItem.Name, cancellationToken).ConfigureAwait(false);
+                        await entry.FileSystem.PropertyStore.RemoveAsync(entry, changeItem.Name, cancellationToken).ConfigureAwait(false);
                         newChangeItem = ChangeItem.FailedDependency(changeItem.Name);
                         properties.Remove(changeItem.Name);
                         break;
                     case ChangeStatus.Modified:
                         Debug.Assert(entry.FileSystem.PropertyStore != null);
-                        await entry.FileSystem.PropertyStore.SaveRawAsync(entry, changeItem.OldValue, cancellationToken).ConfigureAwait(false);
+                        await entry.FileSystem.PropertyStore.SetAsync(entry, changeItem.OldValue, cancellationToken).ConfigureAwait(false);
                         newChangeItem = ChangeItem.FailedDependency(changeItem.Name);
                         break;
                     case ChangeStatus.Removed:
@@ -128,7 +129,7 @@ namespace FubarDev.WebDavServer.DefaultHandlers
                         {
                             properties.Add(changeItem.Name, changeItem.Property);
                             Debug.Assert(_fileSystem.PropertyStore != null);
-                            await _fileSystem.PropertyStore.SaveRawAsync(entry, changeItem.OldValue, cancellationToken).ConfigureAwait(false);
+                            await _fileSystem.PropertyStore.SetAsync(entry, changeItem.OldValue, cancellationToken).ConfigureAwait(false);
                         }
                         newChangeItem = ChangeItem.FailedDependency(changeItem.Name);
                         break;
@@ -206,7 +207,7 @@ namespace FubarDev.WebDavServer.DefaultHandlers
                         try
                         {
                             var oldValue = await property.GetXmlValueAsync(cancellationToken).ConfigureAwait(false);
-                            var success = await entry.FileSystem.PropertyStore.RemoveRawAsync(entry, element.Name, cancellationToken).ConfigureAwait(false);
+                            var success = await entry.FileSystem.PropertyStore.RemoveAsync(entry, element.Name, cancellationToken).ConfigureAwait(false);
                             if (!success)
                             {
                                 result.Add(ChangeItem.Failed(property, "Cannot remove live property"));

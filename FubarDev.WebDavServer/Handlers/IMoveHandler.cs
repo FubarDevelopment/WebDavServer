@@ -6,6 +6,6 @@ namespace FubarDev.WebDavServer.Handlers
 {
     public interface IMoveHandler : IClass1Handler
     {
-        Task<IWebDavResult> MoveAsync(string path, Uri destination, bool forbidOverwrite, CancellationToken cancellationToken);
+        Task<IWebDavResult> MoveAsync(string path, Uri destination, bool? allowOverwrite, CancellationToken cancellationToken);
     }
 }

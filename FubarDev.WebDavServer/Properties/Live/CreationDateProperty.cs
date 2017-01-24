@@ -4,9 +4,9 @@ using System.Xml.Linq;
 using FubarDev.WebDavServer.Model;
 using FubarDev.WebDavServer.Properties.Generic;
 
-namespace FubarDev.WebDavServer.Properties
+namespace FubarDev.WebDavServer.Properties.Live
 {
-    public class CreationDateProperty : GenericDateTimeRfc1123Property
+    public class CreationDateProperty : GenericDateTimeRfc1123Property, ILiveProperty
     {
         public static readonly XName PropertyName = WebDavXml.Dav + "creationdate";
 

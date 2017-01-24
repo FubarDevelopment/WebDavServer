@@ -3,6 +3,7 @@ using System.Text;
 using System.Xml.Linq;
 
 using FubarDev.WebDavServer.Model;
+using FubarDev.WebDavServer.Properties.Dead;
 
 using JetBrains.Annotations;
 

@@ -13,7 +13,6 @@ namespace FubarDev.WebDavServer.FileSystem.DotNet
             AnonymousUserName = info.IsProbablyUnix ? "anonymous" : "Public";
         }
 
-        public bool ShowExtensionsForDisplayName { get; set; }
         public string RootPath { get; set; }
         public string AnonymousUserName { get; set; }
         public bool AllowInfiniteDepth { get; set; }

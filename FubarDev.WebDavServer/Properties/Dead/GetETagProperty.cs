@@ -1,15 +1,15 @@
-﻿using System;
-using System.Threading;
+﻿using System.Threading;
 using System.Threading.Tasks;
 using System.Xml.Linq;
 
 using FubarDev.WebDavServer.FileSystem;
 using FubarDev.WebDavServer.Model;
 using FubarDev.WebDavServer.Properties.Converters;
+using FubarDev.WebDavServer.Properties.Store;
 
-namespace FubarDev.WebDavServer.Properties
+namespace FubarDev.WebDavServer.Properties.Dead
 {
-    public class GetETagProperty : ITypedReadableProperty<EntityTag>, IInitializableProperty
+    public class GetETagProperty : ITypedReadableProperty<EntityTag>, IDeadProperty
     {
         public static readonly XName PropertyName = WebDavXml.Dav + "getetag";
 

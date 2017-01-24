@@ -28,7 +28,7 @@ namespace FubarDev.WebDavServer.FileSystem
             ResultType == SelectionResultType.MissingCollection ||
             ResultType == SelectionResultType.MissingDocumentOrCollection;
 
-        [CanBeNull]
+        [NotNull]
         public ICollection Collection { get; }
 
         [CanBeNull]
@@ -80,6 +80,25 @@ namespace FubarDev.WebDavServer.FileSystem
             }
         }
 
+        [NotNull]
+        public IEntry TargetEntry
+        {
+            get
+            {
+                if (IsMissing)
+                    throw new InvalidOperationException();
+                if (ResultType == SelectionResultType.FoundDocument)
+                {
+                    Debug.Assert(Document != null, "Document != null");
+                    return Document;
+                }
+
+                return Collection;
+            }
+        }
+
+        [NotNull]
+        public IFileSystem TargetFileSystem => ((IEntry) _document ?? Collection).FileSystem;
 
         [NotNull]
         public static SelectionResult Create([NotNull] ICollection collection, [NotNull] IDocument document)

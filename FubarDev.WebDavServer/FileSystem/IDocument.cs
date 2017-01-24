@@ -1,5 +1,4 @@
-﻿using System;
-using System.IO;
+﻿using System.IO;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -21,10 +20,10 @@ namespace FubarDev.WebDavServer.FileSystem
 
         [NotNull]
         [ItemNotNull]
-        Task<IEntry> CopyToAsync([NotNull] ICollection collection, [NotNull] string name, CancellationToken cancellationToken);
+        Task<IDocument> CopyToAsync([NotNull] ICollection collection, [NotNull] string name, CancellationToken cancellationToken);
 
         [NotNull]
         [ItemNotNull]
-        Task<IEntry> MoveToAsync([NotNull] ICollection collection, [NotNull] string name, CancellationToken cancellationToken);
+        Task<IDocument> MoveToAsync([NotNull] ICollection collection, [NotNull] string name, CancellationToken cancellationToken);
     }
 }

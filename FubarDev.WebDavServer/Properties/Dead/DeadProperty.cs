@@ -3,10 +3,11 @@ using System.Threading.Tasks;
 using System.Xml.Linq;
 
 using FubarDev.WebDavServer.FileSystem;
+using FubarDev.WebDavServer.Properties.Store;
 
-namespace FubarDev.WebDavServer.Properties
+namespace FubarDev.WebDavServer.Properties.Dead
 {
-    public class DeadProperty : IUntypedWriteableProperty, IInitializableProperty
+    public class DeadProperty : IUntypedWriteableProperty, IDeadProperty
     {
         private readonly IPropertyStore _store;
 
@@ -35,21 +36,17 @@ namespace FubarDev.WebDavServer.Properties
         public Task SetXmlValueAsync(XElement element, CancellationToken ct)
         {
             _cachedValue = element;
-            return _store.SaveRawAsync(_entry, element, ct);
+            return _store.SetAsync(_entry, element, ct);
         }
 
         public async Task<XElement> GetXmlValueAsync(CancellationToken ct)
         {
-            return _cachedValue ?? (_cachedValue = await _store.LoadRawAsync(_entry, Name, ct).ConfigureAwait(false));
+            return _cachedValue ?? (_cachedValue = await _store.GetAsync(_entry, Name, ct).ConfigureAwait(false));
         }
 
         public void Init(XElement initialValue)
         {
             _cachedValue = initialValue;
-        }
-
-        protected virtual void UpdateProperty(XElement value)
-        {
         }
     }
 }

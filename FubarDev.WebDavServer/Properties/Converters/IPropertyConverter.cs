@@ -2,7 +2,7 @@
 
 using JetBrains.Annotations;
 
-namespace FubarDev.WebDavServer.Properties
+namespace FubarDev.WebDavServer.Properties.Converters
 {
     public interface IPropertyConverter<T>
     {

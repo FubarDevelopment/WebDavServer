@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Threading;
@@ -7,7 +8,7 @@ using System.Threading.Tasks;
 using System.Xml.Linq;
 
 using FubarDev.WebDavServer.FileSystem;
-using FubarDev.WebDavServer.Properties.Events;
+using FubarDev.WebDavServer.Properties.Dead;
 
 using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Extensions.Options;
@@ -16,27 +17,35 @@ using Newtonsoft.Json;
 
 namespace FubarDev.WebDavServer.Properties.Store.TextFile
 {
-    public class TextFilePropertyStore : IFileSystemPropertyStore
+    public class TextFilePropertyStore : PropertyStoreBase, IFileSystemPropertyStore
     {
+        private static readonly XElement[] _emptyElements = new XElement[0];
+
         private readonly IMemoryCache _cache;
 
         private readonly TextFilePropertyStoreOptions _options;
 
         private readonly string _storeEntryName = ".properties";
 
-        public TextFilePropertyStore(IOptions<TextFilePropertyStoreOptions> options, IMemoryCache cache)
-            : this(options.Value, cache)
+        public TextFilePropertyStore(IOptions<TextFilePropertyStoreOptions> options, IMemoryCache cache, IDeadPropertyFactory deadPropertyFactory = null)
+            : this(options.Value, cache, deadPropertyFactory ?? new DeadPropertyFactory())
         {
         }
 
-        public TextFilePropertyStore(TextFilePropertyStoreOptions options, IMemoryCache cache)
+        public TextFilePropertyStore(TextFilePropertyStoreOptions options, IMemoryCache cache, IDeadPropertyFactory deadPropertyFactory)
+            : this(options, cache, deadPropertyFactory, options.RootFolder)
+        {
+        }
+
+        public TextFilePropertyStore(TextFilePropertyStoreOptions options, IMemoryCache cache, IDeadPropertyFactory deadPropertyFactory, string rootFolder)
+            : base(deadPropertyFactory)
         {
             _cache = cache;
             _options = options;
-            RootPath = options.RootFolder;
+            RootPath = rootFolder;
         }
 
-        public int Cost => _options.EstimatedCost;
+        public override int Cost => _options.EstimatedCost;
 
         public string RootPath { get; set; }
 
@@ -45,118 +54,46 @@ namespace FubarDev.WebDavServer.Properties.Store.TextFile
             return entry is IDocument && entry.Name == _storeEntryName;
         }
 
-        public Task<IReadOnlyCollection<IUntypedReadableProperty>> LoadAndCreateAsync(IEntry entry, CancellationToken cancellationToken)
+        public override Task<IReadOnlyCollection<XElement>> GetAsync(IEntry entry, CancellationToken cancellationToken)
         {
-            IReadOnlyCollection<IUntypedReadableProperty> result;
             var storeData = Load(entry, false);
             EntryInfo info;
+            IReadOnlyCollection<XElement> result;
             if (storeData.Entries.TryGetValue(GetEntryKey(entry), out info))
             {
-                result = info.Attributes.Select(x => CreateDeadProperty(entry, x.Value)).ToList();
+                result = info.Attributes.Values.ToList();
             }
             else
             {
-                result = new IUntypedReadableProperty[0];
+                result = _emptyElements;
             }
 
             return Task.FromResult(result);
         }
 
-        public Task<XElement> LoadRawAsync(IEntry entry, XName name, CancellationToken cancellationToken)
-        {
-            var info = GetInfo(entry);
-            if (info == null)
-                return Task.FromResult<XElement>(null);
-
-            XElement result;
-            if (!info.Attributes.TryGetValue(name, out result))
-                return Task.FromResult<XElement>(null);
-
-            return Task.FromResult(result);
-        }
-
-        public Task SaveRawAsync(IEntry entry, XElement element, CancellationToken cancellationToken)
+        public override Task SetAsync(IEntry entry, IEnumerable<XElement> elements, CancellationToken cancellationToken)
         {
             var info = GetInfo(entry) ?? new EntryInfo();
-            info.Attributes[element.Name] = element;
-            UpdateInfo(entry, info);
+            foreach (var element in elements)
+            {
+                info.Attributes[element.Name] = element;
+            }
 
+            UpdateInfo(entry, info);
             return Task.FromResult(0);
         }
 
-        public Task<bool> RemoveRawAsync(IEntry entry, XName name, CancellationToken cancellationToken)
+        public override Task<IReadOnlyCollection<bool>> RemoveAsync(IEntry entry, IEnumerable<XName> names, CancellationToken cancellationToken)
         {
             var info = GetInfo(entry) ?? new EntryInfo();
-            var couldRemove = info.Attributes.Remove(name);
+            var result = new List<bool>();
+            foreach (var name in names)
+            {
+                result.Add(info.Attributes.Remove(name));
+            }
+
             UpdateInfo(entry, info);
-
-            return Task.FromResult(couldRemove);
-        }
-
-        public Task RemoveAsync(IEntry entry, CancellationToken cancellationToken)
-        {
-            var data = Load(entry, true);
-            if (data.Entries.Remove(GetEntryKey(entry)))
-                Save(entry, data);
-            return Task.FromResult(0);
-        }
-
-        public async Task<EntityTag> GetETagAsync(IDocument document, CancellationToken cancellationToken)
-        {
-            var etag = await LoadRawAsync(document, EntityTag.PropertyName, cancellationToken).ConfigureAwait(false);
-            if (etag == null)
-            {
-                etag = new EntityTag().ToXml();
-                await SaveRawAsync(document, etag, cancellationToken).ConfigureAwait(false);
-            }
-
-            return EntityTag.FromXml(etag);
-        }
-
-        public async Task<EntityTag> UpdateETagAsync(IDocument document, CancellationToken cancellationToken)
-        {
-            var etagElement = await LoadRawAsync(document, EntityTag.PropertyName, cancellationToken).ConfigureAwait(false);
-            EntityTag etag;
-            if (etagElement == null)
-            {
-                etag = EntityTag.FromXml(null);
-            }
-            else
-            {
-                etag = EntityTag.FromXml(etagElement).Update();
-            }
-
-            etagElement = etag.ToXml();
-            await SaveRawAsync(document, etagElement, cancellationToken).ConfigureAwait(false);
-
-            return etag;
-        }
-
-        public Task HandleMovedEntryAsync(EntryMoved info, CancellationToken ct)
-        {
-            var isCollection = info.NewEntry is ICollection;
-            var oldFileName = GetFileNameFor(info.FromPath, isCollection);
-            var oldEntryKey = GetEntryKey(info.FromPath, isCollection);
-            var oldStoreData = Load(oldFileName, false);
-            EntryInfo oldInfo;
-            if (!oldStoreData.Entries.TryGetValue(oldEntryKey, out oldInfo))
-                return Task.FromResult(0);
-
-            oldStoreData.Entries.Remove(oldEntryKey);
-            Save(oldFileName, oldStoreData);
-
-            var newFileName = GetFileNameFor(info.NewEntry);
-            var newEntryKey = GetEntryKey(info.NewEntry);
-            var newStoreData = Load(newFileName, false);
-            newStoreData.Entries[newEntryKey] = oldInfo;
-            Save(newFileName, newStoreData);
-
-            return Task.FromResult(0);
-        }
-
-        public Task HandleModifiedEntryAsync(IEntry entry, CancellationToken ct)
-        {
-            return UpdateETagAsync((IDocument)entry, ct);
+            return Task.FromResult<IReadOnlyCollection<bool>>(result);
         }
 
         private static string GetEntryKey(IEntry entry)
@@ -164,13 +101,6 @@ namespace FubarDev.WebDavServer.Properties.Store.TextFile
             if (entry is ICollection)
                 return ".";
             return entry.Name.ToLower();
-        }
-
-        private static string GetEntryKey(string path, bool isCollection)
-        {
-            if (isCollection)
-                return ".";
-            return Path.GetFileName(path);
         }
 
         private void UpdateInfo(IEntry entry, EntryInfo info)
@@ -235,25 +165,28 @@ namespace FubarDev.WebDavServer.Properties.Store.TextFile
         private string GetFileNameFor(IEntry entry)
         {
             var isCollection = entry is ICollection;
-            return GetFileNameFor(entry.Path, isCollection);
-        }
-
-        private string GetFileNameFor(Uri path, bool isCollection)
-        {
-            return GetFileNameFor(path.OriginalString, isCollection);
-        }
-
-        private string GetFileNameFor(string path, bool isCollection)
-        {
+            var path = GetFileSystemPath(entry);
             if (isCollection)
-                return Path.Combine(RootPath, path, _storeEntryName);
+                return Path.Combine(path, _storeEntryName);
 
-            return Path.Combine(RootPath, Path.GetDirectoryName(path), _storeEntryName);
+            var directoryName = Path.GetDirectoryName(path);
+            Debug.Assert(directoryName != null, "directoryName != null");
+            return Path.Combine(directoryName, _storeEntryName);
         }
 
-        private IUntypedWriteableProperty CreateDeadProperty(IEntry entry, XElement element)
+        private string GetFileSystemPath(IEntry entry)
         {
-            return new DeadProperty(this, entry, element);
+            var names = new List<string>();
+
+            while (entry.Parent != null)
+            {
+                if (!string.IsNullOrEmpty(entry.Name))
+                    names.Add(entry.Name);
+                entry = entry.Parent;
+            }
+
+            names.Reverse();
+            return Path.Combine(RootPath, Path.Combine(names.ToArray()));
         }
 
         // ReSharper disable once ClassNeverInstantiated.Local

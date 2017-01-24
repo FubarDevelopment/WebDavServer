@@ -2,7 +2,7 @@
 
 using FubarDev.WebDavServer.Model;
 
-namespace FubarDev.WebDavServer.Properties
+namespace FubarDev.WebDavServer.Properties.Filters
 {
     public class MissingProperty
     {

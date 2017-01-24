@@ -3,22 +3,25 @@ using System.IO;
 using System.Threading;
 using System.Threading.Tasks;
 
-using FubarDev.WebDavServer.Properties;
+using FubarDev.WebDavServer.Properties.Store;
 
 namespace FubarDev.WebDavServer.FileSystem.DotNet
 {
-    public class DotNetFileSystem : IFileSystem
+    public class DotNetFileSystem : ILocalFileSystem
     {
         private readonly PathTraversalEngine _pathTraversalEngine;
 
-        public DotNetFileSystem(DotNetFileSystemOptions options, string rootFolder, PathTraversalEngine pathTraversalEngine, IPropertyStore propertyStore = null)
+        public DotNetFileSystem(DotNetFileSystemOptions options, string rootFolder, PathTraversalEngine pathTraversalEngine, IPropertyStoreFactory propertyStoreFactory = null)
         {
+            RootDirectoryPath = rootFolder;
             _pathTraversalEngine = pathTraversalEngine;
-            var root = new AsyncLazy<DotNetDirectory>(() => new DotNetDirectory(this, new DirectoryInfo(rootFolder), new Uri(string.Empty, UriKind.Relative)));
+            var root = new AsyncLazy<DotNetDirectory>(() => new DotNetDirectory(this, null, new DirectoryInfo(rootFolder), new Uri(string.Empty, UriKind.Relative)));
             Root = new AsyncLazy<ICollection>(async () => await root);
             Options = options;
-            PropertyStore = propertyStore;
+            PropertyStore = propertyStoreFactory?.Create(this);
         }
+
+        public string RootDirectoryPath { get; }
 
         public AsyncLazy<ICollection> Root { get; }
 

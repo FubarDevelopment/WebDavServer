@@ -9,7 +9,6 @@ using System.Xml.Linq;
 using FubarDev.WebDavServer.FileSystem;
 using FubarDev.WebDavServer.Handlers;
 using FubarDev.WebDavServer.Model;
-using FubarDev.WebDavServer.Properties;
 using FubarDev.WebDavServer.Properties.Filters;
 
 using JetBrains.Annotations;
@@ -58,9 +57,9 @@ namespace FubarDev.WebDavServer.DefaultHandlers
                     if (collector == null)
                     {
                         // Cannot recursively collect the children with infinite depth
-                        return new WebDavResult<Error1>(WebDavStatusCodes.Forbidden, new Error1()
+                        return new WebDavResult<Error>(WebDavStatusCodes.Forbidden, new Error()
                         {
-                            ItemsElementName = new[] { ItemsChoiceType2.PropfindFiniteDepth, },
+                            ItemsElementName = new[] { ItemsChoiceType.PropfindFiniteDepth, },
                             Items = new[] { new object(), }
                         });
                     }
@@ -81,9 +80,9 @@ namespace FubarDev.WebDavServer.DefaultHandlers
 
             switch (request.ItemsElementName[0])
             {
-                case ItemsChoiceType.Allprop:
+                case ItemsChoiceType1.Allprop:
                     return await HandleAllPropAsync(request, entries, cancellationToken).ConfigureAwait(false);
-                case ItemsChoiceType.Prop:
+                case ItemsChoiceType1.Prop:
                     return await HandlePropAsync((Prop)request.Items[0], entries, cancellationToken).ConfigureAwait(false);
             }
 
@@ -103,7 +102,7 @@ namespace FubarDev.WebDavServer.DefaultHandlers
                 var response = new Response()
                 {
                     Href = href.OriginalString,
-                    ItemsElementName = propStats.Select(x => ItemsChoiceType1.Propstat).ToArray(),
+                    ItemsElementName = propStats.Select(x => ItemsChoiceType2.Propstat).ToArray(),
                     Items = propStats.Cast<object>().ToArray(),
                 };
 
@@ -120,7 +119,7 @@ namespace FubarDev.WebDavServer.DefaultHandlers
 
         private Task<IWebDavResult> HandleAllPropAsync([NotNull] Propfind request, IEnumerable<IEntry> entries, CancellationToken cancellationToken)
         {
-            var include = request.ItemsElementName.Select((x, i) => Tuple.Create(x, i)).Where(x => x.Item1 == ItemsChoiceType.Include).Select(x => (Include)request.Items[x.Item2]).FirstOrDefault();
+            var include = request.ItemsElementName.Select((x, i) => Tuple.Create(x, i)).Where(x => x.Item1 == ItemsChoiceType1.Include).Select(x => (Include)request.Items[x.Item2]).FirstOrDefault();
             return HandleAllPropAsync(include, entries, cancellationToken);
         }
 
@@ -136,7 +135,7 @@ namespace FubarDev.WebDavServer.DefaultHandlers
             foreach (var entry in entries)
             {
                 var entryPath = entry.Path.OriginalString.TrimEnd('/');
-                var href = _host.BaseUrl.Append(entryPath);
+                var href = _host.BaseUrl.Append(entryPath, true);
 
                 var collector = new PropertyCollector(_host, new ReadableFilter(), new CostFilter(0));
                 var propStats = await collector.GetPropertiesAsync(entry, cancellationToken).ConfigureAwait(false);
@@ -144,7 +143,7 @@ namespace FubarDev.WebDavServer.DefaultHandlers
                 var response = new Response()
                 {
                     Href = href.OriginalString,
-                    ItemsElementName = propStats.Select(x => ItemsChoiceType1.Propstat).ToArray(),
+                    ItemsElementName = propStats.Select(x => ItemsChoiceType2.Propstat).ToArray(),
                     Items = propStats.Cast<object>().ToArray(),
                 };
 

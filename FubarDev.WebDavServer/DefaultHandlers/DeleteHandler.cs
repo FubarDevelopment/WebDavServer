@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Diagnostics;
 using System.Threading;
 using System.Threading.Tasks;
@@ -38,6 +37,11 @@ namespace FubarDev.WebDavServer.DefaultHandlers
             try
             {
                 deleteResult = await targetEntry.DeleteAsync(cancellationToken).ConfigureAwait(false);
+                if (targetEntry.FileSystem.PropertyStore != null)
+                {
+                    // Remove dead properties (if there are any)
+                    await targetEntry.FileSystem.PropertyStore.RemoveAsync(targetEntry, cancellationToken).ConfigureAwait(false);
+                }
             }
             catch
             {
@@ -51,8 +55,8 @@ namespace FubarDev.WebDavServer.DefaultHandlers
                     new Response()
                     {
                         Href = _host.BaseUrl.Append((deleteResult.FailedEntry ?? targetEntry).Path).OriginalString,
-                        ItemsElementName = new[] { ItemsChoiceType1.Status, },
-                        Items = new object[] { $"{_host.RequestProtocol} {(int)deleteResult.StatusCode} {deleteResult.StatusCode.GetReasonPhrase()}" }
+                        ItemsElementName = new[] {ItemsChoiceType2.Status,},
+                        Items = new object[] {$"{_host.RequestProtocol} {(int) deleteResult.StatusCode} {deleteResult.StatusCode.GetReasonPhrase()}"}
                     }
                 }
             };

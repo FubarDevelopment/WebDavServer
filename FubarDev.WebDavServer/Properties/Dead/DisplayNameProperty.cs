@@ -6,10 +6,11 @@ using System.Xml.Linq;
 using FubarDev.WebDavServer.FileSystem;
 using FubarDev.WebDavServer.Model;
 using FubarDev.WebDavServer.Properties.Generic;
+using FubarDev.WebDavServer.Properties.Store;
 
-namespace FubarDev.WebDavServer.Properties
+namespace FubarDev.WebDavServer.Properties.Dead
 {
-    public class DisplayNameProperty : GenericStringProperty, IInitializableProperty
+    public class DisplayNameProperty : GenericStringProperty, IDeadProperty
     {
         public static readonly XName PropertyName = WebDavXml.Dav + "displayname";
 
@@ -34,7 +35,7 @@ namespace FubarDev.WebDavServer.Properties
             if (_value != null)
                 return _value;
 
-            var displayName = await _store.LoadRawAsync(_entry, Name, ct).ConfigureAwait(false);
+            var displayName = await _store.GetAsync(_entry, Name, ct).ConfigureAwait(false);
             if (displayName != null)
             {
                 return displayName.Value;
@@ -48,7 +49,7 @@ namespace FubarDev.WebDavServer.Properties
         public override Task SetValueAsync(string value, CancellationToken ct)
         {
             _value = value;
-            return _store.SaveRawAsync(_entry, Converter.ToElement(Name, value), ct);
+            return _store.SetAsync(_entry, Converter.ToElement(Name, value), ct);
         }
 
         public void Init(XElement initialValue)

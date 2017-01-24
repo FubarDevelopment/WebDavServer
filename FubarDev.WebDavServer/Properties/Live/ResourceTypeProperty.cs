@@ -1,13 +1,12 @@
-﻿using System;
-using System.Threading;
+﻿using System.Threading;
 using System.Threading.Tasks;
 using System.Xml.Linq;
 
 using FubarDev.WebDavServer.Model;
 
-namespace FubarDev.WebDavServer.Properties
+namespace FubarDev.WebDavServer.Properties.Live
 {
-    public abstract class ResourceTypeProperty : IUntypedReadableProperty
+    public abstract class ResourceTypeProperty : ILiveProperty
     {
         public static readonly XName PropertyName = WebDavXml.Dav + "resourcetype";
 
@@ -18,13 +17,15 @@ namespace FubarDev.WebDavServer.Properties
             _element = element;
         }
 
-        public static ResourceTypeProperty Document { get; } = new DocumentResourceType();
-
-        public static ResourceTypeProperty Collection { get; } = new CollectionResourceType();
-
         public XName Name { get; } = PropertyName;
 
         public int Cost { get; } = 0;
+
+        public static ResourceTypeProperty GetDocumentResourceType()
+            => new DocumentResourceType();
+
+        public static ResourceTypeProperty GetCollectionResourceType()
+            => new CollectionResourceType();
 
         public Task<XElement> GetXmlValueAsync(CancellationToken ct)
         {

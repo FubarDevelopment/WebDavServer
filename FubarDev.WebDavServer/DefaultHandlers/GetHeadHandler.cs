@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 using FubarDev.WebDavServer.FileSystem;
 using FubarDev.WebDavServer.Handlers;
 using FubarDev.WebDavServer.Model;
-using FubarDev.WebDavServer.Properties;
+using FubarDev.WebDavServer.Properties.Store;
 
 using JetBrains.Annotations;
 

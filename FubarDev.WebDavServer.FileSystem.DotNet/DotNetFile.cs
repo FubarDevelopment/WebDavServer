@@ -5,14 +5,15 @@ using System.Threading;
 using System.Threading.Tasks;
 
 using FubarDev.WebDavServer.Model;
-using FubarDev.WebDavServer.Properties;
+using FubarDev.WebDavServer.Properties.Dead;
+using FubarDev.WebDavServer.Properties.Live;
 
 namespace FubarDev.WebDavServer.FileSystem.DotNet
 {
     public class DotNetFile : DotNetEntry, IDocument
     {
-        public DotNetFile(DotNetFileSystem fileSystem, FileInfo info, Uri path)
-            : base(fileSystem, info, path)
+        public DotNetFile(DotNetFileSystem fileSystem, DotNetDirectory parent, FileInfo info, Uri path)
+            : base(fileSystem, parent, info, path)
         {
             FileInfo = info;
         }
@@ -37,32 +38,45 @@ namespace FubarDev.WebDavServer.FileSystem.DotNet
             return Task.FromResult(new DeleteResult(WebDavStatusCodes.OK, null));
         }
 
-        public Task<IEntry> CopyToAsync(ICollection collection, string name, CancellationToken cancellationToken)
+        public Task<IDocument> CopyToAsync(ICollection collection, string name, CancellationToken cancellationToken)
         {
             var dir = (DotNetDirectory) collection;
             var targetFileName = System.IO.Path.Combine(dir.DirectoryInfo.FullName, name);
             File.Copy(FileInfo.FullName, targetFileName, true);
-            return dir.GetChildAsync(name, cancellationToken);
+            var fileInfo = new FileInfo(targetFileName);
+            var result = new DotNetFile(dir.DotNetFileSystem, dir, fileInfo, dir.Path.Append(fileInfo.Name));
+            return Task.FromResult<IDocument>(result);
         }
 
-        public Task<IEntry> MoveToAsync(ICollection collection, string name, CancellationToken cancellationToken)
+        public Task<IDocument> MoveToAsync(ICollection collection, string name, CancellationToken cancellationToken)
         {
             var dir = (DotNetDirectory)collection;
             var targetFileName = System.IO.Path.Combine(dir.DirectoryInfo.FullName, name);
             if (File.Exists(targetFileName))
                 File.Delete(targetFileName);
             File.Move(FileInfo.FullName, targetFileName);
-            return dir.GetChildAsync(name, cancellationToken);
+            var fileInfo = new FileInfo(targetFileName);
+            var result = new DotNetFile(dir.DotNetFileSystem, dir, fileInfo, dir.Path.Append(fileInfo.Name));
+            return Task.FromResult<IDocument>(result);
         }
 
-        protected override IEnumerable<IUntypedReadableProperty> GetLiveProperties()
+        protected override IEnumerable<ILiveProperty> GetLiveProperties()
         {
-            foreach (var liveProperty in base.GetLiveProperties())
+            foreach (var property in base.GetLiveProperties())
             {
-                yield return liveProperty;
+                yield return property;
             }
 
             yield return new ContentLengthProperty(ct => Task.FromResult(Length));
+        }
+
+        protected override IEnumerable<IDeadProperty> GetPredefinedDeadProperties()
+        {
+            foreach (var property in base.GetPredefinedDeadProperties())
+            {
+                yield return property;
+            }
+
             yield return new GetETagProperty(FileSystem.PropertyStore, this, 0);
         }
     }

@@ -4,5 +4,6 @@
     {
         public int EstimatedCost { get; set; }
         public string RootFolder { get; set; }
+        public bool StoreInTargetFileSystem { get; set; }
     }
 }

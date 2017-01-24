@@ -5,13 +5,18 @@ using System.Threading;
 using System.Threading.Tasks;
 
 using FubarDev.WebDavServer.Properties;
+using FubarDev.WebDavServer.Properties.Dead;
+using FubarDev.WebDavServer.Properties.Live;
 
 namespace FubarDev.WebDavServer.FileSystem.DotNet
 {
     public abstract class DotNetEntry : IEntry
     {
-        protected DotNetEntry(DotNetFileSystem fileSystem, FileSystemInfo info, Uri path)
+        private readonly DotNetDirectory _parent;
+
+        protected DotNetEntry(DotNetFileSystem fileSystem, DotNetDirectory parent, FileSystemInfo info, Uri path)
         {
+            _parent = parent;
             Info = info;
             DotNetFileSystem = fileSystem;
             Path = path;
@@ -22,26 +27,33 @@ namespace FubarDev.WebDavServer.FileSystem.DotNet
         public string Name => Info.Name;
         public IFileSystem RootFileSystem => DotNetFileSystem;
         public IFileSystem FileSystem => DotNetFileSystem;
+        public ICollection Parent => _parent;
         public Uri Path { get; }
         public DateTime LastWriteTimeUtc => Info.LastWriteTimeUtc;
 
         public IAsyncEnumerable<IUntypedReadableProperty> GetProperties()
         {
-            return new EntryProperties(this, GetLiveProperties(), FileSystem.PropertyStore);
+            return new EntryProperties(this, GetLiveProperties(), GetPredefinedDeadProperties(), FileSystem.PropertyStore);
         }
 
         public abstract Task<DeleteResult> DeleteAsync(CancellationToken cancellationToken);
 
-        protected virtual IEnumerable<IUntypedReadableProperty> GetLiveProperties()
+        protected virtual IEnumerable<ILiveProperty> GetLiveProperties()
         {
-            var properties = new List<IUntypedReadableProperty>()
+            var properties = new List<ILiveProperty>()
             {
                 this.GetResourceTypeProperty(),
-                new DisplayNameProperty(this, FileSystem.PropertyStore, !DotNetFileSystem.Options.ShowExtensionsForDisplayName),
                 new LastModifiedProperty(ct => Task.FromResult(Info.LastWriteTimeUtc), SetLastWriteTimeUtc),
                 new CreationDateProperty(ct => Task.FromResult(Info.CreationTimeUtc), SetCreateTimeUtc),
             };
             return properties;
+        }
+
+        protected virtual IEnumerable<IDeadProperty> GetPredefinedDeadProperties()
+        {
+            var displayProperty = FileSystem.PropertyStore?.Create(this, DisplayNameProperty.PropertyName);
+            if (displayProperty != null)
+                yield return displayProperty;
         }
 
         private Task SetCreateTimeUtc(DateTime value, CancellationToken cancellationToken)

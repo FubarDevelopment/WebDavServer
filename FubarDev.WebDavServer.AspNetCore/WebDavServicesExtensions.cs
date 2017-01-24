@@ -5,6 +5,7 @@ using FubarDev.WebDavServer.Dispatchers;
 using FubarDev.WebDavServer.FileSystem;
 using FubarDev.WebDavServer.Formatters;
 using FubarDev.WebDavServer.Handlers;
+using FubarDev.WebDavServer.Properties.Dead;
 
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -23,6 +24,7 @@ namespace FubarDev.WebDavServer.AspNetCore
             services.TryAddEnumerable(ServiceDescriptor.Transient<IConfigureOptions<MvcOptions>, WebDavXmlSerializerMvcOptionsSetup>());
             services.TryAddEnumerable(ServiceDescriptor.Transient<IConfigureOptions<MvcOptions>, WebDavExceptionFilterMvcOptionsSetup>());
             services.TryAddSingleton<IHttpContextAccessor, HttpContextAccessor>();
+            services.TryAddSingleton<IDeadPropertyFactory, DeadPropertyFactory>();
             services
                 .AddOptions()
                 .AddScoped<IWebDavDispatcher, WebDavServer>()

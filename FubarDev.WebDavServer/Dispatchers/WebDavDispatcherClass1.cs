@@ -50,47 +50,69 @@ namespace FubarDev.WebDavServer.Dispatchers
 
             foreach (var class1Handler in class1Handlers)
             {
+                var handlerFound = false;
+
                 if (class1Handler is IOptionsHandler optionsHandler)
                 {
                     _optionsHandler = optionsHandler;
+                    handlerFound = true;
                 }
-                else if (class1Handlers is IPropFindHandler propFindHandler)
+
+                if (class1Handler is IPropFindHandler propFindHandler)
                 {
                     _propFindHandler = propFindHandler;
+                    handlerFound = true;
                 }
-                else if (class1Handlers is IGetHandler getHandler)
+
+                if (class1Handler is IGetHandler getHandler)
                 {
                     _getHandler = getHandler;
+                    handlerFound = true;
                 }
-                else if (class1Handlers is IHeadHandler headHandler)
+
+                if (class1Handler is IHeadHandler headHandler)
                 {
                     _headHandler = headHandler;
+                    handlerFound = true;
                 }
-                else if (class1Handlers is IPropPatchHandler propPatchHandler)
+
+                if (class1Handler is IPropPatchHandler propPatchHandler)
                 {
                     _propPatchHandler = propPatchHandler;
+                    handlerFound = true;
                 }
-                else if (class1Handlers is IPutHandler putHandler)
+
+                if (class1Handler is IPutHandler putHandler)
                 {
                     _putHandler = putHandler;
+                    handlerFound = true;
                 }
-                else if (class1Handlers is IMkColHandler mkColHandler)
+
+                if (class1Handler is IMkColHandler mkColHandler)
                 {
                     _mkColHandler = mkColHandler;
+                    handlerFound = true;
                 }
-                else if (class1Handlers is IDeleteHandler deleteHandler)
+
+                if (class1Handler is IDeleteHandler deleteHandler)
                 {
                     _deleteHandler = deleteHandler;
+                    handlerFound = true;
                 }
-                else if (class1Handlers is ICopyHandler copyHandler)
+
+                if (class1Handler is ICopyHandler copyHandler)
                 {
                     _copyHandler = copyHandler;
+                    handlerFound = true;
                 }
-                else if (class1Handlers is IMoveHandler moveHandler)
+
+                if (class1Handler is IMoveHandler moveHandler)
                 {
                     _moveHandler = moveHandler;
+                    handlerFound = true;
                 }
-                else
+
+                if (!handlerFound)
                 {
                     throw new NotSupportedException();
                 }
@@ -143,7 +165,7 @@ namespace FubarDev.WebDavServer.Dispatchers
             return _propFindHandler.PropFindAsync(path, request, depth, cancellationToken);
         }
 
-        public Task<IWebDavResult> PropPatch(string path, Propertyupdate request, CancellationToken cancellationToken)
+        public Task<IWebDavResult> PropPatchAsync(string path, Propertyupdate request, CancellationToken cancellationToken)
         {
             if (_propPatchHandler == null)
                 throw new NotSupportedException();
@@ -164,18 +186,18 @@ namespace FubarDev.WebDavServer.Dispatchers
             return _mkColHandler.MkColAsync(path, cancellationToken);
         }
 
-        public Task<IWebDavResult> CopyAsync(string path, Uri destination, bool forbidOverwrite, CancellationToken cancellationToken)
+        public Task<IWebDavResult> CopyAsync(string path, Uri destination, bool? allowOverwrite, CancellationToken cancellationToken)
         {
             if (_copyHandler == null)
                 throw new NotSupportedException();
-            return _copyHandler.CopyAsync(path, destination, forbidOverwrite, cancellationToken);
+            return _copyHandler.CopyAsync(path, destination, allowOverwrite, cancellationToken);
         }
 
-        public Task<IWebDavResult> MoveAsync(string path, Uri destination, bool forbidOverwrite, CancellationToken cancellationToken)
+        public Task<IWebDavResult> MoveAsync(string path, Uri destination, bool? allowOverwrite, CancellationToken cancellationToken)
         {
             if (_moveHandler == null)
                 throw new NotSupportedException();
-            return _moveHandler.MoveAsync(path, destination, forbidOverwrite, cancellationToken);
+            return _moveHandler.MoveAsync(path, destination, allowOverwrite, cancellationToken);
         }
     }
 }

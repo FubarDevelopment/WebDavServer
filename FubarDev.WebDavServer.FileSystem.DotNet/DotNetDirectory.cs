@@ -5,7 +5,7 @@ using System.Threading;
 using System.Threading.Tasks;
 
 using FubarDev.WebDavServer.Model;
-using FubarDev.WebDavServer.Properties;
+using FubarDev.WebDavServer.Properties.Store;
 
 namespace FubarDev.WebDavServer.FileSystem.DotNet
 {
@@ -13,8 +13,8 @@ namespace FubarDev.WebDavServer.FileSystem.DotNet
     {
         private readonly IFileSystemPropertyStore _fileSystemPropertyStore;
 
-        public DotNetDirectory(DotNetFileSystem fileSystem, DirectoryInfo info, Uri path)
-            : base(fileSystem, info, path)
+        public DotNetDirectory(DotNetFileSystem fileSystem, DotNetDirectory parent, DirectoryInfo info, Uri path)
+            : base(fileSystem, parent, info, path)
         {
             _fileSystemPropertyStore = fileSystem.PropertyStore as IFileSystemPropertyStore;
             DirectoryInfo = info;
@@ -61,6 +61,8 @@ namespace FubarDev.WebDavServer.FileSystem.DotNet
         public Task<ICollection> CreateCollectionAsync(string name, CancellationToken cancellationToken)
         {
             var info = new DirectoryInfo(System.IO.Path.Combine(DirectoryInfo.FullName, name));
+            if (info.Exists)
+                throw new IOException("Collection already exists.");
             info.Create();
             return Task.FromResult((ICollection)CreateEntry(info));
         }
@@ -71,42 +73,19 @@ namespace FubarDev.WebDavServer.FileSystem.DotNet
             return Task.FromResult(new DeleteResult(WebDavStatusCodes.OK, null));
         }
 
-        public Task<CollectionActionResult> CopyToAsync(ICollection collection, string name, CancellationToken cancellationToken)
+        public IAsyncEnumerable<IEntry> GetEntries(int maxDepth)
         {
-            var dir = (DotNetDirectory)collection;
-            var targetDirectoryName = System.IO.Path.Combine(dir.DirectoryInfo.FullName, name);
-            var targetDirInfo = Directory.CreateDirectory(targetDirectoryName);
-            /*
-            var engine = new ExecuteRecursiveAction(
-                DirectoryInfo,
-                targetDirInfo,
-                (src, dst) =>
-                {
-                    if (dst.Exists)
-                        dst.Delete();
-                    src.MoveTo(dst.FullName);
-                },
-                (src, dst) =>
-                {
-                    dst.Create();
-                });
-            */
-            throw new NotImplementedException();
-        }
-
-        public Task<CollectionActionResult> MoveToAsync(ICollection collection, string name, CancellationToken cancellationToken)
-        {
-            throw new NotImplementedException();
+            return this.EnumerateEntries(maxDepth);
         }
 
         private IEntry CreateEntry(FileSystemInfo fsInfo)
         {
             var fileInfo = fsInfo as FileInfo;
             if (fileInfo != null)
-                return new DotNetFile(DotNetFileSystem, fileInfo, Path.Append(Uri.EscapeDataString(fileInfo.Name)));
+                return new DotNetFile(DotNetFileSystem, this, fileInfo, Path.Append(fileInfo.Name));
 
             var dirInfo = (DirectoryInfo) fsInfo;
-            return new DotNetDirectory(DotNetFileSystem, dirInfo, Path.Append(Uri.EscapeDataString(dirInfo.Name) + "/"));
+            return new DotNetDirectory(DotNetFileSystem, this, dirInfo, Path.AppendDirectory(dirInfo.Name));
         }
 
         private class DotNetItemInfo
@@ -203,11 +182,6 @@ namespace FubarDev.WebDavServer.FileSystem.DotNet
             {
                 throw new NotImplementedException();
             }
-        }
-
-        public IAsyncEnumerable<IEntry> GetEntries(int maxDepth)
-        {
-            return this.EnumerateEntries(maxDepth);
         }
 
         private class ActionInfo<TItem, TDirectory, TFile>

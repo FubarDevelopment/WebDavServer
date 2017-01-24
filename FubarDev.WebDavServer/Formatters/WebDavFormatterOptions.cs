@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace FubarDev.WebDavServer.Formatters
+﻿namespace FubarDev.WebDavServer.Formatters
 {
     public class WebDavFormatterOptions
     {

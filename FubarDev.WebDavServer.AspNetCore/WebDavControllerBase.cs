@@ -73,7 +73,7 @@ namespace FubarDev.WebDavServer.AspNetCore
         [HttpPropPatch]
         public async Task<IActionResult> PropPatchAsync(string path, [FromBody]Propertyupdate request, CancellationToken cancellationToken)
         {
-            var result = await _dispatcher.Class1.PropPatch(path, request, cancellationToken).ConfigureAwait(false);
+            var result = await _dispatcher.Class1.PropPatchAsync(path, request, cancellationToken).ConfigureAwait(false);
             return new WebDavIndirectResult(_dispatcher, result);
         }
 
@@ -85,29 +85,29 @@ namespace FubarDev.WebDavServer.AspNetCore
         }
 
         [HttpCopy]
-        public Task<IActionResult> CopyAsync(string path, [FromHeader(Name = "Destination")] string destination, CancellationToken cancellationToken)
+        public async Task<IActionResult> CopyAsync(string path, [FromHeader(Name = "Destination")] string destination, [FromHeader(Name = "Overwrite")] string overwrite = null, CancellationToken cancellationToken = default(CancellationToken))
         {
-            return CopyAsync(path, destination, null, cancellationToken);
-        }
-
-        [HttpCopy]
-        public async Task<IActionResult> CopyAsync(string path, [FromHeader(Name = "Destination")] string destination, [FromHeader(Name = "Overwrite")] string overwrite, CancellationToken cancellationToken)
-        {
-            var result = await _dispatcher.Class1.CopyAsync(path, new Uri(destination, UriKind.RelativeOrAbsolute), !string.IsNullOrEmpty(overwrite) && overwrite == "F", cancellationToken).ConfigureAwait(false);
+            var result = await _dispatcher.Class1.CopyAsync(path, new Uri(destination, UriKind.RelativeOrAbsolute), ParseOverwrite(overwrite), cancellationToken).ConfigureAwait(false);
             return new WebDavIndirectResult(_dispatcher, result);
         }
 
         [HttpMove]
-        public Task<IActionResult> MoveAsync(string path, [FromHeader(Name = "Destination")] string destination, CancellationToken cancellationToken)
+        public async Task<IActionResult> MoveAsync(string path, [FromHeader(Name = "Destination")] string destination, [FromHeader(Name = "Overwrite")] string overwrite = null, CancellationToken cancellationToken = default(CancellationToken))
         {
-            return MoveAsync(path, destination, null, cancellationToken);
+            var result = await _dispatcher.Class1.MoveAsync(path, new Uri(destination, UriKind.RelativeOrAbsolute), ParseOverwrite(overwrite), cancellationToken).ConfigureAwait(false);
+            return new WebDavIndirectResult(_dispatcher, result);
         }
 
-        [HttpMove]
-        public async Task<IActionResult> MoveAsync(string path, [FromHeader(Name = "Destination")] string destination, [FromHeader(Name = "Overwrite")] string overwrite, CancellationToken cancellationToken)
+        private static bool? ParseOverwrite(string overwrite)
         {
-            var result = await _dispatcher.Class1.MoveAsync(path, new Uri(destination, UriKind.RelativeOrAbsolute), !string.IsNullOrEmpty(overwrite) && overwrite == "F", cancellationToken).ConfigureAwait(false);
-            return new WebDavIndirectResult(_dispatcher, result);
+            if (string.IsNullOrWhiteSpace(overwrite))
+                return null;
+            overwrite = overwrite.Trim();
+            if (overwrite == "T")
+                return true;
+            if (overwrite == "F")
+                return false;
+            throw new NotSupportedException($"Overwrite value '{overwrite}' isn't supported");
         }
     }
 }
