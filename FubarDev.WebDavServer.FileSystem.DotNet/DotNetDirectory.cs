@@ -3,12 +3,9 @@ using System.Collections.Generic;
 using System.IO;
 using System.Threading;
 using System.Threading.Tasks;
-using System.Xml.Linq;
 
 using FubarDev.WebDavServer.Model;
 using FubarDev.WebDavServer.Properties;
-
-using JetBrains.Annotations;
 
 namespace FubarDev.WebDavServer.FileSystem.DotNet
 {
@@ -36,13 +33,21 @@ namespace FubarDev.WebDavServer.FileSystem.DotNet
             if (!item.Exists)
                 return Task.FromResult<IEntry>(null);
 
-            return Task.FromResult<IEntry>(CreateEntry(item));
+            return Task.FromResult(CreateEntry(item));
         }
 
         public Task<IReadOnlyCollection<IEntry>> GetChildrenAsync(CancellationToken ct)
         {
             var result = new List<IEntry>();
-            result.AddRange(GetChildEntries(ct));
+            foreach (var info in DirectoryInfo.EnumerateFileSystemInfos())
+            {
+                ct.ThrowIfCancellationRequested();
+                var entry = CreateEntry(info);
+                var ignoreEntry = _fileSystemPropertyStore?.IgnoreEntry(entry) ?? false;
+                if (!ignoreEntry)
+                    result.Add(entry);
+            }
+
             return Task.FromResult<IReadOnlyCollection<IEntry>>(result);
         }
 
@@ -66,26 +71,11 @@ namespace FubarDev.WebDavServer.FileSystem.DotNet
             return Task.FromResult(new DeleteResult(WebDavStatusCodes.OK, null));
         }
 
-        public IAsyncEnumerable<IEntry> GetEntries(int maxDepth)
+        public Task<CollectionActionResult> CopyToAsync(ICollection collection, string name, CancellationToken cancellationToken)
         {
-            return this.EnumerateEntries(maxDepth);
-        }
-
-        public Task<CollectionActionResult> CopyToAsync(ICollection collection, bool recursive, CancellationToken cancellationToken)
-        {
-            throw new NotImplementedException();
-        }
-
-        public async Task<CollectionActionResult> CopyToAsync(ICollection collection, string name, bool recursive, CancellationToken cancellationToken)
-        {
-            var targetDir = (DotNetDirectory)collection;
-            var engine = new RecursiveItemEngine<DotNetEntry, DotNetDirectory, DotNetFile, DotNetItemInfo>(this, targetDir, new CopyActions());
-            var remainingDepth = recursive ? int.MaxValue : 0;
-            await engine.StartAsync(name, remainingDepth, cancellationToken).ConfigureAwait(false);
-            if (engine.ActionInfo.ErrorStatusCode != WebDavStatusCodes.OK)
-            {
-                
-            }
+            var dir = (DotNetDirectory)collection;
+            var targetDirectoryName = System.IO.Path.Combine(dir.DirectoryInfo.FullName, name);
+            var targetDirInfo = Directory.CreateDirectory(targetDirectoryName);
             /*
             var engine = new ExecuteRecursiveAction(
                 DirectoryInfo,
@@ -104,17 +94,12 @@ namespace FubarDev.WebDavServer.FileSystem.DotNet
             throw new NotImplementedException();
         }
 
-        public Task<CollectionActionResult> MoveToAsync(ICollection collection, bool recursive, CancellationToken cancellationToken)
+        public Task<CollectionActionResult> MoveToAsync(ICollection collection, string name, CancellationToken cancellationToken)
         {
             throw new NotImplementedException();
         }
 
-        public Task<CollectionActionResult> MoveToAsync(ICollection collection, string name, bool recursive, CancellationToken cancellationToken)
-        {
-            throw new NotImplementedException();
-        }
-
-        private DotNetEntry CreateEntry(FileSystemInfo fsInfo)
+        private IEntry CreateEntry(FileSystemInfo fsInfo)
         {
             var fileInfo = fsInfo as FileInfo;
             if (fileInfo != null)
@@ -124,124 +109,74 @@ namespace FubarDev.WebDavServer.FileSystem.DotNet
             return new DotNetDirectory(DotNetFileSystem, dirInfo, Path.Append(Uri.EscapeDataString(dirInfo.Name) + "/"));
         }
 
-        public IReadOnlyCollection<DotNetEntry> GetChildEntries(CancellationToken ct)
+        private class DotNetItemInfo
         {
-            var result = new List<DotNetEntry>();
-            foreach (var info in DirectoryInfo.EnumerateFileSystemInfos())
+            public DotNetItemInfo(FileSystemInfo item)
             {
-                ct.ThrowIfCancellationRequested();
-                var entry = CreateEntry(info);
-                var ignoreEntry = _fileSystemPropertyStore?.IgnoreEntry(entry) ?? false;
-                if (!ignoreEntry)
-                    result.Add(entry);
-            }
-
-            return result;
-        }
-
-        private class DotNetItemInfo : IInfo
-        {
-            public DotNetItemInfo([NotNull] DotNetEntry item, [NotNull, ItemNotNull] IReadOnlyCollection<XElement> properties)
-            {
-                Name = item.Name;
-                CreationDateTime = item.Info.CreationTimeUtc;
-                ModificationDateTime = item.Info.LastWriteTimeUtc;
-                Properties = properties;
+                CreationDateTime = item.CreationTimeUtc;
+                ModificationDateTime = item.LastWriteTimeUtc;
             }
 
             public DateTime CreationDateTime { get; }
             public DateTime ModificationDateTime { get; }
-            public string Name { get; }
-            public IReadOnlyCollection<XElement> Properties { get; }
         }
 
-        private interface IInfo
+        private class CopyActions : IElementActions<FileSystemInfo, DirectoryInfo, FileInfo, DotNetItemInfo>
         {
-            [NotNull]
-            string Name { get; }
-
-            [NotNull, ItemNotNull]
-            IReadOnlyCollection<XElement> Properties { get; }
-        }
-
-        private class CopyActions : IElementActions<DotNetEntry, DotNetDirectory, DotNetFile, DotNetItemInfo>
-        {
-            public Task<IReadOnlyCollection<DotNetEntry>> GetChildrenAsync(DotNetDirectory directory, CancellationToken ct)
+            public Task<IEnumerable<FileSystemInfo>> GetChildrenAsync(DirectoryInfo directory, CancellationToken ct)
             {
-                return Task.FromResult(directory.GetChildEntries(ct));
+                return Task.FromResult(directory.EnumerateFileSystemInfos());
             }
 
-            public async Task<DotNetItemInfo> GetInfoAsync(DotNetEntry item, CancellationToken ct)
+            public Task<DotNetItemInfo> GetInfoAsync(FileSystemInfo item, CancellationToken ct)
             {
-                var properties = new List<XElement>();
-                using (var enumerator = item.GetProperties().GetEnumerator())
-                {
-                    while (await enumerator.MoveNext(ct).ConfigureAwait(false))
-                    {
-                        properties.Add(await enumerator.Current.GetXmlValueAsync(ct).ConfigureAwait(false));
-                    }
-                }
-
-                return new DotNetItemInfo(item, properties);
+                return Task.FromResult(new DotNetItemInfo(item));
             }
 
-            public Task SetInfoAsync(DotNetEntry item, DotNetItemInfo info, CancellationToken ct)
+            public Task SetInfoAsync(FileSystemInfo item, DotNetItemInfo info, CancellationToken ct)
             {
-                item.Info.CreationTimeUtc = info.CreationDateTime;
-                item.Info.LastWriteTimeUtc = info.ModificationDateTime;
+                item.CreationTimeUtc = info.CreationDateTime;
+                item.LastWriteTimeUtc = info.ModificationDateTime;
                 return Task.FromResult(0);
             }
 
-            public Task<DotNetFile> ExecuteActionAsync(DotNetFile item, DotNetDirectory targetDirectory, string targetName, CancellationToken ct)
+            public Task<FileInfo> ExecuteActionAsync(FileInfo item, DirectoryInfo targetDirectory, string targetName, CancellationToken ct)
             {
-                var targetPath = System.IO.Path.Combine(targetDirectory.DirectoryInfo.FullName, targetName);
-                item.FileInfo.CopyTo(targetPath, true);
-                return Task.FromResult((DotNetFile) targetDirectory.CreateEntry(new FileInfo(targetPath)));
+                var targetPath = System.IO.Path.Combine(targetDirectory.FullName, targetName);
+                item.CopyTo(targetPath, true);
+                return Task.FromResult(new FileInfo(targetPath));
             }
 
-            public Task<DotNetDirectory> ExecuteActionAsync(DotNetDirectory item, DotNetDirectory targetDirectory, string targetName, CancellationToken ct)
+            public Task<DirectoryInfo> ExecuteActionAsync(DirectoryInfo item, DirectoryInfo targetDirectory, string targetName, CancellationToken ct)
             {
-                var targetPath = System.IO.Path.Combine(targetDirectory.DirectoryInfo.FullName, targetName);
-                return Task.FromResult((DotNetDirectory) targetDirectory.CreateEntry(targetDirectory.DirectoryInfo.CreateSubdirectory(targetPath)));
+                var targetPath = System.IO.Path.Combine(targetDirectory.FullName, targetName);
+                return Task.FromResult(targetDirectory.CreateSubdirectory(targetPath));
             }
 
-            public Task ExecuteActionAsync(DotNetDirectory item, DotNetDirectory targetDirectory, CancellationToken ct)
+            public Task ExecuteActionAsync(DirectoryInfo item, DirectoryInfo targetDirectory, CancellationToken ct)
             {
-                targetDirectory.DirectoryInfo.Create();
+                targetDirectory.Create();
                 return Task.FromResult(0);
             }
         }
 
         private interface IElementActions<TItem, TDirectory, TFile, TItemInfo> 
-            where TItem : class
+            where TItem : class 
             where TDirectory : class, TItem
             where TFile : class, TItem
-            where TItemInfo : IInfo
         {
-            [NotNull, ItemNotNull]
-            Task<IReadOnlyCollection<TItem>> GetChildrenAsync([NotNull] TDirectory directory, CancellationToken ct);
-
-            [NotNull, ItemNotNull]
-            Task<TItemInfo> GetInfoAsync([NotNull] TItem item, CancellationToken ct);
-
-            [NotNull]
-            Task SetInfoAsync([NotNull] TItem item, [NotNull] TItemInfo info, CancellationToken ct);
-
-            [NotNull, ItemNotNull]
-            Task<TFile> ExecuteActionAsync([NotNull] TFile item, [NotNull] TDirectory targetDirectory, [NotNull] string targetName, CancellationToken ct);
-
-            [NotNull, ItemNotNull]
-            Task<TDirectory> ExecuteActionAsync([NotNull] TDirectory item, [NotNull] TDirectory targetDirectory, [NotNull] string targetName, CancellationToken ct);
-
-            [NotNull]
-            Task ExecuteActionAsync([NotNull] TDirectory item, [NotNull] TDirectory targetDirectory, CancellationToken ct);
+            Task<IEnumerable<TItem>> GetChildrenAsync(TDirectory directory, CancellationToken ct);
+            Task<TItemInfo> GetInfoAsync(TItem item, CancellationToken ct);
+            Task SetInfoAsync(TItem item, DotNetItemInfo info, CancellationToken ct);
+            Task<TFile> ExecuteActionAsync(TFile item, TDirectory targetDirectory, string targetName, CancellationToken ct);
+            Task<TDirectory> ExecuteActionAsync(TDirectory item, TDirectory targetDirectory, string targetName, CancellationToken ct);
+            Task ExecuteActionAsync(TDirectory item, TDirectory targetDirectory, CancellationToken ct);
         }
 
         private class RecursiveItemEngine<TItem, TDirectory, TFile, TItemInfo>
             where TItem : class
             where TDirectory : class, TItem
             where TFile : class, TItem
-            where TItemInfo : IInfo
         {
             private readonly TDirectory _sourceDirectory;
             private readonly TDirectory _targetDirectory;
@@ -259,88 +194,20 @@ namespace FubarDev.WebDavServer.FileSystem.DotNet
 
             public ActionInfo<TItem, TDirectory, TFile> ActionInfo { get; } = new ActionInfo<TItem, TDirectory, TFile>();
 
-            public Task StartAsync(int remainingDepth, CancellationToken cancellationToken)
+            public Task StartAsync(CancellationToken cancellationToken)
             {
-                return ExecuteAsync(_sourceDirectory, _targetDirectory, remainingDepth, cancellationToken);
+                return ExecuteAsync(_sourceDirectory, _targetDirectory, cancellationToken);
             }
 
-            public async Task StartAsync(string name, int remainingDepth, CancellationToken cancellationToken)
+            private Task ExecuteAsync(TDirectory sourceDirectory, TDirectory targetDirectory, CancellationToken cancellationToken)
             {
-                var targetDir = await _itemHandler.ExecuteActionAsync(_sourceDirectory, _targetDirectory, name, cancellationToken).ConfigureAwait(false);
-                if (remainingDepth == 0)
-                    return;
-                await ExecuteAsync(_sourceDirectory, targetDir, remainingDepth == int.MaxValue ? remainingDepth : remainingDepth - 1, cancellationToken).ConfigureAwait(false);
+                throw new NotImplementedException();
             }
+        }
 
-            private async Task<bool> ExecuteAsync(TDirectory sourceDirectory, TDirectory targetDirectory, int remainingDepth, CancellationToken cancellationToken)
-            {
-                var sourceInfo = await _itemHandler.GetInfoAsync(sourceDirectory, cancellationToken).ConfigureAwait(false);
-                await _itemHandler.ExecuteActionAsync(sourceDirectory, targetDirectory, cancellationToken).ConfigureAwait(false);
-                ActionInfo.Directories.Add(Tuple.Create(sourceDirectory, targetDirectory));
-                if (remainingDepth != 0)
-                {
-                    var children = await _itemHandler.GetChildrenAsync(sourceDirectory, cancellationToken).ConfigureAwait(false);
-                    var result = await ExecuteAsync(children, targetDirectory, remainingDepth, cancellationToken).ConfigureAwait(false);
-                    if (!result)
-                        return false;
-                }
-
-                await _itemHandler.SetInfoAsync(targetDirectory, sourceInfo, cancellationToken).ConfigureAwait(false);
-                return true;
-            }
-
-            private async Task<bool> ExecuteAsync(IEnumerable<TItem> children, TDirectory targetDirectory, int remainingDepth, CancellationToken cancellationToken)
-            {
-                foreach (var child in children)
-                {
-                    var sourceInfo = await _itemHandler.GetInfoAsync(child, cancellationToken).ConfigureAwait(false);
-                    var fileInfo = child as TFile;
-                    if (fileInfo != null)
-                    {
-                        try
-                        {
-                            var targetFile = await _itemHandler
-                                .ExecuteActionAsync(fileInfo, targetDirectory, sourceInfo.Name, cancellationToken)
-                                .ConfigureAwait(false);
-                            ActionInfo.Files.Add(Tuple.Create(fileInfo, targetFile));
-                        }
-                        catch
-                        {
-                            ActionInfo.FailedItem = fileInfo;
-                            ActionInfo.ErrorStatusCode = WebDavStatusCodes.Conflict;
-                            return false;
-                        }
-                    }
-                    else
-                    {
-                        var dirInfo = (TDirectory) child;
-                        try
-                        {
-                            var targetSubDir = await _itemHandler
-                                .ExecuteActionAsync(dirInfo, targetDirectory, sourceInfo.Name, cancellationToken)
-                                .ConfigureAwait(false);
-                            ActionInfo.Directories.Add(Tuple.Create(dirInfo, targetSubDir));
-
-                            if (remainingDepth != 0)
-                            {
-                                var subChildren = await _itemHandler.GetChildrenAsync(dirInfo, cancellationToken).ConfigureAwait(false);
-                                var newRemainingDepth = remainingDepth == int.MaxValue ? remainingDepth : remainingDepth - 1;
-                                await ExecuteAsync(subChildren, targetSubDir, newRemainingDepth, cancellationToken).ConfigureAwait(false);
-                            }
-                        }
-                        catch
-                        {
-                            ActionInfo.FailedItem = dirInfo;
-                            ActionInfo.ErrorStatusCode = WebDavStatusCodes.Conflict;
-                            return false;
-                        }
-                    }
-
-                    await _itemHandler.SetInfoAsync(child, sourceInfo, cancellationToken).ConfigureAwait(false);
-                }
-
-                return true;
-            }
+        public IAsyncEnumerable<IEntry> GetEntries(int maxDepth)
+        {
+            return this.EnumerateEntries(maxDepth);
         }
 
         private class ActionInfo<TItem, TDirectory, TFile>

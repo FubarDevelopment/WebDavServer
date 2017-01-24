@@ -26,18 +26,10 @@ namespace FubarDev.WebDavServer.FileSystem
 
         [NotNull]
         [ItemNotNull]
-        Task<CollectionActionResult> CopyToAsync([NotNull] ICollection collection, bool recursive, CancellationToken cancellationToken);
+        Task<CollectionActionResult> CopyToAsync([NotNull] ICollection collection, [NotNull] string name, CancellationToken cancellationToken);
 
         [NotNull]
         [ItemNotNull]
-        Task<CollectionActionResult> CopyToAsync([NotNull] ICollection collection, [NotNull] string name, bool recursive, CancellationToken cancellationToken);
-
-        [NotNull]
-        [ItemNotNull]
-        Task<CollectionActionResult> MoveToAsync([NotNull] ICollection collection, bool recursive, CancellationToken cancellationToken);
-
-        [NotNull]
-        [ItemNotNull]
-        Task<CollectionActionResult> MoveToAsync([NotNull] ICollection collection, [NotNull] string name, bool recursive, CancellationToken cancellationToken);
+        Task<CollectionActionResult> MoveToAsync([NotNull] ICollection collection, [NotNull] string name, CancellationToken cancellationToken);
     }
 }
