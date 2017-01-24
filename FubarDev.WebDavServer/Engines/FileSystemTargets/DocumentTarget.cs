@@ -3,11 +3,10 @@ using System.Threading;
 using System.Threading.Tasks;
 
 using FubarDev.WebDavServer.FileSystem;
-using FubarDev.WebDavServer.Model;
 
 namespace FubarDev.WebDavServer.Engines.FileSystemTargets
 {
-    public class DocumentTarget : EntryTarget, IDocumentTarget
+    public class DocumentTarget : EntryTarget, IDocumentTarget<CollectionTarget, DocumentTarget, MissingTarget>
     {
         private readonly CollectionTarget _parent;
         private readonly IDocument _document;
@@ -21,23 +20,10 @@ namespace FubarDev.WebDavServer.Engines.FileSystemTargets
             _targetActions = targetActions;
         }
 
-        public async Task<ExecutionResult> ExecuteAsync(Uri sourceUrl, IDocument source, CancellationToken cancellationToken)
+        public async Task<MissingTarget> DeleteAsync(CancellationToken cancellationToken)
         {
-            if (_targetActions.ExistingTargetBehaviour == RecursiveTargetBehaviour.DeleteBeforeCopy)
-            {
-                await _document.DeleteAsync(cancellationToken).ConfigureAwait(false);
-                var missingTarget = new MissingTarget(DestinationUrl, Name, _parent, _targetActions);
-                return await missingTarget.ExecuteAsync(sourceUrl, source, cancellationToken).ConfigureAwait(false);
-            }
-
-            await _targetActions.ExecuteAsync(source, this, cancellationToken).ConfigureAwait(false);
-
-            return new ExecutionResult()
-            {
-                Target = this,
-                Href = DestinationUrl,
-                StatusCode = WebDavStatusCodes.OK
-            };
+            await _document.DeleteAsync(cancellationToken).ConfigureAwait(false);
+            return new MissingTarget(DestinationUrl, Name, _parent, _targetActions);
         }
     }
 }

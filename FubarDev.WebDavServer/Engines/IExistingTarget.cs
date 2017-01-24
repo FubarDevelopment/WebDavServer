@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
+using System.Xml.Linq;
 
 using FubarDev.WebDavServer.Properties;
 
@@ -11,6 +12,6 @@ namespace FubarDev.WebDavServer.Engines
     public interface IExistingTarget : ITarget
     {
         [NotNull]
-        Task<ExecutionResult> SetPropertiesAsync(IEnumerable<IUntypedWriteableProperty> properties, CancellationToken cancellationToken);
+        Task<IReadOnlyCollection<XName>> SetPropertiesAsync(IEnumerable<IUntypedWriteableProperty> properties, CancellationToken cancellationToken);
     }
 }

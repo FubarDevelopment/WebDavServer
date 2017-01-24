@@ -6,7 +6,7 @@ using FubarDev.WebDavServer.Model;
 
 namespace FubarDev.WebDavServer.Engines
 {
-    public struct ExecutionResult
+    public struct ActionResult
     {
         public ITarget Target { get; set; }
         public Uri Href { get; set; }

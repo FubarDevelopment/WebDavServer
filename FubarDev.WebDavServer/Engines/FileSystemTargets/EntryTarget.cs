@@ -6,7 +6,6 @@ using System.Threading.Tasks;
 using System.Xml.Linq;
 
 using FubarDev.WebDavServer.FileSystem;
-using FubarDev.WebDavServer.Model;
 using FubarDev.WebDavServer.Properties;
 using FubarDev.WebDavServer.Properties.Dead;
 using FubarDev.WebDavServer.Properties.Live;
@@ -20,13 +19,14 @@ namespace FubarDev.WebDavServer.Engines.FileSystemTargets
         protected EntryTarget(Uri destinationUrl, IEntry entry)
         {
             _entry = entry;
+            Name = entry.Name;
             DestinationUrl = destinationUrl;
         }
 
-        public string Name => _entry.Name;
+        public string Name { get; }
         public Uri DestinationUrl { get; }
 
-        public async Task<ExecutionResult> SetPropertiesAsync(IEnumerable<IUntypedWriteableProperty> properties, CancellationToken cancellationToken)
+        public async Task<IReadOnlyCollection<XName>> SetPropertiesAsync(IEnumerable<IUntypedWriteableProperty> properties, CancellationToken cancellationToken)
         {
             var liveProperties = new List<ILiveProperty>();
             var deadProperties = new List<IDeadProperty>();
@@ -67,7 +67,7 @@ namespace FubarDev.WebDavServer.Engines.FileSystemTargets
             await propertyStore.SetAsync(_entry, elements, cancellationToken).ConfigureAwait(false);
         }
 
-        private async Task<ExecutionResult> SetPropertiesAsync(IEnumerable<ILiveProperty> properties, CancellationToken cancellationToken)
+        private async Task<IReadOnlyCollection<XName>> SetPropertiesAsync(IEnumerable<ILiveProperty> properties, CancellationToken cancellationToken)
         {
             var isPropUsed = new Dictionary<XName, bool>();
             var propNameToValue = new Dictionary<XName, XElement>();
@@ -79,12 +79,7 @@ namespace FubarDev.WebDavServer.Engines.FileSystemTargets
 
             if (propNameToValue.Count == 0)
             {
-                return new ExecutionResult()
-                {
-                    Target = this,
-                    Href = DestinationUrl,
-                    StatusCode = WebDavStatusCodes.NoContent
-                };
+                return new XName[0];
             }
 
             using (var propEnum = _entry.GetProperties().GetEnumerator())
@@ -104,28 +99,11 @@ namespace FubarDev.WebDavServer.Engines.FileSystemTargets
             var hasUnsetLiveProperties = isPropUsed.Any(x => !x.Value);
             if (hasUnsetLiveProperties)
             {
-                var unsetPropNames = isPropUsed.Where(x => !x.Value).Select(x => x.Key.ToString());
-                var unsetProperties = $"The following properties couldn't be set: {string.Join(", ", unsetPropNames)}";
-                return new ExecutionResult()
-                {
-                    Target = this,
-                    Href = DestinationUrl,
-                    Error = new Error()
-                    {
-                        ItemsElementName = new[] { ItemsChoiceType.PreservedLiveProperties },
-                        Items = new[] { new object() },
-                    },
-                    Reason = unsetProperties,
-                    StatusCode = WebDavStatusCodes.Conflict
-                };
+                var unsetPropNames = isPropUsed.Where(x => !x.Value).Select(x => x.Key).ToList();
+                return unsetPropNames;
             }
 
-            return new ExecutionResult()
-            {
-                Target = this,
-                Href = DestinationUrl,
-                StatusCode = WebDavStatusCodes.OK
-            };
+            return new XName[0];
         }
     }
 }

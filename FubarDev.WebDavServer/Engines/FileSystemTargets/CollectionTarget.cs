@@ -3,30 +3,30 @@ using System.Threading;
 using System.Threading.Tasks;
 
 using FubarDev.WebDavServer.FileSystem;
-using FubarDev.WebDavServer.Model;
 
 namespace FubarDev.WebDavServer.Engines.FileSystemTargets
 {
-    public class CollectionTarget : EntryTarget, ICollectionTarget
+    public class CollectionTarget : EntryTarget, ICollectionTarget<CollectionTarget, DocumentTarget, MissingTarget>
     {
+        private readonly CollectionTarget _parent;
+
         private readonly ITargetActions<CollectionTarget, DocumentTarget, MissingTarget> _targetActions;
 
-        public CollectionTarget(Uri destinationUrl, ICollection collection, ITargetActions<CollectionTarget, DocumentTarget, MissingTarget> targetActions)
+        public CollectionTarget(Uri destinationUrl, CollectionTarget parent, ICollection collection, ITargetActions<CollectionTarget, DocumentTarget, MissingTarget> targetActions)
             : base(destinationUrl, collection)
         {
             Collection = collection;
+            _parent = parent;
             _targetActions = targetActions;
         }
 
         public ICollection Collection { get; }
 
-        public Task<ExecutionResult> CreateAsync(CancellationToken cancellationToken)
+        public async Task<MissingTarget> DeleteAsync(CancellationToken cancellationToken)
         {
-            return Task.FromResult(new ExecutionResult()
-            {
-                StatusCode = WebDavStatusCodes.OK,
-                Href = DestinationUrl,
-            });
+            var name = Collection.Name;
+            await Collection.DeleteAsync(cancellationToken).ConfigureAwait(false);
+            return new MissingTarget(DestinationUrl, name, _parent, _targetActions);
         }
 
         public async Task<ITarget> GetAsync(string name, CancellationToken cancellationToken)
@@ -39,7 +39,7 @@ namespace FubarDev.WebDavServer.Engines.FileSystemTargets
                 return new DocumentTarget(this, DestinationUrl.Append(doc), doc, _targetActions);
 
             var coll = (ICollection) result;
-            return new CollectionTarget(DestinationUrl.Append(coll), coll, _targetActions);
+            return new CollectionTarget(DestinationUrl.Append(coll), this, coll, _targetActions);
         }
     }
 }

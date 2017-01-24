@@ -1,17 +1,17 @@
 ﻿using System;
-using System.IO;
 using System.Threading;
 using System.Threading.Tasks;
-
-using FubarDev.WebDavServer.FileSystem;
 
 using JetBrains.Annotations;
 
 namespace FubarDev.WebDavServer.Engines
 {
-    public interface IDocumentTarget : IExistingTarget
+    public interface IDocumentTarget<TCollection, TDocument, TMissing> : IExistingTarget
+        where TMissing : IMissingTarget<TCollection, TDocument, TMissing>
+        where TDocument : IDocumentTarget<TCollection, TDocument, TMissing>
+        where TCollection : ICollectionTarget<TCollection, TDocument, TMissing>
     {
-        [NotNull]
-        Task<ExecutionResult> ExecuteAsync([NotNull] Uri sourceUrl, [NotNull] IDocument source, CancellationToken cancellationToken);
+        [NotNull, ItemNotNull]
+        Task<TMissing> DeleteAsync(CancellationToken cancellationToken);
     }
 }
