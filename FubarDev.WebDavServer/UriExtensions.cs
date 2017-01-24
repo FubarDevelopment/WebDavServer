@@ -29,11 +29,6 @@ namespace FubarDev.WebDavServer
             return baseUri.Append(Uri.EscapeDataString(relative) + "/", true);
         }
 
-        public static Uri Append(this Uri baseUri, string relative)
-        {
-            return baseUri.Append(relative, false);
-        }
-
         public static Uri Append(this Uri baseUri, Uri relativeUri)
         {
             return baseUri.Append(relativeUri.OriginalString, true);

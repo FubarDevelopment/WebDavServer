@@ -457,8 +457,8 @@ namespace FubarDev.WebDavServer.DefaultHandlers
 
                 foreach (var childNode in sourceNode.Nodes)
                 {
-                    var sourceDocumentUrl = sourceUrl.Append(childNode.Collection.Name);
-                    var targetDocumentUrl = targetUrl.Append(childNode.Collection.Name);
+                    var sourceDocumentUrl = sourceUrl.Append(childNode.Collection.Name, false);
+                    var targetDocumentUrl = targetUrl.Append(childNode.Collection.Name, false);
                     var targetNodeInfo = await TargetInfo
                         .FromDestinationAsync(targetCollection, childNode.Collection.Name, targetDocumentUrl, cancellationToken)
                         .ConfigureAwait(false);

@@ -8,22 +8,24 @@ namespace FubarDev.WebDavServer.Engines.FileSystemTargets
 {
     public class DocumentTarget : EntryTarget, IDocumentTarget<CollectionTarget, DocumentTarget, MissingTarget>
     {
-        private readonly CollectionTarget _parent;
-        private readonly IDocument _document;
         private readonly ITargetActions<CollectionTarget, DocumentTarget, MissingTarget> _targetActions;
 
         public DocumentTarget(CollectionTarget parent, Uri destinationUrl, IDocument document, ITargetActions<CollectionTarget, DocumentTarget, MissingTarget> targetActions)
             : base(destinationUrl, document)
         {
-            _parent = parent;
-            _document = document;
+            Parent = parent;
             _targetActions = targetActions;
+            Document = document;
         }
+
+        public IDocument Document { get; }
+
+        public CollectionTarget Parent { get; }
 
         public async Task<MissingTarget> DeleteAsync(CancellationToken cancellationToken)
         {
-            await _document.DeleteAsync(cancellationToken).ConfigureAwait(false);
-            return new MissingTarget(DestinationUrl, Name, _parent, _targetActions);
+            await Document.DeleteAsync(cancellationToken).ConfigureAwait(false);
+            return new MissingTarget(DestinationUrl, Name, Parent, _targetActions);
         }
     }
 }

@@ -1,47 +1,23 @@
 ﻿using System;
-using System.Text;
+using System.Collections.Generic;
 using System.Xml.Linq;
-
-using FubarDev.WebDavServer.Model;
 
 namespace FubarDev.WebDavServer.Engines
 {
-    public struct ActionResult
+    public class ActionResult
     {
-        public ITarget Target { get; set; }
-        public Uri Href { get; set; }
-        public WebDavStatusCodes StatusCode { get; set; }
-        public Error Error { get; set; }
-        public string Reason { get; set; }
-
-        public bool IsFailure => ((int)StatusCode) >= 300;
-
-        public string GetGroupableStatus()
+        public ActionResult(ActionStatus status, ITarget target)
         {
-            var result = new StringBuilder()
-                .Append((int)StatusCode);
-
-            if (Error != null)
-            {
-                result.Append("+error");
-                for (var i = 0; i != Error.ItemsElementName.Length; ++i)
-                {
-                    string textToAppend;
-                    switch (Error.ItemsElementName[i])
-                    {
-                        case ItemsChoiceType.Any:
-                            textToAppend = ((XElement)Error.Items[i]).ToString(SaveOptions.OmitDuplicateNamespaces | SaveOptions.DisableFormatting);
-                            break;
-                        default:
-                            textToAppend = Error.ItemsElementName[i].ToString();
-                            break;
-                    }
-
-                    result.Append(':').Append(Uri.EscapeDataString(textToAppend));
-                }
-            }
-
-            return result.ToString();
+            Status = status;
+            Target = target;
+            Href = target.DestinationUrl;
         }
+
+        public ActionStatus Status { get; }
+        public ITarget Target { get; }
+        public Uri Href { get; set; }
+        public Exception Exception { get; set; }
+        public IReadOnlyCollection<XName> FailedProperties { get; set; }
+        public bool IsFailure => Status != ActionStatus.Created && Status != ActionStatus.Overwritten;
     }
 }

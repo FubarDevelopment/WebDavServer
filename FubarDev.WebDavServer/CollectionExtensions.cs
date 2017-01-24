@@ -72,6 +72,7 @@ namespace FubarDev.WebDavServer
         public interface INode
         {
             ICollection Collection { get; }
+            string Name { get; }
             IReadOnlyCollection<INode> Nodes { get; }
             IReadOnlyCollection<IDocument> Documents { get; }
         }
@@ -210,6 +211,7 @@ namespace FubarDev.WebDavServer
                 Collection = collection;
             }
 
+            public string Name => Collection.Name;
             public ICollection Collection { get; }
             public List<IDocument> Documents { get; } = new List<IDocument>();
             public List<NodeInfo> SubNodes { get; } = new List<NodeInfo>();

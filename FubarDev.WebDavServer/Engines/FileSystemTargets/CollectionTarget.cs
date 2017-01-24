@@ -41,5 +41,10 @@ namespace FubarDev.WebDavServer.Engines.FileSystemTargets
             var coll = (ICollection) result;
             return new CollectionTarget(DestinationUrl.Append(coll), this, coll, _targetActions);
         }
+
+        public MissingTarget CreateMissing(string name)
+        {
+            return new MissingTarget(DestinationUrl.Append(name, false), name, this, _targetActions);
+        }
     }
 }

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Linq;
 using System.Threading;
@@ -16,6 +17,7 @@ namespace FubarDev.WebDavServer.Engines
         where TMissing : IMissingTarget<TCollection, TDocument, TMissing>
     {
         private readonly ITargetActions<TCollection, TDocument, TMissing> _handler;
+
         private readonly bool _allowOverwrite;
 
         public RecursiveExecutionEngine(ITargetActions<TCollection, TDocument, TMissing> handler, bool allowOverwrite)
@@ -24,103 +26,181 @@ namespace FubarDev.WebDavServer.Engines
             _allowOverwrite = allowOverwrite;
         }
 
-        /*
-        public async Task<IImmutableList<ActionResult>> ExecuteAsync(Uri sourceUrl, ICollection source, TMissing target, CancellationToken cancellationToken)
+        public async Task<CollectionActionResult> ExecuteAsync(Uri sourceUrl, ICollection source, Depth depth, TMissing target, CancellationToken cancellationToken)
         {
-            var newColl = await target.CreateCollectionAsync(cancellationToken).ConfigureAwait(false);
-            return new ExecutionResult()
-            {
-                Target = newColl,
-                Href = newColl.DestinationUrl,
-                StatusCode = WebDavStatusCodes.Created
-            };
-        }
-        */
+            var nodes = await source.GetNodeAsync(depth.OrderValue, cancellationToken).ConfigureAwait(false);
 
-        /*
-        public async Task<Tuple<ExecutionResult, IImmutableList<ExecutionResult>>> ExecuteAsync(Uri sourceUrl, ICollection source, TMissing target, CancellationToken cancellationToken)
-        {
-            var newColl = await target.CreateCollectionAsync(cancellationToken).ConfigureAwait(false);
-            return new ExecutionResult()
-            {
-                Target = newColl,
-                Href = newColl.DestinationUrl,
-                StatusCode = WebDavStatusCodes.Created
-            };
+            return await ExecuteAsync(sourceUrl, source, nodes, target, cancellationToken).ConfigureAwait(false);
         }
 
-        public async Task<Tuple<ExecutionResult, IImmutableList<ExecutionResult>>> ExecuteAsync(Uri sourceUrl, ICollection source, TCollection target, CancellationToken cancellationToken)
+        public async Task<CollectionActionResult> ExecuteAsync(Uri sourceUrl, ICollection source, Depth depth, TCollection target, CancellationToken cancellationToken)
         {
-            var result = ImmutableList<ExecutionResult>.Empty;
-
             if (_handler.ExistingTargetBehaviour == RecursiveTargetBehaviour.DeleteBeforeCopy)
             {
-                var missingTarget = await target.DeleteAsync(cancellationToken).ConfigureAwait(false);
-                var collectionResult = await ExecuteAsync(sourceUrl, source, missingTarget, cancellationToken).ConfigureAwait(false);
-                if (collectionResult.IsFailure)
+                TMissing missing;
+                try
                 {
-                    result = result.Add(collectionResult);
-                    return result;
+                    missing = await target.DeleteAsync(cancellationToken).ConfigureAwait(false);
                 }
+                catch (Exception ex)
+                {
+                    return new CollectionActionResult(ActionStatus.TargetDeleteFailed, target)
+                    {
+                        Exception = ex
+                    };
+                }
+
+                return await ExecuteAsync(sourceUrl, source, depth, missing, cancellationToken).ConfigureAwait(false);
             }
+
+            var properties = await source.GetProperties().OfType<IUntypedWriteableProperty>().ToList(cancellationToken).ConfigureAwait(false);
+
+            var nodes = await source.GetNodeAsync(depth.OrderValue, cancellationToken).ConfigureAwait(false);
+
+            return await ExecuteAsync(sourceUrl, source, nodes, target, properties, cancellationToken).ConfigureAwait(false);
         }
-        */
 
         public async Task<ActionResult> ExecuteAsync(Uri sourceUrl, IDocument source, TMissing target, CancellationToken cancellationToken)
         {
-            var newDoc = await _handler.ExecuteAsync(source, target, cancellationToken).ConfigureAwait(false);
-            return new ActionResult()
+            try
             {
-                Target = newDoc,
-                Href = newDoc.DestinationUrl,
-                StatusCode = WebDavStatusCodes.Created
-            };
+                var newDoc = await _handler.ExecuteAsync(source, target, cancellationToken).ConfigureAwait(false);
+                return new ActionResult(ActionStatus.Created, newDoc);
+            }
+            catch (Exception ex)
+            {
+                return new ActionResult(ActionStatus.CreateFailed, target)
+                {
+                    Exception = ex,
+                };
+            }
         }
 
         public async Task<ActionResult> ExecuteAsync(Uri sourceUrl, IDocument source, TDocument target, CancellationToken cancellationToken)
         {
             if (!_allowOverwrite)
             {
-                return new ActionResult()
-                {
-                    Target = target,
-                    Href = target.DestinationUrl,
-                    StatusCode = WebDavStatusCodes.PreconditionFailed
-                };
+                return new ActionResult(ActionStatus.CannotOverwrite, target);
             }
 
             if (_handler.ExistingTargetBehaviour == RecursiveTargetBehaviour.DeleteBeforeCopy)
             {
-                var missingTarget = await target.DeleteAsync(cancellationToken).ConfigureAwait(false);
+                TMissing missingTarget;
+                try
+                {
+                    missingTarget = await target.DeleteAsync(cancellationToken).ConfigureAwait(false);
+                }
+                catch (Exception ex)
+                {
+                    return new CollectionActionResult(ActionStatus.TargetDeleteFailed, target)
+                    {
+                        Exception = ex
+                    };
+                }
+
                 return await ExecuteAsync(sourceUrl, source, missingTarget, cancellationToken).ConfigureAwait(false);
             }
 
             var properties = await source.GetProperties().OfType<IUntypedWriteableProperty>().ToList(cancellationToken).ConfigureAwait(false);
 
-            await _handler.ExecuteAsync(source, target, cancellationToken).ConfigureAwait(false);
+            var docActionResult = await _handler.ExecuteAsync(source, target, cancellationToken).ConfigureAwait(false);
+            if (docActionResult.IsFailure)
+                return docActionResult;
 
             var failedPropertyNames = await target.SetPropertiesAsync(properties, cancellationToken).ConfigureAwait(false);
             if (failedPropertyNames.Count != 0)
             {
-                var unsetProperties = $"The following properties couldn't be set: {string.Join(", ", failedPropertyNames)}";
-                return new ActionResult()
+                return new ActionResult(ActionStatus.PropSetFailed, target)
                 {
-                    Href = target.DestinationUrl,
-                    Error = new Error()
-                    {
-                        ItemsElementName = new[] { ItemsChoiceType.PreservedLiveProperties },
-                        Items = new[] { new object() },
-                    },
-                    Reason = unsetProperties,
-                    StatusCode = WebDavStatusCodes.Conflict
+                    FailedProperties = failedPropertyNames
                 };
             }
 
-            return new ActionResult()
+            return new ActionResult(ActionStatus.Overwritten, target);
+        }
+
+        public async Task<CollectionActionResult> ExecuteAsync(
+            Uri sourceUrl,
+            ICollection source,
+            CollectionExtensions.INode sourceNode,
+            TMissing target,
+            CancellationToken cancellationToken)
+        {
+            var properties = await source.GetProperties().OfType<IUntypedWriteableProperty>().ToList(cancellationToken).ConfigureAwait(false);
+
+            TCollection newColl;
+            try
             {
-                Target = target,
-                Href = target.DestinationUrl,
-                StatusCode = WebDavStatusCodes.NoContent,
+                newColl = await target.CreateCollectionAsync(cancellationToken).ConfigureAwait(false);
+            }
+            catch (Exception ex)
+            {
+                return new CollectionActionResult(ActionStatus.CreateFailed, target)
+                {
+                    Exception = ex,
+                };
+            }
+
+            return await ExecuteAsync(sourceUrl, source, sourceNode, newColl, properties, cancellationToken).ConfigureAwait(false);
+        }
+
+        public async Task<CollectionActionResult> ExecuteAsync(
+            Uri sourceUrl,
+            ICollection source,
+            CollectionExtensions.INode sourceNode,
+            TCollection target,
+            IReadOnlyCollection<IUntypedWriteableProperty> properties,
+            CancellationToken cancellationToken)
+        {
+            var documentActionResults = ImmutableList<ActionResult>.Empty;
+            var collectionActionResults = ImmutableList<CollectionActionResult>.Empty;
+
+            foreach (var document in sourceNode.Documents)
+            {
+                var docUrl = sourceUrl.Append(document);
+                var missingTarget = target.CreateMissing(document.Name);
+                var docResult = await ExecuteAsync(docUrl, document, missingTarget, cancellationToken).ConfigureAwait(false);
+                documentActionResults = documentActionResults.Add(docResult);
+            }
+
+            foreach (var childNode in sourceNode.Nodes)
+            {
+                var collection = childNode.Collection;
+                var docUrl = sourceUrl.Append(childNode.Collection);
+                var missingTarget = target.CreateMissing(childNode.Name);
+                var docResult = await ExecuteAsync(docUrl, collection, childNode, missingTarget, cancellationToken).ConfigureAwait(false);
+                documentActionResults = documentActionResults.Add(docResult);
+            }
+
+            try
+            {
+                var failedPropertyNames = await target.SetPropertiesAsync(properties, cancellationToken).ConfigureAwait(false);
+                if (failedPropertyNames.Count != 0)
+                {
+                    return new CollectionActionResult(ActionStatus.PropSetFailed, target)
+                    {
+                        FailedProperties = failedPropertyNames,
+                        CollectionActionResults = collectionActionResults,
+                        DocumentActionResults = documentActionResults,
+                    };
+                }
+
+                await _handler.ExecuteAsync(source, cancellationToken).ConfigureAwait(false);
+            }
+            catch (Exception ex)
+            {
+                return new CollectionActionResult(ActionStatus.CleanupFailed, target)
+                {
+                    Exception = ex,
+                    CollectionActionResults = collectionActionResults,
+                    DocumentActionResults = documentActionResults,
+                };
+            }
+
+            return new CollectionActionResult(ActionStatus.Created, target)
+            {
+                CollectionActionResults = collectionActionResults,
+                DocumentActionResults = documentActionResults,
             };
         }
     }
