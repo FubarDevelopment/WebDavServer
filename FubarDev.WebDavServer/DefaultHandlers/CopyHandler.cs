@@ -8,6 +8,9 @@ using System.Threading;
 using System.Threading.Tasks;
 using System.Xml.Linq;
 
+using FubarDev.WebDavServer.Engines;
+using FubarDev.WebDavServer.Engines.DefaultTargetAction;
+using FubarDev.WebDavServer.Engines.FileSystemTargets;
 using FubarDev.WebDavServer.FileSystem;
 using FubarDev.WebDavServer.Handlers;
 using FubarDev.WebDavServer.Model;
@@ -99,6 +102,25 @@ namespace FubarDev.WebDavServer.DefaultHandlers
             CancellationToken cancellationToken)
         {
             Debug.Assert(sourceSelectionResult.Collection != null, "sourceSelectionResult.Collection != null");
+
+            /*
+            var engineHandler = new CopyInFileSystemTargetAction();
+            var engine = new RecursiveExecutionEngine<CollectionTarget, DocumentTarget, MissingTarget>(
+                engineHandler,
+                overwrite);
+
+            if (sourceSelectionResult.ResultType == SelectionResultType.FoundDocument)
+            {
+                var docTarget = DocumentTarget.Create(targetInfo.DestinationUri, (IDocument)targetInfo.TargetEntry, engineHandler);
+                var docResult = await engine.ExecuteAsync(
+                    sourceUrl,
+                    sourceSelectionResult.Document,
+                    docTarget,
+                    cancellationToken).ConfigureAwait(false);
+            }
+            */
+
+            //engine.ExecuteAsync(sourceUrl, )
 
             var processor = new NodeProcessor(handler, overwrite);
             IImmutableList<ElementResult> results;

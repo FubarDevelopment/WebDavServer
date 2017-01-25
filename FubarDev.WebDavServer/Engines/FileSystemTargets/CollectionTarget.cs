@@ -4,6 +4,8 @@ using System.Threading.Tasks;
 
 using FubarDev.WebDavServer.FileSystem;
 
+using JetBrains.Annotations;
+
 namespace FubarDev.WebDavServer.Engines.FileSystemTargets
 {
     public class CollectionTarget : EntryTarget, ICollectionTarget<CollectionTarget, DocumentTarget, MissingTarget>
@@ -21,6 +23,27 @@ namespace FubarDev.WebDavServer.Engines.FileSystemTargets
         }
 
         public ICollection Collection { get; }
+        
+        [NotNull]
+        public static CollectionTarget Create(
+            [NotNull] Uri destinationUrl,
+            [NotNull] ICollection collection,
+            [NotNull] ITargetActions<CollectionTarget, DocumentTarget, MissingTarget> targetActions)
+        {
+            CollectionTarget parentTarget;
+            if (collection.Parent != null)
+            {
+                var collUrl = new Uri(destinationUrl, new Uri("..", UriKind.Relative));
+                parentTarget = new CollectionTarget(collUrl, null, collection.Parent, targetActions);
+            }
+            else
+            {
+                parentTarget = null;
+            }
+
+            var target = new CollectionTarget(destinationUrl, parentTarget, collection, targetActions);
+            return target;
+        }
 
         public async Task<MissingTarget> DeleteAsync(CancellationToken cancellationToken)
         {
