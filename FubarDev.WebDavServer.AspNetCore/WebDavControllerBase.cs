@@ -63,7 +63,7 @@ namespace FubarDev.WebDavServer.AspNetCore
         }
 
         [HttpPropFind()]
-        public async Task<IActionResult> PropFindAsync(string path, [FromBody]Propfind request, [FromHeader(Name = "Depth")] string depth, CancellationToken cancellationToken)
+        public async Task<IActionResult> PropFindAsync(string path, [FromBody]Propfind request, [FromHeader(Name = "Depth")] string depth = null, CancellationToken cancellationToken = default(CancellationToken))
         {
             var parsedDepth = Depth.Parse(depth);
             var result = await _dispatcher.Class1.PropFindAsync(path, request, parsedDepth, cancellationToken).ConfigureAwait(false);
@@ -85,16 +85,18 @@ namespace FubarDev.WebDavServer.AspNetCore
         }
 
         [HttpCopy]
-        public async Task<IActionResult> CopyAsync(string path, [FromHeader(Name = "Destination")] string destination, [FromHeader(Name = "Overwrite")] string overwrite = null, CancellationToken cancellationToken = default(CancellationToken))
+        public async Task<IActionResult> CopyAsync(string path, [FromHeader(Name = "Destination")] string destination, [FromHeader(Name = "Depth")] string depth = null, [FromHeader(Name = "Overwrite")] string overwrite = null, CancellationToken cancellationToken = default(CancellationToken))
         {
-            var result = await _dispatcher.Class1.CopyAsync(path, new Uri(destination, UriKind.RelativeOrAbsolute), ParseOverwrite(overwrite), cancellationToken).ConfigureAwait(false);
+            var parsedDepth = Depth.Parse(depth);
+            var result = await _dispatcher.Class1.CopyAsync(path, new Uri(destination, UriKind.RelativeOrAbsolute), parsedDepth, ParseOverwrite(overwrite), cancellationToken).ConfigureAwait(false);
             return new WebDavIndirectResult(_dispatcher, result);
         }
 
         [HttpMove]
-        public async Task<IActionResult> MoveAsync(string path, [FromHeader(Name = "Destination")] string destination, [FromHeader(Name = "Overwrite")] string overwrite = null, CancellationToken cancellationToken = default(CancellationToken))
+        public async Task<IActionResult> MoveAsync(string path, [FromHeader(Name = "Destination")] string destination, [FromHeader(Name = "Depth")] string depth = null, [FromHeader(Name = "Overwrite")] string overwrite = null, CancellationToken cancellationToken = default(CancellationToken))
         {
-            var result = await _dispatcher.Class1.MoveAsync(path, new Uri(destination, UriKind.RelativeOrAbsolute), ParseOverwrite(overwrite), cancellationToken).ConfigureAwait(false);
+            var parsedDepth = Depth.Parse(depth);
+            var result = await _dispatcher.Class1.MoveAsync(path, new Uri(destination, UriKind.RelativeOrAbsolute), parsedDepth, ParseOverwrite(overwrite), cancellationToken).ConfigureAwait(false);
             return new WebDavIndirectResult(_dispatcher, result);
         }
 

@@ -36,7 +36,7 @@ namespace FubarDev.WebDavServer.Engines.FileSystemTargets
             [NotNull] ITargetActions<CollectionTarget, DocumentTarget, MissingTarget> targetActions)
         {
             var collUrl = new Uri(destinationUrl, new Uri(".", UriKind.Relative));
-            var collTarget = new CollectionTarget(collUrl, null, document.Parent, targetActions);
+            var collTarget = new CollectionTarget(collUrl, null, document.Parent, true, targetActions);
             var docTarget = new DocumentTarget(collTarget, destinationUrl, document, targetActions);
             return docTarget;
         }

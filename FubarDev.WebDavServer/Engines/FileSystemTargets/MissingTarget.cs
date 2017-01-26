@@ -32,7 +32,7 @@ namespace FubarDev.WebDavServer.Engines.FileSystemTargets
             [NotNull] ITargetActions<CollectionTarget, DocumentTarget, MissingTarget> targetActions)
         {
             var collUrl = new Uri(destinationUrl, new Uri(".", UriKind.Relative));
-            var collTarget = new CollectionTarget(collUrl, null, parent, targetActions);
+            var collTarget = new CollectionTarget(collUrl, null, parent, false, targetActions);
             var target = new MissingTarget(destinationUrl, name, collTarget, targetActions);
             return target;
         }
@@ -40,7 +40,7 @@ namespace FubarDev.WebDavServer.Engines.FileSystemTargets
         public async Task<CollectionTarget> CreateCollectionAsync(CancellationToken cancellationToken)
         {
             var coll = await Parent.Collection.CreateCollectionAsync(Name, cancellationToken).ConfigureAwait(false);
-            return new CollectionTarget(DestinationUrl, Parent, coll, _targetActions);
+            return new CollectionTarget(DestinationUrl, Parent, coll, true, _targetActions);
         }
     }
 }

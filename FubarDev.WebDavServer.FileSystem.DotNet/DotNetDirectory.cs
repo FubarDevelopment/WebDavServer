@@ -82,7 +82,7 @@ namespace FubarDev.WebDavServer.FileSystem.DotNet
         {
             var fileInfo = fsInfo as FileInfo;
             if (fileInfo != null)
-                return new DotNetFile(DotNetFileSystem, this, fileInfo, Path.Append(fileInfo.Name));
+                return new DotNetFile(DotNetFileSystem, this, fileInfo, Path.Append(fileInfo.Name, false));
 
             var dirInfo = (DirectoryInfo) fsInfo;
             return new DotNetDirectory(DotNetFileSystem, this, dirInfo, Path.AppendDirectory(dirInfo.Name));

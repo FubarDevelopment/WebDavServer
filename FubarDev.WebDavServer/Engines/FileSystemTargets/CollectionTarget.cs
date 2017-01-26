@@ -14,15 +14,19 @@ namespace FubarDev.WebDavServer.Engines.FileSystemTargets
 
         private readonly ITargetActions<CollectionTarget, DocumentTarget, MissingTarget> _targetActions;
 
-        public CollectionTarget(Uri destinationUrl, CollectionTarget parent, ICollection collection, ITargetActions<CollectionTarget, DocumentTarget, MissingTarget> targetActions)
+        public CollectionTarget([NotNull] Uri destinationUrl, [CanBeNull] CollectionTarget parent, [NotNull] ICollection collection, bool created, [NotNull] ITargetActions<CollectionTarget, DocumentTarget, MissingTarget> targetActions)
             : base(destinationUrl, collection)
         {
             Collection = collection;
             _parent = parent;
             _targetActions = targetActions;
+            Created = created;
         }
 
+        [NotNull]
         public ICollection Collection { get; }
+
+        public bool Created { get; }
         
         [NotNull]
         public static CollectionTarget Create(
@@ -34,14 +38,14 @@ namespace FubarDev.WebDavServer.Engines.FileSystemTargets
             if (collection.Parent != null)
             {
                 var collUrl = new Uri(destinationUrl, new Uri("..", UriKind.Relative));
-                parentTarget = new CollectionTarget(collUrl, null, collection.Parent, targetActions);
+                parentTarget = new CollectionTarget(collUrl, null, collection.Parent, false, targetActions);
             }
             else
             {
                 parentTarget = null;
             }
 
-            var target = new CollectionTarget(destinationUrl, parentTarget, collection, targetActions);
+            var target = new CollectionTarget(destinationUrl, parentTarget, collection, false, targetActions);
             return target;
         }
 
@@ -62,7 +66,7 @@ namespace FubarDev.WebDavServer.Engines.FileSystemTargets
                 return new DocumentTarget(this, DestinationUrl.Append(doc), doc, _targetActions);
 
             var coll = (ICollection) result;
-            return new CollectionTarget(DestinationUrl.Append(coll), this, coll, _targetActions);
+            return new CollectionTarget(DestinationUrl.Append(coll), this, coll, false, _targetActions);
         }
 
         public MissingTarget CreateMissing(string name)

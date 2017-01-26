@@ -25,8 +25,8 @@ namespace FubarDev.WebDavServer.Dispatchers
 
         Task<IWebDavResult> MkColAsync(string path, CancellationToken cancellationToken);
 
-        Task<IWebDavResult> CopyAsync(string path, Uri destination, bool? allowOverwrite, CancellationToken cancellationToken);
+        Task<IWebDavResult> CopyAsync(string path, Uri destination, Depth depth, bool? allowOverwrite, CancellationToken cancellationToken);
 
-        Task<IWebDavResult> MoveAsync(string path, Uri destination, bool? allowOverwrite, CancellationToken cancellationToken);
+        Task<IWebDavResult> MoveAsync(string path, Uri destination, Depth depth, bool? allowOverwrite, CancellationToken cancellationToken);
     }
 }

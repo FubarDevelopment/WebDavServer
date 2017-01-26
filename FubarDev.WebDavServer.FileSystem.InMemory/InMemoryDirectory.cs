@@ -42,7 +42,7 @@ namespace FubarDev.WebDavServer.FileSystem.InMemory
         {
             if (_children.ContainsKey(name))
                 throw new IOException("Document or collection with the same name already exists");
-            var newItem = new InMemoryFile(FileSystem, this, Path.Append(name), name);
+            var newItem = new InMemoryFile(FileSystem, this, Path.Append(name, false), name);
             _children.Add(newItem.Name, newItem);
             return Task.FromResult<IDocument>(newItem);
         }
@@ -51,7 +51,7 @@ namespace FubarDev.WebDavServer.FileSystem.InMemory
         {
             if (_children.ContainsKey(name))
                 throw new IOException("Document or collection with the same name already exists");
-            var newItem = new InMemoryDirectory(FileSystem, this, Path.Append(name), name);
+            var newItem = new InMemoryDirectory(FileSystem, this, Path.Append(name, false), name);
             _children.Add(newItem.Name, newItem);
             return Task.FromResult<ICollection>(newItem);
         }

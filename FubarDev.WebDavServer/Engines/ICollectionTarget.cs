@@ -10,6 +10,8 @@ namespace FubarDev.WebDavServer.Engines
         where TDocument : IDocumentTarget<TCollection, TDocument, TMissing>
         where TCollection : ICollectionTarget<TCollection, TDocument, TMissing>
     {
+        bool Created { get; }
+
         [NotNull, ItemNotNull]
         Task<TMissing> DeleteAsync(CancellationToken cancellationToken);
 

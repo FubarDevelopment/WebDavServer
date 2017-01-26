@@ -186,14 +186,14 @@ namespace FubarDev.WebDavServer.Dispatchers
             return _mkColHandler.MkColAsync(path, cancellationToken);
         }
 
-        public Task<IWebDavResult> CopyAsync(string path, Uri destination, bool? allowOverwrite, CancellationToken cancellationToken)
+        public Task<IWebDavResult> CopyAsync(string path, Uri destination, Depth depth, bool? allowOverwrite, CancellationToken cancellationToken)
         {
             if (_copyHandler == null)
                 throw new NotSupportedException();
-            return _copyHandler.CopyAsync(path, destination, allowOverwrite, cancellationToken);
+            return _copyHandler.CopyAsync(path, destination, depth, allowOverwrite, cancellationToken);
         }
 
-        public Task<IWebDavResult> MoveAsync(string path, Uri destination, bool? allowOverwrite, CancellationToken cancellationToken)
+        public Task<IWebDavResult> MoveAsync(string path, Uri destination, Depth depth, bool? allowOverwrite, CancellationToken cancellationToken)
         {
             if (_moveHandler == null)
                 throw new NotSupportedException();
