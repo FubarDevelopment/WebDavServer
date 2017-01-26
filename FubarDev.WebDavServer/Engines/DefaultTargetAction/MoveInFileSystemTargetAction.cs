@@ -7,13 +7,13 @@ using FubarDev.WebDavServer.FileSystem;
 
 namespace FubarDev.WebDavServer.Engines.DefaultTargetAction
 {
-    public class CopyInFileSystemTargetAction : ITargetActions<CollectionTarget, DocumentTarget, MissingTarget>
+    public class MoveInFileSystemTargetAction : ITargetActions<CollectionTarget, DocumentTarget, MissingTarget>
     {
         public RecursiveTargetBehaviour ExistingTargetBehaviour { get; } = RecursiveTargetBehaviour.DeleteTarget;
 
         public async Task<DocumentTarget> ExecuteAsync(IDocument source, MissingTarget destination, CancellationToken cancellationToken)
         {
-            var doc = await source.CopyToAsync(destination.Parent.Collection, destination.Name, cancellationToken).ConfigureAwait(false);
+            var doc = await source.MoveToAsync(destination.Parent.Collection, destination.Name, cancellationToken).ConfigureAwait(false);
             return new DocumentTarget(destination.Parent, destination.DestinationUrl, doc, this);
         }
 
@@ -21,7 +21,7 @@ namespace FubarDev.WebDavServer.Engines.DefaultTargetAction
         {
             try
             {
-                await source.CopyToAsync(destination.Parent.Collection, destination.Name, cancellationToken).ConfigureAwait(false);
+                await source.MoveToAsync(destination.Parent.Collection, destination.Name, cancellationToken).ConfigureAwait(false);
                 return new ActionResult(ActionStatus.Overwritten, destination);
             }
             catch (Exception ex)
@@ -35,7 +35,7 @@ namespace FubarDev.WebDavServer.Engines.DefaultTargetAction
 
         public Task ExecuteAsync(ICollection source, CancellationToken cancellationToken)
         {
-            return Task.FromResult(0);
+            return source.DeleteAsync(cancellationToken);
         }
     }
 }

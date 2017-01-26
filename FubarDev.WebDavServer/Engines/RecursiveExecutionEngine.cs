@@ -35,7 +35,7 @@ namespace FubarDev.WebDavServer.Engines
 
         public async Task<CollectionActionResult> ExecuteAsync(Uri sourceUrl, ICollection source, Depth depth, TCollection target, CancellationToken cancellationToken)
         {
-            if (_handler.ExistingTargetBehaviour == RecursiveTargetBehaviour.DeleteBeforeCopy)
+            if (_handler.ExistingTargetBehaviour == RecursiveTargetBehaviour.DeleteTarget)
             {
                 TMissing missing;
                 try
@@ -83,7 +83,7 @@ namespace FubarDev.WebDavServer.Engines
                 return new ActionResult(ActionStatus.CannotOverwrite, target);
             }
 
-            if (_handler.ExistingTargetBehaviour == RecursiveTargetBehaviour.DeleteBeforeCopy)
+            if (_handler.ExistingTargetBehaviour == RecursiveTargetBehaviour.DeleteTarget)
             {
                 TMissing missingTarget;
                 try

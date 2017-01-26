@@ -7,7 +7,7 @@ using FubarDev.WebDavServer.FileSystem;
 
 namespace FubarDev.WebDavServer.Engines.DefaultTargetAction
 {
-    public class CopyBetweenFileSystemsTargetAction : ITargetActions<CollectionTarget, DocumentTarget, MissingTarget>
+    public class MoveBetweenFileSystemsTargetAction : ITargetActions<CollectionTarget, DocumentTarget, MissingTarget>
     {
         public RecursiveTargetBehaviour ExistingTargetBehaviour { get; } = RecursiveTargetBehaviour.Overwrite;
 
@@ -32,6 +32,9 @@ namespace FubarDev.WebDavServer.Engines.DefaultTargetAction
                         await sourceStream.CopyToAsync(destinationStream, 65536, cancellationToken).ConfigureAwait(false);
                     }
                 }
+
+                await source.DeleteAsync(cancellationToken).ConfigureAwait(false);
+
                 return new ActionResult(ActionStatus.Overwritten, destination);
             }
             catch (Exception ex)
@@ -45,7 +48,7 @@ namespace FubarDev.WebDavServer.Engines.DefaultTargetAction
 
         public Task ExecuteAsync(ICollection source, CancellationToken cancellationToken)
         {
-            return Task.FromResult(0);
+            return source.DeleteAsync(cancellationToken);
         }
     }
 }

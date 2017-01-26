@@ -16,22 +16,22 @@ using Microsoft.Extensions.Options;
 
 namespace FubarDev.WebDavServer.DefaultHandlers
 {
-    public class CopyHandler : ICopyHandler
+    public class MoveHandler : IMoveHandler
     {
         private readonly IFileSystem _rootFileSystem;
         private readonly IWebDavHost _host;
-        private readonly CopyHandlerOptions _options;
+        private readonly MoveHandlerOptions _options;
 
-        public CopyHandler(IFileSystem rootFileSystem, IWebDavHost host, IOptions<CopyHandlerOptions> options)
+        public MoveHandler(IFileSystem rootFileSystem, IWebDavHost host, IOptions<MoveHandlerOptions> options)
         {
             _rootFileSystem = rootFileSystem;
             _host = host;
-            _options = options?.Value ?? new CopyHandlerOptions();
+            _options = options?.Value ?? new MoveHandlerOptions();
         }
 
-        public IEnumerable<string> HttpMethods { get; } = new[] {"COPY"};
+        public IEnumerable<string> HttpMethods { get; } = new[] {"MOVE"};
 
-        public async Task<IWebDavResult> CopyAsync(string sourcePath, Uri destination, Depth depth, bool? overwrite, CancellationToken cancellationToken)
+        public async Task<IWebDavResult> MoveAsync(string sourcePath, Uri destination, bool? overwrite, CancellationToken cancellationToken)
         {
             var sourceSelectionResult = await _rootFileSystem.SelectAsync(sourcePath, cancellationToken).ConfigureAwait(false);
             if (sourceSelectionResult.IsMissing)
@@ -56,17 +56,17 @@ namespace FubarDev.WebDavServer.DefaultHandlers
             if (isSameFileSystem && _options.Mode == RecursiveProcessingMode.PreferFastest)
             {
                 // Copy one item inside the same file system (fast)
-                handler = new CopyInFileSystemTargetAction();
+                handler = new MoveInFileSystemTargetAction();
             }
             else
             {
                 // Copy one item to another file system (probably slow)
-                handler = new CopyBetweenFileSystemsTargetAction();
+                handler = new MoveBetweenFileSystemsTargetAction();
             }
 
             var doOverwrite = overwrite ?? _options.OverwriteAsDefault;
             var targetInfo = FileSystemTarget.FromSelectionResult(destinationSelectionResult, destinationUrl, handler);
-            var targetResult = await CopyAsync(handler, sourceUrl, sourceSelectionResult, targetInfo, depth, doOverwrite, cancellationToken).ConfigureAwait(false);
+            var targetResult = await MoveAsync(handler, sourceUrl, sourceSelectionResult, targetInfo, doOverwrite, cancellationToken).ConfigureAwait(false);
             return Evaluate(targetResult);
         }
 
@@ -161,12 +161,11 @@ namespace FubarDev.WebDavServer.DefaultHandlers
             return response;
         }
 
-        private async Task<Engines.CollectionActionResult> CopyAsync(
+        private async Task<Engines.CollectionActionResult> MoveAsync(
             ITargetActions<CollectionTarget, DocumentTarget, MissingTarget> handler,
             Uri sourceUrl,
             SelectionResult sourceSelectionResult,
             FileSystemTarget targetInfo,
-            Depth depth,
             bool overwrite,
             CancellationToken cancellationToken)
         {
@@ -229,7 +228,7 @@ namespace FubarDev.WebDavServer.DefaultHandlers
                 collResult = await engine.ExecuteAsync(
                     sourceUrl,
                     sourceSelectionResult.Collection,
-                    depth,
+                    Depth.Infinity, 
                     target,
                     cancellationToken).ConfigureAwait(false);
             }
@@ -239,7 +238,7 @@ namespace FubarDev.WebDavServer.DefaultHandlers
                 collResult = await engine.ExecuteAsync(
                     sourceUrl,
                     sourceSelectionResult.Collection,
-                    depth,
+                    Depth.Infinity,
                     target,
                     cancellationToken).ConfigureAwait(false);
             }

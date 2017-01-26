@@ -3,6 +3,6 @@
     public enum RecursiveTargetBehaviour
     {
         Overwrite,
-        DeleteBeforeCopy
+        DeleteTarget
     }
 }
