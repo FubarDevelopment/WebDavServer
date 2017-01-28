@@ -76,7 +76,7 @@ namespace FubarDev.WebDavServer.Engines.FileSystemTargets
             if (Collection == null)
                 throw new InvalidOperationException();
             Uri collUrl = (DestinationUrl.OriginalString.EndsWith("/")) ? new Uri(DestinationUrl, "..") : new Uri(DestinationUrl, ".");
-            var collTarget = Parent == null ? null : CollectionTarget.Create(collUrl, Parent, _targetActions);
+            var collTarget = Parent == null ? null : CollectionTarget.NewInstance(collUrl, Parent, _targetActions);
             return new CollectionTarget(DestinationUrl, collTarget, Collection, true, _targetActions);
         }
 
@@ -86,7 +86,7 @@ namespace FubarDev.WebDavServer.Engines.FileSystemTargets
             if (Document == null || Parent == null)
                 throw new InvalidOperationException();
             Uri collUrl = (DestinationUrl.OriginalString.EndsWith("/")) ? new Uri(DestinationUrl, "..") : new Uri(DestinationUrl, ".");
-            var collTarget = CollectionTarget.Create(collUrl, Parent, _targetActions);
+            var collTarget = CollectionTarget.NewInstance(collUrl, Parent, _targetActions);
             return new DocumentTarget(collTarget, DestinationUrl, Document, _targetActions);
         }
 
@@ -96,7 +96,7 @@ namespace FubarDev.WebDavServer.Engines.FileSystemTargets
             if (Parent == null)
                 throw new InvalidOperationException();
             Uri collUrl = (DestinationUrl.OriginalString.EndsWith("/")) ? new Uri(DestinationUrl, "..") : new Uri(DestinationUrl, ".");
-            var collTarget = CollectionTarget.Create(collUrl, Parent, _targetActions);
+            var collTarget = CollectionTarget.NewInstance(collUrl, Parent, _targetActions);
             return new MissingTarget(DestinationUrl, Name, collTarget, _targetActions);
         }
     }

@@ -29,7 +29,7 @@ namespace FubarDev.WebDavServer.Engines.FileSystemTargets
         public bool Created { get; }
         
         [NotNull]
-        public static CollectionTarget Create(
+        public static CollectionTarget NewInstance(
             [NotNull] Uri destinationUrl,
             [NotNull] ICollection collection,
             [NotNull] ITargetActions<CollectionTarget, DocumentTarget, MissingTarget> targetActions)

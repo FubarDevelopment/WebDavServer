@@ -30,7 +30,7 @@ namespace FubarDev.WebDavServer.Engines.FileSystemTargets
         public CollectionTarget Parent { get; }
 
         [NotNull]
-        public static DocumentTarget Create(
+        public static DocumentTarget NewInstance(
             [NotNull] Uri destinationUrl,
             [NotNull] IDocument document,
             [NotNull] ITargetActions<CollectionTarget, DocumentTarget, MissingTarget> targetActions)

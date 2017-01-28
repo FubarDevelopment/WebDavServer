@@ -25,7 +25,7 @@ namespace FubarDev.WebDavServer.Engines.FileSystemTargets
         public Uri DestinationUrl { get; }
 
         [NotNull]
-        public static MissingTarget Create(
+        public static MissingTarget NewInstance(
             [NotNull] Uri destinationUrl,
             [NotNull] ICollection parent,
             [NotNull] string name,
