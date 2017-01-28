@@ -71,7 +71,7 @@ namespace FubarDev.WebDavServer.Engines.FileSystemTargets
         }
 
         [NotNull]
-        public CollectionTarget CreateCollectionTarget()
+        public CollectionTarget NewCollectionTarget()
         {
             if (Collection == null)
                 throw new InvalidOperationException();
@@ -81,7 +81,7 @@ namespace FubarDev.WebDavServer.Engines.FileSystemTargets
         }
 
         [NotNull]
-        public DocumentTarget CreateDocumentTarget()
+        public DocumentTarget NewDocumentTarget()
         {
             if (Document == null || Parent == null)
                 throw new InvalidOperationException();
@@ -91,7 +91,7 @@ namespace FubarDev.WebDavServer.Engines.FileSystemTargets
         }
 
         [NotNull]
-        public MissingTarget CreateMissingTarget()
+        public MissingTarget NewMissingTarget()
         {
             if (Parent == null)
                 throw new InvalidOperationException();

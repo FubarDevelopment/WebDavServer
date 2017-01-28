@@ -90,14 +90,14 @@ namespace FubarDev.WebDavServer.DefaultHandlers
                 CollectionTarget collParent;
                 if (targetInfo.Collection != null)
                 {
-                    var target = targetInfo.CreateMissingTarget();
+                    var target = targetInfo.NewMissingTarget();
                     collParent = target.Parent;
                     // Cannot overwrite collection with document
                     docResult = new ActionResult(ActionStatus.OverwriteFailed, target);
                 }
                 else if (targetInfo.Document == null)
                 {
-                    var target = targetInfo.CreateMissingTarget();
+                    var target = targetInfo.NewMissingTarget();
                     collParent = target.Parent;
                     docResult = await engine.ExecuteAsync(
                         sourceUrl,
@@ -107,7 +107,7 @@ namespace FubarDev.WebDavServer.DefaultHandlers
                 }
                 else
                 {
-                    var target = targetInfo.CreateDocumentTarget();
+                    var target = targetInfo.NewDocumentTarget();
                     collParent = target.Parent;
                     docResult = await engine.ExecuteAsync(
                         sourceUrl,
@@ -127,13 +127,13 @@ namespace FubarDev.WebDavServer.DefaultHandlers
             Engines.CollectionActionResult collResult;
             if (targetInfo.Document != null)
             {
-                var target = targetInfo.CreateMissingTarget();
+                var target = targetInfo.NewMissingTarget();
                 // Cannot overwrite document with collection
                 collResult = new Engines.CollectionActionResult(ActionStatus.OverwriteFailed, target);
             }
             else if (targetInfo.Collection == null)
             {
-                var target = targetInfo.CreateMissingTarget();
+                var target = targetInfo.NewMissingTarget();
                 collResult = await engine.ExecuteAsync(
                     sourceUrl,
                     sourceSelectionResult.Collection,
@@ -143,7 +143,7 @@ namespace FubarDev.WebDavServer.DefaultHandlers
             }
             else
             {
-                var target = targetInfo.CreateCollectionTarget();
+                var target = targetInfo.NewCollectionTarget();
                 collResult = await engine.ExecuteAsync(
                     sourceUrl,
                     sourceSelectionResult.Collection,
