@@ -78,6 +78,7 @@ namespace FubarDev.WebDavServer.DefaultHandlers
             if (request == null)
                 return await HandleAllPropAsync(entries, cancellationToken).ConfigureAwait(false);
 
+            // TODO: propname
             switch (request.ItemsElementName[0])
             {
                 case ItemsChoiceType1.Allprop:

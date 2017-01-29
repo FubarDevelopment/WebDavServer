@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 
 using FubarDev.WebDavServer.Engines;
 using FubarDev.WebDavServer.Engines.Local;
+using FubarDev.WebDavServer.Engines.Remote;
 using FubarDev.WebDavServer.FileSystem;
 using FubarDev.WebDavServer.Handlers;
 using FubarDev.WebDavServer.Model;
@@ -31,6 +32,8 @@ namespace FubarDev.WebDavServer.DefaultHandlers
 
         public async Task<IWebDavResult> CopyAsync(string sourcePath, Uri destination, Depth depth, bool? overwrite, CancellationToken cancellationToken)
         {
+            var doOverwrite = overwrite ?? _options.OverwriteAsDefault;
+
             var sourceSelectionResult = await _rootFileSystem.SelectAsync(sourcePath, cancellationToken).ConfigureAwait(false);
             if (sourceSelectionResult.IsMissing)
                 throw new WebDavException(WebDavStatusCode.NotFound);
@@ -40,6 +43,9 @@ namespace FubarDev.WebDavServer.DefaultHandlers
             if (!_host.BaseUrl.IsBaseOf(destinationUrl) || _options.Mode == RecursiveProcessingMode.PreferCrossServer)
             {
                 // Copy from server to server (slow)
+                //var remoteHandler = new RemoteHttpClientTargetActions();
+                //var remoteTargetResult = await RemoteCopyAsync(handler, sourceUrl, sourceSelectionResult, destinationUrl, depth, doOverwrite, cancellationToken).ConfigureAwait(false);
+                //return remoteTargetResult.Evaluate(_host);
                 return new WebDavResult(WebDavStatusCode.BadGateway);
             }
 
@@ -62,10 +68,95 @@ namespace FubarDev.WebDavServer.DefaultHandlers
                 handler = new CopyBetweenFileSystemsTargetAction();
             }
 
-            var doOverwrite = overwrite ?? _options.OverwriteAsDefault;
             var targetInfo = FileSystemTarget.FromSelectionResult(destinationSelectionResult, destinationUrl, handler);
             var targetResult = await CopyAsync(handler, sourceUrl, sourceSelectionResult, targetInfo, depth, doOverwrite, cancellationToken).ConfigureAwait(false);
             return targetResult.Evaluate(_host);
+        }
+
+        private async Task<Engines.CollectionActionResult> RemoteCopyAsync(
+            RemoteTargetActions handler,
+            Uri sourceUrl,
+            SelectionResult sourceSelectionResult,
+            Uri targetUrl,
+            Depth depth,
+            bool overwrite,
+            CancellationToken cancellationToken)
+        {
+            Debug.Assert(sourceSelectionResult.Collection != null, "sourceSelectionResult.Collection != null");
+
+            var engine = new RecursiveExecutionEngine<RemoteCollectionTarget, RemoteDocumentTarget, RemoteMissingTarget>(
+                handler,
+                overwrite);
+
+            var parentCollectionUrl = targetUrl.GetParent();
+            var targetName = targetUrl.GetName();
+            var parentName = parentCollectionUrl.GetName();
+            var parentCollection = new RemoteCollectionTarget(null, parentName, parentCollectionUrl, false, handler);
+            var targetItem = await handler.GetAsync(parentCollection, targetName, cancellationToken).ConfigureAwait(false);
+
+            if (sourceSelectionResult.ResultType == SelectionResultType.FoundDocument)
+            {
+                ActionResult docResult;
+                if (targetItem is RemoteCollectionTarget)
+                {
+                    // Cannot overwrite collection with document
+                    docResult = new ActionResult(ActionStatus.OverwriteFailed, targetItem);
+                }
+                else if (targetItem is RemoteMissingTarget)
+                {
+                    var target = (RemoteMissingTarget)targetItem;
+                    docResult = await engine.ExecuteAsync(
+                        sourceUrl,
+                        sourceSelectionResult.Document,
+                        target,
+                        cancellationToken).ConfigureAwait(false);
+                }
+                else
+                {
+                    var target = (RemoteDocumentTarget)targetItem;
+                    docResult = await engine.ExecuteAsync(
+                        sourceUrl,
+                        sourceSelectionResult.Document,
+                        target,
+                        cancellationToken).ConfigureAwait(false);
+                }
+
+                var engineResult = new Engines.CollectionActionResult(ActionStatus.Ignored, parentCollection)
+                {
+                    DocumentActionResults = new[] { docResult }
+                };
+
+                return engineResult;
+            }
+
+            Engines.CollectionActionResult collResult;
+            if (targetItem is RemoteDocumentTarget)
+            {
+                // Cannot overwrite document with collection
+                collResult = new Engines.CollectionActionResult(ActionStatus.OverwriteFailed, targetItem);
+            }
+            else if (targetItem is RemoteMissingTarget)
+            {
+                var target = (RemoteMissingTarget)targetItem;
+                collResult = await engine.ExecuteAsync(
+                    sourceUrl,
+                    sourceSelectionResult.Collection,
+                    depth,
+                    target,
+                    cancellationToken).ConfigureAwait(false);
+            }
+            else
+            {
+                var target = (RemoteCollectionTarget)targetItem;
+                collResult = await engine.ExecuteAsync(
+                    sourceUrl,
+                    sourceSelectionResult.Collection,
+                    depth,
+                    target,
+                    cancellationToken).ConfigureAwait(false);
+            }
+
+            return collResult;
         }
 
         private async Task<Engines.CollectionActionResult> CopyAsync(

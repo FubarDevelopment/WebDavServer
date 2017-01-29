@@ -49,24 +49,49 @@ namespace FubarDev.WebDavServer.DefaultHandlers
 
             var properties = propertiesList.ToDictionary(x => x.Name);
             var changes = await ApplyChangesAsync(entry, properties, request, cancellationToken).ConfigureAwait(false);
-            if (changes.Any(x => !x.IsSuccess))
+            var hasError = changes.Any(x => x.IsSuccess);
+            if (hasError)
             {
                 changes = await RevertChangesAsync(entry, changes, properties, cancellationToken).ConfigureAwait(false);
             }
 
-            var failedItem = changes.FirstOrDefault(x => x.IsFailure);
-            var isReadOnly = failedItem != null && failedItem.Status == ChangeStatus.ReadOnlyProperty;
-            if (isReadOnly)
+            var statusCode = hasError ? WebDavStatusCode.Forbidden : WebDavStatusCode.MultiStatus;
+            var propStats = new List<Propstat>();
+
+            var readOnlyProperties = changes.Where(x => x.Status == ChangeStatus.ReadOnlyProperty).ToList();
+            if (readOnlyProperties.Count != 0)
             {
-                // tried to update a read-only property
-                return new WebDavResult<Error>(WebDavStatusCode.Forbidden, new Error()
-                {
-                    ItemsElementName = new[] { ItemsChoiceType.CannotModifyProtectedProperty, },
-                    Items = new[] { new object(), }
-                });
+                propStats.AddRange(
+                    CreatePropStats(
+                        readOnlyProperties,
+                        new Error()
+                        {
+                            ItemsElementName = new[] {ItemsChoiceType.CannotModifyProtectedProperty,},
+                            Items = new[] {new object(),}
+                        }));
+                changes = changes.Except(readOnlyProperties).ToList();
             }
 
-            var propStats = new List<Propstat>();
+            propStats.AddRange(CreatePropStats(changes, null));
+
+            var status = new Multistatus()
+            {
+                Response = new[]
+                {
+                    new Response()
+                    {
+                        Href = _host.BaseUrl.Append(path, true).OriginalString,
+                        ItemsElementName = propStats.Select(x => ItemsChoiceType2.Propstat).ToArray(),
+                        Items = propStats.Cast<object>().ToArray()
+                    }
+                }
+            };
+
+            return new WebDavResult<Multistatus>(statusCode, status);
+        }
+
+        private IEnumerable<Propstat> CreatePropStats(IEnumerable<ChangeItem> changes, Error error)
+        {
             var changesByStatusCodes = changes.GroupBy(x => x.StatusCode);
             foreach (var changesByStatusCode in changesByStatusCodes)
             {
@@ -82,26 +107,12 @@ namespace FubarDev.WebDavServer.DefaultHandlers
                     {
                         Any = elements.ToArray(),
                     },
-                    Status = new Status(_host.RequestProtocol, changesByStatusCode.Key).ToString()
+                    Status = new Status(_host.RequestProtocol, changesByStatusCode.Key).ToString(),
+                    Error = error,
                 };
 
-                propStats.Add(propStat);
+                yield return propStat;
             }
-
-            var status = new Multistatus()
-            {
-                Response = new[]
-                {
-                    new Response()
-                    {
-                        Href = _host.BaseUrl.Append(path, true).OriginalString,
-                        ItemsElementName = propStats.Select(x => ItemsChoiceType2.Propstat).ToArray(),
-                        Items = propStats.Cast<object>().ToArray()
-                    }
-                }
-            };
-
-            return new WebDavResult<Multistatus>(WebDavStatusCode.MultiStatus, status);
         }
 
         private async Task<IReadOnlyCollection<ChangeItem>> RevertChangesAsync(IEntry entry, IReadOnlyCollection<ChangeItem> changes, Dictionary<XName, IUntypedReadableProperty> properties, CancellationToken cancellationToken)

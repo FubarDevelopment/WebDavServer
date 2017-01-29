@@ -48,7 +48,7 @@ namespace FubarDev.WebDavServer.Engines.Remote
 
         public Task<ITarget> GetAsync(string name, CancellationToken cancellationToken)
         {
-            return _targetActions.GetAsync(name, cancellationToken);
+            return _targetActions.GetAsync(this, name, cancellationToken);
         }
 
         public RemoteMissingTarget NewMissing(string name)

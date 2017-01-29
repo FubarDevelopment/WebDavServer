@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Xml.Linq;
@@ -30,7 +31,7 @@ namespace FubarDev.WebDavServer.Engines.Remote
         public abstract Task<RemoteCollectionTarget> CreateCollectionAsync([NotNull] RemoteCollectionTarget targetCollection, [NotNull] string name, CancellationToken cancellationToken);
 
         [NotNull, ItemNotNull]
-        public abstract Task<ITarget> GetAsync([NotNull] string name, CancellationToken cancellationToken);
+        public abstract Task<ITarget> GetAsync([NotNull] RemoteCollectionTarget collection, [NotNull] string name, CancellationToken cancellationToken);
 
         [NotNull]
         public abstract Task DeleteAsync([NotNull] RemoteCollectionTarget target, CancellationToken cancellationToken);

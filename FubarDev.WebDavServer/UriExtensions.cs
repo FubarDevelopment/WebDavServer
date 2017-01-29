@@ -6,6 +6,23 @@ namespace FubarDev.WebDavServer
 {
     public static class UriExtensions
     {
+        public static Uri GetParent(this Uri url)
+        {
+            if (url.OriginalString.EndsWith("/"))
+                return new Uri(url, "..");
+            return new Uri(url, ".");
+        }
+
+        public static string GetName(this Uri url)
+        {
+            var s = url.OriginalString;
+            var searchStartPos = s.EndsWith("/") ? s.Length - 2 : s.Length - 1;
+            var slashIndex = s.LastIndexOf("/", searchStartPos, StringComparison.Ordinal);
+            var length = searchStartPos - slashIndex + 1;
+            var name = s.Substring(slashIndex + 1, length);
+            return Uri.UnescapeDataString(name);
+        }
+
         public static Uri Append(this Uri baseUri, IDocument entry)
         {
             return baseUri.Append(Uri.EscapeDataString(entry.Name), true);
