@@ -55,8 +55,8 @@ namespace FubarDev.WebDavServer.DefaultHandlers
                     new Response()
                     {
                         Href = _host.BaseUrl.Append((deleteResult.FailedEntry ?? targetEntry).Path).OriginalString,
-                        ItemsElementName = new[] {ItemsChoiceType2.Status,},
-                        Items = new object[] {$"{_host.RequestProtocol} {(int) deleteResult.StatusCode} {deleteResult.StatusCode.GetReasonPhrase()}"}
+                        ItemsElementName = new[] { ItemsChoiceType2.Status, },
+                        Items = new object[] { new Status(_host.RequestProtocol, deleteResult.StatusCode).ToString() }
                     }
                 }
             };

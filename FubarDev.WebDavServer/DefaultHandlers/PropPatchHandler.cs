@@ -82,7 +82,7 @@ namespace FubarDev.WebDavServer.DefaultHandlers
                     {
                         Any = elements.ToArray(),
                     },
-                    Status = $"{_host.RequestProtocol} {(int)changesByStatusCode.Key} {changesByStatusCode.Key.GetReasonPhrase()}"
+                    Status = new Status(_host.RequestProtocol, changesByStatusCode.Key).ToString()
                 };
 
                 propStats.Add(propStat);

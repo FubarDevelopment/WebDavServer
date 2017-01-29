@@ -56,12 +56,12 @@ namespace FubarDev.WebDavServer.AspNetCore.Filters
                 {
                     Response = new[]
                     {
-                            new Response()
-                            {
-                                Href = context.HttpContext.Request.GetEncodedUrl(),
-                                ItemsElementName = new[] {ItemsChoiceType2.Status,},
-                                Items = new object[] {$"{context.HttpContext.Request.Protocol} {(int)statusCode} {statusCode.GetReasonPhrase(optionalMessge)}"},
-                            },
+                        new Response()
+                        {
+                            Href = context.HttpContext.Request.GetEncodedUrl(),
+                            ItemsElementName = new[] { ItemsChoiceType2.Status, },
+                            Items = new object[] { new Status(context.HttpContext.Request.Protocol, statusCode, optionalMessge) },
+                        },
                     }
                 });
             var dispatcher = context.HttpContext.RequestServices.GetService<IWebDavDispatcher>();

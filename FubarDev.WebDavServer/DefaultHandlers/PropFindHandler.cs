@@ -213,7 +213,7 @@ namespace FubarDev.WebDavServer.DefaultHandlers
                             {
                                 Any = propElements.ToArray(),
                             },
-                            Status = $"{_host.RequestProtocol} 200 OK"
+                            Status = new Status(_host.RequestProtocol, WebDavStatusCodes.OK).ToString()
                         });
                 }
 
@@ -231,7 +231,7 @@ namespace FubarDev.WebDavServer.DefaultHandlers
                             {
                                 Any = item.Value.Select(x => new XElement(x)).ToArray(),
                             },
-                            Status = $"{_host.RequestProtocol} {item.Key} {item.Key.GetReasonPhrase()}"
+                            Status = new Status(_host.RequestProtocol, item.Key).ToString()
                         });
                 }
 

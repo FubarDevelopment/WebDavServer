@@ -92,7 +92,7 @@ namespace FubarDev.WebDavServer
             }
 
             var statusCode = GetWebDavStatusCode(status);
-            items.Add(Tuple.Create(ItemsChoiceType2.Status, (object)$"{host.RequestProtocol} {(int)statusCode} {statusCode.GetReasonPhrase()}"));
+            items.Add(Tuple.Create(ItemsChoiceType2.Status, (object)new Status(host.RequestProtocol, statusCode).ToString()));
 
             response.ItemsElementName = items.Select(x => x.Item1).ToArray();
             response.Items = items.Select(x => x.Item2).ToArray();

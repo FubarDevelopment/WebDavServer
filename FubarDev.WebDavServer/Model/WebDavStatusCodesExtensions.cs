@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using System.Text;
 
+using JetBrains.Annotations;
+
 namespace FubarDev.WebDavServer.Model
 {
     public static class WebDavStatusCodesExtensions
@@ -12,7 +14,8 @@ namespace FubarDev.WebDavServer.Model
             [WebDavStatusCodes.OK] = "OK",
         };
 
-        public static string GetReasonPhrase(this WebDavStatusCodes statusCode, string additionalMessage = "")
+        [NotNull]
+        public static string GetReasonPhrase(this WebDavStatusCodes statusCode, [CanBeNull] string additionalMessage = null)
         {
             var reasonPhrase = _reasonPhrases.GetOrAdd(
                 statusCode,
