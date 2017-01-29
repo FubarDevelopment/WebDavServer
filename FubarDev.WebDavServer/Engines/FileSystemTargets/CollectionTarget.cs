@@ -60,7 +60,8 @@ namespace FubarDev.WebDavServer.Engines.FileSystemTargets
         {
             var result = await Collection.GetChildAsync(name, cancellationToken).ConfigureAwait(false);
             if (result == null)
-                return null;
+                return new MissingTarget(DestinationUrl.Append(name, false), name, this, _targetActions);
+
             var doc = result as IDocument;
             if (doc != null)
                 return new DocumentTarget(this, DestinationUrl.Append(doc), doc, _targetActions);

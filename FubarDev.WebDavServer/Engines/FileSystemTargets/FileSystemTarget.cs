@@ -77,7 +77,7 @@ namespace FubarDev.WebDavServer.Engines.FileSystemTargets
                 throw new InvalidOperationException();
             Uri collUrl = (DestinationUrl.OriginalString.EndsWith("/")) ? new Uri(DestinationUrl, "..") : new Uri(DestinationUrl, ".");
             var collTarget = Parent == null ? null : CollectionTarget.NewInstance(collUrl, Parent, _targetActions);
-            return new CollectionTarget(DestinationUrl, collTarget, Collection, true, _targetActions);
+            return new CollectionTarget(DestinationUrl, collTarget, Collection, false, _targetActions);
         }
 
         [NotNull]
