@@ -70,7 +70,7 @@ namespace FubarDev.WebDavServer.FileSystem.DotNet
         public override Task<DeleteResult> DeleteAsync(CancellationToken cancellationToken)
         {
             DirectoryInfo.Delete(true);
-            return Task.FromResult(new DeleteResult(WebDavStatusCodes.OK, null));
+            return Task.FromResult(new DeleteResult(WebDavStatusCode.OK, null));
         }
 
         public IAsyncEnumerable<IEntry> GetEntries(int maxDepth)
@@ -192,7 +192,7 @@ namespace FubarDev.WebDavServer.FileSystem.DotNet
             public List<Tuple<TDirectory, TDirectory>> Directories { get; } = new List<Tuple<TDirectory, TDirectory>>();
             public List<Tuple<TFile, TFile>> Files { get; } = new List<Tuple<TFile, TFile>>();
             public TItem FailedItem { get; set; }
-            public WebDavStatusCodes ErrorStatusCode { get; set; } = WebDavStatusCodes.OK;
+            public WebDavStatusCode ErrorStatusCode { get; set; } = WebDavStatusCode.OK;
         }
     }
 }

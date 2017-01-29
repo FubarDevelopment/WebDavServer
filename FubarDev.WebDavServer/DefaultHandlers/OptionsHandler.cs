@@ -20,7 +20,7 @@ namespace FubarDev.WebDavServer.DefaultHandlers
         private class WebDavOptionsResult : WebDavResult
         {
             public WebDavOptionsResult()
-                : base(WebDavStatusCodes.OK)
+                : base(WebDavStatusCode.OK)
             {
             }
 

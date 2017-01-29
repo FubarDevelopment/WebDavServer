@@ -41,14 +41,14 @@ namespace FubarDev.WebDavServer.AspNetCore.Filters
             var unauthorizedAccessException = context.Exception as UnauthorizedAccessException;
             if (unauthorizedAccessException != null)
             {
-                context.Result = BuildResultForStatusCode(context, WebDavStatusCodes.Forbidden, unauthorizedAccessException.Message);
+                context.Result = BuildResultForStatusCode(context, WebDavStatusCode.Forbidden, unauthorizedAccessException.Message);
                 return;
             }
 
             _logger.LogError(Logging.EventIds.Unspecified, context.Exception, context.Exception.Message);
         }
 
-        private static IActionResult BuildResultForStatusCode(ExceptionContext context, WebDavStatusCodes statusCode, string optionalMessge)
+        private static IActionResult BuildResultForStatusCode(ExceptionContext context, WebDavStatusCode statusCode, string optionalMessge)
         {
             var result = new WebDavResult<Multistatus>(
                 statusCode,

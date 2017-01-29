@@ -2,7 +2,7 @@
 
 namespace FubarDev.WebDavServer.Model
 {
-    public enum WebDavStatusCodes
+    public enum WebDavStatusCode
     {
         OK = HttpStatusCode.OK,
         Created = HttpStatusCode.Created,

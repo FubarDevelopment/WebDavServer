@@ -34,7 +34,7 @@ namespace FubarDev.WebDavServer.DefaultHandlers
             var selectionResult = await FileSystem.SelectAsync(path, cancellationToken).ConfigureAwait(false);
             if (selectionResult.IsMissing)
             {
-                throw new WebDavException(WebDavStatusCodes.NotFound);
+                throw new WebDavException(WebDavStatusCode.NotFound);
             }
 
             var entries = new List<IEntry>();
@@ -57,7 +57,7 @@ namespace FubarDev.WebDavServer.DefaultHandlers
                     if (collector == null)
                     {
                         // Cannot recursively collect the children with infinite depth
-                        return new WebDavResult<Error>(WebDavStatusCodes.Forbidden, new Error()
+                        return new WebDavResult<Error>(WebDavStatusCode.Forbidden, new Error()
                         {
                             ItemsElementName = new[] { ItemsChoiceType.PropfindFiniteDepth, },
                             Items = new[] { new object(), }
@@ -86,7 +86,7 @@ namespace FubarDev.WebDavServer.DefaultHandlers
                     return await HandlePropAsync((Prop)request.Items[0], entries, cancellationToken).ConfigureAwait(false);
             }
 
-            throw new WebDavException(WebDavStatusCodes.Forbidden);
+            throw new WebDavException(WebDavStatusCode.Forbidden);
         }
 
         private async Task<IWebDavResult> HandlePropAsync(Prop prop, IReadOnlyCollection<IEntry> entries, CancellationToken cancellationToken)
@@ -97,7 +97,7 @@ namespace FubarDev.WebDavServer.DefaultHandlers
                 var href = _host.BaseUrl.Append(entry.Path);
 
                 var collector = new PropertyCollector(_host, new ReadableFilter(), new PropFilter(prop));
-                var propStats = await collector.GetPropertiesAsync(entry, code => code != WebDavStatusCodes.NotFound, cancellationToken).ConfigureAwait(false);
+                var propStats = await collector.GetPropertiesAsync(entry, code => code != WebDavStatusCode.NotFound, cancellationToken).ConfigureAwait(false);
 
                 var response = new Response()
                 {
@@ -114,7 +114,7 @@ namespace FubarDev.WebDavServer.DefaultHandlers
                 Response = responses.ToArray()
             };
 
-            return new WebDavResult<Multistatus>(WebDavStatusCodes.MultiStatus, result);
+            return new WebDavResult<Multistatus>(WebDavStatusCode.MultiStatus, result);
         }
 
         private Task<IWebDavResult> HandleAllPropAsync([NotNull] Propfind request, IEnumerable<IEntry> entries, CancellationToken cancellationToken)
@@ -155,7 +155,7 @@ namespace FubarDev.WebDavServer.DefaultHandlers
                 Response = responses.ToArray()
             };
 
-            return new WebDavResult<Multistatus>(WebDavStatusCodes.MultiStatus, result);
+            return new WebDavResult<Multistatus>(WebDavStatusCode.MultiStatus, result);
         }
 
         class PropertyCollector
@@ -172,10 +172,10 @@ namespace FubarDev.WebDavServer.DefaultHandlers
 
             public Task<IReadOnlyCollection<Propstat>> GetPropertiesAsync(IEntry entry, CancellationToken cancellationToken)
             {
-                return GetPropertiesAsync(entry, code => code != WebDavStatusCodes.NotFound, cancellationToken);
+                return GetPropertiesAsync(entry, code => code != WebDavStatusCode.NotFound, cancellationToken);
             }
 
-            public async Task<IReadOnlyCollection<Propstat>> GetPropertiesAsync(IEntry entry, Func<WebDavStatusCodes, bool> statusCodeFilter, CancellationToken cancellationToken)
+            public async Task<IReadOnlyCollection<Propstat>> GetPropertiesAsync(IEntry entry, Func<WebDavStatusCode, bool> statusCodeFilter, CancellationToken cancellationToken)
             {
                 foreach (var filter in _filters)
                 {
@@ -213,7 +213,7 @@ namespace FubarDev.WebDavServer.DefaultHandlers
                             {
                                 Any = propElements.ToArray(),
                             },
-                            Status = new Status(_host.RequestProtocol, WebDavStatusCodes.OK).ToString()
+                            Status = new Status(_host.RequestProtocol, WebDavStatusCode.OK).ToString()
                         });
                 }
 

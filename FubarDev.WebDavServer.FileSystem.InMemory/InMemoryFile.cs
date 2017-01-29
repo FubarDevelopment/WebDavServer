@@ -31,8 +31,8 @@ namespace FubarDev.WebDavServer.FileSystem.InMemory
         public override Task<DeleteResult> DeleteAsync(CancellationToken cancellationToken)
         {
             var result = !InMemoryParent.Remove(Name)
-                ? new DeleteResult(WebDavStatusCodes.NotFound, this)
-                : new DeleteResult(WebDavStatusCodes.OK, null);
+                ? new DeleteResult(WebDavStatusCode.NotFound, this)
+                : new DeleteResult(WebDavStatusCode.OK, null);
             return Task.FromResult(result);
         }
 

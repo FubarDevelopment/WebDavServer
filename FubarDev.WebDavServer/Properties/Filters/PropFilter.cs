@@ -37,7 +37,7 @@ namespace FubarDev.WebDavServer.Properties.Filters
         {
             var missingProps = new HashSet<XName>(_requestedProperties);
             missingProps.ExceptWith(_selectedProperties);
-            return missingProps.Select(x => new MissingProperty(WebDavStatusCodes.NotFound, x));
+            return missingProps.Select(x => new MissingProperty(WebDavStatusCode.NotFound, x));
         }
     }
 }

@@ -38,7 +38,7 @@ namespace FubarDev.WebDavServer.DefaultHandlers
         {
             var searchResult = await FileSystem.SelectAsync(path, cancellationToken).ConfigureAwait(false);
             if (searchResult.IsMissing)
-                throw new WebDavException(WebDavStatusCodes.NotFound);
+                throw new WebDavException(WebDavStatusCode.NotFound);
             if (searchResult.ResultType == SelectionResultType.FoundCollection)
             {
                 if (returnFile)
@@ -62,7 +62,7 @@ namespace FubarDev.WebDavServer.DefaultHandlers
             private readonly bool _returnFile;
 
             public WebDavDocumentResult([CanBeNull] IPropertyStore propertyStore, [NotNull] IDocument document, bool returnFile)
-                : base(WebDavStatusCodes.OK)
+                : base(WebDavStatusCode.OK)
             {
                 _propertyStore = propertyStore;
                 _document = document;
@@ -98,7 +98,7 @@ namespace FubarDev.WebDavServer.DefaultHandlers
             private readonly ICollection _collection;
 
             public WebDavCollectionResult([NotNull] ICollection collection)
-                : base(WebDavStatusCodes.OK)
+                : base(WebDavStatusCode.OK)
             {
                 _collection = collection;
             }

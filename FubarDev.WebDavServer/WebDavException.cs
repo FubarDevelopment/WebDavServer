@@ -6,18 +6,18 @@ namespace FubarDev.WebDavServer
 {
     public class WebDavException : Exception
     {
-        public WebDavException(WebDavStatusCodes statusCode)
+        public WebDavException(WebDavStatusCode statusCode)
             : base(statusCode.GetReasonPhrase())
         {
             StatusCode = statusCode;
         }
 
-        public WebDavException(WebDavStatusCodes statusCode, Exception innerException)
+        public WebDavException(WebDavStatusCode statusCode, Exception innerException)
             : base(statusCode.GetReasonPhrase(innerException.Message))
         {
             StatusCode = statusCode;
         }
 
-        public WebDavStatusCodes StatusCode { get; }
+        public WebDavStatusCode StatusCode { get; }
     }
 }

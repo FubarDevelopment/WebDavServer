@@ -26,11 +26,11 @@ namespace FubarDev.WebDavServer.DefaultHandlers
         {
             var selectionResult = await _rootFileSystem.SelectAsync(path, cancellationToken).ConfigureAwait(false);
             if (!selectionResult.IsMissing)
-                throw new WebDavException(WebDavStatusCodes.Forbidden);
+                throw new WebDavException(WebDavStatusCode.Forbidden);
 
             Debug.Assert(selectionResult.MissingNames != null, "selectionResult.PathEntries != null");
             if (selectionResult.MissingNames.Count != 1)
-                throw new WebDavException(WebDavStatusCodes.Conflict);
+                throw new WebDavException(WebDavStatusCode.Conflict);
 
             var newName = selectionResult.MissingNames.Single();
             var collection = selectionResult.Collection;
@@ -41,10 +41,10 @@ namespace FubarDev.WebDavServer.DefaultHandlers
             }
             catch (Exception ex)
             {
-                throw new WebDavException(WebDavStatusCodes.Forbidden, ex);
+                throw new WebDavException(WebDavStatusCode.Forbidden, ex);
             }
 
-            return new WebDavResult(WebDavStatusCodes.Created);
+            return new WebDavResult(WebDavStatusCode.Created);
         }
     }
 }

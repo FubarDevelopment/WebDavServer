@@ -27,7 +27,7 @@ namespace FubarDev.WebDavServer.DefaultHandlers
         {
             var selectionResult = await _rootFileSystem.SelectAsync(path, cancellationToken).ConfigureAwait(false);
             if (selectionResult.IsMissing)
-                throw new WebDavException(WebDavStatusCodes.NotFound);
+                throw new WebDavException(WebDavStatusCode.NotFound);
 
             var targetEntry = selectionResult.ResultType == SelectionResultType.FoundCollection ? (IEntry)selectionResult.Collection : selectionResult.Document;
             Debug.Assert(targetEntry != null);
@@ -45,7 +45,7 @@ namespace FubarDev.WebDavServer.DefaultHandlers
             }
             catch
             {
-                deleteResult = new DeleteResult(WebDavStatusCodes.Forbidden, targetEntry);
+                deleteResult = new DeleteResult(WebDavStatusCode.Forbidden, targetEntry);
             }
 
             var result = new Multistatus()
@@ -61,7 +61,7 @@ namespace FubarDev.WebDavServer.DefaultHandlers
                 }
             };
 
-            return new WebDavResult<Multistatus>(WebDavStatusCodes.MultiStatus, result);
+            return new WebDavResult<Multistatus>(WebDavStatusCode.MultiStatus, result);
         }
     }
 }

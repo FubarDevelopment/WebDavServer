@@ -7,7 +7,7 @@ namespace FubarDev.WebDavServer
 {
     public interface IWebDavResult
     {
-        WebDavStatusCodes StatusCode { get; }
+        WebDavStatusCode StatusCode { get; }
 
         Task ExecuteResultAsync(IWebDavResponse response, CancellationToken ct);
     }

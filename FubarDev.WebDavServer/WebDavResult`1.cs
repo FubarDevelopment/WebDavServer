@@ -7,7 +7,7 @@ namespace FubarDev.WebDavServer
 {
     public class WebDavResult<T> : WebDavResult
     {
-        public WebDavResult(WebDavStatusCodes statusCode, T data)
+        public WebDavResult(WebDavStatusCode statusCode, T data)
             : base(statusCode)
         {
             Data = data;

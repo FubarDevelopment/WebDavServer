@@ -34,7 +34,7 @@ namespace FubarDev.WebDavServer.DefaultHandlers
         {
             var selectionResult = await _fileSystem.SelectAsync(path, cancellationToken).ConfigureAwait(false);
             if (selectionResult.IsMissing)
-                throw new WebDavException(WebDavStatusCodes.NotFound);
+                throw new WebDavException(WebDavStatusCode.NotFound);
 
             var entry = (IEntry)selectionResult.Document ?? selectionResult.Collection;
             var propertiesList = new List<IUntypedReadableProperty>();
@@ -59,7 +59,7 @@ namespace FubarDev.WebDavServer.DefaultHandlers
             if (isReadOnly)
             {
                 // tried to update a read-only property
-                return new WebDavResult<Error>(WebDavStatusCodes.Forbidden, new Error()
+                return new WebDavResult<Error>(WebDavStatusCode.Forbidden, new Error()
                 {
                     ItemsElementName = new[] { ItemsChoiceType.CannotModifyProtectedProperty, },
                     Items = new[] { new object(), }
@@ -101,7 +101,7 @@ namespace FubarDev.WebDavServer.DefaultHandlers
                 }
             };
 
-            return new WebDavResult<Multistatus>(WebDavStatusCodes.MultiStatus, status);
+            return new WebDavResult<Multistatus>(WebDavStatusCode.MultiStatus, status);
         }
 
         private async Task<IReadOnlyCollection<ChangeItem>> RevertChangesAsync(IEntry entry, IReadOnlyCollection<ChangeItem> changes, Dictionary<XName, IUntypedReadableProperty> properties, CancellationToken cancellationToken)
@@ -323,7 +323,7 @@ namespace FubarDev.WebDavServer.DefaultHandlers
 
             public bool IsFailure => Status == ChangeStatus.Conflict || Status == ChangeStatus.Failed || Status == ChangeStatus.InsufficientStorage || Status == ChangeStatus.ReadOnlyProperty;
 
-            public WebDavStatusCodes StatusCode
+            public WebDavStatusCode StatusCode
             {
                 get
                 {
@@ -332,16 +332,16 @@ namespace FubarDev.WebDavServer.DefaultHandlers
                         case ChangeStatus.Added:
                         case ChangeStatus.Modified:
                         case ChangeStatus.Removed:
-                            return WebDavStatusCodes.OK;
+                            return WebDavStatusCode.OK;
                         case ChangeStatus.Conflict:
-                            return WebDavStatusCodes.Conflict;
+                            return WebDavStatusCode.Conflict;
                         case ChangeStatus.FailedDependency:
-                            return WebDavStatusCodes.FailedDependency;
+                            return WebDavStatusCode.FailedDependency;
                         case ChangeStatus.InsufficientStorage:
-                            return WebDavStatusCodes.InsufficientStorage;
+                            return WebDavStatusCode.InsufficientStorage;
                         case ChangeStatus.Failed:
                         case ChangeStatus.ReadOnlyProperty:
-                            return WebDavStatusCodes.Forbidden;
+                            return WebDavStatusCode.Forbidden;
                     }
 
                     throw new NotSupportedException();

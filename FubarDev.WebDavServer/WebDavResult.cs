@@ -9,12 +9,12 @@ namespace FubarDev.WebDavServer
 {
     public class WebDavResult : IWebDavResult
     {
-        public WebDavResult(WebDavStatusCodes statusCode)
+        public WebDavResult(WebDavStatusCode statusCode)
         {
             StatusCode = statusCode;
         }
 
-        public WebDavStatusCodes StatusCode { get; }
+        public WebDavStatusCode StatusCode { get; }
         
         public virtual Task ExecuteResultAsync(IWebDavResponse response, CancellationToken ct)
         {

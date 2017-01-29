@@ -26,7 +26,7 @@ namespace FubarDev.WebDavServer.Model
             ReasonPhrase = reasonPhrase;
         }
 
-        public Status([NotNull] string protocol, WebDavStatusCodes statusCode, [CanBeNull] string additionalReasonPhrase = null)
+        public Status([NotNull] string protocol, WebDavStatusCode statusCode, [CanBeNull] string additionalReasonPhrase = null)
         {
             if (string.IsNullOrEmpty(protocol))
                 throw new ArgumentNullException(nameof(protocol));
@@ -68,7 +68,7 @@ namespace FubarDev.WebDavServer.Model
         {
             string reasonPhrase;
             var code = $"{statusCode}";
-            WebDavStatusCodes webDavStatusCode;
+            WebDavStatusCode webDavStatusCode;
             if (!Enum.TryParse(code, out webDavStatusCode))
             {
                 HttpStatusCode httpStatusCode;

@@ -6,13 +6,13 @@ namespace FubarDev.WebDavServer.FileSystem
 {
     public class DeleteResult
     {
-        public DeleteResult(WebDavStatusCodes statusCode, [CanBeNull] IEntry failedEntry)
+        public DeleteResult(WebDavStatusCode statusCode, [CanBeNull] IEntry failedEntry)
         {
             FailedEntry = failedEntry;
             StatusCode = statusCode;
         }
 
-        public WebDavStatusCodes StatusCode { get; }
+        public WebDavStatusCode StatusCode { get; }
 
         [CanBeNull]
         public IEntry FailedEntry { get; }

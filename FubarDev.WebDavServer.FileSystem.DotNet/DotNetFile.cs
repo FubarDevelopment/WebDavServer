@@ -35,7 +35,7 @@ namespace FubarDev.WebDavServer.FileSystem.DotNet
         public override Task<DeleteResult> DeleteAsync(CancellationToken cancellationToken)
         {
             FileInfo.Delete();
-            return Task.FromResult(new DeleteResult(WebDavStatusCodes.OK, null));
+            return Task.FromResult(new DeleteResult(WebDavStatusCode.OK, null));
         }
 
         public Task<IDocument> CopyToAsync(ICollection collection, string name, CancellationToken cancellationToken)

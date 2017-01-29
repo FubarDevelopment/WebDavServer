@@ -6,16 +6,16 @@ using JetBrains.Annotations;
 
 namespace FubarDev.WebDavServer.Model
 {
-    public static class WebDavStatusCodesExtensions
+    public static class WebDavStatusCodeExtensions
     {
-        private static readonly ConcurrentDictionary<WebDavStatusCodes, string> _reasonPhrases = new ConcurrentDictionary<WebDavStatusCodes, string>()
+        private static readonly ConcurrentDictionary<WebDavStatusCode, string> _reasonPhrases = new ConcurrentDictionary<WebDavStatusCode, string>()
         {
-            [WebDavStatusCodes.MultiStatus] = "Multi-Status",
-            [WebDavStatusCodes.OK] = "OK",
+            [WebDavStatusCode.MultiStatus] = "Multi-Status",
+            [WebDavStatusCode.OK] = "OK",
         };
 
         [NotNull]
-        public static string GetReasonPhrase(this WebDavStatusCodes statusCode, [CanBeNull] string additionalMessage = null)
+        public static string GetReasonPhrase(this WebDavStatusCode statusCode, [CanBeNull] string additionalMessage = null)
         {
             var reasonPhrase = _reasonPhrases.GetOrAdd(
                 statusCode,

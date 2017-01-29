@@ -42,28 +42,28 @@ namespace FubarDev.WebDavServer
                 Response = resultsByStatus.Select(x => CreateResponse(x.Key, x.Value, host)).ToArray()
             };
 
-            return new WebDavResult<Multistatus>(WebDavStatusCodes.MultiStatus, result);
+            return new WebDavResult<Multistatus>(WebDavStatusCode.MultiStatus, result);
         }
 
-        private static WebDavStatusCodes GetWebDavStatusCode(ActionStatus status)
+        private static WebDavStatusCode GetWebDavStatusCode(ActionStatus status)
         {
             switch (status)
             {
                 case ActionStatus.Created:
-                    return WebDavStatusCodes.Created;
+                    return WebDavStatusCode.Created;
                 case ActionStatus.Overwritten:
-                    return WebDavStatusCodes.NoContent;
+                    return WebDavStatusCode.NoContent;
                 case ActionStatus.OverwriteFailed:
                 case ActionStatus.PropSetFailed:
                 case ActionStatus.CleanupFailed:
-                    return WebDavStatusCodes.Conflict;
+                    return WebDavStatusCode.Conflict;
                 case ActionStatus.CannotOverwrite:
-                    return WebDavStatusCodes.PreconditionFailed;
+                    return WebDavStatusCode.PreconditionFailed;
                 case ActionStatus.CreateFailed:
                 case ActionStatus.TargetDeleteFailed:
-                    return WebDavStatusCodes.Forbidden;
+                    return WebDavStatusCode.Forbidden;
                 case ActionStatus.ParentFailed:
-                    return WebDavStatusCodes.FailedDependency;
+                    return WebDavStatusCode.FailedDependency;
             }
 
             throw new NotSupportedException();

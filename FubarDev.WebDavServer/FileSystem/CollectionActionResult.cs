@@ -9,12 +9,12 @@ namespace FubarDev.WebDavServer.FileSystem
     public class CollectionActionResult
     {
         public CollectionActionResult([NotNull] ICollection target, [NotNull, ItemNotNull] IReadOnlyCollection<IEntry> createdChildEntries)
-            : this(target, createdChildEntries, null, WebDavStatusCodes.OK)
+            : this(target, createdChildEntries, null, WebDavStatusCode.OK)
         {
             Target = target;
         }
 
-        public CollectionActionResult([NotNull] ICollection target, [NotNull, ItemNotNull] IReadOnlyCollection<IEntry> createdChildEntries, [CanBeNull] IEntry failedEntry, WebDavStatusCodes errorStatusCode)
+        public CollectionActionResult([NotNull] ICollection target, [NotNull, ItemNotNull] IReadOnlyCollection<IEntry> createdChildEntries, [CanBeNull] IEntry failedEntry, WebDavStatusCode errorStatusCode)
         {
             Target = target;
             CreatedChildEntries = createdChildEntries;
@@ -32,6 +32,6 @@ namespace FubarDev.WebDavServer.FileSystem
         [CanBeNull]
         public IEntry FailedEntry { get; }
 
-        public WebDavStatusCodes ErrorStatusCode { get; }
+        public WebDavStatusCode ErrorStatusCode { get; }
     }
 }

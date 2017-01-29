@@ -33,21 +33,21 @@ namespace FubarDev.WebDavServer.DefaultHandlers
         {
             var sourceSelectionResult = await _rootFileSystem.SelectAsync(sourcePath, cancellationToken).ConfigureAwait(false);
             if (sourceSelectionResult.IsMissing)
-                throw new WebDavException(WebDavStatusCodes.NotFound);
+                throw new WebDavException(WebDavStatusCode.NotFound);
 
             var sourceUrl = new Uri(_host.BaseUrl, sourcePath);
             var destinationUrl = new Uri(sourceUrl, destination);
             if (!_host.BaseUrl.IsBaseOf(destinationUrl) || _options.Mode == RecursiveProcessingMode.PreferCrossServer)
             {
                 // Copy from server to server (slow)
-                return new WebDavResult(WebDavStatusCodes.BadGateway);
+                return new WebDavResult(WebDavStatusCode.BadGateway);
             }
 
             // Copy from one known file system to another
             var destinationPath = _host.BaseUrl.MakeRelativeUri(destinationUrl).ToString();
             var destinationSelectionResult = await _rootFileSystem.SelectAsync(destinationPath, cancellationToken).ConfigureAwait(false);
             if (destinationSelectionResult.IsMissing && destinationSelectionResult.MissingNames.Count != 1)
-                throw new WebDavException(WebDavStatusCodes.Conflict);
+                throw new WebDavException(WebDavStatusCode.Conflict);
 
             ITargetActions<CollectionTarget, DocumentTarget, MissingTarget> handler;
             var isSameFileSystem = ReferenceEquals(sourceSelectionResult.TargetFileSystem, destinationSelectionResult.TargetFileSystem);
