@@ -4,15 +4,27 @@ using System.Threading;
 using System.Threading.Tasks;
 using System.Xml.Linq;
 
+using FubarDev.WebDavServer.Engines.DefaultTargetAction;
 using FubarDev.WebDavServer.Properties;
+
+using JetBrains.Annotations;
 
 namespace FubarDev.WebDavServer.Engines.RemoteTargets
 {
     public class RemoteDocumentTarget : IDocumentTarget<RemoteCollectionTarget, RemoteDocumentTarget, RemoteMissingTarget>
     {
-        public Task<RemoteMissingTarget> DeleteAsync(CancellationToken cancellationToken)
+        [NotNull]
+        private readonly RemoteCollectionTarget _parent;
+
+        [NotNull]
+        private readonly RemoteTargetActions _targetActions;
+
+        public RemoteDocumentTarget([NotNull] RemoteCollectionTarget parent, [NotNull] string name, [NotNull] Uri destinationUrl, [NotNull] RemoteTargetActions targetActions)
         {
-            throw new NotImplementedException();
+            _parent = parent;
+            _targetActions = targetActions;
+            Name = name;
+            DestinationUrl = destinationUrl;
         }
 
         public string Name { get; }
@@ -21,7 +33,13 @@ namespace FubarDev.WebDavServer.Engines.RemoteTargets
 
         public Task<IReadOnlyCollection<XName>> SetPropertiesAsync(IEnumerable<IUntypedWriteableProperty> properties, CancellationToken cancellationToken)
         {
-            throw new NotImplementedException();
+            return _targetActions.SetPropertiesAsync(this, properties, cancellationToken);
+        }
+
+        public async Task<RemoteMissingTarget> DeleteAsync(CancellationToken cancellationToken)
+        {
+            await _targetActions.DeleteAsync(this, cancellationToken).ConfigureAwait(false);
+            return _parent.NewMissing(Name);
         }
     }
 }
