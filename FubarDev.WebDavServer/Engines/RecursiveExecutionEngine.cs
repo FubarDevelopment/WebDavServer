@@ -166,7 +166,7 @@ namespace FubarDev.WebDavServer.Engines
                 if (target.Created)
                 {
                     // Collection was created by us - we just assume that the document doesn't exist
-                    var missingTarget = target.CreateMissing(document.Name);
+                    var missingTarget = target.NewMissing(document.Name);
                     var docResult = await ExecuteAsync(docUrl, document, missingTarget, cancellationToken).ConfigureAwait(false);
                     documentActionResults = documentActionResults.Add(docResult);
                 }
@@ -207,7 +207,7 @@ namespace FubarDev.WebDavServer.Engines
                 if (target.Created)
                 {
                     // Collection was created by us - we just assume that the sub collection doesn't exist
-                    var missingTarget = target.CreateMissing(childNode.Name);
+                    var missingTarget = target.NewMissing(childNode.Name);
                     var collResult = await ExecuteAsync(docUrl, childNode, missingTarget, cancellationToken).ConfigureAwait(false);
                     collectionActionResults = collectionActionResults.Add(collResult);
                 }

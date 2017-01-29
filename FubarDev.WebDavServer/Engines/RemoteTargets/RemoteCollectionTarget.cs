@@ -31,7 +31,7 @@ namespace FubarDev.WebDavServer.Engines.RemoteTargets
             throw new NotImplementedException();
         }
 
-        public RemoteMissingTarget CreateMissing(string name)
+        public RemoteMissingTarget NewMissing(string name)
         {
             return new RemoteMissingTarget(DestinationUrl.Append(name, false), name);
         }

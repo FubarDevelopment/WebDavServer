@@ -19,6 +19,6 @@ namespace FubarDev.WebDavServer.Engines
         Task<ITarget> GetAsync([NotNull] string name, CancellationToken cancellationToken);
 
         [NotNull]
-        TMissing CreateMissing([NotNull] string name);
+        TMissing NewMissing([NotNull] string name);
     }
 }

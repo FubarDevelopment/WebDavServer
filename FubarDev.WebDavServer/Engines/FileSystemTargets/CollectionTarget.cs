@@ -70,7 +70,7 @@ namespace FubarDev.WebDavServer.Engines.FileSystemTargets
             return new CollectionTarget(DestinationUrl.Append(coll), this, coll, false, _targetActions);
         }
 
-        public MissingTarget CreateMissing(string name)
+        public MissingTarget NewMissing(string name)
         {
             return new MissingTarget(DestinationUrl.Append(name, false), name, this, _targetActions);
         }
