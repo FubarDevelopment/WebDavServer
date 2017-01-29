@@ -2,10 +2,9 @@
 using System.Threading;
 using System.Threading.Tasks;
 
-using FubarDev.WebDavServer.Engines.FileSystemTargets;
 using FubarDev.WebDavServer.FileSystem;
 
-namespace FubarDev.WebDavServer.Engines.DefaultTargetAction
+namespace FubarDev.WebDavServer.Engines.Local
 {
     public class MoveBetweenFileSystemsTargetAction : ITargetActions<CollectionTarget, DocumentTarget, MissingTarget>
     {

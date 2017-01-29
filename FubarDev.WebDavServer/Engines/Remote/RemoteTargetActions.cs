@@ -3,13 +3,12 @@ using System.Threading;
 using System.Threading.Tasks;
 using System.Xml.Linq;
 
-using FubarDev.WebDavServer.Engines.RemoteTargets;
 using FubarDev.WebDavServer.FileSystem;
 using FubarDev.WebDavServer.Properties;
 
 using JetBrains.Annotations;
 
-namespace FubarDev.WebDavServer.Engines.DefaultTargetAction
+namespace FubarDev.WebDavServer.Engines.Remote
 {
     public abstract class RemoteTargetActions : ITargetActions<RemoteCollectionTarget, RemoteDocumentTarget, RemoteMissingTarget>
     {

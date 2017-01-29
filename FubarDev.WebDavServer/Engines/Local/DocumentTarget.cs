@@ -6,7 +6,7 @@ using FubarDev.WebDavServer.FileSystem;
 
 using JetBrains.Annotations;
 
-namespace FubarDev.WebDavServer.Engines.FileSystemTargets
+namespace FubarDev.WebDavServer.Engines.Local
 {
     public class DocumentTarget : EntryTarget, IDocumentTarget<CollectionTarget, DocumentTarget, MissingTarget>
     {

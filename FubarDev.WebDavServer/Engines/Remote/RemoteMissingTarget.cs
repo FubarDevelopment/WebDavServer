@@ -2,11 +2,9 @@
 using System.Threading;
 using System.Threading.Tasks;
 
-using FubarDev.WebDavServer.Engines.DefaultTargetAction;
-
 using JetBrains.Annotations;
 
-namespace FubarDev.WebDavServer.Engines.RemoteTargets
+namespace FubarDev.WebDavServer.Engines.Remote
 {
     public class RemoteMissingTarget : IMissingTarget<RemoteCollectionTarget, RemoteDocumentTarget, RemoteMissingTarget>
     {

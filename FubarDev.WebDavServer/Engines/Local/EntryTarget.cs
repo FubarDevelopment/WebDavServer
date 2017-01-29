@@ -10,7 +10,7 @@ using FubarDev.WebDavServer.Properties;
 using FubarDev.WebDavServer.Properties.Dead;
 using FubarDev.WebDavServer.Properties.Live;
 
-namespace FubarDev.WebDavServer.Engines.FileSystemTargets
+namespace FubarDev.WebDavServer.Engines.Local
 {
     public abstract class EntryTarget : IExistingTarget
     {
