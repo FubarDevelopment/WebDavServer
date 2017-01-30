@@ -25,7 +25,7 @@ namespace FubarDev.WebDavServer
 
         public static Uri Append(this Uri baseUri, IDocument entry)
         {
-            return baseUri.Append(Uri.EscapeDataString(entry.Name), true);
+            return baseUri.Append(entry.Name.UriEscape(), true);
         }
 
         public static Uri Append(this Uri baseUri, ICollection entry)
@@ -43,7 +43,7 @@ namespace FubarDev.WebDavServer
 
         public static Uri AppendDirectory(this Uri baseUri, string relative)
         {
-            return baseUri.Append(Uri.EscapeDataString(relative) + "/", true);
+            return baseUri.Append(relative.UriEscape() + "/", true);
         }
 
         public static Uri Append(this Uri baseUri, Uri relativeUri)
@@ -60,7 +60,12 @@ namespace FubarDev.WebDavServer
                 basePath = p == -1 ? string.Empty : basePath.Substring(0, p + 1);
             }
 
-            return new Uri(basePath + (isEscaped ? relative : Uri.EscapeDataString(relative)), UriKind.RelativeOrAbsolute);
+            return new Uri(basePath + (isEscaped ? relative : relative.UriEscape()), UriKind.RelativeOrAbsolute);
+        }
+
+        public static string UriEscape(this string s)
+        {
+            return Uri.EscapeDataString(s).Replace("%20", "+");
         }
     }
 }

@@ -73,7 +73,7 @@ namespace FubarDev.WebDavServer.FileSystem
                 Debug.Assert(Collection != null, "Collection != null");
                 result.Append(Collection.Path.OriginalString);
                 Debug.Assert(MissingNames != null, "MissingNames != null");
-                result.Append(string.Join("/", MissingNames.Select(Uri.EscapeDataString)));
+                result.Append(string.Join("/", MissingNames.Select(n => n.UriEscape())));
                 if (ResultType == SelectionResultType.MissingCollection)
                     result.Append("/");
                 return new Uri(result.ToString(), UriKind.Relative);
