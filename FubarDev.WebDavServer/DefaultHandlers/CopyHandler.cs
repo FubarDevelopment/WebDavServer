@@ -93,12 +93,12 @@ namespace FubarDev.WebDavServer.DefaultHandlers
             if (sourceSelectionResult.ResultType == SelectionResultType.FoundDocument)
             {
                 ActionResult docResult;
-                if (targetItem is RemoteCollectionTarget)
+                if (targetItem is TCollection)
                 {
                     // Cannot overwrite collection with document
                     docResult = new ActionResult(ActionStatus.OverwriteFailed, targetItem);
                 }
-                else if (targetItem is RemoteMissingTarget)
+                else if (targetItem is TMissing)
                 {
                     var target = (TMissing)targetItem;
                     docResult = await engine.ExecuteAsync(
@@ -126,12 +126,12 @@ namespace FubarDev.WebDavServer.DefaultHandlers
             }
 
             Engines.CollectionActionResult collResult;
-            if (targetItem is RemoteDocumentTarget)
+            if (targetItem is TDocument)
             {
                 // Cannot overwrite document with collection
                 collResult = new Engines.CollectionActionResult(ActionStatus.OverwriteFailed, targetItem);
             }
-            else if (targetItem is RemoteMissingTarget)
+            else if (targetItem is TMissing)
             {
                 var target = (TMissing)targetItem;
                 collResult = await engine.ExecuteAsync(

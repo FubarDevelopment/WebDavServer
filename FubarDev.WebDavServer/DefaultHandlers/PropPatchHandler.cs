@@ -49,7 +49,7 @@ namespace FubarDev.WebDavServer.DefaultHandlers
 
             var properties = propertiesList.ToDictionary(x => x.Name);
             var changes = await ApplyChangesAsync(entry, properties, request, cancellationToken).ConfigureAwait(false);
-            var hasError = changes.Any(x => x.IsSuccess);
+            var hasError = changes.Any(x => !x.IsSuccess);
             if (hasError)
             {
                 changes = await RevertChangesAsync(entry, changes, properties, cancellationToken).ConfigureAwait(false);
