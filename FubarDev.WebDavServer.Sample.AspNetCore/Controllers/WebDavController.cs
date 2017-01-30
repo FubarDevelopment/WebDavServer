@@ -2,6 +2,7 @@
 
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Logging;
 
 namespace FubarDev.WebDavServer.Sample.AspNetCore.Controllers
 {
@@ -9,8 +10,8 @@ namespace FubarDev.WebDavServer.Sample.AspNetCore.Controllers
     /* [Authorize] */
     public class WebDavController : WebDavControllerBase
     {
-        public WebDavController(IWebDavDispatcher dispatcher)
-            : base(dispatcher)
+        public WebDavController(IWebDavDispatcher dispatcher, ILogger<WebDavIndirectResult> responseLogger = null)
+            : base(dispatcher, responseLogger)
         {
         }
     }

@@ -14,10 +14,12 @@ namespace FubarDev.WebDavServer.AspNetCore.Filters
     public class WebDavExceptionFilter : IExceptionFilter
     {
         private readonly ILogger _logger;
+        private readonly ILogger<WebDavIndirectResult> _responseLogger;
 
-        public WebDavExceptionFilter(ILogger<WebDavExceptionFilter> logger)
+        public WebDavExceptionFilter(ILogger<WebDavExceptionFilter> logger, ILogger<WebDavIndirectResult> responseLogger = null)
         {
             _logger = logger;
+            _responseLogger = responseLogger;
         }
 
         public void OnException(ExceptionContext context)
@@ -48,7 +50,7 @@ namespace FubarDev.WebDavServer.AspNetCore.Filters
             _logger.LogError(Logging.EventIds.Unspecified, context.Exception, context.Exception.Message);
         }
 
-        private static IActionResult BuildResultForStatusCode(ExceptionContext context, WebDavStatusCode statusCode, string optionalMessge)
+        private IActionResult BuildResultForStatusCode(ExceptionContext context, WebDavStatusCode statusCode, string optionalMessge)
         {
             var result = new WebDavResult<Multistatus>(
                 statusCode,
@@ -65,7 +67,7 @@ namespace FubarDev.WebDavServer.AspNetCore.Filters
                     }
                 });
             var dispatcher = context.HttpContext.RequestServices.GetService<IWebDavDispatcher>();
-            return new WebDavIndirectResult(dispatcher, result);
+            return new WebDavIndirectResult(dispatcher, result, _responseLogger);
         }
     }
 }

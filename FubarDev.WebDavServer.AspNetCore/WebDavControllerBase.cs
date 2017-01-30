@@ -6,37 +6,40 @@ using FubarDev.WebDavServer.AspNetCore.Routing;
 using FubarDev.WebDavServer.Model;
 
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Logging;
 
 namespace FubarDev.WebDavServer.AspNetCore
 {
     public class WebDavControllerBase : ControllerBase
     {
         private readonly IWebDavDispatcher _dispatcher;
+        private readonly ILogger<WebDavIndirectResult> _responseLogger;
 
-        public WebDavControllerBase(IWebDavDispatcher dispatcher)
+        public WebDavControllerBase(IWebDavDispatcher dispatcher, ILogger<WebDavIndirectResult> responseLogger = null)
         {
             _dispatcher = dispatcher;
+            _responseLogger = responseLogger;
         }
 
         [HttpOptions]
         public  async Task<IActionResult> QueryOptionsAsync(string path, CancellationToken cancellationToken)
         {
             var result = await _dispatcher.Class1.OptionsAsync(path, cancellationToken).ConfigureAwait(false);
-            return new WebDavIndirectResult(_dispatcher, result);
+            return new WebDavIndirectResult(_dispatcher, result, _responseLogger);
         }
 
         [HttpMkCol]
         public async Task<IActionResult> MkColAsync(string path, CancellationToken cancellationToken)
         {
             var result = await _dispatcher.Class1.MkColAsync(path, cancellationToken).ConfigureAwait(false);
-            return new WebDavIndirectResult(_dispatcher, result);
+            return new WebDavIndirectResult(_dispatcher, result, _responseLogger);
         }
 
         [HttpGet]
         public async Task<IActionResult> GetAsync(string path, CancellationToken cancellationToken)
         {
             var result = await _dispatcher.Class1.GetAsync(path, cancellationToken).ConfigureAwait(false);
-            return new WebDavIndirectResult(_dispatcher, result);
+            return new WebDavIndirectResult(_dispatcher, result, _responseLogger);
         }
 
         // POST api/values
@@ -51,7 +54,7 @@ namespace FubarDev.WebDavServer.AspNetCore
         public async Task<IActionResult> PutAsync(string path, CancellationToken cancellationToken)
         {
             var result = await _dispatcher.Class1.PutAsync(path, HttpContext.Request.Body, cancellationToken).ConfigureAwait(false);
-            return new WebDavIndirectResult(_dispatcher, result);
+            return new WebDavIndirectResult(_dispatcher, result, _responseLogger);
         }
 
         // DELETE api/values/5
@@ -59,7 +62,7 @@ namespace FubarDev.WebDavServer.AspNetCore
         public async Task<IActionResult> DeleteAsync(string path, CancellationToken cancellationToken)
         {
             var result = await _dispatcher.Class1.DeleteAsync(path, cancellationToken).ConfigureAwait(false);
-            return new WebDavIndirectResult(_dispatcher, result);
+            return new WebDavIndirectResult(_dispatcher, result, _responseLogger);
         }
 
         [HttpPropFind()]
@@ -67,21 +70,21 @@ namespace FubarDev.WebDavServer.AspNetCore
         {
             var parsedDepth = Depth.Parse(depth);
             var result = await _dispatcher.Class1.PropFindAsync(path, request, parsedDepth, cancellationToken).ConfigureAwait(false);
-            return new WebDavIndirectResult(_dispatcher, result);
+            return new WebDavIndirectResult(_dispatcher, result, _responseLogger);
         }
 
         [HttpPropPatch]
         public async Task<IActionResult> PropPatchAsync(string path, [FromBody]Propertyupdate request, CancellationToken cancellationToken)
         {
             var result = await _dispatcher.Class1.PropPatchAsync(path, request, cancellationToken).ConfigureAwait(false);
-            return new WebDavIndirectResult(_dispatcher, result);
+            return new WebDavIndirectResult(_dispatcher, result, _responseLogger);
         }
 
         [HttpHead]
         public async Task<IActionResult> HeadAsync(string path, CancellationToken cancellationToken)
         {
             var result = await _dispatcher.Class1.HeadAsync(path, cancellationToken).ConfigureAwait(false);
-            return new WebDavIndirectResult(_dispatcher, result);
+            return new WebDavIndirectResult(_dispatcher, result, _responseLogger);
         }
 
         [HttpCopy]
@@ -89,7 +92,7 @@ namespace FubarDev.WebDavServer.AspNetCore
         {
             var parsedDepth = Depth.Parse(depth);
             var result = await _dispatcher.Class1.CopyAsync(path, new Uri(destination, UriKind.RelativeOrAbsolute), parsedDepth, ParseOverwrite(overwrite), cancellationToken).ConfigureAwait(false);
-            return new WebDavIndirectResult(_dispatcher, result);
+            return new WebDavIndirectResult(_dispatcher, result, _responseLogger);
         }
 
         [HttpMove]
@@ -97,7 +100,7 @@ namespace FubarDev.WebDavServer.AspNetCore
         {
             var parsedDepth = Depth.Parse(depth);
             var result = await _dispatcher.Class1.MoveAsync(path, new Uri(destination, UriKind.RelativeOrAbsolute), parsedDepth, ParseOverwrite(overwrite), cancellationToken).ConfigureAwait(false);
-            return new WebDavIndirectResult(_dispatcher, result);
+            return new WebDavIndirectResult(_dispatcher, result, _responseLogger);
         }
 
         private static bool? ParseOverwrite(string overwrite)
