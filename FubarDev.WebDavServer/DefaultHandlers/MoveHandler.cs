@@ -35,7 +35,7 @@ namespace FubarDev.WebDavServer.DefaultHandlers
 
         protected override RemoteHttpClientTargetActions CreateRemoteTargetActions(HttpClient httpClient)
         {
-            return null;
+            return new MoveRemoteHttpClientTargetActions(httpClient);
         }
 
         protected override ITargetActions<CollectionTarget, DocumentTarget, MissingTarget> CreateLocalTargetActions(RecursiveProcessingMode mode)
