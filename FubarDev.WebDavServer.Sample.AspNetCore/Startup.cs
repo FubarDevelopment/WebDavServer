@@ -81,6 +81,7 @@ namespace FubarDev.WebDavServer.Sample.AspNetCore
                 app.UseDeveloperExceptionPage();
             }
 
+            /*
             if (Program.IsKestrel)
             {
                 app.UseBasicAuthentication(
@@ -92,6 +93,7 @@ namespace FubarDev.WebDavServer.Sample.AspNetCore
                         };
                     });
             }
+            */
 
             app.UseMiddleware<RequestLogMiddleware>();
             app.UseMvc();
@@ -118,7 +120,14 @@ namespace FubarDev.WebDavServer.Sample.AspNetCore
                         $"{context.Request.Protocol} {context.Request.Method} {context.Request.GetDisplayUrl()}"
                     };
 
-                    info.AddRange(context.Request.Headers.Select(x => $"{x.Key}: {x.Value}"));
+                    try
+                    {
+                        info.AddRange(context.Request.Headers.Select(x => $"{x.Key}: {x.Value}"));
+                    }
+                    catch
+                    {
+                        // Ignore all exceptions
+                    }
 
                     if (context.Request.Body != null && !string.IsNullOrEmpty(context.Request.ContentType))
                     {
