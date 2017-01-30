@@ -17,17 +17,14 @@ namespace FubarDev.WebDavServer.Engines.Local
             [NotNull] Uri destinationUrl,
             [NotNull] IDocument document,
             [NotNull] ITargetActions<CollectionTarget, DocumentTarget, MissingTarget> targetActions)
-            : base(destinationUrl, document)
+            : base(parent, destinationUrl, document)
         {
-            Parent = parent;
             _targetActions = targetActions;
             Document = document;
         }
 
         [NotNull]
         public IDocument Document { get; }
-
-        public CollectionTarget Parent { get; }
 
         [NotNull]
         public static DocumentTarget NewInstance(

@@ -73,26 +73,19 @@ namespace FubarDev.WebDavServer.DefaultHandlers
             return targetResult.Evaluate(_host);
         }
 
-        private async Task<Engines.CollectionActionResult> RemoteCopyAsync(
-            RemoteTargetActions handler,
+        private static async Task<Engines.CollectionActionResult> ExecuteAsync<TCollection, TDocument, TMissing>(
+            RecursiveExecutionEngine<TCollection, TDocument, TMissing> engine,
             Uri sourceUrl,
             SelectionResult sourceSelectionResult,
-            Uri targetUrl,
+            TCollection parentCollection,
+            ITarget targetItem,
             Depth depth,
-            bool overwrite,
             CancellationToken cancellationToken)
+            where TCollection : class, ICollectionTarget<TCollection, TDocument, TMissing>
+            where TDocument : class, IDocumentTarget<TCollection, TDocument, TMissing>
+            where TMissing : class, IMissingTarget<TCollection, TDocument, TMissing>
         {
             Debug.Assert(sourceSelectionResult.Collection != null, "sourceSelectionResult.Collection != null");
-
-            var engine = new RecursiveExecutionEngine<RemoteCollectionTarget, RemoteDocumentTarget, RemoteMissingTarget>(
-                handler,
-                overwrite);
-
-            var parentCollectionUrl = targetUrl.GetParent();
-            var targetName = targetUrl.GetName();
-            var parentName = parentCollectionUrl.GetName();
-            var parentCollection = new RemoteCollectionTarget(null, parentName, parentCollectionUrl, false, handler);
-            var targetItem = await handler.GetAsync(parentCollection, targetName, cancellationToken).ConfigureAwait(false);
 
             if (sourceSelectionResult.ResultType == SelectionResultType.FoundDocument)
             {
@@ -104,7 +97,7 @@ namespace FubarDev.WebDavServer.DefaultHandlers
                 }
                 else if (targetItem is RemoteMissingTarget)
                 {
-                    var target = (RemoteMissingTarget)targetItem;
+                    var target = (TMissing)targetItem;
                     docResult = await engine.ExecuteAsync(
                         sourceUrl,
                         sourceSelectionResult.Document,
@@ -113,7 +106,7 @@ namespace FubarDev.WebDavServer.DefaultHandlers
                 }
                 else
                 {
-                    var target = (RemoteDocumentTarget)targetItem;
+                    var target = (TDocument)targetItem;
                     docResult = await engine.ExecuteAsync(
                         sourceUrl,
                         sourceSelectionResult.Document,
@@ -137,7 +130,7 @@ namespace FubarDev.WebDavServer.DefaultHandlers
             }
             else if (targetItem is RemoteMissingTarget)
             {
-                var target = (RemoteMissingTarget)targetItem;
+                var target = (TMissing)targetItem;
                 collResult = await engine.ExecuteAsync(
                     sourceUrl,
                     sourceSelectionResult.Collection,
@@ -147,7 +140,7 @@ namespace FubarDev.WebDavServer.DefaultHandlers
             }
             else
             {
-                var target = (RemoteCollectionTarget)targetItem;
+                var target = (TCollection)targetItem;
                 collResult = await engine.ExecuteAsync(
                     sourceUrl,
                     sourceSelectionResult.Collection,
@@ -157,6 +150,38 @@ namespace FubarDev.WebDavServer.DefaultHandlers
             }
 
             return collResult;
+        }
+
+        private async Task<Engines.CollectionActionResult> RemoteCopyAsync(
+            RemoteTargetActions handler,
+            Uri sourceUrl,
+            SelectionResult sourceSelectionResult,
+            Uri targetUrl,
+            Depth depth,
+            bool overwrite,
+            CancellationToken cancellationToken)
+        {
+            Debug.Assert(sourceSelectionResult.Collection != null, "sourceSelectionResult.Collection != null");
+
+            var engine = new RecursiveExecutionEngine<RemoteCollectionTarget, RemoteDocumentTarget, RemoteMissingTarget>(
+                handler,
+                overwrite);
+
+            var parentCollectionUrl = targetUrl.GetParent();
+            var targetName = targetUrl.GetName();
+            var parentName = parentCollectionUrl.GetName();
+            var parentCollection = new RemoteCollectionTarget(null, parentName, parentCollectionUrl, false, handler);
+            var targetItem = await handler.GetAsync(parentCollection, targetName, cancellationToken).ConfigureAwait(false);
+
+            return await ExecuteAsync(
+                    engine,
+                    sourceUrl,
+                    sourceSelectionResult,
+                    parentCollection,
+                    targetItem,
+                    depth,
+                    cancellationToken)
+                .ConfigureAwait(false);
         }
 
         private async Task<Engines.CollectionActionResult> CopyAsync(
@@ -174,75 +199,36 @@ namespace FubarDev.WebDavServer.DefaultHandlers
                 handler,
                 overwrite);
 
-            if (sourceSelectionResult.ResultType == SelectionResultType.FoundDocument)
+            CollectionTarget parentCollection;
+            ITarget targetItem;
+            if (targetInfo.Collection != null)
             {
-                ActionResult docResult;
-                CollectionTarget collParent;
-                if (targetInfo.Collection != null)
-                {
-                    var target = targetInfo.NewMissingTarget();
-                    collParent = target.Parent;
-                    // Cannot overwrite collection with document
-                    docResult = new ActionResult(ActionStatus.OverwriteFailed, target);
-                }
-                else if (targetInfo.Document == null)
-                {
-                    var target = targetInfo.NewMissingTarget();
-                    collParent = target.Parent;
-                    docResult = await engine.ExecuteAsync(
-                        sourceUrl,
-                        sourceSelectionResult.Document,
-                        target,
-                        cancellationToken).ConfigureAwait(false);
-                }
-                else
-                {
-                    var target = targetInfo.NewDocumentTarget();
-                    collParent = target.Parent;
-                    docResult = await engine.ExecuteAsync(
-                        sourceUrl,
-                        sourceSelectionResult.Document,
-                        target,
-                        cancellationToken).ConfigureAwait(false);
-                }
-
-                var engineResult = new Engines.CollectionActionResult(ActionStatus.Ignored, collParent)
-                {
-                    DocumentActionResults = new[] {docResult}
-                };
-
-                return engineResult;
+                var collTarget = targetInfo.NewCollectionTarget();
+                parentCollection = collTarget.Parent;
+                targetItem = collTarget;
             }
-
-            Engines.CollectionActionResult collResult;
-            if (targetInfo.Document != null)
+            else if (targetInfo.Document != null)
             {
-                var target = targetInfo.NewMissingTarget();
-                // Cannot overwrite document with collection
-                collResult = new Engines.CollectionActionResult(ActionStatus.OverwriteFailed, target);
-            }
-            else if (targetInfo.Collection == null)
-            {
-                var target = targetInfo.NewMissingTarget();
-                collResult = await engine.ExecuteAsync(
-                    sourceUrl,
-                    sourceSelectionResult.Collection,
-                    depth,
-                    target,
-                    cancellationToken).ConfigureAwait(false);
+                var docTarget = targetInfo.NewDocumentTarget();
+                parentCollection = docTarget.Parent;
+                targetItem = docTarget;
             }
             else
             {
-                var target = targetInfo.NewCollectionTarget();
-                collResult = await engine.ExecuteAsync(
-                    sourceUrl,
-                    sourceSelectionResult.Collection,
-                    depth,
-                    target,
-                    cancellationToken).ConfigureAwait(false);
+                var missingTarget = targetInfo.NewMissingTarget();
+                parentCollection = missingTarget.Parent;
+                targetItem = missingTarget;
             }
 
-            return collResult;
+            return await ExecuteAsync(
+                    engine,
+                    sourceUrl,
+                    sourceSelectionResult,
+                    parentCollection,
+                    targetItem,
+                    depth,
+                    cancellationToken)
+                .ConfigureAwait(false);
         }
     }
 }

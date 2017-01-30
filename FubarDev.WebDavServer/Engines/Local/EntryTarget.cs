@@ -10,20 +10,27 @@ using FubarDev.WebDavServer.Properties;
 using FubarDev.WebDavServer.Properties.Dead;
 using FubarDev.WebDavServer.Properties.Live;
 
+using JetBrains.Annotations;
+
 namespace FubarDev.WebDavServer.Engines.Local
 {
     public abstract class EntryTarget : IExistingTarget
     {
         private readonly IEntry _entry;
 
-        protected EntryTarget(Uri destinationUrl, IEntry entry)
+        protected EntryTarget([CanBeNull] CollectionTarget parent, [NotNull] Uri destinationUrl, [NotNull] IEntry entry)
         {
             _entry = entry;
             Name = entry.Name;
+            Parent = parent;
             DestinationUrl = destinationUrl;
         }
 
         public string Name { get; }
+
+        [CanBeNull]
+        public CollectionTarget Parent { get; }
+
         public Uri DestinationUrl { get; }
 
         public async Task<IReadOnlyCollection<XName>> SetPropertiesAsync(IEnumerable<IUntypedWriteableProperty> properties, CancellationToken cancellationToken)

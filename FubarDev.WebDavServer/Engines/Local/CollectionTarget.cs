@@ -10,15 +10,12 @@ namespace FubarDev.WebDavServer.Engines.Local
 {
     public class CollectionTarget : EntryTarget, ICollectionTarget<CollectionTarget, DocumentTarget, MissingTarget>
     {
-        private readonly CollectionTarget _parent;
-
         private readonly ITargetActions<CollectionTarget, DocumentTarget, MissingTarget> _targetActions;
 
         public CollectionTarget([NotNull] Uri destinationUrl, [CanBeNull] CollectionTarget parent, [NotNull] ICollection collection, bool created, [NotNull] ITargetActions<CollectionTarget, DocumentTarget, MissingTarget> targetActions)
-            : base(destinationUrl, collection)
+            : base(parent, destinationUrl, collection)
         {
             Collection = collection;
-            _parent = parent;
             _targetActions = targetActions;
             Created = created;
         }
@@ -53,7 +50,7 @@ namespace FubarDev.WebDavServer.Engines.Local
         {
             var name = Collection.Name;
             await Collection.DeleteAsync(cancellationToken).ConfigureAwait(false);
-            return new MissingTarget(DestinationUrl, name, _parent, _targetActions);
+            return new MissingTarget(DestinationUrl, name, Parent, _targetActions);
         }
 
         public async Task<ITarget> GetAsync(string name, CancellationToken cancellationToken)
