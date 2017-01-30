@@ -19,12 +19,14 @@ namespace FubarDev.WebDavServer.DefaultHandlers
     {
         private readonly IFileSystem _rootFileSystem;
         private readonly IWebDavHost _host;
+        private readonly IRemoteHttpClientFactory _remoteHttpClientFactory;
         private readonly CopyHandlerOptions _options;
 
-        public CopyHandler(IFileSystem rootFileSystem, IWebDavHost host, IOptions<CopyHandlerOptions> options)
+        public CopyHandler(IFileSystem rootFileSystem, IWebDavHost host, IOptions<CopyHandlerOptions> options, IRemoteHttpClientFactory remoteHttpClientFactory = null)
         {
             _rootFileSystem = rootFileSystem;
             _host = host;
+            _remoteHttpClientFactory = remoteHttpClientFactory;
             _options = options?.Value ?? new CopyHandlerOptions();
         }
 
@@ -43,10 +45,11 @@ namespace FubarDev.WebDavServer.DefaultHandlers
             if (!_host.BaseUrl.IsBaseOf(destinationUrl) || _options.Mode == RecursiveProcessingMode.PreferCrossServer)
             {
                 // Copy from server to server (slow)
-                //var remoteHandler = new RemoteHttpClientTargetActions();
-                //var remoteTargetResult = await RemoteCopyAsync(handler, sourceUrl, sourceSelectionResult, destinationUrl, depth, doOverwrite, cancellationToken).ConfigureAwait(false);
-                //return remoteTargetResult.Evaluate(_host);
-                return new WebDavResult(WebDavStatusCode.BadGateway);
+                if (_remoteHttpClientFactory == null)
+                    return new WebDavResult(WebDavStatusCode.BadGateway);
+
+                var remoteTargetResult = await RemoteCopyAsync(sourceUrl, sourceSelectionResult, destinationUrl, depth, doOverwrite, cancellationToken).ConfigureAwait(false);
+                return remoteTargetResult.Evaluate(_host);
             }
 
             // Copy from one known file system to another
@@ -153,7 +156,6 @@ namespace FubarDev.WebDavServer.DefaultHandlers
         }
 
         private async Task<Engines.CollectionActionResult> RemoteCopyAsync(
-            RemoteTargetActions handler,
             Uri sourceUrl,
             SelectionResult sourceSelectionResult,
             Uri targetUrl,
@@ -163,11 +165,14 @@ namespace FubarDev.WebDavServer.DefaultHandlers
         {
             Debug.Assert(sourceSelectionResult.Collection != null, "sourceSelectionResult.Collection != null");
 
+            var parentCollectionUrl = targetUrl.GetParent();
+            var httpClient = await _remoteHttpClientFactory.CreateAsync(parentCollectionUrl, cancellationToken).ConfigureAwait(false);
+            var handler = new CopyRemoteHttpClientTargetActions(httpClient);
+            
             var engine = new RecursiveExecutionEngine<RemoteCollectionTarget, RemoteDocumentTarget, RemoteMissingTarget>(
                 handler,
                 overwrite);
 
-            var parentCollectionUrl = targetUrl.GetParent();
             var targetName = targetUrl.GetName();
             var parentName = parentCollectionUrl.GetName();
             var parentCollection = new RemoteCollectionTarget(null, parentName, parentCollectionUrl, false, handler);

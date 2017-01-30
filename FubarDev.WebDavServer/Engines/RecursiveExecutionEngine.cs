@@ -42,7 +42,22 @@ namespace FubarDev.WebDavServer.Engines
         {
             try
             {
+                var properties = await source.GetProperties()
+                    .OfType<IUntypedWriteableProperty>()
+                    .ToList(cancellationToken)
+                    .ConfigureAwait(false);
+
                 var newDoc = await _handler.ExecuteAsync(source, target, cancellationToken).ConfigureAwait(false);
+
+                var failedPropertyNames = await newDoc.SetPropertiesAsync(properties, cancellationToken).ConfigureAwait(false);
+                if (failedPropertyNames.Count != 0)
+                {
+                    return new ActionResult(ActionStatus.PropSetFailed, target)
+                    {
+                        FailedProperties = failedPropertyNames
+                    };
+                }
+
                 return new ActionResult(ActionStatus.Created, newDoc);
             }
             catch (Exception ex)

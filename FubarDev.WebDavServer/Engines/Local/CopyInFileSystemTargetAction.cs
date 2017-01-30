@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -20,6 +21,7 @@ namespace FubarDev.WebDavServer.Engines.Local
         {
             try
             {
+                Debug.Assert(destination.Parent != null, "destination.Parent != null");
                 await source.CopyToAsync(destination.Parent.Collection, destination.Name, cancellationToken).ConfigureAwait(false);
                 return new ActionResult(ActionStatus.Overwritten, destination);
             }

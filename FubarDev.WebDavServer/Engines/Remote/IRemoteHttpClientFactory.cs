@@ -1,9 +1,12 @@
-﻿using System.Net.Http;
+﻿using System;
+using System.Net.Http;
+using System.Threading;
+using System.Threading.Tasks;
 
 namespace FubarDev.WebDavServer.Engines.Remote
 {
     public interface IRemoteHttpClientFactory
     {
-        HttpClient Create();
+        Task<HttpClient> CreateAsync(Uri baseUrl, CancellationToken cancellationToken);
     }
 }

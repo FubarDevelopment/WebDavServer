@@ -2,7 +2,7 @@
 using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
 
-namespace FubarDev.WebDavServer.FileSystem
+namespace FubarDev.WebDavServer
 {
     /// <summary>
     /// Async <see cref="Lazy{T}"/> implementation

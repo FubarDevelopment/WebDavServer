@@ -28,14 +28,15 @@ namespace FubarDev.WebDavServer.Engines.Remote
         private static readonly XmlSerializer _multiStatusSerializer = new XmlSerializer(typeof(Multistatus));
         private static readonly XmlSerializer _propFindSerializer = new XmlSerializer(typeof(Propfind));
         private static readonly XmlSerializer _propertyUpdateSerializer = new XmlSerializer(typeof(Propertyupdate));
-        private readonly HttpClient _client;
 
-        protected RemoteHttpClientTargetActions(IRemoteHttpClientFactory remoteHttpClientFactory)
+        protected RemoteHttpClientTargetActions(HttpClient httpClient)
         {
-            _client = remoteHttpClientFactory.Create();
+            Client = httpClient;
         }
 
         public override RecursiveTargetBehaviour ExistingTargetBehaviour { get; } = RecursiveTargetBehaviour.Overwrite;
+
+        protected HttpClient Client { get; }
 
         public override Task<IReadOnlyCollection<XName>> SetPropertiesAsync(RemoteCollectionTarget target, IEnumerable<IUntypedWriteableProperty> properties, CancellationToken cancellationToken)
         {
@@ -53,7 +54,7 @@ namespace FubarDev.WebDavServer.Engines.Remote
             var targetUrl = collection.DestinationUrl.AppendDirectory(name);
             using (var httpRequest = new HttpRequestMessage(_mkColHttpMethod, targetUrl))
             {
-                using (var httpResponse = await _client.SendAsync(httpRequest, cancellationToken).ConfigureAwait(false))
+                using (var httpResponse = await Client.SendAsync(httpRequest, cancellationToken).ConfigureAwait(false))
                 {
                     if (!httpResponse.IsSuccessStatusCode)
                         throw new RemoteTargetException("Failed to create");
@@ -123,7 +124,7 @@ namespace FubarDev.WebDavServer.Engines.Remote
                 Content = CreateContent(_propFindSerializer, requestData)
             })
             {
-                using (var httpResponse = await _client.SendAsync(httpRequest, cancellationToken).ConfigureAwait(false))
+                using (var httpResponse = await Client.SendAsync(httpRequest, cancellationToken).ConfigureAwait(false))
                 {
                     if (httpResponse.StatusCode == HttpStatusCode.NotFound)
                         return new RemoteMissingTarget(collection, targetUrl, name, this);
@@ -178,7 +179,7 @@ namespace FubarDev.WebDavServer.Engines.Remote
 
         public override async Task DeleteAsync(RemoteCollectionTarget target, CancellationToken cancellationToken)
         {
-            using (var response = await _client.DeleteAsync(target.DestinationUrl, cancellationToken).ConfigureAwait(false))
+            using (var response = await Client.DeleteAsync(target.DestinationUrl, cancellationToken).ConfigureAwait(false))
             {
                 response.EnsureSuccessStatusCode();
             }
@@ -186,10 +187,64 @@ namespace FubarDev.WebDavServer.Engines.Remote
 
         public override async Task DeleteAsync(RemoteDocumentTarget target, CancellationToken cancellationToken)
         {
-            using (var response = await _client.DeleteAsync(target.DestinationUrl, cancellationToken).ConfigureAwait(false))
+            using (var response = await Client.DeleteAsync(target.DestinationUrl, cancellationToken).ConfigureAwait(false))
             {
                 response.EnsureSuccessStatusCode();
             }
+        }
+
+        public void Dispose()
+        {
+            Client.Dispose();
+        }
+
+        [NotNull]
+        protected static RemoteTargetException CreateException(Uri requestUrl, [NotNull] Error error)
+        {
+            var hrefs = new List<Uri>();
+            string message = "Unknown error";
+            var index = 0;
+            foreach (var choiceType in error.ItemsElementName)
+            {
+                var choiceItem = error.Items[index++];
+                switch (choiceType)
+                {
+                    case ItemsChoiceType.Any:
+                        message = "Request failed with element {choiceItem}";
+                        break;
+                    case ItemsChoiceType.CannotModifyProtectedProperty:
+                        message = "Request tried to modify a protected property";
+                        break;
+                    case ItemsChoiceType.LockTokenMatchesRequestUri:
+                        message = "No lock token found for the given request URI";
+                        break;
+                    case ItemsChoiceType.LockTokenSubmitted:
+                        message = "Locked resource found";
+                        hrefs.AddRange(((LockTokenSubmitted)choiceItem).Href?.Select(x => new Uri(x, UriKind.RelativeOrAbsolute)) ?? new Uri[0]);
+                        break;
+                    case ItemsChoiceType.NoConflictingLock:
+                        message = "Conflicting lock";
+                        hrefs.AddRange(((NoConflictingLock)choiceItem).Href?.Select(x => new Uri(x, UriKind.RelativeOrAbsolute)) ?? new Uri[0]);
+                        break;
+                    case ItemsChoiceType.NoExternalEntities:
+                        message = "External XML entities unsupported";
+                        break;
+                    case ItemsChoiceType.PreservedLiveProperties:
+                        message = "Request failed to modify a live property";
+                        break;
+                    case ItemsChoiceType.PropfindFiniteDepth:
+                        message = "The server doesn't support infinite depth";
+                        break;
+                    default:
+                        message = "Unknown error";
+                        break;
+                }
+            }
+
+            if (hrefs.Count == 0)
+                hrefs.Add(requestUrl);
+
+            return new RemoteTargetException(message, hrefs);
         }
 
         protected Multistatus Parse(Uri requrestUrl, HttpResponseMessage responseMessage, XDocument document)
@@ -276,11 +331,6 @@ namespace FubarDev.WebDavServer.Engines.Remote
             }
         }
 
-        public void Dispose()
-        {
-            _client.Dispose();
-        }
-
         private async Task<IReadOnlyCollection<XName>> SetPropertiesAsync(Uri targetUrl, IEnumerable<IUntypedWriteableProperty> properties, CancellationToken cancellationToken)
         {
             var elements = new List<XElement>();
@@ -312,7 +362,7 @@ namespace FubarDev.WebDavServer.Engines.Remote
                 Content = CreateContent(_propertyUpdateSerializer, requestData)
             })
             {
-                using (var httpResponse = await _client.SendAsync(httpRequest, cancellationToken).ConfigureAwait(false))
+                using (var httpResponse = await Client.SendAsync(httpRequest, cancellationToken).ConfigureAwait(false))
                 {
                     if (httpResponse.IsSuccessStatusCode)
                         return new XName[0];
@@ -406,55 +456,6 @@ namespace FubarDev.WebDavServer.Engines.Remote
             };
 
             return content;
-        }
-
-        [NotNull]
-        private static RemoteTargetException CreateException(Uri requestUrl, [NotNull] Error error)
-        {
-            var hrefs = new List<Uri>();
-            string message = "Unknown error";
-            var index = 0;
-            foreach (var choiceType in error.ItemsElementName)
-            {
-                var choiceItem = error.Items[index++];
-                switch (choiceType)
-                {
-                    case ItemsChoiceType.Any:
-                        message = "Request failed with element {choiceItem}";
-                        break;
-                    case ItemsChoiceType.CannotModifyProtectedProperty:
-                        message = "Request tried to modify a protected property";
-                        break;
-                    case ItemsChoiceType.LockTokenMatchesRequestUri:
-                        message = "No lock token found for the given request URI";
-                        break;
-                    case ItemsChoiceType.LockTokenSubmitted:
-                        message = "Locked resource found";
-                        hrefs.AddRange(((LockTokenSubmitted)choiceItem).Href?.Select(x => new Uri(x, UriKind.RelativeOrAbsolute)) ?? new Uri[0]);
-                        break;
-                    case ItemsChoiceType.NoConflictingLock:
-                        message = "Conflicting lock";
-                        hrefs.AddRange(((NoConflictingLock)choiceItem).Href?.Select(x => new Uri(x, UriKind.RelativeOrAbsolute)) ?? new Uri[0]);
-                        break;
-                    case ItemsChoiceType.NoExternalEntities:
-                        message = "External XML entities unsupported";
-                        break;
-                    case ItemsChoiceType.PreservedLiveProperties:
-                        message = "Request failed to modify a live property";
-                        break;
-                    case ItemsChoiceType.PropfindFiniteDepth:
-                        message = "The server doesn't support infinite depth";
-                        break;
-                    default:
-                        message = "Unknown error";
-                        break;
-                }
-            }
-
-            if (hrefs.Count == 0)
-                hrefs.Add(requestUrl);
-
-            return new RemoteTargetException(message, hrefs);
         }
     }
 }
