@@ -65,7 +65,7 @@ namespace FubarDev.WebDavServer
 
         public static string UriEscape(this string s)
         {
-            return Uri.EscapeDataString(s).Replace("%20", "+");
+            return Uri.EscapeDataString(s);
         }
     }
 }
