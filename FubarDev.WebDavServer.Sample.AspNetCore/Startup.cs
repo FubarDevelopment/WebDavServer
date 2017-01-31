@@ -98,7 +98,6 @@ namespace FubarDev.WebDavServer.Sample.AspNetCore
 
             app.UseMiddleware<RequestLogMiddleware>();
 
-            app.UseIdentity();
             app.UseForwardedHeaders(new ForwardedHeadersOptions()
             {
                 ForwardedHeaders = ForwardedHeaders.XForwardedFor | ForwardedHeaders.XForwardedProto
