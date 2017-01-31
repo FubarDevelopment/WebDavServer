@@ -82,8 +82,7 @@ namespace FubarDev.WebDavServer.Sample.AspNetCore
                 app.UseDeveloperExceptionPage();
             }
 
-            /*
-            if (Program.IsKestrel)
+            if (Program.IsKestrel && !Program.IsWindows())
             {
                 app.UseBasicAuthentication(
                     confg =>
@@ -94,7 +93,6 @@ namespace FubarDev.WebDavServer.Sample.AspNetCore
                         };
                     });
             }
-            */
 
             app.UseMiddleware<RequestLogMiddleware>();
 
