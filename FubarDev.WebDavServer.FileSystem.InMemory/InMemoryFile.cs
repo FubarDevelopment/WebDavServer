@@ -46,14 +46,26 @@ namespace FubarDev.WebDavServer.FileSystem.InMemory
             return Task.FromResult<Stream>(_data = new MemoryStream());
         }
 
-        public Task<IDocument> CopyToAsync(ICollection collection, string name, CancellationToken cancellationToken)
+        public async Task<IDocument> CopyToAsync(ICollection collection, string name, CancellationToken cancellationToken)
         {
-            throw new NotImplementedException();
+            var coll = (InMemoryDirectory) collection;
+            var doc = (InMemoryFile)await coll.CreateDocumentAsync(name, cancellationToken).ConfigureAwait(false);
+            doc._data = _data;
+            doc.CreationTimeUtc = CreationTimeUtc;
+            doc.LastWriteTimeUtc = LastWriteTimeUtc;
+            return doc;
         }
 
-        public Task<IDocument> MoveToAsync(ICollection collection, string name, CancellationToken cancellationToken)
+        public async Task<IDocument> MoveToAsync(ICollection collection, string name, CancellationToken cancellationToken)
         {
-            throw new NotImplementedException();
+            var coll = (InMemoryDirectory)collection;
+            var doc = (InMemoryFile)await coll.CreateDocumentAsync(name, cancellationToken).ConfigureAwait(false);
+            doc._data = _data;
+            doc.CreationTimeUtc = CreationTimeUtc;
+            doc.LastWriteTimeUtc = LastWriteTimeUtc;
+            if (!InMemoryParent.Remove(name))
+                throw new InvalidOperationException("Failed to remove the document from the source collection.");
+            return doc;
         }
 
         protected override IEnumerable<ILiveProperty> GetLiveProperties()

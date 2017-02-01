@@ -12,8 +12,6 @@ namespace FubarDev.WebDavServer.FileSystem.InMemory
     public abstract class InMemoryEntry : IEntry
     {
         private readonly InMemoryDirectory _parent;
-        private DateTime _lastWriteTime;
-        private DateTime _creationTime;
 
         protected InMemoryEntry(IFileSystem fileSystem, InMemoryDirectory parent, Uri path, string name)
         {
@@ -21,7 +19,7 @@ namespace FubarDev.WebDavServer.FileSystem.InMemory
             Name = name;
             RootFileSystem = FileSystem = fileSystem;
             Path = path;
-            _lastWriteTime = _creationTime = DateTime.UtcNow;
+            CreationTimeUtc = LastWriteTimeUtc = DateTime.UtcNow;
         }
 
         public string Name { get; }
@@ -29,8 +27,9 @@ namespace FubarDev.WebDavServer.FileSystem.InMemory
         public IFileSystem FileSystem { get; }
         public ICollection Parent => _parent;
         public Uri Path { get; }
-        public DateTime LastWriteTimeUtc => _lastWriteTime;
+        public DateTime LastWriteTimeUtc { get; protected set; }
         protected InMemoryDirectory InMemoryParent => _parent;
+        protected DateTime CreationTimeUtc { get; set; }
 
         public IAsyncEnumerable<IUntypedReadableProperty> GetProperties()
         {
@@ -44,8 +43,8 @@ namespace FubarDev.WebDavServer.FileSystem.InMemory
             var properties = new List<ILiveProperty>()
             {
                 this.GetResourceTypeProperty(),
-                new LastModifiedProperty(ct => Task.FromResult(_lastWriteTime), (v, ct) => Task.FromResult(_lastWriteTime = v)),
-                new CreationDateProperty(ct => Task.FromResult(_creationTime), (v, ct) => Task.FromResult(_creationTime = v)),
+                new LastModifiedProperty(ct => Task.FromResult(LastWriteTimeUtc), (v, ct) => Task.FromResult(LastWriteTimeUtc = v)),
+                new CreationDateProperty(ct => Task.FromResult(CreationTimeUtc), (v, ct) => Task.FromResult(CreationTimeUtc = v)),
             };
             return properties;
         }
