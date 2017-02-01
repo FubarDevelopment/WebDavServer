@@ -9,6 +9,8 @@ using FubarDev.WebDavServer.FileSystem;
 using FubarDev.WebDavServer.Model;
 using FubarDev.WebDavServer.Properties;
 
+using Microsoft.Extensions.Logging;
+
 namespace FubarDev.WebDavServer.Engines
 {
     public class RecursiveExecutionEngine<TCollection, TDocument, TMissing>
@@ -20,10 +22,13 @@ namespace FubarDev.WebDavServer.Engines
 
         private readonly bool _allowOverwrite;
 
-        public RecursiveExecutionEngine(ITargetActions<TCollection, TDocument, TMissing> handler, bool allowOverwrite)
+        private readonly ILogger _logger;
+
+        public RecursiveExecutionEngine(ITargetActions<TCollection, TDocument, TMissing> handler, bool allowOverwrite, ILogger logger)
         {
             _handler = handler;
             _allowOverwrite = allowOverwrite;
+            _logger = logger;
         }
 
         public async Task<CollectionActionResult> ExecuteAsync(Uri sourceUrl, ICollection source, Depth depth, TMissing target, CancellationToken cancellationToken)
@@ -52,6 +57,7 @@ namespace FubarDev.WebDavServer.Engines
                 var failedPropertyNames = await newDoc.SetPropertiesAsync(properties, cancellationToken).ConfigureAwait(false);
                 if (failedPropertyNames.Count != 0)
                 {
+                    _logger.LogDebug($"{target.DestinationUrl}: Failed setting properties {string.Join(", ", failedPropertyNames.Select(x => x.ToString()))}");
                     return new ActionResult(ActionStatus.PropSetFailed, target)
                     {
                         FailedProperties = failedPropertyNames
@@ -62,6 +68,7 @@ namespace FubarDev.WebDavServer.Engines
             }
             catch (Exception ex)
             {
+                _logger.LogDebug($"{target.DestinationUrl}: Failed with exception {ex.Message}");
                 return new ActionResult(ActionStatus.CreateFailed, target)
                 {
                     Exception = ex,
@@ -73,6 +80,7 @@ namespace FubarDev.WebDavServer.Engines
         {
             if (!_allowOverwrite)
             {
+                _logger.LogDebug($"{target.DestinationUrl}: Cannot overwrite because destination exists");
                 return new ActionResult(ActionStatus.CannotOverwrite, target);
             }
 
@@ -85,6 +93,7 @@ namespace FubarDev.WebDavServer.Engines
                 }
                 catch (Exception ex)
                 {
+                    _logger.LogDebug($"{target.DestinationUrl}: Delete failed with exception {ex.Message}");
                     return new CollectionActionResult(ActionStatus.TargetDeleteFailed, target)
                     {
                         Exception = ex
@@ -103,6 +112,7 @@ namespace FubarDev.WebDavServer.Engines
             var failedPropertyNames = await target.SetPropertiesAsync(properties, cancellationToken).ConfigureAwait(false);
             if (failedPropertyNames.Count != 0)
             {
+                _logger.LogDebug($"{target.DestinationUrl}: Failed setting properties {string.Join(", ", failedPropertyNames.Select(x => x.ToString()))}");
                 return new ActionResult(ActionStatus.PropSetFailed, target)
                 {
                     FailedProperties = failedPropertyNames
@@ -127,6 +137,7 @@ namespace FubarDev.WebDavServer.Engines
             }
             catch (Exception ex)
             {
+                _logger.LogDebug($"{target.DestinationUrl}: Create failed with exception {ex.Message}");
                 return new CollectionActionResult(ActionStatus.CreateFailed, target)
                 {
                     Exception = ex,
@@ -152,6 +163,7 @@ namespace FubarDev.WebDavServer.Engines
                 }
                 catch (Exception ex)
                 {
+                    _logger.LogDebug($"{target.DestinationUrl}: Delete failed with exception {ex.Message}");
                     return new CollectionActionResult(ActionStatus.TargetDeleteFailed, target)
                     {
                         Exception = ex
@@ -201,6 +213,7 @@ namespace FubarDev.WebDavServer.Engines
                         if (collTarget != null)
                         {
                             // We found a collection instead of a document
+                            _logger.LogDebug($"{target.DestinationUrl}: Found a collection instead of a document");
                             var docResult = new ActionResult(ActionStatus.OverwriteFailed, foundTarget);
                             documentActionResults = documentActionResults.Add(docResult);
                         }
@@ -234,6 +247,7 @@ namespace FubarDev.WebDavServer.Engines
                     if (docTarget != null)
                     {
                         // We found a document instead of a collection
+                        _logger.LogDebug($"{target.DestinationUrl}: Found a document instead of a collection");
                         var collResult = new CollectionActionResult(ActionStatus.OverwriteFailed, foundTarget);
                         collectionActionResults = collectionActionResults.Add(collResult);
                     }
@@ -262,6 +276,7 @@ namespace FubarDev.WebDavServer.Engines
                 var failedPropertyNames = await target.SetPropertiesAsync(properties, cancellationToken).ConfigureAwait(false);
                 if (failedPropertyNames.Count != 0)
                 {
+                    _logger.LogDebug($"{target.DestinationUrl}: Failed setting properties {string.Join(", ", failedPropertyNames.Select(x => x.ToString()))}");
                     return new CollectionActionResult(ActionStatus.PropSetFailed, target)
                     {
                         FailedProperties = failedPropertyNames,
@@ -274,6 +289,7 @@ namespace FubarDev.WebDavServer.Engines
             }
             catch (Exception ex)
             {
+                _logger.LogDebug($"{target.DestinationUrl}: Cleanup failed with exception {ex.Message}");
                 return new CollectionActionResult(ActionStatus.CleanupFailed, target)
                 {
                     Exception = ex,

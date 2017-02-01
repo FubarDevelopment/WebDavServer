@@ -114,7 +114,8 @@ namespace FubarDev.WebDavServer.DefaultHandlers
 
             var engine = new RecursiveExecutionEngine<RemoteCollectionTarget, RemoteDocumentTarget, RemoteMissingTarget>(
                 handler,
-                overwrite);
+                overwrite,
+                _logger);
 
             var targetName = targetUrl.GetName();
             var parentName = parentCollectionUrl.GetName();
@@ -145,7 +146,8 @@ namespace FubarDev.WebDavServer.DefaultHandlers
 
             var engine = new RecursiveExecutionEngine<CollectionTarget, DocumentTarget, MissingTarget>(
                 handler,
-                overwrite);
+                overwrite,
+                _logger);
 
             CollectionTarget parentCollection;
             ITarget targetItem;
