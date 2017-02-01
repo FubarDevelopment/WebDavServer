@@ -3,7 +3,6 @@ using System.Threading.Tasks;
 
 using FubarDev.WebDavServer.FileSystem;
 using FubarDev.WebDavServer.FileSystem.InMemory;
-using FubarDev.WebDavServer.Properties.Dead;
 using FubarDev.WebDavServer.Properties.Store.InMemory;
 
 using Xunit;
