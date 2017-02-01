@@ -12,6 +12,8 @@ using FubarDev.WebDavServer.Model;
 
 using JetBrains.Annotations;
 
+using Microsoft.Extensions.Logging;
+
 namespace FubarDev.WebDavServer.DefaultHandlers
 {
     public abstract class CopyMoveHandlerBase
@@ -22,13 +24,17 @@ namespace FubarDev.WebDavServer.DefaultHandlers
         [NotNull]
         private readonly IWebDavHost _host;
 
+        [NotNull]
+        private readonly ILogger _logger;
+
         [CanBeNull]
         private readonly IRemoteHttpClientFactory _remoteHttpClientFactory;
 
-        protected CopyMoveHandlerBase([NotNull] IFileSystem rootFileSystem, [NotNull] IWebDavHost host, [CanBeNull] IRemoteHttpClientFactory remoteHttpClientFactory = null)
+        protected CopyMoveHandlerBase([NotNull] IFileSystem rootFileSystem, [NotNull] IWebDavHost host, [NotNull] ILogger logger, [CanBeNull] IRemoteHttpClientFactory remoteHttpClientFactory = null)
         {
             _rootFileSystem = rootFileSystem;
             _host = host;
+            _logger = logger;
             _remoteHttpClientFactory = remoteHttpClientFactory;
         }
 
@@ -51,6 +57,12 @@ namespace FubarDev.WebDavServer.DefaultHandlers
             var adjustedBaseUrl = new UriBuilder(destinationUrl.Scheme, _host.BaseUrl.Host, _host.BaseUrl.Port, _host.BaseUrl.AbsolutePath).Uri;
             if (!adjustedBaseUrl.IsBaseOf(destinationUrl) || mode == RecursiveProcessingMode.PreferCrossServer)
             {
+                if (_logger.IsEnabled(LogLevel.Trace))
+                    _logger.LogTrace("Using cross-server mode");
+
+                if (_logger.IsEnabled(LogLevel.Debug))
+                    _logger.LogDebug($"{adjustedBaseUrl} is not a base of {destinationUrl}");
+
                 // Copy or move from server to server (slow)
                 if (_remoteHttpClientFactory == null)
                     throw new WebDavException(WebDavStatusCode.BadGateway, "No HttpClient factory for remote access");

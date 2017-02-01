@@ -11,6 +11,7 @@ using FubarDev.WebDavServer.FileSystem;
 using FubarDev.WebDavServer.Handlers;
 using FubarDev.WebDavServer.Model;
 
+using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 
 namespace FubarDev.WebDavServer.DefaultHandlers
@@ -19,8 +20,8 @@ namespace FubarDev.WebDavServer.DefaultHandlers
     {
         private readonly MoveHandlerOptions _options;
 
-        public MoveHandler(IFileSystem rootFileSystem, IWebDavHost host, IOptions<MoveHandlerOptions> options, IRemoteHttpClientFactory remoteHttpClientFactory = null)
-            : base(rootFileSystem, host, remoteHttpClientFactory)
+        public MoveHandler(IFileSystem rootFileSystem, IWebDavHost host, IOptions<MoveHandlerOptions> options, Logger<MoveHandler> logger, IRemoteHttpClientFactory remoteHttpClientFactory = null)
+            : base(rootFileSystem, host, logger, remoteHttpClientFactory)
         {
             _options = options?.Value ?? new MoveHandlerOptions();
         }

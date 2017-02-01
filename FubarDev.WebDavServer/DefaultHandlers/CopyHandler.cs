@@ -11,6 +11,7 @@ using FubarDev.WebDavServer.FileSystem;
 using FubarDev.WebDavServer.Handlers;
 using FubarDev.WebDavServer.Model;
 
+using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 
 namespace FubarDev.WebDavServer.DefaultHandlers
@@ -19,8 +20,8 @@ namespace FubarDev.WebDavServer.DefaultHandlers
     {
         private readonly CopyHandlerOptions _options;
 
-        public CopyHandler(IFileSystem rootFileSystem, IWebDavHost host, IOptions<CopyHandlerOptions> options, IRemoteHttpClientFactory remoteHttpClientFactory = null)
-            : base(rootFileSystem, host, remoteHttpClientFactory)
+        public CopyHandler(IFileSystem rootFileSystem, IWebDavHost host, IOptions<CopyHandlerOptions> options, ILogger<CopyHandler> logger, IRemoteHttpClientFactory remoteHttpClientFactory = null)
+            : base(rootFileSystem, host, logger, remoteHttpClientFactory)
         {
             _options = options?.Value ?? new CopyHandlerOptions();
         }
