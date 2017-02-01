@@ -20,7 +20,7 @@ namespace FubarDev.WebDavServer.DefaultHandlers
     {
         private readonly MoveHandlerOptions _options;
 
-        public MoveHandler(IFileSystem rootFileSystem, IWebDavHost host, IOptions<MoveHandlerOptions> options, Logger<MoveHandler> logger, IRemoteHttpClientFactory remoteHttpClientFactory = null)
+        public MoveHandler(IFileSystem rootFileSystem, IWebDavHost host, IOptions<MoveHandlerOptions> options, ILogger<MoveHandler> logger, IRemoteHttpClientFactory remoteHttpClientFactory = null)
             : base(rootFileSystem, host, logger, remoteHttpClientFactory)
         {
             _options = options?.Value ?? new MoveHandlerOptions();
