@@ -83,7 +83,7 @@ namespace FubarDev.WebDavServer.DefaultHandlers
             }
 
             // Copy or move from one known file system to another
-            var destinationPath = _host.BaseUrl.MakeRelativeUri(destinationUrl).ToString();
+            var destinationPath = adjustedBaseUrl.MakeRelativeUri(destinationUrl).ToString();
             var destinationSelectionResult = await _rootFileSystem.SelectAsync(destinationPath, cancellationToken).ConfigureAwait(false);
             if (destinationSelectionResult.IsMissing && destinationSelectionResult.MissingNames.Count != 1)
             {
