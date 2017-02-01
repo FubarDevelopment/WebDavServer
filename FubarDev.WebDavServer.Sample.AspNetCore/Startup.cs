@@ -1,6 +1,7 @@
 ﻿using System.IO;
 
 using FubarDev.WebDavServer.AspNetCore;
+using FubarDev.WebDavServer.Engines.Remote;
 using FubarDev.WebDavServer.FileSystem;
 using FubarDev.WebDavServer.FileSystem.DotNet;
 using FubarDev.WebDavServer.Properties.Store;
@@ -59,6 +60,7 @@ namespace FubarDev.WebDavServer.Sample.AspNetCore
                     })
                 .AddMemoryCache()
                 .AddTransient<IPropertyStoreFactory, TextFilePropertyStoreFactory>()
+                .AddSingleton<IRemoteHttpClientFactory, HttpClientFactory>()
                 .AddSingleton<IFileSystemFactory, TestFileSystemFactory>()
                 .AddTransient(sp =>
                 {
