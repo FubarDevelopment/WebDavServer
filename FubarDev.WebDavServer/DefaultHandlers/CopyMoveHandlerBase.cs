@@ -50,19 +50,21 @@ namespace FubarDev.WebDavServer.DefaultHandlers
             {
                 // Copy or move from server to server (slow)
                 if (_remoteHttpClientFactory == null)
-                    return new WebDavResult(WebDavStatusCode.BadGateway);
+                    throw new WebDavException(WebDavStatusCode.BadGateway, "No HttpClient factory for remote access");
 
                 var parentCollectionUrl = destinationUrl.GetParent();
                 var httpClient = await _remoteHttpClientFactory.CreateAsync(parentCollectionUrl, cancellationToken).ConfigureAwait(false);
                 if (httpClient == null)
-                    return new WebDavResult(WebDavStatusCode.BadGateway);
+                    throw new WebDavException(WebDavStatusCode.BadGateway, "No HttpClient created");
 
-                var remoteHandler = CreateRemoteTargetActions(httpClient);
-                if (remoteHandler == null)
-                    return new WebDavResult(WebDavStatusCode.BadGateway);
+                using (var remoteHandler = CreateRemoteTargetActions(httpClient))
+                {
+                    if (remoteHandler == null)
+                        throw new WebDavException(WebDavStatusCode.BadGateway, "No remote handler for given client");
 
-                var remoteTargetResult = await RemoteExecuteAsync(remoteHandler, sourceUrl, sourceSelectionResult, destinationUrl, depth, overwrite, cancellationToken).ConfigureAwait(false);
-                return remoteTargetResult.Evaluate(_host);
+                    var remoteTargetResult = await RemoteExecuteAsync(remoteHandler, sourceUrl, sourceSelectionResult, destinationUrl, depth, overwrite, cancellationToken).ConfigureAwait(false);
+                    return remoteTargetResult.Evaluate(_host);
+                }
             }
 
             // Copy or move from one known file system to another

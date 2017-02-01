@@ -18,6 +18,12 @@ namespace FubarDev.WebDavServer
             StatusCode = statusCode;
         }
 
+        public WebDavException(WebDavStatusCode statusCode, string responseMessage)
+            : base(statusCode.GetReasonPhrase(responseMessage))
+        {
+            StatusCode = statusCode;
+        }
+
         public WebDavStatusCode StatusCode { get; }
     }
 }
