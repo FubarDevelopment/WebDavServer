@@ -86,7 +86,10 @@ namespace FubarDev.WebDavServer.DefaultHandlers
             var destinationPath = _host.BaseUrl.MakeRelativeUri(destinationUrl).ToString();
             var destinationSelectionResult = await _rootFileSystem.SelectAsync(destinationPath, cancellationToken).ConfigureAwait(false);
             if (destinationSelectionResult.IsMissing && destinationSelectionResult.MissingNames.Count != 1)
+            {
+                _logger.LogDebug($"{destinationUrl}: The target is missing with the following path parts: {string.Join(", ", destinationSelectionResult.MissingNames)}");
                 throw new WebDavException(WebDavStatusCode.Conflict);
+            }
 
             var isSameFileSystem = ReferenceEquals(sourceSelectionResult.TargetFileSystem, destinationSelectionResult.TargetFileSystem);
             var localMode = isSameFileSystem && mode == RecursiveProcessingMode.PreferFastest
