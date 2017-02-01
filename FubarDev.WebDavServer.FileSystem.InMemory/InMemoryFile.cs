@@ -43,14 +43,14 @@ namespace FubarDev.WebDavServer.FileSystem.InMemory
 
         public Task<Stream> CreateAsync(CancellationToken cancellationToken)
         {
-            return Task.FromResult<Stream>(_data = new MemoryStream());
+            return Task.FromResult<Stream>(_data = new MyMemoryStream(this));
         }
 
         public async Task<IDocument> CopyToAsync(ICollection collection, string name, CancellationToken cancellationToken)
         {
             var coll = (InMemoryDirectory) collection;
             var doc = (InMemoryFile)await coll.CreateDocumentAsync(name, cancellationToken).ConfigureAwait(false);
-            doc._data = _data;
+            doc._data = new MemoryStream(_data.ToArray());
             doc.CreationTimeUtc = CreationTimeUtc;
             doc.LastWriteTimeUtc = LastWriteTimeUtc;
             return doc;
@@ -60,7 +60,7 @@ namespace FubarDev.WebDavServer.FileSystem.InMemory
         {
             var coll = (InMemoryDirectory)collection;
             var doc = (InMemoryFile)await coll.CreateDocumentAsync(name, cancellationToken).ConfigureAwait(false);
-            doc._data = _data;
+            doc._data = new MemoryStream(_data.ToArray());
             doc.CreationTimeUtc = CreationTimeUtc;
             doc.LastWriteTimeUtc = LastWriteTimeUtc;
             if (!InMemoryParent.Remove(name))
@@ -84,6 +84,26 @@ namespace FubarDev.WebDavServer.FileSystem.InMemory
                        {
                            new GetETagProperty(FileSystem.PropertyStore, this, 0)
                        });
+        }
+
+        private class MyMemoryStream : MemoryStream
+        {
+            private readonly InMemoryFile _file;
+
+            public MyMemoryStream(InMemoryFile file)
+            {
+                _file = file;
+            }
+
+            protected override void Dispose(bool disposing)
+            {
+                if (disposing)
+                {
+                    _file._data = new MemoryStream(ToArray());
+                }
+
+                base.Dispose(disposing);
+            }
         }
     }
 }
