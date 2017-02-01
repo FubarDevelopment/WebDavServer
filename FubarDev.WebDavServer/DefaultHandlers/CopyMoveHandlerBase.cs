@@ -46,7 +46,10 @@ namespace FubarDev.WebDavServer.DefaultHandlers
 
             var sourceUrl = new Uri(_host.BaseUrl, sourcePath);
             var destinationUrl = new Uri(sourceUrl, destination);
-            if (!_host.BaseUrl.IsBaseOf(destinationUrl) || mode == RecursiveProcessingMode.PreferCrossServer)
+
+            // Ignore different schemes
+            var adjustedBaseUrl = new UriBuilder(destinationUrl.Scheme, _host.BaseUrl.Host, _host.BaseUrl.Port, _host.BaseUrl.AbsolutePath).Uri;
+            if (!adjustedBaseUrl.IsBaseOf(destinationUrl) || mode == RecursiveProcessingMode.PreferCrossServer)
             {
                 // Copy or move from server to server (slow)
                 if (_remoteHttpClientFactory == null)
