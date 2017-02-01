@@ -6,6 +6,27 @@ namespace FubarDev.WebDavServer
 {
     public static class UriExtensions
     {
+        public static Uri ChangeSchema(this Uri url, string newSchema)
+        {
+            var newPort = url.Port;
+            var oldPort = url.Port;
+
+            if ((url.Scheme == "http" && oldPort == 80) || (url.Scheme == "https" && oldPort == 443))
+            {
+                switch (newSchema.ToLowerInvariant())
+                {
+                    case "http":
+                        newPort = 80;
+                        break;
+                    case "https":
+                        newPort = 443;
+                        break;
+                }
+            }
+
+            return new UriBuilder(newSchema, url.Host, newPort, url.AbsolutePath).Uri;
+        }
+
         public static Uri GetParent(this Uri url)
         {
             if (url.OriginalString.EndsWith("/"))

@@ -54,7 +54,7 @@ namespace FubarDev.WebDavServer.DefaultHandlers
             var destinationUrl = new Uri(sourceUrl, destination);
 
             // Ignore different schemes
-            var adjustedBaseUrl = new UriBuilder(destinationUrl.Scheme, _host.BaseUrl.Host, _host.BaseUrl.Port, _host.BaseUrl.AbsolutePath).Uri;
+            var adjustedBaseUrl = _host.BaseUrl.ChangeSchema(destinationUrl.Scheme);
             if (!adjustedBaseUrl.IsBaseOf(destinationUrl) || mode == RecursiveProcessingMode.PreferCrossServer)
             {
                 if (_logger.IsEnabled(LogLevel.Trace))
