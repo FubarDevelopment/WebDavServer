@@ -22,7 +22,7 @@ namespace FubarDev.WebDavServer.Sample.AspNetCore
             var forceKestrelUse = config.GetValue<bool>("use-kestrel");
 
             IWebHost host;
-            if (!forceKestrelUse && IsWindows())
+            if (!forceKestrelUse && IsWindows)
             {
                 host = new WebHostBuilder()
                     .UseWebListener(opt =>
@@ -37,9 +37,17 @@ namespace FubarDev.WebDavServer.Sample.AspNetCore
             }
             else
             {
+                var pfxFileName = config.GetValue<string>("use-pfx");
                 IsKestrel = true;
                 host = new WebHostBuilder()
-                    .UseKestrel()
+                    .UseKestrel(
+                        opt =>
+                        {
+                            if (!string.IsNullOrEmpty(pfxFileName))
+                            {
+                                opt.UseHttps(pfxFileName);
+                            }
+                        })
                     .UseConfiguration(config)
                     .UseContentRoot(Directory.GetCurrentDirectory())
                     .UseIISIntegration()
@@ -50,10 +58,13 @@ namespace FubarDev.WebDavServer.Sample.AspNetCore
             host.Run();
         }
 
-        public static bool IsWindows()
+        public static bool IsWindows
         {
-            string windir = Environment.GetEnvironmentVariable("windir");
-            return !string.IsNullOrEmpty(windir) && windir.Contains(@"\") && Directory.Exists(windir);
+            get
+            {
+                string windir = Environment.GetEnvironmentVariable("windir");
+                return !string.IsNullOrEmpty(windir) && windir.Contains(@"\") && Directory.Exists(windir);
+            }
         }
     }
 }
