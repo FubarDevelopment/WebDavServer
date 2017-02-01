@@ -20,6 +20,7 @@ namespace FubarDev.WebDavServer.Tests.Handlers
 {
     public class CopyHandlerTests
     {
+        [Fact]
         public async Task CopyFileAsync()
         {
             var ct = CancellationToken.None;
@@ -36,7 +37,8 @@ namespace FubarDev.WebDavServer.Tests.Handlers
             var docText2 = await root.GetChildAsync("text2.txt", ct).ConfigureAwait(false);
             Assert.NotNull(docText2);
             var docProps2 = await docText2.GetPropertyElementsAsync(ct).ConfigureAwait(false);
-            Assert.Empty(PropertyComparer.FindChanges(docProps1, docProps2));
+            var changes = PropertyComparer.FindChanges(docProps1, docProps2);
+            Assert.Empty(changes);
         }
 
         private static async Task InitAsync(IFileSystem fileSystem, CancellationToken ct)
