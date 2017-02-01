@@ -39,6 +39,12 @@ namespace FubarDev.WebDavServer.Sample.AspNetCore
             services
                 .AddOptions()
                 .AddAuthentication()
+                .Configure<WebDavHostOptions>(
+                    opt =>
+                    {
+                        var hostSection = Configuration.GetSection("Host");
+                        hostSection?.Bind(opt);
+                    })
                 .Configure<DotNetFileSystemOptions>(
                     opt =>
                     {

@@ -3,6 +3,7 @@ using System.Linq;
 using System.Text;
 
 using Microsoft.AspNetCore.Http;
+using Microsoft.Extensions.Options;
 
 namespace FubarDev.WebDavServer.AspNetCore
 {
@@ -12,24 +13,35 @@ namespace FubarDev.WebDavServer.AspNetCore
 
         private readonly Lazy<Uri> _baseUrl;
 
-        public WebDavHost(IHttpContextAccessor httpContextAccessor)
+        public WebDavHost(IHttpContextAccessor httpContextAccessor, IOptions<WebDavHostOptions> options)
         {
+            var opt = options?.Value ?? new WebDavHostOptions();
             _httpContextAccessor = httpContextAccessor;
-            _baseUrl = new Lazy<Uri>(() => BuildBaseUrl(httpContextAccessor.HttpContext));
+            _baseUrl = new Lazy<Uri>(() => BuildBaseUrl(httpContextAccessor.HttpContext, opt));
         }
 
         public Uri BaseUrl => _baseUrl.Value;
 
         public string RequestProtocol => _httpContextAccessor.HttpContext.Request.Protocol;
 
-        private static Uri BuildBaseUrl(HttpContext httpContext)
+        private static Uri BuildBaseUrl(HttpContext httpContext, WebDavHostOptions options)
         {
-            var request = httpContext.Request;
-            var pathBase = request.PathBase.ToString();
-            var result = new StringBuilder()
-                .Append(request.Scheme).Append("://").Append(request.Host).Append(pathBase);
-            if (!pathBase.EndsWith("/", StringComparison.Ordinal))
-                result.Append("/");
+            var result = new StringBuilder();
+            if (options.BaseUrl != null)
+            {
+                result.Append(options.BaseUrl);
+                if (!options.BaseUrl.EndsWith("/", StringComparison.Ordinal))
+                    result.Append("/");
+            }
+            else
+            {
+                var request = httpContext.Request;
+                var pathBase = request.PathBase.ToString();
+                result.Append(request.Scheme).Append("://").Append(request.Host).Append(pathBase);
+                if (!pathBase.EndsWith("/", StringComparison.Ordinal))
+                    result.Append("/");
+            }
+
             return new Uri(result.ToString());
         }
 

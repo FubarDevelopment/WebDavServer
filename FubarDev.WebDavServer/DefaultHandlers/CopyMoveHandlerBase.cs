@@ -50,18 +50,18 @@ namespace FubarDev.WebDavServer.DefaultHandlers
             if (sourceSelectionResult.IsMissing)
                 throw new WebDavException(WebDavStatusCode.NotFound);
 
-            var sourceUrl = new Uri(_host.BaseUrl, sourcePath);
+            var baseUrl = _host.BaseUrl;
+            var sourceUrl = new Uri(baseUrl, sourcePath);
             var destinationUrl = new Uri(sourceUrl, destination);
 
             // Ignore different schemes
-            var adjustedBaseUrl = _host.BaseUrl.ChangeSchema(destinationUrl.Scheme);
-            if (!adjustedBaseUrl.IsBaseOf(destinationUrl) || mode == RecursiveProcessingMode.PreferCrossServer)
+            if (!baseUrl.IsBaseOf(destinationUrl) || mode == RecursiveProcessingMode.PreferCrossServer)
             {
                 if (_logger.IsEnabled(LogLevel.Trace))
                     _logger.LogTrace("Using cross-server mode");
 
                 if (_logger.IsEnabled(LogLevel.Debug))
-                    _logger.LogDebug($"{adjustedBaseUrl} is not a base of {destinationUrl}");
+                    _logger.LogDebug($"{baseUrl} is not a base of {destinationUrl}");
 
                 // Copy or move from server to server (slow)
                 if (_remoteHttpClientFactory == null)
@@ -83,7 +83,7 @@ namespace FubarDev.WebDavServer.DefaultHandlers
             }
 
             // Copy or move from one known file system to another
-            var destinationPath = adjustedBaseUrl.MakeRelativeUri(destinationUrl).ToString();
+            var destinationPath = baseUrl.MakeRelativeUri(destinationUrl).ToString();
             var destinationSelectionResult = await _rootFileSystem.SelectAsync(destinationPath, cancellationToken).ConfigureAwait(false);
             if (destinationSelectionResult.IsMissing && destinationSelectionResult.MissingNames.Count != 1)
             {
