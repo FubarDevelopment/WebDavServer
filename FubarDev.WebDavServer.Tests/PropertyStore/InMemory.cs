@@ -18,7 +18,7 @@ namespace FubarDev.WebDavServer.Tests.PropertyStore
         {
             var ct = CancellationToken.None;
             var fs = new InMemoryFileSystem(new PathTraversalEngine(), new InMemoryPropertyStoreFactory());
-            var root = await fs.Root;
+            var root = await fs.Root.GetValueAsync(ct).ConfigureAwait(false);
             Assert.NotNull(fs.PropertyStore);
             var displayNameProperty = await GetDisplayNamePropertyAsync(root, ct).ConfigureAwait(false);
             Assert.Equal(string.Empty, await displayNameProperty.GetValueAsync(ct).ConfigureAwait(false));
@@ -31,7 +31,7 @@ namespace FubarDev.WebDavServer.Tests.PropertyStore
             var fs = new InMemoryFileSystem(new PathTraversalEngine(), new InMemoryPropertyStoreFactory());
             Assert.NotNull(fs.PropertyStore);
 
-            var root = await fs.Root;
+            var root = await fs.Root.GetValueAsync(ct).ConfigureAwait(false);
             var doc = await root.CreateDocumentAsync("test1.txt", ct).ConfigureAwait(false);
 
             var displayNameProperty = await GetDisplayNamePropertyAsync(doc, ct).ConfigureAwait(false);
@@ -45,7 +45,7 @@ namespace FubarDev.WebDavServer.Tests.PropertyStore
             var fs = new InMemoryFileSystem(new PathTraversalEngine(), new InMemoryPropertyStoreFactory());
             Assert.NotNull(fs.PropertyStore);
 
-            var root = await fs.Root;
+            var root = await fs.Root.GetValueAsync(ct).ConfigureAwait(false);
             var doc = await root.CreateDocumentAsync("test1.txt", ct).ConfigureAwait(false);
             var displayNameProperty = await GetDisplayNamePropertyAsync(doc, ct).ConfigureAwait(false);
 

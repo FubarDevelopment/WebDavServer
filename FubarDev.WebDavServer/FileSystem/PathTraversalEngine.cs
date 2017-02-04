@@ -27,7 +27,7 @@ namespace FubarDev.WebDavServer.FileSystem
 
         public async Task<SelectionResult> TraverseAsync(IFileSystem fileSystem, IEnumerable<string> pathParts, CancellationToken ct)
         {
-            var current = await fileSystem.Root;
+            var current = await fileSystem.Root.GetValueAsync(ct).ConfigureAwait(false);
             return await TraverseAsync(current, pathParts, ct).ConfigureAwait(false);
         }
 

@@ -17,7 +17,7 @@ namespace FubarDev.WebDavServer.Tests.FileSystem
         {
             var ct = CancellationToken.None;
             var fs = new InMemoryFileSystem(new PathTraversalEngine(), new InMemoryPropertyStoreFactory());
-            var root = await fs.Root;
+            var root = await fs.Root.GetValueAsync(ct).ConfigureAwait(false);
             var rootNode = await root.GetNodeAsync(int.MaxValue, ct).ConfigureAwait(false);
             Assert.Same(root, rootNode.Collection);
             Assert.Equal(0, rootNode.Documents.Count);
@@ -29,7 +29,7 @@ namespace FubarDev.WebDavServer.Tests.FileSystem
         {
             var ct = CancellationToken.None;
             var fs = new InMemoryFileSystem(new PathTraversalEngine(), new InMemoryPropertyStoreFactory());
-            var root = await fs.Root;
+            var root = await fs.Root.GetValueAsync(ct).ConfigureAwait(false);
             await root.CreateCollectionAsync("test1", ct).ConfigureAwait(false);
             var rootNode = await root.GetNodeAsync(int.MaxValue, ct).ConfigureAwait(false);
             Assert.Same(root, rootNode.Collection);
@@ -51,7 +51,7 @@ namespace FubarDev.WebDavServer.Tests.FileSystem
         {
             var ct = CancellationToken.None;
             var fs = new InMemoryFileSystem(new PathTraversalEngine(), new InMemoryPropertyStoreFactory());
-            var root = await fs.Root;
+            var root = await fs.Root.GetValueAsync(ct).ConfigureAwait(false);
             var test1 = await root.CreateCollectionAsync("test1", ct).ConfigureAwait(false);
             await test1.CreateCollectionAsync("test1.1", ct).ConfigureAwait(false);
             var rootNode = await root.GetNodeAsync(int.MaxValue, ct).ConfigureAwait(false);
@@ -83,7 +83,7 @@ namespace FubarDev.WebDavServer.Tests.FileSystem
         {
             var ct = CancellationToken.None;
             var fs = new InMemoryFileSystem(new PathTraversalEngine(), new InMemoryPropertyStoreFactory());
-            var root = await fs.Root;
+            var root = await fs.Root.GetValueAsync(ct).ConfigureAwait(false);
             await root.CreateCollectionAsync("test1", ct).ConfigureAwait(false);
             await root.CreateCollectionAsync("test2", ct).ConfigureAwait(false);
             var rootNode = await root.GetNodeAsync(int.MaxValue, ct).ConfigureAwait(false);
@@ -114,7 +114,7 @@ namespace FubarDev.WebDavServer.Tests.FileSystem
         {
             var ct = CancellationToken.None;
             var fs = new InMemoryFileSystem(new PathTraversalEngine(), new InMemoryPropertyStoreFactory());
-            var root = await fs.Root;
+            var root = await fs.Root.GetValueAsync(ct).ConfigureAwait(false);
             var test1 = await root.CreateCollectionAsync("test1", ct).ConfigureAwait(false);
             await test1.CreateCollectionAsync("test1.1", ct).ConfigureAwait(false);
             var test2 = await root.CreateCollectionAsync("test2", ct).ConfigureAwait(false);
@@ -165,7 +165,7 @@ namespace FubarDev.WebDavServer.Tests.FileSystem
         {
             var ct = CancellationToken.None;
             var fs = new InMemoryFileSystem(new PathTraversalEngine(), new InMemoryPropertyStoreFactory());
-            var root = await fs.Root;
+            var root = await fs.Root.GetValueAsync(ct).ConfigureAwait(false);
             var test1 = await root.CreateCollectionAsync("test1", ct).ConfigureAwait(false);
             await test1.CreateCollectionAsync("test1.1", ct).ConfigureAwait(false);
             await test1.CreateCollectionAsync("test1.2", ct).ConfigureAwait(false);
@@ -234,7 +234,7 @@ namespace FubarDev.WebDavServer.Tests.FileSystem
         {
             var ct = CancellationToken.None;
             var fs = new InMemoryFileSystem(new PathTraversalEngine(), new InMemoryPropertyStoreFactory());
-            var root = await fs.Root;
+            var root = await fs.Root.GetValueAsync(ct).ConfigureAwait(false);
             var test1 = await root.CreateCollectionAsync("test1", ct).ConfigureAwait(false);
             await test1.CreateDocumentAsync("test1.1", ct).ConfigureAwait(false);
             await test1.CreateDocumentAsync("test1.2", ct).ConfigureAwait(false);
@@ -291,7 +291,7 @@ namespace FubarDev.WebDavServer.Tests.FileSystem
         {
             var ct = CancellationToken.None;
             var fs = new InMemoryFileSystem(new PathTraversalEngine(), new InMemoryPropertyStoreFactory());
-            var root = await fs.Root;
+            var root = await fs.Root.GetValueAsync(ct).ConfigureAwait(false);
             var test1 = await root.CreateCollectionAsync("test1", ct).ConfigureAwait(false);
             await test1.CreateDocumentAsync("test1.1", ct).ConfigureAwait(false);
             await test1.CreateCollectionAsync("test1.2", ct).ConfigureAwait(false);

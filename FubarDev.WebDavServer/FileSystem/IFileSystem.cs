@@ -5,6 +5,8 @@ using FubarDev.WebDavServer.Properties.Store;
 
 using JetBrains.Annotations;
 
+using Microsoft.VisualStudio.Threading;
+
 namespace FubarDev.WebDavServer.FileSystem
 {
     public interface IFileSystem

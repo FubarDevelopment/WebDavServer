@@ -5,6 +5,8 @@ using System.Threading.Tasks;
 
 using FubarDev.WebDavServer.Properties.Store;
 
+using Microsoft.VisualStudio.Threading;
+
 namespace FubarDev.WebDavServer.FileSystem.DotNet
 {
     public class DotNetFileSystem : ILocalFileSystem
@@ -15,8 +17,8 @@ namespace FubarDev.WebDavServer.FileSystem.DotNet
         {
             RootDirectoryPath = rootFolder;
             _pathTraversalEngine = pathTraversalEngine;
-            var root = new AsyncLazy<DotNetDirectory>(() => new DotNetDirectory(this, null, new DirectoryInfo(rootFolder), new Uri(string.Empty, UriKind.Relative)));
-            Root = new AsyncLazy<ICollection>(async () => await root);
+            var rootDir = new DotNetDirectory(this, null, new DirectoryInfo(rootFolder), new Uri(string.Empty, UriKind.Relative));
+            Root = new AsyncLazy<ICollection>(() => Task.FromResult<ICollection>(rootDir));
             Options = options;
             PropertyStore = propertyStoreFactory?.Create(this);
         }
