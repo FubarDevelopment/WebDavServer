@@ -46,8 +46,10 @@ namespace FubarDev.WebDavServer.Engines.Local
             _targetActions = targetActions;
         }
 
+        /// <inheritdoc />
         public string Name { get; }
 
+        /// <inheritdoc />
         public Uri DestinationUrl { get; }
 
         [CanBeNull]

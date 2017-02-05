@@ -30,13 +30,16 @@ namespace FubarDev.WebDavServer.Engines.Local
             DestinationUrl = destinationUrl;
         }
 
+        /// <inheritdoc />
         public string Name { get; }
 
         [CanBeNull]
         public CollectionTarget Parent { get; }
 
+        /// <inheritdoc />
         public Uri DestinationUrl { get; }
 
+        /// <inheritdoc />
         public async Task<IReadOnlyCollection<XName>> SetPropertiesAsync(IEnumerable<IUntypedWriteableProperty> properties, CancellationToken cancellationToken)
         {
             var liveProperties = new List<ILiveProperty>();

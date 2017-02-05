@@ -30,8 +30,10 @@ namespace FubarDev.WebDavServer.DefaultHandlers
             _options = options?.Value ?? new CopyHandlerOptions();
         }
 
+        /// <inheritdoc />
         public IEnumerable<string> HttpMethods { get; } = new[] { "COPY" };
 
+        /// <inheritdoc />
         public Task<IWebDavResult> CopyAsync(string sourcePath, Uri destination, Depth depth, bool? overwrite, CancellationToken cancellationToken)
         {
             var doOverwrite = overwrite ?? _options.OverwriteAsDefault;

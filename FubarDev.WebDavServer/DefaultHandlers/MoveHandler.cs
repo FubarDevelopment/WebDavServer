@@ -30,8 +30,10 @@ namespace FubarDev.WebDavServer.DefaultHandlers
             _options = options?.Value ?? new MoveHandlerOptions();
         }
 
+        /// <inheritdoc />
         public IEnumerable<string> HttpMethods { get; } = new[] { "MOVE" };
 
+        /// <inheritdoc />
         public Task<IWebDavResult> MoveAsync(string sourcePath, Uri destination, bool? overwrite, CancellationToken cancellationToken)
         {
             var doOverwrite = overwrite ?? _options.OverwriteAsDefault;

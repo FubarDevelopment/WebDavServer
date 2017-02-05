@@ -29,10 +29,12 @@ namespace FubarDev.WebDavServer.DefaultHandlers
             FileSystem = fileSystem;
         }
 
+        /// <inheritdoc />
         public IEnumerable<string> HttpMethods { get; } = new[] { "PROPFIND" };
 
         public IFileSystem FileSystem { get; }
 
+        /// <inheritdoc />
         public async Task<IWebDavResult> PropFindAsync(string path, Propfind request, Depth depth, CancellationToken cancellationToken)
         {
             var selectionResult = await FileSystem.SelectAsync(path, cancellationToken).ConfigureAwait(false);

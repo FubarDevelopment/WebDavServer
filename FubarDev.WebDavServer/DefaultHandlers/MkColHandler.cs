@@ -24,8 +24,10 @@ namespace FubarDev.WebDavServer.DefaultHandlers
             _rootFileSystem = rootFileSystem;
         }
 
+        /// <inheritdoc />
         public IEnumerable<string> HttpMethods { get; } = new[] { "MKCOL" };
 
+        /// <inheritdoc />
         public async Task<IWebDavResult> MkColAsync(string path, CancellationToken cancellationToken)
         {
             var selectionResult = await _rootFileSystem.SelectAsync(path, cancellationToken).ConfigureAwait(false);

@@ -44,8 +44,10 @@ namespace FubarDev.WebDavServer.DefaultHandlers
             ReadOnlyProperty
         }
 
+        /// <inheritdoc />
         public IEnumerable<string> HttpMethods { get; } = new[] { "PROPPATCH" };
 
+        /// <inheritdoc />
         public async Task<IWebDavResult> PropPatchAsync(string path, Propertyupdate request, CancellationToken cancellationToken)
         {
             var selectionResult = await _fileSystem.SelectAsync(path, cancellationToken).ConfigureAwait(false);

@@ -2,6 +2,7 @@
   <PropertyGroup>
     <TargetFrameworks>net451;netstandard1.3</TargetFrameworks>
     <CodeAnalysisRuleSet>..\WebDavServer.ruleset</CodeAnalysisRuleSet>
+    <DocumentationFile Condition=" '$(Configuration)' == 'Release' ">FubarDev.WebDavServer.xml</DocumentationFile>
   </PropertyGroup>
   <ItemGroup>
     <PackageReference Include="JetBrains.Annotations" Version="10.2.1">

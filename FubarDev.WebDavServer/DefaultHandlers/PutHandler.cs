@@ -24,8 +24,10 @@ namespace FubarDev.WebDavServer.DefaultHandlers
             _fileSystem = fileSystem;
         }
 
+        /// <inheritdoc />
         public IEnumerable<string> HttpMethods { get; } = new[] { "PUT" };
 
+        /// <inheritdoc />
         public async Task<IWebDavResult> PutAsync(string path, Stream data, CancellationToken cancellationToken)
         {
             var selectionResult = await _fileSystem.SelectAsync(path, cancellationToken).ConfigureAwait(false);

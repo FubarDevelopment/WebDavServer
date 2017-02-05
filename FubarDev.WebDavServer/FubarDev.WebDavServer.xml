@@ -1,0 +1,332 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>FubarDev.WebDavServer</name>
+    </assembly>
+    <members>
+        <member name="P:FubarDev.WebDavServer.DefaultHandlers.CopyHandler.HttpMethods">
+            <inheritdoc />
+        </member>
+        <member name="M:FubarDev.WebDavServer.DefaultHandlers.CopyHandler.CopyAsync(System.String,System.Uri,FubarDev.WebDavServer.Model.Depth,System.Nullable{System.Boolean},System.Threading.CancellationToken)">
+            <inheritdoc />
+        </member>
+        <member name="P:FubarDev.WebDavServer.DefaultHandlers.DeleteHandler.HttpMethods">
+            <inheritdoc />
+        </member>
+        <member name="M:FubarDev.WebDavServer.DefaultHandlers.DeleteHandler.DeleteAsync(System.String,System.Threading.CancellationToken)">
+            <inheritdoc />
+        </member>
+        <member name="P:FubarDev.WebDavServer.DefaultHandlers.GetHeadHandler.HttpMethods">
+            <inheritdoc />
+        </member>
+        <member name="M:FubarDev.WebDavServer.DefaultHandlers.GetHeadHandler.GetAsync(System.String,System.Threading.CancellationToken)">
+            <inheritdoc />
+        </member>
+        <member name="M:FubarDev.WebDavServer.DefaultHandlers.GetHeadHandler.HeadAsync(System.String,System.Threading.CancellationToken)">
+            <inheritdoc />
+        </member>
+        <member name="P:FubarDev.WebDavServer.DefaultHandlers.MkColHandler.HttpMethods">
+            <inheritdoc />
+        </member>
+        <member name="M:FubarDev.WebDavServer.DefaultHandlers.MkColHandler.MkColAsync(System.String,System.Threading.CancellationToken)">
+            <inheritdoc />
+        </member>
+        <member name="P:FubarDev.WebDavServer.DefaultHandlers.MoveHandler.HttpMethods">
+            <inheritdoc />
+        </member>
+        <member name="M:FubarDev.WebDavServer.DefaultHandlers.MoveHandler.MoveAsync(System.String,System.Uri,System.Nullable{System.Boolean},System.Threading.CancellationToken)">
+            <inheritdoc />
+        </member>
+        <member name="P:FubarDev.WebDavServer.DefaultHandlers.OptionsHandler.HttpMethods">
+            <inheritdoc />
+        </member>
+        <member name="M:FubarDev.WebDavServer.DefaultHandlers.OptionsHandler.OptionsAsync(System.String,System.Threading.CancellationToken)">
+            <inheritdoc />
+        </member>
+        <member name="P:FubarDev.WebDavServer.DefaultHandlers.PropFindHandler.HttpMethods">
+            <inheritdoc />
+        </member>
+        <member name="M:FubarDev.WebDavServer.DefaultHandlers.PropFindHandler.PropFindAsync(System.String,FubarDev.WebDavServer.Model.Propfind,FubarDev.WebDavServer.Model.Depth,System.Threading.CancellationToken)">
+            <inheritdoc />
+        </member>
+        <member name="P:FubarDev.WebDavServer.DefaultHandlers.PropPatchHandler.HttpMethods">
+            <inheritdoc />
+        </member>
+        <member name="M:FubarDev.WebDavServer.DefaultHandlers.PropPatchHandler.PropPatchAsync(System.String,FubarDev.WebDavServer.Model.Propertyupdate,System.Threading.CancellationToken)">
+            <inheritdoc />
+        </member>
+        <member name="P:FubarDev.WebDavServer.DefaultHandlers.PutHandler.HttpMethods">
+            <inheritdoc />
+        </member>
+        <member name="M:FubarDev.WebDavServer.DefaultHandlers.PutHandler.PutAsync(System.String,System.IO.Stream,System.Threading.CancellationToken)">
+            <inheritdoc />
+        </member>
+        <member name="P:FubarDev.WebDavServer.Dispatchers.WebDavDispatcherClass1.Version">
+            <inheritdoc />
+        </member>
+        <member name="P:FubarDev.WebDavServer.Dispatchers.WebDavDispatcherClass1.HttpMethods">
+            <inheritdoc />
+        </member>
+        <member name="M:FubarDev.WebDavServer.Dispatchers.WebDavDispatcherClass1.GetAsync(System.String,System.Threading.CancellationToken)">
+            <inheritdoc />
+        </member>
+        <member name="M:FubarDev.WebDavServer.Dispatchers.WebDavDispatcherClass1.HeadAsync(System.String,System.Threading.CancellationToken)">
+            <inheritdoc />
+        </member>
+        <member name="M:FubarDev.WebDavServer.Dispatchers.WebDavDispatcherClass1.PutAsync(System.String,System.IO.Stream,System.Threading.CancellationToken)">
+            <inheritdoc />
+        </member>
+        <member name="M:FubarDev.WebDavServer.Dispatchers.WebDavDispatcherClass1.OptionsAsync(System.String,System.Threading.CancellationToken)">
+            <inheritdoc />
+        </member>
+        <member name="M:FubarDev.WebDavServer.Dispatchers.WebDavDispatcherClass1.PropFindAsync(System.String,FubarDev.WebDavServer.Model.Propfind,FubarDev.WebDavServer.Model.Depth,System.Threading.CancellationToken)">
+            <inheritdoc />
+        </member>
+        <member name="M:FubarDev.WebDavServer.Dispatchers.WebDavDispatcherClass1.PropPatchAsync(System.String,FubarDev.WebDavServer.Model.Propertyupdate,System.Threading.CancellationToken)">
+            <inheritdoc />
+        </member>
+        <member name="M:FubarDev.WebDavServer.Dispatchers.WebDavDispatcherClass1.DeleteAsync(System.String,System.Threading.CancellationToken)">
+            <inheritdoc />
+        </member>
+        <member name="M:FubarDev.WebDavServer.Dispatchers.WebDavDispatcherClass1.MkColAsync(System.String,System.Threading.CancellationToken)">
+            <inheritdoc />
+        </member>
+        <member name="M:FubarDev.WebDavServer.Dispatchers.WebDavDispatcherClass1.CopyAsync(System.String,System.Uri,FubarDev.WebDavServer.Model.Depth,System.Nullable{System.Boolean},System.Threading.CancellationToken)">
+            <inheritdoc />
+        </member>
+        <member name="M:FubarDev.WebDavServer.Dispatchers.WebDavDispatcherClass1.MoveAsync(System.String,System.Uri,FubarDev.WebDavServer.Model.Depth,System.Nullable{System.Boolean},System.Threading.CancellationToken)">
+            <inheritdoc />
+        </member>
+        <member name="P:FubarDev.WebDavServer.Engines.Local.EntryTarget.Name">
+            <inheritdoc />
+        </member>
+        <member name="P:FubarDev.WebDavServer.Engines.Local.EntryTarget.DestinationUrl">
+            <inheritdoc />
+        </member>
+        <member name="M:FubarDev.WebDavServer.Engines.Local.EntryTarget.SetPropertiesAsync(System.Collections.Generic.IEnumerable{FubarDev.WebDavServer.Properties.IUntypedWriteableProperty},System.Threading.CancellationToken)">
+            <inheritdoc />
+        </member>
+        <member name="P:FubarDev.WebDavServer.Engines.Local.FileSystemTarget.Name">
+            <inheritdoc />
+        </member>
+        <member name="P:FubarDev.WebDavServer.Engines.Local.FileSystemTarget.DestinationUrl">
+            <inheritdoc />
+        </member>
+        <member name="P:FubarDev.WebDavServer.Engines.Local.MissingTarget.Name">
+            <inheritdoc />
+        </member>
+        <member name="P:FubarDev.WebDavServer.Engines.Local.MissingTarget.DestinationUrl">
+            <inheritdoc />
+        </member>
+        <member name="M:FubarDev.WebDavServer.Engines.Local.MissingTarget.CreateCollectionAsync(System.Threading.CancellationToken)">
+            <inheritdoc />
+        </member>
+        <member name="M:FubarDev.WebDavServer.FileSystem.CollectionExtensions.EnumerateEntries(FubarDev.WebDavServer.FileSystem.ICollection,System.Collections.Generic.IReadOnlyCollection{FubarDev.WebDavServer.FileSystem.IEntry},System.Int32)">
+            <summary>
+            Gets all entries of a collection recursively
+            </summary>
+            <param name="collection">The collection to get the entries from</param>
+            <param name="children">Child items for the given <paramref name="collection"/></param>
+            <param name="maxDepth">The maximum depth (0 = only entries of the <paramref name="collection"/>, but not of its sub collections)</param>
+            <returns>An async enumerable to collect all the entries recursively</returns>
+        </member>
+        <member name="M:FubarDev.WebDavServer.FileSystem.CollectionExtensions.EnumerateEntries(FubarDev.WebDavServer.FileSystem.ICollection,System.Int32)">
+            <summary>
+            Gets all entries of a collection recursively
+            </summary>
+            <param name="collection">The collection to get the entries from</param>
+            <param name="maxDepth">The maximum depth (0 = only entries of the <paramref name="collection"/>, but not of its sub collections)</param>
+            <returns>An async enumerable to collect all the entries recursively</returns>
+        </member>
+        <member name="T:FubarDev.WebDavServer.FileSystem.ICollectionNode">
+            <summary>
+            A node representing all found children of a <see cref="T:FubarDev.WebDavServer.FileSystem.ICollection"/>
+            </summary>
+        </member>
+        <member name="P:FubarDev.WebDavServer.FileSystem.ICollectionNode.Collection">
+            <summary>
+            Gets the collection this node is for
+            </summary>
+        </member>
+        <member name="P:FubarDev.WebDavServer.FileSystem.ICollectionNode.Name">
+            <summary>
+            Gets the name of the node (usually the same as <see cref="P:FubarDev.WebDavServer.FileSystem.IEntry.Name"/> of <see cref="P:FubarDev.WebDavServer.FileSystem.ICollectionNode.Collection"/>)
+            </summary>
+        </member>
+        <member name="P:FubarDev.WebDavServer.FileSystem.ICollectionNode.Nodes">
+            <summary>
+            Gets the sub collection nodes
+            </summary>
+        </member>
+        <member name="P:FubarDev.WebDavServer.FileSystem.ICollectionNode.Documents">
+            <summary>
+            Gets the documents of this collection node
+            </summary>
+        </member>
+        <member name="T:FubarDev.WebDavServer.Model.Propfind">
+            <remarks/>
+        </member>
+        <member name="P:FubarDev.WebDavServer.Model.Propfind.Items">
+            <remarks/>
+        </member>
+        <member name="P:FubarDev.WebDavServer.Model.Propfind.ItemsElementName">
+            <remarks/>
+        </member>
+        <member name="T:FubarDev.WebDavServer.Model.Include">
+            <remarks/>
+        </member>
+        <member name="P:FubarDev.WebDavServer.Model.Include.Any">
+            <remarks/>
+        </member>
+        <member name="T:FubarDev.WebDavServer.Model.Prop">
+            <remarks/>
+        </member>
+        <member name="P:FubarDev.WebDavServer.Model.Prop.Any">
+            <remarks/>
+        </member>
+        <member name="T:FubarDev.WebDavServer.Model.ItemsChoiceType1">
+            <remarks/>
+        </member>
+        <member name="F:FubarDev.WebDavServer.Model.ItemsChoiceType1.Allprop">
+            <remarks/>
+        </member>
+        <member name="F:FubarDev.WebDavServer.Model.ItemsChoiceType1.Include">
+            <remarks/>
+        </member>
+        <member name="F:FubarDev.WebDavServer.Model.ItemsChoiceType1.Prop">
+            <remarks/>
+        </member>
+        <member name="F:FubarDev.WebDavServer.Model.ItemsChoiceType1.Propname">
+            <remarks/>
+        </member>
+        <member name="T:FubarDev.WebDavServer.Model.Multistatus">
+            <remarks/>
+        </member>
+        <member name="P:FubarDev.WebDavServer.Model.Multistatus.Response">
+            <remarks/>
+        </member>
+        <member name="P:FubarDev.WebDavServer.Model.Multistatus.Responsedescription">
+            <remarks/>
+        </member>
+        <member name="T:FubarDev.WebDavServer.Model.Response">
+            <remarks/>
+        </member>
+        <member name="P:FubarDev.WebDavServer.Model.Response.Href">
+            <remarks/>
+        </member>
+        <member name="P:FubarDev.WebDavServer.Model.Response.Items">
+            <remarks/>
+        </member>
+        <member name="P:FubarDev.WebDavServer.Model.Response.ItemsElementName">
+            <remarks/>
+        </member>
+        <member name="P:FubarDev.WebDavServer.Model.Response.Error">
+            <remarks/>
+        </member>
+        <member name="P:FubarDev.WebDavServer.Model.Response.Responsedescription">
+            <remarks/>
+        </member>
+        <member name="T:FubarDev.WebDavServer.Model.Propstat">
+            <remarks/>
+        </member>
+        <member name="P:FubarDev.WebDavServer.Model.Propstat.Prop">
+            <remarks/>
+        </member>
+        <member name="P:FubarDev.WebDavServer.Model.Propstat.Status">
+            <remarks/>
+        </member>
+        <member name="P:FubarDev.WebDavServer.Model.Propstat.Error">
+            <remarks/>
+        </member>
+        <member name="P:FubarDev.WebDavServer.Model.Propstat.Responsedescription">
+            <remarks/>
+        </member>
+        <member name="P:FubarDev.WebDavServer.Model.Propstat.Location">
+            <remarks/>
+        </member>
+        <member name="T:FubarDev.WebDavServer.Model.Error">
+            <remarks/>
+        </member>
+        <member name="P:FubarDev.WebDavServer.Model.Error.Items">
+            <remarks/>
+        </member>
+        <member name="P:FubarDev.WebDavServer.Model.Error.ItemsElementName">
+            <remarks/>
+        </member>
+        <member name="T:FubarDev.WebDavServer.Model.LockTokenSubmitted">
+            <remarks/>
+        </member>
+        <member name="P:FubarDev.WebDavServer.Model.LockTokenSubmitted.Href">
+            <remarks/>
+        </member>
+        <member name="T:FubarDev.WebDavServer.Model.NoConflictingLock">
+            <remarks/>
+        </member>
+        <member name="P:FubarDev.WebDavServer.Model.NoConflictingLock.Href">
+            <remarks/>
+        </member>
+        <member name="T:FubarDev.WebDavServer.Model.ItemsChoiceType">
+            <remarks/>
+        </member>
+        <member name="F:FubarDev.WebDavServer.Model.ItemsChoiceType.Any">
+            <remarks/>
+        </member>
+        <member name="F:FubarDev.WebDavServer.Model.ItemsChoiceType.CannotModifyProtectedProperty">
+            <remarks/>
+        </member>
+        <member name="F:FubarDev.WebDavServer.Model.ItemsChoiceType.LockTokenMatchesRequestUri">
+            <remarks/>
+        </member>
+        <member name="F:FubarDev.WebDavServer.Model.ItemsChoiceType.LockTokenSubmitted">
+            <remarks/>
+        </member>
+        <member name="F:FubarDev.WebDavServer.Model.ItemsChoiceType.NoConflictingLock">
+            <remarks/>
+        </member>
+        <member name="F:FubarDev.WebDavServer.Model.ItemsChoiceType.NoExternalEntities">
+            <remarks/>
+        </member>
+        <member name="F:FubarDev.WebDavServer.Model.ItemsChoiceType.PreservedLiveProperties">
+            <remarks/>
+        </member>
+        <member name="F:FubarDev.WebDavServer.Model.ItemsChoiceType.PropfindFiniteDepth">
+            <remarks/>
+        </member>
+        <member name="T:FubarDev.WebDavServer.Model.Location">
+            <remarks/>
+        </member>
+        <member name="P:FubarDev.WebDavServer.Model.Location.Href">
+            <remarks/>
+        </member>
+        <member name="T:FubarDev.WebDavServer.Model.ItemsChoiceType2">
+            <remarks/>
+        </member>
+        <member name="F:FubarDev.WebDavServer.Model.ItemsChoiceType2.Href">
+            <remarks/>
+        </member>
+        <member name="F:FubarDev.WebDavServer.Model.ItemsChoiceType2.Propstat">
+            <remarks/>
+        </member>
+        <member name="F:FubarDev.WebDavServer.Model.ItemsChoiceType2.Status">
+            <remarks/>
+        </member>
+        <member name="T:FubarDev.WebDavServer.Model.Propertyupdate">
+            <remarks/>
+        </member>
+        <member name="P:FubarDev.WebDavServer.Model.Propertyupdate.Items">
+            <remarks/>
+        </member>
+        <member name="T:FubarDev.WebDavServer.Model.Propremove">
+            <remarks/>
+        </member>
+        <member name="P:FubarDev.WebDavServer.Model.Propremove.Prop">
+            <remarks/>
+        </member>
+        <member name="T:FubarDev.WebDavServer.Model.Propset">
+            <remarks/>
+        </member>
+        <member name="P:FubarDev.WebDavServer.Model.Propset.Prop">
+            <remarks/>
+        </member>
+    </members>
+</doc>

@@ -130,10 +130,13 @@ namespace FubarDev.WebDavServer.Dispatchers
             HttpMethods = httpMethods.ToList();
         }
 
+        /// <inheritdoc />
         public int Version { get; } = 1;
 
+        /// <inheritdoc />
         public IEnumerable<string> HttpMethods { get; }
 
+        /// <inheritdoc />
         public Task<IWebDavResult> GetAsync(string path, CancellationToken cancellationToken)
         {
             if (_getHandler == null)
@@ -141,6 +144,7 @@ namespace FubarDev.WebDavServer.Dispatchers
             return _getHandler.GetAsync(path, cancellationToken);
         }
 
+        /// <inheritdoc />
         public Task<IWebDavResult> HeadAsync(string path, CancellationToken cancellationToken)
         {
             if (_headHandler == null)
@@ -148,6 +152,7 @@ namespace FubarDev.WebDavServer.Dispatchers
             return _headHandler.HeadAsync(path, cancellationToken);
         }
 
+        /// <inheritdoc />
         public Task<IWebDavResult> PutAsync(string path, Stream data, CancellationToken cancellationToken)
         {
             if (_putHandler == null)
@@ -155,6 +160,7 @@ namespace FubarDev.WebDavServer.Dispatchers
             return _putHandler.PutAsync(path, data, cancellationToken);
         }
 
+        /// <inheritdoc />
         public Task<IWebDavResult> OptionsAsync(string path, CancellationToken cancellationToken)
         {
             if (_optionsHandler == null)
@@ -162,6 +168,7 @@ namespace FubarDev.WebDavServer.Dispatchers
             return _optionsHandler.OptionsAsync(path, cancellationToken);
         }
 
+        /// <inheritdoc />
         public Task<IWebDavResult> PropFindAsync(string path, Propfind request, Depth depth, CancellationToken cancellationToken)
         {
             if (_propFindHandler == null)
@@ -169,6 +176,7 @@ namespace FubarDev.WebDavServer.Dispatchers
             return _propFindHandler.PropFindAsync(path, request, depth, cancellationToken);
         }
 
+        /// <inheritdoc />
         public Task<IWebDavResult> PropPatchAsync(string path, Propertyupdate request, CancellationToken cancellationToken)
         {
             if (_propPatchHandler == null)
@@ -176,6 +184,7 @@ namespace FubarDev.WebDavServer.Dispatchers
             return _propPatchHandler.PropPatchAsync(path, request, cancellationToken);
         }
 
+        /// <inheritdoc />
         public Task<IWebDavResult> DeleteAsync(string path, CancellationToken cancellationToken)
         {
             if (_deleteHandler == null)
@@ -183,6 +192,7 @@ namespace FubarDev.WebDavServer.Dispatchers
             return _deleteHandler.DeleteAsync(path, cancellationToken);
         }
 
+        /// <inheritdoc />
         public Task<IWebDavResult> MkColAsync(string path, CancellationToken cancellationToken)
         {
             if (_mkColHandler == null)
@@ -190,6 +200,7 @@ namespace FubarDev.WebDavServer.Dispatchers
             return _mkColHandler.MkColAsync(path, cancellationToken);
         }
 
+        /// <inheritdoc />
         public Task<IWebDavResult> CopyAsync(string path, Uri destination, Depth depth, bool? allowOverwrite, CancellationToken cancellationToken)
         {
             if (_copyHandler == null)
@@ -197,6 +208,7 @@ namespace FubarDev.WebDavServer.Dispatchers
             return _copyHandler.CopyAsync(path, destination, depth, allowOverwrite, cancellationToken);
         }
 
+        /// <inheritdoc />
         public Task<IWebDavResult> MoveAsync(string path, Uri destination, Depth depth, bool? allowOverwrite, CancellationToken cancellationToken)
         {
             if (_moveHandler == null)

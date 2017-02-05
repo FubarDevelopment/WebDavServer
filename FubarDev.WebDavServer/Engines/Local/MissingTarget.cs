@@ -24,10 +24,12 @@ namespace FubarDev.WebDavServer.Engines.Local
             Parent = parent;
         }
 
+        /// <inheritdoc />
         public string Name { get; }
 
         public CollectionTarget Parent { get; }
 
+        /// <inheritdoc />
         public Uri DestinationUrl { get; }
 
         [NotNull]
@@ -43,6 +45,7 @@ namespace FubarDev.WebDavServer.Engines.Local
             return target;
         }
 
+        /// <inheritdoc />
         public async Task<CollectionTarget> CreateCollectionAsync(CancellationToken cancellationToken)
         {
             var coll = await Parent.Collection.CreateCollectionAsync(Name, cancellationToken).ConfigureAwait(false);

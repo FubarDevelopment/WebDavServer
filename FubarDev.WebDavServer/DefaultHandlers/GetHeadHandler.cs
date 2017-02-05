@@ -24,15 +24,18 @@ namespace FubarDev.WebDavServer.DefaultHandlers
             FileSystem = fileSystem;
         }
 
+        /// <inheritdoc />
         public IEnumerable<string> HttpMethods { get; } = new[] { "GET", "HEAD" };
 
         public IFileSystem FileSystem { get; }
 
+        /// <inheritdoc />
         public Task<IWebDavResult> GetAsync(string path, CancellationToken cancellationToken)
         {
             return HandleAsync(path, true, cancellationToken);
         }
 
+        /// <inheritdoc />
         public Task<IWebDavResult> HeadAsync(string path, CancellationToken cancellationToken)
         {
             return HandleAsync(path, false, cancellationToken);

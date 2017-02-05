@@ -14,8 +14,10 @@ namespace FubarDev.WebDavServer.DefaultHandlers
 {
     public class OptionsHandler : IOptionsHandler
     {
+        /// <inheritdoc />
         public IEnumerable<string> HttpMethods { get; } = new[] { "OPTIONS" };
 
+        /// <inheritdoc />
         public Task<IWebDavResult> OptionsAsync(string path, CancellationToken cancellationToken)
         {
             return Task.FromResult<IWebDavResult>(new WebDavOptionsResult());

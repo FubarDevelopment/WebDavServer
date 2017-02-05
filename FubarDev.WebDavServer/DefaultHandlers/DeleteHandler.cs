@@ -25,8 +25,10 @@ namespace FubarDev.WebDavServer.DefaultHandlers
             _host = host;
         }
 
+        /// <inheritdoc />
         public IEnumerable<string> HttpMethods { get; } = new[] { "DELETE" };
 
+        /// <inheritdoc />
         public async Task<IWebDavResult> DeleteAsync(string path, CancellationToken cancellationToken)
         {
             var selectionResult = await _rootFileSystem.SelectAsync(path, cancellationToken).ConfigureAwait(false);
