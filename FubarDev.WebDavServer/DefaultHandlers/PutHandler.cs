@@ -36,11 +36,11 @@ namespace FubarDev.WebDavServer.DefaultHandlers
             if (selectionResult.ResultType == SelectionResultType.FoundCollection)
                 throw new WebDavException(WebDavStatusCode.MethodNotAllowed);
 
-            Stream fileStream;
+            IDocument document;
             if (selectionResult.ResultType == SelectionResultType.FoundDocument)
             {
                 Debug.Assert(selectionResult.Document != null, "selectionResult.Document != null");
-                fileStream = await selectionResult.Document.CreateAsync(cancellationToken).ConfigureAwait(false);
+                document = selectionResult.Document;
             }
             else
             {
@@ -49,18 +49,31 @@ namespace FubarDev.WebDavServer.DefaultHandlers
                 Debug.Assert(selectionResult.MissingNames.Count == 1, "selectionResult.MissingNames.Count == 1");
                 Debug.Assert(selectionResult.Collection != null, "selectionResult.Collection != null");
                 var newName = selectionResult.MissingNames.Single();
-                var entry = await selectionResult.Collection.CreateDocumentAsync(newName, cancellationToken).ConfigureAwait(false);
-                fileStream = await entry.CreateAsync(cancellationToken).ConfigureAwait(false);
+                document = await selectionResult.Collection.CreateDocumentAsync(newName, cancellationToken).ConfigureAwait(false);
             }
 
-            using (fileStream)
+            using (var fileStream = await document.CreateAsync(cancellationToken).ConfigureAwait(false))
             {
                 await data.CopyToAsync(fileStream).ConfigureAwait(false);
             }
 
-            if (selectionResult.ResultType == SelectionResultType.FoundDocument && selectionResult.Document?.FileSystem.PropertyStore != null)
+            var docPropertyStore = document.FileSystem.PropertyStore;
+            if (docPropertyStore != null)
             {
-                await selectionResult.Document.FileSystem.PropertyStore.RemoveAsync(selectionResult.Document, cancellationToken).ConfigureAwait(false);
+                await docPropertyStore.UpdateETagAsync(document, cancellationToken).ConfigureAwait(false);
+
+                if (selectionResult.ResultType == SelectionResultType.FoundDocument)
+                {
+                    await docPropertyStore.RemoveAsync(selectionResult.Document, cancellationToken).ConfigureAwait(false);
+                }
+            }
+
+            var parent = document.Parent;
+            Debug.Assert(parent != null, "parent != null");
+            var parentPropStore = parent.FileSystem.PropertyStore;
+            if (parentPropStore != null)
+            {
+                await parentPropStore.UpdateETagAsync(parent, cancellationToken).ConfigureAwait(false);
             }
 
             return new WebDavResult(selectionResult.ResultType != SelectionResultType.FoundDocument ? WebDavStatusCode.Created : WebDavStatusCode.OK);
