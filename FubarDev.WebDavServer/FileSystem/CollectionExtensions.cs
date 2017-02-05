@@ -42,28 +42,31 @@ namespace FubarDev.WebDavServer.FileSystem
             var result = new NodeInfo(collection);
             var current = result;
 
-            using (var entries = EnumerateEntries(collection, maxDepth).GetEnumerator())
+            if (maxDepth > 0)
             {
-                while (await entries.MoveNext(cancellationToken).ConfigureAwait(false))
+                using (var entries = EnumerateEntries(collection, maxDepth - 1).GetEnumerator())
                 {
-                    var entry = entries.Current;
-                    var parent = entry.Parent;
-                    while (parent != current.Collection)
+                    while (await entries.MoveNext(cancellationToken).ConfigureAwait(false))
                     {
-                        current = subNodeQueue.Dequeue();
-                    }
+                        var entry = entries.Current;
+                        var parent = entry.Parent;
+                        while (parent != current.Collection)
+                        {
+                            current = subNodeQueue.Dequeue();
+                        }
 
-                    var doc = entry as IDocument;
-                    if (doc == null)
-                    {
-                        var coll = (ICollection)entry;
-                        var info = new NodeInfo(coll);
-                        current.SubNodes.Add(info);
-                        subNodeQueue.Enqueue(info);
-                    }
-                    else
-                    {
-                        current.Documents.Add(doc);
+                        var doc = entry as IDocument;
+                        if (doc == null)
+                        {
+                            var coll = (ICollection)entry;
+                            var info = new NodeInfo(coll);
+                            current.SubNodes.Add(info);
+                            subNodeQueue.Enqueue(info);
+                        }
+                        else
+                        {
+                            current.Documents.Add(doc);
+                        }
                     }
                 }
             }
