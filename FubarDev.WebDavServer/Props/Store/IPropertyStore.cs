@@ -11,34 +11,53 @@ using FubarDev.WebDavServer.FileSystem;
 using FubarDev.WebDavServer.Model;
 using FubarDev.WebDavServer.Props.Dead;
 
+using JetBrains.Annotations;
+
 namespace FubarDev.WebDavServer.Props.Store
 {
     public interface IPropertyStore
     {
         int Cost { get; }
 
-        Task<XElement> GetAsync(IEntry entry, XName name, CancellationToken cancellationToken);
+        [NotNull]
+        [ItemCanBeNull]
+        Task<XElement> GetAsync([NotNull] IEntry entry, [NotNull] XName name, CancellationToken cancellationToken);
 
-        Task SetAsync(IEntry entry, XElement element, CancellationToken cancellationToken);
+        [NotNull]
+        Task SetAsync([NotNull] IEntry entry, [NotNull] XElement element, CancellationToken cancellationToken);
 
-        Task<bool> RemoveAsync(IEntry entry, XName name, CancellationToken cancellationToken);
+        [NotNull]
+        Task<bool> RemoveAsync([NotNull] IEntry entry, [NotNull] XName name, CancellationToken cancellationToken);
 
-        Task<IReadOnlyCollection<XElement>> GetAsync(IEntry entry, CancellationToken cancellationToken);
+        [NotNull]
+        [ItemNotNull]
+        Task<IReadOnlyCollection<XElement>> GetAsync([NotNull] IEntry entry, CancellationToken cancellationToken);
 
-        Task SetAsync(IEntry entry, IEnumerable<XElement> properties, CancellationToken cancellationToken);
+        [NotNull]
+        Task SetAsync([NotNull] IEntry entry, [NotNull] [ItemNotNull] IEnumerable<XElement> properties, CancellationToken cancellationToken);
 
-        Task<IReadOnlyCollection<bool>> RemoveAsync(IEntry entry, IEnumerable<XName> names, CancellationToken cancellationToken);
+        [NotNull]
+        [ItemNotNull]
+        Task<IReadOnlyCollection<bool>> RemoveAsync([NotNull] IEntry entry, [NotNull] [ItemNotNull] IEnumerable<XName> names, CancellationToken cancellationToken);
 
-        Task RemoveAsync(IEntry entry, CancellationToken cancellationToken);
+        [NotNull]
+        Task RemoveAsync([NotNull] IEntry entry, CancellationToken cancellationToken);
 
-        IDeadProperty Create(IEntry entry, XName name);
+        [NotNull]
+        IDeadProperty Create([NotNull] IEntry entry, [NotNull] XName name);
 
-        Task<IDeadProperty> LoadAsync(IEntry entry, XName name, CancellationToken cancellationToken);
+        [NotNull]
+        [ItemNotNull]
+        Task<IDeadProperty> LoadAsync([NotNull] IEntry entry, [NotNull] XName name, CancellationToken cancellationToken);
 
-        Task<IReadOnlyCollection<IDeadProperty>> LoadAsync(IEntry entry, CancellationToken cancellationToken);
+        [NotNull]
+        [ItemNotNull]
+        Task<IReadOnlyCollection<IDeadProperty>> LoadAsync([NotNull] IEntry entry, CancellationToken cancellationToken);
 
-        Task<EntityTag> GetETagAsync(IEntry entry, CancellationToken cancellationToken);
+        [NotNull]
+        Task<EntityTag> GetETagAsync([NotNull] IEntry entry, CancellationToken cancellationToken);
 
-        Task<EntityTag> UpdateETagAsync(IEntry entry, CancellationToken cancellationToken);
+        [NotNull]
+        Task<EntityTag> UpdateETagAsync([NotNull] IEntry entry, CancellationToken cancellationToken);
     }
 }
