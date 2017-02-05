@@ -64,6 +64,8 @@ namespace FubarDev.WebDavServer.Props.Store
         public virtual async Task<IDeadProperty> LoadAsync(IEntry entry, XName name, CancellationToken cancellationToken)
         {
             var element = await GetAsync(entry, name, cancellationToken).ConfigureAwait(false);
+            if (element == null)
+                return Create(entry, name);
             return CreateProperty(entry, element);
         }
 
