@@ -73,15 +73,5 @@ namespace FubarDev.WebDavServer.FileSystem.DotNet
 
             yield return new ContentLengthProperty(ct => Task.FromResult(Length));
         }
-
-        protected override IEnumerable<IDeadProperty> GetPredefinedDeadProperties()
-        {
-            foreach (var property in base.GetPredefinedDeadProperties())
-            {
-                yield return property;
-            }
-
-            yield return new GetETagProperty(FileSystem.PropertyStore, this, 0);
-        }
     }
 }

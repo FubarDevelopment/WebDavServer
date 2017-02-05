@@ -73,23 +73,23 @@ namespace FubarDev.WebDavServer.Props.Store
             return elements.Select(x => CreateProperty(entry, x)).ToList();
         }
 
-        public virtual async Task<EntityTag> GetETagAsync(IDocument document, CancellationToken cancellationToken)
+        public virtual async Task<EntityTag> GetETagAsync(IEntry entry, CancellationToken cancellationToken)
         {
-            var etag = await GetAsync(document, EntityTag.PropertyName, cancellationToken).ConfigureAwait(false);
+            var etag = await GetAsync(entry, EntityTag.PropertyName, cancellationToken).ConfigureAwait(false);
             if (etag == null)
             {
                 etag = new EntityTag(false).ToXml();
-                await SetAsync(document, etag, cancellationToken).ConfigureAwait(false);
+                await SetAsync(entry, etag, cancellationToken).ConfigureAwait(false);
             }
 
             return EntityTag.FromXml(etag);
         }
 
-        public virtual async Task<EntityTag> UpdateETagAsync(IDocument document, CancellationToken cancellationToken)
+        public virtual async Task<EntityTag> UpdateETagAsync(IEntry entry, CancellationToken cancellationToken)
         {
             var etag = EntityTag.FromXml(null);
             var etagElement = etag.ToXml();
-            await SetAsync(document, etagElement, cancellationToken).ConfigureAwait(false);
+            await SetAsync(entry, etagElement, cancellationToken).ConfigureAwait(false);
             return etag;
         }
 

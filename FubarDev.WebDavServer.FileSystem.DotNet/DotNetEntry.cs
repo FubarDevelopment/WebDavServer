@@ -65,6 +65,7 @@ namespace FubarDev.WebDavServer.FileSystem.DotNet
             var displayProperty = FileSystem.PropertyStore?.Create(this, DisplayNameProperty.PropertyName);
             if (displayProperty != null)
                 yield return displayProperty;
+            yield return new GetETagProperty(FileSystem.PropertyStore, this, 0);
         }
 
         private Task SetCreateTimeUtc(DateTime value, CancellationToken cancellationToken)

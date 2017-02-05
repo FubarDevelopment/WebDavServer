@@ -37,8 +37,8 @@ namespace FubarDev.WebDavServer.Props.Store
 
         Task<IReadOnlyCollection<IDeadProperty>> LoadAsync(IEntry entry, CancellationToken cancellationToken);
 
-        Task<EntityTag> GetETagAsync(IDocument document, CancellationToken cancellationToken);
+        Task<EntityTag> GetETagAsync(IEntry entry, CancellationToken cancellationToken);
 
-        Task<EntityTag> UpdateETagAsync(IDocument document, CancellationToken cancellationToken);
+        Task<EntityTag> UpdateETagAsync(IEntry entry, CancellationToken cancellationToken);
     }
 }

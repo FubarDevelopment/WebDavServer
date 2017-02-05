@@ -81,15 +81,6 @@ namespace FubarDev.WebDavServer.FileSystem.InMemory
                        });
         }
 
-        protected override IEnumerable<IDeadProperty> GetPredefinedDeadProperties()
-        {
-            return base.GetPredefinedDeadProperties()
-                       .Concat(new IDeadProperty[]
-                       {
-                           new GetETagProperty(FileSystem.PropertyStore, this, 0),
-                       });
-        }
-
         private class MyMemoryStream : MemoryStream
         {
             private readonly InMemoryFile _file;
