@@ -67,7 +67,7 @@ namespace FubarDev.WebDavServer.FileSystem.InMemory
             doc._data = new MemoryStream(_data.ToArray());
             doc.CreationTimeUtc = CreationTimeUtc;
             doc.LastWriteTimeUtc = LastWriteTimeUtc;
-            if (!InMemoryParent.Remove(name))
+            if (!InMemoryParent.Remove(Name))
                 throw new InvalidOperationException("Failed to remove the document from the source collection.");
             return doc;
         }
