@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.Xml.Linq;
 
 using FubarDev.WebDavServer.FileSystem;
+using FubarDev.WebDavServer.Model;
 using FubarDev.WebDavServer.Props.Store;
 
 using JetBrains.Annotations;

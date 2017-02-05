@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 using System.Xml.Linq;
 
 using FubarDev.WebDavServer.FileSystem;
+using FubarDev.WebDavServer.Model;
 using FubarDev.WebDavServer.Props.Dead;
 
 namespace FubarDev.WebDavServer.Props.Store

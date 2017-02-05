@@ -11,16 +11,11 @@ using FubarDev.WebDavServer.Props.Dead;
 
 using JetBrains.Annotations;
 
-namespace FubarDev.WebDavServer.Props
+namespace FubarDev.WebDavServer.Model
 {
-    public class EntityTag
+    public struct EntityTag
     {
         public static readonly XName PropertyName = WebDavXml.Dav + "getetag";
-
-        public EntityTag()
-            : this(false)
-        {
-        }
 
         public EntityTag(bool isWeak)
             : this(isWeak, Guid.NewGuid().ToString("D"))
@@ -40,7 +35,7 @@ namespace FubarDev.WebDavServer.Props
         public static EntityTag FromXml([CanBeNull] XElement element)
         {
             if (element == null)
-                return new EntityTag();
+                return new EntityTag(false);
 
             return Parse(element.Value);
         }

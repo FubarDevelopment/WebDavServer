@@ -9,6 +9,7 @@ using System.Threading.Tasks;
 using System.Xml.Linq;
 
 using FubarDev.WebDavServer.FileSystem;
+using FubarDev.WebDavServer.Model;
 using FubarDev.WebDavServer.Props.Dead;
 
 using JetBrains.Annotations;
@@ -77,7 +78,7 @@ namespace FubarDev.WebDavServer.Props.Store
             var etag = await GetAsync(document, EntityTag.PropertyName, cancellationToken).ConfigureAwait(false);
             if (etag == null)
             {
-                etag = new EntityTag().ToXml();
+                etag = new EntityTag(false).ToXml();
                 await SetAsync(document, etag, cancellationToken).ConfigureAwait(false);
             }
 

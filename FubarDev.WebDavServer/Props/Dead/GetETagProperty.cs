@@ -44,7 +44,7 @@ namespace FubarDev.WebDavServer.Props.Dead
                 var document = _entry as IDocument;
                 if (document == null)
                 {
-                    _element = Converter.ToElement(Name, new EntityTag());
+                    _element = Converter.ToElement(Name, new EntityTag(false));
                 }
                 else
                 {
