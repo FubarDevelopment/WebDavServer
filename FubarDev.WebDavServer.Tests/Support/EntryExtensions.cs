@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 using System.Xml.Linq;
 
 using FubarDev.WebDavServer.FileSystem;
-using FubarDev.WebDavServer.Properties.Dead;
+using FubarDev.WebDavServer.Props.Dead;
 
 namespace FubarDev.WebDavServer.Tests.Support
 {

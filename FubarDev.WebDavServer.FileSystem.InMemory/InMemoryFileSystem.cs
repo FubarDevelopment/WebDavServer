@@ -6,7 +6,7 @@ using System;
 using System.Threading;
 using System.Threading.Tasks;
 
-using FubarDev.WebDavServer.Properties.Store;
+using FubarDev.WebDavServer.Props.Store;
 
 using Microsoft.VisualStudio.Threading;
 

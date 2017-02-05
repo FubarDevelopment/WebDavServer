@@ -10,9 +10,9 @@ using System.Threading.Tasks;
 using System.Xml.Linq;
 
 using FubarDev.WebDavServer.FileSystem;
-using FubarDev.WebDavServer.Properties.Dead;
+using FubarDev.WebDavServer.Props.Dead;
 
-namespace FubarDev.WebDavServer.Properties.Store.InMemory
+namespace FubarDev.WebDavServer.Props.Store.InMemory
 {
     public class InMemoryPropertyStore : PropertyStoreBase
     {

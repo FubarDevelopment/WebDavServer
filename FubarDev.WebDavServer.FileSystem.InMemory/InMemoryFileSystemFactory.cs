@@ -6,7 +6,7 @@ using System;
 using System.Collections.Generic;
 using System.Security.Principal;
 
-using FubarDev.WebDavServer.Properties.Store;
+using FubarDev.WebDavServer.Props.Store;
 
 namespace FubarDev.WebDavServer.FileSystem.InMemory
 {

@@ -11,7 +11,7 @@ using FubarDev.WebDavServer.FileSystem;
 using FubarDev.WebDavServer.FileSystem.InMemory;
 using FubarDev.WebDavServer.Handlers;
 using FubarDev.WebDavServer.Model;
-using FubarDev.WebDavServer.Properties.Store.InMemory;
+using FubarDev.WebDavServer.Props.Store.InMemory;
 using FubarDev.WebDavServer.Tests.Support;
 
 using Microsoft.Extensions.Logging;

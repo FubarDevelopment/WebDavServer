@@ -9,8 +9,8 @@ using System.Threading;
 using System.Threading.Tasks;
 
 using FubarDev.WebDavServer.Model;
-using FubarDev.WebDavServer.Properties.Dead;
-using FubarDev.WebDavServer.Properties.Live;
+using FubarDev.WebDavServer.Props.Dead;
+using FubarDev.WebDavServer.Props.Live;
 
 namespace FubarDev.WebDavServer.FileSystem.DotNet
 {

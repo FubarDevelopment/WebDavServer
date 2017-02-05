@@ -3,7 +3,7 @@ using System.Security.Principal;
 
 using FubarDev.WebDavServer.FileSystem;
 using FubarDev.WebDavServer.FileSystem.DotNet;
-using FubarDev.WebDavServer.Properties.Store;
+using FubarDev.WebDavServer.Props.Store;
 
 using Microsoft.Extensions.Options;
 

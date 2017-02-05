@@ -4,8 +4,8 @@ using FubarDev.WebDavServer.AspNetCore;
 using FubarDev.WebDavServer.Engines.Remote;
 using FubarDev.WebDavServer.FileSystem;
 using FubarDev.WebDavServer.FileSystem.DotNet;
-using FubarDev.WebDavServer.Properties.Store;
-using FubarDev.WebDavServer.Properties.Store.TextFile;
+using FubarDev.WebDavServer.Props.Store;
+using FubarDev.WebDavServer.Props.Store.TextFile;
 using FubarDev.WebDavServer.Sample.AspNetCore.BasicAuth;
 using FubarDev.WebDavServer.Sample.AspNetCore.Support;
 

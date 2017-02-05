@@ -12,14 +12,14 @@ using System.Threading.Tasks;
 using System.Xml.Linq;
 
 using FubarDev.WebDavServer.FileSystem;
-using FubarDev.WebDavServer.Properties.Dead;
+using FubarDev.WebDavServer.Props.Dead;
 
 using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Extensions.Options;
 
 using Newtonsoft.Json;
 
-namespace FubarDev.WebDavServer.Properties.Store.TextFile
+namespace FubarDev.WebDavServer.Props.Store.TextFile
 {
     public class TextFilePropertyStore : PropertyStoreBase, IFileSystemPropertyStore
     {

@@ -17,7 +17,7 @@ using System.Xml.Linq;
 using System.Xml.Serialization;
 
 using FubarDev.WebDavServer.Model;
-using FubarDev.WebDavServer.Properties;
+using FubarDev.WebDavServer.Props;
 
 using JetBrains.Annotations;
 
@@ -112,7 +112,7 @@ namespace FubarDev.WebDavServer.Engines.Remote
                     {
                         Any = new[]
                         {
-                            new XElement(Properties.Live.ResourceTypeProperty.PropertyName),
+                            new XElement(Props.Live.ResourceTypeProperty.PropertyName),
                         },
                     },
                 },
@@ -175,7 +175,7 @@ namespace FubarDev.WebDavServer.Engines.Remote
 
             var resourceType = propStat
                 .Prop.Any
-                .SingleOrDefault(x => x.Name == Properties.Live.ResourceTypeProperty.PropertyName);
+                .SingleOrDefault(x => x.Name == Props.Live.ResourceTypeProperty.PropertyName);
             var collectionElement = resourceType?.Element(WebDavXml.Dav + "collection");
             if (collectionElement == null)
                 return new RemoteDocumentTarget(collection, name, targetUrl, this);

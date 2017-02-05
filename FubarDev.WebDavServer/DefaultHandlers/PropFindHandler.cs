@@ -13,7 +13,7 @@ using System.Xml.Linq;
 using FubarDev.WebDavServer.FileSystem;
 using FubarDev.WebDavServer.Handlers;
 using FubarDev.WebDavServer.Model;
-using FubarDev.WebDavServer.Properties.Filters;
+using FubarDev.WebDavServer.Props.Filters;
 
 using JetBrains.Annotations;
 

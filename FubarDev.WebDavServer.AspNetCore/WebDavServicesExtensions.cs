@@ -9,7 +9,7 @@ using FubarDev.WebDavServer.Dispatchers;
 using FubarDev.WebDavServer.FileSystem;
 using FubarDev.WebDavServer.Formatters;
 using FubarDev.WebDavServer.Handlers;
-using FubarDev.WebDavServer.Properties.Dead;
+using FubarDev.WebDavServer.Props.Dead;
 
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;

@@ -10,9 +10,9 @@ using System.Threading.Tasks;
 using System.Xml.Linq;
 
 using FubarDev.WebDavServer.FileSystem;
-using FubarDev.WebDavServer.Properties;
-using FubarDev.WebDavServer.Properties.Dead;
-using FubarDev.WebDavServer.Properties.Live;
+using FubarDev.WebDavServer.Props;
+using FubarDev.WebDavServer.Props.Dead;
+using FubarDev.WebDavServer.Props.Live;
 
 using JetBrains.Annotations;
 

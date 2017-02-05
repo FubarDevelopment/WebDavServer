@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 using FubarDev.WebDavServer.FileSystem;
 using FubarDev.WebDavServer.Handlers;
 using FubarDev.WebDavServer.Model;
-using FubarDev.WebDavServer.Properties.Store;
+using FubarDev.WebDavServer.Props.Store;
 
 using JetBrains.Annotations;
 

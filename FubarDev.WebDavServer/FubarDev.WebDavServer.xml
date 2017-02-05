@@ -103,7 +103,7 @@
         <member name="P:FubarDev.WebDavServer.Engines.Local.EntryTarget.DestinationUrl">
             <inheritdoc />
         </member>
-        <member name="M:FubarDev.WebDavServer.Engines.Local.EntryTarget.SetPropertiesAsync(System.Collections.Generic.IEnumerable{FubarDev.WebDavServer.Properties.IUntypedWriteableProperty},System.Threading.CancellationToken)">
+        <member name="M:FubarDev.WebDavServer.Engines.Local.EntryTarget.SetPropertiesAsync(System.Collections.Generic.IEnumerable{FubarDev.WebDavServer.Props.IUntypedWriteableProperty},System.Threading.CancellationToken)">
             <inheritdoc />
         </member>
         <member name="P:FubarDev.WebDavServer.Engines.Local.FileSystemTarget.Name">

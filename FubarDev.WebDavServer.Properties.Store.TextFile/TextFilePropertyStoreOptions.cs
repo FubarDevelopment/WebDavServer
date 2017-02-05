@@ -2,7 +2,7 @@
 // Copyright (c) Fubar Development Junker. All rights reserved.
 // </copyright>
 
-namespace FubarDev.WebDavServer.Properties.Store.TextFile
+namespace FubarDev.WebDavServer.Props.Store.TextFile
 {
     public class TextFilePropertyStoreOptions
     {
