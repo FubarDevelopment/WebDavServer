@@ -1,4 +1,8 @@
-﻿namespace FubarDev.WebDavServer.Properties.Store.TextFile
+﻿// <copyright file="TextFilePropertyStoreOptions.cs" company="Fubar Development Junker">
+// Copyright (c) Fubar Development Junker. All rights reserved.
+// </copyright>
+
+namespace FubarDev.WebDavServer.Properties.Store.TextFile
 {
     public class TextFilePropertyStoreOptions
     {

@@ -1,4 +1,8 @@
-﻿using System;
+﻿// <copyright file="CopyHandlerTests.cs" company="Fubar Development Junker">
+// Copyright (c) Fubar Development Junker. All rights reserved.
+// </copyright>
+
+using System;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -27,7 +31,7 @@ namespace FubarDev.WebDavServer.Tests.Handlers
             var fileSystem = CreateFileSystem();
             await InitAsync(fileSystem, ct).ConfigureAwait(false);
             var handler = CreateHandler(fileSystem, new CopyHandlerOptions());
-            var root = await fileSystem.Root;
+            var root = await fileSystem.Root.GetValueAsync(ct).ConfigureAwait(false);
             var docText1 = await root.GetChildAsync("text1.txt", ct).ConfigureAwait(false);
             Assert.NotNull(docText1);
             var docProps1 = await docText1.GetPropertyElementsAsync(ct).ConfigureAwait(false);
@@ -43,7 +47,7 @@ namespace FubarDev.WebDavServer.Tests.Handlers
 
         private static async Task InitAsync(IFileSystem fileSystem, CancellationToken ct)
         {
-            var root = await fileSystem.Root;
+            var root = await fileSystem.Root.GetValueAsync(ct).ConfigureAwait(false);
             var doc1 = await root.CreateDocumentAsync("text1.txt", ct).ConfigureAwait(false);
             await doc1.FillWithAsync("Dokument 1", ct).ConfigureAwait(false);
             Assert.Equal("Dokument 1", await doc1.ReadAllAsync(ct).ConfigureAwait(false));

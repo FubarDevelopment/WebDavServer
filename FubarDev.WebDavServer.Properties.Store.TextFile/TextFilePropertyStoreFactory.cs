@@ -1,4 +1,8 @@
-﻿using FubarDev.WebDavServer.FileSystem;
+﻿// <copyright file="TextFilePropertyStoreFactory.cs" company="Fubar Development Junker">
+// Copyright (c) Fubar Development Junker. All rights reserved.
+// </copyright>
+
+using FubarDev.WebDavServer.FileSystem;
 using FubarDev.WebDavServer.Properties.Dead;
 
 using Microsoft.Extensions.Caching.Memory;

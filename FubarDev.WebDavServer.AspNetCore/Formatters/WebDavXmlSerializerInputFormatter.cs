@@ -1,4 +1,8 @@
-﻿using Microsoft.AspNetCore.Mvc.Formatters;
+﻿// <copyright file="WebDavXmlSerializerInputFormatter.cs" company="Fubar Development Junker">
+// Copyright (c) Fubar Development Junker. All rights reserved.
+// </copyright>
+
+using Microsoft.AspNetCore.Mvc.Formatters;
 
 namespace FubarDev.WebDavServer.AspNetCore.Formatters
 {

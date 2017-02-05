@@ -1,4 +1,8 @@
-﻿using System.IO;
+﻿// <copyright file="InMemoryFsTests.cs" company="Fubar Development Junker">
+// Copyright (c) Fubar Development Junker. All rights reserved.
+// </copyright>
+
+using System.IO;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -10,7 +14,7 @@ using Xunit;
 
 namespace FubarDev.WebDavServer.Tests.FileSystem
 {
-    public class InMemory
+    public class InMemoryFsTests
     {
         [Fact]
         public async Task Empty()

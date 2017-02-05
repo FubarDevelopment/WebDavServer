@@ -1,4 +1,8 @@
-﻿using System;
+﻿// <copyright file="WebDavExceptionFilter.cs" company="Fubar Development Junker">
+// Copyright (c) Fubar Development Junker. All rights reserved.
+// </copyright>
+
+using System;
 
 using FubarDev.WebDavServer.Model;
 
@@ -64,7 +68,7 @@ namespace FubarDev.WebDavServer.AspNetCore.Filters
                             ItemsElementName = new[] { ItemsChoiceType2.Status, },
                             Items = new object[] { new Status(context.HttpContext.Request.Protocol, statusCode, optionalMessge).ToString() },
                         },
-                    }
+                    },
                 });
             var dispatcher = context.HttpContext.RequestServices.GetService<IWebDavDispatcher>();
             return new WebDavIndirectResult(dispatcher, result, _responseLogger);

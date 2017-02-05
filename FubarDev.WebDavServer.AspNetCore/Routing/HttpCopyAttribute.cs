@@ -1,4 +1,8 @@
-﻿using System;
+﻿// <copyright file="HttpCopyAttribute.cs" company="Fubar Development Junker">
+// Copyright (c) Fubar Development Junker. All rights reserved.
+// </copyright>
+
+using System;
 using System.Collections.Generic;
 
 using JetBrains.Annotations;
@@ -11,11 +15,13 @@ namespace FubarDev.WebDavServer.AspNetCore.Routing
     {
         private static readonly IEnumerable<string> _supportedMethods = new[] { "COPY" };
 
-        public HttpCopyAttribute() : base(_supportedMethods)
+        public HttpCopyAttribute()
+            : base(_supportedMethods)
         {
         }
 
-        public HttpCopyAttribute([NotNull] string template) : base(_supportedMethods, template)
+        public HttpCopyAttribute([NotNull] string template)
+            : base(_supportedMethods, template)
         {
             if (template == null)
                 throw new ArgumentNullException(nameof(template));

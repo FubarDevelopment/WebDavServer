@@ -1,4 +1,8 @@
-﻿using System;
+﻿// <copyright file="WebDavHost.cs" company="Fubar Development Junker">
+// Copyright (c) Fubar Development Junker. All rights reserved.
+// </copyright>
+
+using System;
 using System.Linq;
 using System.Text;
 
@@ -24,6 +28,21 @@ namespace FubarDev.WebDavServer.AspNetCore
 
         public string RequestProtocol => _httpContextAccessor.HttpContext.Request.Protocol;
 
+        public DetectedClient DetectedClient
+        {
+            get
+            {
+                var userAgent = _httpContextAccessor.HttpContext.Request.Headers["User-Agent"].FirstOrDefault();
+                if (string.IsNullOrEmpty(userAgent))
+                    return DetectedClient.Any;
+
+                if (userAgent.StartsWith("Microsoft-WebDAV-MiniRedir"))
+                    return DetectedClient.MicrosoftExplorer;
+
+                return DetectedClient.Any;
+            }
+        }
+
         private static Uri BuildBaseUrl(HttpContext httpContext, WebDavHostOptions options)
         {
             var result = new StringBuilder();
@@ -43,21 +62,6 @@ namespace FubarDev.WebDavServer.AspNetCore
             }
 
             return new Uri(result.ToString());
-        }
-
-        public DetectedClient DetectedClient
-        {
-            get
-            {
-                var userAgent = _httpContextAccessor.HttpContext.Request.Headers["User-Agent"].FirstOrDefault();
-                if (string.IsNullOrEmpty(userAgent))
-                    return DetectedClient.Any;
-
-                if (userAgent.StartsWith("Microsoft-WebDAV-MiniRedir"))
-                    return DetectedClient.MicrosoftExplorer;
-
-                return DetectedClient.Any;
-            }
         }
     }
 }

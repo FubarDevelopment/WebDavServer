@@ -1,4 +1,8 @@
-﻿using System.Linq;
+﻿// <copyright file="InMemoryPropTests.cs" company="Fubar Development Junker">
+// Copyright (c) Fubar Development Junker. All rights reserved.
+// </copyright>
+
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -11,7 +15,7 @@ using Xunit;
 
 namespace FubarDev.WebDavServer.Tests.PropertyStore
 {
-    public class InMemory
+    public class InMemoryPropTests
     {
         [Fact]
         public async Task Empty()

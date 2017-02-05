@@ -1,4 +1,8 @@
-﻿using FubarDev.WebDavServer.AspNetCore.Filters;
+﻿// <copyright file="WebDavServicesExtensions.cs" company="Fubar Development Junker">
+// Copyright (c) Fubar Development Junker. All rights reserved.
+// </copyright>
+
+using FubarDev.WebDavServer.AspNetCore.Filters;
 using FubarDev.WebDavServer.AspNetCore.Filters.Internal;
 using FubarDev.WebDavServer.AspNetCore.Formatters.Internal;
 using FubarDev.WebDavServer.Dispatchers;

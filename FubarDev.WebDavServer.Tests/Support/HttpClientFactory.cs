@@ -1,4 +1,8 @@
-﻿using System;
+﻿// <copyright file="HttpClientFactory.cs" company="Fubar Development Junker">
+// Copyright (c) Fubar Development Junker. All rights reserved.
+// </copyright>
+
+using System;
 using System.Net.Http;
 using System.Threading;
 using System.Threading.Tasks;
@@ -13,7 +17,7 @@ namespace FubarDev.WebDavServer.Tests.Support
         {
             var httpClient = new HttpClient()
             {
-                BaseAddress = baseUrl
+                BaseAddress = baseUrl,
             };
 
             return Task.FromResult(httpClient);

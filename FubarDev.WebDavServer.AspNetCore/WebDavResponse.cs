@@ -1,4 +1,8 @@
-﻿using System.Collections;
+﻿// <copyright file="WebDavResponse.cs" company="Fubar Development Junker">
+// Copyright (c) Fubar Development Junker. All rights reserved.
+// </copyright>
+
+using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -38,6 +42,20 @@ namespace FubarDev.WebDavServer.AspNetCore
             public HeadersDictionary(IHeaderDictionary headers)
             {
                 _headers = headers;
+            }
+
+            public int Count => _headers.Count;
+
+            public bool IsReadOnly => _headers.IsReadOnly;
+
+            public ICollection<string> Keys => _headers.Keys;
+
+            public ICollection<string[]> Values => _headers.Values.Select(x => x.ToArray()).ToList();
+
+            public string[] this[string key]
+            {
+                get { return _headers[key].ToArray(); }
+                set { _headers[key] = new StringValues(value); }
             }
 
             public IEnumerator<KeyValuePair<string, string[]>> GetEnumerator()
@@ -88,10 +106,6 @@ namespace FubarDev.WebDavServer.AspNetCore
                 return Remove(item.Key);
             }
 
-            public int Count => _headers.Count;
-
-            public bool IsReadOnly => _headers.IsReadOnly;
-
             public void Add(string key, string[] value)
             {
                 _headers.Add(key, new StringValues(value));
@@ -119,16 +133,6 @@ namespace FubarDev.WebDavServer.AspNetCore
                 value = null;
                 return false;
             }
-
-            public string[] this[string key]
-            {
-                get { return _headers[key].ToArray(); }
-                set { _headers[key] = new StringValues(value); }
-            }
-
-            public ICollection<string> Keys => _headers.Keys;
-
-            public ICollection<string[]> Values => _headers.Values.Select(x => x.ToArray()).ToList();
         }
     }
 }

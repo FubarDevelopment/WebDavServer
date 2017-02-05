@@ -1,4 +1,8 @@
-﻿using System;
+﻿// <copyright file="HttpPropPatchAttribute.cs" company="Fubar Development Junker">
+// Copyright (c) Fubar Development Junker. All rights reserved.
+// </copyright>
+
+using System;
 using System.Collections.Generic;
 
 using JetBrains.Annotations;
@@ -11,11 +15,13 @@ namespace FubarDev.WebDavServer.AspNetCore.Routing
     {
         private static readonly IEnumerable<string> _supportedMethods = new[] { "PROPPATCH" };
 
-        public HttpPropPatchAttribute() : base(_supportedMethods)
+        public HttpPropPatchAttribute()
+            : base(_supportedMethods)
         {
         }
 
-        public HttpPropPatchAttribute([NotNull] string template) : base(_supportedMethods, template)
+        public HttpPropPatchAttribute([NotNull] string template)
+            : base(_supportedMethods, template)
         {
             if (template == null)
                 throw new ArgumentNullException(nameof(template));

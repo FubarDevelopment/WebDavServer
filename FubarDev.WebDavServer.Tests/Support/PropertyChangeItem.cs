@@ -1,4 +1,8 @@
-﻿using System.Xml.Linq;
+﻿// <copyright file="PropertyChangeItem.cs" company="Fubar Development Junker">
+// Copyright (c) Fubar Development Junker. All rights reserved.
+// </copyright>
+
+using System.Xml.Linq;
 
 namespace FubarDev.WebDavServer.Tests.Support
 {
@@ -16,8 +20,11 @@ namespace FubarDev.WebDavServer.Tests.Support
         }
 
         public PropertyChange Change { get; }
+
         public XName Name { get; }
+
         public XElement Left { get; }
+
         public XElement Right { get; }
 
         public static PropertyChangeItem Added(XElement element)

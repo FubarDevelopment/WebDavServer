@@ -1,4 +1,8 @@
-﻿using System;
+﻿// <copyright file="DotNetFile.cs" company="Fubar Development Junker">
+// Copyright (c) Fubar Development Junker. All rights reserved.
+// </copyright>
+
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Threading;
@@ -40,7 +44,7 @@ namespace FubarDev.WebDavServer.FileSystem.DotNet
 
         public Task<IDocument> CopyToAsync(ICollection collection, string name, CancellationToken cancellationToken)
         {
-            var dir = (DotNetDirectory) collection;
+            var dir = (DotNetDirectory)collection;
             var targetFileName = System.IO.Path.Combine(dir.DirectoryInfo.FullName, name);
             File.Copy(FileInfo.FullName, targetFileName, true);
             var fileInfo = new FileInfo(targetFileName);

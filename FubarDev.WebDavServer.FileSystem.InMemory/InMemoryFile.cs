@@ -1,4 +1,8 @@
-﻿using System;
+﻿// <copyright file="InMemoryFile.cs" company="Fubar Development Junker">
+// Copyright (c) Fubar Development Junker. All rights reserved.
+// </copyright>
+
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -48,7 +52,7 @@ namespace FubarDev.WebDavServer.FileSystem.InMemory
 
         public async Task<IDocument> CopyToAsync(ICollection collection, string name, CancellationToken cancellationToken)
         {
-            var coll = (InMemoryDirectory) collection;
+            var coll = (InMemoryDirectory)collection;
             var doc = (InMemoryFile)await coll.CreateDocumentAsync(name, cancellationToken).ConfigureAwait(false);
             doc._data = new MemoryStream(_data.ToArray());
             doc.CreationTimeUtc = CreationTimeUtc;
@@ -73,7 +77,7 @@ namespace FubarDev.WebDavServer.FileSystem.InMemory
             return base.GetLiveProperties()
                        .Concat(new ILiveProperty[]
                        {
-                           new ContentLengthProperty(ct => Task.FromResult(Length))
+                           new ContentLengthProperty(ct => Task.FromResult(Length)),
                        });
         }
 
@@ -82,7 +86,7 @@ namespace FubarDev.WebDavServer.FileSystem.InMemory
             return base.GetPredefinedDeadProperties()
                        .Concat(new IDeadProperty[]
                        {
-                           new GetETagProperty(FileSystem.PropertyStore, this, 0)
+                           new GetETagProperty(FileSystem.PropertyStore, this, 0),
                        });
         }
 

@@ -86,7 +86,7 @@ namespace FubarDev.WebDavServer.Properties
             public async Task<bool> MoveNext(CancellationToken cancellationToken)
 #pragma warning restore IDE1006 // Benennungsstile
             {
-                for (; ;)
+                while (true)
                 {
                     var result = await GetNextPropertyAsync(cancellationToken).ConfigureAwait(false);
                     if (result == null)

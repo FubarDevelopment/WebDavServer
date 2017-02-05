@@ -1,4 +1,8 @@
-﻿using System;
+﻿// <copyright file="DotNetFileSystemOptions.cs" company="Fubar Development Junker">
+// Copyright (c) Fubar Development Junker. All rights reserved.
+// </copyright>
+
+using System;
 using System.IO;
 using System.Linq;
 
@@ -27,7 +31,7 @@ namespace FubarDev.WebDavServer.FileSystem.DotNet
             return new HomePathInfo()
             {
                 RootPath = rootDir,
-                IsProbablyUnix = home.Item1 == "HOME"
+                IsProbablyUnix = home.Item1 == "HOME",
             };
         }
 
