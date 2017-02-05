@@ -1,4 +1,8 @@
-﻿using System;
+﻿// <copyright file="UriExtensions.cs" company="Fubar Development Junker">
+// Copyright (c) Fubar Development Junker. All rights reserved.
+// </copyright>
+
+using System;
 
 using FubarDev.WebDavServer.FileSystem;
 
@@ -38,7 +42,7 @@ namespace FubarDev.WebDavServer
             var doc = entry as IDocument;
             if (doc != null)
                 return baseUri.Append(doc);
-            return baseUri.Append((ICollection) entry);
+            return baseUri.Append((ICollection)entry);
         }
 
         public static Uri AppendDirectory(this Uri baseUri, string relative)

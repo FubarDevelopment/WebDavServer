@@ -1,4 +1,8 @@
-﻿using System;
+﻿// <copyright file="CollectionTarget.cs" company="Fubar Development Junker">
+// Copyright (c) Fubar Development Junker. All rights reserved.
+// </copyright>
+
+using System;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -12,7 +16,12 @@ namespace FubarDev.WebDavServer.Engines.Local
     {
         private readonly ITargetActions<CollectionTarget, DocumentTarget, MissingTarget> _targetActions;
 
-        public CollectionTarget([NotNull] Uri destinationUrl, [CanBeNull] CollectionTarget parent, [NotNull] ICollection collection, bool created, [NotNull] ITargetActions<CollectionTarget, DocumentTarget, MissingTarget> targetActions)
+        public CollectionTarget(
+            [NotNull] Uri destinationUrl,
+            [CanBeNull] CollectionTarget parent,
+            [NotNull] ICollection collection,
+            bool created,
+            [NotNull] ITargetActions<CollectionTarget, DocumentTarget, MissingTarget> targetActions)
             : base(parent, destinationUrl, collection)
         {
             Collection = collection;
@@ -24,7 +33,7 @@ namespace FubarDev.WebDavServer.Engines.Local
         public ICollection Collection { get; }
 
         public bool Created { get; }
-        
+
         [NotNull]
         public static CollectionTarget NewInstance(
             [NotNull] Uri destinationUrl,
@@ -63,7 +72,7 @@ namespace FubarDev.WebDavServer.Engines.Local
             if (doc != null)
                 return new DocumentTarget(this, DestinationUrl.Append(doc), doc, _targetActions);
 
-            var coll = (ICollection) result;
+            var coll = (ICollection)result;
             return new CollectionTarget(DestinationUrl.Append(coll), this, coll, false, _targetActions);
         }
 

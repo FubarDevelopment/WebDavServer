@@ -1,4 +1,8 @@
-﻿using System;
+﻿// <copyright file="CopyRemoteHttpClientTargetActions.cs" company="Fubar Development Junker">
+// Copyright (c) Fubar Development Junker. All rights reserved.
+// </copyright>
+
+using System;
 using System.Net.Http;
 using System.Threading;
 using System.Threading.Tasks;
@@ -9,7 +13,7 @@ namespace FubarDev.WebDavServer.Engines.Remote
 {
     public class CopyRemoteHttpClientTargetActions : RemoteHttpClientTargetActions
     {
-        public CopyRemoteHttpClientTargetActions(HttpClient httpClient) 
+        public CopyRemoteHttpClientTargetActions(HttpClient httpClient)
             : base(httpClient)
         {
         }
@@ -42,8 +46,8 @@ namespace FubarDev.WebDavServer.Engines.Remote
                         Content = content,
                         Headers =
                         {
-                            {"Overwrite", "T"}
-                        }
+                            { "Overwrite", "T" },
+                        },
                     };
 
                     using (var response = await Client

@@ -1,4 +1,8 @@
-﻿using System.Threading;
+﻿// <copyright file="SimpleTypedProperty.cs" company="Fubar Development Junker">
+// Copyright (c) Fubar Development Junker. All rights reserved.
+// </copyright>
+
+using System.Threading;
 using System.Threading.Tasks;
 using System.Xml.Linq;
 
@@ -14,6 +18,7 @@ namespace FubarDev.WebDavServer.Properties
         }
 
         public abstract Task<T> GetValueAsync(CancellationToken ct);
+
         public abstract Task SetValueAsync(T value, CancellationToken ct);
     }
 }

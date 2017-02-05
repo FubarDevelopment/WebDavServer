@@ -1,4 +1,8 @@
-﻿using System;
+﻿// <copyright file="RemoteMissingTarget.cs" company="Fubar Development Junker">
+// Copyright (c) Fubar Development Junker. All rights reserved.
+// </copyright>
+
+using System;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -18,6 +22,7 @@ namespace FubarDev.WebDavServer.Engines.Remote
             Name = name;
             DestinationUrl = destinationUrl;
         }
+
         public string Name { get; }
 
         public Uri DestinationUrl { get; }

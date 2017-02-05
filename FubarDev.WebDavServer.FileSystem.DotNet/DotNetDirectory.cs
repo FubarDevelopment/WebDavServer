@@ -97,6 +97,7 @@ namespace FubarDev.WebDavServer.FileSystem.DotNet
             }
 
             public DateTime CreationDateTime { get; }
+
             public DateTime ModificationDateTime { get; }
         }
 
@@ -145,10 +146,15 @@ namespace FubarDev.WebDavServer.FileSystem.DotNet
             where TFile : class, TItem
         {
             Task<IEnumerable<TItem>> GetChildrenAsync(TDirectory directory, CancellationToken ct);
+
             Task<TItemInfo> GetInfoAsync(TItem item, CancellationToken ct);
+
             Task SetInfoAsync(TItem item, DotNetItemInfo info, CancellationToken ct);
+
             Task<TFile> ExecuteActionAsync(TFile item, TDirectory targetDirectory, string targetName, CancellationToken ct);
+
             Task<TDirectory> ExecuteActionAsync(TDirectory item, TDirectory targetDirectory, string targetName, CancellationToken ct);
+
             Task ExecuteActionAsync(TDirectory item, TDirectory targetDirectory, CancellationToken ct);
         }
 
@@ -190,8 +196,11 @@ namespace FubarDev.WebDavServer.FileSystem.DotNet
             where TFile : class, TItem
         {
             public List<Tuple<TDirectory, TDirectory>> Directories { get; } = new List<Tuple<TDirectory, TDirectory>>();
+
             public List<Tuple<TFile, TFile>> Files { get; } = new List<Tuple<TFile, TFile>>();
+
             public TItem FailedItem { get; set; }
+
             public WebDavStatusCode ErrorStatusCode { get; set; } = WebDavStatusCode.OK;
         }
     }

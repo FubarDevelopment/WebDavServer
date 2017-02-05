@@ -1,4 +1,8 @@
-﻿using System.Net;
+﻿// <copyright file="WebDavStatusCode.cs" company="Fubar Development Junker">
+// Copyright (c) Fubar Development Junker. All rights reserved.
+// </copyright>
+
+using System.Net;
 
 namespace FubarDev.WebDavServer.Model
 {

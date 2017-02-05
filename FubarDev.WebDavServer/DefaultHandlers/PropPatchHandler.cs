@@ -1,4 +1,8 @@
-﻿using System;
+﻿// <copyright file="PropPatchHandler.cs" company="Fubar Development Junker">
+// Copyright (c) Fubar Development Junker. All rights reserved.
+// </copyright>
+
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
@@ -26,6 +30,18 @@ namespace FubarDev.WebDavServer.DefaultHandlers
         {
             _fileSystem = fileSystem;
             _host = host;
+        }
+
+        private enum ChangeStatus
+        {
+            Added,
+            Modified,
+            Removed,
+            Failed,
+            Conflict,
+            FailedDependency,
+            InsufficientStorage,
+            ReadOnlyProperty
         }
 
         public IEnumerable<string> HttpMethods { get; } = new[] { "PROPPATCH" };
@@ -66,8 +82,8 @@ namespace FubarDev.WebDavServer.DefaultHandlers
                         readOnlyProperties,
                         new Error()
                         {
-                            ItemsElementName = new[] {ItemsChoiceType.CannotModifyProtectedProperty,},
-                            Items = new[] {new object(),}
+                            ItemsElementName = new[] { ItemsChoiceType.CannotModifyProtectedProperty, },
+                            Items = new[] { new object(), },
                         }));
                 changes = changes.Except(readOnlyProperties).ToList();
             }
@@ -82,9 +98,9 @@ namespace FubarDev.WebDavServer.DefaultHandlers
                     {
                         Href = _host.BaseUrl.Append(path, true).OriginalString,
                         ItemsElementName = propStats.Select(x => ItemsChoiceType2.Propstat).ToArray(),
-                        Items = propStats.Cast<object>().ToArray()
-                    }
-                }
+                        Items = propStats.Cast<object>().ToArray(),
+                    },
+                },
             };
 
             return new WebDavResult<Multistatus>(statusCode, status);
@@ -125,13 +141,13 @@ namespace FubarDev.WebDavServer.DefaultHandlers
                 switch (changeItem.Status)
                 {
                     case ChangeStatus.Added:
-                        Debug.Assert(entry.FileSystem.PropertyStore != null);
+                        Debug.Assert(entry.FileSystem.PropertyStore != null, "entry.FileSystem.PropertyStore != null");
                         await entry.FileSystem.PropertyStore.RemoveAsync(entry, changeItem.Name, cancellationToken).ConfigureAwait(false);
                         newChangeItem = ChangeItem.FailedDependency(changeItem.Name);
                         properties.Remove(changeItem.Name);
                         break;
                     case ChangeStatus.Modified:
-                        Debug.Assert(entry.FileSystem.PropertyStore != null);
+                        Debug.Assert(entry.FileSystem.PropertyStore != null, "entry.FileSystem.PropertyStore != null");
                         await entry.FileSystem.PropertyStore.SetAsync(entry, changeItem.OldValue, cancellationToken).ConfigureAwait(false);
                         newChangeItem = ChangeItem.FailedDependency(changeItem.Name);
                         break;
@@ -139,9 +155,10 @@ namespace FubarDev.WebDavServer.DefaultHandlers
                         if (changeItem.Property != null)
                         {
                             properties.Add(changeItem.Name, changeItem.Property);
-                            Debug.Assert(_fileSystem.PropertyStore != null);
+                            Debug.Assert(_fileSystem.PropertyStore != null, "_fileSystem.PropertyStore != null");
                             await _fileSystem.PropertyStore.SetAsync(entry, changeItem.OldValue, cancellationToken).ConfigureAwait(false);
                         }
+
                         newChangeItem = ChangeItem.FailedDependency(changeItem.Name);
                         break;
                     case ChangeStatus.Conflict:
@@ -302,7 +319,7 @@ namespace FubarDev.WebDavServer.DefaultHandlers
             return result;
         }
 
-        public class ChangeItem
+        private class ChangeItem
         {
             private ChangeItem(ChangeStatus status, IUntypedReadableProperty property, XElement newValue, XElement oldValue, [NotNull] XName name, string description)
             {
@@ -403,18 +420,6 @@ namespace FubarDev.WebDavServer.DefaultHandlers
             {
                 return new ChangeItem(ChangeStatus.ReadOnlyProperty, property, newValue, null, property.Name, description);
             }
-        }
-
-        public enum ChangeStatus
-        {
-            Added,
-            Modified,
-            Removed,
-            Failed,
-            Conflict,
-            FailedDependency,
-            InsufficientStorage,
-            ReadOnlyProperty
         }
     }
 }

@@ -1,4 +1,8 @@
-﻿using System;
+﻿// <copyright file="MoveHandler.cs" company="Fubar Development Junker">
+// Copyright (c) Fubar Development Junker. All rights reserved.
+// </copyright>
+
+using System;
 using System.Collections.Generic;
 using System.Net.Http;
 using System.Threading;
@@ -26,7 +30,7 @@ namespace FubarDev.WebDavServer.DefaultHandlers
             _options = options?.Value ?? new MoveHandlerOptions();
         }
 
-        public IEnumerable<string> HttpMethods { get; } = new[] {"MOVE"};
+        public IEnumerable<string> HttpMethods { get; } = new[] { "MOVE" };
 
         public Task<IWebDavResult> MoveAsync(string sourcePath, Uri destination, bool? overwrite, CancellationToken cancellationToken)
         {

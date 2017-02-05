@@ -1,4 +1,8 @@
-﻿using System.Collections.Generic;
+﻿// <copyright file="EntryProperties.cs" company="Fubar Development Junker">
+// Copyright (c) Fubar Development Junker. All rights reserved.
+// </copyright>
+
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Threading;
@@ -19,16 +23,22 @@ namespace FubarDev.WebDavServer.Properties
         [NotNull]
         private readonly IEntry _entry;
 
-        [NotNull, ItemNotNull]
+        [NotNull]
+        [ItemNotNull]
         private readonly IEnumerable<ILiveProperty> _liveProperties;
 
-        [NotNull, ItemNotNull]
+        [NotNull]
+        [ItemNotNull]
         private readonly IEnumerable<IDeadProperty> _predefinedDeadProperties;
 
         [CanBeNull]
         private readonly IPropertyStore _propertyStore;
 
-        public EntryProperties([NotNull] IEntry entry, [NotNull, ItemNotNull] IEnumerable<ILiveProperty> liveProperties, [NotNull, ItemNotNull] IEnumerable<IDeadProperty> predefinedDeadProperties, [CanBeNull] IPropertyStore propertyStore)
+        public EntryProperties(
+            [NotNull] IEntry entry,
+            [NotNull] [ItemNotNull] IEnumerable<ILiveProperty> liveProperties,
+            [NotNull] [ItemNotNull] IEnumerable<IDeadProperty> predefinedDeadProperties,
+            [CanBeNull] IPropertyStore propertyStore)
         {
             _entry = entry;
             _liveProperties = liveProperties;
@@ -59,7 +69,11 @@ namespace FubarDev.WebDavServer.Properties
             [CanBeNull]
             private IEnumerator<IDeadProperty> _deadPropertiesEnumerator;
 
-            public PropertiesEnumerator([NotNull] IEntry entry, [NotNull, ItemNotNull] IEnumerable<ILiveProperty> liveProperties, [NotNull, ItemNotNull] IEnumerable<IDeadProperty> predefinedDeadProperties, [CanBeNull] IPropertyStore propertyStore)
+            public PropertiesEnumerator(
+                [NotNull] IEntry entry,
+                [NotNull] [ItemNotNull] IEnumerable<ILiveProperty> liveProperties,
+                [NotNull] [ItemNotNull] IEnumerable<IDeadProperty> predefinedDeadProperties,
+                [CanBeNull] IPropertyStore propertyStore)
             {
                 _entry = entry;
                 _propertyStore = propertyStore;
@@ -72,7 +86,7 @@ namespace FubarDev.WebDavServer.Properties
             public async Task<bool> MoveNext(CancellationToken cancellationToken)
 #pragma warning restore IDE1006 // Benennungsstile
             {
-                for (;;)
+                for (; ;)
                 {
                     var result = await GetNextPropertyAsync(cancellationToken).ConfigureAwait(false);
                     if (result == null)

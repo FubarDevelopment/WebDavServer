@@ -1,10 +1,15 @@
-﻿using FubarDev.WebDavServer.FileSystem;
+﻿// <copyright file="IFileSystemPropertyStore.cs" company="Fubar Development Junker">
+// Copyright (c) Fubar Development Junker. All rights reserved.
+// </copyright>
+
+using FubarDev.WebDavServer.FileSystem;
 
 namespace FubarDev.WebDavServer.Properties.Store
 {
     public interface IFileSystemPropertyStore : IPropertyStore
     {
-        bool IgnoreEntry(IEntry entry);
         string RootPath { get; set; }
+
+        bool IgnoreEntry(IEntry entry);
     }
 }

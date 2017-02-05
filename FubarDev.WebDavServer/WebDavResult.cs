@@ -1,4 +1,8 @@
-﻿using System.Globalization;
+﻿// <copyright file="WebDavResult.cs" company="Fubar Development Junker">
+// Copyright (c) Fubar Development Junker. All rights reserved.
+// </copyright>
+
+using System.Globalization;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
@@ -15,7 +19,7 @@ namespace FubarDev.WebDavServer
         }
 
         public WebDavStatusCode StatusCode { get; }
-        
+
         public virtual Task ExecuteResultAsync(IWebDavResponse response, CancellationToken ct)
         {
             response.Headers["DAV"] = response.Dispatcher.SupportedClasses.Select(x => x.ToString(CultureInfo.InvariantCulture)).ToArray();

@@ -1,4 +1,8 @@
-﻿using System;
+﻿// <copyright file="DateTimeRfc1123Converter.cs" company="Fubar Development Junker">
+// Copyright (c) Fubar Development Junker. All rights reserved.
+// </copyright>
+
+using System;
 using System.Globalization;
 using System.Xml.Linq;
 

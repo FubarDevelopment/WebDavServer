@@ -1,4 +1,8 @@
-﻿using System;
+﻿// <copyright file="Depth.cs" company="Fubar Development Junker">
+// Copyright (c) Fubar Development Junker. All rights reserved.
+// </copyright>
+
+using System;
 using System.Diagnostics;
 
 namespace FubarDev.WebDavServer.Model
@@ -18,6 +22,36 @@ namespace FubarDev.WebDavServer.Model
         public int OrderValue { get; }
 
         public string Value { get; }
+
+        public static bool operator ==(Depth x, Depth y)
+        {
+            return DepthComparer.Default.Equals(x, y);
+        }
+
+        public static bool operator !=(Depth x, Depth y)
+        {
+            return !DepthComparer.Default.Equals(x, y);
+        }
+
+        public static bool operator >(Depth x, Depth y)
+        {
+            return DepthComparer.Default.Compare(x, y) > 0;
+        }
+
+        public static bool operator <(Depth x, Depth y)
+        {
+            return DepthComparer.Default.Compare(x, y) < 0;
+        }
+
+        public static bool operator >=(Depth x, Depth y)
+        {
+            return DepthComparer.Default.Compare(x, y) >= 0;
+        }
+
+        public static bool operator <=(Depth x, Depth y)
+        {
+            return DepthComparer.Default.Compare(x, y) <= 0;
+        }
 
         public static Depth Parse(string depth)
         {
@@ -56,36 +90,6 @@ namespace FubarDev.WebDavServer.Model
             return string.IsNullOrEmpty(depthText);
         }
 
-        public static bool operator ==(Depth x, Depth y)
-        {
-            return DepthComparer.Default.Equals(x, y);
-        }
-
-        public static bool operator !=(Depth x, Depth y)
-        {
-            return !DepthComparer.Default.Equals(x, y);
-        }
-
-        public static bool operator >(Depth x, Depth y)
-        {
-            return DepthComparer.Default.Compare(x, y) > 0;
-        }
-
-        public static bool operator <(Depth x, Depth y)
-        {
-            return DepthComparer.Default.Compare(x, y) < 0;
-        }
-
-        public static bool operator >=(Depth x, Depth y)
-        {
-            return DepthComparer.Default.Compare(x, y) >= 0;
-        }
-
-        public static bool operator <=(Depth x, Depth y)
-        {
-            return DepthComparer.Default.Compare(x, y) <= 0;
-        }
-
         public bool Equals(Depth other)
         {
             return DepthComparer.Default.Equals(this, other);
@@ -94,7 +98,7 @@ namespace FubarDev.WebDavServer.Model
         public override bool Equals(object obj)
         {
             Debug.Assert(obj != null, "obj != null");
-            return DepthComparer.Default.Equals(this, (Depth) obj);
+            return DepthComparer.Default.Equals(this, (Depth)obj);
         }
 
         public override int GetHashCode()

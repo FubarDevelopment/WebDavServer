@@ -12,8 +12,11 @@ namespace FubarDev.WebDavServer.AspNetCore
         }
 
         public IWebDavDispatcher Dispatcher { get; }
+
         public IDictionary<string, string[]> Headers { get; } = new Dictionary<string, string[]>();
+
         public string ContentType { get; set; }
+
         public Stream Body { get; } = new MemoryStream();
 
         public XDocument Load()

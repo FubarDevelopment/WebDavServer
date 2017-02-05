@@ -1,4 +1,8 @@
-﻿using System.Collections.Generic;
+﻿// <copyright file="DeleteHandler.cs" company="Fubar Development Junker">
+// Copyright (c) Fubar Development Junker. All rights reserved.
+// </copyright>
+
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.Threading;
 using System.Threading.Tasks;
@@ -30,7 +34,7 @@ namespace FubarDev.WebDavServer.DefaultHandlers
                 throw new WebDavException(WebDavStatusCode.NotFound);
 
             var targetEntry = selectionResult.ResultType == SelectionResultType.FoundCollection ? (IEntry)selectionResult.Collection : selectionResult.Document;
-            Debug.Assert(targetEntry != null);
+            Debug.Assert(targetEntry != null, "targetEntry != null");
 
             DeleteResult deleteResult;
 
@@ -56,9 +60,9 @@ namespace FubarDev.WebDavServer.DefaultHandlers
                     {
                         Href = _host.BaseUrl.Append((deleteResult.FailedEntry ?? targetEntry).Path).OriginalString,
                         ItemsElementName = new[] { ItemsChoiceType2.Status, },
-                        Items = new object[] { new Status(_host.RequestProtocol, deleteResult.StatusCode).ToString() }
-                    }
-                }
+                        Items = new object[] { new Status(_host.RequestProtocol, deleteResult.StatusCode).ToString() },
+                    },
+                },
             };
 
             return new WebDavResult<Multistatus>(WebDavStatusCode.MultiStatus, result);

@@ -1,4 +1,8 @@
-﻿using System;
+﻿// <copyright file="RemoteCollectionTarget.cs" company="Fubar Development Junker">
+// Copyright (c) Fubar Development Junker. All rights reserved.
+// </copyright>
+
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Threading;

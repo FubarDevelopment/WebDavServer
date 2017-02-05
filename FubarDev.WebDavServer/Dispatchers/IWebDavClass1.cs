@@ -1,4 +1,8 @@
-﻿using System;
+﻿// <copyright file="IWebDavClass1.cs" company="Fubar Development Junker">
+// Copyright (c) Fubar Development Junker. All rights reserved.
+// </copyright>
+
+using System;
 using System.IO;
 using System.Threading;
 using System.Threading.Tasks;

@@ -23,12 +23,19 @@ namespace FubarDev.WebDavServer.FileSystem.DotNet
         }
 
         public FileSystemInfo Info { get; }
+
         public DotNetFileSystem DotNetFileSystem { get; }
+
         public string Name => Info.Name;
+
         public IFileSystem RootFileSystem => DotNetFileSystem;
+
         public IFileSystem FileSystem => DotNetFileSystem;
+
         public ICollection Parent => _parent;
+
         public Uri Path { get; }
+
         public DateTime LastWriteTimeUtc => Info.LastWriteTimeUtc;
 
         public IAsyncEnumerable<IUntypedReadableProperty> GetProperties()

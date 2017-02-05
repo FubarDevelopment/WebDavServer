@@ -1,4 +1,8 @@
-﻿using System;
+﻿// <copyright file="IRemoteHttpClientFactory.cs" company="Fubar Development Junker">
+// Copyright (c) Fubar Development Junker. All rights reserved.
+// </copyright>
+
+using System;
 using System.Net.Http;
 using System.Threading;
 using System.Threading.Tasks;

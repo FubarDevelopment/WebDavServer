@@ -1,4 +1,8 @@
-﻿using System;
+﻿// <copyright file="RemoteTargetActions.cs" company="Fubar Development Junker">
+// Copyright (c) Fubar Development Junker. All rights reserved.
+// </copyright>
+
+using System;
 using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
@@ -21,16 +25,26 @@ namespace FubarDev.WebDavServer.Engines.Remote
 
         public abstract Task ExecuteAsync(ICollection source, CancellationToken cancellationToken);
 
-        [NotNull, ItemNotNull]
-        public abstract Task<IReadOnlyCollection<XName>> SetPropertiesAsync([NotNull] RemoteCollectionTarget target, [NotNull, ItemNotNull] IEnumerable<IUntypedWriteableProperty> properties, CancellationToken cancellationToken);
+        [NotNull]
+        [ItemNotNull]
+        public abstract Task<IReadOnlyCollection<XName>> SetPropertiesAsync(
+            [NotNull] RemoteCollectionTarget target,
+            [NotNull] [ItemNotNull] IEnumerable<IUntypedWriteableProperty> properties,
+            CancellationToken cancellationToken);
 
-        [NotNull, ItemNotNull]
-        public abstract Task<IReadOnlyCollection<XName>> SetPropertiesAsync([NotNull] RemoteDocumentTarget target, [NotNull, ItemNotNull] IEnumerable<IUntypedWriteableProperty> properties, CancellationToken cancellationToken);
+        [NotNull]
+        [ItemNotNull]
+        public abstract Task<IReadOnlyCollection<XName>> SetPropertiesAsync(
+            [NotNull] RemoteDocumentTarget target,
+            [NotNull] [ItemNotNull] IEnumerable<IUntypedWriteableProperty> properties,
+            CancellationToken cancellationToken);
 
-        [NotNull, ItemNotNull]
+        [NotNull]
+        [ItemNotNull]
         public abstract Task<RemoteCollectionTarget> CreateCollectionAsync([NotNull] RemoteCollectionTarget targetCollection, [NotNull] string name, CancellationToken cancellationToken);
 
-        [NotNull, ItemNotNull]
+        [NotNull]
+        [ItemNotNull]
         public abstract Task<ITarget> GetAsync([NotNull] RemoteCollectionTarget collection, [NotNull] string name, CancellationToken cancellationToken);
 
         [NotNull]

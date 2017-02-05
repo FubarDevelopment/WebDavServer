@@ -1,4 +1,8 @@
-﻿using FubarDev.WebDavServer.Model;
+﻿// <copyright file="DeleteResult.cs" company="Fubar Development Junker">
+// Copyright (c) Fubar Development Junker. All rights reserved.
+// </copyright>
+
+using FubarDev.WebDavServer.Model;
 
 using JetBrains.Annotations;
 

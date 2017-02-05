@@ -1,4 +1,8 @@
-﻿using System;
+﻿// <copyright file="SelectionResult.cs" company="Fubar Development Junker">
+// Copyright (c) Fubar Development Junker. All rights reserved.
+// </copyright>
+
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
@@ -13,7 +17,7 @@ namespace FubarDev.WebDavServer.FileSystem
         private static readonly IReadOnlyCollection<string> _emptyCollection = new string[0];
         private readonly IDocument _document;
         private readonly IReadOnlyCollection<string> _pathEntries;
-        
+
         internal SelectionResult(SelectionResultType resultType, [NotNull] ICollection collection, IDocument document, [CanBeNull] IReadOnlyCollection<string> pathEntries)
         {
             ResultType = resultType;
@@ -98,7 +102,7 @@ namespace FubarDev.WebDavServer.FileSystem
         }
 
         [NotNull]
-        public IFileSystem TargetFileSystem => ((IEntry) _document ?? Collection).FileSystem;
+        public IFileSystem TargetFileSystem => ((IEntry)_document ?? Collection).FileSystem;
 
         [NotNull]
         public static SelectionResult Create([NotNull] ICollection collection, [NotNull] IDocument document)
@@ -119,7 +123,7 @@ namespace FubarDev.WebDavServer.FileSystem
         }
 
         [NotNull]
-        public static SelectionResult CreateMissingDocumentOrCollection([NotNull] ICollection collection, [NotNull][ItemNotNull] IReadOnlyCollection<string> pathEntries)
+        public static SelectionResult CreateMissingDocumentOrCollection([NotNull] ICollection collection, [NotNull] [ItemNotNull] IReadOnlyCollection<string> pathEntries)
         {
             if (collection == null)
                 throw new ArgumentNullException(nameof(collection));
@@ -129,7 +133,7 @@ namespace FubarDev.WebDavServer.FileSystem
         }
 
         [NotNull]
-        public static SelectionResult CreateMissingCollection([NotNull] ICollection collection, [NotNull][ItemNotNull] IReadOnlyCollection<string> pathEntries)
+        public static SelectionResult CreateMissingCollection([NotNull] ICollection collection, [NotNull] [ItemNotNull] IReadOnlyCollection<string> pathEntries)
         {
             if (collection == null)
                 throw new ArgumentNullException(nameof(collection));

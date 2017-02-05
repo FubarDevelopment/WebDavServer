@@ -1,4 +1,8 @@
-﻿using System;
+﻿// <copyright file="CreationDateProperty.cs" company="Fubar Development Junker">
+// Copyright (c) Fubar Development Junker. All rights reserved.
+// </copyright>
+
+using System;
 using System.Xml.Linq;
 
 using FubarDev.WebDavServer.Model;

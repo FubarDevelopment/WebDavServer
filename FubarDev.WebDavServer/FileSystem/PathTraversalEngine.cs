@@ -1,4 +1,8 @@
-﻿using System;
+﻿// <copyright file="PathTraversalEngine.cs" company="Fubar Development Junker">
+// Copyright (c) Fubar Development Junker. All rights reserved.
+// </copyright>
+
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
@@ -40,12 +44,38 @@ namespace FubarDev.WebDavServer.FileSystem
         {
             return TraverseAsync(currentCollection, ToPathElements(pathParts), ct);
         }
-        
+
+        private static IEnumerable<string> SplitPath(string path)
+        {
+            var lastIndex = 0;
+            var indexOfSlash = path.IndexOf('/');
+            while (indexOfSlash != -1)
+            {
+                yield return path.Substring(lastIndex, indexOfSlash - lastIndex + 1);
+                lastIndex = indexOfSlash + 1;
+                indexOfSlash = path.IndexOf('/', lastIndex);
+            }
+
+            var remaining = path.Substring(lastIndex);
+            if (!string.IsNullOrEmpty(remaining))
+                yield return remaining;
+        }
+
+        private static IEnumerable<PathElement> ToPathElements(IEnumerable<string> pathParts)
+        {
+            foreach (var pathPart in pathParts)
+            {
+                var isDirectory = pathPart.EndsWith("/");
+                var name = isDirectory ? pathPart.Substring(0, pathPart.Length - 1) : pathPart;
+                yield return new PathElement(pathPart, Uri.UnescapeDataString(name), isDirectory);
+            }
+        }
+
         private async Task<SelectionResult> TraverseAsync(ICollection currentCollection, IEnumerable<PathElement> pathParts, CancellationToken ct)
         {
             var currentPathStack = new Stack<ICollection>();
             currentPathStack.Push(currentCollection);
-            
+
             var pathPartsArr = pathParts.ToArray();
 
             var id = Guid.NewGuid().ToString("D");
@@ -88,10 +118,10 @@ namespace FubarDev.WebDavServer.FileSystem
                     // file found
                     if (_logger?.IsEnabled(LogLevel.Debug) ?? false)
                         _logger.LogDebug($"Processing path ({id}), found document {next.Name} ({next.Path})");
-                    return SelectionResult.Create(currentCollection, (IDocument) next);
+                    return SelectionResult.Create(currentCollection, (IDocument)next);
                 }
 
-                currentCollection = (ICollection) next;
+                currentCollection = (ICollection)next;
                 currentPathStack.Push(currentCollection);
             }
 
@@ -99,31 +129,6 @@ namespace FubarDev.WebDavServer.FileSystem
             if (_logger?.IsEnabled(LogLevel.Debug) ?? false)
                 _logger.LogDebug($"Processing path ({id}), found collection {currentCollection.Name} ({currentCollection.Path})");
             return SelectionResult.Create(currentCollection);
-        }
-
-        private static IEnumerable<string> SplitPath(string path)
-        {
-            var lastIndex = 0;
-            var indexOfSlash = path.IndexOf('/');
-            while (indexOfSlash != -1)
-            {
-                yield return path.Substring(lastIndex, indexOfSlash - lastIndex + 1);
-                lastIndex = indexOfSlash + 1;
-                indexOfSlash = path.IndexOf('/', lastIndex);
-            }
-            var remaining = path.Substring(lastIndex);
-            if (!string.IsNullOrEmpty(remaining))
-                yield return remaining;
-        }
-
-        private static IEnumerable<PathElement> ToPathElements(IEnumerable<string> pathParts)
-        {
-            foreach (var pathPart in pathParts)
-            {
-                var isDirectory = pathPart.EndsWith("/");
-                var name = isDirectory ? pathPart.Substring(0, pathPart.Length - 1) : pathPart;
-                yield return new PathElement(pathPart, Uri.UnescapeDataString(name), isDirectory);
-            }
         }
 
         private struct PathElement
@@ -136,7 +141,9 @@ namespace FubarDev.WebDavServer.FileSystem
             }
 
             public string OriginalName { get; }
+
             public string Name { get; }
+
             public bool IsDirectory { get; }
         }
     }

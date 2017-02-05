@@ -1,4 +1,8 @@
-﻿using System;
+﻿// <copyright file="EntityTag.cs" company="Fubar Development Junker">
+// Copyright (c) Fubar Development Junker. All rights reserved.
+// </copyright>
+
+using System;
 using System.Text;
 using System.Xml.Linq;
 
@@ -30,7 +34,26 @@ namespace FubarDev.WebDavServer.Properties
         }
 
         public bool IsWeak { get; }
+
         public string Value { get; }
+
+        public static EntityTag FromXml([CanBeNull] XElement element)
+        {
+            if (element == null)
+                return new EntityTag();
+
+            return Parse(element.Value);
+        }
+
+        public static EntityTag Parse(string value)
+        {
+            var isWeak = value.StartsWith("W/");
+            if (isWeak)
+                value = value.Substring(2);
+            if (value.StartsWith("\"") && value.EndsWith("\""))
+                value = value.Substring(1, value.Length - 2);
+            return new EntityTag(isWeak, value);
+        }
 
         public EntityTag AsStrong()
         {
@@ -59,24 +82,6 @@ namespace FubarDev.WebDavServer.Properties
         public XElement ToXml()
         {
             return new XElement(GetETagProperty.PropertyName, ToString());
-        }
-
-        public static EntityTag FromXml([CanBeNull] XElement element)
-        {
-            if (element == null)
-                return new EntityTag();
-
-            return Parse(element.Value);
-        }
-
-        public static EntityTag Parse(string value)
-        {
-            var isWeak = value.StartsWith("W/");
-            if (isWeak)
-                value = value.Substring(2);
-            if (value.StartsWith("\"") && value.EndsWith("\""))
-                value = value.Substring(1, value.Length - 2);
-            return new EntityTag(isWeak, value);
         }
     }
 }

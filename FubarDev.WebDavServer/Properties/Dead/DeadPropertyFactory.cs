@@ -1,4 +1,8 @@
-﻿using System.Collections.Generic;
+﻿// <copyright file="DeadPropertyFactory.cs" company="Fubar Development Junker">
+// Copyright (c) Fubar Development Junker. All rights reserved.
+// </copyright>
+
+using System.Collections.Generic;
 using System.Xml.Linq;
 
 using FubarDev.WebDavServer.FileSystem;
@@ -12,8 +16,6 @@ namespace FubarDev.WebDavServer.Properties.Dead
 {
     public class DeadPropertyFactory : IDeadPropertyFactory
     {
-        private delegate IDeadProperty CreateDeadPropertyDelegate(IPropertyStore store, IEntry entry, XName name);
-
         private readonly IReadOnlyDictionary<XName, CreateDeadPropertyDelegate> _defaultCreationMap;
 
         public DeadPropertyFactory(IOptions<DeadPropertyFactoryOptions> options = null)
@@ -29,6 +31,8 @@ namespace FubarDev.WebDavServer.Properties.Dead
                 [DisplayNameProperty.PropertyName] = (store, entry, name) => new DisplayNameProperty(entry, store, options.HideExtensionForDisplayName),
             };
         }
+
+        private delegate IDeadProperty CreateDeadPropertyDelegate(IPropertyStore store, IEntry entry, XName name);
 
         public virtual IDeadProperty Create(IPropertyStore store, IEntry entry, XName name)
         {

@@ -1,4 +1,8 @@
-﻿using System;
+﻿// <copyright file="MoveRemoteHttpClientTargetActions.cs" company="Fubar Development Junker">
+// Copyright (c) Fubar Development Junker. All rights reserved.
+// </copyright>
+
+using System;
 using System.Net.Http;
 using System.Threading;
 using System.Threading.Tasks;
@@ -9,7 +13,7 @@ namespace FubarDev.WebDavServer.Engines.Remote
 {
     public class MoveRemoteHttpClientTargetActions : RemoteHttpClientTargetActions
     {
-        public MoveRemoteHttpClientTargetActions(HttpClient httpClient) 
+        public MoveRemoteHttpClientTargetActions(HttpClient httpClient)
             : base(httpClient)
         {
         }
@@ -44,8 +48,8 @@ namespace FubarDev.WebDavServer.Engines.Remote
                         Content = content,
                         Headers =
                         {
-                            {"Overwrite", "T"}
-                        }
+                            { "Overwrite", "T" },
+                        },
                     };
 
                     using (var response = await Client

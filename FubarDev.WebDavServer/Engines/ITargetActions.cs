@@ -1,4 +1,8 @@
-﻿using System.Threading;
+﻿// <copyright file="ITargetActions.cs" company="Fubar Development Junker">
+// Copyright (c) Fubar Development Junker. All rights reserved.
+// </copyright>
+
+using System.Threading;
 using System.Threading.Tasks;
 
 using FubarDev.WebDavServer.FileSystem;
@@ -14,7 +18,8 @@ namespace FubarDev.WebDavServer.Engines
     {
         RecursiveTargetBehaviour ExistingTargetBehaviour { get; }
 
-        [NotNull, ItemNotNull]
+        [NotNull]
+        [ItemNotNull]
         Task<TDocument> ExecuteAsync([NotNull] IDocument source, [NotNull] TMissing destination, CancellationToken cancellationToken);
 
         [NotNull]

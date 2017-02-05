@@ -1,4 +1,8 @@
-﻿using System.Collections.Concurrent;
+﻿// <copyright file="WebDavStatusCodeExtensions.cs" company="Fubar Development Junker">
+// Copyright (c) Fubar Development Junker. All rights reserved.
+// </copyright>
+
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Text;
 

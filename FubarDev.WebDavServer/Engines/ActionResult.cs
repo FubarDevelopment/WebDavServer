@@ -1,4 +1,8 @@
-﻿using System;
+﻿// <copyright file="ActionResult.cs" company="Fubar Development Junker">
+// Copyright (c) Fubar Development Junker. All rights reserved.
+// </copyright>
+
+using System;
 using System.Collections.Generic;
 using System.Xml.Linq;
 
@@ -14,10 +18,15 @@ namespace FubarDev.WebDavServer.Engines
         }
 
         public ActionStatus Status { get; }
+
         public ITarget Target { get; }
+
         public Uri Href { get; set; }
+
         public Exception Exception { get; set; }
+
         public IReadOnlyCollection<XName> FailedProperties { get; set; }
+
         public bool IsFailure => Status != ActionStatus.Created && Status != ActionStatus.Overwritten;
     }
 }

@@ -1,4 +1,8 @@
-﻿using System.Threading;
+﻿// <copyright file="IPropFindHandler.cs" company="Fubar Development Junker">
+// Copyright (c) Fubar Development Junker. All rights reserved.
+// </copyright>
+
+using System.Threading;
 using System.Threading.Tasks;
 
 using FubarDev.WebDavServer.Model;

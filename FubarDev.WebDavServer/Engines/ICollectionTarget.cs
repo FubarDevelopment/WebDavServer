@@ -1,4 +1,8 @@
-﻿using System.Threading;
+﻿// <copyright file="ICollectionTarget.cs" company="Fubar Development Junker">
+// Copyright (c) Fubar Development Junker. All rights reserved.
+// </copyright>
+
+using System.Threading;
 using System.Threading.Tasks;
 
 using JetBrains.Annotations;
@@ -12,10 +16,12 @@ namespace FubarDev.WebDavServer.Engines
     {
         bool Created { get; }
 
-        [NotNull, ItemNotNull]
+        [NotNull]
+        [ItemNotNull]
         Task<TMissing> DeleteAsync(CancellationToken cancellationToken);
 
-        [NotNull, ItemNotNull]
+        [NotNull]
+        [ItemNotNull]
         Task<ITarget> GetAsync([NotNull] string name, CancellationToken cancellationToken);
 
         [NotNull]

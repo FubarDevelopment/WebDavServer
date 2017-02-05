@@ -1,4 +1,8 @@
-﻿using System;
+﻿// <copyright file="Status.cs" company="Fubar Development Junker">
+// Copyright (c) Fubar Development Junker. All rights reserved.
+// </copyright>
+
+using System;
 using System.Net;
 
 using JetBrains.Annotations;

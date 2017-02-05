@@ -1,4 +1,8 @@
-﻿using System;
+﻿// <copyright file="CollectionActionResultExtensions.cs" company="Fubar Development Junker">
+// Copyright (c) Fubar Development Junker. All rights reserved.
+// </copyright>
+
+using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -39,7 +43,7 @@ namespace FubarDev.WebDavServer
 
             var result = new Multistatus()
             {
-                Response = resultsByStatus.Select(x => CreateResponse(x.Key, x.Value, host)).ToArray()
+                Response = resultsByStatus.Select(x => CreateResponse(x.Key, x.Value, host)).ToArray(),
             };
 
             return new WebDavResult<Multistatus>(WebDavStatusCode.MultiStatus, result);
@@ -86,7 +90,7 @@ namespace FubarDev.WebDavServer
                     response.Error = new Error()
                     {
                         ItemsElementName = new[] { ItemsChoiceType.PreservedLiveProperties, },
-                        Items = new[] { new object(), }
+                        Items = new[] { new object(), },
                     };
                     break;
             }

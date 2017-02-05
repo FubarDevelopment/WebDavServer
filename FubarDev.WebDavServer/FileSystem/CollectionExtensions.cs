@@ -1,13 +1,15 @@
-﻿using System;
+﻿// <copyright file="CollectionExtensions.cs" company="Fubar Development Junker">
+// Copyright (c) Fubar Development Junker. All rights reserved.
+// </copyright>
+
+using System;
 using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
 
-using FubarDev.WebDavServer.FileSystem;
-
 using JetBrains.Annotations;
 
-namespace FubarDev.WebDavServer
+namespace FubarDev.WebDavServer.FileSystem
 {
     public static class CollectionExtensions
     {
@@ -34,7 +36,7 @@ namespace FubarDev.WebDavServer
             return new FileSystemEntries(collection, null, 0, maxDepth);
         }
 
-        public static async Task<INode> GetNodeAsync(this ICollection collection, int maxDepth, CancellationToken cancellationToken)
+        public static async Task<ICollectionNode> GetNodeAsync(this ICollection collection, int maxDepth, CancellationToken cancellationToken)
         {
             var subNodeQueue = new Queue<NodeInfo>();
             var result = new NodeInfo(collection);
@@ -54,7 +56,7 @@ namespace FubarDev.WebDavServer
                     var doc = entry as IDocument;
                     if (doc == null)
                     {
-                        var coll = (ICollection) entry;
+                        var coll = (ICollection)entry;
                         var info = new NodeInfo(coll);
                         current.SubNodes.Add(info);
                         subNodeQueue.Enqueue(info);
@@ -69,14 +71,6 @@ namespace FubarDev.WebDavServer
             return result;
         }
 
-        public interface INode
-        {
-            ICollection Collection { get; }
-            string Name { get; }
-            IReadOnlyCollection<INode> Nodes { get; }
-            IReadOnlyCollection<IDocument> Documents { get; }
-        }
-
         private class FileSystemEntries : IAsyncEnumerable<IEntry>
         {
             private readonly ICollection _collection;
@@ -87,7 +81,7 @@ namespace FubarDev.WebDavServer
 
             private readonly int _startDepth;
 
-            public FileSystemEntries([NotNull] ICollection collection, [CanBeNull][ItemNotNull] IReadOnlyCollection<IEntry> children, int startDepth, int remainingDepth)
+            public FileSystemEntries([NotNull] ICollection collection, [CanBeNull] [ItemNotNull] IReadOnlyCollection<IEntry> children, int startDepth, int remainingDepth)
             {
                 _collection = collection;
                 _children = children;
@@ -112,7 +106,7 @@ namespace FubarDev.WebDavServer
 
                 private IEnumerator<IEntry> _entries;
 
-                public FileSystemEntriesEnumerator([NotNull] ICollection collection, [CanBeNull][ItemNotNull] IReadOnlyCollection<IEntry> children, int startDepth, int maxDepth)
+                public FileSystemEntriesEnumerator([NotNull] ICollection collection, [CanBeNull] [ItemNotNull] IReadOnlyCollection<IEntry> children, int startDepth, int maxDepth)
                 {
                     _maxDepth = maxDepth;
                     _currentDepth = startDepth;
@@ -185,7 +179,7 @@ namespace FubarDev.WebDavServer
 
                 private struct CollectionInfo
                 {
-                    public CollectionInfo([NotNull] ICollection collection, [CanBeNull][ItemNotNull] IReadOnlyCollection<IEntry> children, int depth)
+                    public CollectionInfo([NotNull] ICollection collection, [CanBeNull] [ItemNotNull] IReadOnlyCollection<IEntry> children, int depth)
                     {
                         Collection = collection;
                         Children = children;
@@ -204,7 +198,7 @@ namespace FubarDev.WebDavServer
             }
         }
 
-        private class NodeInfo : INode
+        private class NodeInfo : ICollectionNode
         {
             public NodeInfo(ICollection collection)
             {
@@ -212,12 +206,16 @@ namespace FubarDev.WebDavServer
             }
 
             public string Name => Collection.Name;
+
             public ICollection Collection { get; }
+
             public List<IDocument> Documents { get; } = new List<IDocument>();
+
             public List<NodeInfo> SubNodes { get; } = new List<NodeInfo>();
 
-            IReadOnlyCollection<INode> INode.Nodes => SubNodes;
-            IReadOnlyCollection<IDocument> INode.Documents => Documents;
+            IReadOnlyCollection<ICollectionNode> ICollectionNode.Nodes => SubNodes;
+
+            IReadOnlyCollection<IDocument> ICollectionNode.Documents => Documents;
         }
     }
 }

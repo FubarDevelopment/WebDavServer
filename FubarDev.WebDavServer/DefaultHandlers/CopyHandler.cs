@@ -1,4 +1,8 @@
-﻿using System;
+﻿// <copyright file="CopyHandler.cs" company="Fubar Development Junker">
+// Copyright (c) Fubar Development Junker. All rights reserved.
+// </copyright>
+
+using System;
 using System.Collections.Generic;
 using System.Net.Http;
 using System.Threading;
@@ -26,7 +30,7 @@ namespace FubarDev.WebDavServer.DefaultHandlers
             _options = options?.Value ?? new CopyHandlerOptions();
         }
 
-        public IEnumerable<string> HttpMethods { get; } = new[] {"COPY"};
+        public IEnumerable<string> HttpMethods { get; } = new[] { "COPY" };
 
         public Task<IWebDavResult> CopyAsync(string sourcePath, Uri destination, Depth depth, bool? overwrite, CancellationToken cancellationToken)
         {

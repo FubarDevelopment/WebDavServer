@@ -1,4 +1,8 @@
-﻿using System.Threading;
+﻿// <copyright file="SimpleUntypedProperty.cs" company="Fubar Development Junker">
+// Copyright (c) Fubar Development Junker. All rights reserved.
+// </copyright>
+
+using System.Threading;
 using System.Threading.Tasks;
 using System.Xml.Linq;
 
@@ -15,8 +19,11 @@ namespace FubarDev.WebDavServer.Properties
         }
 
         public XName Name { get; }
+
         public int Cost { get; }
+
         public abstract Task SetXmlValueAsync(XElement element, CancellationToken ct);
+
         public abstract Task<XElement> GetXmlValueAsync(CancellationToken ct);
     }
 }

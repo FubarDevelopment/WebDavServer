@@ -1,4 +1,8 @@
-﻿using System;
+﻿// <copyright file="IWebDavHost.cs" company="Fubar Development Junker">
+// Copyright (c) Fubar Development Junker. All rights reserved.
+// </copyright>
+
+using System;
 
 namespace FubarDev.WebDavServer
 {

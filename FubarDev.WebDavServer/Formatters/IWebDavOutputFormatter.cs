@@ -1,4 +1,8 @@
-﻿using System.IO;
+﻿// <copyright file="IWebDavOutputFormatter.cs" company="Fubar Development Junker">
+// Copyright (c) Fubar Development Junker. All rights reserved.
+// </copyright>
+
+using System.IO;
 using System.Text;
 
 namespace FubarDev.WebDavServer.Formatters

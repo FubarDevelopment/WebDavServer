@@ -1,4 +1,8 @@
-﻿using System;
+﻿// <copyright file="RemoteTargetException.cs" company="Fubar Development Junker">
+// Copyright (c) Fubar Development Junker. All rights reserved.
+// </copyright>
+
+using System;
 using System.Collections.Generic;
 
 using JetBrains.Annotations;
@@ -52,7 +56,8 @@ namespace FubarDev.WebDavServer.Engines.Remote
             Href = href;
         }
 
-        [NotNull, ItemNotNull]
+        [NotNull]
+        [ItemNotNull]
         public IReadOnlyCollection<Uri> Href { get; }
     }
 }

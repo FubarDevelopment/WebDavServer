@@ -1,4 +1,8 @@
-﻿using System;
+﻿// <copyright file="EntryExtensions.cs" company="Fubar Development Junker">
+// Copyright (c) Fubar Development Junker. All rights reserved.
+// </copyright>
+
+using System;
 
 using FubarDev.WebDavServer.FileSystem;
 using FubarDev.WebDavServer.Properties.Live;

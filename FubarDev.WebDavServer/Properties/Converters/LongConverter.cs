@@ -1,4 +1,8 @@
-﻿using System.Xml;
+﻿// <copyright file="LongConverter.cs" company="Fubar Development Junker">
+// Copyright (c) Fubar Development Junker. All rights reserved.
+// </copyright>
+
+using System.Xml;
 using System.Xml.Linq;
 
 namespace FubarDev.WebDavServer.Properties.Converters

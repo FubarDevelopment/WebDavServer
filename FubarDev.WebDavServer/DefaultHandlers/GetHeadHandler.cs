@@ -1,4 +1,8 @@
-﻿using System;
+﻿// <copyright file="GetHeadHandler.cs" company="Fubar Development Junker">
+// Copyright (c) Fubar Development Junker. All rights reserved.
+// </copyright>
+
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Threading;
@@ -13,9 +17,9 @@ using JetBrains.Annotations;
 
 namespace FubarDev.WebDavServer.DefaultHandlers
 {
-    public class GetHandler : IGetHandler, IHeadHandler
+    public class GetHeadHandler : IGetHandler, IHeadHandler
     {
-        public GetHandler(IFileSystem fileSystem)
+        public GetHeadHandler(IFileSystem fileSystem)
         {
             FileSystem = fileSystem;
         }
@@ -47,7 +51,7 @@ namespace FubarDev.WebDavServer.DefaultHandlers
                 return new WebDavCollectionResult(searchResult.Collection);
             }
 
-            Debug.Assert(searchResult.Document != null);
+            Debug.Assert(searchResult.Document != null, "searchResult.Document != null");
             return new WebDavDocumentResult(FileSystem.PropertyStore, searchResult.Document, returnFile);
         }
 

@@ -1,4 +1,8 @@
-﻿using System.Collections.Generic;
+﻿// <copyright file="CollectionActionResult.cs" company="Fubar Development Junker">
+// Copyright (c) Fubar Development Junker. All rights reserved.
+// </copyright>
+
+using System.Collections.Generic;
 
 namespace FubarDev.WebDavServer.Engines
 {
@@ -10,6 +14,7 @@ namespace FubarDev.WebDavServer.Engines
         }
 
         public IReadOnlyCollection<ActionResult> DocumentActionResults { get; set; }
+
         public IReadOnlyCollection<CollectionActionResult> CollectionActionResults { get; set; }
 
         public IEnumerable<ActionResult> Flatten()

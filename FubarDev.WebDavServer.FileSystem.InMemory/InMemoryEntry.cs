@@ -23,12 +23,19 @@ namespace FubarDev.WebDavServer.FileSystem.InMemory
         }
 
         public string Name { get; }
+
         public IFileSystem RootFileSystem { get; }
+
         public IFileSystem FileSystem { get; }
+
         public ICollection Parent => _parent;
+
         public Uri Path { get; }
+
         public DateTime LastWriteTimeUtc { get; protected set; }
+
         protected InMemoryDirectory InMemoryParent => _parent;
+
         protected DateTime CreationTimeUtc { get; set; }
 
         public IAsyncEnumerable<IUntypedReadableProperty> GetProperties()

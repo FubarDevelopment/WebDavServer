@@ -1,4 +1,8 @@
-﻿using System;
+﻿// <copyright file="FileSystemTarget.cs" company="Fubar Development Junker">
+// Copyright (c) Fubar Development Junker. All rights reserved.
+// </copyright>
+
+using System;
 using System.Diagnostics;
 using System.Linq;
 
@@ -30,7 +34,11 @@ namespace FubarDev.WebDavServer.Engines.Local
             _targetActions = targetActions;
         }
 
-        public FileSystemTarget([NotNull] Uri destinationUrl, [NotNull] ICollection collection, [NotNull] string name, [NotNull] ITargetActions<CollectionTarget, DocumentTarget, MissingTarget> targetActions)
+        public FileSystemTarget(
+            [NotNull] Uri destinationUrl,
+            [NotNull] ICollection collection,
+            [NotNull] string name,
+            [NotNull] ITargetActions<CollectionTarget, DocumentTarget, MissingTarget> targetActions)
         {
             DestinationUrl = destinationUrl;
             Parent = collection;
@@ -52,7 +60,10 @@ namespace FubarDev.WebDavServer.Engines.Local
         public ICollection Collection { get; }
 
         [NotNull]
-        public static FileSystemTarget FromSelectionResult([NotNull] SelectionResult selectionResult, [NotNull] Uri destinationUri, [NotNull] ITargetActions<CollectionTarget, DocumentTarget, MissingTarget> targetActions)
+        public static FileSystemTarget FromSelectionResult(
+            [NotNull] SelectionResult selectionResult,
+            [NotNull] Uri destinationUri,
+            [NotNull] ITargetActions<CollectionTarget, DocumentTarget, MissingTarget> targetActions)
         {
             if (selectionResult.IsMissing)
             {
@@ -75,7 +86,7 @@ namespace FubarDev.WebDavServer.Engines.Local
         {
             if (Collection == null)
                 throw new InvalidOperationException();
-            Uri collUrl = (DestinationUrl.OriginalString.EndsWith("/")) ? new Uri(DestinationUrl, "..") : new Uri(DestinationUrl, ".");
+            Uri collUrl = DestinationUrl.OriginalString.EndsWith("/") ? new Uri(DestinationUrl, "..") : new Uri(DestinationUrl, ".");
             var collTarget = Parent == null ? null : CollectionTarget.NewInstance(collUrl, Parent, _targetActions);
             return new CollectionTarget(DestinationUrl, collTarget, Collection, false, _targetActions);
         }
@@ -85,7 +96,7 @@ namespace FubarDev.WebDavServer.Engines.Local
         {
             if (Document == null || Parent == null)
                 throw new InvalidOperationException();
-            Uri collUrl = (DestinationUrl.OriginalString.EndsWith("/")) ? new Uri(DestinationUrl, "..") : new Uri(DestinationUrl, ".");
+            Uri collUrl = DestinationUrl.OriginalString.EndsWith("/") ? new Uri(DestinationUrl, "..") : new Uri(DestinationUrl, ".");
             var collTarget = CollectionTarget.NewInstance(collUrl, Parent, _targetActions);
             return new DocumentTarget(collTarget, DestinationUrl, Document, _targetActions);
         }
@@ -95,7 +106,7 @@ namespace FubarDev.WebDavServer.Engines.Local
         {
             if (Parent == null)
                 throw new InvalidOperationException();
-            Uri collUrl = (DestinationUrl.OriginalString.EndsWith("/")) ? new Uri(DestinationUrl, "..") : new Uri(DestinationUrl, ".");
+            Uri collUrl = DestinationUrl.OriginalString.EndsWith("/") ? new Uri(DestinationUrl, "..") : new Uri(DestinationUrl, ".");
             var collTarget = CollectionTarget.NewInstance(collUrl, Parent, _targetActions);
             return new MissingTarget(DestinationUrl, Name, collTarget, _targetActions);
         }

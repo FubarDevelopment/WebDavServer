@@ -1,4 +1,8 @@
-﻿using System;
+﻿// <copyright file="RecursiveExecutionEngine.cs" company="Fubar Development Junker">
+// Copyright (c) Fubar Development Junker. All rights reserved.
+// </copyright>
+
+using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Linq;
@@ -60,7 +64,7 @@ namespace FubarDev.WebDavServer.Engines
                     _logger.LogDebug($"{target.DestinationUrl}: Failed setting properties {string.Join(", ", failedPropertyNames.Select(x => x.ToString()))}");
                     return new ActionResult(ActionStatus.PropSetFailed, target)
                     {
-                        FailedProperties = failedPropertyNames
+                        FailedProperties = failedPropertyNames,
                     };
                 }
 
@@ -96,7 +100,7 @@ namespace FubarDev.WebDavServer.Engines
                     _logger.LogDebug($"{target.DestinationUrl}: Delete failed with exception {ex.Message}");
                     return new CollectionActionResult(ActionStatus.TargetDeleteFailed, target)
                     {
-                        Exception = ex
+                        Exception = ex,
                     };
                 }
 
@@ -115,7 +119,7 @@ namespace FubarDev.WebDavServer.Engines
                 _logger.LogDebug($"{target.DestinationUrl}: Failed setting properties {string.Join(", ", failedPropertyNames.Select(x => x.ToString()))}");
                 return new ActionResult(ActionStatus.PropSetFailed, target)
                 {
-                    FailedProperties = failedPropertyNames
+                    FailedProperties = failedPropertyNames,
                 };
             }
 
@@ -124,7 +128,7 @@ namespace FubarDev.WebDavServer.Engines
 
         public async Task<CollectionActionResult> ExecuteAsync(
             Uri sourceUrl,
-            CollectionExtensions.INode sourceNode,
+            ICollectionNode sourceNode,
             TMissing target,
             CancellationToken cancellationToken)
         {
@@ -149,7 +153,7 @@ namespace FubarDev.WebDavServer.Engines
 
         public async Task<CollectionActionResult> ExecuteAsync(
             Uri sourceUrl,
-            CollectionExtensions.INode sourceNode,
+            ICollectionNode sourceNode,
             TCollection target,
             CancellationToken cancellationToken)
         {
@@ -166,7 +170,7 @@ namespace FubarDev.WebDavServer.Engines
                     _logger.LogDebug($"{target.DestinationUrl}: Delete failed with exception {ex.Message}");
                     return new CollectionActionResult(ActionStatus.TargetDeleteFailed, target)
                     {
-                        Exception = ex
+                        Exception = ex,
                     };
                 }
 
@@ -179,7 +183,7 @@ namespace FubarDev.WebDavServer.Engines
 
         public async Task<CollectionActionResult> ExecuteAsync(
             Uri sourceUrl,
-            CollectionExtensions.INode sourceNode,
+            ICollectionNode sourceNode,
             TCollection target,
             IReadOnlyCollection<IUntypedWriteableProperty> properties,
             CancellationToken cancellationToken)

@@ -1,4 +1,8 @@
-﻿using System.Collections.Generic;
+﻿// <copyright file="PropertyStoreBase.cs" company="Fubar Development Junker">
+// Copyright (c) Fubar Development Junker. All rights reserved.
+// </copyright>
+
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
@@ -31,16 +35,18 @@ namespace FubarDev.WebDavServer.Properties.Store
 
         public virtual Task SetAsync(IEntry entry, XElement element, CancellationToken cancellationToken)
         {
-            return SetAsync(entry, new[] {element}, cancellationToken);
+            return SetAsync(entry, new[] { element }, cancellationToken);
         }
 
         public virtual async Task<bool> RemoveAsync(IEntry entry, XName name, CancellationToken cancellationToken)
         {
-            return (await RemoveAsync(entry, new[] {name}, cancellationToken).ConfigureAwait(false)).Single();
+            return (await RemoveAsync(entry, new[] { name }, cancellationToken).ConfigureAwait(false)).Single();
         }
 
         public abstract Task<IReadOnlyCollection<XElement>> GetAsync(IEntry entry, CancellationToken cancellationToken);
+
         public abstract Task SetAsync(IEntry entry, IEnumerable<XElement> properties, CancellationToken cancellationToken);
+
         public abstract Task<IReadOnlyCollection<bool>> RemoveAsync(IEntry entry, IEnumerable<XName> names, CancellationToken cancellationToken);
 
         public virtual async Task RemoveAsync(IEntry entry, CancellationToken cancellationToken)

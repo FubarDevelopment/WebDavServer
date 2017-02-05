@@ -1,4 +1,8 @@
-﻿using System;
+﻿// <copyright file="IDocumentTarget.cs" company="Fubar Development Junker">
+// Copyright (c) Fubar Development Junker. All rights reserved.
+// </copyright>
+
+using System;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -11,7 +15,8 @@ namespace FubarDev.WebDavServer.Engines
         where TDocument : class, IDocumentTarget<TCollection, TDocument, TMissing>
         where TCollection : class, ICollectionTarget<TCollection, TDocument, TMissing>
     {
-        [NotNull, ItemNotNull]
+        [NotNull]
+        [ItemNotNull]
         Task<TMissing> DeleteAsync(CancellationToken cancellationToken);
     }
 }

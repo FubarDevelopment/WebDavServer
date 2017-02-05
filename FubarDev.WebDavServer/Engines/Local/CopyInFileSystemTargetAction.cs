@@ -1,4 +1,8 @@
-﻿using System;
+﻿// <copyright file="CopyInFileSystemTargetAction.cs" company="Fubar Development Junker">
+// Copyright (c) Fubar Development Junker. All rights reserved.
+// </copyright>
+
+using System;
 using System.Diagnostics;
 using System.Threading;
 using System.Threading.Tasks;

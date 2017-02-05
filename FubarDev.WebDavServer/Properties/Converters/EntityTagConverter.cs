@@ -1,4 +1,8 @@
-﻿using System.Xml.Linq;
+﻿// <copyright file="EntityTagConverter.cs" company="Fubar Development Junker">
+// Copyright (c) Fubar Development Junker. All rights reserved.
+// </copyright>
+
+using System.Xml.Linq;
 
 namespace FubarDev.WebDavServer.Properties.Converters
 {

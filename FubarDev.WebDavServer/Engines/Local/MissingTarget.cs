@@ -1,4 +1,8 @@
-﻿using System;
+﻿// <copyright file="MissingTarget.cs" company="Fubar Development Junker">
+// Copyright (c) Fubar Development Junker. All rights reserved.
+// </copyright>
+
+using System;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -21,7 +25,9 @@ namespace FubarDev.WebDavServer.Engines.Local
         }
 
         public string Name { get; }
+
         public CollectionTarget Parent { get; }
+
         public Uri DestinationUrl { get; }
 
         [NotNull]

@@ -21,6 +21,7 @@ namespace FubarDev.WebDavServer.FileSystem.InMemory
         }
 
         public AsyncLazy<ICollection> Root { get; }
+
         public IPropertyStore PropertyStore { get; }
 
         public Task<SelectionResult> SelectAsync(string path, CancellationToken ct)

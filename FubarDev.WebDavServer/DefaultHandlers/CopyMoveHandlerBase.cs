@@ -1,4 +1,8 @@
-﻿using System;
+﻿// <copyright file="CopyMoveHandlerBase.cs" company="Fubar Development Junker">
+// Copyright (c) Fubar Development Junker. All rights reserved.
+// </copyright>
+
+using System;
 using System.Diagnostics;
 using System.Net.Http;
 using System.Threading;
@@ -40,10 +44,10 @@ namespace FubarDev.WebDavServer.DefaultHandlers
 
         public async Task<IWebDavResult> ExecuteAsync(
             [NotNull] string sourcePath,
-            [NotNull] Uri destination, 
-            Depth depth, 
-            bool overwrite, 
-            RecursiveProcessingMode mode, 
+            [NotNull] Uri destination,
+            Depth depth,
+            bool overwrite,
+            RecursiveProcessingMode mode,
             CancellationToken cancellationToken)
         {
             var sourceSelectionResult = await _rootFileSystem.SelectAsync(sourcePath, cancellationToken).ConfigureAwait(false);
@@ -101,6 +105,91 @@ namespace FubarDev.WebDavServer.DefaultHandlers
             var targetResult = await LocalExecuteAsync(handler, sourceUrl, sourceSelectionResult, targetInfo, depth, overwrite, cancellationToken).ConfigureAwait(false);
             return targetResult.Evaluate(_host);
         }
+
+        protected static async Task<Engines.CollectionActionResult> ExecuteAsync<TCollection, TDocument, TMissing>(
+            [NotNull] RecursiveExecutionEngine<TCollection, TDocument, TMissing> engine,
+            [NotNull] Uri sourceUrl,
+            [NotNull] SelectionResult sourceSelectionResult,
+            [NotNull] TCollection parentCollection,
+            [NotNull] ITarget targetItem,
+            Depth depth,
+            CancellationToken cancellationToken)
+            where TCollection : class, ICollectionTarget<TCollection, TDocument, TMissing>
+            where TDocument : class, IDocumentTarget<TCollection, TDocument, TMissing>
+            where TMissing : class, IMissingTarget<TCollection, TDocument, TMissing>
+        {
+            Debug.Assert(sourceSelectionResult.Collection != null, "sourceSelectionResult.Collection != null");
+
+            if (sourceSelectionResult.ResultType == SelectionResultType.FoundDocument)
+            {
+                ActionResult docResult;
+                if (targetItem is TCollection)
+                {
+                    // Cannot overwrite collection with document
+                    docResult = new ActionResult(ActionStatus.OverwriteFailed, targetItem);
+                }
+                else if (targetItem is TMissing)
+                {
+                    var target = (TMissing)targetItem;
+                    docResult = await engine.ExecuteAsync(
+                        sourceUrl,
+                        sourceSelectionResult.Document,
+                        target,
+                        cancellationToken).ConfigureAwait(false);
+                }
+                else
+                {
+                    var target = (TDocument)targetItem;
+                    docResult = await engine.ExecuteAsync(
+                        sourceUrl,
+                        sourceSelectionResult.Document,
+                        target,
+                        cancellationToken).ConfigureAwait(false);
+                }
+
+                var engineResult = new Engines.CollectionActionResult(ActionStatus.Ignored, parentCollection)
+                {
+                    DocumentActionResults = new[] { docResult },
+                };
+
+                return engineResult;
+            }
+
+            Engines.CollectionActionResult collResult;
+            if (targetItem is TDocument)
+            {
+                // Cannot overwrite document with collection
+                collResult = new Engines.CollectionActionResult(ActionStatus.OverwriteFailed, targetItem);
+            }
+            else if (targetItem is TMissing)
+            {
+                var target = (TMissing)targetItem;
+                collResult = await engine.ExecuteAsync(
+                    sourceUrl,
+                    sourceSelectionResult.Collection,
+                    depth,
+                    target,
+                    cancellationToken).ConfigureAwait(false);
+            }
+            else
+            {
+                var target = (TCollection)targetItem;
+                collResult = await engine.ExecuteAsync(
+                    sourceUrl,
+                    sourceSelectionResult.Collection,
+                    depth,
+                    target,
+                    cancellationToken).ConfigureAwait(false);
+            }
+
+            return collResult;
+        }
+
+        [CanBeNull]
+        protected abstract RemoteHttpClientTargetActions CreateRemoteTargetActions([NotNull] HttpClient httpClient);
+
+        [NotNull]
+        protected abstract ITargetActions<CollectionTarget, DocumentTarget, MissingTarget> CreateLocalTargetActions(RecursiveProcessingMode mode);
 
         private async Task<Engines.CollectionActionResult> RemoteExecuteAsync(
             [NotNull] RemoteTargetActions handler,
@@ -185,91 +274,5 @@ namespace FubarDev.WebDavServer.DefaultHandlers
                     cancellationToken)
                 .ConfigureAwait(false);
         }
-
-        [CanBeNull]
-        protected abstract RemoteHttpClientTargetActions CreateRemoteTargetActions([NotNull] HttpClient httpClient);
-
-        [NotNull]
-        protected abstract ITargetActions<CollectionTarget, DocumentTarget, MissingTarget> CreateLocalTargetActions(RecursiveProcessingMode mode);
-
-        protected static async Task<Engines.CollectionActionResult> ExecuteAsync<TCollection, TDocument, TMissing>(
-            [NotNull] RecursiveExecutionEngine<TCollection, TDocument, TMissing> engine,
-            [NotNull] Uri sourceUrl,
-            [NotNull] SelectionResult sourceSelectionResult,
-            [NotNull] TCollection parentCollection,
-            [NotNull] ITarget targetItem,
-            Depth depth,
-            CancellationToken cancellationToken)
-            where TCollection : class, ICollectionTarget<TCollection, TDocument, TMissing>
-            where TDocument : class, IDocumentTarget<TCollection, TDocument, TMissing>
-            where TMissing : class, IMissingTarget<TCollection, TDocument, TMissing>
-        {
-            Debug.Assert(sourceSelectionResult.Collection != null, "sourceSelectionResult.Collection != null");
-
-            if (sourceSelectionResult.ResultType == SelectionResultType.FoundDocument)
-            {
-                ActionResult docResult;
-                if (targetItem is TCollection)
-                {
-                    // Cannot overwrite collection with document
-                    docResult = new ActionResult(ActionStatus.OverwriteFailed, targetItem);
-                }
-                else if (targetItem is TMissing)
-                {
-                    var target = (TMissing)targetItem;
-                    docResult = await engine.ExecuteAsync(
-                        sourceUrl,
-                        sourceSelectionResult.Document,
-                        target,
-                        cancellationToken).ConfigureAwait(false);
-                }
-                else
-                {
-                    var target = (TDocument)targetItem;
-                    docResult = await engine.ExecuteAsync(
-                        sourceUrl,
-                        sourceSelectionResult.Document,
-                        target,
-                        cancellationToken).ConfigureAwait(false);
-                }
-
-                var engineResult = new Engines.CollectionActionResult(ActionStatus.Ignored, parentCollection)
-                {
-                    DocumentActionResults = new[] { docResult }
-                };
-
-                return engineResult;
-            }
-
-            Engines.CollectionActionResult collResult;
-            if (targetItem is TDocument)
-            {
-                // Cannot overwrite document with collection
-                collResult = new Engines.CollectionActionResult(ActionStatus.OverwriteFailed, targetItem);
-            }
-            else if (targetItem is TMissing)
-            {
-                var target = (TMissing)targetItem;
-                collResult = await engine.ExecuteAsync(
-                    sourceUrl,
-                    sourceSelectionResult.Collection,
-                    depth,
-                    target,
-                    cancellationToken).ConfigureAwait(false);
-            }
-            else
-            {
-                var target = (TCollection)targetItem;
-                collResult = await engine.ExecuteAsync(
-                    sourceUrl,
-                    sourceSelectionResult.Collection,
-                    depth,
-                    target,
-                    cancellationToken).ConfigureAwait(false);
-            }
-
-            return collResult;
-        }
-
     }
 }

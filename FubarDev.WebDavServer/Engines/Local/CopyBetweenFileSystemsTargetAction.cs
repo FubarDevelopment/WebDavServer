@@ -1,4 +1,8 @@
-﻿using System;
+﻿// <copyright file="CopyBetweenFileSystemsTargetAction.cs" company="Fubar Development Junker">
+// Copyright (c) Fubar Development Junker. All rights reserved.
+// </copyright>
+
+using System;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -31,6 +35,7 @@ namespace FubarDev.WebDavServer.Engines.Local
                         await sourceStream.CopyToAsync(destinationStream, 65536, cancellationToken).ConfigureAwait(false);
                     }
                 }
+
                 return new ActionResult(ActionStatus.Overwritten, destination);
             }
             catch (Exception ex)

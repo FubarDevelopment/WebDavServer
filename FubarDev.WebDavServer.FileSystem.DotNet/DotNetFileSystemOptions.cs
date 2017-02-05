@@ -14,7 +14,9 @@ namespace FubarDev.WebDavServer.FileSystem.DotNet
         }
 
         public string RootPath { get; set; }
+
         public string AnonymousUserName { get; set; }
+
         public bool AllowInfiniteDepth { get; set; }
 
         private static HomePathInfo GetHomePath()
@@ -32,6 +34,7 @@ namespace FubarDev.WebDavServer.FileSystem.DotNet
         private class HomePathInfo
         {
             public string RootPath { get; set; }
+
             public bool IsProbablyUnix { get; set; }
         }
     }

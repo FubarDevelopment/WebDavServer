@@ -1,4 +1,8 @@
-﻿using System.Collections.Generic;
+﻿// <copyright file="PutHandler.cs" company="Fubar Development Junker">
+// Copyright (c) Fubar Development Junker. All rights reserved.
+// </copyright>
+
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
@@ -33,14 +37,14 @@ namespace FubarDev.WebDavServer.DefaultHandlers
             Stream fileStream;
             if (selectionResult.ResultType == SelectionResultType.FoundDocument)
             {
-                Debug.Assert(selectionResult.Document != null);
+                Debug.Assert(selectionResult.Document != null, "selectionResult.Document != null");
                 fileStream = await selectionResult.Document.CreateAsync(cancellationToken).ConfigureAwait(false);
             }
             else
             {
-                Debug.Assert(selectionResult.ResultType == SelectionResultType.MissingDocumentOrCollection);
+                Debug.Assert(selectionResult.ResultType == SelectionResultType.MissingDocumentOrCollection, "selectionResult.ResultType == SelectionResultType.MissingDocumentOrCollection");
                 Debug.Assert(selectionResult.MissingNames != null, "selectionResult.PathEntries != null");
-                Debug.Assert(selectionResult.MissingNames.Count == 1);
+                Debug.Assert(selectionResult.MissingNames.Count == 1, "selectionResult.MissingNames.Count == 1");
                 Debug.Assert(selectionResult.Collection != null, "selectionResult.Collection != null");
                 var newName = selectionResult.MissingNames.Single();
                 var entry = await selectionResult.Collection.CreateDocumentAsync(newName, cancellationToken).ConfigureAwait(false);
