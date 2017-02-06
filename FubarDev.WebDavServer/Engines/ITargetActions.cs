@@ -26,6 +26,6 @@ namespace FubarDev.WebDavServer.Engines
         Task<ActionResult> ExecuteAsync([NotNull] IDocument source, [NotNull] TDocument destination, CancellationToken cancellationToken);
 
         [NotNull]
-        Task ExecuteAsync([NotNull] ICollection source, CancellationToken cancellationToken);
+        Task ExecuteAsync([NotNull] ICollection source, TCollection destination, CancellationToken cancellationToken);
     }
 }

@@ -17,10 +17,11 @@ namespace FubarDev.WebDavServer.Engines.Local
         public async Task<DocumentTarget> ExecuteAsync(IDocument source, MissingTarget destination, CancellationToken cancellationToken)
         {
             var doc = await destination.Parent.Collection.CreateDocumentAsync(destination.Name, cancellationToken).ConfigureAwait(false);
+
             var docTarget = new DocumentTarget(destination.Parent, destination.DestinationUrl, doc, this);
-            var result = await ExecuteAsync(source, docTarget, cancellationToken).ConfigureAwait(false);
-            if (result.IsFailure)
-                throw new Exception(result.Exception.Message, result.Exception);
+            await CopyAsync(source, doc, cancellationToken).ConfigureAwait(false);
+            await CopyETagAsync(source, doc, cancellationToken).ConfigureAwait(false);
+
             return docTarget;
         }
 
@@ -28,14 +29,8 @@ namespace FubarDev.WebDavServer.Engines.Local
         {
             try
             {
-                using (var sourceStream = await source.OpenReadAsync(cancellationToken).ConfigureAwait(false))
-                {
-                    using (var destinationStream = await destination.Document.CreateAsync(cancellationToken).ConfigureAwait(false))
-                    {
-                        await sourceStream.CopyToAsync(destinationStream, 65536, cancellationToken).ConfigureAwait(false);
-                    }
-                }
-
+                await CopyAsync(source, destination.Document, cancellationToken).ConfigureAwait(false);
+                await CopyETagAsync(source, destination.Document, cancellationToken).ConfigureAwait(false);
                 return new ActionResult(ActionStatus.Overwritten, destination);
             }
             catch (Exception ex)
@@ -47,9 +42,31 @@ namespace FubarDev.WebDavServer.Engines.Local
             }
         }
 
-        public Task ExecuteAsync(ICollection source, CancellationToken cancellationToken)
+        public Task ExecuteAsync(ICollection source, CollectionTarget destination, CancellationToken cancellationToken)
         {
-            return Task.FromResult(0);
+            return CopyETagAsync(source, destination.Collection, cancellationToken);
+        }
+
+        private static async Task CopyAsync(IDocument source, IDocument destination, CancellationToken cancellationToken)
+        {
+            using (var sourceStream = await source.OpenReadAsync(cancellationToken).ConfigureAwait(false))
+            {
+                using (var destinationStream = await destination.CreateAsync(cancellationToken).ConfigureAwait(false))
+                {
+                    await sourceStream.CopyToAsync(destinationStream, 65536, cancellationToken).ConfigureAwait(false);
+                }
+            }
+        }
+
+        private static async Task CopyETagAsync(IEntry source, IEntry dest, CancellationToken cancellationToken)
+        {
+            var sourcePropStore = source.FileSystem.PropertyStore;
+            var destPropStore = dest.FileSystem.PropertyStore;
+            if (sourcePropStore != null && destPropStore != null)
+            {
+                var etag = await sourcePropStore.GetETagAsync(source, cancellationToken).ConfigureAwait(false);
+                await destPropStore.SetAsync(dest, etag.ToXml(), cancellationToken).ConfigureAwait(false);
+            }
         }
     }
 }

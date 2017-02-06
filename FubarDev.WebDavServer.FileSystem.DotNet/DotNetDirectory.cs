@@ -71,10 +71,17 @@ namespace FubarDev.WebDavServer.FileSystem.DotNet
             return Task.FromResult((ICollection)CreateEntry(info));
         }
 
-        public override Task<DeleteResult> DeleteAsync(CancellationToken cancellationToken)
+        public override async Task<DeleteResult> DeleteAsync(CancellationToken cancellationToken)
         {
             DirectoryInfo.Delete(true);
-            return Task.FromResult(new DeleteResult(WebDavStatusCode.OK, null));
+
+            var propStore = FileSystem.PropertyStore;
+            if (propStore != null)
+            {
+                await propStore.RemoveAsync(this, cancellationToken).ConfigureAwait(false);
+            }
+
+            return new DeleteResult(WebDavStatusCode.OK, null);
         }
 
         public IAsyncEnumerable<IEntry> GetEntries(int maxDepth)

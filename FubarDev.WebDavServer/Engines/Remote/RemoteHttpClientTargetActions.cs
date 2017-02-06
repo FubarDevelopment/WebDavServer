@@ -38,7 +38,7 @@ namespace FubarDev.WebDavServer.Engines.Remote
             Client = httpClient;
         }
 
-        public override RecursiveTargetBehaviour ExistingTargetBehaviour { get; } = RecursiveTargetBehaviour.Overwrite;
+        public override RecursiveTargetBehaviour ExistingTargetBehaviour { get; } = RecursiveTargetBehaviour.DeleteTarget;
 
         protected HttpClient Client { get; }
 

@@ -7,9 +7,9 @@ using System.Collections.Generic;
 using System.IO;
 using System.Threading;
 using System.Threading.Tasks;
+using System.Xml.Linq;
 
 using FubarDev.WebDavServer.Model;
-using FubarDev.WebDavServer.Props.Dead;
 using FubarDev.WebDavServer.Props.Live;
 
 namespace FubarDev.WebDavServer.FileSystem.DotNet
@@ -36,32 +36,77 @@ namespace FubarDev.WebDavServer.FileSystem.DotNet
             return Task.FromResult<Stream>(FileInfo.Open(FileMode.Create, FileAccess.Write));
         }
 
-        public override Task<DeleteResult> DeleteAsync(CancellationToken cancellationToken)
+        public override async Task<DeleteResult> DeleteAsync(CancellationToken cancellationToken)
         {
             FileInfo.Delete();
-            return Task.FromResult(new DeleteResult(WebDavStatusCode.OK, null));
+
+            var propStore = FileSystem.PropertyStore;
+            if (propStore != null)
+            {
+                await propStore.RemoveAsync(this, cancellationToken).ConfigureAwait(false);
+            }
+
+            return new DeleteResult(WebDavStatusCode.OK, null);
         }
 
-        public Task<IDocument> CopyToAsync(ICollection collection, string name, CancellationToken cancellationToken)
+        public async Task<IDocument> CopyToAsync(ICollection collection, string name, CancellationToken cancellationToken)
         {
             var dir = (DotNetDirectory)collection;
             var targetFileName = System.IO.Path.Combine(dir.DirectoryInfo.FullName, name);
             File.Copy(FileInfo.FullName, targetFileName, true);
             var fileInfo = new FileInfo(targetFileName);
-            var result = new DotNetFile(dir.DotNetFileSystem, dir, fileInfo, dir.Path.Append(fileInfo.Name, false));
-            return Task.FromResult<IDocument>(result);
+            var doc = new DotNetFile(dir.DotNetFileSystem, dir, fileInfo, dir.Path.Append(fileInfo.Name, false));
+
+            var sourcePropStore = FileSystem.PropertyStore;
+            var destPropStore = collection.FileSystem.PropertyStore;
+            if (sourcePropStore != null && destPropStore != null)
+            {
+                var sourceProps = await sourcePropStore.GetAsync(this, cancellationToken).ConfigureAwait(false);
+                await destPropStore.RemoveAsync(doc, cancellationToken).ConfigureAwait(false);
+                await destPropStore.SetAsync(doc, sourceProps, cancellationToken).ConfigureAwait(false);
+            }
+            else if (destPropStore != null)
+            {
+                await destPropStore.RemoveAsync(doc, cancellationToken).ConfigureAwait(false);
+            }
+
+            return doc;
         }
 
-        public Task<IDocument> MoveToAsync(ICollection collection, string name, CancellationToken cancellationToken)
+        public async Task<IDocument> MoveToAsync(ICollection collection, string name, CancellationToken cancellationToken)
         {
+            var sourcePropStore = FileSystem.PropertyStore;
+            var destPropStore = collection.FileSystem.PropertyStore;
+
+            IReadOnlyCollection<XElement> sourceProps;
+            if (sourcePropStore != null && destPropStore != null)
+            {
+                sourceProps = await sourcePropStore.GetAsync(this, cancellationToken).ConfigureAwait(false);
+            }
+            else
+            {
+                sourceProps = null;
+            }
+
             var dir = (DotNetDirectory)collection;
             var targetFileName = System.IO.Path.Combine(dir.DirectoryInfo.FullName, name);
             if (File.Exists(targetFileName))
                 File.Delete(targetFileName);
             File.Move(FileInfo.FullName, targetFileName);
             var fileInfo = new FileInfo(targetFileName);
-            var result = new DotNetFile(dir.DotNetFileSystem, dir, fileInfo, dir.Path.Append(fileInfo.Name, false));
-            return Task.FromResult<IDocument>(result);
+            var doc = new DotNetFile(dir.DotNetFileSystem, dir, fileInfo, dir.Path.Append(fileInfo.Name, false));
+
+            if (destPropStore != null)
+            {
+                await destPropStore.RemoveAsync(doc, cancellationToken).ConfigureAwait(false);
+
+                if (sourceProps != null)
+                {
+                    await destPropStore.SetAsync(doc, sourceProps, cancellationToken).ConfigureAwait(false);
+                }
+            }
+
+            return doc;
         }
 
         protected override IEnumerable<ILiveProperty> GetLiveProperties()

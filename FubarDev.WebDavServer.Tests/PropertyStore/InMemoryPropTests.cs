@@ -43,6 +43,22 @@ namespace FubarDev.WebDavServer.Tests.PropertyStore
         }
 
         [Fact]
+        public async Task SameNameDocumentsInDifferentCollections()
+        {
+            var ct = CancellationToken.None;
+            var fs = new InMemoryFileSystem(new PathTraversalEngine(), new InMemoryPropertyStoreFactory());
+            Assert.NotNull(fs.PropertyStore);
+
+            var root = await fs.Root.GetValueAsync(ct).ConfigureAwait(false);
+            var coll1 = await root.CreateCollectionAsync("coll1", ct).ConfigureAwait(false);
+            var docRoot = await root.CreateDocumentAsync("test1.txt", ct).ConfigureAwait(false);
+            var docColl1 = await coll1.CreateDocumentAsync("test1.txt", ct).ConfigureAwait(false);
+            var eTagDocRoot = await fs.PropertyStore.GetETagAsync(docRoot, ct).ConfigureAwait(false);
+            var eTagDocColl1 = await fs.PropertyStore.GetETagAsync(docColl1, ct).ConfigureAwait(false);
+            Assert.NotEqual(eTagDocRoot, eTagDocColl1);
+        }
+
+        [Fact]
         public async Task DisplayNameChangeable()
         {
             var ct = CancellationToken.None;

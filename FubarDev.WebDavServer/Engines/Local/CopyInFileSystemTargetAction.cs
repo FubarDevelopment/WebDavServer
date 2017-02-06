@@ -13,7 +13,7 @@ namespace FubarDev.WebDavServer.Engines.Local
 {
     public class CopyInFileSystemTargetAction : ITargetActions<CollectionTarget, DocumentTarget, MissingTarget>
     {
-        public RecursiveTargetBehaviour ExistingTargetBehaviour { get; } = RecursiveTargetBehaviour.DeleteTarget;
+        public RecursiveTargetBehaviour ExistingTargetBehaviour { get; } = RecursiveTargetBehaviour.Overwrite;
 
         public async Task<DocumentTarget> ExecuteAsync(IDocument source, MissingTarget destination, CancellationToken cancellationToken)
         {
@@ -38,9 +38,20 @@ namespace FubarDev.WebDavServer.Engines.Local
             }
         }
 
-        public Task ExecuteAsync(ICollection source, CancellationToken cancellationToken)
+        public Task ExecuteAsync(ICollection source, CollectionTarget destination, CancellationToken cancellationToken)
         {
-            return Task.FromResult(0);
+            return CopyETagAsync(source, destination.Collection, cancellationToken);
+        }
+
+        private static async Task CopyETagAsync(IEntry source, IEntry dest, CancellationToken cancellationToken)
+        {
+            var sourcePropStore = source.FileSystem.PropertyStore;
+            var destPropStore = dest.FileSystem.PropertyStore;
+            if (sourcePropStore != null && destPropStore != null)
+            {
+                var etag = await sourcePropStore.GetETagAsync(source, cancellationToken).ConfigureAwait(false);
+                await destPropStore.SetAsync(dest, etag.ToXml(), cancellationToken).ConfigureAwait(false);
+            }
         }
     }
 }

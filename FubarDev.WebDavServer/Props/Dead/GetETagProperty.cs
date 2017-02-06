@@ -41,16 +41,8 @@ namespace FubarDev.WebDavServer.Props.Dead
         {
             if (_element == null)
             {
-                var document = _entry as IDocument;
-                if (document == null)
-                {
-                    _element = Converter.ToElement(Name, new EntityTag(false));
-                }
-                else
-                {
-                    var etag = await _propertyStore.GetETagAsync(document, ct).ConfigureAwait(false);
-                    _element = Converter.ToElement(Name, etag);
-                }
+                var etag = await _propertyStore.GetETagAsync(_entry, ct).ConfigureAwait(false);
+                _element = Converter.ToElement(Name, etag);
             }
 
             return _element;

@@ -8,9 +8,9 @@ using System.IO;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
+using System.Xml.Linq;
 
 using FubarDev.WebDavServer.Model;
-using FubarDev.WebDavServer.Props.Dead;
 using FubarDev.WebDavServer.Props.Live;
 
 namespace FubarDev.WebDavServer.FileSystem.InMemory
@@ -32,12 +32,20 @@ namespace FubarDev.WebDavServer.FileSystem.InMemory
 
         public long Length => _data.Length;
 
-        public override Task<DeleteResult> DeleteAsync(CancellationToken cancellationToken)
+        public override async Task<DeleteResult> DeleteAsync(CancellationToken cancellationToken)
         {
-            var result = !InMemoryParent.Remove(Name)
-                ? new DeleteResult(WebDavStatusCode.NotFound, this)
-                : new DeleteResult(WebDavStatusCode.OK, null);
-            return Task.FromResult(result);
+            if (InMemoryParent.Remove(Name))
+            {
+                var propStore = FileSystem.PropertyStore;
+                if (propStore != null)
+                {
+                    await propStore.RemoveAsync(this, cancellationToken).ConfigureAwait(false);
+                }
+
+                return new DeleteResult(WebDavStatusCode.OK, null);
+            }
+
+            return new DeleteResult(WebDavStatusCode.NotFound, this);
         }
 
         public Task<Stream> OpenReadAsync(CancellationToken cancellationToken)
@@ -53,15 +61,44 @@ namespace FubarDev.WebDavServer.FileSystem.InMemory
         public async Task<IDocument> CopyToAsync(ICollection collection, string name, CancellationToken cancellationToken)
         {
             var coll = (InMemoryDirectory)collection;
+            coll.Remove(name);
+
             var doc = (InMemoryFile)await coll.CreateDocumentAsync(name, cancellationToken).ConfigureAwait(false);
             doc._data = new MemoryStream(_data.ToArray());
             doc.CreationTimeUtc = CreationTimeUtc;
             doc.LastWriteTimeUtc = LastWriteTimeUtc;
+
+            var sourcePropStore = FileSystem.PropertyStore;
+            var destPropStore = collection.FileSystem.PropertyStore;
+            if (sourcePropStore != null && destPropStore != null)
+            {
+                var sourceProps = await sourcePropStore.GetAsync(this, cancellationToken).ConfigureAwait(false);
+                await destPropStore.RemoveAsync(doc, cancellationToken).ConfigureAwait(false);
+                await destPropStore.SetAsync(doc, sourceProps, cancellationToken).ConfigureAwait(false);
+            }
+            else if (destPropStore != null)
+            {
+                await destPropStore.RemoveAsync(doc, cancellationToken).ConfigureAwait(false);
+            }
+
             return doc;
         }
 
         public async Task<IDocument> MoveToAsync(ICollection collection, string name, CancellationToken cancellationToken)
         {
+            var sourcePropStore = FileSystem.PropertyStore;
+            var destPropStore = collection.FileSystem.PropertyStore;
+
+            IReadOnlyCollection<XElement> sourceProps;
+            if (sourcePropStore != null && destPropStore != null)
+            {
+                sourceProps = await sourcePropStore.GetAsync(this, cancellationToken).ConfigureAwait(false);
+            }
+            else
+            {
+                sourceProps = null;
+            }
+
             var coll = (InMemoryDirectory)collection;
             var doc = (InMemoryFile)await coll.CreateDocumentAsync(name, cancellationToken).ConfigureAwait(false);
             doc._data = new MemoryStream(_data.ToArray());
@@ -69,6 +106,17 @@ namespace FubarDev.WebDavServer.FileSystem.InMemory
             doc.LastWriteTimeUtc = LastWriteTimeUtc;
             if (!InMemoryParent.Remove(Name))
                 throw new InvalidOperationException("Failed to remove the document from the source collection.");
+
+            if (destPropStore != null)
+            {
+                await destPropStore.RemoveAsync(doc, cancellationToken).ConfigureAwait(false);
+
+                if (sourceProps != null)
+                {
+                    await destPropStore.SetAsync(doc, sourceProps, cancellationToken).ConfigureAwait(false);
+                }
+            }
+
             return doc;
         }
 

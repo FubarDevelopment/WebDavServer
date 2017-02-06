@@ -69,7 +69,7 @@ namespace FubarDev.WebDavServer.Engines.Remote
             return new ActionResult(ActionStatus.Overwritten, destination);
         }
 
-        public override Task ExecuteAsync(ICollection source, CancellationToken cancellationToken)
+        public override Task ExecuteAsync(ICollection source, RemoteCollectionTarget destination, CancellationToken cancellationToken)
         {
             return Task.FromResult(0);
         }

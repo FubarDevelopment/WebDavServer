@@ -3,6 +3,7 @@
 // </copyright>
 
 using System;
+using System.Diagnostics;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -12,7 +13,7 @@ namespace FubarDev.WebDavServer.Engines.Local
 {
     public class MoveInFileSystemTargetAction : ITargetActions<CollectionTarget, DocumentTarget, MissingTarget>
     {
-        public RecursiveTargetBehaviour ExistingTargetBehaviour { get; } = RecursiveTargetBehaviour.DeleteTarget;
+        public RecursiveTargetBehaviour ExistingTargetBehaviour { get; } = RecursiveTargetBehaviour.Overwrite;
 
         public async Task<DocumentTarget> ExecuteAsync(IDocument source, MissingTarget destination, CancellationToken cancellationToken)
         {
@@ -24,6 +25,7 @@ namespace FubarDev.WebDavServer.Engines.Local
         {
             try
             {
+                Debug.Assert(destination.Parent != null, "destination.Parent != null");
                 await source.MoveToAsync(destination.Parent.Collection, destination.Name, cancellationToken).ConfigureAwait(false);
                 return new ActionResult(ActionStatus.Overwritten, destination);
             }
@@ -36,9 +38,21 @@ namespace FubarDev.WebDavServer.Engines.Local
             }
         }
 
-        public Task ExecuteAsync(ICollection source, CancellationToken cancellationToken)
+        public async Task ExecuteAsync(ICollection source, CollectionTarget destination, CancellationToken cancellationToken)
         {
-            return source.DeleteAsync(cancellationToken);
+            await CopyETagAsync(source, destination.Collection, cancellationToken).ConfigureAwait(false);
+            await source.DeleteAsync(cancellationToken).ConfigureAwait(false);
+        }
+
+        private static async Task CopyETagAsync(IEntry source, IEntry dest, CancellationToken cancellationToken)
+        {
+            var sourcePropStore = source.FileSystem.PropertyStore;
+            var destPropStore = dest.FileSystem.PropertyStore;
+            if (sourcePropStore != null && destPropStore != null)
+            {
+                var etag = await sourcePropStore.GetETagAsync(source, cancellationToken).ConfigureAwait(false);
+                await destPropStore.SetAsync(dest, etag.ToXml(), cancellationToken).ConfigureAwait(false);
+            }
         }
     }
 }

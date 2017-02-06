@@ -10,13 +10,13 @@ using System.Threading.Tasks;
 using System.Xml.Linq;
 
 using FubarDev.WebDavServer.FileSystem;
+using FubarDev.WebDavServer.Model;
 using FubarDev.WebDavServer.Props.Dead;
 
 namespace FubarDev.WebDavServer.Props.Store.InMemory
 {
     public class InMemoryPropertyStore : PropertyStoreBase
     {
-        private static readonly IReadOnlyCollection<XElement> _emptyElements = new XElement[0];
         private readonly IDictionary<Uri, IDictionary<XName, XElement>> _properties = new Dictionary<Uri, IDictionary<XName, XElement>>();
 
         public InMemoryPropertyStore(IDeadPropertyFactory deadPropertyFactory)
@@ -26,13 +26,22 @@ namespace FubarDev.WebDavServer.Props.Store.InMemory
 
         public override int Cost { get; } = 0;
 
-        public override Task<IReadOnlyCollection<XElement>> GetAsync(IEntry entry, CancellationToken cancellationToken)
+        public override async Task<IReadOnlyCollection<XElement>> GetAsync(IEntry entry, CancellationToken cancellationToken)
         {
+            IReadOnlyCollection<XElement> result;
             IDictionary<XName, XElement> properties;
             if (!_properties.TryGetValue(entry.Path, out properties))
-                return Task.FromResult(_emptyElements);
+            {
+                var etagXml = new EntityTag(false).ToXml();
+                await SetAsync(entry, etagXml, cancellationToken).ConfigureAwait(false);
+                result = new[] { etagXml };
+            }
+            else
+            {
+                result = properties.Values.ToList();
+            }
 
-            return Task.FromResult<IReadOnlyCollection<XElement>>(properties.Values.ToList());
+            return result;
         }
 
         public override Task SetAsync(IEntry entry, IEnumerable<XElement> elements, CancellationToken cancellationToken)

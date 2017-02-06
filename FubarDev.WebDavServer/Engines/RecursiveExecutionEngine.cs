@@ -191,6 +191,13 @@ namespace FubarDev.WebDavServer.Engines
             var documentActionResults = ImmutableList<ActionResult>.Empty;
             var collectionActionResults = ImmutableList<CollectionActionResult>.Empty;
 
+            var subNodeProperties = new Dictionary<string, IReadOnlyCollection<IUntypedWriteableProperty>>();
+            foreach (var childNode in sourceNode.Nodes)
+            {
+                var subProperties = await childNode.Collection.GetProperties().OfType<IUntypedWriteableProperty>().ToList(cancellationToken).ConfigureAwait(false);
+                subNodeProperties.Add(childNode.Name, subProperties);
+            }
+
             foreach (var document in sourceNode.Documents)
             {
                 var docUrl = sourceUrl.Append(document);
@@ -234,13 +241,15 @@ namespace FubarDev.WebDavServer.Engines
 
             foreach (var childNode in sourceNode.Nodes)
             {
+                var childProperties = subNodeProperties[childNode.Name];
                 var collection = childNode.Collection;
                 var docUrl = sourceUrl.Append(childNode.Collection);
                 if (target.Created)
                 {
                     // Collection was created by us - we just assume that the sub collection doesn't exist
                     var missingTarget = target.NewMissing(childNode.Name);
-                    var collResult = await ExecuteAsync(docUrl, childNode, missingTarget, cancellationToken).ConfigureAwait(false);
+                    var newColl = await missingTarget.CreateCollectionAsync(cancellationToken).ConfigureAwait(false);
+                    var collResult = await ExecuteAsync(docUrl, childNode, newColl, childProperties, cancellationToken).ConfigureAwait(false);
                     collectionActionResults = collectionActionResults.Add(collResult);
                 }
                 else
@@ -261,14 +270,15 @@ namespace FubarDev.WebDavServer.Engines
                         if (collTarget != null)
                         {
                             // We found a collection: Business as usual
-                            var collResult = await ExecuteAsync(docUrl, childNode, collTarget, cancellationToken).ConfigureAwait(false);
+                            var collResult = await ExecuteAsync(docUrl, childNode, collTarget, childProperties, cancellationToken).ConfigureAwait(false);
                             collectionActionResults = collectionActionResults.Add(collResult);
                         }
                         else
                         {
                             // We didn't find anything: Business as usual
                             var missingTarget = (TMissing)foundTarget;
-                            var collResult = await ExecuteAsync(docUrl, childNode, missingTarget, cancellationToken).ConfigureAwait(false);
+                            var newColl = await missingTarget.CreateCollectionAsync(cancellationToken).ConfigureAwait(false);
+                            var collResult = await ExecuteAsync(docUrl, childNode, newColl, childProperties, cancellationToken).ConfigureAwait(false);
                             collectionActionResults = collectionActionResults.Add(collResult);
                         }
                     }
@@ -289,7 +299,7 @@ namespace FubarDev.WebDavServer.Engines
                     };
                 }
 
-                await _handler.ExecuteAsync(sourceNode.Collection, cancellationToken).ConfigureAwait(false);
+                await _handler.ExecuteAsync(sourceNode.Collection, target, cancellationToken).ConfigureAwait(false);
             }
             catch (Exception ex)
             {

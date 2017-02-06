@@ -22,12 +22,20 @@ namespace FubarDev.WebDavServer.FileSystem.InMemory
         {
         }
 
-        public override Task<DeleteResult> DeleteAsync(CancellationToken cancellationToken)
+        public override async Task<DeleteResult> DeleteAsync(CancellationToken cancellationToken)
         {
-            var result = !InMemoryParent.Remove(Name)
-                ? new DeleteResult(WebDavStatusCode.NotFound, this)
-                : new DeleteResult(WebDavStatusCode.OK, null);
-            return Task.FromResult(result);
+            if (InMemoryParent.Remove(Name))
+            {
+                var propStore = FileSystem.PropertyStore;
+                if (propStore != null)
+                {
+                    await propStore.RemoveAsync(this, cancellationToken).ConfigureAwait(false);
+                }
+
+                return new DeleteResult(WebDavStatusCode.OK, null);
+            }
+
+            return new DeleteResult(WebDavStatusCode.NotFound, this);
         }
 
         public Task<IEntry> GetChildAsync(string name, CancellationToken ct)
@@ -55,7 +63,7 @@ namespace FubarDev.WebDavServer.FileSystem.InMemory
         {
             if (_children.ContainsKey(name))
                 throw new IOException("Document or collection with the same name already exists");
-            var newItem = new InMemoryDirectory(FileSystem, this, Path.Append(name, false), name);
+            var newItem = new InMemoryDirectory(FileSystem, this, Path.AppendDirectory(name), name);
             _children.Add(newItem.Name, newItem);
             return Task.FromResult<ICollection>(newItem);
         }

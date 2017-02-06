@@ -73,11 +73,12 @@ namespace FubarDev.WebDavServer.Tests.Handlers
             var root = await fileSystem.Root.GetValueAsync(ct).ConfigureAwait(false);
             var coll1 = await root.CreateCollectionAsync("test1", ct).ConfigureAwait(false);
             Assert.NotNull(coll1);
-            var props1 = await coll1.GetPropertyElementsAsync(ct).ConfigureAwait(false);
 
             var doc1 = await coll1.CreateDocumentAsync("text.txt", ct).ConfigureAwait(false);
             await doc1.FillWithAsync("Dokument 1", ct).ConfigureAwait(false);
             Assert.Equal("Dokument 1", await doc1.ReadAllAsync(ct).ConfigureAwait(false));
+
+            var props1 = await coll1.GetPropertyElementsAsync(ct).ConfigureAwait(false);
             var docProps1 = await doc1.GetPropertyElementsAsync(ct).ConfigureAwait(false);
 
             await handler
@@ -106,9 +107,10 @@ namespace FubarDev.WebDavServer.Tests.Handlers
             var root = await fileSystem.Root.GetValueAsync(ct).ConfigureAwait(false);
             var coll1 = await root.CreateCollectionAsync("test1", ct).ConfigureAwait(false);
             Assert.NotNull(coll1);
-            var props1 = await coll1.GetPropertyElementsAsync(ct).ConfigureAwait(false);
 
             var sub1 = await coll1.CreateCollectionAsync("subcoll", ct).ConfigureAwait(false);
+
+            var props1 = await coll1.GetPropertyElementsAsync(ct).ConfigureAwait(false);
             var subProps1 = await sub1.GetPropertyElementsAsync(ct).ConfigureAwait(false);
 
             await handler
@@ -137,14 +139,15 @@ namespace FubarDev.WebDavServer.Tests.Handlers
             var root = await fileSystem.Root.GetValueAsync(ct).ConfigureAwait(false);
             var coll1 = await root.CreateCollectionAsync("test1", ct).ConfigureAwait(false);
             Assert.NotNull(coll1);
-            var props1 = await coll1.GetPropertyElementsAsync(ct).ConfigureAwait(false);
 
             var doc1 = await coll1.CreateDocumentAsync("text.txt", ct).ConfigureAwait(false);
             await doc1.FillWithAsync("Dokument 1", ct).ConfigureAwait(false);
             Assert.Equal("Dokument 1", await doc1.ReadAllAsync(ct).ConfigureAwait(false));
-            var docProps1 = await doc1.GetPropertyElementsAsync(ct).ConfigureAwait(false);
 
             var sub1 = await coll1.CreateCollectionAsync("subcoll", ct).ConfigureAwait(false);
+
+            var props1 = await coll1.GetPropertyElementsAsync(ct).ConfigureAwait(false);
+            var docProps1 = await doc1.GetPropertyElementsAsync(ct).ConfigureAwait(false);
             var subProps1 = await sub1.GetPropertyElementsAsync(ct).ConfigureAwait(false);
 
             await handler
@@ -179,14 +182,15 @@ namespace FubarDev.WebDavServer.Tests.Handlers
             var root = await fileSystem.Root.GetValueAsync(ct).ConfigureAwait(false);
             var coll1 = await root.CreateCollectionAsync("test1", ct).ConfigureAwait(false);
             Assert.NotNull(coll1);
-            var props1 = await coll1.GetPropertyElementsAsync(ct).ConfigureAwait(false);
 
             var sub1 = await coll1.CreateCollectionAsync("subcoll", ct).ConfigureAwait(false);
-            var subProps1 = await sub1.GetPropertyElementsAsync(ct).ConfigureAwait(false);
 
             var doc1 = await sub1.CreateDocumentAsync("text.txt", ct).ConfigureAwait(false);
             await doc1.FillWithAsync("Dokument 1", ct).ConfigureAwait(false);
             Assert.Equal("Dokument 1", await doc1.ReadAllAsync(ct).ConfigureAwait(false));
+
+            var props1 = await coll1.GetPropertyElementsAsync(ct).ConfigureAwait(false);
+            var subProps1 = await sub1.GetPropertyElementsAsync(ct).ConfigureAwait(false);
             var docProps1 = await doc1.GetPropertyElementsAsync(ct).ConfigureAwait(false);
 
             await handler
@@ -221,12 +225,12 @@ namespace FubarDev.WebDavServer.Tests.Handlers
             var root = await fileSystem.Root.GetValueAsync(ct).ConfigureAwait(false);
             var coll1 = await root.CreateCollectionAsync("test1", ct).ConfigureAwait(false);
             Assert.NotNull(coll1);
-            var props1 = await coll1.GetPropertyElementsAsync(ct).ConfigureAwait(false);
 
             var sub11 = await coll1.CreateCollectionAsync("subcoll1", ct).ConfigureAwait(false);
-            var subProps11 = await sub11.GetPropertyElementsAsync(ct).ConfigureAwait(false);
-
             var sub12 = await coll1.CreateCollectionAsync("subcoll2", ct).ConfigureAwait(false);
+
+            var props1 = await coll1.GetPropertyElementsAsync(ct).ConfigureAwait(false);
+            var subProps11 = await sub11.GetPropertyElementsAsync(ct).ConfigureAwait(false);
             var subProps12 = await sub12.GetPropertyElementsAsync(ct).ConfigureAwait(false);
 
             await handler
@@ -262,37 +266,38 @@ namespace FubarDev.WebDavServer.Tests.Handlers
 
             var coll1 = await root.CreateCollectionAsync("test1", ct).ConfigureAwait(false);
             Assert.NotNull(coll1);
-            var props1 = await coll1.GetPropertyElementsAsync(ct).ConfigureAwait(false);
 
             var doc1 = await coll1.CreateDocumentAsync("text.txt", ct).ConfigureAwait(false);
             await doc1.FillWithAsync("Dokument 1", ct).ConfigureAwait(false);
             Assert.Equal("Dokument 1", await doc1.ReadAllAsync(ct).ConfigureAwait(false));
-            var docProps1 = await doc1.GetPropertyElementsAsync(ct).ConfigureAwait(false);
 
             var sub11 = await coll1.CreateCollectionAsync("subcoll1", ct).ConfigureAwait(false);
-            var subProps11 = await sub11.GetPropertyElementsAsync(ct).ConfigureAwait(false);
 
             var doc111 = await sub11.CreateDocumentAsync("text11.txt", ct).ConfigureAwait(false);
             await doc111.FillWithAsync("Dokument 1.1.1", ct).ConfigureAwait(false);
             Assert.Equal("Dokument 1.1.1", await doc111.ReadAllAsync(ct).ConfigureAwait(false));
-            var docProps111 = await doc111.GetPropertyElementsAsync(ct).ConfigureAwait(false);
 
             var doc112 = await sub11.CreateDocumentAsync("text12.txt", ct).ConfigureAwait(false);
             await doc112.FillWithAsync("Dokument 1.1.2", ct).ConfigureAwait(false);
             Assert.Equal("Dokument 1.1.2", await doc112.ReadAllAsync(ct).ConfigureAwait(false));
-            var docProps112 = await doc112.GetPropertyElementsAsync(ct).ConfigureAwait(false);
 
             var sub12 = await coll1.CreateCollectionAsync("subcoll2", ct).ConfigureAwait(false);
-            var subProps12 = await sub12.GetPropertyElementsAsync(ct).ConfigureAwait(false);
 
             var doc121 = await sub12.CreateDocumentAsync("text21.txt", ct).ConfigureAwait(false);
             await doc121.FillWithAsync("Dokument 1.2.1", ct).ConfigureAwait(false);
             Assert.Equal("Dokument 1.2.1", await doc121.ReadAllAsync(ct).ConfigureAwait(false));
-            var docProps121 = await doc121.GetPropertyElementsAsync(ct).ConfigureAwait(false);
 
             var doc122 = await sub12.CreateDocumentAsync("text22.txt", ct).ConfigureAwait(false);
             await doc122.FillWithAsync("Dokument 1.2.2", ct).ConfigureAwait(false);
             Assert.Equal("Dokument 1.2.2", await doc122.ReadAllAsync(ct).ConfigureAwait(false));
+
+            var props1 = await coll1.GetPropertyElementsAsync(ct).ConfigureAwait(false);
+            var docProps1 = await doc1.GetPropertyElementsAsync(ct).ConfigureAwait(false);
+            var subProps11 = await sub11.GetPropertyElementsAsync(ct).ConfigureAwait(false);
+            var docProps111 = await doc111.GetPropertyElementsAsync(ct).ConfigureAwait(false);
+            var docProps112 = await doc112.GetPropertyElementsAsync(ct).ConfigureAwait(false);
+            var subProps12 = await sub12.GetPropertyElementsAsync(ct).ConfigureAwait(false);
+            var docProps121 = await doc121.GetPropertyElementsAsync(ct).ConfigureAwait(false);
             var docProps122 = await doc122.GetPropertyElementsAsync(ct).ConfigureAwait(false);
 
             await handler

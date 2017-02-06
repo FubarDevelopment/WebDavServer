@@ -23,7 +23,7 @@ namespace FubarDev.WebDavServer.Engines.Remote
 
         public abstract Task<ActionResult> ExecuteAsync(IDocument source, RemoteDocumentTarget destination, CancellationToken cancellationToken);
 
-        public abstract Task ExecuteAsync(ICollection source, CancellationToken cancellationToken);
+        public abstract Task ExecuteAsync(ICollection source, RemoteCollectionTarget destination, CancellationToken cancellationToken);
 
         [NotNull]
         [ItemNotNull]

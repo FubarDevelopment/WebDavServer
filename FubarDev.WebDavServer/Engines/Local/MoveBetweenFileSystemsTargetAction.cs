@@ -18,9 +18,10 @@ namespace FubarDev.WebDavServer.Engines.Local
         {
             var doc = await destination.Parent.Collection.CreateDocumentAsync(destination.Name, cancellationToken).ConfigureAwait(false);
             var docTarget = new DocumentTarget(destination.Parent, destination.DestinationUrl, doc, this);
-            var result = await ExecuteAsync(source, docTarget, cancellationToken).ConfigureAwait(false);
-            if (result.IsFailure)
-                throw new Exception(result.Exception.Message, result.Exception);
+            await MoveAsync(source, doc, cancellationToken).ConfigureAwait(false);
+            await CopyETagAsync(source, doc, cancellationToken).ConfigureAwait(false);
+            await source.DeleteAsync(cancellationToken).ConfigureAwait(false);
+
             return docTarget;
         }
 
@@ -28,14 +29,8 @@ namespace FubarDev.WebDavServer.Engines.Local
         {
             try
             {
-                using (var sourceStream = await source.OpenReadAsync(cancellationToken).ConfigureAwait(false))
-                {
-                    using (var destinationStream = await destination.Document.CreateAsync(cancellationToken).ConfigureAwait(false))
-                    {
-                        await sourceStream.CopyToAsync(destinationStream, 65536, cancellationToken).ConfigureAwait(false);
-                    }
-                }
-
+                await MoveAsync(source, destination.Document, cancellationToken).ConfigureAwait(false);
+                await CopyETagAsync(source, destination.Document, cancellationToken).ConfigureAwait(false);
                 await source.DeleteAsync(cancellationToken).ConfigureAwait(false);
 
                 return new ActionResult(ActionStatus.Overwritten, destination);
@@ -49,9 +44,32 @@ namespace FubarDev.WebDavServer.Engines.Local
             }
         }
 
-        public Task ExecuteAsync(ICollection source, CancellationToken cancellationToken)
+        public async Task ExecuteAsync(ICollection source, CollectionTarget destination, CancellationToken cancellationToken)
         {
-            return source.DeleteAsync(cancellationToken);
+            await CopyETagAsync(source, destination.Collection, cancellationToken).ConfigureAwait(false);
+            await source.DeleteAsync(cancellationToken).ConfigureAwait(false);
+        }
+
+        private static async Task MoveAsync(IDocument source, IDocument destination, CancellationToken cancellationToken)
+        {
+            using (var sourceStream = await source.OpenReadAsync(cancellationToken).ConfigureAwait(false))
+            {
+                using (var destinationStream = await destination.CreateAsync(cancellationToken).ConfigureAwait(false))
+                {
+                    await sourceStream.CopyToAsync(destinationStream, 65536, cancellationToken).ConfigureAwait(false);
+                }
+            }
+        }
+
+        private static async Task CopyETagAsync(IEntry source, IEntry dest, CancellationToken cancellationToken)
+        {
+            var sourcePropStore = source.FileSystem.PropertyStore;
+            var destPropStore = dest.FileSystem.PropertyStore;
+            if (sourcePropStore != null && destPropStore != null)
+            {
+                var etag = await sourcePropStore.GetETagAsync(source, cancellationToken).ConfigureAwait(false);
+                await destPropStore.SetAsync(dest, etag.ToXml(), cancellationToken).ConfigureAwait(false);
+            }
         }
     }
 }

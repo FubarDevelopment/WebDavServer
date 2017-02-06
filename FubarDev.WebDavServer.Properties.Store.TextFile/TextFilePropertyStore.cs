@@ -12,6 +12,7 @@ using System.Threading.Tasks;
 using System.Xml.Linq;
 
 using FubarDev.WebDavServer.FileSystem;
+using FubarDev.WebDavServer.Model;
 using FubarDev.WebDavServer.Props.Dead;
 
 using Microsoft.Extensions.Caching.Memory;
@@ -23,8 +24,6 @@ namespace FubarDev.WebDavServer.Props.Store.TextFile
 {
     public class TextFilePropertyStore : PropertyStoreBase, IFileSystemPropertyStore
     {
-        private static readonly XElement[] _emptyElements = new XElement[0];
-
         private readonly IMemoryCache _cache;
 
         private readonly TextFilePropertyStoreOptions _options;
@@ -58,7 +57,7 @@ namespace FubarDev.WebDavServer.Props.Store.TextFile
             return entry is IDocument && entry.Name == _storeEntryName;
         }
 
-        public override Task<IReadOnlyCollection<XElement>> GetAsync(IEntry entry, CancellationToken cancellationToken)
+        public override async Task<IReadOnlyCollection<XElement>> GetAsync(IEntry entry, CancellationToken cancellationToken)
         {
             var storeData = Load(entry, false);
             EntryInfo info;
@@ -69,10 +68,12 @@ namespace FubarDev.WebDavServer.Props.Store.TextFile
             }
             else
             {
-                result = _emptyElements;
+                var etagXml = new EntityTag(false).ToXml();
+                await SetAsync(entry, etagXml, cancellationToken).ConfigureAwait(false);
+                result = new[] { etagXml };
             }
 
-            return Task.FromResult(result);
+            return result;
         }
 
         public override Task SetAsync(IEntry entry, IEnumerable<XElement> elements, CancellationToken cancellationToken)

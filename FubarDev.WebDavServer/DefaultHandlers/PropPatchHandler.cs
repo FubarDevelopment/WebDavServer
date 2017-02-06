@@ -77,9 +77,14 @@ namespace FubarDev.WebDavServer.DefaultHandlers
                 var targetPropStore = entry.FileSystem.PropertyStore;
                 if (targetPropStore != null)
                     await targetPropStore.UpdateETagAsync(entry, cancellationToken).ConfigureAwait(false);
-                var parentPropStore = entry.Parent?.FileSystem.PropertyStore;
-                if (parentPropStore != null)
-                    await parentPropStore.UpdateETagAsync(entry.Parent, cancellationToken).ConfigureAwait(false);
+                var parent = entry.Parent;
+                while (parent != null)
+                {
+                    var parentPropStore = parent.FileSystem.PropertyStore;
+                    if (parentPropStore != null)
+                        await parentPropStore.UpdateETagAsync(entry.Parent, cancellationToken).ConfigureAwait(false);
+                    parent = parent.Parent;
+                }
             }
 
             var statusCode = hasError ? WebDavStatusCode.Forbidden : WebDavStatusCode.MultiStatus;
