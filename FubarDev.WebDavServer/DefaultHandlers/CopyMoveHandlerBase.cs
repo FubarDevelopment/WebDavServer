@@ -192,7 +192,7 @@ namespace FubarDev.WebDavServer.DefaultHandlers
         protected abstract ITargetActions<CollectionTarget, DocumentTarget, MissingTarget> CreateLocalTargetActions(RecursiveProcessingMode mode);
 
         private async Task<Engines.CollectionActionResult> RemoteExecuteAsync(
-            [NotNull] RemoteTargetActions handler,
+            [NotNull] IRemoteTargetActions handler,
             [NotNull] Uri sourceUrl,
             [NotNull] SelectionResult sourceSelectionResult,
             [NotNull] Uri targetUrl,

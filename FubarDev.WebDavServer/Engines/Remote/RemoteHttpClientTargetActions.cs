@@ -16,6 +16,7 @@ using System.Threading.Tasks;
 using System.Xml.Linq;
 using System.Xml.Serialization;
 
+using FubarDev.WebDavServer.FileSystem;
 using FubarDev.WebDavServer.Model;
 using FubarDev.WebDavServer.Props;
 
@@ -23,7 +24,7 @@ using JetBrains.Annotations;
 
 namespace FubarDev.WebDavServer.Engines.Remote
 {
-    public abstract class RemoteHttpClientTargetActions : RemoteTargetActions, IDisposable
+    public abstract class RemoteHttpClientTargetActions : IRemoteTargetActions, IDisposable
     {
         private static readonly Encoding _defaultEncoding = new UTF8Encoding(false);
         private static readonly HttpMethod _propFindHttpMethod = new HttpMethod("PROPFIND");
@@ -39,21 +40,27 @@ namespace FubarDev.WebDavServer.Engines.Remote
             Client = httpClient;
         }
 
-        public override RecursiveTargetBehaviour ExistingTargetBehaviour { get; } = RecursiveTargetBehaviour.DeleteTarget;
+        public RecursiveTargetBehaviour ExistingTargetBehaviour { get; } = RecursiveTargetBehaviour.DeleteTarget;
 
         protected HttpClient Client { get; }
 
-        public override Task<IReadOnlyCollection<XName>> SetPropertiesAsync(RemoteCollectionTarget target, IEnumerable<IUntypedWriteableProperty> properties, CancellationToken cancellationToken)
+        public abstract Task<RemoteDocumentTarget> ExecuteAsync(IDocument source, RemoteMissingTarget destination, CancellationToken cancellationToken);
+
+        public abstract Task<ActionResult> ExecuteAsync(IDocument source, RemoteDocumentTarget destination, CancellationToken cancellationToken);
+
+        public abstract Task ExecuteAsync(ICollection source, RemoteCollectionTarget destination, CancellationToken cancellationToken);
+
+        public Task<IReadOnlyCollection<XName>> SetPropertiesAsync(RemoteCollectionTarget target, IEnumerable<IUntypedWriteableProperty> properties, CancellationToken cancellationToken)
         {
             return SetPropertiesAsync(target.DestinationUrl, properties, cancellationToken);
         }
 
-        public override Task<IReadOnlyCollection<XName>> SetPropertiesAsync(RemoteDocumentTarget target, IEnumerable<IUntypedWriteableProperty> properties, CancellationToken cancellationToken)
+        public Task<IReadOnlyCollection<XName>> SetPropertiesAsync(RemoteDocumentTarget target, IEnumerable<IUntypedWriteableProperty> properties, CancellationToken cancellationToken)
         {
             return SetPropertiesAsync(target.DestinationUrl, properties, cancellationToken);
         }
 
-        public override async Task<RemoteCollectionTarget> CreateCollectionAsync(
+        public async Task<RemoteCollectionTarget> CreateCollectionAsync(
             RemoteCollectionTarget collection,
             string name,
             CancellationToken cancellationToken)
@@ -102,7 +109,7 @@ namespace FubarDev.WebDavServer.Engines.Remote
             }
         }
 
-        public override async Task<ITarget> GetAsync(RemoteCollectionTarget collection, string name, CancellationToken cancellationToken)
+        public async Task<ITarget> GetAsync(RemoteCollectionTarget collection, string name, CancellationToken cancellationToken)
         {
             var requestData = new Propfind()
             {
@@ -184,7 +191,7 @@ namespace FubarDev.WebDavServer.Engines.Remote
             return new RemoteCollectionTarget(collection, name, collection.DestinationUrl.AppendDirectory(name), false, this);
         }
 
-        public override async Task DeleteAsync(RemoteCollectionTarget target, CancellationToken cancellationToken)
+        public async Task DeleteAsync(RemoteCollectionTarget target, CancellationToken cancellationToken)
         {
             using (var response = await Client.DeleteAsync(target.DestinationUrl, cancellationToken).ConfigureAwait(false))
             {
@@ -192,7 +199,7 @@ namespace FubarDev.WebDavServer.Engines.Remote
             }
         }
 
-        public override async Task DeleteAsync(RemoteDocumentTarget target, CancellationToken cancellationToken)
+        public async Task DeleteAsync(RemoteDocumentTarget target, CancellationToken cancellationToken)
         {
             using (var response = await Client.DeleteAsync(target.DestinationUrl, cancellationToken).ConfigureAwait(false))
             {

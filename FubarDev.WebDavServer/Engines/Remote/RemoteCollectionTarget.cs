@@ -21,9 +21,9 @@ namespace FubarDev.WebDavServer.Engines.Remote
         private readonly RemoteCollectionTarget _parent;
 
         [NotNull]
-        private readonly RemoteTargetActions _targetActions;
+        private readonly IRemoteTargetActions _targetActions;
 
-        public RemoteCollectionTarget([CanBeNull] RemoteCollectionTarget parent, [NotNull] string name, [NotNull] Uri destinationUrl, bool created, [NotNull] RemoteTargetActions targetActions)
+        public RemoteCollectionTarget([CanBeNull] RemoteCollectionTarget parent, [NotNull] string name, [NotNull] Uri destinationUrl, bool created, [NotNull] IRemoteTargetActions targetActions)
         {
             _parent = parent;
             _targetActions = targetActions;

@@ -13,9 +13,9 @@ namespace FubarDev.WebDavServer.Engines.Remote
     public class RemoteMissingTarget : IMissingTarget<RemoteCollectionTarget, RemoteDocumentTarget, RemoteMissingTarget>
     {
         [NotNull]
-        private readonly RemoteTargetActions _targetActions;
+        private readonly IRemoteTargetActions _targetActions;
 
-        public RemoteMissingTarget([NotNull] RemoteCollectionTarget parent, [NotNull] Uri destinationUrl, [NotNull] string name, [NotNull] RemoteTargetActions targetActions)
+        public RemoteMissingTarget([NotNull] RemoteCollectionTarget parent, [NotNull] Uri destinationUrl, [NotNull] string name, [NotNull] IRemoteTargetActions targetActions)
         {
             _targetActions = targetActions;
             Parent = parent;
