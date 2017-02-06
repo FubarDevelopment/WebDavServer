@@ -2,8 +2,11 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Text;
 using System.Threading.Tasks;
 using System.Xml.Linq;
+
+using FubarDev.WebDavServer.AspNetCore.Logging;
 
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Http.Extensions;
@@ -24,6 +27,7 @@ namespace FubarDev.WebDavServer.Sample.AspNetCore.Support
             _logger = logger;
         }
 
+        // ReSharper disable once ConsiderUsingAsyncSuffix
         public async Task Invoke(HttpContext context)
         {
             using (_logger.BeginScope("RequestInfo"))
@@ -48,14 +52,37 @@ namespace FubarDev.WebDavServer.Sample.AspNetCore.Support
                     var isXml = _supportedMediaTypes.Any(x => contentType.IsSubsetOf(x));
                     if (isXml)
                     {
+                        var encoding = Encoding.UTF8;
+                        if (contentType.Charset.HasValue)
+                        {
+                            encoding = Encoding.GetEncoding(contentType.Charset.Value);
+                        }
+
                         var temp = new MemoryStream();
                         await context.Request.Body.CopyToAsync(temp, 65536).ConfigureAwait(false);
 
                         if (temp.Length != 0)
                         {
                             temp.Position = 0;
-                            var doc = XDocument.Load(temp);
-                            info.Add($"Body: {doc}");
+
+                            try
+                            {
+                                using (var reader = new StreamReader(temp, encoding, false, 1000, true))
+                                {
+                                    var doc = XDocument.Load(reader);
+                                    info.Add($"Body: {doc}");
+                                }
+                            }
+                            catch (Exception ex)
+                            {
+                                _logger.LogWarning(EventIds.Unspecified, ex, ex.Message);
+                                temp.Position = 0;
+                                using (var reader = new StreamReader(temp, encoding, false, 1000, true))
+                                {
+                                    var content = await reader.ReadToEndAsync().ConfigureAwait(false);
+                                    info.Add($"Body: {content}");
+                                }
+                            }
 
                             if (!context.Request.Body.CanSeek)
                             {
