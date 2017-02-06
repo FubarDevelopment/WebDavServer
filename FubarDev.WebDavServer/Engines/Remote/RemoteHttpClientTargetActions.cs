@@ -25,6 +25,7 @@ namespace FubarDev.WebDavServer.Engines.Remote
 {
     public abstract class RemoteHttpClientTargetActions : RemoteTargetActions, IDisposable
     {
+        private static readonly Encoding _defaultEncoding = new UTF8Encoding(false);
         private static readonly HttpMethod _propFindHttpMethod = new HttpMethod("PROPFIND");
         private static readonly HttpMethod _propPatchHttpMethod = new HttpMethod("PROPPATCH");
         private static readonly HttpMethod _mkColHttpMethod = new HttpMethod("MKCOL");
@@ -356,10 +357,9 @@ namespace FubarDev.WebDavServer.Engines.Remote
         private static HttpContent CreateContent(XmlSerializer serializer, object requestData)
         {
             byte[] data;
-            var encoding = Encoding.UTF8;
             using (var requestStream = new MemoryStream())
             {
-                using (var requestWriter = new StreamWriter(requestStream, encoding))
+                using (var requestWriter = new StreamWriter(requestStream, _defaultEncoding))
                 {
                     serializer.Serialize(requestStream, requestData);
                     requestWriter.Flush();
@@ -371,7 +371,7 @@ namespace FubarDev.WebDavServer.Engines.Remote
             {
                 Headers =
                 {
-                    ContentType = MediaTypeHeaderValue.Parse($"text/xml; charset={encoding.WebName}"),
+                    ContentType = MediaTypeHeaderValue.Parse($"text/xml; charset={_defaultEncoding.WebName}"),
                 },
             };
 
