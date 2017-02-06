@@ -22,7 +22,7 @@ namespace FubarDev.WebDavServer
             var s = url.OriginalString;
             var searchStartPos = s.EndsWith("/") ? s.Length - 2 : s.Length - 1;
             var slashIndex = s.LastIndexOf("/", searchStartPos, StringComparison.Ordinal);
-            var length = searchStartPos - slashIndex + 1;
+            var length = searchStartPos - slashIndex;
             var name = s.Substring(slashIndex + 1, length);
             return Uri.UnescapeDataString(name);
         }
