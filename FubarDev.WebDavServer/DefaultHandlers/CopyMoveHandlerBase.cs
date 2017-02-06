@@ -4,7 +4,6 @@
 
 using System;
 using System.Diagnostics;
-using System.Net.Http;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -31,15 +30,11 @@ namespace FubarDev.WebDavServer.DefaultHandlers
         [NotNull]
         private readonly ILogger _logger;
 
-        [CanBeNull]
-        private readonly IRemoteHttpClientFactory _remoteHttpClientFactory;
-
-        protected CopyMoveHandlerBase([NotNull] IFileSystem rootFileSystem, [NotNull] IWebDavHost host, [NotNull] ILogger logger, [CanBeNull] IRemoteHttpClientFactory remoteHttpClientFactory = null)
+        protected CopyMoveHandlerBase([NotNull] IFileSystem rootFileSystem, [NotNull] IWebDavHost host, [NotNull] ILogger logger)
         {
             _rootFileSystem = rootFileSystem;
             _host = host;
             _logger = logger;
-            _remoteHttpClientFactory = remoteHttpClientFactory;
         }
 
         public async Task<IWebDavResult> ExecuteAsync(
@@ -67,16 +62,7 @@ namespace FubarDev.WebDavServer.DefaultHandlers
                 if (_logger.IsEnabled(LogLevel.Debug))
                     _logger.LogDebug($"{baseUrl} is not a base of {destinationUrl}");
 
-                // Copy or move from server to server (slow)
-                if (_remoteHttpClientFactory == null)
-                    throw new WebDavException(WebDavStatusCode.BadGateway, "No HttpClient factory for remote access");
-
-                var parentCollectionUrl = destinationUrl.GetParent();
-                var httpClient = await _remoteHttpClientFactory.CreateAsync(parentCollectionUrl, cancellationToken).ConfigureAwait(false);
-                if (httpClient == null)
-                    throw new WebDavException(WebDavStatusCode.BadGateway, "No HttpClient created");
-
-                using (var remoteHandler = CreateRemoteTargetActions(httpClient))
+                using (var remoteHandler = await CreateRemoteTargetActionsAsync(destinationUrl, cancellationToken).ConfigureAwait(false))
                 {
                     if (remoteHandler == null)
                         throw new WebDavException(WebDavStatusCode.BadGateway, "No remote handler for given client");
@@ -185,8 +171,9 @@ namespace FubarDev.WebDavServer.DefaultHandlers
             return collResult;
         }
 
-        [CanBeNull]
-        protected abstract RemoteHttpClientTargetActions CreateRemoteTargetActions([NotNull] HttpClient httpClient);
+        [NotNull]
+        [ItemCanBeNull]
+        protected abstract Task<IRemoteTargetActions> CreateRemoteTargetActionsAsync(Uri destinationUrl, CancellationToken cancellationToken);
 
         [NotNull]
         protected abstract ITargetActions<CollectionTarget, DocumentTarget, MissingTarget> CreateLocalTargetActions(RecursiveProcessingMode mode);

@@ -11,7 +11,7 @@ using FubarDev.WebDavServer.FileSystem;
 
 namespace FubarDev.WebDavServer.Engines.Remote
 {
-    public class MoveRemoteHttpClientTargetActions : RemoteHttpClientTargetActions
+    public class MoveRemoteHttpClientTargetActions : RemoteHttpClientTargetActions, IRemoteMoveTargetActions
     {
         public MoveRemoteHttpClientTargetActions(HttpClient httpClient)
             : base(httpClient)

@@ -4,7 +4,6 @@
 
 using System;
 using System.Collections.Generic;
-using System.Net.Http;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -15,6 +14,7 @@ using FubarDev.WebDavServer.FileSystem;
 using FubarDev.WebDavServer.Handlers;
 using FubarDev.WebDavServer.Model;
 
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 
@@ -22,11 +22,13 @@ namespace FubarDev.WebDavServer.DefaultHandlers
 {
     public class MoveHandler : CopyMoveHandlerBase, IMoveHandler
     {
+        private readonly IServiceProvider _serviceProvider;
         private readonly MoveHandlerOptions _options;
 
-        public MoveHandler(IFileSystem rootFileSystem, IWebDavHost host, IOptions<MoveHandlerOptions> options, ILogger<MoveHandler> logger, IRemoteHttpClientFactory remoteHttpClientFactory = null)
-            : base(rootFileSystem, host, logger, remoteHttpClientFactory)
+        public MoveHandler(IFileSystem rootFileSystem, IWebDavHost host, IOptions<MoveHandlerOptions> options, ILogger<MoveHandler> logger, IServiceProvider serviceProvider)
+            : base(rootFileSystem, host, logger)
         {
+            _serviceProvider = serviceProvider;
             _options = options?.Value ?? new MoveHandlerOptions();
         }
 
@@ -40,8 +42,26 @@ namespace FubarDev.WebDavServer.DefaultHandlers
             return ExecuteAsync(sourcePath, destination, Depth.Infinity, doOverwrite, _options.Mode, cancellationToken);
         }
 
-        protected override RemoteHttpClientTargetActions CreateRemoteTargetActions(HttpClient httpClient)
+        protected override async Task<IRemoteTargetActions> CreateRemoteTargetActionsAsync(Uri destinationUrl, CancellationToken cancellationToken)
         {
+            if (_options.CreateRemoteMoveTargetActionsAsync != null)
+            {
+                return await _options
+                    .CreateRemoteMoveTargetActionsAsync(_serviceProvider, cancellationToken)
+                    .ConfigureAwait(false);
+            }
+
+            var remoteHttpClientFactory = _serviceProvider.GetService<IRemoteHttpClientFactory>();
+
+            // Copy or move from server to server (slow)
+            if (remoteHttpClientFactory == null)
+                throw new WebDavException(WebDavStatusCode.BadGateway, "No HttpClient factory for remote access");
+
+            var parentCollectionUrl = destinationUrl.GetParent();
+            var httpClient = await remoteHttpClientFactory.CreateAsync(parentCollectionUrl, cancellationToken).ConfigureAwait(false);
+            if (httpClient == null)
+                throw new WebDavException(WebDavStatusCode.BadGateway, "No HttpClient created");
+
             return new MoveRemoteHttpClientTargetActions(httpClient);
         }
 
