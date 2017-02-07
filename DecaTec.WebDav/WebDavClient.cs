@@ -1159,7 +1159,7 @@ namespace DecaTec.WebDav
             // So set the depth header always to 'infinity'.
             requestMethod.Headers.Add(WebDavRequestHeader.Depth, WebDavDepthHeaderValue.Infinity.ToString());
 
-            if (lockTokenSource != null || lockTokenSource != null)
+            if (lockTokenSource != null || lockTokenDestination != null)
             {
                 var sb = new StringBuilder();
 
