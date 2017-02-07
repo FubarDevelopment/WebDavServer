@@ -198,6 +198,8 @@ namespace FubarDev.WebDavServer.DefaultHandlers
         private async Task<IReadOnlyCollection<ChangeItem>> ApplyChangesAsync(IEntry entry, Dictionary<XName, IUntypedReadableProperty> properties, Propertyupdate request, CancellationToken cancellationToken)
         {
             var result = new List<ChangeItem>();
+            if (request.Items == null)
+                return result;
 
             var failed = false;
             foreach (var item in request.Items)
@@ -225,6 +227,9 @@ namespace FubarDev.WebDavServer.DefaultHandlers
         private async Task<IReadOnlyCollection<ChangeItem>> ApplyRemoveAsync(IEntry entry, Dictionary<XName, IUntypedReadableProperty> properties, Propremove remove, bool previouslyFailed, CancellationToken cancellationToken)
         {
             var result = new List<ChangeItem>();
+
+            if (remove.Prop.Any == null)
+                return result;
 
             var failed = previouslyFailed;
             foreach (var element in remove.Prop.Any)
@@ -280,6 +285,9 @@ namespace FubarDev.WebDavServer.DefaultHandlers
         private async Task<IReadOnlyCollection<ChangeItem>> ApplySetAsync(IEntry entry, Dictionary<XName, IUntypedReadableProperty> properties, Propset set, bool previouslyFailed, CancellationToken cancellationToken)
         {
             var result = new List<ChangeItem>();
+
+            if (set.Prop.Any == null)
+                return result;
 
             var failed = previouslyFailed;
             foreach (var element in set.Prop.Any)
