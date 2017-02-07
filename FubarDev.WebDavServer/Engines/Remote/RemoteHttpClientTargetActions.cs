@@ -24,7 +24,7 @@ using JetBrains.Annotations;
 
 namespace FubarDev.WebDavServer.Engines.Remote
 {
-    public abstract class RemoteHttpClientTargetActions : IRemoteTargetActions, IDisposable
+    public abstract class RemoteHttpClientTargetActions : IRemoteTargetActions
     {
         private static readonly Encoding _defaultEncoding = new UTF8Encoding(false);
         private static readonly HttpMethod _propFindHttpMethod = new HttpMethod("PROPFIND");
