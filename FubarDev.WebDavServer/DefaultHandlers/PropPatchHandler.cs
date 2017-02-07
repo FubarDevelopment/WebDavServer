@@ -55,9 +55,10 @@ namespace FubarDev.WebDavServer.DefaultHandlers
             if (selectionResult.IsMissing)
                 throw new WebDavException(WebDavStatusCode.NotFound);
 
-            var entry = (IEntry)selectionResult.Document ?? selectionResult.Collection;
-            var propertiesList = new List<IUntypedReadableProperty>();
+            var entry = selectionResult.ResultType == SelectionResultType.FoundDocument ? (IEntry)selectionResult.Document : selectionResult.Collection;
             Debug.Assert(entry != null, "entry != null");
+
+            var propertiesList = new List<IUntypedReadableProperty>();
             using (var propEnum = entry.GetProperties().GetEnumerator())
             {
                 while (await propEnum.MoveNext(cancellationToken).ConfigureAwait(false))
