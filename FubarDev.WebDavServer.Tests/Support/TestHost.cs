@@ -8,9 +8,20 @@ namespace FubarDev.WebDavServer.Tests.Support
 {
     public class TestHost : IWebDavHost
     {
-        public string RequestProtocol { get; } = "http";
+        public TestHost()
+            : this(new Uri("http://localhost/"))
+        {
+        }
 
-        public Uri BaseUrl { get; } = new Uri("http://localhost/");
+        public TestHost(Uri baseUrl)
+        {
+            BaseUrl = baseUrl;
+            RequestProtocol = baseUrl.Scheme;
+        }
+
+        public string RequestProtocol { get; }
+
+        public Uri BaseUrl { get; }
 
         public DetectedClient DetectedClient { get; } = DetectedClient.Any;
     }

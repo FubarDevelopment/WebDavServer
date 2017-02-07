@@ -12,11 +12,13 @@ namespace FubarDev.WebDavServer.Tests.Support
     {
         public static IReadOnlyCollection<PropertyChangeItem> FindChanges(
             IReadOnlyCollection<XElement> left,
-            IReadOnlyCollection<XElement> right)
+            IReadOnlyCollection<XElement> right,
+            params XName[] propertiesToIgnore)
         {
+            var propsToIgnore = new HashSet<XName>(propertiesToIgnore);
             var result = new List<PropertyChangeItem>();
             var rightItems = right.ToDictionary(x => x.Name);
-            foreach (var leftItem in left)
+            foreach (var leftItem in left.Where(x => !propsToIgnore.Contains(x.Name)))
             {
                 XElement rightItem;
                 if (rightItems.TryGetValue(leftItem.Name, out rightItem))
@@ -36,7 +38,7 @@ namespace FubarDev.WebDavServer.Tests.Support
                 }
             }
 
-            foreach (var rightItem in rightItems.Values)
+            foreach (var rightItem in rightItems.Values.Where(x => !propsToIgnore.Contains(x.Name)))
             {
                 result.Add(PropertyChangeItem.Added(rightItem));
             }

@@ -359,6 +359,7 @@ namespace FubarDev.WebDavServer.Tests.Handlers
         private static IMoveHandler CreateHandler(IFileSystem fileSystem, Action<MoveHandlerOptions> configureOptions = null)
         {
             var services = new ServiceCollection();
+            services.AddOptions();
             services.AddSingleton<IWebDavHost, TestHost>();
             services.AddLogging();
             if (configureOptions != null)
