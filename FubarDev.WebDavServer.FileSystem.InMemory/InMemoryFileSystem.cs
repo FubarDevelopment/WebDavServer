@@ -8,8 +8,6 @@ using System.Threading.Tasks;
 
 using FubarDev.WebDavServer.Props.Store;
 
-using Microsoft.VisualStudio.Threading;
-
 namespace FubarDev.WebDavServer.FileSystem.InMemory
 {
     public class InMemoryFileSystem : IFileSystem
