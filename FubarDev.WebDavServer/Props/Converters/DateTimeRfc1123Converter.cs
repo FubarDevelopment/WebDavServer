@@ -12,7 +12,10 @@ namespace FubarDev.WebDavServer.Props.Converters
     {
         public DateTime FromElement(XElement element)
         {
-            return DateTime.ParseExact(element.Value, "R", CultureInfo.InvariantCulture);
+            var v = element.Value;
+            if (v.EndsWith("UTC"))
+                v = v.Substring(0, v.Length - 3) + "GMT";
+            return DateTime.ParseExact(v, "R", CultureInfo.InvariantCulture);
         }
 
         public XElement ToElement(XName name, DateTime value)
