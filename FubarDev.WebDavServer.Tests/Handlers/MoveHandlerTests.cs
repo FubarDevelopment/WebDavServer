@@ -13,9 +13,7 @@ using FubarDev.WebDavServer.Handlers;
 using FubarDev.WebDavServer.Props.Store.InMemory;
 using FubarDev.WebDavServer.Tests.Support;
 
-using Microsoft.Extensions.Logging;
-using Microsoft.Extensions.Logging.Abstractions;
-using Microsoft.Extensions.Options;
+using Microsoft.Extensions.DependencyInjection;
 
 using Xunit;
 
@@ -28,7 +26,7 @@ namespace FubarDev.WebDavServer.Tests.Handlers
         {
             var ct = CancellationToken.None;
             var fileSystem = new InMemoryFileSystem(new PathTraversalEngine(), new InMemoryPropertyStoreFactory());
-            var handler = CreateHandler(fileSystem, new MoveHandlerOptions());
+            var handler = CreateHandler(fileSystem);
             var root = await fileSystem.Root.GetValueAsync(ct).ConfigureAwait(false);
             var doc1 = await root.CreateDocumentAsync("text1.txt", ct).ConfigureAwait(false);
             await doc1.FillWithAsync("Dokument 1", ct).ConfigureAwait(false);
@@ -49,7 +47,7 @@ namespace FubarDev.WebDavServer.Tests.Handlers
         {
             var ct = CancellationToken.None;
             var fileSystem = new InMemoryFileSystem(new PathTraversalEngine(), new InMemoryPropertyStoreFactory());
-            var handler = CreateHandler(fileSystem, new MoveHandlerOptions());
+            var handler = CreateHandler(fileSystem);
             var root = await fileSystem.Root.GetValueAsync(ct).ConfigureAwait(false);
             var coll1 = await root.CreateCollectionAsync("test1", ct).ConfigureAwait(false);
             Assert.NotNull(coll1);
@@ -69,7 +67,7 @@ namespace FubarDev.WebDavServer.Tests.Handlers
         {
             var ct = CancellationToken.None;
             var fileSystem = new InMemoryFileSystem(new PathTraversalEngine(), new InMemoryPropertyStoreFactory());
-            var handler = CreateHandler(fileSystem, new MoveHandlerOptions());
+            var handler = CreateHandler(fileSystem);
             var root = await fileSystem.Root.GetValueAsync(ct).ConfigureAwait(false);
             var coll1 = await root.CreateCollectionAsync("test1", ct).ConfigureAwait(false);
             Assert.NotNull(coll1);
@@ -103,7 +101,7 @@ namespace FubarDev.WebDavServer.Tests.Handlers
         {
             var ct = CancellationToken.None;
             var fileSystem = new InMemoryFileSystem(new PathTraversalEngine(), new InMemoryPropertyStoreFactory());
-            var handler = CreateHandler(fileSystem, new MoveHandlerOptions());
+            var handler = CreateHandler(fileSystem);
             var root = await fileSystem.Root.GetValueAsync(ct).ConfigureAwait(false);
             var coll1 = await root.CreateCollectionAsync("test1", ct).ConfigureAwait(false);
             Assert.NotNull(coll1);
@@ -135,7 +133,7 @@ namespace FubarDev.WebDavServer.Tests.Handlers
         {
             var ct = CancellationToken.None;
             var fileSystem = new InMemoryFileSystem(new PathTraversalEngine(), new InMemoryPropertyStoreFactory());
-            var handler = CreateHandler(fileSystem, new MoveHandlerOptions());
+            var handler = CreateHandler(fileSystem);
             var root = await fileSystem.Root.GetValueAsync(ct).ConfigureAwait(false);
             var coll1 = await root.CreateCollectionAsync("test1", ct).ConfigureAwait(false);
             Assert.NotNull(coll1);
@@ -178,7 +176,7 @@ namespace FubarDev.WebDavServer.Tests.Handlers
         {
             var ct = CancellationToken.None;
             var fileSystem = new InMemoryFileSystem(new PathTraversalEngine(), new InMemoryPropertyStoreFactory());
-            var handler = CreateHandler(fileSystem, new MoveHandlerOptions());
+            var handler = CreateHandler(fileSystem);
             var root = await fileSystem.Root.GetValueAsync(ct).ConfigureAwait(false);
             var coll1 = await root.CreateCollectionAsync("test1", ct).ConfigureAwait(false);
             Assert.NotNull(coll1);
@@ -221,7 +219,7 @@ namespace FubarDev.WebDavServer.Tests.Handlers
         {
             var ct = CancellationToken.None;
             var fileSystem = new InMemoryFileSystem(new PathTraversalEngine(), new InMemoryPropertyStoreFactory());
-            var handler = CreateHandler(fileSystem, new MoveHandlerOptions());
+            var handler = CreateHandler(fileSystem);
             var root = await fileSystem.Root.GetValueAsync(ct).ConfigureAwait(false);
             var coll1 = await root.CreateCollectionAsync("test1", ct).ConfigureAwait(false);
             Assert.NotNull(coll1);
@@ -261,7 +259,7 @@ namespace FubarDev.WebDavServer.Tests.Handlers
         {
             var ct = CancellationToken.None;
             var fileSystem = new InMemoryFileSystem(new PathTraversalEngine(), new InMemoryPropertyStoreFactory());
-            var handler = CreateHandler(fileSystem, new MoveHandlerOptions());
+            var handler = CreateHandler(fileSystem);
             var root = await fileSystem.Root.GetValueAsync(ct).ConfigureAwait(false);
 
             var coll1 = await root.CreateCollectionAsync("test1", ct).ConfigureAwait(false);
@@ -358,16 +356,21 @@ namespace FubarDev.WebDavServer.Tests.Handlers
             Assert.Empty(docChanges22);
         }
 
-        private static IMoveHandler CreateHandler(IFileSystem fileSystem, MoveHandlerOptions options)
+        private static IMoveHandler CreateHandler(IFileSystem fileSystem, Action<MoveHandlerOptions> configureOptions = null)
         {
-            var host = new TestHost();
-            ILoggerFactory loggerFactory = new LoggerFactory();
-            loggerFactory.AddProvider(NullLoggerProvider.Instance);
-            var logger = new Logger<MoveHandler>(loggerFactory);
-            var optWrapper = new OptionsWrapper<MoveHandlerOptions>(options);
-            var httpClientFactory = new HttpClientFactory();
-            var handler = new MoveHandler(fileSystem, host, optWrapper, logger, httpClientFactory);
-            return handler;
+            var services = new ServiceCollection();
+            services.AddSingleton<IWebDavHost, TestHost>();
+            services.AddLogging();
+            if (configureOptions != null)
+            {
+                services.Configure(configureOptions);
+            }
+
+            services.AddSingleton(fileSystem);
+            services.AddTransient<IMoveHandler, MoveHandler>();
+
+            var serviceProvider = services.BuildServiceProvider();
+            return serviceProvider.GetRequiredService<IMoveHandler>();
         }
     }
 }
