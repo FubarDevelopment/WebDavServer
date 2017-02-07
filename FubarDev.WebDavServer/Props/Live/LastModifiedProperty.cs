@@ -15,7 +15,7 @@ namespace FubarDev.WebDavServer.Props.Live
         public static readonly XName PropertyName = WebDavXml.Dav + "getlastmodified";
 
         public LastModifiedProperty(GetPropertyValueAsyncDelegate<DateTime> getPropertyValueAsync, SetPropertyValueAsyncDelegate<DateTime> setValueAsyncFunc)
-            : base(PropertyName, 0, getPropertyValueAsync, setValueAsyncFunc)
+            : base(PropertyName, 0, getPropertyValueAsync, setValueAsyncFunc, WebDavXml.Dav + "lastmodified")
         {
         }
     }

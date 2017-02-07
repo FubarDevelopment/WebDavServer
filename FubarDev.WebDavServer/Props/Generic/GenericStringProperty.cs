@@ -10,8 +10,8 @@ namespace FubarDev.WebDavServer.Props.Generic
 {
     public class GenericStringProperty : GenericProperty<string>
     {
-        public GenericStringProperty(XName name, int cost, GetPropertyValueAsyncDelegate<string> getValueAsyncFunc, SetPropertyValueAsyncDelegate<string> setValueAsyncFunc)
-            : base(name, cost, new StringConverter(), getValueAsyncFunc, setValueAsyncFunc)
+        public GenericStringProperty(XName name, int cost, GetPropertyValueAsyncDelegate<string> getValueAsyncFunc, SetPropertyValueAsyncDelegate<string> setValueAsyncFunc, params XName[] alternativeNames)
+            : base(name, cost, new StringConverter(), getValueAsyncFunc, setValueAsyncFunc, alternativeNames)
         {
         }
     }

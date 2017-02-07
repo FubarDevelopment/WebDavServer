@@ -2,6 +2,7 @@
 // Copyright (c) Fubar Development Junker. All rights reserved.
 // </copyright>
 
+using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Xml.Linq;
@@ -22,6 +23,8 @@ namespace FubarDev.WebDavServer.Props.Live
         }
 
         public XName Name { get; } = PropertyName;
+
+        public IReadOnlyCollection<XName> AlternativeNames { get; } = new XName[0];
 
         public int Cost { get; } = 0;
 

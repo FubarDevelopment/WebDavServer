@@ -12,8 +12,8 @@ namespace FubarDev.WebDavServer.Props
 {
     public abstract class SimpleTypedProperty<T> : SimpleUntypedProperty, ITypedWriteableProperty<T>
     {
-        protected SimpleTypedProperty([NotNull] XName name, int cost)
-            : base(name, cost)
+        protected SimpleTypedProperty([NotNull] XName name, int cost, params XName[] alternativeNames)
+            : base(name, cost, alternativeNames)
         {
         }
 

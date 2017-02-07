@@ -5,6 +5,7 @@
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
@@ -82,7 +83,11 @@ namespace FubarDev.WebDavServer.DefaultHandlers
                 {
                     var parentPropStore = parent.FileSystem.PropertyStore;
                     if (parentPropStore != null)
+                    {
+                        Debug.Assert(entry.Parent != null, "entry.Parent != null");
                         await parentPropStore.UpdateETagAsync(entry.Parent, cancellationToken).ConfigureAwait(false);
+                    }
+
                     parent = parent.Parent;
                 }
             }
@@ -120,6 +125,21 @@ namespace FubarDev.WebDavServer.DefaultHandlers
             };
 
             return new WebDavResult<Multistatus>(statusCode, status);
+        }
+
+        private static IUntypedReadableProperty FindProperty(IReadOnlyDictionary<XName, IUntypedReadableProperty> properties, XName name)
+        {
+            IUntypedReadableProperty property;
+            if (properties.TryGetValue(name, out property))
+                return property;
+
+            foreach (var readableProperty in properties.Values.Where(x => x.AlternativeNames.Count != 0))
+            {
+                if (readableProperty.AlternativeNames.Any(x => x == name))
+                    return readableProperty;
+            }
+
+            return null;
         }
 
         private IEnumerable<Propstat> CreatePropStats(IEnumerable<ChangeItem> changes, Error error)
@@ -164,6 +184,7 @@ namespace FubarDev.WebDavServer.DefaultHandlers
                         break;
                     case ChangeStatus.Modified:
                         Debug.Assert(entry.FileSystem.PropertyStore != null, "entry.FileSystem.PropertyStore != null");
+                        Debug.Assert(changeItem.OldValue != null, "changeItem.OldValue != null");
                         await entry.FileSystem.PropertyStore.SetAsync(entry, changeItem.OldValue, cancellationToken).ConfigureAwait(false);
                         newChangeItem = ChangeItem.FailedDependency(changeItem.Name);
                         break;
@@ -172,6 +193,7 @@ namespace FubarDev.WebDavServer.DefaultHandlers
                         {
                             properties.Add(changeItem.Name, changeItem.Property);
                             Debug.Assert(_fileSystem.PropertyStore != null, "_fileSystem.PropertyStore != null");
+                            Debug.Assert(changeItem.OldValue != null, "changeItem.OldValue != null");
                             await _fileSystem.PropertyStore.SetAsync(entry, changeItem.OldValue, cancellationToken).ConfigureAwait(false);
                         }
 
@@ -224,7 +246,7 @@ namespace FubarDev.WebDavServer.DefaultHandlers
             return result;
         }
 
-        private async Task<IReadOnlyCollection<ChangeItem>> ApplyRemoveAsync(IEntry entry, Dictionary<XName, IUntypedReadableProperty> properties, Propremove remove, bool previouslyFailed, CancellationToken cancellationToken)
+        private async Task<IReadOnlyCollection<ChangeItem>> ApplyRemoveAsync(IEntry entry, IReadOnlyDictionary<XName, IUntypedReadableProperty> properties, Propremove remove, bool previouslyFailed, CancellationToken cancellationToken)
         {
             var result = new List<ChangeItem>();
 
@@ -240,8 +262,8 @@ namespace FubarDev.WebDavServer.DefaultHandlers
                     continue;
                 }
 
-                IUntypedReadableProperty property;
-                if (properties.TryGetValue(element.Name, out property))
+                var property = FindProperty(properties, element.Name);
+                if (property != null)
                 {
                     if (entry.FileSystem.PropertyStore == null)
                     {
@@ -298,8 +320,8 @@ namespace FubarDev.WebDavServer.DefaultHandlers
                     continue;
                 }
 
-                IUntypedReadableProperty property;
-                if (properties.TryGetValue(element.Name, out property))
+                var property = FindProperty(properties, element.Name);
+                if (property != null)
                 {
                     ChangeItem changeItem;
                     try
@@ -343,6 +365,9 @@ namespace FubarDev.WebDavServer.DefaultHandlers
             return result;
         }
 
+        [SuppressMessage("ReSharper", "MemberCanBePrivate.Local", Justification = "Reviewed. Might be used when locking is implemented.")]
+        [SuppressMessage("ReSharper", "UnusedAutoPropertyAccessor.Local", Justification = "Reviewed. Might be used when locking is implemented.")]
+        [SuppressMessage("ReSharper", "UnusedMember.Local", Justification = "Reviewed. Might be used when locking is implemented.")]
         private class ChangeItem
         {
             private ChangeItem(ChangeStatus status, IUntypedReadableProperty property, XElement newValue, XElement oldValue, [NotNull] XName name, string description)

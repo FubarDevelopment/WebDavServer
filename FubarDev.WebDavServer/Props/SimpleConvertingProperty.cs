@@ -14,8 +14,8 @@ namespace FubarDev.WebDavServer.Props
 {
     public abstract class SimpleConvertingProperty<T> : SimpleTypedProperty<T>
     {
-        protected SimpleConvertingProperty([NotNull] XName name, int cost, [NotNull] IPropertyConverter<T> converter)
-            : base(name, cost)
+        protected SimpleConvertingProperty([NotNull] XName name, int cost, [NotNull] IPropertyConverter<T> converter, params XName[] alternativeNames)
+            : base(name, cost, alternativeNames)
         {
             Converter = converter;
         }

@@ -2,6 +2,7 @@
 // Copyright (c) Fubar Development Junker. All rights reserved.
 // </copyright>
 
+using System.Collections.Generic;
 using System.Xml.Linq;
 
 using JetBrains.Annotations;
@@ -12,5 +13,9 @@ namespace FubarDev.WebDavServer.Props
     {
         [NotNull]
         XName Name { get; }
+
+        [NotNull]
+        [ItemNotNull]
+        IReadOnlyCollection<XName> AlternativeNames { get; }
     }
 }

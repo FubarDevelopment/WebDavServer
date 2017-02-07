@@ -17,8 +17,8 @@ namespace FubarDev.WebDavServer.Props.Generic
 
         private readonly SetPropertyValueAsyncDelegate<T> _setValueAsyncFunc;
 
-        public GenericProperty(XName name, int cost, IPropertyConverter<T> converter, GetPropertyValueAsyncDelegate<T> getValueAsyncFunc, SetPropertyValueAsyncDelegate<T> setValueAsyncFunc)
-            : base(name, cost, converter)
+        public GenericProperty(XName name, int cost, IPropertyConverter<T> converter, GetPropertyValueAsyncDelegate<T> getValueAsyncFunc, SetPropertyValueAsyncDelegate<T> setValueAsyncFunc, params XName[] alternativeNames)
+            : base(name, cost, converter, alternativeNames)
         {
             _getValueAsyncFunc = getValueAsyncFunc;
             _setValueAsyncFunc = setValueAsyncFunc;

@@ -11,8 +11,8 @@ namespace FubarDev.WebDavServer.Props.Generic
 {
     public class GenericDateTimeRfc1123Property : GenericProperty<DateTime>
     {
-        public GenericDateTimeRfc1123Property(XName name, int cost, GetPropertyValueAsyncDelegate<DateTime> getValueAsyncFunc, SetPropertyValueAsyncDelegate<DateTime> setValueAsyncFunc)
-            : base(name, cost, new DateTimeRfc1123Converter(), getValueAsyncFunc, setValueAsyncFunc)
+        public GenericDateTimeRfc1123Property(XName name, int cost, GetPropertyValueAsyncDelegate<DateTime> getValueAsyncFunc, SetPropertyValueAsyncDelegate<DateTime> setValueAsyncFunc, params XName[] alternativeNames)
+            : base(name, cost, new DateTimeRfc1123Converter(), getValueAsyncFunc, setValueAsyncFunc, alternativeNames)
         {
         }
     }

@@ -2,6 +2,7 @@
 // Copyright (c) Fubar Development Junker. All rights reserved.
 // </copyright>
 
+using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Xml.Linq;
@@ -32,6 +33,8 @@ namespace FubarDev.WebDavServer.Props.Dead
         }
 
         public XName Name { get; }
+
+        public IReadOnlyCollection<XName> AlternativeNames { get; } = new[] { WebDavXml.Dav + "etag" };
 
         public int Cost { get; }
 
