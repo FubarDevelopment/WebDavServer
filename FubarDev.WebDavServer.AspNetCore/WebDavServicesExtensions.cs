@@ -35,10 +35,10 @@ namespace Microsoft.Extensions.DependencyInjection
             services.TryAddSingleton<IRemoteCopyTargetActionsFactory, DefaultRemoteTargetActionsFactory>();
             services.TryAddSingleton<IRemoteMoveTargetActionsFactory, DefaultRemoteTargetActionsFactory>();
             services.TryAddSingleton<IRemoteHttpClientFactory, DefaultRemoteHttpClientFactory>();
+            services.TryAddScoped<IWebDavHost, WebDavHost>();
             services
                 .AddOptions()
                 .AddScoped<IWebDavDispatcher, WebDavServer>()
-                .AddScoped<IWebDavHost, WebDavHost>()
                 .AddSingleton<WebDavExceptionFilter>()
                 .AddScoped<IWebDavOutputFormatter, WebDavXmlOutputFormatter>()
                 .AddSingleton<PathTraversalEngine>()
