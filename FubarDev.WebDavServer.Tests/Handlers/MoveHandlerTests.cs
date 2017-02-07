@@ -5,6 +5,7 @@
 using System;
 using System.Threading;
 using System.Threading.Tasks;
+using System.Xml.Linq;
 
 using FubarDev.WebDavServer.DefaultHandlers;
 using FubarDev.WebDavServer.FileSystem;
@@ -21,24 +22,34 @@ namespace FubarDev.WebDavServer.Tests.Handlers
 {
     public class MoveHandlerTests
     {
+        private static readonly XName[] _propsToIgnore = new XName[0];
+        private readonly IFileSystem _fileSystem;
+        private readonly IMoveHandler _handler;
+
+        public MoveHandlerTests()
+        {
+            _fileSystem = new InMemoryFileSystem(new PathTraversalEngine(), new InMemoryPropertyStoreFactory());
+            _handler = CreateHandler(_fileSystem);
+        }
+
         [Fact]
         public async Task MoveFileAsync()
         {
             var ct = CancellationToken.None;
-            var fileSystem = new InMemoryFileSystem(new PathTraversalEngine(), new InMemoryPropertyStoreFactory());
-            var handler = CreateHandler(fileSystem);
-            var root = await fileSystem.Root.GetValueAsync(ct).ConfigureAwait(false);
+            var root = await _fileSystem.Root.GetValueAsync(ct).ConfigureAwait(false);
             var doc1 = await root.CreateDocumentAsync("text1.txt", ct).ConfigureAwait(false);
             await doc1.FillWithAsync("Dokument 1", ct).ConfigureAwait(false);
             Assert.Equal("Dokument 1", await doc1.ReadAllAsync(ct).ConfigureAwait(false));
             var props1 = await doc1.GetPropertyElementsAsync(ct).ConfigureAwait(false);
-            await handler
+
+            await _handler
                 .MoveAsync("text1.txt", new Uri("text2.txt", UriKind.Relative), null, ct)
                 .ConfigureAwait(false);
+
             var child = await root.GetChildAsync("text2.txt", ct).ConfigureAwait(false);
             var doc2 = Assert.IsType<InMemoryFile>(child);
             var props2 = await doc2.GetPropertyElementsAsync(ct).ConfigureAwait(false);
-            var changes = PropertyComparer.FindChanges(props1, props2);
+            var changes = PropertyComparer.FindChanges(props1, props2, _propsToIgnore);
             Assert.Empty(changes);
         }
 
@@ -46,19 +57,19 @@ namespace FubarDev.WebDavServer.Tests.Handlers
         public async Task MoveEmptyDirectoryAsync()
         {
             var ct = CancellationToken.None;
-            var fileSystem = new InMemoryFileSystem(new PathTraversalEngine(), new InMemoryPropertyStoreFactory());
-            var handler = CreateHandler(fileSystem);
-            var root = await fileSystem.Root.GetValueAsync(ct).ConfigureAwait(false);
+            var root = await _fileSystem.Root.GetValueAsync(ct).ConfigureAwait(false);
             var coll1 = await root.CreateCollectionAsync("test1", ct).ConfigureAwait(false);
             Assert.NotNull(coll1);
             var props1 = await coll1.GetPropertyElementsAsync(ct).ConfigureAwait(false);
-            await handler
+
+            await _handler
                 .MoveAsync("test1", new Uri("test2", UriKind.Relative), null, ct)
                 .ConfigureAwait(false);
+
             var child = await root.GetChildAsync("test2", ct).ConfigureAwait(false);
             var coll2 = Assert.IsType<InMemoryDirectory>(child);
             var props2 = await coll2.GetPropertyElementsAsync(ct).ConfigureAwait(false);
-            var changes = PropertyComparer.FindChanges(props1, props2);
+            var changes = PropertyComparer.FindChanges(props1, props2, _propsToIgnore);
             Assert.Empty(changes);
         }
 
@@ -66,9 +77,7 @@ namespace FubarDev.WebDavServer.Tests.Handlers
         public async Task MoveDirectoryWithDocumentAsync()
         {
             var ct = CancellationToken.None;
-            var fileSystem = new InMemoryFileSystem(new PathTraversalEngine(), new InMemoryPropertyStoreFactory());
-            var handler = CreateHandler(fileSystem);
-            var root = await fileSystem.Root.GetValueAsync(ct).ConfigureAwait(false);
+            var root = await _fileSystem.Root.GetValueAsync(ct).ConfigureAwait(false);
             var coll1 = await root.CreateCollectionAsync("test1", ct).ConfigureAwait(false);
             Assert.NotNull(coll1);
 
@@ -79,20 +88,20 @@ namespace FubarDev.WebDavServer.Tests.Handlers
             var props1 = await coll1.GetPropertyElementsAsync(ct).ConfigureAwait(false);
             var docProps1 = await doc1.GetPropertyElementsAsync(ct).ConfigureAwait(false);
 
-            await handler
+            await _handler
                 .MoveAsync("test1", new Uri("test2", UriKind.Relative), null, ct)
                 .ConfigureAwait(false);
 
             var child = await root.GetChildAsync("test2", ct).ConfigureAwait(false);
             var coll2 = Assert.IsType<InMemoryDirectory>(child);
             var props2 = await coll2.GetPropertyElementsAsync(ct).ConfigureAwait(false);
-            var changes = PropertyComparer.FindChanges(props1, props2);
+            var changes = PropertyComparer.FindChanges(props1, props2, _propsToIgnore);
             Assert.Empty(changes);
 
             var docChild = await coll2.GetChildAsync("text.txt", ct).ConfigureAwait(false);
             var doc2 = Assert.IsType<InMemoryFile>(docChild);
             var docProps2 = await doc2.GetPropertyElementsAsync(ct).ConfigureAwait(false);
-            var docChanges = PropertyComparer.FindChanges(docProps1, docProps2);
+            var docChanges = PropertyComparer.FindChanges(docProps1, docProps2, _propsToIgnore);
             Assert.Empty(docChanges);
         }
 
@@ -100,9 +109,7 @@ namespace FubarDev.WebDavServer.Tests.Handlers
         public async Task MoveDirectoryWithSubDirectoryAsync()
         {
             var ct = CancellationToken.None;
-            var fileSystem = new InMemoryFileSystem(new PathTraversalEngine(), new InMemoryPropertyStoreFactory());
-            var handler = CreateHandler(fileSystem);
-            var root = await fileSystem.Root.GetValueAsync(ct).ConfigureAwait(false);
+            var root = await _fileSystem.Root.GetValueAsync(ct).ConfigureAwait(false);
             var coll1 = await root.CreateCollectionAsync("test1", ct).ConfigureAwait(false);
             Assert.NotNull(coll1);
 
@@ -111,20 +118,20 @@ namespace FubarDev.WebDavServer.Tests.Handlers
             var props1 = await coll1.GetPropertyElementsAsync(ct).ConfigureAwait(false);
             var subProps1 = await sub1.GetPropertyElementsAsync(ct).ConfigureAwait(false);
 
-            await handler
+            await _handler
                 .MoveAsync("test1", new Uri("test2", UriKind.Relative), null, ct)
                 .ConfigureAwait(false);
 
             var child = await root.GetChildAsync("test2", ct).ConfigureAwait(false);
             var coll2 = Assert.IsType<InMemoryDirectory>(child);
             var props2 = await coll2.GetPropertyElementsAsync(ct).ConfigureAwait(false);
-            var changes = PropertyComparer.FindChanges(props1, props2);
+            var changes = PropertyComparer.FindChanges(props1, props2, _propsToIgnore);
             Assert.Empty(changes);
 
             var subChild = await coll2.GetChildAsync("subcoll", ct).ConfigureAwait(false);
             var sub2 = Assert.IsType<InMemoryDirectory>(subChild);
             var subProps2 = await sub2.GetPropertyElementsAsync(ct).ConfigureAwait(false);
-            var subChanges = PropertyComparer.FindChanges(subProps1, subProps2);
+            var subChanges = PropertyComparer.FindChanges(subProps1, subProps2, _propsToIgnore);
             Assert.Empty(subChanges);
         }
 
@@ -132,9 +139,7 @@ namespace FubarDev.WebDavServer.Tests.Handlers
         public async Task MoveDirectoryWithFileAndSubDirectoryAsync()
         {
             var ct = CancellationToken.None;
-            var fileSystem = new InMemoryFileSystem(new PathTraversalEngine(), new InMemoryPropertyStoreFactory());
-            var handler = CreateHandler(fileSystem);
-            var root = await fileSystem.Root.GetValueAsync(ct).ConfigureAwait(false);
+            var root = await _fileSystem.Root.GetValueAsync(ct).ConfigureAwait(false);
             var coll1 = await root.CreateCollectionAsync("test1", ct).ConfigureAwait(false);
             Assert.NotNull(coll1);
 
@@ -148,26 +153,26 @@ namespace FubarDev.WebDavServer.Tests.Handlers
             var docProps1 = await doc1.GetPropertyElementsAsync(ct).ConfigureAwait(false);
             var subProps1 = await sub1.GetPropertyElementsAsync(ct).ConfigureAwait(false);
 
-            await handler
+            await _handler
                 .MoveAsync("test1", new Uri("test2", UriKind.Relative), null, ct)
                 .ConfigureAwait(false);
 
             var child = await root.GetChildAsync("test2", ct).ConfigureAwait(false);
             var coll2 = Assert.IsType<InMemoryDirectory>(child);
             var props2 = await coll2.GetPropertyElementsAsync(ct).ConfigureAwait(false);
-            var changes = PropertyComparer.FindChanges(props1, props2);
+            var changes = PropertyComparer.FindChanges(props1, props2, _propsToIgnore);
             Assert.Empty(changes);
 
             var docChild = await coll2.GetChildAsync("text.txt", ct).ConfigureAwait(false);
             var doc2 = Assert.IsType<InMemoryFile>(docChild);
             var docProps2 = await doc2.GetPropertyElementsAsync(ct).ConfigureAwait(false);
-            var docChanges = PropertyComparer.FindChanges(docProps1, docProps2);
+            var docChanges = PropertyComparer.FindChanges(docProps1, docProps2, _propsToIgnore);
             Assert.Empty(docChanges);
 
             var subChild = await coll2.GetChildAsync("subcoll", ct).ConfigureAwait(false);
             var sub2 = Assert.IsType<InMemoryDirectory>(subChild);
             var subProps2 = await sub2.GetPropertyElementsAsync(ct).ConfigureAwait(false);
-            var subChanges = PropertyComparer.FindChanges(subProps1, subProps2);
+            var subChanges = PropertyComparer.FindChanges(subProps1, subProps2, _propsToIgnore);
             Assert.Empty(subChanges);
         }
 
@@ -175,9 +180,7 @@ namespace FubarDev.WebDavServer.Tests.Handlers
         public async Task MoveDirectoryWithSubDirectoryAndFileAsync()
         {
             var ct = CancellationToken.None;
-            var fileSystem = new InMemoryFileSystem(new PathTraversalEngine(), new InMemoryPropertyStoreFactory());
-            var handler = CreateHandler(fileSystem);
-            var root = await fileSystem.Root.GetValueAsync(ct).ConfigureAwait(false);
+            var root = await _fileSystem.Root.GetValueAsync(ct).ConfigureAwait(false);
             var coll1 = await root.CreateCollectionAsync("test1", ct).ConfigureAwait(false);
             Assert.NotNull(coll1);
 
@@ -191,26 +194,26 @@ namespace FubarDev.WebDavServer.Tests.Handlers
             var subProps1 = await sub1.GetPropertyElementsAsync(ct).ConfigureAwait(false);
             var docProps1 = await doc1.GetPropertyElementsAsync(ct).ConfigureAwait(false);
 
-            await handler
+            await _handler
                 .MoveAsync("test1", new Uri("test2", UriKind.Relative), null, ct)
                 .ConfigureAwait(false);
 
             var child = await root.GetChildAsync("test2", ct).ConfigureAwait(false);
             var coll2 = Assert.IsType<InMemoryDirectory>(child);
             var props2 = await coll2.GetPropertyElementsAsync(ct).ConfigureAwait(false);
-            var changes = PropertyComparer.FindChanges(props1, props2);
+            var changes = PropertyComparer.FindChanges(props1, props2, _propsToIgnore);
             Assert.Empty(changes);
 
             var subChild = await coll2.GetChildAsync("subcoll", ct).ConfigureAwait(false);
             var sub2 = Assert.IsType<InMemoryDirectory>(subChild);
             var subProps2 = await sub2.GetPropertyElementsAsync(ct).ConfigureAwait(false);
-            var subChanges = PropertyComparer.FindChanges(subProps1, subProps2);
+            var subChanges = PropertyComparer.FindChanges(subProps1, subProps2, _propsToIgnore);
             Assert.Empty(subChanges);
 
             var docChild = await sub2.GetChildAsync("text.txt", ct).ConfigureAwait(false);
             var doc2 = Assert.IsType<InMemoryFile>(docChild);
             var docProps2 = await doc2.GetPropertyElementsAsync(ct).ConfigureAwait(false);
-            var docChanges = PropertyComparer.FindChanges(docProps1, docProps2);
+            var docChanges = PropertyComparer.FindChanges(docProps1, docProps2, _propsToIgnore);
             Assert.Empty(docChanges);
         }
 
@@ -218,9 +221,7 @@ namespace FubarDev.WebDavServer.Tests.Handlers
         public async Task MoveDirectoryWithTwoSubDirectoriesAsync()
         {
             var ct = CancellationToken.None;
-            var fileSystem = new InMemoryFileSystem(new PathTraversalEngine(), new InMemoryPropertyStoreFactory());
-            var handler = CreateHandler(fileSystem);
-            var root = await fileSystem.Root.GetValueAsync(ct).ConfigureAwait(false);
+            var root = await _fileSystem.Root.GetValueAsync(ct).ConfigureAwait(false);
             var coll1 = await root.CreateCollectionAsync("test1", ct).ConfigureAwait(false);
             Assert.NotNull(coll1);
 
@@ -231,26 +232,26 @@ namespace FubarDev.WebDavServer.Tests.Handlers
             var subProps11 = await sub11.GetPropertyElementsAsync(ct).ConfigureAwait(false);
             var subProps12 = await sub12.GetPropertyElementsAsync(ct).ConfigureAwait(false);
 
-            await handler
+            await _handler
                 .MoveAsync("test1", new Uri("test2", UriKind.Relative), null, ct)
                 .ConfigureAwait(false);
 
             var child = await root.GetChildAsync("test2", ct).ConfigureAwait(false);
             var coll2 = Assert.IsType<InMemoryDirectory>(child);
             var props2 = await coll2.GetPropertyElementsAsync(ct).ConfigureAwait(false);
-            var changes = PropertyComparer.FindChanges(props1, props2);
+            var changes = PropertyComparer.FindChanges(props1, props2, _propsToIgnore);
             Assert.Empty(changes);
 
             var subChild21 = await coll2.GetChildAsync("subcoll1", ct).ConfigureAwait(false);
             var sub21 = Assert.IsType<InMemoryDirectory>(subChild21);
             var subProps21 = await sub21.GetPropertyElementsAsync(ct).ConfigureAwait(false);
-            var subChanges1 = PropertyComparer.FindChanges(subProps11, subProps21);
+            var subChanges1 = PropertyComparer.FindChanges(subProps11, subProps21, _propsToIgnore);
             Assert.Empty(subChanges1);
 
             var subChild22 = await coll2.GetChildAsync("subcoll2", ct).ConfigureAwait(false);
             var sub22 = Assert.IsType<InMemoryDirectory>(subChild22);
             var subProps22 = await sub22.GetPropertyElementsAsync(ct).ConfigureAwait(false);
-            var subChanges2 = PropertyComparer.FindChanges(subProps12, subProps22);
+            var subChanges2 = PropertyComparer.FindChanges(subProps12, subProps22, _propsToIgnore);
             Assert.Empty(subChanges2);
         }
 
@@ -258,9 +259,7 @@ namespace FubarDev.WebDavServer.Tests.Handlers
         public async Task MoveDirectoryWithSubDocumentAndTwoSubDirectoriesWithTwoDocumentsAsync()
         {
             var ct = CancellationToken.None;
-            var fileSystem = new InMemoryFileSystem(new PathTraversalEngine(), new InMemoryPropertyStoreFactory());
-            var handler = CreateHandler(fileSystem);
-            var root = await fileSystem.Root.GetValueAsync(ct).ConfigureAwait(false);
+            var root = await _fileSystem.Root.GetValueAsync(ct).ConfigureAwait(false);
 
             var coll1 = await root.CreateCollectionAsync("test1", ct).ConfigureAwait(false);
             Assert.NotNull(coll1);
@@ -298,61 +297,61 @@ namespace FubarDev.WebDavServer.Tests.Handlers
             var docProps121 = await doc121.GetPropertyElementsAsync(ct).ConfigureAwait(false);
             var docProps122 = await doc122.GetPropertyElementsAsync(ct).ConfigureAwait(false);
 
-            await handler
+            await _handler
                 .MoveAsync("test1", new Uri("test2", UriKind.Relative), null, ct)
                 .ConfigureAwait(false);
 
             var child = await root.GetChildAsync("test2", ct).ConfigureAwait(false);
             var coll2 = Assert.IsType<InMemoryDirectory>(child);
             var props2 = await coll2.GetPropertyElementsAsync(ct).ConfigureAwait(false);
-            var changes = PropertyComparer.FindChanges(props1, props2);
+            var changes = PropertyComparer.FindChanges(props1, props2, _propsToIgnore);
             Assert.Empty(changes);
 
             var docChild = await coll2.GetChildAsync("text.txt", ct).ConfigureAwait(false);
             var doc2 = Assert.IsType<InMemoryFile>(docChild);
             Assert.Equal("Dokument 1", await doc2.ReadAllAsync(ct).ConfigureAwait(false));
             var docProps2 = await doc2.GetPropertyElementsAsync(ct).ConfigureAwait(false);
-            var docChanges = PropertyComparer.FindChanges(docProps1, docProps2);
+            var docChanges = PropertyComparer.FindChanges(docProps1, docProps2, _propsToIgnore);
             Assert.Empty(docChanges);
 
             var subChild21 = await coll2.GetChildAsync("subcoll1", ct).ConfigureAwait(false);
             var sub21 = Assert.IsType<InMemoryDirectory>(subChild21);
             var subProps21 = await sub21.GetPropertyElementsAsync(ct).ConfigureAwait(false);
-            var subChanges1 = PropertyComparer.FindChanges(subProps11, subProps21);
+            var subChanges1 = PropertyComparer.FindChanges(subProps11, subProps21, _propsToIgnore);
             Assert.Empty(subChanges1);
 
             var docChild211 = await sub21.GetChildAsync("text11.txt", ct).ConfigureAwait(false);
             var doc211 = Assert.IsType<InMemoryFile>(docChild211);
             Assert.Equal("Dokument 1.1.1", await doc211.ReadAllAsync(ct).ConfigureAwait(false));
             var docProps211 = await doc211.GetPropertyElementsAsync(ct).ConfigureAwait(false);
-            var docChanges11 = PropertyComparer.FindChanges(docProps111, docProps211);
+            var docChanges11 = PropertyComparer.FindChanges(docProps111, docProps211, _propsToIgnore);
             Assert.Empty(docChanges11);
 
             var docChild212 = await sub21.GetChildAsync("text12.txt", ct).ConfigureAwait(false);
             var doc212 = Assert.IsType<InMemoryFile>(docChild212);
             Assert.Equal("Dokument 1.1.2", await doc212.ReadAllAsync(ct).ConfigureAwait(false));
             var docProps212 = await doc212.GetPropertyElementsAsync(ct).ConfigureAwait(false);
-            var docChanges12 = PropertyComparer.FindChanges(docProps112, docProps212);
+            var docChanges12 = PropertyComparer.FindChanges(docProps112, docProps212, _propsToIgnore);
             Assert.Empty(docChanges12);
 
             var subChild22 = await coll2.GetChildAsync("subcoll2", ct).ConfigureAwait(false);
             var sub22 = Assert.IsType<InMemoryDirectory>(subChild22);
             var subProps22 = await sub22.GetPropertyElementsAsync(ct).ConfigureAwait(false);
-            var subChanges2 = PropertyComparer.FindChanges(subProps12, subProps22);
+            var subChanges2 = PropertyComparer.FindChanges(subProps12, subProps22, _propsToIgnore);
             Assert.Empty(subChanges2);
 
             var docChild221 = await sub22.GetChildAsync("text21.txt", ct).ConfigureAwait(false);
             var doc221 = Assert.IsType<InMemoryFile>(docChild221);
             Assert.Equal("Dokument 1.2.1", await doc221.ReadAllAsync(ct).ConfigureAwait(false));
             var docProps221 = await doc221.GetPropertyElementsAsync(ct).ConfigureAwait(false);
-            var docChanges21 = PropertyComparer.FindChanges(docProps121, docProps221);
+            var docChanges21 = PropertyComparer.FindChanges(docProps121, docProps221, _propsToIgnore);
             Assert.Empty(docChanges21);
 
             var docChild222 = await sub22.GetChildAsync("text22.txt", ct).ConfigureAwait(false);
             var doc222 = Assert.IsType<InMemoryFile>(docChild222);
             Assert.Equal("Dokument 1.2.2", await doc222.ReadAllAsync(ct).ConfigureAwait(false));
             var docProps222 = await doc222.GetPropertyElementsAsync(ct).ConfigureAwait(false);
-            var docChanges22 = PropertyComparer.FindChanges(docProps122, docProps222);
+            var docChanges22 = PropertyComparer.FindChanges(docProps122, docProps222, _propsToIgnore);
             Assert.Empty(docChanges22);
         }
 

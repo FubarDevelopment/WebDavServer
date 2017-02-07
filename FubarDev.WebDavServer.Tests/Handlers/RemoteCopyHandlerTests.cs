@@ -38,6 +38,7 @@ namespace FubarDev.WebDavServer.Tests.Handlers
         private static readonly XName[] _propsToIgnore = { GetETagProperty.PropertyName };
         private readonly TestServer _server;
         private readonly IFileSystem _fileSystem;
+        private readonly WebDavClient _client;
 
         public RemoteCopyHandlerTests()
         {
@@ -46,6 +47,10 @@ namespace FubarDev.WebDavServer.Tests.Handlers
                 .ConfigureServices(sc => ConfigureServices(this, sc))
                 .UseStartup<TestStartup>();
             _server = new TestServer(builder);
+            _client = new WebDavClient(_server.CreateHandler())
+            {
+                BaseAddress = _server.BaseAddress,
+            };
         }
 
         [Fact]
@@ -58,8 +63,7 @@ namespace FubarDev.WebDavServer.Tests.Handlers
             Assert.Equal("Dokument 1", await doc1.ReadAllAsync(ct).ConfigureAwait(false));
             var props1 = await doc1.GetPropertyElementsAsync(ct).ConfigureAwait(false);
 
-            var client = CreateClient();
-            var response = await client
+            var response = await _client
                 .CopyAsync(
                     new Uri("text1.txt", UriKind.Relative),
                     new Uri("text2.txt", UriKind.Relative))
@@ -82,8 +86,7 @@ namespace FubarDev.WebDavServer.Tests.Handlers
             Assert.NotNull(coll1);
             var props1 = await coll1.GetPropertyElementsAsync(ct).ConfigureAwait(false);
 
-            var client = CreateClient();
-            var response = await client
+            var response = await _client
                 .CopyAsync(
                     new Uri("test1", UriKind.Relative),
                     new Uri("test2", UriKind.Relative))
@@ -111,8 +114,7 @@ namespace FubarDev.WebDavServer.Tests.Handlers
 
             var props1 = await coll1.GetPropertyElementsAsync(ct).ConfigureAwait(false);
 
-            var client = CreateClient();
-            var response = await client
+            var response = await _client
                 .CopyAsync(
                     new Uri("test1", UriKind.Relative),
                     new Uri("test2", UriKind.Relative),
@@ -146,8 +148,7 @@ namespace FubarDev.WebDavServer.Tests.Handlers
             var props1 = await coll1.GetPropertyElementsAsync(ct).ConfigureAwait(false);
             var docProps1 = await doc1.GetPropertyElementsAsync(ct).ConfigureAwait(false);
 
-            var client = CreateClient();
-            var response = await client
+            var response = await _client
                 .CopyAsync(
                     new Uri("test1", UriKind.Relative),
                     new Uri("test2", UriKind.Relative),
@@ -181,8 +182,7 @@ namespace FubarDev.WebDavServer.Tests.Handlers
 
             var props1 = await coll1.GetPropertyElementsAsync(ct).ConfigureAwait(false);
 
-            var client = CreateClient();
-            var response = await client
+            var response = await _client
                 .CopyAsync(
                     new Uri("test1", UriKind.Relative),
                     new Uri("test2", UriKind.Relative),
@@ -214,8 +214,7 @@ namespace FubarDev.WebDavServer.Tests.Handlers
             var props1 = await coll1.GetPropertyElementsAsync(ct).ConfigureAwait(false);
             var subProps1 = await sub1.GetPropertyElementsAsync(ct).ConfigureAwait(false);
 
-            var client = CreateClient();
-            var response = await client
+            var response = await _client
                 .CopyAsync(
                     new Uri("test1", UriKind.Relative),
                     new Uri("test2", UriKind.Relative),
@@ -255,8 +254,7 @@ namespace FubarDev.WebDavServer.Tests.Handlers
             var docProps1 = await doc1.GetPropertyElementsAsync(ct).ConfigureAwait(false);
             var subProps1 = await sub1.GetPropertyElementsAsync(ct).ConfigureAwait(false);
 
-            var client = CreateClient();
-            var response = await client
+            var response = await _client
                 .CopyAsync(
                     new Uri("test1", UriKind.Relative),
                     new Uri("test2", UriKind.Relative),
@@ -300,8 +298,7 @@ namespace FubarDev.WebDavServer.Tests.Handlers
 
             var props1 = await coll1.GetPropertyElementsAsync(ct).ConfigureAwait(false);
 
-            var client = CreateClient();
-            var response = await client
+            var response = await _client
                 .CopyAsync(
                     new Uri("test1", UriKind.Relative),
                     new Uri("test2", UriKind.Relative),
@@ -340,8 +337,7 @@ namespace FubarDev.WebDavServer.Tests.Handlers
             var props1 = await coll1.GetPropertyElementsAsync(ct).ConfigureAwait(false);
             var subProps1 = await sub1.GetPropertyElementsAsync(ct).ConfigureAwait(false);
 
-            var client = CreateClient();
-            var response = await client
+            var response = await _client
                 .CopyAsync(
                     new Uri("test1", UriKind.Relative),
                     new Uri("test2", UriKind.Relative),
@@ -384,8 +380,7 @@ namespace FubarDev.WebDavServer.Tests.Handlers
             var subProps1 = await sub1.GetPropertyElementsAsync(ct).ConfigureAwait(false);
             var docProps1 = await doc1.GetPropertyElementsAsync(ct).ConfigureAwait(false);
 
-            var client = CreateClient();
-            var response = await client
+            var response = await _client
                 .CopyAsync(
                     new Uri("test1", UriKind.Relative),
                     new Uri("test2", UriKind.Relative),
@@ -426,8 +421,7 @@ namespace FubarDev.WebDavServer.Tests.Handlers
 
             var props1 = await coll1.GetPropertyElementsAsync(ct).ConfigureAwait(false);
 
-            var client = CreateClient();
-            var response = await client
+            var response = await _client
                 .CopyAsync(
                     new Uri("test1", UriKind.Relative),
                     new Uri("test2", UriKind.Relative),
@@ -464,8 +458,7 @@ namespace FubarDev.WebDavServer.Tests.Handlers
             var subProps11 = await sub11.GetPropertyElementsAsync(ct).ConfigureAwait(false);
             var subProps12 = await sub12.GetPropertyElementsAsync(ct).ConfigureAwait(false);
 
-            var client = CreateClient();
-            var response = await client
+            var response = await _client
                 .CopyAsync(
                     new Uri("test1", UriKind.Relative),
                     new Uri("test2", UriKind.Relative),
@@ -535,8 +528,7 @@ namespace FubarDev.WebDavServer.Tests.Handlers
             var docProps121 = await doc121.GetPropertyElementsAsync(ct).ConfigureAwait(false);
             var docProps122 = await doc122.GetPropertyElementsAsync(ct).ConfigureAwait(false);
 
-            var client = CreateClient();
-            var response = await client
+            var response = await _client
                 .CopyAsync(
                     new Uri("test1", UriKind.Relative),
                     new Uri("test2", UriKind.Relative),
@@ -625,16 +617,6 @@ namespace FubarDev.WebDavServer.Tests.Handlers
                 })
                 .AddMvcCore()
                 .AddWebDav();
-        }
-
-        private WebDavClient CreateClient()
-        {
-            var client = new WebDavClient(_server.CreateHandler())
-            {
-                BaseAddress = _server.BaseAddress,
-            };
-
-            return client;
         }
 
         [UsedImplicitly]
