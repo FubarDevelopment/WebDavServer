@@ -21,10 +21,10 @@ namespace FubarDev.WebDavServer.FileSystem.DotNet
         {
             RootDirectoryPath = rootFolder;
             _pathTraversalEngine = pathTraversalEngine;
-            var rootDir = new DotNetDirectory(this, null, new DirectoryInfo(rootFolder), new Uri(string.Empty, UriKind.Relative));
-            Root = new AsyncLazy<ICollection>(() => Task.FromResult<ICollection>(rootDir));
             Options = options;
             PropertyStore = propertyStoreFactory?.Create(this);
+            var rootDir = new DotNetDirectory(this, null, new DirectoryInfo(rootFolder), new Uri(string.Empty, UriKind.Relative));
+            Root = new AsyncLazy<ICollection>(() => Task.FromResult<ICollection>(rootDir));
         }
 
         public string RootDirectoryPath { get; }
