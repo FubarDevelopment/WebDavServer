@@ -121,6 +121,22 @@ namespace FubarDev.WebDavServer.AspNetCore
             return new WebDavIndirectResult(_dispatcher, result, _responseLogger);
         }
 
+        [HttpLock]
+        public Task<IActionResult> LockAsync(
+            string path,
+            CancellationToken cancellationToken = default(CancellationToken))
+        {
+            throw new WebDavException(WebDavStatusCode.NotImplemented);
+        }
+
+        [HttpUnlock]
+        public Task<IActionResult> UnlockAsync(
+            string path,
+            CancellationToken cancellationToken = default(CancellationToken))
+        {
+            throw new WebDavException(WebDavStatusCode.NotImplemented);
+        }
+
         private static bool? ParseOverwrite(string overwrite)
         {
             if (string.IsNullOrWhiteSpace(overwrite))
