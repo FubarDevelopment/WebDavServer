@@ -2,12 +2,6 @@
 // Copyright (c) Fubar Development Junker. All rights reserved.
 // </copyright>
 
-using System;
-using System.Threading;
-using System.Threading.Tasks;
-
-using FubarDev.WebDavServer.Engines.Remote;
-
 namespace FubarDev.WebDavServer.DefaultHandlers
 {
     public class CopyHandlerOptions
@@ -15,7 +9,5 @@ namespace FubarDev.WebDavServer.DefaultHandlers
         public RecursiveProcessingMode Mode { get; set; }
 
         public bool OverwriteAsDefault { get; set; } = true;
-
-        public Func<IServiceProvider, CancellationToken, Task<IRemoteCopyTargetActions>> CreateRemoteCopyTargetActionsAsync { get; set; }
     }
 }

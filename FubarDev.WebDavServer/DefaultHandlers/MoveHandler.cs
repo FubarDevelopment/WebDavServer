@@ -44,25 +44,16 @@ namespace FubarDev.WebDavServer.DefaultHandlers
 
         protected override async Task<IRemoteTargetActions> CreateRemoteTargetActionsAsync(Uri destinationUrl, CancellationToken cancellationToken)
         {
-            if (_options.CreateRemoteMoveTargetActionsAsync != null)
+            var remoteTargetActionsFactory = _serviceProvider.GetService<IRemoteMoveTargetActionsFactory>();
+            if (remoteTargetActionsFactory != null)
             {
-                return await _options
-                    .CreateRemoteMoveTargetActionsAsync(_serviceProvider, cancellationToken)
-                    .ConfigureAwait(false);
+                var targetActions = await remoteTargetActionsFactory
+                    .CreateMoveTargetActionsAsync(destinationUrl, cancellationToken).ConfigureAwait(false);
+                if (targetActions != null)
+                    return targetActions;
             }
 
-            var remoteHttpClientFactory = _serviceProvider.GetService<IRemoteHttpClientFactory>();
-
-            // Copy or move from server to server (slow)
-            if (remoteHttpClientFactory == null)
-                throw new WebDavException(WebDavStatusCode.BadGateway, "No HttpClient factory for remote access");
-
-            var parentCollectionUrl = destinationUrl.GetParent();
-            var httpClient = await remoteHttpClientFactory.CreateAsync(parentCollectionUrl, cancellationToken).ConfigureAwait(false);
-            if (httpClient == null)
-                throw new WebDavException(WebDavStatusCode.BadGateway, "No HttpClient created");
-
-            return new MoveRemoteHttpClientTargetActions(httpClient);
+            return null;
         }
 
         protected override ITargetActions<CollectionTarget, DocumentTarget, MissingTarget> CreateLocalTargetActions(RecursiveProcessingMode mode)
