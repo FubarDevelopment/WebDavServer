@@ -1,69 +1,42 @@
-﻿// <copyright file="RemoteCopyHandlerTests.cs" company="Fubar Development Junker">
+﻿// <copyright file="CopyHandlerTestsBase.cs" company="Fubar Development Junker">
 // Copyright (c) Fubar Development Junker. All rights reserved.
 // </copyright>
 
 using System;
-using System.Net.Http;
-using System.Security.Principal;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Xml.Linq;
 
 using DecaTec.WebDav;
 
-using FubarDev.WebDavServer.AspNetCore;
-using FubarDev.WebDavServer.DefaultHandlers;
-using FubarDev.WebDavServer.Engines.Remote;
-using FubarDev.WebDavServer.FileSystem;
 using FubarDev.WebDavServer.FileSystem.InMemory;
-using FubarDev.WebDavServer.Props.Dead;
-using FubarDev.WebDavServer.Props.Store.InMemory;
 using FubarDev.WebDavServer.Tests.Support;
-
-using JetBrains.Annotations;
-
-using Microsoft.AspNetCore.Builder;
-using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.TestHost;
-using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Logging;
 
 using Xunit;
 
 namespace FubarDev.WebDavServer.Tests.Handlers
 {
-    public class RemoteCopyHandlerTests
+    public abstract class CopyTestsBase : ServerTestsBase
     {
-        private static readonly XName[] _propsToIgnore = { GetETagProperty.PropertyName };
-        private readonly TestServer _server;
-        private readonly IFileSystem _fileSystem;
-        private readonly WebDavClient _client;
+        private readonly XName[] _propsToIgnore;
 
-        public RemoteCopyHandlerTests()
+        protected CopyTestsBase(RecursiveProcessingMode processingMode, params XName[] propertiesToIgnore)
+            : base(processingMode)
         {
-            _fileSystem = new InMemoryFileSystem(new PathTraversalEngine(), new InMemoryPropertyStoreFactory());
-            var builder = new WebHostBuilder()
-                .ConfigureServices(sc => ConfigureServices(this, sc))
-                .UseStartup<TestStartup>();
-            _server = new TestServer(builder);
-            _client = new WebDavClient(_server.CreateHandler())
-            {
-                BaseAddress = _server.BaseAddress,
-            };
+            _propsToIgnore = propertiesToIgnore;
         }
 
         [Fact]
         public async Task CopyFileAsync()
         {
             var ct = CancellationToken.None;
-            var root = await _fileSystem.Root.GetValueAsync(ct).ConfigureAwait(false);
+            var root = await FileSystem.Root.GetValueAsync(ct).ConfigureAwait(false);
             var doc1 = await root.CreateDocumentAsync("text1.txt", ct).ConfigureAwait(false);
             await doc1.FillWithAsync("Dokument 1", ct).ConfigureAwait(false);
             Assert.Equal("Dokument 1", await doc1.ReadAllAsync(ct).ConfigureAwait(false));
             var props1 = await doc1.GetPropertyElementsAsync(ct).ConfigureAwait(false);
 
-            var response = await _client
+            var response = await Client
                 .CopyAsync(
                     new Uri("text1.txt", UriKind.Relative),
                     new Uri("text2.txt", UriKind.Relative))
@@ -81,12 +54,12 @@ namespace FubarDev.WebDavServer.Tests.Handlers
         public async Task CopyEmptyDirectoryAsync()
         {
             var ct = CancellationToken.None;
-            var root = await _fileSystem.Root.GetValueAsync(ct).ConfigureAwait(false);
+            var root = await FileSystem.Root.GetValueAsync(ct).ConfigureAwait(false);
             var coll1 = await root.CreateCollectionAsync("test1", ct).ConfigureAwait(false);
             Assert.NotNull(coll1);
             var props1 = await coll1.GetPropertyElementsAsync(ct).ConfigureAwait(false);
 
-            var response = await _client
+            var response = await Client
                 .CopyAsync(
                     new Uri("test1", UriKind.Relative),
                     new Uri("test2", UriKind.Relative))
@@ -104,7 +77,7 @@ namespace FubarDev.WebDavServer.Tests.Handlers
         public async Task CopyDirectoryWithDocumentDepthZeroAsync()
         {
             var ct = CancellationToken.None;
-            var root = await _fileSystem.Root.GetValueAsync(ct).ConfigureAwait(false);
+            var root = await FileSystem.Root.GetValueAsync(ct).ConfigureAwait(false);
             var coll1 = await root.CreateCollectionAsync("test1", ct).ConfigureAwait(false);
             Assert.NotNull(coll1);
 
@@ -114,7 +87,7 @@ namespace FubarDev.WebDavServer.Tests.Handlers
 
             var props1 = await coll1.GetPropertyElementsAsync(ct).ConfigureAwait(false);
 
-            var response = await _client
+            var response = await Client
                 .CopyAsync(
                     new Uri("test1", UriKind.Relative),
                     new Uri("test2", UriKind.Relative),
@@ -137,7 +110,7 @@ namespace FubarDev.WebDavServer.Tests.Handlers
         public async Task CopyDirectoryWithDocumentDepthOneAsync()
         {
             var ct = CancellationToken.None;
-            var root = await _fileSystem.Root.GetValueAsync(ct).ConfigureAwait(false);
+            var root = await FileSystem.Root.GetValueAsync(ct).ConfigureAwait(false);
             var coll1 = await root.CreateCollectionAsync("test1", ct).ConfigureAwait(false);
             Assert.NotNull(coll1);
 
@@ -148,7 +121,7 @@ namespace FubarDev.WebDavServer.Tests.Handlers
             var props1 = await coll1.GetPropertyElementsAsync(ct).ConfigureAwait(false);
             var docProps1 = await doc1.GetPropertyElementsAsync(ct).ConfigureAwait(false);
 
-            var response = await _client
+            var response = await Client
                 .CopyAsync(
                     new Uri("test1", UriKind.Relative),
                     new Uri("test2", UriKind.Relative),
@@ -174,7 +147,7 @@ namespace FubarDev.WebDavServer.Tests.Handlers
         public async Task CopyDirectoryWithSubDirectoryDepthZeroAsync()
         {
             var ct = CancellationToken.None;
-            var root = await _fileSystem.Root.GetValueAsync(ct).ConfigureAwait(false);
+            var root = await FileSystem.Root.GetValueAsync(ct).ConfigureAwait(false);
             var coll1 = await root.CreateCollectionAsync("test1", ct).ConfigureAwait(false);
             Assert.NotNull(coll1);
 
@@ -182,7 +155,7 @@ namespace FubarDev.WebDavServer.Tests.Handlers
 
             var props1 = await coll1.GetPropertyElementsAsync(ct).ConfigureAwait(false);
 
-            var response = await _client
+            var response = await Client
                 .CopyAsync(
                     new Uri("test1", UriKind.Relative),
                     new Uri("test2", UriKind.Relative),
@@ -205,7 +178,7 @@ namespace FubarDev.WebDavServer.Tests.Handlers
         public async Task CopyDirectoryWithSubDirectoryDepthOneAsync()
         {
             var ct = CancellationToken.None;
-            var root = await _fileSystem.Root.GetValueAsync(ct).ConfigureAwait(false);
+            var root = await FileSystem.Root.GetValueAsync(ct).ConfigureAwait(false);
             var coll1 = await root.CreateCollectionAsync("test1", ct).ConfigureAwait(false);
             Assert.NotNull(coll1);
 
@@ -214,7 +187,7 @@ namespace FubarDev.WebDavServer.Tests.Handlers
             var props1 = await coll1.GetPropertyElementsAsync(ct).ConfigureAwait(false);
             var subProps1 = await sub1.GetPropertyElementsAsync(ct).ConfigureAwait(false);
 
-            var response = await _client
+            var response = await Client
                 .CopyAsync(
                     new Uri("test1", UriKind.Relative),
                     new Uri("test2", UriKind.Relative),
@@ -240,7 +213,7 @@ namespace FubarDev.WebDavServer.Tests.Handlers
         public async Task CopyDirectoryWithFileAndSubDirectoryDepthOneAsync()
         {
             var ct = CancellationToken.None;
-            var root = await _fileSystem.Root.GetValueAsync(ct).ConfigureAwait(false);
+            var root = await FileSystem.Root.GetValueAsync(ct).ConfigureAwait(false);
             var coll1 = await root.CreateCollectionAsync("test1", ct).ConfigureAwait(false);
             Assert.NotNull(coll1);
 
@@ -254,7 +227,7 @@ namespace FubarDev.WebDavServer.Tests.Handlers
             var docProps1 = await doc1.GetPropertyElementsAsync(ct).ConfigureAwait(false);
             var subProps1 = await sub1.GetPropertyElementsAsync(ct).ConfigureAwait(false);
 
-            var response = await _client
+            var response = await Client
                 .CopyAsync(
                     new Uri("test1", UriKind.Relative),
                     new Uri("test2", UriKind.Relative),
@@ -286,7 +259,7 @@ namespace FubarDev.WebDavServer.Tests.Handlers
         public async Task CopyDirectoryWithFileAndSubDirectoryDepthZeroAsync()
         {
             var ct = CancellationToken.None;
-            var root = await _fileSystem.Root.GetValueAsync(ct).ConfigureAwait(false);
+            var root = await FileSystem.Root.GetValueAsync(ct).ConfigureAwait(false);
             var coll1 = await root.CreateCollectionAsync("test1", ct).ConfigureAwait(false);
             Assert.NotNull(coll1);
 
@@ -298,7 +271,7 @@ namespace FubarDev.WebDavServer.Tests.Handlers
 
             var props1 = await coll1.GetPropertyElementsAsync(ct).ConfigureAwait(false);
 
-            var response = await _client
+            var response = await Client
                 .CopyAsync(
                     new Uri("test1", UriKind.Relative),
                     new Uri("test2", UriKind.Relative),
@@ -324,7 +297,7 @@ namespace FubarDev.WebDavServer.Tests.Handlers
         public async Task CopyDirectoryWithSubDirectoryAndFileDepthOneAsync()
         {
             var ct = CancellationToken.None;
-            var root = await _fileSystem.Root.GetValueAsync(ct).ConfigureAwait(false);
+            var root = await FileSystem.Root.GetValueAsync(ct).ConfigureAwait(false);
             var coll1 = await root.CreateCollectionAsync("test1", ct).ConfigureAwait(false);
             Assert.NotNull(coll1);
 
@@ -337,7 +310,7 @@ namespace FubarDev.WebDavServer.Tests.Handlers
             var props1 = await coll1.GetPropertyElementsAsync(ct).ConfigureAwait(false);
             var subProps1 = await sub1.GetPropertyElementsAsync(ct).ConfigureAwait(false);
 
-            var response = await _client
+            var response = await Client
                 .CopyAsync(
                     new Uri("test1", UriKind.Relative),
                     new Uri("test2", UriKind.Relative),
@@ -366,7 +339,7 @@ namespace FubarDev.WebDavServer.Tests.Handlers
         public async Task CopyDirectoryWithSubDirectoryAndFileDepthInfinityAsync()
         {
             var ct = CancellationToken.None;
-            var root = await _fileSystem.Root.GetValueAsync(ct).ConfigureAwait(false);
+            var root = await FileSystem.Root.GetValueAsync(ct).ConfigureAwait(false);
             var coll1 = await root.CreateCollectionAsync("test1", ct).ConfigureAwait(false);
             Assert.NotNull(coll1);
 
@@ -380,7 +353,7 @@ namespace FubarDev.WebDavServer.Tests.Handlers
             var subProps1 = await sub1.GetPropertyElementsAsync(ct).ConfigureAwait(false);
             var docProps1 = await doc1.GetPropertyElementsAsync(ct).ConfigureAwait(false);
 
-            var response = await _client
+            var response = await Client
                 .CopyAsync(
                     new Uri("test1", UriKind.Relative),
                     new Uri("test2", UriKind.Relative),
@@ -412,7 +385,7 @@ namespace FubarDev.WebDavServer.Tests.Handlers
         public async Task CopyDirectoryWithTwoSubDirectoriesDepthZeroAsync()
         {
             var ct = CancellationToken.None;
-            var root = await _fileSystem.Root.GetValueAsync(ct).ConfigureAwait(false);
+            var root = await FileSystem.Root.GetValueAsync(ct).ConfigureAwait(false);
             var coll1 = await root.CreateCollectionAsync("test1", ct).ConfigureAwait(false);
             Assert.NotNull(coll1);
 
@@ -421,7 +394,7 @@ namespace FubarDev.WebDavServer.Tests.Handlers
 
             var props1 = await coll1.GetPropertyElementsAsync(ct).ConfigureAwait(false);
 
-            var response = await _client
+            var response = await Client
                 .CopyAsync(
                     new Uri("test1", UriKind.Relative),
                     new Uri("test2", UriKind.Relative),
@@ -447,7 +420,7 @@ namespace FubarDev.WebDavServer.Tests.Handlers
         public async Task CopyDirectoryWithTwoSubDirectoriesDepthOneAsync()
         {
             var ct = CancellationToken.None;
-            var root = await _fileSystem.Root.GetValueAsync(ct).ConfigureAwait(false);
+            var root = await FileSystem.Root.GetValueAsync(ct).ConfigureAwait(false);
             var coll1 = await root.CreateCollectionAsync("test1", ct).ConfigureAwait(false);
             Assert.NotNull(coll1);
 
@@ -458,7 +431,7 @@ namespace FubarDev.WebDavServer.Tests.Handlers
             var subProps11 = await sub11.GetPropertyElementsAsync(ct).ConfigureAwait(false);
             var subProps12 = await sub12.GetPropertyElementsAsync(ct).ConfigureAwait(false);
 
-            var response = await _client
+            var response = await Client
                 .CopyAsync(
                     new Uri("test1", UriKind.Relative),
                     new Uri("test2", UriKind.Relative),
@@ -490,7 +463,7 @@ namespace FubarDev.WebDavServer.Tests.Handlers
         public async Task CopyDirectoryWithSubDocumentAndTwoSubDirectoriesWithTwoDocumentsAsync()
         {
             var ct = CancellationToken.None;
-            var root = await _fileSystem.Root.GetValueAsync(ct).ConfigureAwait(false);
+            var root = await FileSystem.Root.GetValueAsync(ct).ConfigureAwait(false);
 
             var coll1 = await root.CreateCollectionAsync("test1", ct).ConfigureAwait(false);
             Assert.NotNull(coll1);
@@ -528,7 +501,7 @@ namespace FubarDev.WebDavServer.Tests.Handlers
             var docProps121 = await doc121.GetPropertyElementsAsync(ct).ConfigureAwait(false);
             var docProps122 = await doc122.GetPropertyElementsAsync(ct).ConfigureAwait(false);
 
-            var response = await _client
+            var response = await Client
                 .CopyAsync(
                     new Uri("test1", UriKind.Relative),
                     new Uri("test2", UriKind.Relative),
@@ -589,75 +562,6 @@ namespace FubarDev.WebDavServer.Tests.Handlers
             var docProps222 = await doc222.GetPropertyElementsAsync(ct).ConfigureAwait(false);
             var docChanges22 = PropertyComparer.FindChanges(docProps122, docProps222, _propsToIgnore);
             Assert.Empty(docChanges22);
-        }
-
-        private void ConfigureServices(RemoteCopyHandlerTests container, IServiceCollection services)
-        {
-            services
-                .AddOptions()
-                .AddLogging()
-                .Configure<CopyHandlerOptions>(
-                    opt =>
-                    {
-                        opt.Mode = RecursiveProcessingMode.PreferCrossServer;
-                    })
-                .Configure<MoveHandlerOptions>(
-                    opt =>
-                    {
-                        opt.Mode = RecursiveProcessingMode.PreferCrossServer;
-                    })
-                .AddScoped<IWebDavHost>(sp => new TestHost(container._server.BaseAddress))
-                .AddScoped<IRemoteHttpClientFactory>(sp => new TestHttpClientFactory(container._server))
-                .AddSingleton<IFileSystemFactory>(sp => new TestFileSystemFactory(container._fileSystem))
-                .AddTransient(sp =>
-                {
-                    var factory = sp.GetRequiredService<IFileSystemFactory>();
-                    var context = sp.GetRequiredService<IHttpContextAccessor>();
-                    return factory.CreateFileSystem(context.HttpContext.User.Identity);
-                })
-                .AddMvcCore()
-                .AddWebDav();
-        }
-
-        [UsedImplicitly]
-        private class TestStartup
-        {
-            [UsedImplicitly]
-            public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory)
-            {
-                loggerFactory.AddDebug();
-                app.UseMvc();
-            }
-        }
-
-        private class TestFileSystemFactory : IFileSystemFactory
-        {
-            private readonly IFileSystem _fileSystem;
-
-            public TestFileSystemFactory(IFileSystem fileSystem)
-            {
-                _fileSystem = fileSystem;
-            }
-
-            public IFileSystem CreateFileSystem(IIdentity identity)
-            {
-                return _fileSystem;
-            }
-        }
-
-        private class TestHttpClientFactory : IRemoteHttpClientFactory
-        {
-            private readonly TestServer _server;
-
-            public TestHttpClientFactory(TestServer server)
-            {
-                _server = server;
-            }
-
-            public Task<HttpClient> CreateAsync(Uri baseUrl, CancellationToken cancellationToken)
-            {
-                return Task.FromResult(_server.CreateClient());
-            }
         }
     }
 }
