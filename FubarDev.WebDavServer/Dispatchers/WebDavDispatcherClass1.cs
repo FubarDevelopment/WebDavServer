@@ -131,7 +131,7 @@ namespace FubarDev.WebDavServer.Dispatchers
         }
 
         /// <inheritdoc />
-        public int Version { get; } = 1;
+        public string Version { get; } = "1";
 
         /// <inheritdoc />
         public IEnumerable<string> HttpMethods { get; }

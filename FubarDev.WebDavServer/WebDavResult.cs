@@ -22,7 +22,7 @@ namespace FubarDev.WebDavServer
 
         public virtual Task ExecuteResultAsync(IWebDavResponse response, CancellationToken ct)
         {
-            response.Headers["DAV"] = response.Dispatcher.SupportedClasses.Select(x => x.ToString(CultureInfo.InvariantCulture)).ToArray();
+            response.Headers["DAV"] = response.Dispatcher.SupportedClasses.ToArray();
             return Task.FromResult(0);
         }
     }

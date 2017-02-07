@@ -14,7 +14,7 @@ namespace FubarDev.WebDavServer
     public interface IWebDavDispatcher
     {
         [NotNull]
-        IReadOnlyCollection<int> SupportedClasses { get; }
+        IReadOnlyCollection<string> SupportedClasses { get; }
 
         [NotNull]
         [ItemNotNull]

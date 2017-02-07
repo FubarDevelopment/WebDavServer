@@ -10,7 +10,7 @@ namespace FubarDev.WebDavServer.Dispatchers
 {
     public interface IWebDavClass
     {
-        int Version { get; }
+        string Version { get; }
 
         [NotNull]
         [ItemNotNull]

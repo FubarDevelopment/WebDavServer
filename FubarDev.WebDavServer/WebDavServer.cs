@@ -23,7 +23,7 @@ namespace FubarDev.WebDavServer
 
         public IReadOnlyCollection<string> SupportedHttpMethods { get; }
 
-        public IReadOnlyCollection<int> SupportedClasses { get; }
+        public IReadOnlyCollection<string> SupportedClasses { get; }
 
         public IWebDavOutputFormatter Formatter { get; }
 
