@@ -661,7 +661,7 @@ namespace DecaTec.WebDav
         /// <returns>The <see cref="Task"/> representing the asynchronous operation.</returns>
         public async Task<WebDavResponseMessage> LockAsync(string requestUrl, WebDavTimeoutHeaderValue timeout, WebDavDepthHeaderValue depth, string lockInfoXmlString, HttpCompletionOption completionOption, CancellationToken cancellationToken)
         {
-            return await LockAsync(requestUrl, timeout, depth, lockInfoXmlString, completionOption, cancellationToken);
+            return await LockAsync(new Uri(requestUrl), timeout, depth, lockInfoXmlString, completionOption, cancellationToken);
         }
 
         /// <summary>
