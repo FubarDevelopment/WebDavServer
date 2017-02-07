@@ -1,0 +1,796 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+      <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+   <title>Web Distributed Authoring and Versioning (WebDAV) Ordered&nbsp;Collections&nbsp;Protocol</title><script type="application/javascript">
+function getMeta(rfcno, container) {
+
+  var xhr = new XMLHttpRequest();
+  xhr.open("GET", "https://tools.ietf.org/draft/rfc" + rfcno + "/state.xml", true);
+  xhr.onload = function (e) {
+    if (xhr.readyState === 4) {
+      if (xhr.status === 200) {
+        var doc = xhr.responseXML;
+        var info = getChildByName(doc.documentElement, "info");
+  
+        var cont = document.getElementById(container);
+        // empty the container
+        while (cont.firstChild) {
+          cont.removeChild(myNode.firstChild);
+        }      
+  
+        var c = getChildByName(info, "stdstatus");
+        if (c !== null) {
+          var bld = newElementWithText("b", c.textContent);
+          cont.appendChild(bld);
+        }
+  
+        c = getChildByName(info, "updatedby");
+        if (c !== null) {
+          cont.appendChild(newElement("br"));
+          cont.appendChild(newText("Updated by: "));
+          appendRfcLinks(cont, c.textContent);
+        }
+  
+        c = getChildByName(info, "obsoletedby");
+        if (c !== null) {
+          cont.appendChild(newElement("br"));
+          cont.appendChild(newText("Obsoleted by: "));
+          appendRfcLinks(cont, c.textContent);
+        }
+        
+        c = getChildByName(info, "errata");
+        if (c !== null) {
+          cont.appendChild(newElement("br"));
+          var link = newElementWithText("a", "errata");
+          link.setAttribute("href", "http://www.rfc-editor.org/errata_search.php?rfc=" + rfcno);
+          var errata = newElementWithText("i", "This document has ");
+          errata.appendChild(link);
+          errata.appendChild(newText("."));
+          cont.appendChild(errata);
+        }
+
+        cont.style.display = "block";
+      } else {
+        console.error(xhr.statusText);
+      }
+    }
+  };
+  xhr.onerror = function (e) {
+    console.error(xhr.status + " " + xhr.statusText);
+  };
+  xhr.send(null);
+}
+
+// DOM helpers
+function newElement(name) {
+  return document.createElement(name);
+}
+function newElementWithText(name, txt) {
+  var e = document.createElement(name);
+  e.appendChild(newText(txt));
+  return e;
+}
+function newText(text) {
+  return document.createTextNode(text);
+}
+
+function getChildByName(parent, name) {
+  if (parent === null) {
+    return null;
+  }
+  else {
+    for (var c = parent.firstChild; c !== null; c = c.nextSibling) {
+      if (name == c.nodeName) {
+        return c;
+      }
+    }
+    return null;
+  }
+}
+
+function appendRfcLinks(parent, text) {
+  var updates = text.split(",");
+  for (var i = 0; i < updates.length; i++) {
+    var rfc = updates[i].trim();
+    if (rfc.substring(0, 3) == "rfc") {
+      var link = newElement("a");
+      link.setAttribute("href", "http://tools.ietf.org/html/" + rfc);
+      link.appendChild(newText(rfc.substring(3)));
+      parent.appendChild(link);
+    } else {
+      parent.appendChild(newText(rfc));
+    }
+    if (i != updates.length - 1) {
+      parent.appendChild(newText(", "));
+    }
+  }
+}
+</script><script type="application/javascript">
+function anchorRewrite() {
+  map = { };
+  if (window.location.hash.length >= 1) {
+    var fragid = window.location.hash.substr(1);
+    if (fragid) {
+      if (! document.getElementById(fragid)) {
+        var prefix = "rfc.";
+        var mapped = map[fragid];
+        if (mapped) {
+          window.location.hash = mapped;
+        } else if (fragid.indexOf("section-") == 0) {
+          window.location.hash = prefix + "section." + fragid.substring(8);
+        } else if (fragid.indexOf("appendix-") == 0) {
+          window.location.hash = prefix + "section." + fragid.substring(9);
+        } else if (fragid.indexOf("s-") == 0) {
+          window.location.hash = prefix + "section." + fragid.substring(2);
+        } else if (fragid.indexOf("p-") == 0) {
+          var r = fragid.substring(2);
+          var p = r.indexOf("-");
+          if (p >= 0) {
+            window.location.hash = prefix + "section." + r.substring(0, p) + ".p." + r.substring(p + 1);
+          }
+        }
+      }
+    }  
+  }
+}
+window.addEventListener('hashchange', anchorRewrite);
+window.addEventListener('DOMContentLoaded', anchorRewrite);
+</script><style type="text/css" title="Xml2Rfc (sans serif)">
+a {
+  text-decoration: none;
+}
+a.smpl {
+  color: black;
+}
+a:hover {
+  text-decoration: underline;
+}
+a:active {
+  text-decoration: underline;
+}
+address {
+  margin-top: 1em;
+  margin-left: 2em;
+  font-style: normal;
+}
+body {
+  color: black;
+  font-family: cambria, georgia, serif;
+  font-size: 12pt;
+  margin: 2em auto;
+  max-width: 1000px;
+}
+samp, span.tt, code, pre {
+  font-family: consolas, monaco, monospace;
+}
+cite {
+  font-style: normal;
+}
+dl {
+  margin-left: 2em;
+}
+dl > dt {
+  float: left;
+  margin-right: 1em;
+}
+dl.nohang > dt {
+  float: none;
+}
+dl > dd {
+  margin-bottom: .5em;
+}
+dl.compact > dd {
+  margin-bottom: .0em;
+}
+dl > dd > dl {
+  margin-top: 0.5em;
+}
+ul.empty {
+  list-style-type: none;
+}
+ul.empty li {
+  margin-top: .5em;
+}
+dl p {
+  margin-left: 0em;
+}
+dl.reference > dt {
+  font-weight: bold;
+}
+dl.reference > dd {
+  margin-left: 6em;
+}
+h1 {
+  color: green;
+  font-size: 150%;
+  line-height: 18pt;
+  font-weight: bold;
+  text-align: center;
+  margin-top: 36pt;
+  margin-bottom: 0pt;
+}
+h2 {
+  font-size: 130%;
+  line-height: 21pt;
+  page-break-after: avoid;
+}
+h2.np {
+  page-break-before: always;
+}
+h3 {
+  font-size: 120%;
+  line-height: 15pt;
+  page-break-after: avoid;
+}
+h4 {
+  font-size: 110%;
+  page-break-after: avoid;
+}
+h5, h6 {
+  page-break-after: avoid;
+}
+h1 a, h2 a, h3 a, h4 a, h5 a, h6 a {
+  color: black;
+}
+img {
+  margin-left: 3em;
+}
+li {
+  margin-left: 2em;
+}
+ol {
+  margin-left: 2em;
+}
+ol.la {
+  list-style-type: lower-alpha;
+}
+ol.ua {
+  list-style-type: upper-alpha;
+}
+ol p {
+  margin-left: 0em;
+}
+p {
+  margin-left: 2em;
+}
+pre {
+  font-size: 11pt;
+  margin-left: 3em;
+  background-color: lightyellow;
+  padding: .25em;
+  page-break-inside: avoid;
+}
+pre.text2 {
+  border-style: dotted;
+  border-width: 1px;
+  background-color: #f0f0f0;
+}
+pre.inline {
+  background-color: white;
+  padding: 0em;
+  page-break-inside: auto;
+}
+pre.text {
+  border-style: dotted;
+  border-width: 1px;
+  background-color: #f8f8f8;
+}
+pre.drawing {
+  border-style: solid;
+  border-width: 1px;
+  background-color: #f8f8f8;
+  padding: 2em;
+}
+table {
+  margin-left: 2em;
+}
+table.header {
+  border-spacing: 1px;
+  width: 95%;
+  font-size: 11pt;
+  color: white;
+}
+td.top {
+  vertical-align: top;
+}
+td.topnowrap {
+  vertical-align: top;
+  white-space: nowrap;
+}
+table.header td {
+  background-color: gray;
+  width: 50%;
+}
+ul.toc, ul.toc ul {
+  list-style: none;
+  margin-left: 1.5em;
+  padding-left: 0em;
+}
+ul.toc li {
+  line-height: 150%;
+  font-weight: bold;
+  margin-left: 0em;
+}
+ul.toc li li {
+  line-height: normal;
+  font-weight: normal;
+  font-size: 11pt;
+  margin-left: 0em;
+}
+li.excluded {
+  font-size: 0pt;
+}
+ul p {
+  margin-left: 0em;
+}
+.filename, h1, h2, h3, h4 {
+  font-family: candara, calibri, segoe, optima, arial, sans-serif;
+}
+ul.ind, ul.ind ul {
+  list-style: none;
+  margin-left: 1.5em;
+  padding-left: 0em;
+  page-break-before: avoid;
+}
+ul.ind li {
+  font-weight: bold;
+  line-height: 200%;
+  margin-left: 0em;
+}
+ul.ind li li {
+  font-weight: normal;
+  line-height: 150%;
+  margin-left: 0em;
+}
+.avoidbreakinside {
+  page-break-inside: avoid;
+}
+.avoidbreakafter {
+  page-break-after: avoid;
+}
+.bcp14 {
+  font-style: normal;
+  text-transform: lowercase;
+  font-variant: small-caps;
+}
+.comment {
+  background-color: yellow;
+}
+.center {
+  text-align: center;
+}
+.error {
+  color: red;
+  font-style: italic;
+  font-weight: bold;
+}
+.figure {
+  font-weight: bold;
+  text-align: center;
+  font-size: 10pt;
+}
+.filename {
+  color: #333333;
+  font-size: 112%;
+  font-weight: bold;
+  line-height: 21pt;
+  text-align: center;
+  margin-top: 0pt;
+}
+.fn {
+  font-weight: bold;
+}
+.left {
+  text-align: left;
+}
+.right {
+  text-align: right;
+}
+.warning {
+  font-size: 130%;
+  background-color: yellow;
+}
+.self {
+    color: #999999;
+    margin-left: .3em;
+    text-decoration: none;
+    visibility: hidden;
+    -webkit-user-select: none; 
+    -moz-user-select: none;
+    -ms-user-select: none;
+}
+.self:hover {
+    text-decoration: none;
+}
+p:hover .self {
+    visibility: visible;
+}
+.docstatus {
+  border: 1px solid black;
+  display: none;
+  float: right;
+  margin: 2em;
+  padding: 1em;
+}
+
+@media screen {
+  pre.text, pre.text2 {
+    width: 69em;
+  }
+}
+
+@media print {
+  .noprint {
+    display: none;
+  }
+
+  a {
+    color: black;
+    text-decoration: none;
+  }
+
+  table.header {
+    width: 90%;
+  }
+
+  td.header {
+    width: 50%;
+    color: black;
+    background-color: white;
+    vertical-align: top;
+    font-size: 110%;
+  }
+
+  ul.toc a:last-child::after {
+    content: leader('.') target-counter(attr(href), page);
+  }
+
+  ul.ind li li a {
+    content: target-counter(attr(href), page);
+  }
+
+  pre {
+    font-size: 10pt;
+  }
+
+  .print2col {
+    column-count: 2;
+    -moz-column-count: 2;
+    column-fill: auto;
+  }
+}
+@page {
+  @top-left {
+       content: "RFC 3648";
+  }
+  @top-right {
+       content: "December 2003";
+  }
+  @top-center {
+       content: "WebDAV Ordered Collections Protocol";
+  }
+  @bottom-left {
+       content: "Whitehead & Reschke";
+  }
+  @bottom-center {
+       content: "Standards Track";
+  }
+  @bottom-right {
+       content: "[Page " counter(page) "]";
+  }
+}
+@page:first {
+    @top-left {
+      content: normal;
+    }
+    @top-right {
+      content: normal;
+    }
+    @top-center {
+      content: normal;
+    }
+}
+</style><link rel="Contents" href="#rfc.toc"><link rel="Author" href="#rfc.authors"><link rel="Copyright" href="#rfc.copyright"><link rel="Index" href="#rfc.index"><link rel="Chapter" title="1 Notational Conventions" href="#rfc.section.1"><link rel="Chapter" title="2 Introduction" href="#rfc.section.2"><link rel="Chapter" title="3 Terminology" href="#rfc.section.3"><link rel="Chapter" title="4 Overview of Ordered Collections" href="#rfc.section.4"><link rel="Chapter" title="5 Creating an Ordered Collection" href="#rfc.section.5"><link rel="Chapter" title="6 Setting the Position of a Collection Member" href="#rfc.section.6"><link rel="Chapter" title="7 Changing a Collection Ordering: ORDERPATCH method" href="#rfc.section.7"><link rel="Chapter" title="8 Listing the Members of an Ordered Collection" href="#rfc.section.8"><link rel="Chapter" title="9 Relationship to versioned collections" href="#rfc.section.9"><link rel="Chapter" title="10 Capability Discovery" href="#rfc.section.10"><link rel="Chapter" title="11 Security Considerations" href="#rfc.section.11"><link rel="Chapter" title="12 Internationalization Considerations" href="#rfc.section.12"><link rel="Chapter" title="13 IANA Considerations" href="#rfc.section.13"><link rel="Chapter" title="14 Contributors" href="#rfc.section.14"><link rel="Chapter" title="15 Acknowledgements" href="#rfc.section.15"><link rel="Chapter" href="#rfc.section.16" title="16 Normative References"><link rel="Appendix" title="A Extensions to the WebDAV Document Type Definition" href="#rfc.section.A"><link rel="Bookmark" title="IETF WEBDAV Working Group" href="http://ftp.ics.uci.edu/pub/ietf/webdav/"><link rel="Alternate" title="Authoritative ASCII Version" href="http://www.ietf.org/rfc/rfc3648.txt"><link rel="Help" title="RFC-Editor's Status Page" href="http://www.rfc-editor.org/info/rfc3648"><link rel="Help" title="Additional Information on tools.ietf.org" href="http://tools.ietf.org/html/rfc3648"><meta name="generator" content="http://greenbytes.de/tech/webdav/rfc2629.xslt, Revision 1.840, 2016/11/16 05:32:10, XSLT vendor: SAXON 6.5.5 from Michael Kay http://saxon.sf.net/"><meta name="keywords" content="WebDAV, ordering, ordered collections, protocol, ORDERPATCH method, Position header, Ordering-Type header"><link rel="schema.dcterms" href="http://purl.org/dc/terms/"><meta name="dcterms.creator" content="Whitehead, J."><meta name="dcterms.creator" content="Reschke, J. F."><meta name="dcterms.identifier" content="urn:ietf:rfc:3648"><meta name="dcterms.issued" content="2003-12"><meta name="dcterms.abstract" content="This specification extends the Web Distributed Authoring and Versioning (WebDAV) Protocol to support the server-side ordering of collection members. Of particular interest are orderings that are not based on property values, and so cannot be achieved using a search protocol's ordering option and cannot be maintained automatically by the server. Protocol elements are defined to let clients specify the position in the ordering of each collection member, as well as the semantics governing the ordering."><meta name="dcterms.isPartOf" content="urn:issn:2070-1721"><meta name="description" content="This specification extends the Web Distributed Authoring and Versioning (WebDAV) Protocol to support the server-side ordering of collection members. Of particular interest are orderings that are not based on property values, and so cannot be achieved using a search protocol's ordering option and cannot be maintained automatically by the server. Protocol elements are defined to let clients specify the position in the ordering of each collection member, as well as the semantics governing the ordering."></head><body onload="getMeta(3648,&#34;rfc.meta&#34;);"><header><table class="header" id="rfc.headerblock"><tbody><tr><td class="left">Network Working Group</td><td class="right">J. Whitehead</td></tr><tr><td class="left">Request for Comments: 3648</td><td class="right">U.C. Santa Cruz</td></tr><tr><td class="left">Category: Standards Track</td><td class="right">J. Reschke, Editor</td></tr><tr><td class="left"></td><td class="right">greenbytes</td></tr><tr><td class="left"></td><td class="right">December 2003</td></tr></tbody></table><div id="rfc.title"><h1>Web Distributed Authoring and Versioning (WebDAV) Ordered&nbsp;Collections&nbsp;Protocol</h1></div></header><div id="rfc.meta" class="docstatus"></div><section id="rfc.status"><h2><a href="#rfc.status">Status of this Memo</a></h2><p>This document specifies an Internet standards track protocol for the Internet community, and requests discussion and suggestions for improvements. Please refer to the current edition of the &#8220;Internet Official Protocol Standards&#8221; (STD 1) for the standardization state and status of this protocol. Distribution of this memo is unlimited.</p></section><section id="rfc.copyrightnotice"><h2><a href="#rfc.copyrightnotice">Copyright Notice</a></h2><p>Copyright &copy; The Internet Society (2003). All Rights Reserved.</p></section><section id="rfc.abstract"><h2><a href="#rfc.abstract">Abstract</a></h2><p>This specification extends the Web Distributed Authoring and Versioning (WebDAV) Protocol to support the server-side ordering of collection members. Of particular interest are orderings that are not based on property values, and so cannot be achieved using a search protocol's ordering option and cannot be maintained automatically by the server. Protocol elements are defined to let clients specify the position in the ordering of each collection member, as well as the semantics governing the ordering.</p></section><hr class="noprint"><nav id="rfc.toc"><h2 class="np"><a href="#rfc.toc">Table of Contents</a></h2><ul class="toc"><li><a href="#rfc.section.1">1.</a>&nbsp;&nbsp;&nbsp;<a href="#rfc.section.1">Notational Conventions</a></li><li><a href="#rfc.section.2">2.</a>&nbsp;&nbsp;&nbsp;<a href="#rfc.section.2">Introduction</a></li><li><a href="#rfc.section.3">3.</a>&nbsp;&nbsp;&nbsp;<a href="#SECTION.TERMINOLOGY">Terminology</a></li><li><a href="#rfc.section.4">4.</a>&nbsp;&nbsp;&nbsp;<a href="#SECTION.OVERVIEW">Overview of Ordered Collections</a><ul><li><a href="#rfc.section.4.1">4.1.</a>&nbsp;&nbsp;&nbsp;<a href="#rfc.section.4.1">Additional Collection properties</a><ul><li><a href="#rfc.section.4.1.1">4.1.1.</a>&nbsp;&nbsp;&nbsp;<a href="#PROPERTY_ordering-type">DAV:ordering-type (protected)</a></li></ul></li></ul></li><li><a href="#rfc.section.5">5.</a>&nbsp;&nbsp;&nbsp;<a href="#SECTION.CREATING">Creating an Ordered Collection</a><ul><li><a href="#rfc.section.5.1">5.1.</a>&nbsp;&nbsp;&nbsp;<a href="#SECTION.CREATING.OVERVIEW">Overview</a></li><li><a href="#rfc.section.5.2">5.2.</a>&nbsp;&nbsp;&nbsp;<a href="#rfc.section.5.2">Example: Creating an Ordered Collection</a></li></ul></li><li><a href="#rfc.section.6">6.</a>&nbsp;&nbsp;&nbsp;<a href="#SECTION.SETTING">Setting the Position of a Collection Member</a><ul><li><a href="#rfc.section.6.1">6.1.</a>&nbsp;&nbsp;&nbsp;<a href="#SECTION.SETTING.OVERVIEW">Overview</a></li><li><a href="#rfc.section.6.2">6.2.</a>&nbsp;&nbsp;&nbsp;<a href="#rfc.section.6.2">Examples: Setting the Position of a Collection Member</a></li><li><a href="#rfc.section.6.3">6.3.</a>&nbsp;&nbsp;&nbsp;<a href="#rfc.section.6.3">Examples: Renaming a member of an ordered collection</a></li></ul></li><li><a href="#rfc.section.7">7.</a>&nbsp;&nbsp;&nbsp;<a href="#METHOD_ORDERPATCH">Changing a Collection Ordering: ORDERPATCH method</a><ul><li><a href="#rfc.section.7.1">7.1.</a>&nbsp;&nbsp;&nbsp;<a href="#rfc.section.7.1">Example: Changing a Collection Ordering</a></li><li><a href="#rfc.section.7.2">7.2.</a>&nbsp;&nbsp;&nbsp;<a href="#rfc.section.7.2">Example: Failure of an ORDERPATCH Request</a></li></ul></li><li><a href="#rfc.section.8">8.</a>&nbsp;&nbsp;&nbsp;<a href="#SECTION.LISTING">Listing the Members of an Ordered Collection</a><ul><li><a href="#rfc.section.8.1">8.1.</a>&nbsp;&nbsp;&nbsp;<a href="#rfc.section.8.1">Example: PROPFIND on an Ordered Collection</a></li></ul></li><li><a href="#rfc.section.9">9.</a>&nbsp;&nbsp;&nbsp;<a href="#SECTION.VERSIONING">Relationship to versioned collections</a><ul><li><a href="#rfc.section.9.1">9.1.</a>&nbsp;&nbsp;&nbsp;<a href="#rfc.section.9.1">Collection Version Properties</a><ul><li><a href="#rfc.section.9.1.1">9.1.1.</a>&nbsp;&nbsp;&nbsp;<a href="#rfc.section.9.1.1">Additional semantics for DAV:version-controlled-binding-set (protected)</a></li><li><a href="#rfc.section.9.1.2">9.1.2.</a>&nbsp;&nbsp;&nbsp;<a href="#rfc.section.9.1.2">DAV:ordering-type (protected)</a></li></ul></li><li><a href="#rfc.section.9.2">9.2.</a>&nbsp;&nbsp;&nbsp;<a href="#rfc.section.9.2">Additional CHECKIN semantics</a></li><li><a href="#rfc.section.9.3">9.3.</a>&nbsp;&nbsp;&nbsp;<a href="#rfc.section.9.3">Additional CHECKOUT Semantics</a></li><li><a href="#rfc.section.9.4">9.4.</a>&nbsp;&nbsp;&nbsp;<a href="#rfc.section.9.4">Additional UNCHECKOUT, UPDATE, and MERGE Semantics</a></li></ul></li><li><a href="#rfc.section.10">10.</a>&nbsp;&nbsp;&nbsp;<a href="#SECTION.DISCOVERY">Capability Discovery</a><ul><li><a href="#rfc.section.10.1">10.1.</a>&nbsp;&nbsp;&nbsp;<a href="#rfc.section.10.1">Example: Using OPTIONS for the Discovery of Support for Ordering</a></li><li><a href="#rfc.section.10.2">10.2.</a>&nbsp;&nbsp;&nbsp;<a href="#rfc.section.10.2">Example: Using Live Properties for the Discovery of Ordering</a></li></ul></li><li><a href="#rfc.section.11">11.</a>&nbsp;&nbsp;&nbsp;<a href="#SECTION.SECURITY">Security Considerations</a><ul><li><a href="#rfc.section.11.1">11.1.</a>&nbsp;&nbsp;&nbsp;<a href="#rfc.section.11.1">Denial of Service and DAV:ordering-type</a></li></ul></li><li><a href="#rfc.section.12">12.</a>&nbsp;&nbsp;&nbsp;<a href="#rfc.section.12">Internationalization Considerations</a></li><li><a href="#rfc.section.13">13.</a>&nbsp;&nbsp;&nbsp;<a href="#SECTION.IANA">IANA Considerations</a></li><li><a href="#rfc.section.14">14.</a>&nbsp;&nbsp;&nbsp;<a href="#rfc.section.14">Contributors</a></li><li><a href="#rfc.section.15">15.</a>&nbsp;&nbsp;&nbsp;<a href="#rfc.section.15">Acknowledgements</a></li><li><a href="#rfc.section.16">16.</a>&nbsp;&nbsp;&nbsp;<a href="#rfc.references">Normative References</a></li><li><a href="#rfc.section.A">A.</a>&nbsp;&nbsp;&nbsp;<a href="#rfc.section.A">Extensions to the WebDAV Document Type Definition</a></li><li><a href="#rfc.index">Index</a></li><li><a href="#rfc.authors">Authors' Addresses</a></li><li><a href="#rfc.ipr">Intellectual Property and Copyright Statements</a></li></ul></nav><section id="n-notational-conventions"><h2 id="rfc.section.1" class="np"><a href="#rfc.section.1">1.</a>&nbsp;<a href="#n-notational-conventions">Notational Conventions</a></h2><div id="rfc.section.1.p.1"><p>Since this document describes a set of extensions to the WebDAV Distributed Authoring Protocol <a href="#RFC2518" id="rfc.xref.RFC2518.1"><cite title="HTTP Extensions for Distributed Authoring -- WEBDAV">[RFC2518]</cite></a>, which is itself an extension to the HTTP/1.1 protocol, the augmented BNF used here to describe protocol elements is exactly the same as described in <a href="https://tools.ietf.org/html/rfc2616#section-2.1" id="rfc.xref.RFC2616.1">Section 2.1</a> of HTTP <a href="#RFC2616" id="rfc.xref.RFC2616.2"><cite title="Hypertext Transfer Protocol -- HTTP/1.1">[RFC2616]</cite></a>. Since this augmented BNF uses the basic production rules provided in <a href="https://tools.ietf.org/html/rfc2616#section-2.2" id="rfc.xref.RFC2616.3">Section 2.2</a> of HTTP, these rules apply to this document as well.<a class="self" href="#rfc.section.1.p.1">&para;</a></p></div><div id="rfc.section.1.p.2"><p>The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "MAY", and "OPTIONAL" in this document are to be interpreted as described in <a href="#RFC2119" id="rfc.xref.RFC2119.1"><cite title="Key words for use in RFCs to Indicate Requirement Levels">[RFC2119]</cite></a>.<a class="self" href="#rfc.section.1.p.2">&para;</a></p></div><div id="rfc.section.1.p.3"><p>This document uses XML DTD fragments as a purely notational convention. WebDAV request and response bodies can not be validated due to the specific extensibility rules defined in section <a href="https://tools.ietf.org/html/rfc2518#section-23" id="rfc.xref.RFC2518.2">23</a> of <a href="#RFC2518" id="rfc.xref.RFC2518.3"><cite title="HTTP Extensions for Distributed Authoring -- WEBDAV">[RFC2518]</cite></a> and due to the fact that all XML elements defined by this specification use the XML namespace name "DAV:". In particular: <a class="self" href="#rfc.section.1.p.3">&para;</a></p><ol><li>element names use the "DAV:" namespace,</li><li>element ordering is irrelevant,</li><li>extension elements (elements not already defined as valid child elements) may be added anywhere, except where explicitly stated otherwise,</li><li>extension attributes (attributes not already defined as valid for this element) may be added anywhere, except where explicitly stated otherwise.</li></ol></div></section><section id="n-introduction"><h2 id="rfc.section.2"><a href="#rfc.section.2">2.</a>&nbsp;<a href="#n-introduction">Introduction</a></h2><div id="rfc.section.2.p.1"><p>This specification builds on the collection infrastructure provided by the WebDAV Distributed Authoring Protocol, adding support for the server-side ordering of collection members.<a class="self" href="#rfc.section.2.p.1">&para;</a></p></div><div id="rfc.section.2.p.2"><p>There are many scenarios in which it is useful to impose an ordering on a collection at the server, such as expressing a recommended access order, or a revision history order. The members of a collection might represent the pages of a book, which need to be presented in order if they are to make sense, or an instructor might create a collection of course readings that she wants to be displayed in the order they are to be read.<a class="self" href="#rfc.section.2.p.2">&para;</a></p></div><div id="rfc.section.2.p.3"><p>Orderings may be based on property values, but this is not always the case. The resources in the collection may not have properties that can be used to support the desired ordering. Orderings based on properties can be obtained using a search protocol's ordering option, but orderings not based on properties cannot. These orderings generally need to be maintained by a human user.<a class="self" href="#rfc.section.2.p.3">&para;</a></p></div><div id="rfc.section.2.p.4"><p>The ordering protocol defined here focuses on support for such human-maintained orderings. Its protocol elements allow clients to specify the position of each collection member in the collection's ordering, as well as the semantics governing the order. The protocol is designed to allow additional support in the future for orderings that are maintained automatically by the server.<a class="self" href="#rfc.section.2.p.4">&para;</a></p></div><div id="rfc.section.2.p.5"><p>The remainder of this document is structured as follows: <a href="#SECTION.TERMINOLOGY" title="Terminology">Section&nbsp;3</a> defines terminology that will be used throughout the specification. <a href="#SECTION.OVERVIEW" title="Overview of Ordered Collections">Section&nbsp;4</a> provides an overview of ordered collections. <a href="#SECTION.CREATING" title="Creating an Ordered Collection">Section&nbsp;5</a> describes how to create an ordered collection, and <a href="#SECTION.SETTING" title="Setting the Position of a Collection Member">Section&nbsp;6</a> discusses how to set a member's position in the ordering of a collection. <a href="#METHOD_ORDERPATCH" title="Changing a Collection Ordering: ORDERPATCH method">Section&nbsp;7</a> explains how to change a collection ordering. <a href="#SECTION.LISTING" title="Listing the Members of an Ordered Collection">Section&nbsp;8</a> discusses listing the members of an ordered collection. <a href="#SECTION.VERSIONING" title="Relationship to versioned collections">Section&nbsp;9</a> discusses the impact on version-controlled collections (as defined in <a href="#RFC3253" id="rfc.xref.RFC3253.1"><cite title="Versioning Extensions to WebDAV (Web Distributed Authoring and Versioning)">[RFC3253]</cite></a>). <a href="#SECTION.DISCOVERY" title="Capability Discovery">Section&nbsp;10</a> describes capability discovery. Sections <a href="#SECTION.SECURITY" title="Security Considerations">11</a> through <a href="#SECTION.IANA" title="IANA Considerations">13</a> discuss security, internationalization, and IANA considerations. The remaining sections provide supporting information.<a class="self" href="#rfc.section.2.p.5">&para;</a></p></div></section><section id="SECTION.TERMINOLOGY"><h2 id="rfc.section.3"><a href="#rfc.section.3">3.</a>&nbsp;<a href="#SECTION.TERMINOLOGY">Terminology</a></h2><div id="rfc.section.3.p.1"><p>The terminology used here follows that in <a href="#RFC2518" id="rfc.xref.RFC2518.4"><cite title="HTTP Extensions for Distributed Authoring -- WEBDAV">[RFC2518]</cite></a> and <a href="#RFC3253" id="rfc.xref.RFC3253.2"><cite title="Versioning Extensions to WebDAV (Web Distributed Authoring and Versioning)">[RFC3253]</cite></a>. Definitions of the terms <dfn>resource</dfn>, <dfn>Uniform Resource Identifier</dfn> (<dfn>URI</dfn>), and <dfn>Uniform Resource Locator</dfn> (<dfn>URL</dfn>) are provided in <a href="#RFC2396" id="rfc.xref.RFC2396.1"><cite title="Uniform Resource Identifiers (URI): Generic Syntax">[RFC2396]</cite></a>.<a class="self" href="#rfc.section.3.p.1">&para;</a></p></div><div id="rfc.section.3.p.2"><p><span id="rfc.iref.o.1"></span> <dfn>Ordered Collection</dfn> <a class="self" href="#rfc.section.3.p.2">&para;</a></p><ul class="empty"><li>A collection for which the results from a PROPFIND request are guaranteed to be in the order specified for that collection.</li></ul></div><div id="rfc.section.3.p.3"><p><span id="rfc.iref.u.1"></span> <dfn>Unordered Collection</dfn> <a class="self" href="#rfc.section.3.p.3">&para;</a></p><ul class="empty"><li>A collection for which the client cannot depend on the repeatability of the ordering of results from a PROPFIND request.</li></ul></div><div id="rfc.section.3.p.4"><p><span id="rfc.iref.c.1"></span> <dfn>Client-Maintained Ordering</dfn> <a class="self" href="#rfc.section.3.p.4">&para;</a></p><ul class="empty"><li>An ordering of collection members that is maintained on the server based on client requests specifying the position of each collection member in the ordering.</li></ul></div><div id="rfc.section.3.p.5"><p><span id="rfc.iref.s.1"></span> <dfn>Server-Maintained Ordering</dfn> <a class="self" href="#rfc.section.3.p.5">&para;</a></p><ul class="empty"><li>An ordering of collection members that is maintained automatically by the server, based on a client's choice of ordering semantics.</li></ul></div><div id="rfc.section.3.p.6"><p><span id="rfc.iref.o.2"></span> <dfn>Ordering Semantics</dfn> <a class="self" href="#rfc.section.3.p.6">&para;</a></p><ul class="empty"><li>In general, ordering semantics are the set of structures or meanings applied to the ordering of the member of a specific collection. Within this document, "ordering semantics" refers specifically to the structure specified in the DAV:ordering-type property. See <a href="#PROPERTY_ordering-type" title="DAV:ordering-type (protected)">Section&nbsp;4.1.1</a> for more information on DAV:ordering-type.</li></ul></div><div id="rfc.section.3.p.7"><p>This document uses the terms "<dfn>precondition</dfn>", "<dfn>postcondition</dfn>" and "<dfn>protected property</dfn>" as defined in <a href="#RFC3253" id="rfc.xref.RFC3253.3"><cite title="Versioning Extensions to WebDAV (Web Distributed Authoring and Versioning)">[RFC3253]</cite></a>. Servers <em class="bcp14">MUST</em> report pre-/postcondition failures as described in section <a href="https://tools.ietf.org/html/rfc3253#section-1.6" id="rfc.xref.RFC3253.4">1.6</a> of this document.<a class="self" href="#rfc.section.3.p.7">&para;</a></p></div></section><section id="SECTION.OVERVIEW"><h2 id="rfc.section.4"><a href="#rfc.section.4">4.</a>&nbsp;<a href="#SECTION.OVERVIEW">Overview of Ordered Collections</a></h2><div id="rfc.section.4.p.1"><p>If a collection is not ordered, the client cannot depend on the repeatability of the ordering of results from a PROPFIND request. By specifying an ordering for a collection, a client requires the server to follow that ordering whenever it responds to a PROPFIND request on that collection.<a class="self" href="#rfc.section.4.p.1">&para;</a></p></div><div id="rfc.section.4.p.2"><p>Server-side orderings may be client-maintained or server-maintained. For client-maintained orderings, a client must specify the ordering position of each of the collection's members, either when the member is added to the collection (using the Position header (<a href="#SECTION.SETTING" title="Setting the Position of a Collection Member">Section&nbsp;6</a>)) or later (using the ORDERPATCH (<a href="#METHOD_ORDERPATCH" title="Changing a Collection Ordering: ORDERPATCH method">Section&nbsp;7</a>) method). For server-maintained orderings, the server automatically positions each of the collection's members according to the ordering semantics. This specification supports only client-maintained orderings, but is designed to allow the future extension with server-maintained orderings.<a class="self" href="#rfc.section.4.p.2">&para;</a></p></div><div id="rfc.section.4.p.3"><p>A collection that supports ordering is not required to be ordered.<a class="self" href="#rfc.section.4.p.3">&para;</a></p></div><div id="rfc.section.4.p.4"><p>If a collection is ordered, each of its internal member URIs <em class="bcp14">MUST</em> appear in the ordering exactly once, and the ordering <em class="bcp14">MUST NOT</em> include any URIs that are not internal members of the collection. The server is responsible for enforcing these constraints on orderings. The server <em class="bcp14">MUST</em> remove an internal member URI from the ordering when it is removed from the collection. Removing an internal member <em class="bcp14">MUST NOT</em> affect the ordering of the remaining internal members. The server <em class="bcp14">MUST</em> add an internal member URI to the ordering when it is added to the collection.<a class="self" href="#rfc.section.4.p.4">&para;</a></p></div><div id="rfc.section.4.p.5"><p>Only one ordering can be attached to any collection. Multiple orderings of the same resources can be achieved by creating multiple collections referencing those resources, and attaching a different ordering to each collection.<a class="self" href="#rfc.section.4.p.5">&para;</a></p></div><div id="rfc.section.4.p.6"><p>An ordering is considered to be part of the state of a collection resource. Consequently, the ordering is the same no matter which URI is used to access the collection and is protected by locks or access control constraints on the collection.<a class="self" href="#rfc.section.4.p.6">&para;</a></p></div><section id="n-additional-collection-properties"><h3 id="rfc.section.4.1"><a href="#rfc.section.4.1">4.1.</a>&nbsp;<a href="#n-additional-collection-properties">Additional Collection properties</a></h3><div id="rfc.section.4.1.p.1"><p>A DAV:allprop PROPFIND request <em class="bcp14">SHOULD NOT</em> return any of the properties defined in this document.<a class="self" href="#rfc.section.4.1.p.1">&para;</a></p></div><section id="PROPERTY_ordering-type"><h4 id="rfc.section.4.1.1"><a href="#rfc.section.4.1.1">4.1.1.</a>&nbsp;<a href="#PROPERTY_ordering-type">DAV:ordering-type (protected)</a></h4><div id="rfc.section.4.1.1.p.1"><p>The DAV:ordering-type property indicates whether the collection is ordered and, if so, uniquely identifies the semantics of the ordering. It may also point to an explanation of the semantics in human and/or machine-readable form. At a minimum, this allows human users who add members to the collection to understand where to position them in the ordering. This property cannot be set using PROPPATCH. Its value can only be set by including the Ordering-Type header with a MKCOL request or by submitting an ORDERPATCH request.<a class="self" href="#rfc.section.4.1.1.p.1">&para;</a></p></div><div id="rfc.section.4.1.1.p.2"><p>Ordering types are identified by URIs that uniquely identify the semantics of the collection's ordering. The following two URIs are predefined: <a class="self" href="#rfc.section.4.1.1.p.2">&para;</a></p><dl><dt>DAV:custom:</dt><dd><span id="rfc.iref.d.1"></span> The value DAV:custom indicates that the collection is ordered, but the semantics governing the ordering are not being advertised.</dd><dt>DAV:unordered:</dt><dd><span id="rfc.iref.d.2"></span> The value DAV:unordered indicates that the collection is not ordered. That is, the client cannot depend on the repeatability of the ordering of results from a PROPFIND request.</dd></dl></div><div id="rfc.section.4.1.1.p.3"><p>An ordering-aware client interacting with an ordering-unaware server (e.g., one that is implemented only according to <a href="#RFC2518" id="rfc.xref.RFC2518.5"><cite title="HTTP Extensions for Distributed Authoring -- WEBDAV">[RFC2518]</cite></a>) <em class="bcp14">SHOULD</em> assume that the collection is unordered if a collection does not have the DAV:ordering-type property.<a class="self" href="#rfc.section.4.1.1.p.3">&para;</a></p></div><div id="rfc.figure.u.1"><pre class="inline">&lt;!ELEMENT ordering-type (href) &gt;
+</pre></div></section></section></section><section id="SECTION.CREATING"><h2 id="rfc.section.5"><a href="#rfc.section.5">5.</a>&nbsp;<a href="#SECTION.CREATING">Creating an Ordered Collection</a></h2><section id="SECTION.CREATING.OVERVIEW"><h3 id="rfc.section.5.1"><a href="#rfc.section.5.1">5.1.</a>&nbsp;<a href="#SECTION.CREATING.OVERVIEW">Overview</a></h3><div id="rfc.section.5.1.p.1"><p>When a collection is created, the client <em class="bcp14">MAY</em> request that it be ordered and specify the semantics of the ordering by using the new Ordering-Type header (defined below) with a MKCOL request.<a class="self" href="#rfc.section.5.1.p.1">&para;</a></p></div><div id="rfc.section.5.1.p.2"><p>For collections that are ordered, the client <em class="bcp14">SHOULD</em> identify the semantics of the ordering with a URI in the Ordering-Type header, although the client <em class="bcp14">MAY</em> simply set the header value to DAV:custom to indicate that the collection is ordered but the semantics of the ordering are not being advertised. Setting the value to a URI that identifies the ordering semantics provides the information a human user or software package needs to insert new collection members into the ordering intelligently. Although the URI in the Ordering-Type header <em class="bcp14">MAY</em> point to a resource that contains a definition of the semantics of the ordering, clients <em class="bcp14">SHOULD NOT</em> access that resource to avoid overburdening its server. A value of DAV:unordered in the Ordering-Type header indicates that the client wants the collection to be unordered. If the Ordering-Type header is not present, the collection will be unordered.<a class="self" href="#rfc.section.5.1.p.2">&para;</a></p></div><div id="rfc.section.5.1.p.3"><p><b>Additional Marshalling:</b> <span id="rfc.iref.o.3"></span> <span id="rfc.iref.h.1"></span> <a class="self" href="#rfc.section.5.1.p.3">&para;</a></p><ul class="empty"><li><span id="rfc.figure.u.2"><pre class="inline">   Ordering-Type = "Ordering-Type" ":" absoluteURI
+   ; absoluteURI: see <a href="#RFC2396" id="rfc.xref.RFC2396.2"><cite title="Uniform Resource Identifiers (URI): Generic Syntax">[RFC2396]</cite></a>, section <a href="https://tools.ietf.org/html/rfc2396#section-3" id="rfc.xref.RFC2396.3">3</a>
+</pre></span> </li><li>The URI "DAV:unordered" indicates that the collection is not ordered, while "DAV:custom" indicates that the collection is to be ordered, but the semantics of the ordering is not being advertised. Any other URI value indicates that the collection is ordered, and identifies the semantics of the ordering.</li></ul></div><div id="rfc.section.5.1.p.4"><p><b>Additional Preconditions:</b> <a class="self" href="#rfc.section.5.1.p.4">&para;</a></p><ul class="empty"><li><span id="rfc.iref.d.3"></span> <span id="rfc.iref.c.2"></span> (DAV:ordered-collections-supported): the server <em class="bcp14">MUST</em> support ordered collections in the part of the URL namespace identified by the request URL.</li></ul></div><div id="rfc.section.5.1.p.5"><p><b>Additional Postconditions:</b> <a class="self" href="#rfc.section.5.1.p.5">&para;</a></p><ul class="empty"><li><span id="rfc.iref.d.4"></span> <span id="rfc.iref.c.3"></span> (DAV:ordering-type-set): if the Ordering-Type header was present, the request <em class="bcp14">MUST</em> have created a new collection resource with the DAV:ordering-type being set according to the Ordering-Type request header. The collection <em class="bcp14">MUST</em> be ordered unless the ordering type is "DAV:unordered".</li></ul></div></section><section id="n-example--creating-an-ordered-collection"><h3 id="rfc.section.5.2"><a href="#rfc.section.5.2">5.2.</a>&nbsp;<a href="#n-example--creating-an-ordered-collection">Example: Creating an Ordered Collection</a></h3><div id="rfc.figure.u.3"><p>&gt;&gt; Request:</p><pre class="text2">MKCOL /theNorth/ HTTP/1.1
+Host: example.org
+Ordering-Type: http://example.org/orderings/compass.html
+</pre></div><div id="rfc.figure.u.4"><p>&gt;&gt; Response:</p><pre class="text">HTTP/1.1 201 Created
+</pre></div><div id="rfc.section.5.2.p.1"><p>In this example, a new ordered collection was created. Its DAV:ordering-type property has the URI from the Ordering-Type header as its value http://example.org/orderings/compass.html. In this case, the URI identifies the semantics governing a client-maintained ordering. As new members are added to the collection, clients or end users can use the semantics to determine where to position the new members in the ordering.<a class="self" href="#rfc.section.5.2.p.1">&para;</a></p></div></section></section><section id="SECTION.SETTING"><h2 id="rfc.section.6"><a href="#rfc.section.6">6.</a>&nbsp;<a href="#SECTION.SETTING">Setting the Position of a Collection Member</a></h2><section id="SECTION.SETTING.OVERVIEW"><h3 id="rfc.section.6.1"><a href="#rfc.section.6.1">6.1.</a>&nbsp;<a href="#SECTION.SETTING.OVERVIEW">Overview</a></h3><div id="rfc.section.6.1.p.1"><p>When a new member is added to a collection with a client-maintained ordering (for example, with PUT, COPY, or MKCOL), its position in the ordering can be set with the new Position header. The Position header allows the client to specify that an internal member URI should be first in the collection's ordering, last in the collection's ordering, immediately before some other internal member URI in the collection's ordering, or immediately after some other internal member URI in the collection's ordering.<a class="self" href="#rfc.section.6.1.p.1">&para;</a></p></div><div id="rfc.section.6.1.p.2"><p>If the Position request header is not used when adding a member to an ordered collection, then: <a class="self" href="#rfc.section.6.1.p.2">&para;</a></p><ul><li>If the request is replacing an existing resource, the server <em class="bcp14">MUST</em> preserve the present ordering.</li><li>If the request is adding a new internal member URI to the collection, the server <em class="bcp14">MUST</em> append the new member to the end of the ordering.</li></ul></div><div id="rfc.section.6.1.p.3"><ul class="empty"><li>Note to implementers: this specification does not mandate a specific implementation of MOVE operations within the same parent collection. Therefore, servers may either implement this as a simple rename operation (preserving the collection member's position), or as a sequence of "remove" and "add" (causing the semantics of "adding a new member" to apply). Future revisions of this specification may specify this behaviour more precisely based on future implementation experience.</li></ul></div><div id="rfc.section.6.1.p.4"><p><b>Additional Marshalling:</b> <a class="self" href="#rfc.section.6.1.p.4">&para;</a></p><ul class="empty"><li><span id="rfc.iref.p.1"></span> <span id="rfc.iref.h.2"></span> <span id="rfc.figure.u.5"><pre class="inline">   Position = "Position" ":" ("first" | "last" | 
+                             (("before" | "after") segment))
+</pre></span> </li><li>segment is defined in <a href="https://tools.ietf.org/html/rfc2396#section-3.3">Section 3.3</a> of <a href="#RFC2396" id="rfc.xref.RFC2396.4"><cite title="Uniform Resource Identifiers (URI): Generic Syntax">[RFC2396]</cite></a>.</li><li>The segment is interpreted relative to the collection to which the new member is being added.</li><li>When the Position header is present, the server <em class="bcp14">MUST</em> insert the new member into the ordering at the specified location.</li><li>The "first" keyword indicates that the new member is placed in the beginning position in the collection's ordering, while "last" indicates that the new member is placed in the final position in the collection's ordering. The "before" keyword indicates that the new member is added to the collection's ordering immediately prior to the position of the member identified in the segment. Likewise, the "after" keyword indicates that the new member is added to the collection's ordering immediately following the position of the member identified in the segment.</li><li>If the request is replacing an existing resource and the Position header is present, the server <em class="bcp14">MUST</em> remove the internal member URI from its current position, and insert it at the newly requested position.</li></ul></div><div id="rfc.section.6.1.p.5"><p><b>Additional Preconditions:</b> <a class="self" href="#rfc.section.6.1.p.5">&para;</a></p><ul class="empty"><li><span id="rfc.iref.d.5"></span> <span id="rfc.iref.c.4"></span> (DAV:collection-must-be-ordered): the target collection <em class="bcp14">MUST</em> be ordered.</li><li><span id="rfc.iref.d.6"></span> <span id="rfc.iref.c.5"></span> (DAV:segment-must-identify-member): the referenced segment <em class="bcp14">MUST</em> identify a resource that exists and is different from the affected resource.</li></ul></div><div id="rfc.section.6.1.p.6"><p><b>Additional Postconditions:</b> <a class="self" href="#rfc.section.6.1.p.6">&para;</a></p><ul class="empty"><li><span id="rfc.iref.d.7"></span> <span id="rfc.iref.c.6"></span> (DAV:position-set): if a Position header is present, the request <em class="bcp14">MUST</em> create the new collection member at the specified position.</li></ul></div></section><section id="n-examples--setting-the-position-of-a-collection-member"><h3 id="rfc.section.6.2"><a href="#rfc.section.6.2">6.2.</a>&nbsp;<a href="#n-examples--setting-the-position-of-a-collection-member">Examples: Setting the Position of a Collection Member</a></h3><div id="rfc.figure.u.6"><p>&gt;&gt; Request:</p><pre class="text2">COPY /~user/dav/spec08.html HTTP/1.1
+Host: example.org
+Destination: http://example.org/~slein/dav/spec08.html
+Position: after requirements.html      
+</pre></div><div id="rfc.figure.u.7"><p>&gt;&gt; Response:</p><pre class="text">HTTP/1.1 201 Created
+</pre></div><div id="rfc.section.6.2.p.1"><p>This request resulted in the creation of a new resource at example.org/~slein/dav/spec08.html. The Position header in this example caused the server to set its position in the ordering of the /~slein/dav/ collection immediately after requirements.html.<a class="self" href="#rfc.section.6.2.p.1">&para;</a></p></div><div id="rfc.figure.u.8"><p>&gt;&gt; Request:</p><pre class="text2">MOVE /i-d/draft-webdav-prot-08.txt HTTP/1.1
+Host: example.org
+Destination: http://example.org/~user/dav/draft-webdav-prot-08.txt
+Position: first
+</pre></div><div id="rfc.figure.u.9"><p>&gt;&gt; Response:</p><pre class="text">HTTP/1.1 409 Conflict
+Content-Type: text/xml; charset="utf-8"
+Content-Length: xxxx
+
+&lt;?xml version="1.0" encoding="utf-8" ?&gt;
+&lt;D:error xmlns:D="DAV:"&gt;
+  &lt;D:collection-must-be-ordered/&gt;
+&lt;/D:error&gt; 
+</pre></div><div id="rfc.section.6.2.p.2"><p>In this case, the server returned a 409 (Conflict) status code because the /~user/dav/ collection is an unordered collection. Consequently, the server was unable to satisfy the Position header.<a class="self" href="#rfc.section.6.2.p.2">&para;</a></p></div></section><section id="n-examples--renaming-a-member-of-an-ordered-collection"><h3 id="rfc.section.6.3"><a href="#rfc.section.6.3">6.3.</a>&nbsp;<a href="#n-examples--renaming-a-member-of-an-ordered-collection">Examples: Renaming a member of an ordered collection</a></h3><div id="rfc.section.6.3.p.1"><p>The following sequence of requests will rename a collection member while preserving its position, independently of how the server implements the MOVE operation: <a class="self" href="#rfc.section.6.3.p.1">&para;</a></p><ol><li>PROPFIND collection with depth 1, retrieving the DAV:ordering-type property (an interactive client has already likely done this in order to display the collection's content).</li><li>If the DAV:ordering-type property is present and does not equal "dav:unordered" (thus if the collection is ordered), determine the current position (such as "first" or "after x") and setup the Position header accordingly.</li><li>Perform the MOVE operation, optionally supplying the Position header computed in the previous step.</li></ol></div></section></section><section id="METHOD_ORDERPATCH"><h2 id="rfc.section.7"><a href="#rfc.section.7">7.</a>&nbsp;<a href="#METHOD_ORDERPATCH">Changing a Collection Ordering: ORDERPATCH method</a></h2><div id="rfc.section.7.p.1"><p>The ORDERPATCH method is used to change the ordering semantics of a collection, to change the order of the collection's members in the ordering, or both.<a class="self" href="#rfc.section.7.p.1">&para;</a></p></div><div id="rfc.section.7.p.2"><p>The server <em class="bcp14">MUST</em> apply the changes in the order they appear in the order XML element. The server <em class="bcp14">MUST</em> either apply all the changes or apply none of them. If any error occurs during processing, all executed changes <em class="bcp14">MUST</em> be undone and a proper error result returned.<a class="self" href="#rfc.section.7.p.2">&para;</a></p></div><div id="rfc.section.7.p.3"><p>If an ORDERPATCH request changes the ordering semantics, but does not completely specify the order of the collection members, the server <em class="bcp14">MUST</em> assign a position in the ordering to each collection member for which a position was not specified. These server-assigned positions <em class="bcp14">MUST</em> follow the last position specified by the client. The result is that all members for which the client specified a position are at the beginning of the ordering, followed by any members for which the server assigned positions. Note that the ordering of the server-assigned positions is not defined by this document, therefore servers can use whatever rule seems reasonable (for instance, alphabetically or by creation date).<a class="self" href="#rfc.section.7.p.3">&para;</a></p></div><div id="rfc.section.7.p.4"><p>If an ORDERPATCH request does not change the ordering semantics, any member positions not specified in the request <em class="bcp14">MUST</em> remain unchanged.<a class="self" href="#rfc.section.7.p.4">&para;</a></p></div><div id="rfc.section.7.p.5"><p>A request to reposition a collection member to the same place in the ordering is not an error.<a class="self" href="#rfc.section.7.p.5">&para;</a></p></div><div id="rfc.section.7.p.6"><p>If an ORDERPATCH request fails, the server state preceding the request <em class="bcp14">MUST</em> be restored.<a class="self" href="#rfc.section.7.p.6">&para;</a></p></div><div id="rfc.section.7.p.7"><p><b>Additional Marshalling:</b> <a class="self" href="#rfc.section.7.p.7">&para;</a></p><ul class="empty"><li>The request body <em class="bcp14">MUST</em> be DAV:orderpatch element.</li><li><span id="rfc.figure.u.10"><pre class="inline">   &lt;!ELEMENT orderpatch (ordering-type?, order-member*) &gt;
+
+   &lt;!ELEMENT order-member (segment, position) &gt;
+   &lt;!ELEMENT position (first | last | before | after)&gt;
+   &lt;!ELEMENT segment (#PCDATA)&gt;
+   &lt;!ELEMENT first EMPTY &gt;
+   &lt;!ELEMENT last EMPTY &gt;
+   &lt;!ELEMENT before segment &gt;
+   &lt;!ELEMENT after segment &gt;
+</pre></span> </li><li>PCDATA value: segment, as defined in section <a href="https://tools.ietf.org/html/rfc2396#section-3.3" id="rfc.xref.RFC2396.5">3.3</a> of <a href="#RFC2396" id="rfc.xref.RFC2396.6"><cite title="Uniform Resource Identifiers (URI): Generic Syntax">[RFC2396]</cite></a>.</li><li>The DAV:ordering-type property is modified according to the DAV:ordering-type element.</li><li>The ordering of internal member URIs in the collection identified by the Request-URI is changed based on instructions in the order-member XML elements. Specifically, in in the order that they appear in the request. The order-member XML elements identify the internal member URIs whose positions are to be changed, and describe their new positions in the ordering. Each new position can be specified as first in the ordering, last in the ordering, immediately before some other internal member URI, or immediately after some other internal member URI.</li><li>If a response body for a successful request is included, it <em class="bcp14">MUST</em> be a DAV:orderpatch-response XML element. Note that this document does not define any elements for the ORDERPATCH response body, but the DAV:orderpatch-response element is defined to ensure interoperability between future extensions that do define elements for the ORDERPATCH response body. <span id="rfc.figure.u.11"><pre class="inline">   &lt;!ELEMENT orderpatch-response ANY&gt;
+</pre></span> </li><li>Since multiple changes can be requested in a single ORDERPATCH request, the server <em class="bcp14">MUST</em> return a 207 (Multi-Status) response (defined in <a href="#RFC2518" id="rfc.xref.RFC2518.6"><cite title="HTTP Extensions for Distributed Authoring -- WEBDAV">[RFC2518]</cite></a>), containing DAV:response elements for either the request-URI (when the DAV:ordering-type could not be modified) or URIs of collection members to be repositioned (when an individual positioning request expressed as DAV:order-member could not be fulfilled) if any problems are encountered.</li></ul></div><div id="rfc.section.7.p.8"><p><b>Preconditions:</b> <a class="self" href="#rfc.section.7.p.8">&para;</a></p><ul class="empty"><li>(DAV:collection-must-be-ordered): see <a href="#SECTION.SETTING.OVERVIEW" title="Overview">Section&nbsp;6.1</a>.</li><li>(DAV:segment-must-identify-member): see <a href="#SECTION.SETTING.OVERVIEW" title="Overview">Section&nbsp;6.1</a>.</li></ul></div><div id="rfc.section.7.p.9"><p><b>Postconditions:</b> <a class="self" href="#rfc.section.7.p.9">&para;</a></p><ul class="empty"><li><span id="rfc.iref.d.8"></span> <span id="rfc.iref.c.7"></span> (DAV:ordering-type-set): if the request body contained a DAV:ordering-type element, the request <em class="bcp14">MUST</em> have set the DAV:ordering-type property of the collection to the value specified in the request.</li><li><span id="rfc.iref.d.9"></span> <span id="rfc.iref.c.8"></span> (DAV:ordering-modified): if the request body contained DAV:order-member elements, the request <em class="bcp14">MUST</em> have set the ordering of internal member URIs in the collection identified by the request-URI based upon instructions in the DAV:order-member elements.</li></ul></div><section id="n-example--changing-a-collection-ordering"><h3 id="rfc.section.7.1"><a href="#rfc.section.7.1">7.1.</a>&nbsp;<a href="#n-example--changing-a-collection-ordering">Example: Changing a Collection Ordering</a></h3><div id="rfc.section.7.1.p.1" class="avoidbreakafter"><p>Consider an ordered collection /coll-1, with bindings ordered as follows:<a class="self" href="#rfc.section.7.1.p.1">&para;</a></p></div><div id="rfc.figure.u.12"><pre class="text">three.html
+four.html
+one.html
+two.html
+</pre></div><div id="rfc.figure.u.13"><p>&gt;&gt; Request:</p><pre class="text2">ORDERPATCH /coll-1/ HTTP/1.1
+Host: example.org
+Content-Type: text/xml; charset="utf-8"
+Content-Length: xxx
+
+&lt;?xml version="1.0" ?&gt;
+&lt;d:orderpatch xmlns:d="DAV:"&gt;
+   &lt;d:ordering-type&gt;
+      &lt;d:href&gt;http://example.org/inorder.ord&lt;/d:href&gt;
+   &lt;/d:ordering-type&gt;
+   &lt;d:order-member&gt;
+      &lt;d:segment&gt;two.html&lt;/d:segment&gt;
+      &lt;d:position&gt;&lt;d:first/&gt;&lt;/d:position&gt;
+   &lt;/d:order-member&gt;
+   &lt;d:order-member&gt;
+      &lt;d:segment&gt;one.html&lt;/d:segment&gt;
+      &lt;d:position&gt;&lt;d:first/&gt;&lt;/d:position&gt;
+   &lt;/d:order-member&gt;
+   &lt;d:order-member&gt;
+      &lt;d:segment&gt;three.html&lt;/d:segment&gt;
+      &lt;d:position&gt;&lt;d:last/&gt;&lt;/d:position&gt;
+   &lt;/d:order-member&gt;
+   &lt;d:order-member&gt;
+      &lt;d:segment&gt;four.html&lt;/d:segment&gt;
+      &lt;d:position&gt;&lt;d:last/&gt;&lt;/d:position&gt;
+   &lt;/d:order-member&gt;
+&lt;/d:orderpatch&gt;
+</pre></div><div id="rfc.figure.u.14"><p>&gt;&gt; Response:</p><pre class="text">HTTP/1.1 200 OK
+</pre></div><div id="rfc.section.7.1.p.2" class="avoidbreakafter"><p>In this example, after the request has been processed, the collection's ordering semantics are identified by the URI http://example.org/inorder.ord. The value of the collection's DAV:ordering-type property has been set to this URI. The request also contains instructions for changing the positions of the collection's internal member URIs in the ordering to comply with the new ordering semantics. As the DAV:order-member elements are required to be processed in the order they appear in the request, two.html is moved to the beginning of the ordering, and then one.html is moved to the beginning of the ordering. Then three.html is moved to the end of the ordering, and finally four.html is moved to the end of the ordering. After the request has been processed, the collection's ordering is as follows:<a class="self" href="#rfc.section.7.1.p.2">&para;</a></p></div><div id="rfc.figure.u.15"><pre class="text">one.html
+two.html
+three.html
+four.html
+</pre></div></section><section id="n-example--failure-of-an-orderpatch-request"><h3 id="rfc.section.7.2"><a href="#rfc.section.7.2">7.2.</a>&nbsp;<a href="#n-example--failure-of-an-orderpatch-request">Example: Failure of an ORDERPATCH Request</a></h3><div id="rfc.section.7.2.p.1" class="avoidbreakafter"><p>Consider a collection /coll-1/ with members ordered as follows:<a class="self" href="#rfc.section.7.2.p.1">&para;</a></p></div><div id="rfc.figure.u.16"><pre class="text">nunavut.map
+nunavut.img
+baffin.map
+baffin.desc
+baffin.img
+iqaluit.map
+nunavut.desc
+iqaluit.img
+iqaluit.desc
+</pre></div><div id="rfc.figure.u.17"><p>&gt;&gt; Request:</p><pre class="text2">ORDERPATCH /coll-1/ HTTP/1.1
+Host: www.nunanet.com
+Content-Type: text/xml; charset="utf-8"
+Content-Length: xxx
+
+&lt;?xml version="1.0" ?&gt;
+&lt;d:orderpatch xmlns:d="DAV:"&gt;
+   &lt;d:order-member&gt;
+      &lt;d:segment&gt;nunavut.desc&lt;/d:segment&gt;
+      &lt;d:position&gt; 
+         &lt;d:after&gt;
+            &lt;d:segment&gt;nunavut.map&lt;/d:segment&gt;
+         &lt;/d:after&gt;
+      &lt;/d:position&gt;
+   &lt;/d:order-member&gt;
+   &lt;d:order-member&gt;
+      &lt;d:segment&gt;iqaluit.map&lt;/d:segment&gt;
+      &lt;d:position&gt;
+         &lt;d:after&gt;
+            &lt;d:segment&gt;pangnirtung.img&lt;/d:segment&gt;
+         &lt;/d:after&gt;
+      &lt;/d:position&gt;
+   &lt;/d:order-member&gt;
+&lt;/d:orderpatch&gt;
+</pre></div><div id="rfc.figure.u.18"><p>&gt;&gt; Response:</p><pre class="text">HTTP/1.1 207 Multi-Status
+Content-Type: text/xml; charset="utf-8"
+Content-Length: xxx
+
+&lt;?xml version="1.0" ?&gt;
+&lt;d:multistatus xmlns:d="DAV:"&gt;
+  &lt;d:response&gt;
+    &lt;d:href&gt;http://www.nunanet.com/coll-1/iqaluit.map&lt;/d:href&gt;
+    &lt;d:status&gt;HTTP/1.1 403 Forbidden&lt;/d:status&gt;
+    &lt;d:responsedescription&gt;
+      &lt;d:error&gt;&lt;d:segment-must-identify-member/&gt;&lt;/d:error&gt;
+      pangnirtung.img is not a collection member.
+    &lt;/d:responsedescription&gt;
+  &lt;/d:response&gt;
+&lt;/d:multistatus&gt;
+</pre></div><div id="rfc.section.7.2.p.2"><p>In this example, the client attempted to position iqaluit.map after a URI that is not an internal member of the collection /coll-1/. The server responded to this client error with a 403 (Forbidden) status code, indicating the failed precondition DAV:segment-must-identify-member. Because ORDERPATCH is an atomic method, the request to reposition nunavut.desc (which would otherwise have succeeded) failed as well, but does not need to be expressed in the multistatus response body.<a class="self" href="#rfc.section.7.2.p.2">&para;</a></p></div></section></section><section id="SECTION.LISTING"><h2 id="rfc.section.8"><a href="#rfc.section.8">8.</a>&nbsp;<a href="#SECTION.LISTING">Listing the Members of an Ordered Collection</a></h2><div id="rfc.section.8.p.1"><p>A PROPFIND request is used to retrieve a listing of the members of an ordered collection, just as it is used to retrieve a listing of the members of an unordered collection.<a class="self" href="#rfc.section.8.p.1">&para;</a></p></div><div id="rfc.section.8.p.2"><p>However, when responding to a PROPFIND on an ordered collection, the server <em class="bcp14">MUST</em> order the response elements according to the ordering defined on the collection. If a collection is unordered, the client cannot depend on the repeatability of the ordering of results from a PROPFIND request.<a class="self" href="#rfc.section.8.p.2">&para;</a></p></div><div id="rfc.section.8.p.3"><p>In a response to a PROPFIND with Depth: infinity, members of different collections may be interleaved. That is, the server is not required to do a breadth-first traversal. The only requirement is that the members of any ordered collection appear in the order defined for that collection. Thus, for the hierarchy illustrated in the following figure, where collection A is an ordered collection with the ordering B C D,<a class="self" href="#rfc.section.8.p.3">&para;</a></p></div><div id="rfc.figure.u.19"><pre class="drawing">                    A
+                   /|\
+                  / | \
+                 B  C  D
+                /  /|\
+               E  F G H
+</pre></div><div id="rfc.section.8.p.4"><p>it would be acceptable for the server to return response elements in the order A B E C F G H D or "A B E C H G F D" as well (if C is unordered). In this response, B, C, and D appear in the correct order, separated by members of other collections. Clients can use a series of Depth: 1 PROPFIND requests to avoid the complexity of processing Depth: infinity responses based on depth-first traversals.<a class="self" href="#rfc.section.8.p.4">&para;</a></p></div><section id="n-example--propfind-on-an-ordered-collection"><h3 id="rfc.section.8.1"><a href="#rfc.section.8.1">8.1.</a>&nbsp;<a href="#n-example--propfind-on-an-ordered-collection">Example: PROPFIND on an Ordered Collection</a></h3><div id="rfc.section.8.1.p.1"><p>Suppose a PROPFIND request is submitted to /MyColl/, which has its members ordered as follows.<a class="self" href="#rfc.section.8.1.p.1">&para;</a></p></div><div id="rfc.figure.u.20"><pre class="text">/MyColl/
+   lakehazen.html
+   siorapaluk.html
+   iqaluit.html
+   newyork.html
+</pre></div><div id="rfc.figure.u.21"><p>&gt;&gt; Request:</p><pre class="text2">PROPFIND /MyColl/ HTTP/1.1
+Host: example.org
+Depth: 1
+Content-Type: text/xml; charset="utf-8"
+Content-Length: xxxx
+
+&lt;?xml version="1.0" ?&gt;
+&lt;D:propfind xmlns:D="DAV:"&gt;
+  &lt;D:prop xmlns:J="http://example.org/jsprops/"&gt;
+    &lt;D:ordering-type/&gt;
+    &lt;D:resourcetype/&gt;
+    &lt;J:latitude/&gt;
+ &lt;/D:prop&gt;
+&lt;/D:propfind&gt;
+</pre></div><div id="rfc.figure.u.22"><p>&gt;&gt; Response:</p><pre class="text">HTTP/1.1 207 Multi-Status
+Content-Type: text/xml; charset="utf-8"
+Content-Length: xxxx
+
+&lt;?xml version="1.0" ?&gt;
+&lt;D:multistatus xmlns:D="DAV:"
+               xmlns:J="http://example.org/jsprops/"&gt;
+   &lt;D:response&gt;
+      &lt;D:href&gt;http://example.org/MyColl/&lt;/D:href&gt;
+      &lt;D:propstat&gt;
+         &lt;D:prop&gt;
+            &lt;D:ordering-type&gt;
+               &lt;D:href&gt;DAV:custom&lt;/D:href&gt;
+            &lt;/D:ordering-type&gt;
+            &lt;D:resourcetype&gt;&lt;D:collection/&gt;&lt;/D:resourcetype&gt;
+         &lt;/D:prop&gt;
+         &lt;D:status&gt;HTTP/1.1 200 OK&lt;/D:status&gt;
+      &lt;/D:propstat&gt;
+      &lt;D:propstat&gt;
+         &lt;D:prop&gt;
+            &lt;J:latitude/&gt;
+         &lt;/D:prop&gt;
+         &lt;D:status&gt;HTTP/1.1 404 Not Found&lt;/D:status&gt;
+      &lt;/D:propstat&gt;
+   &lt;/D:response&gt;
+   &lt;D:response&gt;
+      &lt;D:href&gt;http://example.org/MyColl/lakehazen.html&lt;/D:href&gt;
+      &lt;D:propstat&gt;
+         &lt;D:prop&gt;
+            &lt;D:resourcetype/&gt;
+            &lt;J:latitude&gt;82N&lt;/J:latitude&gt;
+         &lt;/D:prop&gt;
+         &lt;D:status&gt;HTTP/1.1 200 OK&lt;/D:status&gt;
+      &lt;/D:propstat&gt;
+      &lt;D:propstat&gt;
+         &lt;D:prop&gt;
+            &lt;D:ordering-type/&gt;
+         &lt;/D:prop&gt;
+         &lt;D:status&gt;HTTP/1.1 404 Not Found&lt;/D:status&gt;
+      &lt;/D:propstat&gt;
+   &lt;/D:response&gt;
+   &lt;D:response&gt;
+      &lt;D:href
+      &gt;http://example.org/MyColl/siorapaluk.html&lt;/D:href&gt;
+      &lt;D:propstat&gt;
+         &lt;D:prop&gt;
+            &lt;D:resourcetype/&gt;
+            &lt;J:latitude&gt;78N&lt;/J:latitude&gt;
+         &lt;/D:prop&gt;
+         &lt;D:status&gt;HTTP/1.1 200 OK&lt;/D:status&gt;
+      &lt;/D:propstat&gt;
+      &lt;D:propstat&gt;
+         &lt;D:prop&gt;
+            &lt;D:ordering-type/&gt;
+         &lt;/D:prop&gt;
+         &lt;D:status&gt;HTTP/1.1 404 Not Found&lt;/D:status&gt;
+      &lt;/D:propstat&gt;
+   &lt;/D:response&gt;
+   &lt;D:response&gt;
+      &lt;D:href&gt;http://example.org/MyColl/iqaluit.html&lt;/D:href&gt;
+      &lt;D:propstat&gt;
+         &lt;D:prop&gt;
+            &lt;D:resourcetype/&gt;
+            &lt;J:latitude&gt;62N&lt;/J:latitude&gt;
+         &lt;/D:prop&gt;
+         &lt;D:status&gt;HTTP/1.1 200 OK&lt;/D:status&gt;
+      &lt;/D:propstat&gt;
+      &lt;D:propstat&gt;
+         &lt;D:prop&gt;
+            &lt;D:ordering-type/&gt;
+         &lt;/D:prop&gt;
+         &lt;D:status&gt;HTTP/1.1 404 Not Found&lt;/D:status&gt;
+      &lt;/D:propstat&gt;
+   &lt;/D:response&gt;
+   &lt;D:response&gt;
+      &lt;D:href&gt;http://example.org/MyColl/newyork.html&lt;/D:href&gt;
+      &lt;D:propstat&gt;
+         &lt;D:prop&gt;
+            &lt;D:resourcetype/&gt;
+            &lt;J:latitude&gt;45N&lt;/J:latitude&gt;
+         &lt;/D:prop&gt;
+         &lt;D:status&gt;HTTP/1.1 200 OK&lt;/D:status&gt;
+      &lt;D:propstat&gt;
+         &lt;D:prop&gt;
+            &lt;D:ordering-type/&gt;
+         &lt;/D:prop&gt;
+         &lt;D:status&gt;HTTP/1.1 404 Not Found&lt;/D:status&gt;
+      &lt;/D:propstat&gt;
+      &lt;/D:propstat&gt;
+   &lt;/D:response&gt;
+&lt;/D:multistatus&gt;
+</pre></div><div id="rfc.section.8.1.p.2"><p>In this example, the server responded with a list of the collection members in the order defined for the collection.<a class="self" href="#rfc.section.8.1.p.2">&para;</a></p></div></section></section><section id="SECTION.VERSIONING"><h2 id="rfc.section.9"><a href="#rfc.section.9">9.</a>&nbsp;<a href="#SECTION.VERSIONING">Relationship to versioned collections</a></h2><div id="rfc.section.9.p.1"><p>The Versioning Extensions to WebDAV <a href="#RFC3253" id="rfc.xref.RFC3253.5"><cite title="Versioning Extensions to WebDAV (Web Distributed Authoring and Versioning)">[RFC3253]</cite></a> introduce the concept of versioned collections, recording both the dead properties and the set of internal version-controlled bindings. This section defines how this feature interacts with ordered collections.<a class="self" href="#rfc.section.9.p.1">&para;</a></p></div><div id="rfc.section.9.p.2"><p>This specification considers both the ordering type (DAV:ordering-type property) and the ordering of collection members to be part of the state of a collection. Therefore, both <em class="bcp14">MUST</em> be recorded upon CHECKIN or VERSION-CONTROL, and both <em class="bcp14">MUST</em> be restored upon CHECKOUT, UNCHECKOUT or UPDATE (where for compatibility with RFC 3253, only the ordering of version-controlled members needs to be maintained).<a class="self" href="#rfc.section.9.p.2">&para;</a></p></div><section id="n-collection-version-properties"><h3 id="rfc.section.9.1"><a href="#rfc.section.9.1">9.1.</a>&nbsp;<a href="#n-collection-version-properties">Collection Version Properties</a></h3><section id="n-additional-semantics-for-dav-version-controlled-binding-set--protected-"><h4 id="rfc.section.9.1.1"><a href="#rfc.section.9.1.1">9.1.1.</a>&nbsp;<a href="#n-additional-semantics-for-dav-version-controlled-binding-set--protected-">Additional semantics for DAV:version-controlled-binding-set (protected)</a></h4><div id="rfc.section.9.1.1.p.1"><p>For ordered collections, the DAV:version-controlled-binding elements <em class="bcp14">MUST</em> appear in the ordering defined for the checked-in ordered collection.<a class="self" href="#rfc.section.9.1.1.p.1">&para;</a></p></div></section><section id="n-dav-ordering-type--protected-"><h4 id="rfc.section.9.1.2"><a href="#rfc.section.9.1.2">9.1.2.</a>&nbsp;<a href="#n-dav-ordering-type--protected-">DAV:ordering-type (protected)</a></h4><div id="rfc.section.9.1.2.p.1"><p>The DAV:ordering-type property records the DAV:ordering-type property of the checked-in ordered collection.<a class="self" href="#rfc.section.9.1.2.p.1">&para;</a></p></div></section></section><section id="n-additional-checkin-semantics"><h3 id="rfc.section.9.2"><a href="#rfc.section.9.2">9.2.</a>&nbsp;<a href="#n-additional-checkin-semantics">Additional CHECKIN semantics</a></h3><div id="rfc.section.9.2.p.1"><p><b>Additional Postconditions:</b> <a class="self" href="#rfc.section.9.2.p.1">&para;</a></p><ul class="empty"><li><span id="rfc.iref.d.10"></span> <span id="rfc.iref.c.9"></span> (DAV:initialize-version-controlled-bindings-ordered): If the request-URL identified a both ordered and version-controlled collection, then the child elements of DAV:version-controlled-binding-set of the new collection version <em class="bcp14">MUST</em> appear in the ordering defined for that collection.</li><li><span id="rfc.iref.d.11"></span> <span id="rfc.iref.c.10"></span> (DAV:initialize-collection-version-ordering-type): If the request-URL identified a both ordered and version-controlled collection, then the DAV:ordering-type property of the new collection version <em class="bcp14">MUST</em> be a copy of the collection's DAV:ordering-type property.</li></ul></div></section><section id="n-additional-checkout-semantics"><h3 id="rfc.section.9.3"><a href="#rfc.section.9.3">9.3.</a>&nbsp;<a href="#n-additional-checkout-semantics">Additional CHECKOUT Semantics</a></h3><div id="rfc.section.9.3.p.1"><p><b>Additional Postconditions:</b> <a class="self" href="#rfc.section.9.3.p.1">&para;</a></p><ul class="empty"><li><span id="rfc.iref.d.12"></span> <span id="rfc.iref.c.11"></span> (DAV:initialize-version-history-bindings-ordered): If the request has been applied to a collection version with a DAV:ordering-type other than "DAV:unordered", the bindings in the new working collection <em class="bcp14">MUST</em> be ordered according to the collection version's DAV:version-controlled-binding-set property.</li><li><span id="rfc.iref.d.13"></span> <span id="rfc.iref.c.12"></span> (DAV:initialize-ordering-type): If the request has been applied to a collection version, the DAV:ordering-type property of the new working collection <em class="bcp14">MUST</em> be initialized from the collection version's DAV:ordering-type property.</li></ul></div></section><section id="n-additional-uncheckout--update--and-merge-semantics"><h3 id="rfc.section.9.4"><a href="#rfc.section.9.4">9.4.</a>&nbsp;<a href="#n-additional-uncheckout--update--and-merge-semantics">Additional UNCHECKOUT, UPDATE, and MERGE Semantics</a></h3><div id="rfc.section.9.4.p.1"><p><b>Additional Postconditions:</b> <a class="self" href="#rfc.section.9.4.p.1">&para;</a></p><ul class="empty"><li><span id="rfc.iref.d.14"></span> <span id="rfc.iref.c.13"></span> (DAV:update-version-controlled-collection-members-ordered): If the request modified the DAV:checked-in version of a version-controlled collection and the DAV:ordering-type for the checked-in version is not unordered ("DAV:unordered"), the version-controlled members <em class="bcp14">MUST</em> be ordered according to the checked-in version's DAV:version-controlled-binding-set property. The ordering of non-version-controlled members is server-defined.</li><li><span id="rfc.iref.d.15"></span> <span id="rfc.iref.c.14"></span> (DAV:update-version-ordering-type): If the request modified the DAV:checked-in version of a version-controlled collection, the DAV:ordering-type property <em class="bcp14">MUST</em> be updated from the checked-in version's property.</li></ul></div></section></section><section id="SECTION.DISCOVERY"><h2 id="rfc.section.10"><a href="#rfc.section.10">10.</a>&nbsp;<a href="#SECTION.DISCOVERY">Capability Discovery</a></h2><div id="rfc.section.10.p.1"><p>Sections <a href="https://tools.ietf.org/html/rfc2518#section-9.1" id="rfc.xref.RFC2518.7">9.1</a> and <a href="https://tools.ietf.org/html/rfc2518#section-15" id="rfc.xref.RFC2518.8">15</a> of <a href="#RFC2518" id="rfc.xref.RFC2518.9"><cite title="HTTP Extensions for Distributed Authoring -- WEBDAV">[RFC2518]</cite></a> describe the use of compliance classes with the DAV header in responses to OPTIONS, indicating which parts of the Web Distributed Authoring protocols the resource supports. This specification defines an <em class="bcp14">OPTIONAL</em> extension to <a href="#RFC2518" id="rfc.xref.RFC2518.10"><cite title="HTTP Extensions for Distributed Authoring -- WEBDAV">[RFC2518]</cite></a>. It defines a new compliance class, called ordered-collections, for use with the DAV header in responses to OPTIONS requests. If a collection resource does support ordering, its response to an OPTIONS request may indicate that it does, by listing the new ORDERPATCH method as one it supports, and by listing the new ordered-collections compliance class in the DAV header.<a class="self" href="#rfc.section.10.p.1">&para;</a></p></div><div id="rfc.section.10.p.2"><p>When responding to an OPTIONS request, only a collection or a null resource can include ordered-collections in the value of the DAV header. By including ordered-collections, the resource indicates that its internal member URIs can be ordered. It implies nothing about whether any collections identified by its internal member URIs can be ordered.<a class="self" href="#rfc.section.10.p.2">&para;</a></p></div><div id="rfc.section.10.p.3"><p>Furthermore, RFC 3253 <a href="#RFC3253" id="rfc.xref.RFC3253.6"><cite title="Versioning Extensions to WebDAV (Web Distributed Authoring and Versioning)">[RFC3253]</cite></a> introduces the live properties DAV:supported-method-set (section <a href="https://tools.ietf.org/html/rfc3253#section-3.1.3" id="rfc.xref.RFC3253.7">3.1.3</a>) and DAV:supported-live-property-set (section <a href="https://tools.ietf.org/html/rfc3253#section-3.1.4" id="rfc.xref.RFC3253.8">3.1.4</a>). Servers <em class="bcp14">MUST</em> support these properties as defined in RFC 3253.<a class="self" href="#rfc.section.10.p.3">&para;</a></p></div><section id="n-example--using-options-for-the-discovery-of-support-for-ordering"><h3 id="rfc.section.10.1"><a href="#rfc.section.10.1">10.1.</a>&nbsp;<a href="#n-example--using-options-for-the-discovery-of-support-for-ordering">Example: Using OPTIONS for the Discovery of Support for Ordering</a></h3><div id="rfc.figure.u.23"><p>&gt;&gt; Request:</p><pre class="text2">OPTIONS /somecollection/ HTTP/1.1
+Host: example.org
+</pre></div><div id="rfc.figure.u.24"><p>&gt;&gt; Response:</p><pre class="text">HTTP/1.1 200 OK
+Allow: OPTIONS, GET, HEAD, POST, PUT, DELETE, TRACE, COPY, MOVE
+Allow: MKCOL, PROPFIND, PROPPATCH, LOCK, UNLOCK, ORDERPATCH
+DAV: 1, 2, ordered-collections
+</pre></div><div id="rfc.section.10.1.p.1"><p>The DAV header in the response indicates that the resource /somecollection/ is level 1 and level 2 compliant, as defined in <a href="#RFC2518" id="rfc.xref.RFC2518.11"><cite title="HTTP Extensions for Distributed Authoring -- WEBDAV">[RFC2518]</cite></a>. In addition, /somecollection/ supports ordering. The Allow header indicates that ORDERPATCH requests can be submitted to /somecollection/.<a class="self" href="#rfc.section.10.1.p.1">&para;</a></p></div></section><section id="n-example--using-live-properties-for-the-discovery-of-ordering"><h3 id="rfc.section.10.2"><a href="#rfc.section.10.2">10.2.</a>&nbsp;<a href="#n-example--using-live-properties-for-the-discovery-of-ordering">Example: Using Live Properties for the Discovery of Ordering</a></h3><div id="rfc.figure.u.25"><p>&gt;&gt; Request:</p><pre class="text2">PROPFIND /somecollection HTTP/1.1
+Depth: 0
+Content-Type: text/xml; charset="utf-8"
+Content-Length: xxx
+
+&lt;?xml version="1.0" encoding="UTF-8" ?&gt;
+&lt;propfind xmlns="DAV:"&gt;
+  &lt;prop&gt;
+    &lt;supported-live-property-set/&gt;
+    &lt;supported-method-set/&gt;
+  &lt;/prop&gt;
+&lt;/propfind&gt;
+</pre></div><div id="rfc.figure.u.26"><p>&gt;&gt; Response:</p><pre class="text">HTTP/1.1 207 Multi-Status
+Content-Type: text/xml; charset="utf-8"
+Content-Length: xxx
+
+&lt;?xml version="1.0" encoding="utf-8" ?&gt;
+&lt;multistatus xmlns="DAV:"&gt;
+  &lt;response&gt;
+    &lt;href&gt;http://example.org/somecollection&lt;/href&gt;
+    &lt;propstat&gt;
+      &lt;prop&gt;
+        &lt;supported-live-property-set&gt;
+          &lt;supported-live-property&gt;
+            &lt;prop&gt;&lt;ordering-type/&gt;&lt;/prop&gt;
+          &lt;/supported-live-property&gt;
+          &lt;!-- ... other live properties omitted for brevity ... --&gt;
+        &lt;/supported-live-property-set&gt;
+        &lt;supported-method-set&gt;
+          &lt;supported-method name="COPY" /&gt;
+          &lt;supported-method name="DELETE" /&gt;
+          &lt;supported-method name="GET" /&gt;
+          &lt;supported-method name="HEAD" /&gt;
+          &lt;supported-method name="LOCK" /&gt;
+          &lt;supported-method name="MKCOL" /&gt;
+          &lt;supported-method name="MOVE" /&gt;
+          &lt;supported-method name="OPTIONS" /&gt;
+          &lt;supported-method name="ORDERPATCH" /&gt;
+          &lt;supported-method name="POST" /&gt;
+          &lt;supported-method name="PROPFIND" /&gt;
+          &lt;supported-method name="PROPPATCH" /&gt;
+          &lt;supported-method name="PUT" /&gt;
+          &lt;supported-method name="TRACE" /&gt;
+          &lt;supported-method name="UNLOCK" /&gt;
+        &lt;/supported-method-set&gt;
+      &lt;/prop&gt;
+      &lt;status&gt;HTTP/1.1 200 OK&lt;/status&gt;
+    &lt;/propstat&gt;
+  &lt;/response&gt;
+&lt;/multistatus&gt;
+</pre></div><div id="rfc.section.10.2.p.1"><p>Note that actual responses <em class="bcp14">MUST</em> contain a complete list of supported live properties.<a class="self" href="#rfc.section.10.2.p.1">&para;</a></p></div></section></section><section id="SECTION.SECURITY"><h2 id="rfc.section.11"><a href="#rfc.section.11">11.</a>&nbsp;<a href="#SECTION.SECURITY">Security Considerations</a></h2><div id="rfc.section.11.p.1"><p>This section is provided to make WebDAV implementers aware of the security implications of this protocol.<a class="self" href="#rfc.section.11.p.1">&para;</a></p></div><div id="rfc.section.11.p.2"><p>All of the security considerations of HTTP/1.1 and the WebDAV Distributed Authoring Protocol specification also apply to this protocol specification. In addition, ordered collections introduce a new security concern. This issue is detailed here.<a class="self" href="#rfc.section.11.p.2">&para;</a></p></div><section id="n-denial-of-service-and-dav-ordering-type"><h3 id="rfc.section.11.1"><a href="#rfc.section.11.1">11.1.</a>&nbsp;<a href="#n-denial-of-service-and-dav-ordering-type">Denial of Service and DAV:ordering-type</a></h3><div id="rfc.section.11.1.p.1"><p>There may be some risk of denial of service at sites that are advertised in the DAV:ordering-type property of collections. However, it is anticipated that widely-deployed applications will use hard-coded values for frequently-used ordering semantics rather than looking up the semantics at the location specified by DAV:ordering-type. This risk will be further reduced if clients observe the recommendation of <a href="#SECTION.CREATING.OVERVIEW" title="Overview">Section&nbsp;5.1</a> that requests not be sent to the URI in DAV:ordering-type.<a class="self" href="#rfc.section.11.1.p.1">&para;</a></p></div></section></section><section id="n-internationalization-considerations"><h2 id="rfc.section.12"><a href="#rfc.section.12">12.</a>&nbsp;<a href="#n-internationalization-considerations">Internationalization Considerations</a></h2><div id="rfc.section.12.p.1"><p>This specification follows the practices of <a href="#RFC2518" id="rfc.xref.RFC2518.12"><cite title="HTTP Extensions for Distributed Authoring -- WEBDAV">[RFC2518]</cite></a> by encoding all human-readable content using <a href="#XML" id="rfc.xref.XML.1"><cite title="Extensible Markup Language (XML) 1.0 (2nd ed)">[XML]</cite></a> and in the treatment of names. Consequently, this specification complies with the IETF Character Set Policy <a href="#RFC2277" id="rfc.xref.RFC2277.1"><cite title="IETF Policy on Character Sets and Languages">[RFC2277]</cite></a>.<a class="self" href="#rfc.section.12.p.1">&para;</a></p></div><div id="rfc.section.12.p.2"><p>WebDAV applications <em class="bcp14">MUST</em> support the character set tagging, character set encoding, and the language tagging functionality of the XML specification. This constraint ensures that the human-readable content of this specification complies with <a href="#RFC2277" id="rfc.xref.RFC2277.2"><cite title="IETF Policy on Character Sets and Languages">[RFC2277]</cite></a>.<a class="self" href="#rfc.section.12.p.2">&para;</a></p></div><div id="rfc.section.12.p.3"><p>As in <a href="#RFC2518" id="rfc.xref.RFC2518.13"><cite title="HTTP Extensions for Distributed Authoring -- WEBDAV">[RFC2518]</cite></a>, names in this specification fall into three categories: names of protocol elements such as methods and headers, names of XML elements, and names of properties. The naming of protocol elements follows the precedent of HTTP using English names encoded in USASCII for methods and headers. The names of XML elements used in this specification are English names encoded in UTF-8.<a class="self" href="#rfc.section.12.p.3">&para;</a></p></div><div id="rfc.section.12.p.4"><p>For error reporting, <a href="#RFC2518" id="rfc.xref.RFC2518.14"><cite title="HTTP Extensions for Distributed Authoring -- WEBDAV">[RFC2518]</cite></a> follows the convention of HTTP/1.1 status codes, including with each status code a short, English description of the code (e.g., 423 Locked). Internationalized applications will ignore this message, and display an appropriate message in the user's language and character set.<a class="self" href="#rfc.section.12.p.4">&para;</a></p></div><div id="rfc.section.12.p.5"><p>This specification introduces no new strings that are displayed to users as part of normal, error-free operation of the protocol.<a class="self" href="#rfc.section.12.p.5">&para;</a></p></div><div id="rfc.section.12.p.6"><p>For the rationale of these decisions and advice for application implementers, see <a href="#RFC2518" id="rfc.xref.RFC2518.15"><cite title="HTTP Extensions for Distributed Authoring -- WEBDAV">[RFC2518]</cite></a>.<a class="self" href="#rfc.section.12.p.6">&para;</a></p></div></section><section id="SECTION.IANA"><h2 id="rfc.section.13"><a href="#rfc.section.13">13.</a>&nbsp;<a href="#SECTION.IANA">IANA Considerations</a></h2><div id="rfc.section.13.p.1"><p>This document uses the namespaces defined by <a href="#RFC2518" id="rfc.xref.RFC2518.16"><cite title="HTTP Extensions for Distributed Authoring -- WEBDAV">[RFC2518]</cite></a> for properties and XML elements. All other IANA considerations mentioned in <a href="#RFC2518" id="rfc.xref.RFC2518.17"><cite title="HTTP Extensions for Distributed Authoring -- WEBDAV">[RFC2518]</cite></a> also apply to this document.<a class="self" href="#rfc.section.13.p.1">&para;</a></p></div></section><section id="n-contributors"><h2 id="rfc.section.14"><a href="#rfc.section.14">14.</a>&nbsp;<a href="#n-contributors">Contributors</a></h2><div id="rfc.section.14.p.1"><p>This document has benefited from significant contributions from Geoff Clemm, Jason Crawford, Jim Davis, Chuck Fay and Judith Slein.<a class="self" href="#rfc.section.14.p.1">&para;</a></p></div></section><section id="n-acknowledgements"><h2 id="rfc.section.15"><a href="#rfc.section.15">15.</a>&nbsp;<a href="#n-acknowledgements">Acknowledgements</a></h2><div id="rfc.section.15.p.1"><p>This document has benefited from thoughtful discussion by Jim Amsden, Steve Carter, Tyson Chihaya, Ken Coar, Ellis Cohen, Bruce Cragun, Spencer Dawkins, Mark Day, Rajiv Dulepet, David Durand, Lisa Dusseault, Roy Fielding, Yaron Goland, Fred Hitt, Alex Hopmann, Marcus Jager, Chris Kaler, Manoj Kasichainula, Rohit Khare, Daniel LaLiberte, Steve Martin, Larry Masinter, Jeff McAffer, Surendra Koduru Reddy, Max Rible, Sam Ruby, Bradley Sergeant, Nick Shelness, John Stracke, John Tigue, John Turner, Kevin Wiggen, and others.<a class="self" href="#rfc.section.15.p.1">&para;</a></p></div></section><section id="rfc.references"><h2 id="rfc.section.16"><a href="#rfc.section.16">16.</a> Normative References</h2><dl class="reference"><dt id="RFC2119">[RFC2119]</dt><dd>Bradner, S., &#8220;<a href="https://tools.ietf.org/html/rfc2119">Key words for use in RFCs to Indicate Requirement Levels</a>&#8221;, BCP&nbsp;14, RFC&nbsp;2119, March&nbsp;1997.</dd><dt id="RFC2277">[RFC2277]</dt><dd><a href="mailto:Harald.T.Alvestrand@uninett.no">Alvestrand, H.</a>, &#8220;<a href="https://tools.ietf.org/html/rfc2277">IETF Policy on Character Sets and Languages</a>&#8221;, BCP&nbsp;18, RFC&nbsp;2277, January&nbsp;1998.</dd><dt id="RFC2396">[RFC2396]</dt><dd><a href="mailto:timbl@w3.org">Berners-Lee, T.</a>, <a href="mailto:fielding@ics.uci.edu">Fielding, R.</a>, and <a href="mailto:masinter@parc.xerox.com">L. Masinter</a>, &#8220;<a href="https://tools.ietf.org/html/rfc2396">Uniform Resource Identifiers (URI): Generic Syntax</a>&#8221;, RFC&nbsp;2396, August&nbsp;1998.</dd><dt id="RFC2518">[RFC2518]</dt><dd><a href="mailto:yarong@microsoft.com">Goland, Y.</a>, <a href="mailto:ejw@ics.uci.edu">Whitehead, E.</a>, <a href="mailto:asad@netscape.com">Faizi, A.</a>, <a href="mailto:srcarter@novell.com">Carter, S.</a>, and <a href="mailto:dcjensen@novell.com">D. Jensen</a>, &#8220;<a href="https://tools.ietf.org/html/rfc2518">HTTP Extensions for Distributed Authoring -- WEBDAV</a>&#8221;, RFC&nbsp;2518, February&nbsp;1999.</dd><dt id="RFC2616">[RFC2616]</dt><dd><a href="mailto:fielding@ics.uci.edu">Fielding, R.</a>, <a href="mailto:jg@w3.org">Gettys, J.</a>, <a href="mailto:mogul@wrl.dec.com">Mogul, J.</a>, <a href="mailto:frystyk@w3.org">Frystyk, H.</a>, <a href="mailto:masinter@parc.xerox.com">Masinter, L.</a>, <a href="mailto:paulle@microsoft.com">Leach, P.</a>, and <a href="mailto:timbl@w3.org">T. Berners-Lee</a>, &#8220;<a href="https://tools.ietf.org/html/rfc2616">Hypertext Transfer Protocol -- HTTP/1.1</a>&#8221;, RFC&nbsp;2616, June&nbsp;1999.</dd><dt id="RFC3253">[RFC3253]</dt><dd><a href="mailto:geoffrey.clemm@rational.com">Clemm, G.</a>, <a href="mailto:jamsden@us.ibm.com">Amsden, J.</a>, <a href="mailto:tim_ellison@uk.ibm.com">Ellison, T.</a>, <a href="mailto:ckaler@microsoft.com">Kaler, C.</a>, and <a href="mailto:ejw@cse.ucsc.edu">J. Whitehead</a>, &#8220;<a href="https://tools.ietf.org/html/rfc3253">Versioning Extensions to WebDAV (Web Distributed Authoring and Versioning)</a>&#8221;, RFC&nbsp;3253, March&nbsp;2002.</dd><dt id="XML">[XML]</dt><dd><a href="mailto:tbray@textuality.com">Bray, T.</a>, <a href="mailto:jeanpa@microsoft.com">Paoli, J.</a>, <a href="mailto:cmsmcq@uic.edu">Sperberg-McQueen, C.</a>, and <a href="mailto:eve.maler@east.sun.com">E. Maler</a>, &#8220;<a href="http://www.w3.org/TR/2000/REC-xml-20001006">Extensible Markup Language (XML) 1.0 (2nd ed)</a>&#8221;, W3C&nbsp;REC-xml, October&nbsp;2000, &lt;<a href="http://www.w3.org/TR/2000/REC-xml-20001006">http://www.w3.org/TR/2000/REC-xml-20001006</a>&gt;.</dd></dl></section><section id="n-extensions-to-the-webdav-document-type-definition"><h2 id="rfc.section.A" class="np"><a href="#rfc.section.A">A.</a>&nbsp;<a href="#n-extensions-to-the-webdav-document-type-definition">Extensions to the WebDAV Document Type Definition</a></h2><div id="rfc.figure.u.27"><pre class="inline">&lt;!ELEMENT orderpatch (ordering-type?, order-member*) &gt;
+&lt;!ELEMENT order-member (segment, position) &gt;
+&lt;!ELEMENT ordering-type (href) &gt;
+&lt;!ELEMENT position (first | last | before | after)&gt;
+&lt;!ELEMENT first EMPTY &gt;
+&lt;!ELEMENT last EMPTY &gt;
+&lt;!ELEMENT before segment &gt;
+&lt;!ELEMENT after segment &gt;
+&lt;!ELEMENT segment (#PCDATA)&gt;
+</pre></div></section><section id="rfc.index"><h2><a href="#rfc.index">Index</a></h2><p class="noprint"><a href="#rfc.index.C">C</a> <a href="#rfc.index.D">D</a> <a href="#rfc.index.H">H</a> <a href="#rfc.index.M">M</a> <a href="#rfc.index.O">O</a> <a href="#rfc.index.P">P</a> <a href="#rfc.index.R">R</a> <a href="#rfc.index.S">S</a> <a href="#rfc.index.U">U</a> <a href="#rfc.index.X">X</a> </p><div class="print2col"><ul class="ind"><li><a id="rfc.index.C" href="#rfc.index.C"><b>C</b></a><ul><li>Client-Maintained Ordering&nbsp;&nbsp;<a href="#rfc.iref.c.1">3</a></li><li>Condition Names&nbsp;&nbsp;<ul><li>DAV:collection-must-be-ordered (pre)&nbsp;&nbsp;<a href="#rfc.iref.c.4"><b>6.1</b></a></li><li>DAV:initialize-collection-version-ordering-type (post)&nbsp;&nbsp;<a href="#rfc.iref.c.10"><b>9.2</b></a></li><li>DAV:initialize-ordering-type (post)&nbsp;&nbsp;<a href="#rfc.iref.c.12"><b>9.3</b></a></li><li>DAV:initialize-version-controlled-bindings-ordered (post)&nbsp;&nbsp;<a href="#rfc.iref.c.9"><b>9.2</b></a></li><li>DAV:initialize-version-history-bindings-ordered (post)&nbsp;&nbsp;<a href="#rfc.iref.c.11"><b>9.3</b></a></li><li>DAV:ordered-collections-supported (pre)&nbsp;&nbsp;<a href="#rfc.iref.c.2"><b>5.1</b></a></li><li>DAV:ordering-modified (post)&nbsp;&nbsp;<a href="#rfc.iref.c.8"><b>7</b></a></li><li>DAV:ordering-type-set (post)&nbsp;&nbsp;<a href="#rfc.iref.c.3"><b>5.1</b></a>, <a href="#rfc.iref.c.7"><b>7</b></a></li><li>DAV:position-set (post)&nbsp;&nbsp;<a href="#rfc.iref.c.6"><b>6.1</b></a></li><li>DAV:segment-must-identify-member (pre)&nbsp;&nbsp;<a href="#rfc.iref.c.5"><b>6.1</b></a></li><li>DAV:update-version-controlled-collection-members-ordered (post)&nbsp;&nbsp;<a href="#rfc.iref.c.13"><b>9.4</b></a></li><li>DAV:update-version-ordering-type (post)&nbsp;&nbsp;<a href="#rfc.iref.c.14"><b>9.4</b></a></li></ul></li></ul></li><li><a id="rfc.index.D" href="#rfc.index.D"><b>D</b></a><ul><li>DAV header&nbsp;&nbsp;<ul><li>compliance class 'ordered-collections'&nbsp;&nbsp;<a href="#rfc.section.10"><b>10</b></a></li></ul></li><li>DAV:collection-must-be-ordered precondition&nbsp;&nbsp;<a href="#rfc.iref.d.5"><b>6.1</b></a></li><li>DAV:custom ordering type&nbsp;&nbsp;<a href="#rfc.iref.d.1">4.1.1</a></li><li>DAV:initialize-collection-version-ordering-type postcondition&nbsp;&nbsp;<a href="#rfc.iref.d.11"><b>9.2</b></a></li><li>DAV:initialize-ordering-type postcondition&nbsp;&nbsp;<a href="#rfc.iref.d.13"><b>9.3</b></a></li><li>DAV:initialize-version-controlled-bindings-ordered postcondition&nbsp;&nbsp;<a href="#rfc.iref.d.10"><b>9.2</b></a></li><li>DAV:initialize-version-history-bindings-ordered postcondition&nbsp;&nbsp;<a href="#rfc.iref.d.12"><b>9.3</b></a></li><li>DAV:ordered-collections-supported precondition&nbsp;&nbsp;<a href="#rfc.iref.d.3"><b>5.1</b></a></li><li>DAV:ordering-modified postcondition&nbsp;&nbsp;<a href="#rfc.iref.d.9"><b>7</b></a></li><li>DAV:ordering-type property&nbsp;&nbsp;<a href="#rfc.section.4.1.1"><b>4.1.1</b></a></li><li>DAV:ordering-type-set postcondition&nbsp;&nbsp;<a href="#rfc.iref.d.4"><b>5.1</b></a>, <a href="#rfc.iref.d.8"><b>7</b></a></li><li>DAV:position-set postcondition&nbsp;&nbsp;<a href="#rfc.iref.d.7"><b>6.1</b></a></li><li>DAV:segment-must-identify-member precondition&nbsp;&nbsp;<a href="#rfc.iref.d.6"><b>6.1</b></a></li><li>DAV:unordered ordering type&nbsp;&nbsp;<a href="#rfc.iref.d.2">4.1.1</a></li><li>DAV:update-version-controlled-collection-members-ordered postcondition&nbsp;&nbsp;<a href="#rfc.iref.d.14"><b>9.4</b></a></li><li>DAV:update-version-ordering-type postcondition&nbsp;&nbsp;<a href="#rfc.iref.d.15"><b>9.4</b></a></li></ul></li><li><a id="rfc.index.H" href="#rfc.index.H"><b>H</b></a><ul><li>Headers&nbsp;&nbsp;<ul><li>Ordering-Type&nbsp;&nbsp;<a href="#rfc.iref.h.1"><b>5.1</b></a></li><li>Position&nbsp;&nbsp;<a href="#rfc.iref.h.2"><b>6.1</b></a></li></ul></li></ul></li><li><a id="rfc.index.M" href="#rfc.index.M"><b>M</b></a><ul><li>Methods&nbsp;&nbsp;<ul><li>ORDERPATCH&nbsp;&nbsp;<a href="#rfc.section.7"><b>7</b></a></li></ul></li></ul></li><li><a id="rfc.index.O" href="#rfc.index.O"><b>O</b></a><ul><li>Ordered Collection&nbsp;&nbsp;<a href="#rfc.iref.o.1">3</a></li><li>Ordering Semantics&nbsp;&nbsp;<a href="#rfc.iref.o.2">3</a></li><li>Ordering-Type header&nbsp;&nbsp;<a href="#rfc.iref.o.3"><b>5.1</b></a></li><li>ORDERPATCH method&nbsp;&nbsp;<a href="#rfc.section.7"><b>7</b></a></li></ul></li><li><a id="rfc.index.P" href="#rfc.index.P"><b>P</b></a><ul><li>Position header&nbsp;&nbsp;<a href="#rfc.iref.p.1"><b>6.1</b></a></li><li>Properties&nbsp;&nbsp;<ul><li>DAV:ordering-type&nbsp;&nbsp;<a href="#rfc.section.4.1.1"><b>4.1.1</b></a></li></ul></li></ul></li><li><a id="rfc.index.R" href="#rfc.index.R"><b>R</b></a><ul><li><em>RFC2119</em>&nbsp;&nbsp;<a href="#rfc.xref.RFC2119.1">1</a>, <a href="#RFC2119"><b>16</b></a></li><li><em>RFC2277</em>&nbsp;&nbsp;<a href="#rfc.xref.RFC2277.1">12</a>, <a href="#rfc.xref.RFC2277.2">12</a>, <a href="#RFC2277"><b>16</b></a></li><li><em>RFC2396</em>&nbsp;&nbsp;<a href="#rfc.xref.RFC2396.1">3</a>, <a href="#rfc.xref.RFC2396.2">5.1</a>, <a href="#rfc.xref.RFC2396.3">5.1</a>, <a href="#rfc.xref.RFC2396.4">6.1</a>, <a href="#rfc.xref.RFC2396.5">7</a>, <a href="#rfc.xref.RFC2396.6">7</a>, <a href="#RFC2396"><b>16</b></a><ul><li><em>Section 3</em>&nbsp;&nbsp;<a href="#rfc.xref.RFC2396.3">5.1</a></li><li><em>Section 3.3</em>&nbsp;&nbsp;<a href="#rfc.xref.RFC2396.4">6.1</a>, <a href="#rfc.xref.RFC2396.5">7</a></li></ul></li><li><em>RFC2518</em>&nbsp;&nbsp;<a href="#rfc.xref.RFC2518.1">1</a>, <a href="#rfc.xref.RFC2518.2">1</a>, <a href="#rfc.xref.RFC2518.3">1</a>, <a href="#rfc.xref.RFC2518.4">3</a>, <a href="#rfc.xref.RFC2518.5">4.1.1</a>, <a href="#rfc.xref.RFC2518.6">7</a>, <a href="#rfc.xref.RFC2518.7">10</a>, <a href="#rfc.xref.RFC2518.8">10</a>, <a href="#rfc.xref.RFC2518.9">10</a>, <a href="#rfc.xref.RFC2518.10">10</a>, <a href="#rfc.xref.RFC2518.11">10.1</a>, <a href="#rfc.xref.RFC2518.12">12</a>, <a href="#rfc.xref.RFC2518.13">12</a>, <a href="#rfc.xref.RFC2518.14">12</a>, <a href="#rfc.xref.RFC2518.15">12</a>, <a href="#rfc.xref.RFC2518.16">13</a>, <a href="#rfc.xref.RFC2518.17">13</a>, <a href="#RFC2518"><b>16</b></a><ul><li><em>Section 9.1</em>&nbsp;&nbsp;<a href="#rfc.xref.RFC2518.7">10</a></li><li><em>Section 15</em>&nbsp;&nbsp;<a href="#rfc.xref.RFC2518.8">10</a></li><li><em>Section 23</em>&nbsp;&nbsp;<a href="#rfc.xref.RFC2518.2">1</a></li></ul></li><li><em>RFC2616</em>&nbsp;&nbsp;<a href="#rfc.xref.RFC2616.1">1</a>, <a href="#rfc.xref.RFC2616.2">1</a>, <a href="#rfc.xref.RFC2616.3">1</a>, <a href="#RFC2616"><b>16</b></a><ul><li><em>Section 2.1</em>&nbsp;&nbsp;<a href="#rfc.xref.RFC2616.1">1</a></li><li><em>Section 2.2</em>&nbsp;&nbsp;<a href="#rfc.xref.RFC2616.3">1</a></li></ul></li><li><em>RFC3253</em>&nbsp;&nbsp;<a href="#rfc.xref.RFC3253.1">2</a>, <a href="#rfc.xref.RFC3253.2">3</a>, <a href="#rfc.xref.RFC3253.3">3</a>, <a href="#rfc.xref.RFC3253.4">3</a>, <a href="#rfc.xref.RFC3253.5">9</a>, <a href="#rfc.xref.RFC3253.6">10</a>, <a href="#rfc.xref.RFC3253.7">10</a>, <a href="#rfc.xref.RFC3253.8">10</a>, <a href="#RFC3253"><b>16</b></a><ul><li><em>Section 1.6</em>&nbsp;&nbsp;<a href="#rfc.xref.RFC3253.4">3</a></li><li><em>Section 3.1.3</em>&nbsp;&nbsp;<a href="#rfc.xref.RFC3253.7">10</a></li><li><em>Section 3.1.4</em>&nbsp;&nbsp;<a href="#rfc.xref.RFC3253.8">10</a></li></ul></li></ul></li><li><a id="rfc.index.S" href="#rfc.index.S"><b>S</b></a><ul><li>Server-Maintained Ordering&nbsp;&nbsp;<a href="#rfc.iref.s.1">3</a></li></ul></li><li><a id="rfc.index.U" href="#rfc.index.U"><b>U</b></a><ul><li>Unordered Collection&nbsp;&nbsp;<a href="#rfc.iref.u.1">3</a></li></ul></li><li><a id="rfc.index.X" href="#rfc.index.X"><b>X</b></a><ul><li><em>XML</em>&nbsp;&nbsp;<a href="#rfc.xref.XML.1">12</a>, <a href="#XML"><b>16</b></a></li></ul></li></ul></div></section><section id="rfc.authors" class="avoidbreakinside"><h2><a href="#rfc.authors">Authors' Addresses</a></h2><address><b>Jim Whitehead</b><br>UC Santa Cruz, Dept. of Computer Science<br>1156 High Street<br>Santa Cruz, CA&nbsp;95064<br>US<br>EMail: <a href="mailto:ejw@cse.ucsc.edu">ejw@cse.ucsc.edu</a></address><address><b>Julian F. Reschke</b>
+      (editor)
+    <br>greenbytes GmbH<br>Salzmannstrasse 152<br>Muenster, NW&nbsp;48159<br>Germany<br>Phone: <a href="tel:+492512807760">+49 251 2807760</a><br>Fax: <a href="fax:+492512807761">+49 251 2807761</a><br>EMail: <a href="mailto:julian.reschke@greenbytes.de">julian.reschke@greenbytes.de</a><br>URI: <a href="http://greenbytes.de/tech/webdav/">http://greenbytes.de/tech/webdav/</a></address></section><section id="rfc.copyright"><h2><a href="#rfc.copyright">Full Copyright Statement</a></h2><p>Copyright &copy; The Internet Society (2003). All Rights Reserved.</p><p>This document and translations of it may be copied and furnished to others, and derivative works that comment on or otherwise explain it or assist in its implementation may be prepared, copied, published and distributed, in whole or in part, without restriction of any kind, provided that the above copyright notice and this paragraph are included on all such copies and derivative works. However, this document itself may not be modified in any way, such as by removing the copyright notice or references to the Internet Society or other Internet organizations, except as needed for the purpose of developing Internet standards in which case the procedures for copyrights defined in the Internet Standards process must be followed, or as required to translate it into languages other than English.</p><p>The limited permissions granted above are perpetual and will not be revoked by the Internet Society or its successors or assigns.</p><p>This document and the information contained herein is provided on an &#8220;AS IS&#8221; basis and THE INTERNET SOCIETY AND THE INTERNET ENGINEERING TASK FORCE DISCLAIMS ALL WARRANTIES, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO ANY WARRANTY THAT THE USE OF THE INFORMATION HEREIN WILL NOT INFRINGE ANY RIGHTS OR ANY IMPLIED WARRANTIES OF MERCHANTABILITY OR FITNESS FOR A PARTICULAR PURPOSE.</p></section><section id="rfc.ipr"><h2><a href="#rfc.ipr">Intellectual Property</a></h2><p>The IETF takes no position regarding the validity or scope of any intellectual property or other rights that might be claimed to pertain to the implementation or use of the technology described in this document or the extent to which any license under such rights might or might not be available; neither does it represent that it has made any effort to identify any such rights. Information on the IETF's procedures with respect to rights in standards-track and standards-related documentation can be found in BCP-11. Copies of claims of rights made available for publication and any assurances of licenses to be made available, or the result of an attempt made to obtain a general license or permission for the use of such proprietary rights by implementors or users of this specification can be obtained from the IETF Secretariat.</p><p>The IETF invites any interested party to bring to its attention any copyrights, patents or patent applications, or other proprietary rights which may cover technology that may be required to practice this standard. Please address the information to the IETF Executive Director.</p></section><section id="n-acknowledgment"><h2><a href="#n-acknowledgment">Acknowledgment</a></h2><p>Funding for the RFC Editor function is currently provided by the Internet Society.</p></section></body></html>

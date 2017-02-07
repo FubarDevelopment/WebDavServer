@@ -1,0 +1,794 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+      <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+   <title>Web Distributed Authoring and Versioning (WebDAV) Redirect&nbsp;Reference&nbsp;Resources</title><script type="application/javascript">
+function getMeta(rfcno, container) {
+
+  var xhr = new XMLHttpRequest();
+  xhr.open("GET", "https://tools.ietf.org/draft/rfc" + rfcno + "/state.xml", true);
+  xhr.onload = function (e) {
+    if (xhr.readyState === 4) {
+      if (xhr.status === 200) {
+        var doc = xhr.responseXML;
+        var info = getChildByName(doc.documentElement, "info");
+  
+        var cont = document.getElementById(container);
+        // empty the container
+        while (cont.firstChild) {
+          cont.removeChild(myNode.firstChild);
+        }      
+  
+        var c = getChildByName(info, "stdstatus");
+        if (c !== null) {
+          var bld = newElementWithText("b", c.textContent);
+          cont.appendChild(bld);
+        }
+  
+        c = getChildByName(info, "updatedby");
+        if (c !== null) {
+          cont.appendChild(newElement("br"));
+          cont.appendChild(newText("Updated by: "));
+          appendRfcLinks(cont, c.textContent);
+        }
+  
+        c = getChildByName(info, "obsoletedby");
+        if (c !== null) {
+          cont.appendChild(newElement("br"));
+          cont.appendChild(newText("Obsoleted by: "));
+          appendRfcLinks(cont, c.textContent);
+        }
+        
+        c = getChildByName(info, "errata");
+        if (c !== null) {
+          cont.appendChild(newElement("br"));
+          var link = newElementWithText("a", "errata");
+          link.setAttribute("href", "http://www.rfc-editor.org/errata_search.php?rfc=" + rfcno);
+          var errata = newElementWithText("i", "This document has ");
+          errata.appendChild(link);
+          errata.appendChild(newText("."));
+          cont.appendChild(errata);
+        }
+
+        cont.style.display = "block";
+      } else {
+        console.error(xhr.statusText);
+      }
+    }
+  };
+  xhr.onerror = function (e) {
+    console.error(xhr.status + " " + xhr.statusText);
+  };
+  xhr.send(null);
+}
+
+// DOM helpers
+function newElement(name) {
+  return document.createElement(name);
+}
+function newElementWithText(name, txt) {
+  var e = document.createElement(name);
+  e.appendChild(newText(txt));
+  return e;
+}
+function newText(text) {
+  return document.createTextNode(text);
+}
+
+function getChildByName(parent, name) {
+  if (parent === null) {
+    return null;
+  }
+  else {
+    for (var c = parent.firstChild; c !== null; c = c.nextSibling) {
+      if (name == c.nodeName) {
+        return c;
+      }
+    }
+    return null;
+  }
+}
+
+function appendRfcLinks(parent, text) {
+  var updates = text.split(",");
+  for (var i = 0; i < updates.length; i++) {
+    var rfc = updates[i].trim();
+    if (rfc.substring(0, 3) == "rfc") {
+      var link = newElement("a");
+      link.setAttribute("href", "http://tools.ietf.org/html/" + rfc);
+      link.appendChild(newText(rfc.substring(3)));
+      parent.appendChild(link);
+    } else {
+      parent.appendChild(newText(rfc));
+    }
+    if (i != updates.length - 1) {
+      parent.appendChild(newText(", "));
+    }
+  }
+}
+</script><script type="application/javascript">
+function anchorRewrite() {
+  map = { };
+  if (window.location.hash.length >= 1) {
+    var fragid = window.location.hash.substr(1);
+    if (fragid) {
+      if (! document.getElementById(fragid)) {
+        var prefix = "rfc.";
+        var mapped = map[fragid];
+        if (mapped) {
+          window.location.hash = mapped;
+        } else if (fragid.indexOf("section-") == 0) {
+          window.location.hash = prefix + "section." + fragid.substring(8);
+        } else if (fragid.indexOf("appendix-") == 0) {
+          window.location.hash = prefix + "section." + fragid.substring(9);
+        } else if (fragid.indexOf("s-") == 0) {
+          window.location.hash = prefix + "section." + fragid.substring(2);
+        } else if (fragid.indexOf("p-") == 0) {
+          var r = fragid.substring(2);
+          var p = r.indexOf("-");
+          if (p >= 0) {
+            window.location.hash = prefix + "section." + r.substring(0, p) + ".p." + r.substring(p + 1);
+          }
+        }
+      }
+    }  
+  }
+}
+window.addEventListener('hashchange', anchorRewrite);
+window.addEventListener('DOMContentLoaded', anchorRewrite);
+</script><style type="text/css" title="Xml2Rfc (sans serif)">
+a {
+  text-decoration: none;
+}
+a.smpl {
+  color: black;
+}
+a:hover {
+  text-decoration: underline;
+}
+a:active {
+  text-decoration: underline;
+}
+address {
+  margin-top: 1em;
+  margin-left: 2em;
+  font-style: normal;
+}
+body {
+  color: black;
+  font-family: cambria, georgia, serif;
+  font-size: 12pt;
+  margin: 2em auto;
+  max-width: 1000px;
+}
+samp, span.tt, code, pre {
+  font-family: consolas, monaco, monospace;
+}
+cite {
+  font-style: normal;
+}
+dl {
+  margin-left: 2em;
+}
+dl > dt {
+  float: left;
+  margin-right: 1em;
+}
+dl.nohang > dt {
+  float: none;
+}
+dl > dd {
+  margin-bottom: .5em;
+}
+dl.compact > dd {
+  margin-bottom: .0em;
+}
+dl > dd > dl {
+  margin-top: 0.5em;
+}
+ul.empty {
+  list-style-type: none;
+}
+ul.empty li {
+  margin-top: .5em;
+}
+dl p {
+  margin-left: 0em;
+}
+dl.reference > dt {
+  font-weight: bold;
+}
+dl.reference > dd {
+  margin-left: 6em;
+}
+h1 {
+  color: green;
+  font-size: 150%;
+  line-height: 18pt;
+  font-weight: bold;
+  text-align: center;
+  margin-top: 36pt;
+  margin-bottom: 0pt;
+}
+h2 {
+  font-size: 130%;
+  line-height: 21pt;
+  page-break-after: avoid;
+}
+h2.np {
+  page-break-before: always;
+}
+h3 {
+  font-size: 120%;
+  line-height: 15pt;
+  page-break-after: avoid;
+}
+h4 {
+  font-size: 110%;
+  page-break-after: avoid;
+}
+h5, h6 {
+  page-break-after: avoid;
+}
+h1 a, h2 a, h3 a, h4 a, h5 a, h6 a {
+  color: black;
+}
+img {
+  margin-left: 3em;
+}
+li {
+  margin-left: 2em;
+}
+ol {
+  margin-left: 2em;
+}
+ol.la {
+  list-style-type: lower-alpha;
+}
+ol.ua {
+  list-style-type: upper-alpha;
+}
+ol p {
+  margin-left: 0em;
+}
+p {
+  margin-left: 2em;
+}
+pre {
+  font-size: 11pt;
+  margin-left: 3em;
+  background-color: lightyellow;
+  padding: .25em;
+  page-break-inside: avoid;
+}
+pre.text2 {
+  border-style: dotted;
+  border-width: 1px;
+  background-color: #f0f0f0;
+}
+pre.inline {
+  background-color: white;
+  padding: 0em;
+  page-break-inside: auto;
+}
+pre.text {
+  border-style: dotted;
+  border-width: 1px;
+  background-color: #f8f8f8;
+}
+pre.drawing {
+  border-style: solid;
+  border-width: 1px;
+  background-color: #f8f8f8;
+  padding: 2em;
+}
+table {
+  margin-left: 2em;
+}
+div.tt {
+  margin-left: 2em;
+} 
+table.tt {
+  border-collapse: collapse;
+  border-color: gray;
+  border-spacing: 0; 
+  vertical-align: top;
+ }
+table.tt th {
+  border-color: gray;
+  padding: 3px;
+}
+table.tt td {
+  border-color: gray;
+  padding: 3px;
+}
+table.all {
+  border-style: solid;
+  border-width: 2px;
+}
+table.full {
+  border-style: solid;
+  border-width: 2px;
+}
+table.tt td {
+  vertical-align: top;
+}
+table.all td {
+  border-style: solid;
+  border-width: 1px;
+}
+table.full td {
+  border-style: none solid;
+  border-width: 1px;
+}
+table.tt th {
+  vertical-align: top;
+}
+table.all th {
+  border-style: solid;
+  border-width: 1px;
+}
+table.full th {
+  border-style: solid;
+  border-width: 1px 1px 2px 1px;
+}
+table.headers th {
+  border-style: none none solid none;
+  border-width: 2px;
+}
+table.tleft {
+  margin-right: auto;
+}
+table.tright {
+  margin-left: auto;
+}
+table.tcenter {
+  margin-left: auto;
+  margin-right: auto;
+}
+caption {
+  caption-side: bottom;
+  font-weight: bold;
+  font-size: 10pt;
+  margin-top: .5em;
+}
+
+table.header {
+  border-spacing: 1px;
+  width: 95%;
+  font-size: 11pt;
+  color: white;
+}
+td.top {
+  vertical-align: top;
+}
+td.topnowrap {
+  vertical-align: top;
+  white-space: nowrap;
+}
+table.header td {
+  background-color: gray;
+  width: 50%;
+}
+ul.toc, ul.toc ul {
+  list-style: none;
+  margin-left: 1.5em;
+  padding-left: 0em;
+}
+ul.toc li {
+  line-height: 150%;
+  font-weight: bold;
+  margin-left: 0em;
+}
+ul.toc li li {
+  line-height: normal;
+  font-weight: normal;
+  font-size: 11pt;
+  margin-left: 0em;
+}
+li.excluded {
+  font-size: 0pt;
+}
+ul p {
+  margin-left: 0em;
+}
+.filename, h1, h2, h3, h4 {
+  font-family: candara, calibri, segoe, optima, arial, sans-serif;
+}
+ul.ind, ul.ind ul {
+  list-style: none;
+  margin-left: 1.5em;
+  padding-left: 0em;
+  page-break-before: avoid;
+}
+ul.ind li {
+  font-weight: bold;
+  line-height: 200%;
+  margin-left: 0em;
+}
+ul.ind li li {
+  font-weight: normal;
+  line-height: 150%;
+  margin-left: 0em;
+}
+.avoidbreakinside {
+  page-break-inside: avoid;
+}
+.avoidbreakafter {
+  page-break-after: avoid;
+}
+.bcp14 {
+  font-style: normal;
+  text-transform: lowercase;
+  font-variant: small-caps;
+}
+.comment {
+  background-color: yellow;
+}
+.center {
+  text-align: center;
+}
+.error {
+  color: red;
+  font-style: italic;
+  font-weight: bold;
+}
+.figure {
+  font-weight: bold;
+  text-align: center;
+  font-size: 10pt;
+}
+.filename {
+  color: #333333;
+  font-size: 112%;
+  font-weight: bold;
+  line-height: 21pt;
+  text-align: center;
+  margin-top: 0pt;
+}
+.fn {
+  font-weight: bold;
+}
+.left {
+  text-align: left;
+}
+.right {
+  text-align: right;
+}
+.warning {
+  font-size: 130%;
+  background-color: yellow;
+}
+.self {
+    color: #999999;
+    margin-left: .3em;
+    text-decoration: none;
+    visibility: hidden;
+    -webkit-user-select: none; 
+    -moz-user-select: none;
+    -ms-user-select: none;
+}
+.self:hover {
+    text-decoration: none;
+}
+p:hover .self {
+    visibility: visible;
+}
+.docstatus {
+  border: 1px solid black;
+  display: none;
+  float: right;
+  margin: 2em;
+  padding: 1em;
+}
+
+@media screen {
+  pre.text, pre.text2 {
+    width: 69em;
+  }
+}
+
+@media print {
+  .noprint {
+    display: none;
+  }
+
+  a {
+    color: black;
+    text-decoration: none;
+  }
+
+  table.header {
+    width: 90%;
+  }
+
+  td.header {
+    width: 50%;
+    color: black;
+    background-color: white;
+    vertical-align: top;
+    font-size: 110%;
+  }
+
+  ul.toc a:last-child::after {
+    content: leader('.') target-counter(attr(href), page);
+  }
+
+  ul.ind li li a {
+    content: target-counter(attr(href), page);
+  }
+
+  pre {
+    font-size: 10pt;
+  }
+
+  .print2col {
+    column-count: 2;
+    -moz-column-count: 2;
+    column-fill: auto;
+  }
+}
+@page {
+  @top-left {
+       content: "RFC 4437";
+  }
+  @top-right {
+       content: "March 2006";
+  }
+  @top-center {
+       content: "WebDAV Redirect Reference Resources";
+  }
+  @bottom-left {
+       content: "Whitehead, et al.";
+  }
+  @bottom-center {
+       content: "Experimental";
+  }
+  @bottom-right {
+       content: "[Page " counter(page) "]";
+  }
+}
+@page:first {
+    @top-left {
+      content: normal;
+    }
+    @top-right {
+      content: normal;
+    }
+    @top-center {
+      content: normal;
+    }
+}
+</style><link rel="Contents" href="#rfc.toc"><link rel="Author" href="#rfc.authors"><link rel="Copyright" href="#rfc.copyright"><link rel="Index" href="#rfc.index"><link rel="Chapter" title="1 Introduction" href="#rfc.section.1"><link rel="Chapter" title="2 Notational Conventions" href="#rfc.section.2"><link rel="Chapter" title="3 Terminology" href="#rfc.section.3"><link rel="Chapter" title="4 Overview of Redirect Reference Resources" href="#rfc.section.4"><link rel="Chapter" title="5 Operations on Redirect Reference Resources" href="#rfc.section.5"><link rel="Chapter" title="6 MKREDIRECTREF Method" href="#rfc.section.6"><link rel="Chapter" title="7 UPDATEREDIRECTREF Method" href="#rfc.section.7"><link rel="Chapter" title="8 Operations on Collections That Contain Redirect Reference Resources" href="#rfc.section.8"><link rel="Chapter" title="9 Operations on Targets of Redirect Reference Resources" href="#rfc.section.9"><link rel="Chapter" title="10 Relative References in DAV:reftarget" href="#rfc.section.10"><link rel="Chapter" title="11 Redirect References to Collections" href="#rfc.section.11"><link rel="Chapter" title="12 Headers" href="#rfc.section.12"><link rel="Chapter" title="13 Redirect Reference Resource Properties" href="#rfc.section.13"><link rel="Chapter" title="14 XML Elements" href="#rfc.section.14"><link rel="Chapter" title="15 Extensions to the DAV:response XML Element for Multi-Status Responses" href="#rfc.section.15"><link rel="Chapter" title="16 Capability Discovery" href="#rfc.section.16"><link rel="Chapter" title="17 Security Considerations" href="#rfc.section.17"><link rel="Chapter" title="18 Internationalization Considerations" href="#rfc.section.18"><link rel="Chapter" title="19 IANA Considerations" href="#rfc.section.19"><link rel="Chapter" title="20 Contributors" href="#rfc.section.20"><link rel="Chapter" title="21 Acknowledgements" href="#rfc.section.21"><link rel="Chapter" href="#rfc.section.22" title="22 Normative References"><link rel="Alternate" title="Authoritative ASCII Version" href="http://www.ietf.org/rfc/rfc4437.txt"><link rel="Help" title="RFC-Editor's Status Page" href="http://www.rfc-editor.org/info/rfc4437"><link rel="Help" title="Additional Information on tools.ietf.org" href="http://tools.ietf.org/html/rfc4437"><meta name="generator" content="http://greenbytes.de/tech/webdav/rfc2629.xslt, Revision 1.840, 2016/11/16 05:32:10, XSLT vendor: SAXON 6.5.5 from Michael Kay http://saxon.sf.net/"><link rel="schema.dcterms" href="http://purl.org/dc/terms/"><meta name="dcterms.creator" content="Whitehead, J."><meta name="dcterms.creator" content="Clemm, G."><meta name="dcterms.creator" content="Reschke, J. F."><meta name="dcterms.identifier" content="urn:ietf:rfc:4437"><meta name="dcterms.issued" content="2006-03"><meta name="dcterms.abstract" content="This specification defines an extension to Web Distributed Authoring and Versioning (WebDAV) to allow clients to author HTTP redirect reference resources whose default response is an HTTP/1.1 3xx (Redirection) status code. A redirect reference makes it possible to access the target resourced indirectly through any URI mapped to the redirect reference resource. This specification does not address remapping of trees of resources or regular expression based redirections. There are no integrity guarantees associated with redirect reference resources. Other mechanisms can also be used to achieve the same functionality as this specification. This specification allows operators to experiment with this mechanism and develop experience on what is the best approach to the problem."><meta name="dcterms.isPartOf" content="urn:issn:2070-1721"><meta name="description" content="This specification defines an extension to Web Distributed Authoring and Versioning (WebDAV) to allow clients to author HTTP redirect reference resources whose default response is an HTTP/1.1 3xx (Redirection) status code. A redirect reference makes it possible to access the target resourced indirectly through any URI mapped to the redirect reference resource. This specification does not address remapping of trees of resources or regular expression based redirections. There are no integrity guarantees associated with redirect reference resources. Other mechanisms can also be used to achieve the same functionality as this specification. This specification allows operators to experiment with this mechanism and develop experience on what is the best approach to the problem."></head><body onload="getMeta(4437,&#34;rfc.meta&#34;);"><header><table class="header" id="rfc.headerblock"><tbody><tr><td class="left">Network Working Group</td><td class="right">J. Whitehead</td></tr><tr><td class="left">Request for Comments: 4437</td><td class="right">U.C. Santa Cruz</td></tr><tr><td class="left">Category: Experimental</td><td class="right">G. Clemm</td></tr><tr><td class="left"></td><td class="right">IBM</td></tr><tr><td class="left"></td><td class="right">J. Reschke, Editor</td></tr><tr><td class="left"></td><td class="right">greenbytes</td></tr><tr><td class="left"></td><td class="right">March 2006</td></tr></tbody></table><div id="rfc.title"><h1>Web Distributed Authoring and Versioning (WebDAV) Redirect&nbsp;Reference&nbsp;Resources</h1></div></header><div id="rfc.meta" class="docstatus"></div><section id="rfc.status"><h2><a href="#rfc.status">Status of this Memo</a></h2><p>This memo defines an Experimental Protocol for the Internet community. It does not specify an Internet standard of any kind. Discussion and suggestions for improvement are requested. Distribution of this memo is unlimited.</p></section><section id="rfc.copyrightnotice"><h2><a href="#rfc.copyrightnotice">Copyright Notice</a></h2><p>Copyright &copy; The Internet Society (2006). All Rights Reserved.</p></section><section id="rfc.abstract"><h2><a href="#rfc.abstract">Abstract</a></h2><p>This specification defines an extension to Web Distributed Authoring and Versioning (WebDAV) to allow clients to author HTTP redirect reference resources whose default response is an HTTP/1.1 3xx (Redirection) status code. A redirect reference makes it possible to access the target resourced indirectly through any URI mapped to the redirect reference resource. This specification does not address remapping of trees of resources or regular expression based redirections. There are no integrity guarantees associated with redirect reference resources. Other mechanisms can also be used to achieve the same functionality as this specification. This specification allows operators to experiment with this mechanism and develop experience on what is the best approach to the problem.</p></section><hr class="noprint"><nav id="rfc.toc"><h2 class="np"><a href="#rfc.toc">Table of Contents</a></h2><ul class="toc"><li><a href="#rfc.section.1">1.</a>&nbsp;&nbsp;&nbsp;<a href="#rfc.section.1">Introduction</a></li><li><a href="#rfc.section.2">2.</a>&nbsp;&nbsp;&nbsp;<a href="#rfc.section.2">Notational Conventions</a></li><li><a href="#rfc.section.3">3.</a>&nbsp;&nbsp;&nbsp;<a href="#terminology">Terminology</a></li><li><a href="#rfc.section.4">4.</a>&nbsp;&nbsp;&nbsp;<a href="#overview">Overview of Redirect Reference Resources</a></li><li><a href="#rfc.section.5">5.</a>&nbsp;&nbsp;&nbsp;<a href="#operations.on.redirect.reference.resources">Operations on Redirect Reference Resources</a></li><li><a href="#rfc.section.6">6.</a>&nbsp;&nbsp;&nbsp;<a href="#METHOD_MKREDIRECTREF">MKREDIRECTREF Method</a><ul><li><a href="#rfc.section.6.1">6.1.</a>&nbsp;&nbsp;&nbsp;<a href="#rfc.section.6.1">Example: Creating a Redirect Reference Resource with MKREDIRECTREF</a></li></ul></li><li><a href="#rfc.section.7">7.</a>&nbsp;&nbsp;&nbsp;<a href="#METHOD_UPDATEREDIRECTREF">UPDATEREDIRECTREF Method</a><ul><li><a href="#rfc.section.7.1">7.1.</a>&nbsp;&nbsp;&nbsp;<a href="#rfc.section.7.1">Example: Updating a Redirect Reference Resource with UPDATEREDIRECTREF</a></li></ul></li><li><a href="#rfc.section.8">8.</a>&nbsp;&nbsp;&nbsp;<a href="#operations.on.collections.that.contain.redirect.reference.resources">Operations on Collections That Contain Redirect Reference Resources</a><ul><li><a href="#rfc.section.8.1">8.1.</a>&nbsp;&nbsp;&nbsp;<a href="#rfc.section.8.1">Example: PROPFIND on a Collection with Redirect Reference Resources</a></li><li><a href="#rfc.section.8.2">8.2.</a>&nbsp;&nbsp;&nbsp;<a href="#rfc.section.8.2">Example: PROPFIND with Apply-To-Redirect-Ref on a Collection with Redirect Reference Resources</a></li></ul></li><li><a href="#rfc.section.9">9.</a>&nbsp;&nbsp;&nbsp;<a href="#operations.on.targets.of.redirect.reference.resources">Operations on Targets of Redirect Reference Resources</a></li><li><a href="#rfc.section.10">10.</a>&nbsp;&nbsp;&nbsp;<a href="#rfc.section.10">Relative References in DAV:reftarget</a><ul><li><a href="#rfc.section.10.1">10.1.</a>&nbsp;&nbsp;&nbsp;<a href="#rfc.section.10.1">Example: Resolving a Relative Reference in a Multi-Status Response</a></li></ul></li><li><a href="#rfc.section.11">11.</a>&nbsp;&nbsp;&nbsp;<a href="#redirect.references.to.collections">Redirect References to Collections</a></li><li><a href="#rfc.section.12">12.</a>&nbsp;&nbsp;&nbsp;<a href="#headers">Headers</a><ul><li><a href="#rfc.section.12.1">12.1.</a>&nbsp;&nbsp;&nbsp;<a href="#header.redirect-ref">Redirect-Ref Response Header</a></li><li><a href="#rfc.section.12.2">12.2.</a>&nbsp;&nbsp;&nbsp;<a href="#header.apply-to-redirect-ref">Apply-To-Redirect-Ref Request Header</a></li></ul></li><li><a href="#rfc.section.13">13.</a>&nbsp;&nbsp;&nbsp;<a href="#properties">Redirect Reference Resource Properties</a><ul><li><a href="#rfc.section.13.1">13.1.</a>&nbsp;&nbsp;&nbsp;<a href="#redirect-lifetime.property">DAV:redirect-lifetime (protected)</a></li><li><a href="#rfc.section.13.2">13.2.</a>&nbsp;&nbsp;&nbsp;<a href="#reftarget.property">DAV:reftarget (protected)</a></li></ul></li><li><a href="#rfc.section.14">14.</a>&nbsp;&nbsp;&nbsp;<a href="#xml.elements">XML Elements</a><ul><li><a href="#rfc.section.14.1">14.1.</a>&nbsp;&nbsp;&nbsp;<a href="#redirectref.xml.element">redirectref XML Element</a></li></ul></li><li><a href="#rfc.section.15">15.</a>&nbsp;&nbsp;&nbsp;<a href="#extensions.to.response.element">Extensions to the DAV:response XML Element for Multi-Status Responses</a></li><li><a href="#rfc.section.16">16.</a>&nbsp;&nbsp;&nbsp;<a href="#capability.discovery">Capability Discovery</a><ul><li><a href="#rfc.section.16.1">16.1.</a>&nbsp;&nbsp;&nbsp;<a href="#rfc.section.16.1">Example: Discovery of Support for Redirect Reference Resources</a></li></ul></li><li><a href="#rfc.section.17">17.</a>&nbsp;&nbsp;&nbsp;<a href="#security.considerations">Security Considerations</a><ul><li><a href="#rfc.section.17.1">17.1.</a>&nbsp;&nbsp;&nbsp;<a href="#rfc.section.17.1">Privacy Concerns</a></li><li><a href="#rfc.section.17.2">17.2.</a>&nbsp;&nbsp;&nbsp;<a href="#rfc.section.17.2">Redirect Loops</a></li><li><a href="#rfc.section.17.3">17.3.</a>&nbsp;&nbsp;&nbsp;<a href="#rfc.section.17.3">Redirect Reference Resources and Denial of Service</a></li><li><a href="#rfc.section.17.4">17.4.</a>&nbsp;&nbsp;&nbsp;<a href="#rfc.section.17.4">Revealing Private Locations</a></li></ul></li><li><a href="#rfc.section.18">18.</a>&nbsp;&nbsp;&nbsp;<a href="#rfc.section.18">Internationalization Considerations</a></li><li><a href="#rfc.section.19">19.</a>&nbsp;&nbsp;&nbsp;<a href="#iana.considerations">IANA Considerations</a><ul><li><a href="#rfc.section.19.1">19.1.</a>&nbsp;&nbsp;&nbsp;<a href="#rfc.section.19.1">HTTP headers</a><ul><li><a href="#rfc.section.19.1.1">19.1.1.</a>&nbsp;&nbsp;&nbsp;<a href="#rfc.section.19.1.1">Redirect-Ref</a></li><li><a href="#rfc.section.19.1.2">19.1.2.</a>&nbsp;&nbsp;&nbsp;<a href="#rfc.section.19.1.2">Apply-To-Redirect-Ref</a></li></ul></li></ul></li><li><a href="#rfc.section.20">20.</a>&nbsp;&nbsp;&nbsp;<a href="#rfc.section.20">Contributors</a></li><li><a href="#rfc.section.21">21.</a>&nbsp;&nbsp;&nbsp;<a href="#rfc.section.21">Acknowledgements</a></li><li><a href="#rfc.section.22">22.</a>&nbsp;&nbsp;&nbsp;<a href="#rfc.references">Normative References</a></li><li><a href="#rfc.index">Index</a></li><li><a href="#rfc.authors">Authors' Addresses</a></li><li><a href="#rfc.ipr">Intellectual Property and Copyright Statements</a></li></ul></nav><section id="n-introduction"><h2 id="rfc.section.1" class="np"><a href="#rfc.section.1">1.</a>&nbsp;<a href="#n-introduction">Introduction</a></h2><div id="rfc.section.1.p.1"><p>This specification extends the Web Distributed Authoring Protocol (WebDAV) to enable clients to create new access paths to existing resources. This capability is useful for several reasons.<a class="self" href="#rfc.section.1.p.1">&para;</a></p></div><div id="rfc.section.1.p.2"><p>WebDAV makes it possible to organize HTTP resources into hierarchies, placing them into groupings, known as collections, that are more easily browsed and manipulated than a single flat collection. However, hierarchies require categorization decisions that locate resources at a single location in the hierarchy, a drawback when a resource has multiple valid categories. For example, in a hierarchy of vehicle descriptions containing collections for cars and boats, a description of a combination car/boat vehicle could belong in either collection. Ideally, the description should be accessible from both. Allowing clients to create new URIs that access the existing resource lets them put that resource into multiple collections.<a class="self" href="#rfc.section.1.p.2">&para;</a></p></div><div id="rfc.section.1.p.3"><p>Hierarchies also make resource sharing more difficult, since resources that have utility across many collections are still forced into a single collection. For example, the mathematics department at one university might create a collection of information on fractals that contains bindings to some local resources, but also provides access to some resources at other universities. For many reasons, it may be undesirable to make physical copies of the shared resources: to conserve disk space, to respect copyright constraints, or to make any changes in the shared resources visible automatically. Being able to create new access paths to existing resources in other collections or even on other unrelated systems is useful for this sort of case.<a class="self" href="#rfc.section.1.p.3">&para;</a></p></div><div id="rfc.section.1.p.4"><p>The redirect reference resources defined here provide a mechanism for creating alternative access paths to existing resources. A redirect reference resource is a resource in one collection whose purpose is to redirect requests to another resource (its target), possibly in a different collection. In this way, it allows clients to submit requests to the target resource from another collection. It redirects most requests to the target resource using an HTTP status code from the 3xx range (Redirection), thereby providing a form of mediated access to the target resource.<a class="self" href="#rfc.section.1.p.4">&para;</a></p></div><div id="rfc.section.1.p.5"><p>A redirect reference is a resource with properties but with no body of its own. Properties of a redirect reference resource can contain information such as who created the reference, when, and why. Since redirect reference resources are implemented using HTTP 3xx responses, it generally takes two round trips to submit a request to the intended resource. Redirect references work equally well for local resources and for resources that reside on a different system from the reference.<a class="self" href="#rfc.section.1.p.5">&para;</a></p></div><div id="rfc.section.1.p.6"><p>The remainder of this document is structured as follows: <a href="#terminology" title="Terminology">Section&nbsp;3</a> defines terms that will be used throughout the specification. <a href="#overview" title="Overview of Redirect Reference Resources">Section&nbsp;4</a> provides an overview of redirect reference resources. <a href="#operations.on.redirect.reference.resources" title="Operations on Redirect Reference Resources">Section&nbsp;5</a> defines the semantics of existing methods when applied to redirect reference resources. <a href="#METHOD_MKREDIRECTREF" title="MKREDIRECTREF Method">Section&nbsp;6</a> discusses how to create a redirect reference resource, and <a href="#METHOD_UPDATEREDIRECTREF" title="UPDATEREDIRECTREF Method">Section&nbsp;7</a> discusses updating redirect references. <a href="#operations.on.collections.that.contain.redirect.reference.resources" title="Operations on Collections That Contain Redirect Reference Resources">Section&nbsp;8</a> discusses their semantics when applied to collections that contain redirect reference resources. Sections <a href="#operations.on.targets.of.redirect.reference.resources" title="Operations on Targets of Redirect Reference Resources">9</a> through <a href="#redirect.references.to.collections" title="Redirect References to Collections">11</a> discuss several other issues raised by the existence of redirect reference resources. Sections <a href="#headers" title="Headers">12</a> through <a href="#extensions.to.response.element" title="Extensions to the DAV:response XML Element for Multi-Status Responses">15</a> define the new headers, properties, and XML elements required to support redirect reference resources. Section <a href="#capability.discovery" title="Capability Discovery">16</a> discusses capability discovery. Sections <a href="#security.considerations" title="Security Considerations">17</a> through <a href="#iana.considerations" title="IANA Considerations">19</a> present the security, internationalization, and IANA concerns raised by this specification. The remaining sections provide a variety of supporting information.<a class="self" href="#rfc.section.1.p.6">&para;</a></p></div></section><section id="n-notational-conventions"><h2 id="rfc.section.2"><a href="#rfc.section.2">2.</a>&nbsp;<a href="#n-notational-conventions">Notational Conventions</a></h2><div id="rfc.section.2.p.1"><p>Since this document describes a set of extensions to the WebDAV Distributed Authoring Protocol <a href="#RFC2518"><cite title="HTTP Extensions for Distributed Authoring -- WEBDAV">[RFC2518]</cite></a>, itself an extension to the HTTP/1.1 protocol, the augmented BNF used here to describe protocol elements is exactly the same as described in <a href="https://tools.ietf.org/html/rfc2616#section-2.1">Section 2.1</a> of <a href="#RFC2616"><cite title="Hypertext Transfer Protocol -- HTTP/1.1">[RFC2616]</cite></a>. Since this augmented BNF uses the basic production rules provided in <a href="https://tools.ietf.org/html/rfc2616#section-2.2">Section 2.2</a> of <a href="#RFC2616"><cite title="Hypertext Transfer Protocol -- HTTP/1.1">[RFC2616]</cite></a>, these rules apply to this document as well.<a class="self" href="#rfc.section.2.p.1">&para;</a></p></div><div id="rfc.section.2.p.2"><p>In this document, the key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "MAY", and "OPTIONAL" are to be interpreted as described in <a href="#RFC2119"><cite title="Key words for use in RFCs to Indicate Requirement Levels">[RFC2119]</cite></a>.<a class="self" href="#rfc.section.2.p.2">&para;</a></p></div></section><section id="terminology"><h2 id="rfc.section.3"><a href="#rfc.section.3">3.</a>&nbsp;<a href="#terminology">Terminology</a></h2><div id="rfc.section.3.p.1"><p>The terminology used here follows and extends that in the WebDAV Distributed Authoring Protocol specification <a href="#RFC2518"><cite title="HTTP Extensions for Distributed Authoring -- WEBDAV">[RFC2518]</cite></a>. Definitions of the terms <dfn>resource</dfn>, <dfn>Uniform Resource Identifier</dfn> (<dfn>URI</dfn>), and <dfn>Uniform Resource Locator</dfn> (<dfn>URL</dfn>) are provided in <a href="#RFC3986"><cite title="Uniform Resource Identifier (URI): Generic Syntax">[RFC3986]</cite></a>.<a class="self" href="#rfc.section.3.p.1">&para;</a></p></div><div id="rfc.section.3.p.2"><p><span id="rfc.iref.r.1"></span> <dfn>Redirect Reference Resource</dfn> <a class="self" href="#rfc.section.3.p.2">&para;</a></p><ul class="empty"><li>A resource created to redirect all requests made to it, using an HTTP status code from the 3xx range, to a defined target resource.</li></ul></div><div id="rfc.section.3.p.3"><p><span id="rfc.iref.n.1"></span> <dfn>Non-Reference Resource</dfn> <a class="self" href="#rfc.section.3.p.3">&para;</a></p><ul class="empty"><li>A resource that is not a reference to another resource.</li></ul></div><div id="rfc.section.3.p.4"><p><span id="rfc.iref.t.1"></span> <dfn>Target Resource</dfn> <a class="self" href="#rfc.section.3.p.4">&para;</a></p><ul class="empty"><li>The resource to which requests are redirected by a redirect reference resource. A target resource can be anything that can be identified by an absolute URI (see <a href="#RFC3986"><cite title="Uniform Resource Identifier (URI): Generic Syntax">[RFC3986]</cite></a>, "absolute-URI").</li></ul></div><div id="rfc.section.3.p.5"><p>This document uses the terms "<dfn>precondition</dfn>", "<dfn>postcondition</dfn>", and "<dfn>protected property</dfn>" as defined in <a href="#RFC3253"><cite title="Versioning Extensions to WebDAV (Web Distributed Authoring and Versioning)">[RFC3253]</cite></a>. Servers <em class="bcp14">MUST</em> report pre-/postcondition failures as described in <a href="https://tools.ietf.org/html/rfc3253#section-1.6">Section 1.6</a> of this document.<a class="self" href="#rfc.section.3.p.5">&para;</a></p></div></section><section id="overview"><h2 id="rfc.section.4"><a href="#rfc.section.4">4.</a>&nbsp;<a href="#overview">Overview of Redirect Reference Resources</a></h2><div id="rfc.section.4.p.1"><p>For all operations submitted to a redirect reference resource, the default response is a 302 (Found), accompanied by the Redirect-Ref header (defined in <a href="#header.redirect-ref" title="Redirect-Ref Response Header">Section&nbsp;12.1</a>, below) and the Location header (<a href="#RFC2616"><cite title="Hypertext Transfer Protocol -- HTTP/1.1">[RFC2616]</cite></a>, <a href="https://tools.ietf.org/html/rfc2616#section-14.30">Section 14.30</a>) set to the URI of the target resource. With this information, the client can resubmit the request to the URI of the target resource.<a class="self" href="#rfc.section.4.p.1">&para;</a></p></div><div id="rfc.section.4.p.2"><p>A redirect reference resource never automatically forwards requests to its target resource. Redirect resources bring the same benefits as links in HTML documents. They can be created and maintained without the involvement or even knowledge of their target resource. This reduces the cost of linking between resources.<a class="self" href="#rfc.section.4.p.2">&para;</a></p></div><div id="rfc.section.4.p.3"><p>If the client is aware that it is operating on a redirect reference resource, it can resolve the reference by retrieving the reference resource's DAV:reftarget property (defined in <a href="#reftarget.property" title="DAV:reftarget (protected)">Section&nbsp;13.2</a>, below), whose value contains the URI of the target resource. It can then submit requests to the target resource.<a class="self" href="#rfc.section.4.p.3">&para;</a></p></div><div id="rfc.section.4.p.4"><p>A redirect reference resource is a new type of resource. To distinguish redirect reference resources from non-reference resources, a new value of the DAV:resourcetype property (defined in <a href="#RFC2518"><cite title="HTTP Extensions for Distributed Authoring -- WEBDAV">[RFC2518]</cite></a>), DAV:redirectref, is defined in <a href="#redirectref.xml.element" title="redirectref XML Element">Section&nbsp;14.1</a>, below.<a class="self" href="#rfc.section.4.p.4">&para;</a></p></div><div id="rfc.section.4.p.5"><p>Since a redirect reference resource is a resource, methods can be applied to the reference resource as well as to its target resource. The Apply-To-Redirect-Ref request header (defined in <a href="#header.apply-to-redirect-ref" title="Apply-To-Redirect-Ref Request Header">Section&nbsp;12.2</a>, below) is provided so that referencing-aware clients can control whether an operation is applied to the redirect reference resource or standard HTTP/WebDAV behaviour (redirection with a 3xx status code) should occur. The Apply-To-Redirect-Ref header can be used with most requests to redirect reference resources. This header is particularly useful with PROPFIND, to retrieve the reference resource's own properties.<a class="self" href="#rfc.section.4.p.5">&para;</a></p></div><div id="rfc.section.4.p.6"><p><b>Implementation Note:</b> Operations on the target of a redirect reference usually do not affect the redirect reference itself. However, clients should not rely on this behaviour (for instance, some servers may update redirect references as a result of namespace operations on the reference's target).<a class="self" href="#rfc.section.4.p.6">&para;</a></p></div></section><section id="operations.on.redirect.reference.resources"><h2 id="rfc.section.5"><a href="#rfc.section.5">5.</a>&nbsp;<a href="#operations.on.redirect.reference.resources">Operations on Redirect Reference Resources</a></h2><div id="rfc.section.5.p.1" class="avoidbreakafter"><p>Although non-referencing-aware clients cannot create reference resources, they should be able to submit requests through the reference resources created by reference-aware WebDAV clients. They should be able to follow any references to their targets. To make this possible, a server that receives any request made via a redirect reference resource <em class="bcp14">MUST</em> return a 3xx range (Redirection) status code, unless the request includes an Apply-To-Redirect-Ref header specifying "T". The client and server <em class="bcp14">MUST</em> follow <a href="#RFC2616"><cite title="Hypertext Transfer Protocol -- HTTP/1.1">[RFC2616]</cite></a>, <a href="https://tools.ietf.org/html/rfc2616#section-10.3">Section 10.3</a>, but with these additional rules:<a class="self" href="#rfc.section.5.p.1">&para;</a></p></div><div id="rfc.section.5.p.2"><ul><li>The Location response header <em class="bcp14">MUST</em> contain a URI (see <a href="#RFC3986"><cite title="Uniform Resource Identifier (URI): Generic Syntax">[RFC3986]</cite></a>, <a href="https://tools.ietf.org/html/rfc3986#section-3">Section 3</a>) that identifies the target of the reference resource.</li><li>The response <em class="bcp14">MUST</em> include the Redirect-Ref header. This header allows reference-aware WebDAV clients to recognize the resource as a reference resource and to understand the reason for the redirection.</li></ul></div><div id="rfc.section.5.p.3"><p>A reference-aware WebDAV client can, like a non-referencing client, resubmit the request to the URI in the Location header in order to operate on the target resource. Alternatively, it can resubmit the request to the URI of the redirect reference resource with the "Apply-To-Redirect-Ref: T" header in order to operate on the reference resource itself. In this case, the request <em class="bcp14">MUST</em> be applied to the reference resource itself, and a 3xx response <em class="bcp14">MUST NOT</em> be returned.<a class="self" href="#rfc.section.5.p.3">&para;</a></p></div><div id="rfc.section.5.p.4"><p>As redirect references do not have bodies, GET and PUT requests with "Apply-To-Redirect-Ref: T" <em class="bcp14">MUST</em> fail with status 403 (forbidden).<a class="self" href="#rfc.section.5.p.4">&para;</a></p></div></section><section id="METHOD_MKREDIRECTREF"><h2 id="rfc.section.6"><a href="#rfc.section.6">6.</a>&nbsp;<a href="#METHOD_MKREDIRECTREF">MKREDIRECTREF Method</a></h2><div id="rfc.section.6.p.1"><p>The MKREDIRECTREF method requests the creation of a redirect reference resource.<a class="self" href="#rfc.section.6.p.1">&para;</a></p></div><div id="rfc.section.6.p.2"><p>If a MKREDIRECTREF request fails, the server state preceding the request <em class="bcp14">MUST</em> be restored.<a class="self" href="#rfc.section.6.p.2">&para;</a></p></div><div id="rfc.section.6.p.3"><p>Responses from a MKREDIRECTREF request <em class="bcp14">MUST NOT</em> be cached, as MKREDIRECTREF has non-idempotent and non-safe semantics (see <a href="#RFC2616"><cite title="Hypertext Transfer Protocol -- HTTP/1.1">[RFC2616]</cite></a>, <a href="https://tools.ietf.org/html/rfc2616#section-9.1">Section 9.1</a>).<a class="self" href="#rfc.section.6.p.3">&para;</a></p></div><div id="rfc.section.6.p.4"><p><span id="rfc.iref.m.1"></span> <b>Marshalling</b> <a class="self" href="#rfc.section.6.p.4">&para;</a></p><ul class="empty"><li>The request body <em class="bcp14">MUST</em> be a DAV:mkredirectref XML element. <span id="rfc.figure.u.1"><pre class="inline"><span id="rfc.iref.x.1"></span><span id="rfc.iref.d.1"></span>   &lt;!ELEMENT mkredirectref (reftarget, redirect-lifetime?)&gt;
+<span id="rfc.iref.x.2"></span><span id="rfc.iref.d.2"></span>   &lt;!ELEMENT reftarget (href)&gt;
+<span id="rfc.iref.x.3"></span><span id="rfc.iref.d.3"></span>   &lt;!ELEMENT redirect-lifetime (permanent | temporary)&gt;
+<span id="rfc.iref.x.4"></span><span id="rfc.iref.d.4"></span>   &lt;!ELEMENT permanent EMPTY&gt;
+<span id="rfc.iref.x.5"></span><span id="rfc.iref.d.5"></span>   &lt;!ELEMENT temporary EMPTY&gt;</pre></span> </li><li>The DAV:href element is defined in <a href="#RFC2518"><cite title="HTTP Extensions for Distributed Authoring -- WEBDAV">[RFC2518]</cite></a> (<a href="https://tools.ietf.org/html/rfc2518#section-12.3">Section 12.3</a>) and <em class="bcp14">MUST</em> contain either a URI or a relative-ref (see <a href="#RFC3986"><cite title="Uniform Resource Identifier (URI): Generic Syntax">[RFC3986]</cite></a>, Sections <a href="https://tools.ietf.org/html/rfc3986#section-3">3</a> and <a href="https://tools.ietf.org/html/rfc3986#section-4.2">4.2</a>).</li><li>If no DAV:redirect-lifetime element is specified, the server <em class="bcp14">MUST</em> behave as if a value of DAV:temporary was specified.</li><li>If the request succeeds, the server <em class="bcp14">MUST</em> return 201 (Created) status.</li><li>If a response body for a successful request is included, it <em class="bcp14">MUST</em> be a DAV:mkredirectref-response XML element. Note that this document does not define any elements for the MKREDIRECTREF response body, but the DAV:mkredirectref-response element is defined to ensure interoperability between future extensions that do define elements for the response body. <span id="rfc.figure.u.2"><pre class="inline"><span id="rfc.iref.x.6"></span><span id="rfc.iref.d.6"></span>   &lt;!ELEMENT mkredirectref-response ANY&gt;</pre></span> </li></ul></div><div id="rfc.section.6.p.5"><p><span id="rfc.iref.m.2"></span> <b>Preconditions</b> <a class="self" href="#rfc.section.6.p.5">&para;</a></p><ul class="empty"><li><span id="rfc.iref.c.1"></span> <span id="rfc.iref.d.7"></span> (DAV:resource-must-be-null): A resource <em class="bcp14">MUST NOT</em> exist at the Request-URI.</li><li><span id="rfc.iref.c.2"></span> <span id="rfc.iref.d.8"></span> (DAV:parent-resource-must-be-non-null): The Request-URI minus the last past segment <em class="bcp14">MUST</em> identify a collection.</li><li><span id="rfc.iref.c.3"></span> <span id="rfc.iref.d.9"></span> (DAV:name-allowed): The last segment of the Request-URI is available for use as a resource name.</li><li><span id="rfc.iref.c.4"></span> <span id="rfc.iref.d.10"></span> (DAV:locked-update-allowed): If the collection identified by the Request-URI minus the last path segment is write-locked, then the appropriate token <em class="bcp14">MUST</em> be specified in an If request header.</li><li><span id="rfc.iref.c.5"></span> <span id="rfc.iref.d.11"></span> (DAV:redirect-lifetime-supported): If the request body contains a DAV:redirect-lifetime element, the server <em class="bcp14">MUST</em> support the specified lifetime. Support for DAV:temporary is <em class="bcp14">REQUIRED</em>, while support for DAV:permanent is <em class="bcp14">OPTIONAL</em>.</li><li><span id="rfc.iref.c.6"></span> <span id="rfc.iref.d.12"></span> (DAV:legal-reftarget): The specified is a legal URI or relative-ref.</li></ul></div><div id="rfc.section.6.p.6"><p><span id="rfc.iref.m.3"></span> <b>Postconditions</b> <a class="self" href="#rfc.section.6.p.6">&para;</a></p><ul class="empty"><li><span id="rfc.iref.c.7"></span> <span id="rfc.iref.d.13"></span> (DAV:new-redirectref): a new redirect reference resource is created whose DAV:reftarget property has the value specified in the request body.</li></ul></div><section id="n-example--creating-a-redirect-reference-resource-with-mkredirectref"><h3 id="rfc.section.6.1"><a href="#rfc.section.6.1">6.1.</a>&nbsp;<a href="#n-example--creating-a-redirect-reference-resource-with-mkredirectref">Example: Creating a Redirect Reference Resource with MKREDIRECTREF</a></h3><div id="rfc.figure.u.3"><p>&gt;&gt; Request:</p><pre class="text2">MKREDIRECTREF /~whitehead/dav/spec08.ref HTTP/1.1
+Host: www.example.com
+Content-Type: text/xml; charset="utf-8"
+Content-Length: xxx
+
+&lt;?xml version="1.0" encoding="utf-8" ?&gt;
+&lt;D:mkredirectref xmlns:D="DAV:"&gt;
+  &lt;D:reftarget&gt;
+    &lt;D:href&gt;/i-d/draft-webdav-protocol-08.txt&lt;/D:href&gt;
+  &lt;/D:reftarget&gt;
+&lt;/D:mkredirectref&gt;
+</pre></div><div id="rfc.figure.u.4"><p>&gt;&gt; Response:</p><pre class="text">HTTP/1.1 201 Created
+</pre></div><div id="rfc.section.6.1.p.1"><p>This request resulted in the creation of a new redirect reference resource at http://www.example.com/~whitehead/dav/spec08.ref, which points to the resource identified by the DAV:reftarget property. In this example, the target resource is identified by the URI http://www.example.com/i-d/draft-webdav-protocol-08.txt. The redirect reference resource's DAV:resourcetype property is set to DAV:redirectref, and its DAV:redirect-lifetime property has the value DAV:temporary.<a class="self" href="#rfc.section.6.1.p.1">&para;</a></p></div></section></section><section id="METHOD_UPDATEREDIRECTREF"><h2 id="rfc.section.7"><a href="#rfc.section.7">7.</a>&nbsp;<a href="#METHOD_UPDATEREDIRECTREF">UPDATEREDIRECTREF Method</a></h2><div id="rfc.section.7.p.1"><p>The UPDATEREDIRECTREF method requests the update of a redirect reference resource.<a class="self" href="#rfc.section.7.p.1">&para;</a></p></div><div id="rfc.section.7.p.2"><p>If a UPDATEREDIRECTREF request fails, the server state preceding the request <em class="bcp14">MUST</em> be restored.<a class="self" href="#rfc.section.7.p.2">&para;</a></p></div><div id="rfc.section.7.p.3"><p>Responses from a UPDATEREDIRECTREF request <em class="bcp14">MUST NOT</em> be cached, as UPDATEREDIRECTREF has non-safe semantics (see <a href="#RFC2616"><cite title="Hypertext Transfer Protocol -- HTTP/1.1">[RFC2616]</cite></a>, <a href="https://tools.ietf.org/html/rfc2616#section-9.1">Section 9.1</a>).<a class="self" href="#rfc.section.7.p.3">&para;</a></p></div><div id="rfc.section.7.p.4"><p><span id="rfc.iref.u.1"></span> <b>Marshalling</b> <a class="self" href="#rfc.section.7.p.4">&para;</a></p><ul class="empty"><li>The request body <em class="bcp14">MUST</em> be a DAV:updateredirectref XML element. <span id="rfc.figure.u.5"><pre class="inline">   &lt;!ELEMENT updateredirectref (reftarget?, redirect-lifetime?)&gt;
+</pre><p>See <a href="#METHOD_MKREDIRECTREF" title="MKREDIRECTREF Method">Section&nbsp;6</a> for a definition of DAV:reftarget and DAV:redirect-lifetime.</p></span> </li><li>If no DAV:reftarget element is specified, the server <em class="bcp14">MUST NOT</em> change the target of the redirect reference.</li><li>If no DAV:redirect-lifetime element is specified, the server <em class="bcp14">MUST NOT</em> change the lifetime of the redirect reference.</li><li>If a response body for a successful request is included, it <em class="bcp14">MUST</em> be a DAV:updateredirectref-response XML element. Note that this document does not define any elements for the UPDATEREDIRECTREF response body, but the DAV:updateredirectref-response element is defined to ensure interoperability between future extensions that do define elements for the response body. <span id="rfc.figure.u.6"><pre class="inline"><span id="rfc.iref.x.7"></span><span id="rfc.iref.d.14"></span>   &lt;!ELEMENT updateredirectref-response ANY&gt;</pre></span> </li></ul></div><div id="rfc.section.7.p.5"><p><span id="rfc.iref.u.2"></span> <b>Preconditions</b> <a class="self" href="#rfc.section.7.p.5">&para;</a></p><ul class="empty"><li><span id="rfc.iref.c.8"></span> <span id="rfc.iref.d.15"></span> (DAV:locked-update-allowed): if the resource is write-locked, then the appropriate token <em class="bcp14">MUST</em> be specified in an If request header.</li><li><span id="rfc.iref.c.9"></span> <span id="rfc.iref.d.16"></span> (DAV:must-be-redirectref): the resource identified by the Request-URI must be a redirect reference resource as defined by this specification.</li><li><span id="rfc.iref.c.10"></span> <span id="rfc.iref.d.17"></span> (DAV:redirect-lifetime-supported): see <a href="#METHOD_MKREDIRECTREF" title="MKREDIRECTREF Method">Section&nbsp;6</a>.</li><li><span id="rfc.iref.c.11"></span> <span id="rfc.iref.d.18"></span> (DAV:redirect-lifetime-update-supported): servers <em class="bcp14">MAY</em> support changing the DAV:redirect-lifetime property; if they don't, this condition code can be used to signal failure.</li><li><span id="rfc.iref.c.12"></span> <span id="rfc.iref.d.19"></span> (DAV:legal-reftarget): see <a href="#METHOD_MKREDIRECTREF" title="MKREDIRECTREF Method">Section&nbsp;6</a>.</li></ul></div><div id="rfc.section.7.p.6"><p><span id="rfc.iref.u.3"></span> <b>Postconditions</b> <a class="self" href="#rfc.section.7.p.6">&para;</a></p><ul class="empty"><li><span id="rfc.iref.c.13"></span> <span id="rfc.iref.d.20"></span> (DAV:redirectref-updated): the DAV:reftarget and DAV:redirect-lifetime properties of the redirect reference have been updated accordingly.</li></ul></div><section id="n-example--updating-a-redirect-reference-resource-with-updateredirectref"><h3 id="rfc.section.7.1"><a href="#rfc.section.7.1">7.1.</a>&nbsp;<a href="#n-example--updating-a-redirect-reference-resource-with-updateredirectref">Example: Updating a Redirect Reference Resource with UPDATEREDIRECTREF</a></h3><div id="rfc.figure.u.7"><p>&gt;&gt; Request:</p><pre class="text2">UPDATEREDIRECTREF /~whitehead/dav/spec08.ref HTTP/1.1
+Host: www.example.com
+Apply-To-Redirect-Ref: T
+Content-Type: text/xml; charset="utf-8"
+Content-Length: xxx
+
+&lt;?xml version="1.0" encoding="utf-8" ?&gt;
+&lt;D:updateredirectref xmlns:D="DAV:"&gt;
+  &lt;D:reftarget&gt;
+    &lt;D:href&gt;/i-d/draft-webdav-protocol-08b.txt&lt;/D:href&gt;
+  &lt;/D:reftarget&gt;
+&lt;/D:updateredirectref&gt;
+</pre></div><div id="rfc.figure.u.8"><p>&gt;&gt; Response:</p><pre class="text">HTTP/1.1 200 OK
+</pre></div><div id="rfc.section.7.1.p.1"><p>This request has updated the redirect reference's DAV:reftarget property to "/i-d/draft-webdav-protocol-08b.txt" and has not changed the DAV:redirect-lifetime value. Note that the "Apply-To-Redirect-Ref" request header must be used; otherwise, the request would result in a redirect (3xx) response status.<a class="self" href="#rfc.section.7.1.p.1">&para;</a></p></div></section></section><section id="operations.on.collections.that.contain.redirect.reference.resources"><h2 id="rfc.section.8"><a href="#rfc.section.8">8.</a>&nbsp;<a href="#operations.on.collections.that.contain.redirect.reference.resources">Operations on Collections That Contain Redirect Reference Resources</a></h2><div id="rfc.section.8.p.1"><p>According to <a href="#RFC2518"><cite title="HTTP Extensions for Distributed Authoring -- WEBDAV">[RFC2518]</cite></a>, <a href="https://tools.ietf.org/html/rfc2518#section-9.2">Section 9.2</a>, methods that have defined interactions with the "Depth" request header should apply all other request headers to each resource in scope. However, applying this principle to the "Apply-To-Redirect-Ref" header uniformly would make it impractical to implement this specification on top of existing servers and also would result in unexpected server behaviour for clients that do not take the existence of redirect references into account. On the other hand, the definition of the "Depth" header allows alternate behaviours to be explicitly defined.<a class="self" href="#rfc.section.8.p.1">&para;</a></p></div><div id="rfc.section.8.p.2"><p>For this reason, this specification defines the interaction between "Depth" and "Apply-To-Redirect-Ref" request headers on a case-by-case basis and also provides a default for methods not mentioned here that do not specify the behaviour themselves.<a class="self" href="#rfc.section.8.p.2">&para;</a></p></div><div id="rfc.table.u.1" class="tt"><table class="tt full tcenter"><thead><tr><th>method name</th><th>defined in</th><th>supported depths</th><th>behaviour</th></tr></thead><tbody><tr><td class="left">COPY</td><td class="left"><a href="#RFC2518"><cite title="HTTP Extensions for Distributed Authoring -- WEBDAV">[RFC2518]</cite></a>, <a href="https://tools.ietf.org/html/rfc2518#section-8.9">8.9</a></td><td class="left">0, infinity</td><td class="left">"T"</td></tr><tr><td class="left">DELETE</td><td class="left"><a href="#RFC2518"><cite title="HTTP Extensions for Distributed Authoring -- WEBDAV">[RFC2518]</cite></a>, <a href="https://tools.ietf.org/html/rfc2518#section-8.7">8.7</a></td><td class="left">infinity</td><td class="left">"T"</td></tr><tr><td class="left">LOCK</td><td class="left"><a href="#RFC2518"><cite title="HTTP Extensions for Distributed Authoring -- WEBDAV">[RFC2518]</cite></a>, <a href="https://tools.ietf.org/html/rfc2518#section-8.11">8.11</a></td><td class="left">0, infinity</td><td class="left">"T"</td></tr><tr><td class="left">MOVE</td><td class="left"><a href="#RFC2518"><cite title="HTTP Extensions for Distributed Authoring -- WEBDAV">[RFC2518]</cite></a>, <a href="https://tools.ietf.org/html/rfc2518#section-8.10">8.10</a></td><td class="left">0, infinity</td><td class="left">"T"</td></tr><tr><td class="left">PROPFIND</td><td class="left"><a href="#RFC2518"><cite title="HTTP Extensions for Distributed Authoring -- WEBDAV">[RFC2518]</cite></a>, <a href="https://tools.ietf.org/html/rfc2518#section-8.2">8.2</a></td><td class="left">0, 1, infinity</td><td class="left">inherit</td></tr><tr><td class="left">REPORT</td><td class="left"><a href="#RFC3253"><cite title="Versioning Extensions to WebDAV (Web Distributed Authoring and Versioning)">[RFC3253]</cite></a>, <a href="https://tools.ietf.org/html/rfc2518#section-3.6">3.6</a></td><td class="left">0, 1, infinity</td><td class="left">inherit</td></tr><tr><td class="left">default</td><td class="left"></td><td class="left"></td><td class="left">"T"</td></tr></tbody></table></div><div id="rfc.section.8.p.3"><p>When the behaviour is defined to be "inherit", the method should follow RFC2518's default behaviour for "Depth" operations, which means applying the value given for "Apply-To-Redirect-Ref" to each resource in scope. On the other hand, when it is defined to be "T", the method should behave as if a "Apply-To-Redirect-Ref: T" header was specified for each operation on child resources. The latter ensures that "Depth: infinity" operations will not fail unexpectedly just because there was a redirect reference resource in scope.<a class="self" href="#rfc.section.8.p.3">&para;</a></p></div><section id="n-example--propfind-on-a-collection-with-redirect-reference-resources"><h3 id="rfc.section.8.1"><a href="#rfc.section.8.1">8.1.</a>&nbsp;<a href="#n-example--propfind-on-a-collection-with-redirect-reference-resources">Example: PROPFIND on a Collection with Redirect Reference Resources</a></h3><div id="rfc.section.8.1.p.1" class="avoidbreakafter"><p>Suppose a PROPFIND request with Depth: infinity is submitted to the following collection, with the members shown here:<a class="self" href="#rfc.section.8.1.p.1">&para;</a></p></div><div id="rfc.figure.u.9"><pre class="text">/MyCollection/
+     (non-reference resource) diary.html
+     (redirect reference resource) nunavut
+</pre></div><div id="rfc.figure.u.10"><p>&gt;&gt; Request:</p><pre class="text2">PROPFIND /MyCollection/ HTTP/1.1
+Host: example.com
+Depth: infinity
+Apply-To-Redirect-Ref: F
+Content-Type: text/xml
+Content-Length: xxxx
+
+&lt;?xml version="1.0" ?&gt;
+&lt;D:propfind xmlns:D="DAV: "&gt;
+  &lt;D:prop xmlns:J="http://example.com/jsprops/"&gt;
+    &lt;D:resourcetype/&gt;
+    &lt;J:keywords/&gt;
+  &lt;/D:prop&gt;
+&lt;/D:propfind&gt;
+</pre></div><div id="rfc.figure.u.11"><p>&gt;&gt; Response:</p><pre class="text">HTTP/1.1 207 Multi-Status
+Content-Type: text/xml
+Content-Length: xxxx
+
+&lt;?xml version="1.0" ?&gt;
+&lt;D:multistatus xmlns:D="DAV:" xmlns:J="http://example.com/jsprops/"&gt;
+  &lt;D:response&gt;
+    &lt;D:href&gt;/MyCollection/&lt;/D:href&gt;
+    &lt;D:propstat&gt;
+      &lt;D:prop&gt;
+        &lt;D:resourcetype&gt;&lt;D:collection/&gt;&lt;/D:resourcetype&gt;
+        &lt;J:keywords&gt;diary, interests, hobbies&lt;/J:keywords&gt;
+      &lt;/D:prop&gt;
+      &lt;D:status&gt;HTTP/1.1 200 OK&lt;/D:status&gt;
+    &lt;/D:propstat&gt;
+  &lt;/D:response&gt;
+  &lt;D:response&gt;
+    &lt;D:href&gt;/MyCollection/diary.html&lt;/D:href&gt;
+    &lt;D:propstat&gt;
+      &lt;D:prop&gt;
+        &lt;D:resourcetype/&gt;
+        &lt;J:keywords&gt;diary, travel, family, history&lt;/J:keywords&gt;
+      &lt;/D:prop&gt;
+      &lt;D:status&gt;HTTP/1.1 200 OK&lt;/D:status&gt;
+    &lt;/D:propstat&gt;
+  &lt;/D:response&gt;
+  &lt;D:response&gt;
+    &lt;D:href&gt;/MyCollection/nunavut&lt;/D:href&gt;
+    &lt;D:status&gt;HTTP/1.1 302 Found&lt;/D:status&gt;
+    &lt;D:location&gt; 
+      &lt;D:href&gt;http://example.ca/art/inuit/&lt;/D:href&gt;
+    &lt;/D:location&gt;
+  &lt;/D:response&gt;
+&lt;/D:multistatus&gt;
+</pre></div><div id="rfc.section.8.1.p.2"><p>In this example, the Depth header is set to infinity, and the Apply-To-Redirect-Ref header is set to "F". The collection contains one URI that identifies a redirect reference resource. The response element for the redirect reference resource has a status of 302 (Found) and includes a DAV:location extension element to allow clients to retrieve the properties of its target resource. (The response element for the redirect reference resource does not include the requested properties. The client can submit another PROPFIND request to the URI in the DAV:location pseudo-property to retrieve those properties.)<a class="self" href="#rfc.section.8.1.p.2">&para;</a></p></div></section><section id="n-example--propfind-with-apply-to-redirect-ref-on-a-collection-with-redirect-reference-resources"><h3 id="rfc.section.8.2"><a href="#rfc.section.8.2">8.2.</a>&nbsp;<a href="#n-example--propfind-with-apply-to-redirect-ref-on-a-collection-with-redirect-reference-resources">Example: PROPFIND with Apply-To-Redirect-Ref on a Collection with Redirect Reference Resources</a></h3><div id="rfc.section.8.2.p.1" class="avoidbreakafter"><p>Suppose a PROPFIND request with "Apply-To-Redirect-Ref: T" and Depth: infinity is submitted to the following collection, with the members shown here:<a class="self" href="#rfc.section.8.2.p.1">&para;</a></p></div><div id="rfc.figure.u.12"><pre class="text">/MyCollection/
+     (non-reference resource) diary.html
+     (redirect reference resource) nunavut
+</pre></div><div id="rfc.figure.u.13"><p>&gt;&gt; Request:</p><pre class="text2">PROPFIND /MyCollection/ HTTP/1.1
+Host: example.com
+Depth: infinity
+Apply-To-Redirect-Ref: T
+Content-Type: text/xml
+Content-Length: xxxx
+
+&lt;?xml version="1.0" ?&gt;
+&lt;D:propfind xmlns:D="DAV:"&gt;
+  &lt;D:prop&gt;
+    &lt;D:resourcetype/&gt;
+    &lt;D:reftarget/&gt;
+    &lt;D:redirect-lifetime/&gt;
+  &lt;/D:prop&gt;
+&lt;/D:propfind&gt;
+</pre></div><div id="rfc.figure.u.14"><p>&gt;&gt; Response:</p><pre class="text">HTTP/1.1 207 Multi-Status
+Content-Type: text/xml
+Content-Length: xxxx
+
+&lt;?xml version="1.0" ?&gt;
+&lt;D:multistatus xmlns:D="DAV:"&gt;
+  &lt;D:response&gt;
+    &lt;D:href&gt;/MyCollection/&lt;/D:href&gt;
+    &lt;D:propstat&gt;
+      &lt;D:prop&gt;
+        &lt;D:resourcetype&gt;&lt;D:collection/&gt;&lt;/D:resourcetype&gt;
+      &lt;/D:prop&gt;
+      &lt;D:status&gt;HTTP/1.1 200 OK&lt;/D:status&gt;
+    &lt;/D:propstat&gt;
+    &lt;D:propstat&gt;
+      &lt;D:prop&gt;
+        &lt;D:reftarget/&gt;
+        &lt;D:redirect-lifetime/&gt;
+      &lt;/D:prop&gt;
+      &lt;D:status&gt;HTTP/1.1 404 Not Found&lt;/D:status&gt;
+    &lt;/D:propstat&gt;
+  &lt;/D:response&gt;
+  &lt;D:response&gt;
+    &lt;D:href&gt;/MyCollection/diary.html&lt;/D:href&gt;
+    &lt;D:propstat&gt;
+      &lt;D:prop&gt;
+        &lt;D:resourcetype/&gt;
+      &lt;/D:prop&gt;
+      &lt;D:status&gt;HTTP/1.1 200 OK&lt;/D:status&gt;
+    &lt;/D:propstat&gt;
+    &lt;D:propstat&gt;
+      &lt;D:prop&gt;
+        &lt;D:reftarget/&gt;
+        &lt;D:redirect-lifetime/&gt;
+      &lt;/D:prop&gt;
+      &lt;D:status&gt;HTTP/1.1 404 Not Found&lt;/D:status&gt;
+    &lt;/D:propstat&gt;
+  &lt;/D:response&gt;
+  &lt;D:response&gt;
+    &lt;D:href&gt;/MyCollection/nunavut&lt;/D:href&gt;
+    &lt;D:propstat&gt;
+      &lt;D:prop&gt;
+        &lt;D:resourcetype&gt;&lt;D:redirectref/&gt;&lt;/D:resourcetype&gt;
+        &lt;D:reftarget&gt;
+          &lt;D:href&gt;http://example.ca/art/inuit/&lt;/D:href&gt;
+        &lt;/D:reftarget&gt;
+        &lt;D:redirect-lifetime&gt;&lt;D:temporary/&gt;&lt;/D:redirect-lifetime&gt;
+      &lt;/D:prop&gt;
+    &lt;D:status&gt;HTTP/1.1 200 OK&lt;/D:status&gt;
+    &lt;/D:propstat&gt;
+  &lt;/D:response&gt;
+&lt;/D:multistatus&gt;
+</pre></div><div id="rfc.section.8.2.p.2"><p>Since the "Apply-To-Redirect-Ref: T" header is present, the response shows the properties of the redirect reference resource in the collection rather than reporting a 302 status.<a class="self" href="#rfc.section.8.2.p.2">&para;</a></p></div></section></section><section id="operations.on.targets.of.redirect.reference.resources"><h2 id="rfc.section.9"><a href="#rfc.section.9">9.</a>&nbsp;<a href="#operations.on.targets.of.redirect.reference.resources">Operations on Targets of Redirect Reference Resources</a></h2><div id="rfc.section.9.p.1"><p>Operations on targets of redirect reference resources have no effect on the reference resource.<a class="self" href="#rfc.section.9.p.1">&para;</a></p></div></section><section id="n-relative-references-in-dav-reftarget"><h2 id="rfc.section.10"><a href="#rfc.section.10">10.</a>&nbsp;<a href="#n-relative-references-in-dav-reftarget">Relative References in DAV:reftarget</a></h2><div id="rfc.section.10.p.1"><p>The URI in the href in a DAV:reftarget property <em class="bcp14">MAY</em> be a relative reference. In this case, the base URI to be used for resolving it to absolute form is the URI used in the HTTP message to identify the redirect reference resource to which the DAV:reftarget property belongs.<a class="self" href="#rfc.section.10.p.1">&para;</a></p></div><div id="rfc.section.10.p.2"><p>When DAV:reftarget appears in the context of a Multi-Status response, it is in a DAV:response element that contains a single DAV:href element. The value of this DAV:href element serves as the base URI for resolving a relative reference in DAV:reftarget. The value of DAV:href may itself be relative, in which case it must be resolved first in order to serve as the base URI for the relative reference in DAV:reftarget. If the DAV:href element is relative, its base URI is constructed from the scheme component "http", the value of the Host header in the request, and the Request-URI.<a class="self" href="#rfc.section.10.p.2">&para;</a></p></div><section id="n-example--resolving-a-relative-reference-in-a-multi-status-response"><h3 id="rfc.section.10.1"><a href="#rfc.section.10.1">10.1.</a>&nbsp;<a href="#n-example--resolving-a-relative-reference-in-a-multi-status-response">Example: Resolving a Relative Reference in a Multi-Status Response</a></h3><div id="rfc.figure.u.15"><p>&gt;&gt; Request:</p><pre class="text2">PROPFIND /geog/ HTTP/1.1
+Host: example.com
+Apply-To-Redirect-Ref: T
+Depth: 1
+Content-Type: text/xml
+Content-Length: nnn
+
+&lt;?xml version="1.0" ?&gt;
+&lt;D:propfind xmlns:D="DAV:"&gt;
+  &lt;D:prop&gt;
+    &lt;D:resourcetype/&gt;
+    &lt;D:reftarget/&gt;
+  &lt;/D:prop&gt;
+&lt;/D:propfind&gt;
+</pre></div><div id="rfc.figure.u.16"><p>&gt;&gt; Response:</p><pre class="text">HTTP/1.1 207 Multi-Status
+Content-Type: text/xml
+Content-Length: nnn
+
+&lt;?xml version="1/0" ?&gt;
+&lt;D:multistatus xmlns:D="DAV:"&gt;
+  &lt;D:response&gt;
+    &lt;D:href&gt;/geog/&lt;/D:href&gt;
+    &lt;D:propstat&gt;
+      &lt;D:prop&gt;
+        &lt;D:resourcetype&gt;&lt;D:collection/&gt;&lt;/D:resourcetype&gt;
+      &lt;/D:prop&gt;
+      &lt;D:status&gt;HTTP/1.1 200 OK&lt;/D:status&gt;
+    &lt;/D:propstat&gt;
+    &lt;D:propstat&gt;
+      &lt;D:prop&gt;&lt;D:reftarget/&gt;&lt;/D:prop&gt;
+      &lt;D:status&gt;HTTP/1.1 404 Not Found&lt;/D:status&gt;
+    &lt;/D:propstat&gt;
+  &lt;/D:response&gt;
+  &lt;D:response&gt;
+    &lt;D:href&gt;/geog/stats.html&lt;/D:href&gt;
+    &lt;D:propstat&gt;
+      &lt;D:prop&gt;
+        &lt;D:resourcetype&gt;&lt;D:redirectref/&gt;&lt;/D:resourcetype&gt;
+        &lt;D:reftarget&gt;
+          &lt;D:href&gt;statistics/population/1997.html&lt;/D:href&gt;
+        &lt;/D:reftarget&gt;
+      &lt;/D:prop&gt;
+    &lt;D:status&gt;HTTP/1.1 200 OK&lt;/D:status&gt;
+    &lt;/D:propstat&gt;
+  &lt;/D:response&gt;
+&lt;/D:multistatus&gt;
+</pre></div><div id="rfc.section.10.1.p.1"><p>In this example, the relative reference "statistics/population/1997.html" is returned as the value of the DAV:reftarget property for the reference resource identified by href /geog/stats.html. The href is itself a relative reference, which resolves to http://example.com/geog/stats.html. This is the base URI for resolving the relative reference in reftarget. The absolute URI of reftarget is http://example.com/geog/statistics/population/1997.html.<a class="self" href="#rfc.section.10.1.p.1">&para;</a></p></div></section></section><section id="redirect.references.to.collections"><h2 id="rfc.section.11"><a href="#rfc.section.11">11.</a>&nbsp;<a href="#redirect.references.to.collections">Redirect References to Collections</a></h2><div id="rfc.section.11.p.1" class="avoidbreakafter"><p>In a Request-URI /segment1/segment2/segment3, any of the three segments may identify a redirect reference resource. (See <a href="#RFC3986"><cite title="Uniform Resource Identifier (URI): Generic Syntax">[RFC3986]</cite></a>, <a href="https://tools.ietf.org/html/rfc3986#section-3.3">Section 3.3</a>, for definitions of "path" and "segment".) If any segment in a Request-URI identifies a redirect reference resource, the response <em class="bcp14">SHOULD</em> be a 3xx. The value of the Location header in the response is as follows:<a class="self" href="#rfc.section.11.p.1">&para;</a></p></div><div id="rfc.section.11.p.2"><p>The leftmost path segment of the Request-URI that identifies a redirect reference resource, together with all path segments and separators to the left of it, is replaced by the value of the redirect reference resource's DAV:reftarget property (resolved to an absolute URI). The remainder of the Request-URI is concatenated to this path.<a class="self" href="#rfc.section.11.p.2">&para;</a></p></div><div id="rfc.section.11.p.3"><p>Note: If the DAV:reftarget property ends with a "/" and the remainder of the Request-URI is non-empty (and therefore must begin with a "/"), the final "/" in the DAV:reftarget property is dropped before the remainder of the Request-URI is appended.<a class="self" href="#rfc.section.11.p.3">&para;</a></p></div><div id="rfc.section.11.p.4"><p>Consider Request-URI /x/y/z.html. Suppose that /x/ is a redirect reference resource, whose target resource is collection /a/, which contains redirect reference resource y whose target resource is collection /b/, which contains redirect reference resource z.html, whose target resource is /c/d.html.<a class="self" href="#rfc.section.11.p.4">&para;</a></p></div><div id="rfc.figure.u.17"><div style="display:table; margin-left: auto; margin-right: auto;"><pre style="margin-left: 0em;" class="drawing">/x/y/z.html
+    |
+    | /x -&gt; /a
+    |
+    v
+/a/y/z.html
+    |
+    | /a/y -&gt; /b
+    |
+    v
+/b/z.html
+    |
+    | /b/z.html -&gt; /c/d.html
+    |
+    v
+/c/d.html
+</pre></div></div><div id="rfc.section.11.p.5"><p>In this case, the client must follow up three separate 3xx responses before finally reaching the target resource. The server responds to the initial request with a 3xx with Location: /a/y/z.html, and the client resubmits the request to /a/y/z.html. The server responds to this request with a 3xx with Location: /b/z.html, and the client resubmits the request to /b/z.html. The server responds to this request with a 3xx with Location: /c/d.html, and the client resubmits the request to /c/d.html. This final request succeeds.<a class="self" href="#rfc.section.11.p.5">&para;</a></p></div><div id="rfc.section.11.p.6"><ul class="empty"><li><b>Note:</b> The behaviour described above may have a very serious impact on the efficiency of mapping Request-URIs to resources in HTTP request processing. Therefore, servers <em class="bcp14">MAY</em> respond with a 404 status code if the cost of checking all leading path segments for redirect references seems prohibitive.</li></ul></div></section><section id="headers"><h2 id="rfc.section.12"><a href="#rfc.section.12">12.</a>&nbsp;<a href="#headers">Headers</a></h2><section id="header.redirect-ref"><h3 id="rfc.section.12.1"><a href="#rfc.section.12.1">12.1.</a>&nbsp;<a href="#header.redirect-ref">Redirect-Ref Response Header</a></h3><div id="rfc.figure.u.18"><pre class="inline">Redirect-Ref = "Redirect-Ref:" (URI | relative-ref)
+; URI: see <a href="#RFC3986"><cite title="Uniform Resource Identifier (URI): Generic Syntax">[RFC3986]</cite></a>, <a href="https://tools.ietf.org/html/rfc3986#section-3">Section 3</a>
+; relative-ref: see <a href="#RFC3986"><cite title="Uniform Resource Identifier (URI): Generic Syntax">[RFC3986]</cite></a>, <a href="https://tools.ietf.org/html/rfc3986#section-4.2">Section 4.2</a>
+</pre></div><div id="rfc.section.12.1.p.1"><p>The Redirect-Ref header is used in all 3xx responses from redirect reference resources. The value is the link target as specified during redirect reference resource creation.<a class="self" href="#rfc.section.12.1.p.1">&para;</a></p></div></section><section id="header.apply-to-redirect-ref"><h3 id="rfc.section.12.2"><a href="#rfc.section.12.2">12.2.</a>&nbsp;<a href="#header.apply-to-redirect-ref">Apply-To-Redirect-Ref Request Header</a></h3><div id="rfc.figure.u.19"><pre class="inline">Apply-To-Redirect-Ref = "Apply-To-Redirect-Ref" ":" ("T" | "F")
+</pre></div><div id="rfc.section.12.2.p.1"><p>The optional Apply-To-Redirect-Ref header can be used on any request to a redirect reference resource. When it is present and set to "T", the request <em class="bcp14">MUST</em> be applied to the reference resource itself, and a 3xx response <em class="bcp14">MUST NOT</em> be returned.<a class="self" href="#rfc.section.12.2.p.1">&para;</a></p></div><div id="rfc.section.12.2.p.2"><p>If the Apply-To-Redirect-Ref header is used on a request to any other sort of resource besides a redirect reference resource, the server <em class="bcp14">MUST</em> ignore it.<a class="self" href="#rfc.section.12.2.p.2">&para;</a></p></div></section></section><section id="properties"><h2 id="rfc.section.13"><a href="#rfc.section.13">13.</a>&nbsp;<a href="#properties">Redirect Reference Resource Properties</a></h2><div id="rfc.section.13.p.1"><p>The properties defined below are <em class="bcp14">REQUIRED</em> on redirect reference resources. A PROPFIND/allprop request <em class="bcp14">SHOULD NOT</em> return any of the properties defined in this document.<a class="self" href="#rfc.section.13.p.1">&para;</a></p></div><section id="redirect-lifetime.property"><h3 id="rfc.section.13.1"><a href="#rfc.section.13.1">13.1.</a>&nbsp;<a href="#redirect-lifetime.property">DAV:redirect-lifetime (protected)</a></h3><div id="rfc.section.13.1.p.1"><p>This property provides information about the lifetime of a redirect. It can be either DAV:permanent (HTTP status 301) or DAV:temporary (HTTP status 302). Future protocols may define additional values.<a class="self" href="#rfc.section.13.1.p.1">&para;</a></p></div><div id="rfc.figure.u.20"><pre class="inline"><span id="rfc.iref.x.8"></span><span id="rfc.iref.d.21"></span>&lt;!ELEMENT redirect-lifetime (permanent | temporary)&gt;
+<span id="rfc.iref.x.9"></span><span id="rfc.iref.d.22"></span>&lt;!ELEMENT permanent EMPTY&gt;
+<span id="rfc.iref.x.10"></span><span id="rfc.iref.d.23"></span>&lt;!ELEMENT temporary EMPTY&gt;
+</pre></div></section><section id="reftarget.property"><h3 id="rfc.section.13.2"><a href="#rfc.section.13.2">13.2.</a>&nbsp;<a href="#reftarget.property">DAV:reftarget (protected)</a></h3><div id="rfc.section.13.2.p.1"><p>This property provides an efficient way for clients to discover the URI of the target resource. This is a read-only property after its initial creation. Its value can only be set in a MKREDIRECTREF request. The value is a DAV:href element containing the URI of the target resource.<a class="self" href="#rfc.section.13.2.p.1">&para;</a></p></div><div id="rfc.figure.u.21"><pre class="inline">&lt;!ELEMENT reftarget href &gt;
+</pre></div></section></section><section id="xml.elements"><h2 id="rfc.section.14"><a href="#rfc.section.14">14.</a>&nbsp;<a href="#xml.elements">XML Elements</a></h2><section id="redirectref.xml.element"><h3 id="rfc.section.14.1"><a href="#rfc.section.14.1">14.1.</a>&nbsp;<a href="#redirectref.xml.element">redirectref XML Element</a></h3><div id="rfc.section.14.1.p.1"><dl><dt>Name:</dt><dd>redirectref</dd><dt>Namespace:</dt><dd>DAV:</dd><dt>Purpose:</dt><dd>Used as the value of the DAV:resourcetype property to specify that the resource type is a redirect reference resource.</dd></dl></div><div id="rfc.figure.u.22"><pre class="inline">&lt;!ELEMENT redirectref EMPTY &gt;
+</pre></div></section></section><section id="extensions.to.response.element"><h2 id="rfc.section.15"><a href="#rfc.section.15">15.</a>&nbsp;<a href="#extensions.to.response.element">Extensions to the DAV:response XML Element for Multi-Status Responses</a></h2><div id="rfc.section.15.p.1"><p>As described in <a href="#operations.on.collections.that.contain.redirect.reference.resources" title="Operations on Collections That Contain Redirect Reference Resources">Section&nbsp;8</a>, the DAV:location element may be returned in the DAV:response element of a 207 Multi-Status response, to allow clients to resubmit their requests to the target resource of a redirect reference resource.<a class="self" href="#rfc.section.15.p.1">&para;</a></p></div><div id="rfc.section.15.p.2" class="avoidbreakafter"><p>Consequently, the definition of the DAV:response XML element changes to the following:<a class="self" href="#rfc.section.15.p.2">&para;</a></p></div><div id="rfc.figure.u.23"><pre class="inline">&lt;!ELEMENT response (href, ((href*, status)|(propstat+)),
+                    responsedescription?, location?) &gt;
+&lt;!ELEMENT location (href) &gt; 
+</pre></div></section><section id="capability.discovery"><h2 id="rfc.section.16"><a href="#rfc.section.16">16.</a>&nbsp;<a href="#capability.discovery">Capability Discovery</a></h2><div id="rfc.section.16.p.1"><p>Sections <a href="https://tools.ietf.org/html/rfc2518#section-9.1">9.1</a> and <a href="https://tools.ietf.org/html/rfc2518#section-15">15</a> of <a href="#RFC2518"><cite title="HTTP Extensions for Distributed Authoring -- WEBDAV">[RFC2518]</cite></a> describe the use of compliance classes with the DAV header in responses to OPTIONS, to indicate which parts of the WebDAV Distributed Authoring protocols the resource supports. This specification defines an <em class="bcp14">OPTIONAL</em> extension to <a href="#RFC2518"><cite title="HTTP Extensions for Distributed Authoring -- WEBDAV">[RFC2518]</cite></a>. It defines a new compliance class, called redirectrefs, for use with the DAV header in responses to OPTIONS requests. If a resource does support redirect references, its response to an OPTIONS request may indicate that it does, by listing the new redirectrefs compliance class in the DAV header and by listing the MKREDIRECTREF method as one it supports.<a class="self" href="#rfc.section.16.p.1">&para;</a></p></div><div id="rfc.section.16.p.2"><p>When responding to an OPTIONS request, any type of resource can include redirectrefs in the value of the DAV header. Doing so indicates that the server permits a redirect reference resource at the Request-URI.<a class="self" href="#rfc.section.16.p.2">&para;</a></p></div><section id="n-example--discovery-of-support-for-redirect-reference-resources"><h3 id="rfc.section.16.1"><a href="#rfc.section.16.1">16.1.</a>&nbsp;<a href="#n-example--discovery-of-support-for-redirect-reference-resources">Example: Discovery of Support for Redirect Reference Resources</a></h3><div id="rfc.figure.u.24"><p>&gt;&gt; Request:</p><pre class="text2">OPTIONS /somecollection/someresource HTTP/1.1
+Host: example.org
+</pre></div><div id="rfc.figure.u.25"><p>&gt;&gt; Response:</p><pre class="text">HTTP/1.1 200 OK
+Allow: OPTIONS, GET, HEAD, POST, PUT, DELETE, TRACE, COPY, MOVE
+Allow: MKCOL, PROPFIND, PROPPATCH, LOCK, UNLOCK, MKREDIRECTREF
+DAV: 1, 2, redirectrefs
+</pre></div><div id="rfc.section.16.1.p.1"><p>The DAV header in the response indicates that the resource /somecollection/someresource is level 1 and level 2 compliant, as defined in <a href="#RFC2518"><cite title="HTTP Extensions for Distributed Authoring -- WEBDAV">[RFC2518]</cite></a>. In addition, /somecollection/someresource supports redirect reference resources. The Allow header indicates that MKREDIRECTREF requests can be submitted to /somecollection/someresource.<a class="self" href="#rfc.section.16.1.p.1">&para;</a></p></div></section></section><section id="security.considerations"><h2 id="rfc.section.17"><a href="#rfc.section.17">17.</a>&nbsp;<a href="#security.considerations">Security Considerations</a></h2><div id="rfc.section.17.p.1"><p>This section is provided to make applications that implement this protocol aware of the security implications of this protocol.<a class="self" href="#rfc.section.17.p.1">&para;</a></p></div><div id="rfc.section.17.p.2"><p>All of the security considerations of HTTP/1.1 and the WebDAV Distributed Authoring Protocol specification also apply to this protocol specification. In addition, redirect reference resources introduce several new security concerns and increase the risk of some existing threats. These issues are detailed below.<a class="self" href="#rfc.section.17.p.2">&para;</a></p></div><section id="n-privacy-concerns"><h3 id="rfc.section.17.1"><a href="#rfc.section.17.1">17.1.</a>&nbsp;<a href="#n-privacy-concerns">Privacy Concerns</a></h3><div id="rfc.section.17.1.p.1"><p>By creating redirect reference resources on a trusted server, it is possible for a hostile agent to induce users to send private information to a target on an unrelated system. This risk is mitigated somewhat, since clients are required to notify the user of the redirection for any request other than GET or HEAD. (See <a href="#RFC2616"><cite title="Hypertext Transfer Protocol -- HTTP/1.1">[RFC2616]</cite></a>, <a href="https://tools.ietf.org/html/rfc2616#section-10.3.3">Section 10.3.3</a>, 302 Found.)<a class="self" href="#rfc.section.17.1.p.1">&para;</a></p></div></section><section id="n-redirect-loops"><h3 id="rfc.section.17.2"><a href="#rfc.section.17.2">17.2.</a>&nbsp;<a href="#n-redirect-loops">Redirect Loops</a></h3><div id="rfc.section.17.2.p.1"><p>Although redirect loops were already possible in HTTP 1.1, the introduction of the MKREDIRECTREF method creates a new avenue for clients to create loops accidentally or maliciously. If the reference resource and its target are on the same server, the server may be able to detect MKREDIRECTREF requests that would create loops. See also <a href="#RFC2616"><cite title="Hypertext Transfer Protocol -- HTTP/1.1">[RFC2616]</cite></a>, <a href="https://tools.ietf.org/html/rfc2616#section-10.3">Section 10.3</a>, "Redirection 3xx."<a class="self" href="#rfc.section.17.2.p.1">&para;</a></p></div></section><section id="n-redirect-reference-resources-and-denial-of-service"><h3 id="rfc.section.17.3"><a href="#rfc.section.17.3">17.3.</a>&nbsp;<a href="#n-redirect-reference-resources-and-denial-of-service">Redirect Reference Resources and Denial of Service</a></h3><div id="rfc.section.17.3.p.1"><p>Denial of service attacks were already possible by posting URLs that were intended for limited use at heavily used Web sites. The introduction of MKREDIRECTREF creates a new avenue for similar denial of service attacks. Clients can now create redirect reference resources at heavily used sites to target locations that were not designed for heavy usage.<a class="self" href="#rfc.section.17.3.p.1">&para;</a></p></div></section><section id="n-revealing-private-locations"><h3 id="rfc.section.17.4"><a href="#rfc.section.17.4">17.4.</a>&nbsp;<a href="#n-revealing-private-locations">Revealing Private Locations</a></h3><div id="rfc.section.17.4.p.1"><p>There are several ways that redirect reference resources may reveal information about collection structures. First, the DAV:reftarget property of every redirect reference resource contains the URI of the target resource. Anyone who has access to the reference resource can discover the collection path that leads to the target resource. The owner of the target resource may have wanted to limit knowledge of this collection structure.<a class="self" href="#rfc.section.17.4.p.1">&para;</a></p></div><div id="rfc.section.17.4.p.2"><p>Sufficiently powerful access control mechanisms can control this risk to some extent. Property-level access control could prevent users from examining the DAV:reftarget property. (The Location header returned in responses to requests on redirect reference resources reveals the same information, however.)<a class="self" href="#rfc.section.17.4.p.2">&para;</a></p></div><div id="rfc.section.17.4.p.3"><p>This risk is no greater than the similar risk posed by HTML links.<a class="self" href="#rfc.section.17.4.p.3">&para;</a></p></div></section></section><section id="n-internationalization-considerations"><h2 id="rfc.section.18"><a href="#rfc.section.18">18.</a>&nbsp;<a href="#n-internationalization-considerations">Internationalization Considerations</a></h2><div id="rfc.section.18.p.1"><p>All internationalization considerations mentioned in <a href="#RFC2518"><cite title="HTTP Extensions for Distributed Authoring -- WEBDAV">[RFC2518]</cite></a> also apply to this document.<a class="self" href="#rfc.section.18.p.1">&para;</a></p></div></section><section id="iana.considerations"><h2 id="rfc.section.19"><a href="#rfc.section.19">19.</a>&nbsp;<a href="#iana.considerations">IANA Considerations</a></h2><div id="rfc.section.19.p.1"><p>All IANA considerations mentioned in <a href="#RFC2518"><cite title="HTTP Extensions for Distributed Authoring -- WEBDAV">[RFC2518]</cite></a> also apply to this document.<a class="self" href="#rfc.section.19.p.1">&para;</a></p></div><section id="n-http-headers"><h3 id="rfc.section.19.1"><a href="#rfc.section.19.1">19.1.</a>&nbsp;<a href="#n-http-headers">HTTP headers</a></h3><div id="rfc.section.19.1.p.1"><p>This document specifies the two new HTTP headers listed below.<a class="self" href="#rfc.section.19.1.p.1">&para;</a></p></div><section id="n-redirect-ref"><h4 id="rfc.section.19.1.1"><a href="#rfc.section.19.1.1">19.1.1.</a>&nbsp;<a href="#n-redirect-ref">Redirect-Ref</a></h4><div id="rfc.section.19.1.1.p.1"><dl><dt>Header field name:</dt><dd>Redirect-Ref</dd><dt>Applicable protocol:</dt><dd>http</dd><dt>Status:</dt><dd>standard</dd><dt>Author/Change controller:</dt><dd>IETF</dd><dt>Specification document:</dt><dd>this specification (<a href="#header.redirect-ref" title="Redirect-Ref Response Header">Section&nbsp;12.1</a>)</dd></dl></div></section><section id="n-apply-to-redirect-ref"><h4 id="rfc.section.19.1.2"><a href="#rfc.section.19.1.2">19.1.2.</a>&nbsp;<a href="#n-apply-to-redirect-ref">Apply-To-Redirect-Ref</a></h4><div id="rfc.section.19.1.2.p.1"><dl><dt>Header field name:</dt><dd>Apply-To-Redirect-Ref</dd><dt>Applicable protocol:</dt><dd>http</dd><dt>Status:</dt><dd>standard</dd><dt>Author/Change controller:</dt><dd>IETF</dd><dt>Specification document:</dt><dd>this specification (<a href="#header.apply-to-redirect-ref" title="Apply-To-Redirect-Ref Request Header">Section&nbsp;12.2</a>)</dd></dl></div></section></section></section><section id="n-contributors"><h2 id="rfc.section.20"><a href="#rfc.section.20">20.</a>&nbsp;<a href="#n-contributors">Contributors</a></h2><div id="rfc.section.20.p.1"><p>Many thanks to Jason Crawford, Jim Davis, Chuck Fay, and Judith Slein, who can take credit for big parts of the original design of this specification.<a class="self" href="#rfc.section.20.p.1">&para;</a></p></div></section><section id="n-acknowledgements"><h2 id="rfc.section.21"><a href="#rfc.section.21">21.</a>&nbsp;<a href="#n-acknowledgements">Acknowledgements</a></h2><div id="rfc.section.21.p.1"><p>This document has benefited from thoughtful discussion by Jim Amsden, Peter Carlson, Steve Carter, Tyson Chihaya, Ken Coar, Ellis Cohen, Bruce Cragun, Spencer Dawkins, Mark Day, Rajiv Dulepet, David Durand, Lisa Dusseault, Stefan Eissing, Roy Fielding, Yaron Goland, Fred Hitt, Alex Hopmann, James Hunt, Marcus Jager, Chris Kaler, Manoj Kasichainula, Rohit Khare, Daniel LaLiberte, Steve Martin, Larry Masinter, Jeff McAffer, Joe Orton, Surendra Koduru Reddy, Juergen Reuter, Max Rible, Sam Ruby, Bradley Sergeant, Nick Shelness, John Stracke, John Tigue, John Turner, Kevin Wiggen, and others.<a class="self" href="#rfc.section.21.p.1">&para;</a></p></div></section><section id="rfc.references"><h2 id="rfc.section.22"><a href="#rfc.section.22">22.</a> Normative References</h2><dl class="reference"><dt id="RFC2119">[RFC2119]</dt><dd><a href="mailto:sob@harvard.edu">Bradner, S.</a>, &#8220;<a href="https://tools.ietf.org/html/rfc2119">Key words for use in RFCs to Indicate Requirement Levels</a>&#8221;, BCP&nbsp;14, RFC&nbsp;2119, March&nbsp;1997.</dd><dt id="RFC2518">[RFC2518]</dt><dd><a href="mailto:yarong@microsoft.com">Goland, Y.</a>, <a href="mailto:ejw@ics.uci.edu">Whitehead, E.</a>, <a href="mailto:asad@netscape.com">Faizi, A.</a>, <a href="mailto:srcarter@novell.com">Carter, S.</a>, and <a href="mailto:dcjensen@novell.com">D. Jensen</a>, &#8220;<a href="https://tools.ietf.org/html/rfc2518">HTTP Extensions for Distributed Authoring -- WEBDAV</a>&#8221;, RFC&nbsp;2518, February&nbsp;1999.</dd><dt id="RFC2616">[RFC2616]</dt><dd><a href="mailto:fielding@ics.uci.edu">Fielding, R.</a>, <a href="mailto:jg@w3.org">Gettys, J.</a>, <a href="mailto:mogul@wrl.dec.com">Mogul, J.</a>, <a href="mailto:frystyk@w3.org">Frystyk, H.</a>, <a href="mailto:masinter@parc.xerox.com">Masinter, L.</a>, <a href="mailto:paulle@microsoft.com">Leach, P.</a>, and <a href="mailto:timbl@w3.org">T. Berners-Lee</a>, &#8220;<a href="https://tools.ietf.org/html/rfc2616">Hypertext Transfer Protocol -- HTTP/1.1</a>&#8221;, RFC&nbsp;2616, June&nbsp;1999.</dd><dt id="RFC3253">[RFC3253]</dt><dd><a href="mailto:geoffrey.clemm@rational.com">Clemm, G.</a>, <a href="mailto:jamsden@us.ibm.com">Amsden, J.</a>, <a href="mailto:tim_ellison@uk.ibm.com">Ellison, T.</a>, <a href="mailto:ckaler@microsoft.com">Kaler, C.</a>, and <a href="mailto:ejw@cse.ucsc.edu">J. Whitehead</a>, &#8220;<a href="https://tools.ietf.org/html/rfc3253">Versioning Extensions to WebDAV (Web Distributed Authoring and Versioning)</a>&#8221;, RFC&nbsp;3253, March&nbsp;2002.</dd><dt id="RFC3986">[RFC3986]</dt><dd><a href="mailto:timbl@w3.org">Berners-Lee, T.</a>, <a href="mailto:fielding@gbiv.com">Fielding, R.</a>, and <a href="mailto:LMM@acm.org">L. Masinter</a>, &#8220;<a href="https://tools.ietf.org/html/rfc3986">Uniform Resource Identifier (URI): Generic Syntax</a>&#8221;, STD&nbsp;66, RFC&nbsp;3986, January&nbsp;2005.</dd></dl></section><section id="rfc.index"><h2><a href="#rfc.index">Index</a></h2><p class="noprint"><a href="#rfc.index.A">A</a> <a href="#rfc.index.C">C</a> <a href="#rfc.index.D">D</a> <a href="#rfc.index.H">H</a> <a href="#rfc.index.M">M</a> <a href="#rfc.index.N">N</a> <a href="#rfc.index.P">P</a> <a href="#rfc.index.R">R</a> <a href="#rfc.index.T">T</a> <a href="#rfc.index.U">U</a> <a href="#rfc.index.X">X</a> </p><div class="print2col"><ul class="ind"><li><a id="rfc.index.A" href="#rfc.index.A"><b>A</b></a><ul><li>Apply-To-Redirect-Ref header&nbsp;&nbsp;<a href="#rfc.section.12.2"><b>12.2</b></a></li></ul></li><li><a id="rfc.index.C" href="#rfc.index.C"><b>C</b></a><ul><li>Condition Names&nbsp;&nbsp;<ul><li>DAV:legal-reftarget (pre)&nbsp;&nbsp;<a href="#rfc.iref.c.6"><b>6</b></a>, <a href="#rfc.iref.c.12">7</a></li><li>DAV:locked-update-allowed (pre)&nbsp;&nbsp;<a href="#rfc.iref.c.4"><b>6</b></a>, <a href="#rfc.iref.c.8"><b>7</b></a></li><li>DAV:must-be-redirectref (pre)&nbsp;&nbsp;<a href="#rfc.iref.c.9"><b>7</b></a></li><li>DAV:name-allowed (pre)&nbsp;&nbsp;<a href="#rfc.iref.c.3"><b>6</b></a></li><li>DAV:new-redirectref (post)&nbsp;&nbsp;<a href="#rfc.iref.c.7"><b>6</b></a></li><li>DAV:parent-resource-must-be-non-null (pre)&nbsp;&nbsp;<a href="#rfc.iref.c.2"><b>6</b></a></li><li>DAV:redirect-lifetime-supported (pre)&nbsp;&nbsp;<a href="#rfc.iref.c.5"><b>6</b></a>, <a href="#rfc.iref.c.10"><b>7</b></a></li><li>DAV:redirect-lifetime-update-supported (pre)&nbsp;&nbsp;<a href="#rfc.iref.c.11">7</a></li><li>DAV:redirectref-updated (post)&nbsp;&nbsp;<a href="#rfc.iref.c.13"><b>7</b></a></li><li>DAV:resource-must-be-null (pre)&nbsp;&nbsp;<a href="#rfc.iref.c.1"><b>6</b></a></li></ul></li></ul></li><li><a id="rfc.index.D" href="#rfc.index.D"><b>D</b></a><ul><li>DAV header&nbsp;&nbsp;<ul><li>compliance class 'redirectrefs'&nbsp;&nbsp;<a href="#rfc.section.16"><b>16</b></a></li></ul></li><li>DAV:legal-reftarget precondition&nbsp;&nbsp;<a href="#rfc.iref.d.12"><b>6</b></a>, <a href="#rfc.iref.d.19">7</a></li><li>DAV:locked-update-allowed precondition&nbsp;&nbsp;<a href="#rfc.iref.d.10"><b>6</b></a>, <a href="#rfc.iref.d.15"><b>7</b></a></li><li><span class="tt">DAV:mkdirectref XML element</span>&nbsp;&nbsp;<a href="#rfc.iref.d.1"><b>6</b></a></li><li><span class="tt">DAV:mkredirectref-response XML element</span>&nbsp;&nbsp;<a href="#rfc.iref.d.6"><b>6</b></a></li><li>DAV:must-be-redirectref precondition&nbsp;&nbsp;<a href="#rfc.iref.d.16"><b>7</b></a></li><li>DAV:name-allowed precondition&nbsp;&nbsp;<a href="#rfc.iref.d.9"><b>6</b></a></li><li>DAV:new-redirectref postcondition&nbsp;&nbsp;<a href="#rfc.iref.d.13"><b>6</b></a></li><li>DAV:parent-resource-must-be-non-null precondition&nbsp;&nbsp;<a href="#rfc.iref.d.8"><b>6</b></a></li><li><span class="tt">DAV:permanent XML element</span>&nbsp;&nbsp;<a href="#rfc.iref.d.4"><b>6</b></a>, <a href="#rfc.iref.d.22"><b>13.1</b></a></li><li>DAV:redirect-lifetime property&nbsp;&nbsp;<a href="#rfc.section.13.1"><b>13.1</b></a></li><li><span class="tt">DAV:redirect-lifetime XML element</span>&nbsp;&nbsp;<a href="#rfc.iref.d.3"><b>6</b></a>, <a href="#rfc.iref.d.21"><b>13.1</b></a></li><li>DAV:redirect-lifetime-supported precondition&nbsp;&nbsp;<a href="#rfc.iref.d.11"><b>6</b></a>, <a href="#rfc.iref.d.17"><b>7</b></a></li><li>DAV:redirect-lifetime-update-supported precondition&nbsp;&nbsp;<a href="#rfc.iref.d.18">7</a></li><li>DAV:redirectref resource type&nbsp;&nbsp;<a href="#rfc.section.14.1"><b>14.1</b></a></li><li>DAV:redirectref-updated postcondition&nbsp;&nbsp;<a href="#rfc.iref.d.20"><b>7</b></a></li><li>DAV:reftarget property&nbsp;&nbsp;<a href="#rfc.section.13.2"><b>13.2</b></a></li><li><span class="tt">DAV:reftarget XML element</span>&nbsp;&nbsp;<a href="#rfc.iref.d.2"><b>6</b></a></li><li>DAV:resource-must-be-null precondition&nbsp;&nbsp;<a href="#rfc.iref.d.7"><b>6</b></a></li><li><span class="tt">DAV:temporary XML element</span>&nbsp;&nbsp;<a href="#rfc.iref.d.5"><b>6</b></a>, <a href="#rfc.iref.d.23"><b>13.1</b></a></li><li><span class="tt">DAV:updateredirectref-response XML element</span>&nbsp;&nbsp;<a href="#rfc.iref.d.14"><b>7</b></a></li></ul></li><li><a id="rfc.index.H" href="#rfc.index.H"><b>H</b></a><ul><li>Headers&nbsp;&nbsp;<ul><li>Apply-To-Redirect-Ref&nbsp;&nbsp;<a href="#rfc.section.12.2"><b>12.2</b></a></li><li>Redirect-Ref&nbsp;&nbsp;<a href="#rfc.section.12.1"><b>12.1</b></a></li></ul></li></ul></li><li><a id="rfc.index.M" href="#rfc.index.M"><b>M</b></a><ul><li>Methods&nbsp;&nbsp;<ul><li>MKREDIRECTREF&nbsp;&nbsp;<a href="#rfc.section.6"><b>6</b></a></li><li>UPDATEREDIRECTREF&nbsp;&nbsp;<a href="#rfc.section.7"><b>7</b></a></li></ul></li><li>MKREDIRECTREF method&nbsp;&nbsp;<a href="#rfc.section.6"><b>6</b></a><ul><li>Marshalling&nbsp;&nbsp;<a href="#rfc.iref.m.1"><b>6</b></a></li><li>Postconditions&nbsp;&nbsp;<a href="#rfc.iref.m.3"><b>6</b></a></li><li>Preconditions&nbsp;&nbsp;<a href="#rfc.iref.m.2"><b>6</b></a></li></ul></li></ul></li><li><a id="rfc.index.N" href="#rfc.index.N"><b>N</b></a><ul><li>Non-Reference Resource&nbsp;&nbsp;<a href="#rfc.iref.n.1">3</a></li></ul></li><li><a id="rfc.index.P" href="#rfc.index.P"><b>P</b></a><ul><li>Properties&nbsp;&nbsp;<ul><li>DAV:redirect-lifetime&nbsp;&nbsp;<a href="#rfc.section.13.1"><b>13.1</b></a></li><li>DAV:reftarget&nbsp;&nbsp;<a href="#rfc.section.13.2"><b>13.2</b></a></li></ul></li></ul></li><li><a id="rfc.index.R" href="#rfc.index.R"><b>R</b></a><ul><li>Redirect Reference Resource&nbsp;&nbsp;<a href="#rfc.iref.r.1">3</a></li><li>Redirect-Ref header&nbsp;&nbsp;<a href="#rfc.section.12.1"><b>12.1</b></a></li><li>Resource Types&nbsp;&nbsp;<ul><li>DAV:redirectref&nbsp;&nbsp;<a href="#rfc.section.14.1"><b>14.1</b></a></li></ul></li></ul></li><li><a id="rfc.index.T" href="#rfc.index.T"><b>T</b></a><ul><li>Target Resource&nbsp;&nbsp;<a href="#rfc.iref.t.1">3</a></li></ul></li><li><a id="rfc.index.U" href="#rfc.index.U"><b>U</b></a><ul><li>UPDATEREDIRECTREF method&nbsp;&nbsp;<a href="#rfc.section.7"><b>7</b></a><ul><li>Marshalling&nbsp;&nbsp;<a href="#rfc.iref.u.1"><b>7</b></a></li><li>Postconditions&nbsp;&nbsp;<a href="#rfc.iref.u.3"><b>7</b></a></li><li>Preconditions&nbsp;&nbsp;<a href="#rfc.iref.u.2"><b>7</b></a></li></ul></li></ul></li><li><a id="rfc.index.X" href="#rfc.index.X"><b>X</b></a><ul><li><span class="tt">XML elements</span>&nbsp;&nbsp;<ul><li><span class="tt">DAV:mkdirectref</span>&nbsp;&nbsp;<a href="#rfc.iref.x.1"><b>6</b></a></li><li><span class="tt">DAV:mkredirectref-response</span>&nbsp;&nbsp;<a href="#rfc.iref.x.6"><b>6</b></a></li><li><span class="tt">DAV:permanent</span>&nbsp;&nbsp;<a href="#rfc.iref.x.4"><b>6</b></a>, <a href="#rfc.iref.x.9"><b>13.1</b></a></li><li><span class="tt">DAV:redirect-lifetime</span>&nbsp;&nbsp;<a href="#rfc.iref.x.3"><b>6</b></a>, <a href="#rfc.iref.x.8"><b>13.1</b></a></li><li><span class="tt">DAV:reftarget</span>&nbsp;&nbsp;<a href="#rfc.iref.x.2"><b>6</b></a></li><li><span class="tt">DAV:temporary</span>&nbsp;&nbsp;<a href="#rfc.iref.x.5"><b>6</b></a>, <a href="#rfc.iref.x.10"><b>13.1</b></a></li><li><span class="tt">DAV:updateredirectref-response</span>&nbsp;&nbsp;<a href="#rfc.iref.x.7"><b>7</b></a></li></ul></li></ul></li></ul></div></section><section id="rfc.authors" class="avoidbreakinside"><h2><a href="#rfc.authors">Authors' Addresses</a></h2><address><b>Jim Whitehead</b><br>UC Santa Cruz, Dept. of Computer Science<br>1156 High Street<br>Santa Cruz, CA&nbsp;95064<br>US<br>EMail: <a href="mailto:ejw@cse.ucsc.edu">ejw@cse.ucsc.edu</a></address><address><b>Geoff Clemm</b><br>IBM<br>20 Maguire Road<br>Lexington, MA&nbsp;02421<br>US<br>EMail: <a href="mailto:geoffrey.clemm@us.ibm.com">geoffrey.clemm@us.ibm.com</a></address><address><b>Julian F. Reschke</b>
+      (editor)
+    <br>greenbytes GmbH<br>Hafenweg 16<br>Muenster, NW&nbsp;48155<br>Germany<br>Phone: <a href="tel:+492512807760">+49 251 2807760</a><br>Fax: <a href="fax:+492512807761">+49 251 2807761</a><br>EMail: <a href="mailto:julian.reschke@greenbytes.de">julian.reschke@greenbytes.de</a><br>URI: <a href="http://greenbytes.de/tech/webdav/">http://greenbytes.de/tech/webdav/</a></address></section><section id="rfc.copyright"><h2><a href="#rfc.copyright">Full Copyright Statement</a></h2><p>Copyright &copy; The Internet Society (2006).</p><p>This document is subject to the rights, licenses and restrictions contained in BCP 78, and except as set forth therein, the authors retain all their rights.</p><p>This document and the information contained herein are provided on an &#8220;AS IS&#8221; basis and THE CONTRIBUTOR, THE ORGANIZATION HE/SHE REPRESENTS OR IS SPONSORED BY (IF ANY), THE INTERNET SOCIETY AND THE INTERNET ENGINEERING TASK FORCE DISCLAIM ALL WARRANTIES, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO ANY WARRANTY THAT THE USE OF THE INFORMATION HEREIN WILL NOT INFRINGE ANY RIGHTS OR ANY IMPLIED WARRANTIES OF MERCHANTABILITY OR FITNESS FOR A PARTICULAR PURPOSE.</p></section><section id="rfc.ipr"><h2><a href="#rfc.ipr">Intellectual Property</a></h2><p>The IETF takes no position regarding the validity or scope of any Intellectual Property Rights or other rights that might be claimed to pertain to the implementation or use of the technology described in this document or the extent to which any license under such rights might or might not be available; nor does it represent that it has made any independent effort to identify any such rights. Information on the procedures with respect to rights in RFC documents can be found in BCP 78 and BCP 79.</p><p>Copies of IPR disclosures made to the IETF Secretariat and any assurances of licenses to be made available, or the result of an attempt made to obtain a general license or permission for the use of such proprietary rights by implementers or users of this specification can be obtained from the IETF on-line IPR repository at <a href="http://www.ietf.org/ipr">http://www.ietf.org/ipr</a>.</p><p>The IETF invites any interested party to bring to its attention any copyrights, patents or patent applications, or other proprietary rights that may cover technology that may be required to implement this standard. Please address the information to the IETF at <a href="mailto:ietf-ipr@ietf.org">ietf-ipr@ietf.org</a>.</p></section><section id="n-acknowledgment"><h2><a href="#n-acknowledgment">Acknowledgment</a></h2><p>Funding for the RFC Editor function is provided by the IETF Administrative Support Activity (IASA).</p></section></body></html>

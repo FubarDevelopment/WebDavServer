@@ -1,0 +1,4690 @@
+<html xmlns:v="urn:schemas-microsoft-com:vml"
+xmlns:o="urn:schemas-microsoft-com:office:office"
+xmlns:w="urn:schemas-microsoft-com:office:word"
+xmlns="http://www.w3.org/TR/REC-html40">
+
+<head>
+<meta http-equiv=Content-Type content="text/html; charset=windows-1252">
+<meta name=ProgId content=Word.Document>
+<meta name=Generator content="Microsoft Word 9">
+<meta name=Originator content="Microsoft Word 9">
+<link rel=File-List href="./draft-ietf-webdav-advacl-00_files/filelist.xml">
+<title>Versioning Extensions to WebDAV</title>
+<!--[if gte mso 9]><xml>
+ <o:DocumentProperties>
+  <o:Author>Geoffrey Clemm and Christopher Kaler</o:Author>
+  <o:LastAuthor>Geoffrey Clemm</o:LastAuthor>
+  <o:Revision>2</o:Revision>
+  <o:TotalTime>1</o:TotalTime>
+  <o:LastPrinted>2000-07-14T20:55:00Z</o:LastPrinted>
+  <o:Created>2000-10-16T19:43:00Z</o:Created>
+  <o:LastSaved>2000-10-16T19:43:00Z</o:LastSaved>
+  <o:Pages>7</o:Pages>
+  <o:Words>2154</o:Words>
+  <o:Characters>12282</o:Characters>
+  <o:Company>World Wide Web Consortium</o:Company>
+  <o:Lines>102</o:Lines>
+  <o:Paragraphs>24</o:Paragraphs>
+  <o:CharactersWithSpaces>15083</o:CharactersWithSpaces>
+  <o:Version>9.3821</o:Version>
+ </o:DocumentProperties>
+ <o:OfficeDocumentSettings>
+  <o:RelyOnVML/>
+  <o:AllowPNG/>
+ </o:OfficeDocumentSettings>
+</xml><![endif]--><!--[if gte mso 9]><xml>
+ <w:WordDocument>
+  <w:PrintFractionalCharacterWidth/>
+  <w:ActiveWritingStyle Lang="EN-US" VendorID="8" DLLVersion="513" NLCheck="0">1</w:ActiveWritingStyle>
+  <w:DoNotHyphenateCaps/>
+  <w:PunctuationKerning/>
+  <w:DisplayHorizontalDrawingGridEvery>0</w:DisplayHorizontalDrawingGridEvery>
+  <w:DisplayVerticalDrawingGridEvery>0</w:DisplayVerticalDrawingGridEvery>
+  <w:UseMarginsForDrawingGridOrigin/>
+  <w:DoNotShadeFormData/>
+  <w:Compatibility>
+   <w:PrintColBlack/>
+   <w:ShowBreaksInFrames/>
+   <w:SuppressSpBfAfterPgBrk/>
+   <w:SwapBordersFacingPages/>
+   <w:ConvMailMergeEsc/>
+   <w:UsePrinterMetrics/>
+   <w:WW6BorderRules/>
+   <w:FootnoteLayoutLikeWW8/>
+   <w:ShapeLayoutLikeWW8/>
+   <w:AlignTablesRowByRow/>
+   <w:ForgetLastTabAlignment/>
+   <w:NoSpaceRaiseLower/>
+   <w:LayoutRawTableWidth/>
+   <w:LayoutTableRowsApart/>
+  </w:Compatibility>
+ </w:WordDocument>
+</xml><![endif]-->
+<style>
+<!--
+ /* Font Definitions */
+@font-face
+	{font-family:Wingdings;
+	panose-1:5 0 0 0 0 0 0 0 0 0;
+	mso-font-charset:2;
+	mso-generic-font-family:auto;
+	mso-font-pitch:variable;
+	mso-font-signature:0 268435456 0 0 -2147483648 0;}
+@font-face
+	{font-family:"MS Mincho";
+	panose-1:0 0 0 0 0 0 0 0 0 0;
+	mso-font-alt:"\FF2D\FF33 \660E\671D";
+	mso-font-charset:128;
+	mso-generic-font-family:roman;
+	mso-font-format:other;
+	mso-font-pitch:fixed;
+	mso-font-signature:1 134676480 16 0 131072 0;}
+@font-face
+	{font-family:Tahoma;
+	panose-1:2 11 6 4 3 5 4 4 2 4;
+	mso-font-charset:0;
+	mso-generic-font-family:swiss;
+	mso-font-pitch:variable;
+	mso-font-signature:553679495 -2147483648 8 0 66047 0;}
+@font-face
+	{font-family:"Arial Black";
+	panose-1:2 11 10 4 2 1 2 2 2 4;
+	mso-font-charset:0;
+	mso-generic-font-family:swiss;
+	mso-font-pitch:variable;
+	mso-font-signature:647 0 0 0 159 0;}
+@font-face
+	{font-family:Verdana;
+	panose-1:2 11 6 4 3 5 4 4 2 4;
+	mso-font-charset:0;
+	mso-generic-font-family:swiss;
+	mso-font-pitch:variable;
+	mso-font-signature:536871559 0 0 0 415 0;}
+@font-face
+	{font-family:"\@MS Mincho";
+	panose-1:0 0 0 0 0 0 0 0 0 0;
+	mso-font-charset:128;
+	mso-generic-font-family:roman;
+	mso-font-format:other;
+	mso-font-pitch:fixed;
+	mso-font-signature:1 134676480 16 0 131072 0;}
+ /* Style Definitions */
+p.MsoNormal, li.MsoNormal, div.MsoNormal
+	{mso-style-parent:"";
+	margin-top:0in;
+	margin-right:0in;
+	margin-bottom:6.0pt;
+	margin-left:0in;
+	mso-pagination:widow-orphan;
+	font-size:10.0pt;
+	font-family:"Times New Roman";
+	mso-fareast-font-family:"Times New Roman";
+	mso-bidi-language:HE;}
+h1
+	{mso-style-next:"Body Text";
+	margin-top:12.0pt;
+	margin-right:0in;
+	margin-bottom:12.0pt;
+	margin-left:.3in;
+	text-indent:-.3in;
+	mso-pagination:widow-orphan;
+	page-break-after:avoid;
+	mso-outline-level:1;
+	mso-list:l66 level1 lfo198;
+	tab-stops:list .3in;
+	font-size:12.0pt;
+	font-family:"Arial Black";
+	font-variant:small-caps;
+	mso-font-kerning:0pt;
+	mso-bidi-language:HE;
+	font-weight:normal;}
+h2
+	{mso-style-next:"Body Text";
+	margin-top:12.0pt;
+	margin-right:0in;
+	margin-bottom:12.0pt;
+	margin-left:.4in;
+	text-indent:-.4in;
+	mso-pagination:widow-orphan;
+	page-break-after:avoid;
+	mso-outline-level:2;
+	mso-list:l66 level2 lfo198;
+	tab-stops:list .4in;
+	font-size:10.0pt;
+	font-family:"Arial Black";
+	mso-bidi-language:HE;
+	font-weight:normal;}
+h3
+	{mso-style-next:"Body Text";
+	margin-top:12.0pt;
+	margin-right:0in;
+	margin-bottom:12.0pt;
+	margin-left:.5in;
+	text-indent:-.5in;
+	mso-pagination:widow-orphan;
+	page-break-after:avoid;
+	mso-outline-level:3;
+	mso-list:l66 level3 lfo198;
+	tab-stops:list .5in;
+	font-size:10.0pt;
+	font-family:"Times New Roman";
+	mso-bidi-language:HE;
+	font-weight:bold;}
+h4
+	{mso-style-next:Normal;
+	margin-top:12.0pt;
+	margin-right:0in;
+	margin-bottom:6.0pt;
+	margin-left:.6in;
+	text-indent:-.6in;
+	mso-pagination:widow-orphan;
+	page-break-after:avoid;
+	mso-outline-level:4;
+	mso-list:l66 level4 lfo198;
+	font-size:10.0pt;
+	font-family:"Times New Roman";
+	mso-bidi-language:HE;
+	font-weight:bold;}
+h5
+	{mso-style-next:Normal;
+	margin-top:12.0pt;
+	margin-right:0in;
+	margin-bottom:6.0pt;
+	margin-left:.7in;
+	text-indent:-.7in;
+	mso-pagination:widow-orphan;
+	mso-outline-level:5;
+	mso-list:l66 level5 lfo198;
+	tab-stops:list .7in;
+	font-size:10.0pt;
+	font-family:"Times New Roman";
+	mso-bidi-language:HE;
+	font-weight:bold;}
+h6
+	{mso-style-next:Normal;
+	margin-top:12.0pt;
+	margin-right:0in;
+	margin-bottom:6.0pt;
+	margin-left:.8in;
+	text-indent:-.8in;
+	mso-pagination:widow-orphan;
+	mso-outline-level:6;
+	mso-list:l66 level6 lfo198;
+	tab-stops:list .8in;
+	font-size:9.0pt;
+	font-family:"Times New Roman";
+	mso-bidi-language:HE;
+	font-weight:bold;}
+p.MsoHeading7, li.MsoHeading7, div.MsoHeading7
+	{mso-style-next:Normal;
+	margin-top:12.0pt;
+	margin-right:0in;
+	margin-bottom:3.0pt;
+	margin-left:.9in;
+	text-indent:-.9in;
+	mso-pagination:widow-orphan;
+	mso-outline-level:7;
+	mso-list:l66 level7 lfo198;
+	tab-stops:list .9in;
+	font-size:10.0pt;
+	font-family:Arial;
+	mso-fareast-font-family:"Times New Roman";
+	mso-bidi-language:HE;}
+p.MsoHeading8, li.MsoHeading8, div.MsoHeading8
+	{mso-style-next:Normal;
+	margin-top:12.0pt;
+	margin-right:0in;
+	margin-bottom:3.0pt;
+	margin-left:1.0in;
+	text-indent:-1.0in;
+	mso-pagination:widow-orphan;
+	mso-outline-level:8;
+	mso-list:l66 level8 lfo198;
+	tab-stops:list 1.0in;
+	font-size:10.0pt;
+	font-family:Arial;
+	mso-fareast-font-family:"Times New Roman";
+	mso-bidi-language:HE;
+	font-style:italic;}
+p.MsoHeading9, li.MsoHeading9, div.MsoHeading9
+	{mso-style-next:Normal;
+	margin-top:12.0pt;
+	margin-right:0in;
+	margin-bottom:3.0pt;
+	margin-left:1.1in;
+	text-indent:-1.1in;
+	mso-pagination:widow-orphan;
+	mso-outline-level:9;
+	mso-list:l66 level9 lfo198;
+	tab-stops:list 1.1in;
+	font-size:9.0pt;
+	font-family:Arial;
+	mso-fareast-font-family:"Times New Roman";
+	mso-bidi-language:HE;
+	font-weight:bold;
+	font-style:italic;}
+p.MsoIndex1, li.MsoIndex1, div.MsoIndex1
+	{mso-style-update:auto;
+	mso-style-next:Normal;
+	margin-top:0in;
+	margin-right:0in;
+	margin-bottom:0in;
+	margin-left:10.0pt;
+	margin-bottom:.0001pt;
+	text-indent:-10.0pt;
+	mso-pagination:widow-orphan;
+	font-size:10.0pt;
+	font-family:"Times New Roman";
+	mso-fareast-font-family:"Times New Roman";
+	mso-bidi-language:HE;}
+p.MsoIndex2, li.MsoIndex2, div.MsoIndex2
+	{mso-style-update:auto;
+	mso-style-next:Normal;
+	margin-top:0in;
+	margin-right:0in;
+	margin-bottom:0in;
+	margin-left:20.0pt;
+	margin-bottom:.0001pt;
+	text-indent:-10.0pt;
+	mso-pagination:widow-orphan;
+	font-size:10.0pt;
+	font-family:"Times New Roman";
+	mso-fareast-font-family:"Times New Roman";
+	mso-bidi-language:HE;}
+p.MsoIndex3, li.MsoIndex3, div.MsoIndex3
+	{mso-style-update:auto;
+	mso-style-next:Normal;
+	margin-top:0in;
+	margin-right:0in;
+	margin-bottom:0in;
+	margin-left:30.0pt;
+	margin-bottom:.0001pt;
+	text-indent:-10.0pt;
+	mso-pagination:widow-orphan;
+	font-size:10.0pt;
+	font-family:"Times New Roman";
+	mso-fareast-font-family:"Times New Roman";
+	mso-bidi-language:HE;}
+p.MsoIndex4, li.MsoIndex4, div.MsoIndex4
+	{mso-style-update:auto;
+	mso-style-next:Normal;
+	margin-top:0in;
+	margin-right:0in;
+	margin-bottom:0in;
+	margin-left:40.0pt;
+	margin-bottom:.0001pt;
+	text-indent:-10.0pt;
+	mso-pagination:widow-orphan;
+	font-size:10.0pt;
+	font-family:"Times New Roman";
+	mso-fareast-font-family:"Times New Roman";
+	mso-bidi-language:HE;}
+p.MsoIndex5, li.MsoIndex5, div.MsoIndex5
+	{mso-style-update:auto;
+	mso-style-next:Normal;
+	margin-top:0in;
+	margin-right:0in;
+	margin-bottom:0in;
+	margin-left:50.0pt;
+	margin-bottom:.0001pt;
+	text-indent:-10.0pt;
+	mso-pagination:widow-orphan;
+	font-size:10.0pt;
+	font-family:"Times New Roman";
+	mso-fareast-font-family:"Times New Roman";
+	mso-bidi-language:HE;}
+p.MsoIndex6, li.MsoIndex6, div.MsoIndex6
+	{mso-style-update:auto;
+	mso-style-next:Normal;
+	margin-top:0in;
+	margin-right:0in;
+	margin-bottom:0in;
+	margin-left:60.0pt;
+	margin-bottom:.0001pt;
+	text-indent:-10.0pt;
+	mso-pagination:widow-orphan;
+	font-size:10.0pt;
+	font-family:"Times New Roman";
+	mso-fareast-font-family:"Times New Roman";
+	mso-bidi-language:HE;}
+p.MsoIndex7, li.MsoIndex7, div.MsoIndex7
+	{mso-style-update:auto;
+	mso-style-next:Normal;
+	margin-top:0in;
+	margin-right:0in;
+	margin-bottom:0in;
+	margin-left:70.0pt;
+	margin-bottom:.0001pt;
+	text-indent:-10.0pt;
+	mso-pagination:widow-orphan;
+	font-size:10.0pt;
+	font-family:"Times New Roman";
+	mso-fareast-font-family:"Times New Roman";
+	mso-bidi-language:HE;}
+p.MsoIndex8, li.MsoIndex8, div.MsoIndex8
+	{mso-style-update:auto;
+	mso-style-next:Normal;
+	margin-top:0in;
+	margin-right:0in;
+	margin-bottom:0in;
+	margin-left:80.0pt;
+	margin-bottom:.0001pt;
+	text-indent:-10.0pt;
+	mso-pagination:widow-orphan;
+	font-size:10.0pt;
+	font-family:"Times New Roman";
+	mso-fareast-font-family:"Times New Roman";
+	mso-bidi-language:HE;}
+p.MsoIndex9, li.MsoIndex9, div.MsoIndex9
+	{mso-style-update:auto;
+	mso-style-next:Normal;
+	margin-top:0in;
+	margin-right:0in;
+	margin-bottom:0in;
+	margin-left:1.25in;
+	margin-bottom:.0001pt;
+	text-indent:-10.0pt;
+	mso-pagination:widow-orphan;
+	font-size:10.0pt;
+	font-family:"Times New Roman";
+	mso-fareast-font-family:"Times New Roman";
+	mso-bidi-language:HE;}
+p.MsoToc1, li.MsoToc1, div.MsoToc1
+	{mso-style-update:auto;
+	mso-style-next:Normal;
+	margin-top:12.0pt;
+	margin-right:0in;
+	margin-bottom:0in;
+	margin-left:0in;
+	margin-bottom:.0001pt;
+	mso-pagination:widow-orphan;
+	tab-stops:right dotted 6.0in;
+	font-size:10.0pt;
+	font-family:Arial;
+	mso-fareast-font-family:"Times New Roman";
+	mso-bidi-font-family:"Times New Roman";
+	text-transform:uppercase;
+	mso-bidi-language:HE;}
+p.MsoToc2, li.MsoToc2, div.MsoToc2
+	{mso-style-update:auto;
+	mso-style-next:Normal;
+	margin:0in;
+	margin-bottom:.0001pt;
+	mso-pagination:widow-orphan;
+	tab-stops:40.0pt right dotted 6.0in 532.3pt;
+	font-size:10.0pt;
+	font-family:Arial;
+	mso-fareast-font-family:"Times New Roman";
+	mso-bidi-font-family:"Times New Roman";
+	mso-bidi-language:HE;}
+p.MsoToc3, li.MsoToc3, div.MsoToc3
+	{mso-style-update:auto;
+	mso-style-next:Normal;
+	margin-top:0in;
+	margin-right:0in;
+	margin-bottom:0in;
+	margin-left:10.0pt;
+	margin-bottom:.0001pt;
+	mso-pagination:widow-orphan;
+	tab-stops:60.0pt right dotted 6.0in;
+	font-size:8.0pt;
+	mso-bidi-font-size:10.0pt;
+	font-family:Arial;
+	mso-fareast-font-family:"Times New Roman";
+	mso-bidi-font-family:"Times New Roman";
+	mso-bidi-language:HE;}
+p.MsoToc4, li.MsoToc4, div.MsoToc4
+	{mso-style-update:auto;
+	mso-style-next:Normal;
+	margin-top:0in;
+	margin-right:0in;
+	margin-bottom:0in;
+	margin-left:20.0pt;
+	margin-bottom:.0001pt;
+	mso-pagination:widow-orphan;
+	tab-stops:right dotted 6.0in;
+	font-size:10.0pt;
+	font-family:"Times New Roman";
+	mso-fareast-font-family:"Times New Roman";
+	mso-bidi-language:HE;}
+p.MsoToc5, li.MsoToc5, div.MsoToc5
+	{mso-style-update:auto;
+	mso-style-next:Normal;
+	margin-top:0in;
+	margin-right:0in;
+	margin-bottom:0in;
+	margin-left:30.0pt;
+	margin-bottom:.0001pt;
+	mso-pagination:widow-orphan;
+	tab-stops:right dotted 6.0in;
+	font-size:10.0pt;
+	font-family:"Times New Roman";
+	mso-fareast-font-family:"Times New Roman";
+	mso-bidi-language:HE;}
+p.MsoToc6, li.MsoToc6, div.MsoToc6
+	{mso-style-update:auto;
+	mso-style-next:Normal;
+	margin-top:0in;
+	margin-right:0in;
+	margin-bottom:0in;
+	margin-left:40.0pt;
+	margin-bottom:.0001pt;
+	mso-pagination:widow-orphan;
+	tab-stops:right dotted 6.0in;
+	font-size:10.0pt;
+	font-family:"Times New Roman";
+	mso-fareast-font-family:"Times New Roman";
+	mso-bidi-language:HE;}
+p.MsoToc7, li.MsoToc7, div.MsoToc7
+	{mso-style-update:auto;
+	mso-style-next:Normal;
+	margin-top:0in;
+	margin-right:0in;
+	margin-bottom:0in;
+	margin-left:50.0pt;
+	margin-bottom:.0001pt;
+	mso-pagination:widow-orphan;
+	tab-stops:right dotted 6.0in;
+	font-size:10.0pt;
+	font-family:"Times New Roman";
+	mso-fareast-font-family:"Times New Roman";
+	mso-bidi-language:HE;}
+p.MsoToc8, li.MsoToc8, div.MsoToc8
+	{mso-style-update:auto;
+	mso-style-next:Normal;
+	margin-top:0in;
+	margin-right:0in;
+	margin-bottom:0in;
+	margin-left:60.0pt;
+	margin-bottom:.0001pt;
+	mso-pagination:widow-orphan;
+	tab-stops:right dotted 6.0in;
+	font-size:10.0pt;
+	font-family:"Times New Roman";
+	mso-fareast-font-family:"Times New Roman";
+	mso-bidi-language:HE;}
+p.MsoToc9, li.MsoToc9, div.MsoToc9
+	{mso-style-update:auto;
+	mso-style-next:Normal;
+	margin-top:0in;
+	margin-right:0in;
+	margin-bottom:0in;
+	margin-left:70.0pt;
+	margin-bottom:.0001pt;
+	mso-pagination:widow-orphan;
+	tab-stops:right dotted 6.0in;
+	font-size:10.0pt;
+	font-family:"Times New Roman";
+	mso-fareast-font-family:"Times New Roman";
+	mso-bidi-language:HE;}
+p.MsoNormalIndent, li.MsoNormalIndent, div.MsoNormalIndent
+	{margin-top:0in;
+	margin-right:0in;
+	margin-bottom:0in;
+	margin-left:.5in;
+	margin-bottom:.0001pt;
+	mso-pagination:widow-orphan;
+	font-size:10.0pt;
+	font-family:Arial;
+	mso-fareast-font-family:"Times New Roman";
+	mso-bidi-font-family:"Times New Roman";
+	mso-bidi-language:HE;}
+p.MsoCommentText, li.MsoCommentText, div.MsoCommentText
+	{margin-top:0in;
+	margin-right:0in;
+	margin-bottom:6.0pt;
+	margin-left:0in;
+	mso-pagination:widow-orphan;
+	font-size:10.0pt;
+	font-family:"Times New Roman";
+	mso-fareast-font-family:"Times New Roman";
+	mso-bidi-language:HE;}
+p.MsoHeader, li.MsoHeader, div.MsoHeader
+	{margin-top:0in;
+	margin-right:0in;
+	margin-bottom:6.0pt;
+	margin-left:0in;
+	mso-pagination:widow-orphan;
+	tab-stops:center 3.0in right 6.0in;
+	font-size:10.0pt;
+	font-family:"Times New Roman";
+	mso-fareast-font-family:"Times New Roman";
+	mso-bidi-language:HE;}
+p.MsoFooter, li.MsoFooter, div.MsoFooter
+	{margin-top:0in;
+	margin-right:0in;
+	margin-bottom:6.0pt;
+	margin-left:0in;
+	mso-pagination:widow-orphan;
+	tab-stops:center 3.0in right 6.0in;
+	font-size:10.0pt;
+	font-family:"Times New Roman";
+	mso-fareast-font-family:"Times New Roman";
+	mso-bidi-language:HE;}
+p.MsoIndexHeading, li.MsoIndexHeading, div.MsoIndexHeading
+	{mso-style-next:"Index 1";
+	margin-top:6.0pt;
+	margin-right:0in;
+	margin-bottom:6.0pt;
+	margin-left:0in;
+	mso-pagination:widow-orphan;
+	font-size:10.0pt;
+	font-family:"Times New Roman";
+	mso-fareast-font-family:"Times New Roman";
+	mso-bidi-language:HE;
+	font-weight:bold;
+	font-style:italic;}
+span.MsoCommentReference
+	{mso-ansi-font-size:8.0pt;
+	mso-bidi-font-size:8.0pt;}
+p.MsoList, li.MsoList, div.MsoList
+	{margin-top:0in;
+	margin-right:0in;
+	margin-bottom:0in;
+	margin-left:.25in;
+	margin-bottom:.0001pt;
+	text-indent:-.25in;
+	mso-pagination:widow-orphan;
+	font-size:10.0pt;
+	font-family:Arial;
+	mso-fareast-font-family:"Times New Roman";
+	mso-bidi-language:HE;}
+p.MsoListBullet, li.MsoListBullet, div.MsoListBullet
+	{mso-style-update:auto;
+	margin-top:0in;
+	margin-right:0in;
+	margin-bottom:6.0pt;
+	margin-left:1.0in;
+	text-indent:-.25in;
+	mso-pagination:widow-orphan;
+	mso-list:l31 level2 lfo266;
+	tab-stops:1.0in;
+	font-size:10.0pt;
+	font-family:"Times New Roman";
+	mso-fareast-font-family:"MS Mincho";
+	mso-bidi-language:HE;}
+p.MsoList2, li.MsoList2, div.MsoList2
+	{margin-top:0in;
+	margin-right:0in;
+	margin-bottom:0in;
+	margin-left:.5in;
+	margin-bottom:.0001pt;
+	text-indent:-.25in;
+	mso-pagination:widow-orphan;
+	font-size:10.0pt;
+	font-family:Arial;
+	mso-fareast-font-family:"Times New Roman";
+	mso-bidi-language:HE;}
+p.MsoListBullet3, li.MsoListBullet3, div.MsoListBullet3
+	{mso-style-update:auto;
+	margin-top:1.0pt;
+	margin-right:0in;
+	margin-bottom:1.0pt;
+	margin-left:.5in;
+	text-indent:-.25in;
+	mso-pagination:widow-orphan;
+	font-size:10.0pt;
+	font-family:"Times New Roman";
+	mso-fareast-font-family:"Times New Roman";
+	mso-bidi-language:HE;}
+p.MsoListNumber3, li.MsoListNumber3, div.MsoListNumber3
+	{margin-top:1.0pt;
+	margin-right:0in;
+	margin-bottom:1.0pt;
+	margin-left:.5in;
+	text-indent:-.25in;
+	mso-pagination:widow-orphan;
+	font-size:10.0pt;
+	font-family:"Times New Roman";
+	mso-fareast-font-family:"Times New Roman";
+	mso-bidi-language:HE;}
+p.MsoTitle, li.MsoTitle, div.MsoTitle
+	{margin-top:12.0pt;
+	margin-right:0in;
+	margin-bottom:3.0pt;
+	margin-left:0in;
+	text-align:center;
+	mso-pagination:widow-orphan;
+	mso-outline-level:1;
+	font-size:16.0pt;
+	font-family:"Times New Roman";
+	mso-fareast-font-family:"Times New Roman";
+	mso-font-kerning:14.0pt;
+	mso-bidi-language:HE;
+	font-style:italic;}
+p.MsoBodyText, li.MsoBodyText, div.MsoBodyText
+	{margin-top:0in;
+	margin-right:0in;
+	margin-bottom:6.0pt;
+	margin-left:.5in;
+	mso-pagination:widow-orphan;
+	font-size:10.0pt;
+	font-family:"Times New Roman";
+	mso-fareast-font-family:"Times New Roman";
+	mso-bidi-language:HE;}
+p.MsoBodyTextIndent, li.MsoBodyTextIndent, div.MsoBodyTextIndent
+	{margin-top:0in;
+	margin-right:0in;
+	margin-bottom:6.0pt;
+	margin-left:.4in;
+	mso-pagination:widow-orphan;
+	font-size:10.0pt;
+	font-family:"Times New Roman";
+	mso-fareast-font-family:"Times New Roman";
+	mso-bidi-language:HE;}
+a:link, span.MsoHyperlink
+	{color:blue;
+	text-decoration:none;
+	text-underline:none;}
+a:visited, span.MsoHyperlinkFollowed
+	{color:purple;
+	text-decoration:none;
+	text-underline:none;}
+p.MsoDocumentMap, li.MsoDocumentMap, div.MsoDocumentMap
+	{margin-top:0in;
+	margin-right:0in;
+	margin-bottom:6.0pt;
+	margin-left:0in;
+	mso-pagination:widow-orphan;
+	background:navy;
+	font-size:10.0pt;
+	font-family:Tahoma;
+	mso-fareast-font-family:"Times New Roman";
+	mso-bidi-language:HE;}
+p.MsoPlainText, li.MsoPlainText, div.MsoPlainText
+	{margin:0in;
+	margin-bottom:.0001pt;
+	mso-pagination:widow-orphan;
+	font-size:10.0pt;
+	font-family:"Courier New";
+	mso-fareast-font-family:"Times New Roman";
+	mso-bidi-language:HE;}
+p
+	{margin-right:0in;
+	mso-margin-top-alt:auto;
+	mso-margin-bottom-alt:auto;
+	margin-left:0in;
+	mso-pagination:widow-orphan;
+	font-size:12.0pt;
+	font-family:"Times New Roman";
+	mso-fareast-font-family:"Times New Roman";}
+pre
+	{margin:0in;
+	margin-bottom:.0001pt;
+	mso-pagination:widow-orphan;
+	tab-stops:45.8pt 91.6pt 137.4pt 183.2pt 229.0pt 274.8pt 320.6pt 366.4pt 412.2pt 458.0pt 503.8pt 549.6pt 595.4pt 641.2pt 687.0pt 732.8pt;
+	font-size:10.0pt;
+	font-family:"Courier New";
+	mso-fareast-font-family:"Courier New";}
+p.Address, li.Address, div.Address
+	{mso-style-name:Address;
+	mso-style-next:Normal;
+	margin-top:3.0pt;
+	margin-right:0in;
+	margin-bottom:3.0pt;
+	margin-left:0in;
+	mso-pagination:widow-orphan;
+	font-size:10.0pt;
+	font-family:"Times New Roman";
+	mso-fareast-font-family:"Times New Roman";
+	mso-bidi-language:HE;
+	font-style:italic;}
+p.Blockquote, li.Blockquote, div.Blockquote
+	{mso-style-name:Blockquote;
+	margin-top:0in;
+	margin-right:.25in;
+	margin-bottom:6.0pt;
+	margin-left:.25in;
+	mso-pagination:widow-orphan;
+	font-size:10.0pt;
+	font-family:"Times New Roman";
+	mso-fareast-font-family:"Times New Roman";
+	mso-bidi-language:HE;}
+p.DefinitionCompact, li.DefinitionCompact, div.DefinitionCompact
+	{mso-style-name:"Definition Compact\,DL COMPACT";
+	margin-top:3.0pt;
+	margin-right:0in;
+	margin-bottom:6.0pt;
+	margin-left:.25in;
+	text-indent:-.25in;
+	mso-pagination:widow-orphan;
+	font-size:10.0pt;
+	font-family:"Times New Roman";
+	mso-fareast-font-family:"Times New Roman";
+	mso-bidi-language:HE;}
+p.DefinitionList, li.DefinitionList, div.DefinitionList
+	{mso-style-name:"Definition List\,DL";
+	margin-top:3.0pt;
+	margin-right:0in;
+	margin-bottom:6.0pt;
+	margin-left:.5in;
+	text-indent:-.5in;
+	mso-pagination:widow-orphan;
+	font-size:10.0pt;
+	font-family:"Times New Roman";
+	mso-fareast-font-family:"Times New Roman";
+	mso-bidi-language:HE;}
+p.HorizontalRule, li.HorizontalRule, div.HorizontalRule
+	{mso-style-name:"Horizontal Rule\,HR";
+	mso-style-next:Normal;
+	margin-top:0in;
+	margin-right:0in;
+	margin-bottom:6.0pt;
+	margin-left:0in;
+	line-height:1.0pt;
+	mso-line-height-rule:exactly;
+	mso-pagination:widow-orphan;
+	background:white;
+	mso-shading:white;
+	mso-pattern:solid white;
+	border:none;
+	mso-border-alt:solid gray 1.5pt;
+	padding:0in;
+	mso-padding-alt:1.0pt 1.0pt 1.0pt 1.0pt;
+	mso-border-shadow:yes;
+	font-size:10.0pt;
+	font-family:"Times New Roman";
+	mso-fareast-font-family:"Times New Roman";
+	mso-bidi-language:HE;}
+p.Menu, li.Menu, div.Menu
+	{mso-style-name:Menu;
+	mso-style-next:Normal;
+	margin-top:1.0pt;
+	margin-right:0in;
+	margin-bottom:1.0pt;
+	margin-left:.5in;
+	text-indent:-.25in;
+	mso-pagination:widow-orphan;
+	font-size:10.0pt;
+	font-family:"Times New Roman";
+	mso-fareast-font-family:"Times New Roman";
+	mso-bidi-language:HE;}
+p.Example, li.Example, div.Example
+	{mso-style-name:Example;
+	margin-top:3.0pt;
+	margin-right:0in;
+	margin-bottom:0in;
+	margin-left:.5in;
+	margin-bottom:.0001pt;
+	mso-pagination:widow-orphan;
+	font-size:10.0pt;
+	font-family:"Courier New";
+	mso-fareast-font-family:"Times New Roman";
+	mso-bidi-language:HE;}
+p.Preformatted, li.Preformatted, div.Preformatted
+	{mso-style-name:"Preformatted\,PRE";
+	margin-top:0in;
+	margin-right:0in;
+	margin-bottom:0in;
+	margin-left:.5in;
+	margin-bottom:.0001pt;
+	mso-pagination:widow-orphan;
+	tab-stops:.75in 1.0in 1.25in 1.5in 1.75in 2.0in 2.25in 2.5in 2.75in 3.0in 3.25in 3.5in 3.75in 4.0in 4.25in 7.2in 7.8in;
+	font-size:10.0pt;
+	font-family:"Courier New";
+	mso-fareast-font-family:"Times New Roman";
+	mso-bidi-language:HE;}
+p.RestartList, li.RestartList, div.RestartList
+	{mso-style-name:RestartList;
+	mso-style-parent:"";
+	mso-style-next:Normal;
+	margin:0in;
+	margin-bottom:.0001pt;
+	line-height:.7pt;
+	mso-line-height-rule:exactly;
+	mso-pagination:widow-orphan;
+	font-size:10.0pt;
+	font-family:"Times New Roman";
+	mso-fareast-font-family:"Times New Roman";
+	mso-bidi-language:HE;}
+span.CODE
+	{mso-style-name:CODE;
+	mso-ansi-font-size:10.0pt;
+	mso-bidi-font-size:10.0pt;
+	mso-ascii-font-family:"Courier New";
+	mso-hansi-font-family:"Courier New";
+	mso-bidi-font-family:"Courier New";}
+span.DefinitionTerm
+	{mso-style-name:"Definition Term\,DT";}
+p.AppendixHeader, li.AppendixHeader, div.AppendixHeader
+	{mso-style-name:"Appendix Header";
+	mso-style-parent:"Heading 2\,H2";
+	mso-style-next:"Body Text";
+	margin-top:12.0pt;
+	margin-right:0in;
+	margin-bottom:12.0pt;
+	margin-left:.55in;
+	text-indent:-.3in;
+	mso-pagination:widow-orphan;
+	page-break-after:avoid;
+	mso-outline-level:2;
+	mso-list:l65 level2 lfo128;
+	tab-stops:list .75in 1.5in;
+	font-size:10.0pt;
+	font-family:"Arial Black";
+	mso-fareast-font-family:"Times New Roman";
+	mso-bidi-font-family:"Times New Roman";
+	mso-bidi-language:HE;}
+span.identifier
+	{mso-style-name:identifier;
+	mso-ascii-font-family:Arial;
+	mso-hansi-font-family:Arial;
+	mso-bidi-font-family:Arial;
+	font-weight:bold;}
+p.ReferenceLine, li.ReferenceLine, div.ReferenceLine
+	{mso-style-name:"Reference Line";
+	margin-top:0in;
+	margin-right:0in;
+	margin-bottom:6.0pt;
+	margin-left:0in;
+	mso-pagination:widow-orphan;
+	font-size:10.0pt;
+	font-family:Arial;
+	mso-fareast-font-family:"Times New Roman";
+	mso-bidi-language:HE;}
+p.InsideAddress, li.InsideAddress, div.InsideAddress
+	{mso-style-name:"Inside Address";
+	margin:0in;
+	margin-bottom:.0001pt;
+	mso-pagination:widow-orphan;
+	font-size:10.0pt;
+	font-family:Arial;
+	mso-fareast-font-family:"Times New Roman";
+	mso-bidi-language:HE;}
+p.HTTP, li.HTTP, div.HTTP
+	{mso-style-name:HTTP;
+	margin-top:0in;
+	margin-right:0in;
+	margin-bottom:0in;
+	margin-left:.3in;
+	margin-bottom:.0001pt;
+	line-height:12.0pt;
+	mso-line-height-rule:exactly;
+	mso-pagination:none;
+	font-size:8.0pt;
+	font-family:Verdana;
+	mso-fareast-font-family:"Times New Roman";
+	mso-bidi-font-family:"Times New Roman";
+	mso-bidi-language:HE;}
+p.Syntax, li.Syntax, div.Syntax
+	{mso-style-name:Syntax;
+	margin:0in;
+	margin-bottom:.0001pt;
+	line-height:12.0pt;
+	mso-line-height-rule:exactly;
+	mso-pagination:lines-together;
+	tab-stops:1.25in;
+	font-size:12.0pt;
+	font-family:"Courier New";
+	mso-fareast-font-family:"Times New Roman";
+	mso-bidi-language:HE;}
+p.AppH3, li.AppH3, div.AppH3
+	{mso-style-name:"App H3";
+	mso-style-parent:"Heading 3\,H3";
+	mso-style-next:"Body Text";
+	margin-top:12.0pt;
+	margin-right:0in;
+	margin-bottom:12.0pt;
+	margin-left:.85in;
+	text-indent:-.35in;
+	mso-pagination:widow-orphan;
+	page-break-after:avoid;
+	mso-outline-level:3;
+	mso-list:l20 level3 lfo126;
+	tab-stops:list .85in 1.0in;
+	font-size:10.0pt;
+	font-family:"Times New Roman";
+	mso-fareast-font-family:"Times New Roman";
+	mso-bidi-language:HE;
+	font-weight:bold;}
+p.Change, li.Change, div.Change
+	{mso-style-name:Change;
+	mso-style-parent:"App H3";
+	mso-style-next:"Body Text";
+	margin-top:12.0pt;
+	margin-right:0in;
+	margin-bottom:12.0pt;
+	margin-left:.5in;
+	mso-pagination:widow-orphan;
+	page-break-after:avoid;
+	tab-stops:list 1.0in;
+	font-size:10.0pt;
+	font-family:"Times New Roman";
+	mso-fareast-font-family:"Times New Roman";
+	mso-bidi-language:HE;
+	font-weight:bold;}
+p.Heading1aa, li.Heading1aa, div.Heading1aa
+	{mso-style-name:Heading1aa;
+	margin-top:12.0pt;
+	margin-right:0in;
+	margin-bottom:3.0pt;
+	margin-left:0in;
+	page-break-before:always;
+	mso-pagination:widow-orphan;
+	font-size:14.0pt;
+	font-family:Arial;
+	mso-fareast-font-family:"Times New Roman";
+	mso-bidi-language:HE;
+	font-weight:bold;}
+p.EditorNote, li.EditorNote, div.EditorNote
+	{mso-style-name:"Editor Note";
+	mso-style-parent:"Body Text";
+	margin-top:0in;
+	margin-right:0in;
+	margin-bottom:6.0pt;
+	margin-left:.5in;
+	mso-pagination:widow-orphan;
+	border:none;
+	mso-border-alt:solid windowtext .5pt;
+	padding:0in;
+	mso-padding-alt:1.0pt 4.0pt 1.0pt 4.0pt;
+	mso-element:frame;
+	mso-element-frame-hspace:9.35pt;
+	mso-element-frame-vspace:9.35pt;
+	mso-element-wrap:auto;
+	mso-element-anchor-vertical:paragraph;
+	mso-element-anchor-horizontal:column;
+	mso-element-top:.05pt;
+	mso-height-rule:exactly;
+	font-size:10.0pt;
+	font-family:"Times New Roman";
+	mso-fareast-font-family:"Times New Roman";
+	mso-bidi-language:HE;}
+span.HTMLMarkup
+	{mso-style-name:"HTML Markup";
+	mso-style-parent:"";
+	color:red;
+	display:none;
+	mso-hide:all;}
+p.Definition, li.Definition, div.Definition
+	{mso-style-name:Definition;
+	margin-top:0in;
+	margin-right:0in;
+	margin-bottom:6.0pt;
+	margin-left:.3in;
+	mso-pagination:widow-orphan;
+	font-size:10.0pt;
+	font-family:"Arial Black";
+	mso-fareast-font-family:"Times New Roman";
+	mso-bidi-font-family:"Times New Roman";
+	mso-bidi-language:HE;}
+@page Section1
+	{size:8.5in 11.0in;
+	margin:1.0in .5in 1.0in 1.0in;
+	mso-header-margin:35.3pt;
+	mso-footer-margin:35.3pt;
+	mso-title-page:yes;
+	mso-header:url("./draft-ietf-webdav-advacl-00_files/header.htm") h1;
+	mso-footer:url("./draft-ietf-webdav-advacl-00_files/header.htm") f1;
+	mso-first-footer:url("./draft-ietf-webdav-advacl-00_files/header.htm") ff1;
+	mso-paper-source:0;}
+div.Section1
+	{page:Section1;}
+ /* List Definitions */
+@list l0
+	{mso-list-id:-132;
+	mso-list-type:simple;
+	mso-list-template-ids:-839219682;}
+@list l0:level1
+	{mso-level-tab-stop:1.25in;
+	mso-level-number-position:left;
+	margin-left:1.25in;
+	text-indent:-.25in;}
+@list l1
+	{mso-list-id:-131;
+	mso-list-type:simple;
+	mso-list-template-ids:-2078258152;}
+@list l1:level1
+	{mso-level-tab-stop:1.0in;
+	mso-level-number-position:left;
+	margin-left:1.0in;
+	text-indent:-.25in;}
+@list l2
+	{mso-list-id:-130;
+	mso-list-type:simple;
+	mso-list-template-ids:121897002;}
+@list l2:level1
+	{mso-level-tab-stop:.75in;
+	mso-level-number-position:left;
+	margin-left:.75in;
+	text-indent:-.25in;}
+@list l3
+	{mso-list-id:-129;
+	mso-list-type:simple;
+	mso-list-template-ids:-1507424840;}
+@list l3:level1
+	{mso-level-tab-stop:.5in;
+	mso-level-number-position:left;
+	text-indent:-.25in;}
+@list l4
+	{mso-list-id:-128;
+	mso-list-type:simple;
+	mso-list-template-ids:-1224825692;}
+@list l4:level1
+	{mso-level-number-format:bullet;
+	mso-level-text:\F0B7;
+	mso-level-tab-stop:1.25in;
+	mso-level-number-position:left;
+	margin-left:1.25in;
+	text-indent:-.25in;
+	font-family:Symbol;
+	mso-bidi-font-family:"Times New Roman";}
+@list l5
+	{mso-list-id:-127;
+	mso-list-type:simple;
+	mso-list-template-ids:695758264;}
+@list l5:level1
+	{mso-level-number-format:bullet;
+	mso-level-text:\F0B7;
+	mso-level-tab-stop:1.0in;
+	mso-level-number-position:left;
+	margin-left:1.0in;
+	text-indent:-.25in;
+	font-family:Symbol;
+	mso-bidi-font-family:"Times New Roman";}
+@list l6
+	{mso-list-id:-126;
+	mso-list-type:simple;
+	mso-list-template-ids:-935048460;}
+@list l6:level1
+	{mso-level-number-format:bullet;
+	mso-level-text:\F0B7;
+	mso-level-tab-stop:.75in;
+	mso-level-number-position:left;
+	margin-left:.75in;
+	text-indent:-.25in;
+	font-family:Symbol;
+	mso-bidi-font-family:"Times New Roman";}
+@list l7
+	{mso-list-id:-125;
+	mso-list-type:simple;
+	mso-list-template-ids:-1755810018;}
+@list l7:level1
+	{mso-level-number-format:bullet;
+	mso-level-text:\F0B7;
+	mso-level-tab-stop:.5in;
+	mso-level-number-position:left;
+	text-indent:-.25in;
+	font-family:Symbol;
+	mso-bidi-font-family:"Times New Roman";}
+@list l8
+	{mso-list-id:-120;
+	mso-list-type:simple;
+	mso-list-template-ids:-654966134;}
+@list l8:level1
+	{mso-level-tab-stop:.25in;
+	mso-level-number-position:left;
+	margin-left:.25in;
+	text-indent:-.25in;}
+@list l9
+	{mso-list-id:-119;
+	mso-list-type:simple;
+	mso-list-template-ids:260973116;}
+@list l9:level1
+	{mso-level-number-format:bullet;
+	mso-level-text:\F0B7;
+	mso-level-tab-stop:.25in;
+	mso-level-number-position:left;
+	margin-left:.25in;
+	text-indent:-.25in;
+	font-family:Symbol;
+	mso-bidi-font-family:"Times New Roman";}
+@list l10
+	{mso-list-id:-5;
+	mso-list-template-ids:-1607859322;}
+@list l10:level1
+	{mso-level-tab-stop:.25in;
+	mso-level-number-position:left;
+	margin-left:.25in;
+	text-indent:-.25in;}
+@list l10:level2
+	{mso-level-text:"%1\.%2\.";
+	mso-level-tab-stop:.55in;
+	mso-level-number-position:left;
+	margin-left:.55in;
+	text-indent:-.3in;}
+@list l10:level3
+	{mso-level-text:"%1\.%2\.%3\.";
+	mso-level-tab-stop:.85in;
+	mso-level-number-position:left;
+	margin-left:.85in;
+	text-indent:-.35in;}
+@list l10:level4
+	{mso-level-text:"%1\.%2\.%3\.%4\.";
+	mso-level-tab-stop:1.25in;
+	mso-level-number-position:left;
+	margin-left:1.2in;
+	text-indent:-.45in;}
+@list l10:level5
+	{mso-level-text:"%1\.%2\.%3\.%4\.%5\.";
+	mso-level-tab-stop:1.75in;
+	mso-level-number-position:left;
+	margin-left:1.55in;
+	text-indent:-.55in;}
+@list l10:level6
+	{mso-level-text:"%1\.%2\.%3\.%4\.%5\.%6\.";
+	mso-level-tab-stop:2.0in;
+	mso-level-number-position:left;
+	margin-left:1.9in;
+	text-indent:-.65in;}
+@list l10:level7
+	{mso-level-text:"%1\.%2\.%3\.%4\.%5\.%6\.%7\.";
+	mso-level-tab-stop:2.5in;
+	mso-level-number-position:left;
+	margin-left:2.25in;
+	text-indent:-.75in;}
+@list l10:level8
+	{mso-level-text:"%1\.%2\.%3\.%4\.%5\.%6\.%7\.%8\.";
+	mso-level-tab-stop:2.75in;
+	mso-level-number-position:left;
+	margin-left:2.6in;
+	text-indent:-.85in;}
+@list l10:level9
+	{mso-level-text:"%1\.%2\.%3\.%4\.%5\.%6\.%7\.%8\.%9\.";
+	mso-level-tab-stop:3.25in;
+	mso-level-number-position:left;
+	margin-left:3.0in;
+	text-indent:-1.0in;}
+@list l11
+	{mso-list-id:-2;
+	mso-list-type:simple;
+	mso-list-template-ids:-1;}
+@list l11:level1
+	{mso-level-start-at:0;
+	mso-level-text:*;
+	mso-level-tab-stop:none;
+	mso-level-number-position:left;
+	margin-left:0in;
+	text-indent:0in;}
+@list l12
+	{mso-list-id:2;
+	mso-list-template-ids:0;}
+@list l12:level1
+	{mso-level-tab-stop:none;
+	mso-level-number-position:left;
+	text-indent:-.25in;}
+@list l12:level2
+	{mso-level-tab-stop:none;
+	mso-level-number-position:left;
+	text-indent:-.25in;}
+@list l12:level3
+	{mso-level-tab-stop:none;
+	mso-level-number-position:left;
+	text-indent:-.25in;}
+@list l12:level4
+	{mso-level-tab-stop:none;
+	mso-level-number-position:left;
+	text-indent:-.25in;}
+@list l12:level5
+	{mso-level-tab-stop:none;
+	mso-level-number-position:left;
+	text-indent:-.25in;}
+@list l12:level6
+	{mso-level-tab-stop:none;
+	mso-level-number-position:left;
+	text-indent:-.25in;}
+@list l12:level7
+	{mso-level-tab-stop:none;
+	mso-level-number-position:left;
+	text-indent:-.25in;}
+@list l12:level8
+	{mso-level-tab-stop:none;
+	mso-level-number-position:left;
+	text-indent:-.25in;}
+@list l12:level9
+	{mso-level-start-at:0;
+	mso-level-text:"";
+	mso-level-tab-stop:none;
+	mso-level-number-position:left;
+	margin-left:0in;
+	text-indent:0in;}
+@list l13
+	{mso-list-id:21169249;
+	mso-list-type:simple;
+	mso-list-template-ids:-1;}
+@list l13:level1
+	{mso-level-number-format:bullet;
+	mso-level-text:\F0B7;
+	mso-level-tab-stop:none;
+	mso-level-number-position:left;
+	mso-level-legacy:yes;
+	mso-level-legacy-indent:.25in;
+	mso-level-legacy-space:0in;
+	text-indent:-.25in;
+	mso-ansi-font-size:10.0pt;
+	mso-bidi-font-size:10.0pt;
+	font-family:Symbol;
+	mso-bidi-font-family:"Times New Roman";
+	mso-ansi-font-weight:normal;
+	mso-ansi-font-style:normal;
+	text-decoration:none;
+	text-underline:none;}
+@list l14
+	{mso-list-id:29457591;
+	mso-list-template-ids:-1282399114;}
+@list l14:level1
+	{mso-level-tab-stop:.25in;
+	mso-level-number-position:left;
+	margin-left:.25in;
+	text-indent:-.25in;}
+@list l14:level2
+	{mso-level-text:"%1\.%2\.";
+	mso-level-tab-stop:.55in;
+	mso-level-number-position:left;
+	margin-left:.55in;
+	text-indent:-.3in;}
+@list l14:level3
+	{mso-level-text:"%1\.%2\.%3\.";
+	mso-level-tab-stop:.85in;
+	mso-level-number-position:left;
+	margin-left:.85in;
+	text-indent:-.35in;}
+@list l14:level4
+	{mso-level-text:"%1\.%2\.%3\.%4\.";
+	mso-level-tab-stop:1.25in;
+	mso-level-number-position:left;
+	margin-left:1.2in;
+	text-indent:-.45in;}
+@list l14:level5
+	{mso-level-text:"%1\.%2\.%3\.%4\.%5\.";
+	mso-level-tab-stop:1.75in;
+	mso-level-number-position:left;
+	margin-left:1.55in;
+	text-indent:-.55in;}
+@list l14:level6
+	{mso-level-text:"%1\.%2\.%3\.%4\.%5\.%6\.";
+	mso-level-tab-stop:2.0in;
+	mso-level-number-position:left;
+	margin-left:1.9in;
+	text-indent:-.65in;}
+@list l14:level7
+	{mso-level-text:"%1\.%2\.%3\.%4\.%5\.%6\.%7\.";
+	mso-level-tab-stop:2.5in;
+	mso-level-number-position:left;
+	margin-left:2.25in;
+	text-indent:-.75in;}
+@list l14:level8
+	{mso-level-text:"%1\.%2\.%3\.%4\.%5\.%6\.%7\.%8\.";
+	mso-level-tab-stop:2.75in;
+	mso-level-number-position:left;
+	margin-left:2.6in;
+	text-indent:-.85in;}
+@list l14:level9
+	{mso-level-text:"%1\.%2\.%3\.%4\.%5\.%6\.%7\.%8\.%9\.";
+	mso-level-tab-stop:3.25in;
+	mso-level-number-position:left;
+	margin-left:3.0in;
+	text-indent:-1.0in;}
+@list l15
+	{mso-list-id:30542593;
+	mso-list-type:hybrid;
+	mso-list-template-ids:-1347153350 2139534472 1202460430 -832511980 -8748884 -1076350394 320866220 -940665630 550125296 -845780678;}
+@list l15:level1
+	{mso-level-number-format:bullet;
+	mso-level-text:\F0B7;
+	mso-level-tab-stop:.5in;
+	mso-level-number-position:left;
+	text-indent:-.25in;
+	mso-ansi-font-size:10.0pt;
+	font-family:Symbol;}
+@list l16
+	{mso-list-id:37973255;
+	mso-list-type:simple;
+	mso-list-template-ids:67698703;}
+@list l16:level1
+	{mso-level-tab-stop:.25in;
+	mso-level-number-position:left;
+	margin-left:.25in;
+	text-indent:-.25in;}
+@list l17
+	{mso-list-id:107551696;
+	mso-list-type:simple;
+	mso-list-template-ids:1489677316;}
+@list l17:level1
+	{mso-level-start-at:0;
+	mso-level-number-format:bullet;
+	mso-level-text:-;
+	mso-level-tab-stop:.25in;
+	mso-level-number-position:left;
+	margin-left:.25in;
+	text-indent:-.25in;}
+@list l18
+	{mso-list-id:150293307;
+	mso-list-type:simple;
+	mso-list-template-ids:67698689;}
+@list l18:level1
+	{mso-level-number-format:bullet;
+	mso-level-text:\F0B7;
+	mso-level-tab-stop:.25in;
+	mso-level-number-position:left;
+	margin-left:.25in;
+	text-indent:-.25in;
+	font-family:Symbol;
+	mso-bidi-font-family:"Times New Roman";}
+@list l19
+	{mso-list-id:154762279;
+	mso-list-template-ids:566632982;}
+@list l19:level1
+	{mso-level-tab-stop:.25in;
+	mso-level-number-position:left;
+	margin-left:.25in;
+	text-indent:-.25in;}
+@list l19:level2
+	{mso-level-text:"%1\.%2\.";
+	mso-level-tab-stop:.75in;
+	mso-level-number-position:left;
+	margin-left:.55in;
+	text-indent:-.3in;}
+@list l19:level3
+	{mso-level-text:"%1\.%2\.%3\.";
+	mso-level-tab-stop:1.0in;
+	mso-level-number-position:left;
+	margin-left:.85in;
+	text-indent:-.35in;}
+@list l19:level4
+	{mso-level-text:"%1\.%2\.%3\.%4\.";
+	mso-level-tab-stop:1.2in;
+	mso-level-number-position:left;
+	margin-left:1.2in;
+	text-indent:-.45in;}
+@list l19:level5
+	{mso-level-text:"%1\.%2\.%3\.%4\.%5\.";
+	mso-level-tab-stop:1.55in;
+	mso-level-number-position:left;
+	margin-left:1.55in;
+	text-indent:-.55in;}
+@list l19:level6
+	{mso-level-text:"%1\.%2\.%3\.%4\.%5\.%6\.";
+	mso-level-tab-stop:1.9in;
+	mso-level-number-position:left;
+	margin-left:1.9in;
+	text-indent:-.65in;}
+@list l19:level7
+	{mso-level-text:"%1\.%2\.%3\.%4\.%5\.%6\.%7\.";
+	mso-level-tab-stop:2.25in;
+	mso-level-number-position:left;
+	margin-left:2.25in;
+	text-indent:-.75in;}
+@list l19:level8
+	{mso-level-text:"%1\.%2\.%3\.%4\.%5\.%6\.%7\.%8\.";
+	mso-level-tab-stop:2.6in;
+	mso-level-number-position:left;
+	margin-left:2.6in;
+	text-indent:-.85in;}
+@list l19:level9
+	{mso-level-text:"%1\.%2\.%3\.%4\.%5\.%6\.%7\.%8\.%9\.";
+	mso-level-tab-stop:3.0in;
+	mso-level-number-position:left;
+	margin-left:3.0in;
+	text-indent:-1.0in;}
+@list l20
+	{mso-list-id:174154132;
+	mso-list-template-ids:406119652;}
+@list l20:level1
+	{mso-level-tab-stop:.25in;
+	mso-level-number-position:left;
+	margin-left:.25in;
+	text-indent:-.25in;}
+@list l20:level2
+	{mso-level-text:"%1\.%2\.";
+	mso-level-tab-stop:.75in;
+	mso-level-number-position:left;
+	margin-left:.55in;
+	text-indent:-.3in;}
+@list l20:level3
+	{mso-level-text:"%1\.%2\.%3\.";
+	mso-level-tab-stop:1.0in;
+	mso-level-number-position:left;
+	margin-left:.85in;
+	text-indent:-.35in;}
+@list l20:level4
+	{mso-level-text:"%1\.%2\.%3\.%4\.";
+	mso-level-tab-stop:1.2in;
+	mso-level-number-position:left;
+	margin-left:1.2in;
+	text-indent:-.45in;}
+@list l20:level5
+	{mso-level-text:"%1\.%2\.%3\.%4\.%5\.";
+	mso-level-tab-stop:1.55in;
+	mso-level-number-position:left;
+	margin-left:1.55in;
+	text-indent:-.55in;}
+@list l20:level6
+	{mso-level-text:"%1\.%2\.%3\.%4\.%5\.%6\.";
+	mso-level-tab-stop:1.9in;
+	mso-level-number-position:left;
+	margin-left:1.9in;
+	text-indent:-.65in;}
+@list l20:level7
+	{mso-level-text:"%1\.%2\.%3\.%4\.%5\.%6\.%7\.";
+	mso-level-tab-stop:2.25in;
+	mso-level-number-position:left;
+	margin-left:2.25in;
+	text-indent:-.75in;}
+@list l20:level8
+	{mso-level-text:"%1\.%2\.%3\.%4\.%5\.%6\.%7\.%8\.";
+	mso-level-tab-stop:2.6in;
+	mso-level-number-position:left;
+	margin-left:2.6in;
+	text-indent:-.85in;}
+@list l20:level9
+	{mso-level-text:"%1\.%2\.%3\.%4\.%5\.%6\.%7\.%8\.%9\.";
+	mso-level-tab-stop:3.0in;
+	mso-level-number-position:left;
+	margin-left:3.0in;
+	text-indent:-1.0in;}
+@list l21
+	{mso-list-id:215312723;
+	mso-list-type:simple;
+	mso-list-template-ids:-1;}
+@list l21:level1
+	{mso-level-number-format:bullet;
+	mso-level-text:\F0B7;
+	mso-level-tab-stop:none;
+	mso-level-number-position:left;
+	mso-level-legacy:yes;
+	mso-level-legacy-indent:.25in;
+	mso-level-legacy-space:0in;
+	text-indent:-.25in;
+	mso-ansi-font-size:10.0pt;
+	mso-bidi-font-size:10.0pt;
+	font-family:Symbol;
+	mso-bidi-font-family:"Times New Roman";
+	mso-ansi-font-weight:normal;
+	mso-ansi-font-style:normal;
+	text-decoration:none;
+	text-underline:none;}
+@list l22
+	{mso-list-id:218174349;
+	mso-list-type:simple;
+	mso-list-template-ids:1607864076;}
+@list l22:level1
+	{mso-level-tab-stop:none;
+	mso-level-number-position:left;
+	mso-level-legacy:yes;
+	mso-level-legacy-indent:.25in;
+	mso-level-legacy-space:0in;
+	text-indent:-.25in;}
+@list l23
+	{mso-list-id:235894656;
+	mso-list-type:simple;
+	mso-list-template-ids:-2004328354;}
+@list l23:level1
+	{mso-level-start-at:0;
+	mso-level-number-format:bullet;
+	mso-level-text:-;
+	mso-level-tab-stop:.75in;
+	mso-level-number-position:left;
+	margin-left:.75in;
+	text-indent:-.25in;}
+@list l24
+	{mso-list-id:280065710;
+	mso-list-type:simple;
+	mso-list-template-ids:67698691;}
+@list l24:level1
+	{mso-level-number-format:bullet;
+	mso-level-text:\F0A8;
+	mso-level-tab-stop:.25in;
+	mso-level-number-position:left;
+	margin-left:.25in;
+	text-indent:-.25in;
+	font-family:Symbol;
+	mso-bidi-font-family:"Times New Roman";}
+@list l25
+	{mso-list-id:298918410;
+	mso-list-type:simple;
+	mso-list-template-ids:1092125594;}
+@list l25:level1
+	{mso-level-start-at:7;
+	mso-level-tab-stop:.5in;
+	mso-level-number-position:left;
+	text-indent:-.25in;}
+@list l26
+	{mso-list-id:310672889;
+	mso-list-type:simple;
+	mso-list-template-ids:67698689;}
+@list l26:level1
+	{mso-level-number-format:bullet;
+	mso-level-text:\F0B7;
+	mso-level-tab-stop:.25in;
+	mso-level-number-position:left;
+	margin-left:.25in;
+	text-indent:-.25in;
+	font-family:Symbol;
+	mso-bidi-font-family:"Times New Roman";}
+@list l27
+	{mso-list-id:335110217;
+	mso-list-type:simple;
+	mso-list-template-ids:67698689;}
+@list l27:level1
+	{mso-level-number-format:bullet;
+	mso-level-text:\F0B7;
+	mso-level-tab-stop:.25in;
+	mso-level-number-position:left;
+	margin-left:.25in;
+	text-indent:-.25in;
+	font-family:Symbol;
+	mso-bidi-font-family:"Times New Roman";}
+@list l28
+	{mso-list-id:367951647;
+	mso-list-type:simple;
+	mso-list-template-ids:-1;}
+@list l28:level1
+	{mso-level-start-at:3;
+	mso-level-tab-stop:none;
+	mso-level-number-position:left;
+	mso-level-legacy:yes;
+	mso-level-legacy-indent:.25in;
+	mso-level-legacy-space:0in;
+	margin-left:.25in;
+	text-indent:-.25in;}
+@list l29
+	{mso-list-id:418521640;
+	mso-list-type:simple;
+	mso-list-template-ids:67698689;}
+@list l29:level1
+	{mso-level-number-format:bullet;
+	mso-level-text:\F0B7;
+	mso-level-tab-stop:.25in;
+	mso-level-number-position:left;
+	margin-left:.25in;
+	text-indent:-.25in;
+	font-family:Symbol;
+	mso-bidi-font-family:"Times New Roman";}
+@list l30
+	{mso-list-id:442068130;
+	mso-list-type:simple;
+	mso-list-template-ids:-1;}
+@list l30:level1
+	{mso-level-start-at:10;
+	mso-level-tab-stop:none;
+	mso-level-number-position:left;
+	mso-level-legacy:yes;
+	mso-level-legacy-indent:.5in;
+	mso-level-legacy-space:0in;
+	text-indent:-.5in;}
+@list l31
+	{mso-list-id:472793367;
+	mso-list-type:hybrid;
+	mso-list-template-ids:915677740 67698689 1684808694 1607869104 67698689 67698691 67698693 67698689 67698691 67698693;}
+@list l31:level1
+	{mso-level-number-format:bullet;
+	mso-level-text:\F0B7;
+	mso-level-tab-stop:1.0in;
+	mso-level-number-position:left;
+	margin-left:1.0in;
+	text-indent:-.25in;
+	font-family:Symbol;}
+@list l31:level2
+	{mso-level-number-format:bullet;
+	mso-level-style-link:"List Bullet";
+	mso-level-text:\F0B7;
+	mso-level-tab-stop:1.5in;
+	mso-level-number-position:left;
+	margin-left:1.5in;
+	text-indent:-.25in;
+	font-family:Symbol;}
+@list l31:level3
+	{mso-level-number-format:bullet;
+	mso-level-text:\F0B7;
+	mso-level-tab-stop:2.0in;
+	mso-level-number-position:left;
+	margin-left:2.0in;
+	text-indent:-.25in;
+	font-family:Symbol;}
+@list l32
+	{mso-list-id:484785189;
+	mso-list-type:simple;
+	mso-list-template-ids:-1;}
+@list l32:level1
+	{mso-level-number-format:bullet;
+	mso-level-text:\F0B7;
+	mso-level-tab-stop:none;
+	mso-level-number-position:left;
+	mso-level-legacy:yes;
+	mso-level-legacy-indent:.25in;
+	mso-level-legacy-space:0in;
+	text-indent:-.25in;
+	mso-ansi-font-size:10.0pt;
+	mso-bidi-font-size:10.0pt;
+	font-family:Symbol;
+	mso-bidi-font-family:"Times New Roman";
+	mso-ansi-font-weight:normal;
+	mso-ansi-font-style:normal;
+	text-decoration:none;
+	text-underline:none;}
+@list l33
+	{mso-list-id:485561118;
+	mso-list-type:simple;
+	mso-list-template-ids:-1;}
+@list l33:level1
+	{mso-level-start-at:3;
+	mso-level-tab-stop:none;
+	mso-level-number-position:left;
+	mso-level-legacy:yes;
+	mso-level-legacy-indent:.25in;
+	mso-level-legacy-space:0in;
+	margin-left:.25in;
+	text-indent:-.25in;}
+@list l34
+	{mso-list-id:523521486;
+	mso-list-type:simple;
+	mso-list-template-ids:67698689;}
+@list l34:level1
+	{mso-level-number-format:bullet;
+	mso-level-text:\F0B7;
+	mso-level-tab-stop:.25in;
+	mso-level-number-position:left;
+	margin-left:.25in;
+	text-indent:-.25in;
+	font-family:Symbol;
+	mso-bidi-font-family:"Times New Roman";}
+@list l35
+	{mso-list-id:524095124;
+	mso-list-type:simple;
+	mso-list-template-ids:67698689;}
+@list l35:level1
+	{mso-level-number-format:bullet;
+	mso-level-text:\F0B7;
+	mso-level-tab-stop:.25in;
+	mso-level-number-position:left;
+	margin-left:.25in;
+	text-indent:-.25in;
+	font-family:Symbol;
+	mso-bidi-font-family:"Times New Roman";}
+@list l36
+	{mso-list-id:532233234;
+	mso-list-type:simple;
+	mso-list-template-ids:1489677316;}
+@list l36:level1
+	{mso-level-start-at:0;
+	mso-level-number-format:bullet;
+	mso-level-text:-;
+	mso-level-tab-stop:.25in;
+	mso-level-number-position:left;
+	margin-left:.25in;
+	text-indent:-.25in;}
+@list l37
+	{mso-list-id:543951975;
+	mso-list-template-ids:67698719;}
+@list l37:level1
+	{mso-level-tab-stop:.25in;
+	mso-level-number-position:left;
+	margin-left:.25in;
+	text-indent:-.25in;}
+@list l37:level2
+	{mso-level-text:"%1\.%2\.";
+	mso-level-tab-stop:.55in;
+	mso-level-number-position:left;
+	margin-left:.55in;
+	text-indent:-.3in;}
+@list l37:level3
+	{mso-level-text:"%1\.%2\.%3\.";
+	mso-level-tab-stop:.85in;
+	mso-level-number-position:left;
+	margin-left:.85in;
+	text-indent:-.35in;}
+@list l37:level4
+	{mso-level-text:"%1\.%2\.%3\.%4\.";
+	mso-level-tab-stop:1.25in;
+	mso-level-number-position:left;
+	margin-left:1.2in;
+	text-indent:-.45in;}
+@list l37:level5
+	{mso-level-text:"%1\.%2\.%3\.%4\.%5\.";
+	mso-level-tab-stop:1.75in;
+	mso-level-number-position:left;
+	margin-left:1.55in;
+	text-indent:-.55in;}
+@list l37:level6
+	{mso-level-text:"%1\.%2\.%3\.%4\.%5\.%6\.";
+	mso-level-tab-stop:2.0in;
+	mso-level-number-position:left;
+	margin-left:1.9in;
+	text-indent:-.65in;}
+@list l37:level7
+	{mso-level-text:"%1\.%2\.%3\.%4\.%5\.%6\.%7\.";
+	mso-level-tab-stop:2.5in;
+	mso-level-number-position:left;
+	margin-left:2.25in;
+	text-indent:-.75in;}
+@list l37:level8
+	{mso-level-text:"%1\.%2\.%3\.%4\.%5\.%6\.%7\.%8\.";
+	mso-level-tab-stop:2.75in;
+	mso-level-number-position:left;
+	margin-left:2.6in;
+	text-indent:-.85in;}
+@list l37:level9
+	{mso-level-text:"%1\.%2\.%3\.%4\.%5\.%6\.%7\.%8\.%9\.";
+	mso-level-tab-stop:3.25in;
+	mso-level-number-position:left;
+	margin-left:3.0in;
+	text-indent:-1.0in;}
+@list l38
+	{mso-list-id:553125279;
+	mso-list-type:simple;
+	mso-list-template-ids:67698689;}
+@list l38:level1
+	{mso-level-number-format:bullet;
+	mso-level-text:\F0B7;
+	mso-level-tab-stop:.25in;
+	mso-level-number-position:left;
+	margin-left:.25in;
+	text-indent:-.25in;
+	font-family:Symbol;
+	mso-bidi-font-family:"Times New Roman";}
+@list l39
+	{mso-list-id:557937827;
+	mso-list-type:simple;
+	mso-list-template-ids:67698703;}
+@list l39:level1
+	{mso-level-tab-stop:none;
+	mso-level-number-position:left;
+	mso-level-legacy:yes;
+	mso-level-legacy-indent:.25in;
+	mso-level-legacy-space:0in;
+	margin-left:.25in;
+	text-indent:-.25in;}
+@list l40
+	{mso-list-id:560793446;
+	mso-list-type:simple;
+	mso-list-template-ids:67698689;}
+@list l40:level1
+	{mso-level-number-format:bullet;
+	mso-level-text:\F0B7;
+	mso-level-tab-stop:.25in;
+	mso-level-number-position:left;
+	margin-left:.25in;
+	text-indent:-.25in;
+	font-family:Symbol;
+	mso-bidi-font-family:"Times New Roman";}
+@list l41
+	{mso-list-id:597295536;
+	mso-list-type:simple;
+	mso-list-template-ids:67698689;}
+@list l41:level1
+	{mso-level-number-format:bullet;
+	mso-level-text:\F0B7;
+	mso-level-tab-stop:.25in;
+	mso-level-number-position:left;
+	margin-left:.25in;
+	text-indent:-.25in;
+	font-family:Symbol;
+	mso-bidi-font-family:"Times New Roman";}
+@list l42
+	{mso-list-id:602150413;
+	mso-list-type:simple;
+	mso-list-template-ids:67698689;}
+@list l42:level1
+	{mso-level-number-format:bullet;
+	mso-level-text:\F0B7;
+	mso-level-tab-stop:.25in;
+	mso-level-number-position:left;
+	margin-left:.25in;
+	text-indent:-.25in;
+	font-family:Symbol;
+	mso-bidi-font-family:"Times New Roman";}
+@list l43
+	{mso-list-id:617834795;
+	mso-list-type:simple;
+	mso-list-template-ids:67698689;}
+@list l43:level1
+	{mso-level-number-format:bullet;
+	mso-level-text:\F0B7;
+	mso-level-tab-stop:.25in;
+	mso-level-number-position:left;
+	margin-left:.25in;
+	text-indent:-.25in;
+	font-family:Symbol;
+	mso-bidi-font-family:"Times New Roman";}
+@list l44
+	{mso-list-id:621307353;
+	mso-list-type:simple;
+	mso-list-template-ids:67698689;}
+@list l44:level1
+	{mso-level-number-format:bullet;
+	mso-level-text:\F0B7;
+	mso-level-tab-stop:.25in;
+	mso-level-number-position:left;
+	margin-left:.25in;
+	text-indent:-.25in;
+	font-family:Symbol;
+	mso-bidi-font-family:"Times New Roman";}
+@list l45
+	{mso-list-id:664430618;
+	mso-list-type:simple;
+	mso-list-template-ids:67698689;}
+@list l45:level1
+	{mso-level-number-format:bullet;
+	mso-level-text:\F0B7;
+	mso-level-tab-stop:.25in;
+	mso-level-number-position:left;
+	margin-left:.25in;
+	text-indent:-.25in;
+	font-family:Symbol;
+	mso-bidi-font-family:"Times New Roman";}
+@list l46
+	{mso-list-id:684673909;
+	mso-list-type:simple;
+	mso-list-template-ids:67698691;}
+@list l46:level1
+	{mso-level-number-format:bullet;
+	mso-level-text:\F0A8;
+	mso-level-tab-stop:.25in;
+	mso-level-number-position:left;
+	margin-left:.25in;
+	text-indent:-.25in;
+	font-family:Symbol;
+	mso-bidi-font-family:"Times New Roman";}
+@list l47
+	{mso-list-id:688339450;
+	mso-list-type:simple;
+	mso-list-template-ids:-1;}
+@list l47:level1
+	{mso-level-number-format:bullet;
+	mso-level-text:\F0B7;
+	mso-level-tab-stop:none;
+	mso-level-number-position:left;
+	mso-level-legacy:yes;
+	mso-level-legacy-indent:.25in;
+	mso-level-legacy-space:0in;
+	text-indent:-.25in;
+	mso-ansi-font-size:10.0pt;
+	mso-bidi-font-size:10.0pt;
+	font-family:Symbol;
+	mso-bidi-font-family:"Times New Roman";
+	mso-ansi-font-weight:normal;
+	mso-ansi-font-style:normal;
+	text-decoration:none;
+	text-underline:none;}
+@list l48
+	{mso-list-id:693923874;
+	mso-list-type:simple;
+	mso-list-template-ids:67698689;}
+@list l48:level1
+	{mso-level-number-format:bullet;
+	mso-level-text:\F0B7;
+	mso-level-tab-stop:.25in;
+	mso-level-number-position:left;
+	margin-left:.25in;
+	text-indent:-.25in;
+	font-family:Symbol;
+	mso-bidi-font-family:"Times New Roman";}
+@list l49
+	{mso-list-id:713696686;
+	mso-list-type:simple;
+	mso-list-template-ids:2097986170;}
+@list l49:level1
+	{mso-level-tab-stop:none;
+	mso-level-number-position:left;
+	mso-level-legacy:yes;
+	mso-level-legacy-indent:.25in;
+	mso-level-legacy-space:0in;
+	margin-left:.25in;
+	text-indent:-.25in;}
+@list l50
+	{mso-list-id:719865366;
+	mso-list-type:simple;
+	mso-list-template-ids:67698703;}
+@list l50:level1
+	{mso-level-tab-stop:.25in;
+	mso-level-number-position:left;
+	margin-left:.25in;
+	text-indent:-.25in;}
+@list l51
+	{mso-list-id:733506578;
+	mso-list-type:hybrid;
+	mso-list-template-ids:1893631922 1478501432 23996072 1384054072 56684136 -1294187810 -976828994 -1829487832 -788258552 1931237600;}
+@list l51:level1
+	{mso-level-number-format:bullet;
+	mso-level-text:\F0B7;
+	mso-level-tab-stop:.5in;
+	mso-level-number-position:left;
+	text-indent:-.25in;
+	mso-ansi-font-size:10.0pt;
+	font-family:Symbol;}
+@list l51:level2
+	{mso-level-number-format:bullet;
+	mso-level-text:o;
+	mso-level-tab-stop:1.0in;
+	mso-level-number-position:left;
+	text-indent:-.25in;
+	mso-ansi-font-size:10.0pt;
+	font-family:"Courier New";
+	mso-bidi-font-family:"Times New Roman";}
+@list l51:level3
+	{mso-level-number-format:bullet;
+	mso-level-text:\F0A7;
+	mso-level-tab-stop:1.5in;
+	mso-level-number-position:left;
+	text-indent:-.25in;
+	mso-ansi-font-size:10.0pt;
+	font-family:Wingdings;}
+@list l51:level4
+	{mso-level-number-format:bullet;
+	mso-level-text:\F0A7;
+	mso-level-tab-stop:2.0in;
+	mso-level-number-position:left;
+	text-indent:-.25in;
+	mso-ansi-font-size:10.0pt;
+	font-family:Wingdings;}
+@list l52
+	{mso-list-id:785469579;
+	mso-list-type:simple;
+	mso-list-template-ids:475184228;}
+@list l52:level1
+	{mso-level-tab-stop:.25in;
+	mso-level-number-position:left;
+	margin-left:.25in;
+	text-indent:-.25in;}
+@list l53
+	{mso-list-id:864833559;
+	mso-list-type:simple;
+	mso-list-template-ids:1489677316;}
+@list l53:level1
+	{mso-level-start-at:0;
+	mso-level-number-format:bullet;
+	mso-level-text:-;
+	mso-level-tab-stop:.25in;
+	mso-level-number-position:left;
+	margin-left:.25in;
+	text-indent:-.25in;}
+@list l54
+	{mso-list-id:866062155;
+	mso-list-type:hybrid;
+	mso-list-template-ids:676088362 1458701762 67698691 67698693 67698689 67698691 67698693 67698689 67698691 67698693;}
+@list l54:level1
+	{mso-level-start-at:0;
+	mso-level-number-format:bullet;
+	mso-level-text:\F0B7;
+	mso-level-tab-stop:.75in;
+	mso-level-number-position:left;
+	margin-left:.75in;
+	text-indent:-.25in;
+	font-family:Symbol;
+	mso-fareast-font-family:"Times New Roman";
+	mso-bidi-font-family:"Times New Roman";}
+@list l55
+	{mso-list-id:873691672;
+	mso-list-type:simple;
+	mso-list-template-ids:67698689;}
+@list l55:level1
+	{mso-level-number-format:bullet;
+	mso-level-text:\F0B7;
+	mso-level-tab-stop:.25in;
+	mso-level-number-position:left;
+	margin-left:.25in;
+	text-indent:-.25in;
+	font-family:Symbol;
+	mso-bidi-font-family:"Times New Roman";}
+@list l56
+	{mso-list-id:894390813;
+	mso-list-type:simple;
+	mso-list-template-ids:-897275930;}
+@list l56:level1
+	{mso-level-start-at:0;
+	mso-level-number-format:bullet;
+	mso-level-text:\F0B7;
+	mso-level-tab-stop:.75in;
+	mso-level-number-position:left;
+	margin-left:.75in;
+	text-indent:-.25in;
+	font-family:Symbol;}
+@list l57
+	{mso-list-id:936061348;
+	mso-list-type:simple;
+	mso-list-template-ids:-1;}
+@list l57:level1
+	{mso-level-number-format:bullet;
+	mso-level-text:\F0B7;
+	mso-level-tab-stop:none;
+	mso-level-number-position:left;
+	mso-level-legacy:yes;
+	mso-level-legacy-indent:.25in;
+	mso-level-legacy-space:0in;
+	text-indent:-.25in;
+	mso-ansi-font-size:10.0pt;
+	mso-bidi-font-size:10.0pt;
+	font-family:Symbol;
+	mso-bidi-font-family:"Times New Roman";
+	mso-ansi-font-weight:normal;
+	mso-ansi-font-style:normal;
+	text-decoration:none;
+	text-underline:none;}
+@list l58
+	{mso-list-id:937564086;
+	mso-list-type:simple;
+	mso-list-template-ids:-1880750074;}
+@list l58:level1
+	{mso-level-start-at:0;
+	mso-level-number-format:bullet;
+	mso-level-text:-;
+	mso-level-tab-stop:.75in;
+	mso-level-number-position:left;
+	margin-left:.75in;
+	text-indent:-.25in;}
+@list l59
+	{mso-list-id:996809585;
+	mso-list-type:simple;
+	mso-list-template-ids:-698681024;}
+@list l59:level1
+	{mso-level-start-at:0;
+	mso-level-number-format:bullet;
+	mso-level-text:-;
+	mso-level-tab-stop:.25in;
+	mso-level-number-position:left;
+	margin-left:.25in;
+	text-indent:-.25in;}
+@list l60
+	{mso-list-id:999966933;
+	mso-list-type:simple;
+	mso-list-template-ids:67698703;}
+@list l60:level1
+	{mso-level-start-at:3;
+	mso-level-tab-stop:.25in;
+	mso-level-number-position:left;
+	margin-left:.25in;
+	text-indent:-.25in;}
+@list l61
+	{mso-list-id:1038621798;
+	mso-list-type:simple;
+	mso-list-template-ids:67698689;}
+@list l61:level1
+	{mso-level-number-format:bullet;
+	mso-level-text:\F0B7;
+	mso-level-tab-stop:.25in;
+	mso-level-number-position:left;
+	margin-left:.25in;
+	text-indent:-.25in;
+	font-family:Symbol;
+	mso-bidi-font-family:"Times New Roman";}
+@list l62
+	{mso-list-id:1041245385;
+	mso-list-type:simple;
+	mso-list-template-ids:1489677316;}
+@list l62:level1
+	{mso-level-start-at:0;
+	mso-level-number-format:bullet;
+	mso-level-text:-;
+	mso-level-tab-stop:.25in;
+	mso-level-number-position:left;
+	margin-left:.25in;
+	text-indent:-.25in;}
+@list l63
+	{mso-list-id:1060247913;
+	mso-list-type:simple;
+	mso-list-template-ids:67698689;}
+@list l63:level1
+	{mso-level-number-format:bullet;
+	mso-level-text:\F0B7;
+	mso-level-tab-stop:.25in;
+	mso-level-number-position:left;
+	margin-left:.25in;
+	text-indent:-.25in;
+	font-family:Symbol;
+	mso-bidi-font-family:"Times New Roman";}
+@list l64
+	{mso-list-id:1064066073;
+	mso-list-type:simple;
+	mso-list-template-ids:67698691;}
+@list l64:level1
+	{mso-level-number-format:bullet;
+	mso-level-text:\F0A8;
+	mso-level-tab-stop:.25in;
+	mso-level-number-position:left;
+	margin-left:.25in;
+	text-indent:-.25in;
+	font-family:Symbol;
+	mso-bidi-font-family:"Times New Roman";}
+@list l65
+	{mso-list-id:1068267820;
+	mso-list-template-ids:769134402;}
+@list l65:level1
+	{mso-level-number-format:none;
+	mso-level-text:"";
+	mso-level-tab-stop:.25in;
+	mso-level-number-position:left;
+	margin-left:.25in;
+	text-indent:-.25in;}
+@list l65:level2
+	{mso-level-number-format:alpha-upper;
+	mso-level-style-link:"Plain Text";
+	mso-level-text:"Appendix %2";
+	mso-level-tab-stop:1.5in;
+	mso-level-number-position:left;
+	margin-left:.55in;
+	text-indent:-.3in;}
+@list l65:level3
+	{mso-level-number-format:none;
+	mso-level-text:"";
+	mso-level-tab-stop:.85in;
+	mso-level-number-position:left;
+	margin-left:.85in;
+	text-indent:-.35in;}
+@list l65:level4
+	{mso-level-text:"%1\.%2\.%3\.%4\.";
+	mso-level-tab-stop:1.2in;
+	mso-level-number-position:left;
+	margin-left:1.2in;
+	text-indent:-.45in;}
+@list l65:level5
+	{mso-level-text:"%1\.%2\.%3\.%4\.%5\.";
+	mso-level-tab-stop:1.55in;
+	mso-level-number-position:left;
+	margin-left:1.55in;
+	text-indent:-.55in;}
+@list l65:level6
+	{mso-level-text:"%1\.%2\.%3\.%4\.%5\.%6\.";
+	mso-level-tab-stop:1.9in;
+	mso-level-number-position:left;
+	margin-left:1.9in;
+	text-indent:-.65in;}
+@list l65:level7
+	{mso-level-text:"%1\.%2\.%3\.%4\.%5\.%6\.%7\.";
+	mso-level-tab-stop:2.25in;
+	mso-level-number-position:left;
+	margin-left:2.25in;
+	text-indent:-.75in;}
+@list l65:level8
+	{mso-level-text:"%1\.%2\.%3\.%4\.%5\.%6\.%7\.%8\.";
+	mso-level-tab-stop:2.6in;
+	mso-level-number-position:left;
+	margin-left:2.6in;
+	text-indent:-.85in;}
+@list l65:level9
+	{mso-level-text:"%1\.%2\.%3\.%4\.%5\.%6\.%7\.%8\.%9\.";
+	mso-level-tab-stop:3.0in;
+	mso-level-number-position:left;
+	margin-left:3.0in;
+	text-indent:-1.0in;}
+@list l66
+	{mso-list-id:1131098850;
+	mso-list-template-ids:1388319368;}
+@list l66:level1
+	{mso-level-style-link:"Heading 1";
+	mso-level-text:%1;
+	mso-level-tab-stop:.3in;
+	mso-level-number-position:left;
+	margin-left:.3in;
+	text-indent:-.3in;}
+@list l66:level2
+	{mso-level-style-link:"Heading 2";
+	mso-level-text:"%1\.%2";
+	mso-level-tab-stop:.4in;
+	mso-level-number-position:left;
+	margin-left:.4in;
+	text-indent:-.4in;}
+@list l66:level3
+	{mso-level-style-link:"Heading 3";
+	mso-level-text:"%1\.%2\.%3";
+	mso-level-tab-stop:.5in;
+	mso-level-number-position:left;
+	margin-left:.5in;
+	text-indent:-.5in;}
+@list l66:level4
+	{mso-level-style-link:"Heading 4";
+	mso-level-text:"%1\.%2\.%3\.%4";
+	mso-level-tab-stop:.6in;
+	mso-level-number-position:left;
+	margin-left:.6in;
+	text-indent:-.6in;}
+@list l66:level5
+	{mso-level-style-link:"Heading 5";
+	mso-level-text:"%1\.%2\.%3\.%4\.%5";
+	mso-level-tab-stop:.7in;
+	mso-level-number-position:left;
+	margin-left:.7in;
+	text-indent:-.7in;}
+@list l66:level6
+	{mso-level-style-link:"Heading 6";
+	mso-level-text:"%1\.%2\.%3\.%4\.%5\.%6";
+	mso-level-tab-stop:.8in;
+	mso-level-number-position:left;
+	margin-left:.8in;
+	text-indent:-.8in;}
+@list l66:level7
+	{mso-level-style-link:"Heading 7";
+	mso-level-text:"%1\.%2\.%3\.%4\.%5\.%6\.%7";
+	mso-level-tab-stop:.9in;
+	mso-level-number-position:left;
+	margin-left:.9in;
+	text-indent:-.9in;}
+@list l66:level8
+	{mso-level-style-link:"Heading 8";
+	mso-level-text:"%1\.%2\.%3\.%4\.%5\.%6\.%7\.%8";
+	mso-level-tab-stop:1.0in;
+	mso-level-number-position:left;
+	margin-left:1.0in;
+	text-indent:-1.0in;}
+@list l66:level9
+	{mso-level-style-link:"Heading 9";
+	mso-level-text:"%1\.%2\.%3\.%4\.%5\.%6\.%7\.%8\.%9";
+	mso-level-tab-stop:1.1in;
+	mso-level-number-position:left;
+	margin-left:1.1in;
+	text-indent:-1.1in;}
+@list l67
+	{mso-list-id:1132291583;
+	mso-list-type:simple;
+	mso-list-template-ids:1489677316;}
+@list l67:level1
+	{mso-level-start-at:0;
+	mso-level-number-format:bullet;
+	mso-level-text:-;
+	mso-level-tab-stop:.25in;
+	mso-level-number-position:left;
+	margin-left:.25in;
+	text-indent:-.25in;}
+@list l68
+	{mso-list-id:1137458720;
+	mso-list-type:hybrid;
+	mso-list-template-ids:209473742 67698689 67698691 67698693 67698689 67698691 67698693 67698689 67698691 67698693;}
+@list l68:level1
+	{mso-level-number-format:bullet;
+	mso-level-text:\F0B7;
+	mso-level-tab-stop:1.0in;
+	mso-level-number-position:left;
+	margin-left:1.0in;
+	text-indent:-.25in;
+	font-family:Symbol;}
+@list l68:level2
+	{mso-level-number-format:bullet;
+	mso-level-text:o;
+	mso-level-tab-stop:1.5in;
+	mso-level-number-position:left;
+	margin-left:1.5in;
+	text-indent:-.25in;
+	font-family:"Courier New";
+	mso-bidi-font-family:"Times New Roman";}
+@list l68:level3
+	{mso-level-number-format:bullet;
+	mso-level-text:\F0A7;
+	mso-level-tab-stop:2.0in;
+	mso-level-number-position:left;
+	margin-left:2.0in;
+	text-indent:-.25in;
+	font-family:Wingdings;}
+@list l69
+	{mso-list-id:1169558743;
+	mso-list-type:simple;
+	mso-list-template-ids:-1526156232;}
+@list l69:level1
+	{mso-level-tab-stop:none;
+	mso-level-number-position:left;
+	mso-level-legacy:yes;
+	mso-level-legacy-indent:.25in;
+	mso-level-legacy-space:0in;
+	margin-left:.25in;
+	text-indent:-.25in;}
+@list l70
+	{mso-list-id:1176916268;
+	mso-list-type:simple;
+	mso-list-template-ids:67698689;}
+@list l70:level1
+	{mso-level-number-format:bullet;
+	mso-level-text:\F0B7;
+	mso-level-tab-stop:.25in;
+	mso-level-number-position:left;
+	margin-left:.25in;
+	text-indent:-.25in;
+	font-family:Symbol;
+	mso-bidi-font-family:"Times New Roman";}
+@list l71
+	{mso-list-id:1243837357;
+	mso-list-type:simple;
+	mso-list-template-ids:374760076;}
+@list l71:level1
+	{mso-level-tab-stop:none;
+	mso-level-number-position:left;
+	mso-level-legacy:yes;
+	mso-level-legacy-indent:.25in;
+	mso-level-legacy-space:0in;
+	margin-left:.25in;
+	text-indent:-.25in;}
+@list l72
+	{mso-list-id:1295477383;
+	mso-list-type:simple;
+	mso-list-template-ids:67698689;}
+@list l72:level1
+	{mso-level-number-format:bullet;
+	mso-level-text:\F0B7;
+	mso-level-tab-stop:.25in;
+	mso-level-number-position:left;
+	margin-left:.25in;
+	text-indent:-.25in;
+	font-family:Symbol;
+	mso-bidi-font-family:"Times New Roman";}
+@list l73
+	{mso-list-id:1340502346;
+	mso-list-type:simple;
+	mso-list-template-ids:-467648580;}
+@list l73:level1
+	{mso-level-start-at:3;
+	mso-level-text:"%1\. ";
+	mso-level-tab-stop:none;
+	mso-level-number-position:left;
+	mso-level-legacy:yes;
+	mso-level-legacy-indent:.25in;
+	mso-level-legacy-space:0in;
+	text-indent:-.25in;
+	mso-ansi-font-size:10.0pt;
+	mso-bidi-font-size:10.0pt;
+	font-family:"Times New Roman";
+	mso-ansi-font-weight:normal;
+	mso-ansi-font-style:normal;
+	text-decoration:none;
+	text-underline:none;}
+@list l74
+	{mso-list-id:1383863784;
+	mso-list-type:hybrid;
+	mso-list-template-ids:662058666 1607869104 67698691 67698693 67698689 67698691 67698693 67698689 67698691 67698693;}
+@list l74:level1
+	{mso-level-number-format:bullet;
+	mso-level-text:\F0B7;
+	mso-level-tab-stop:56.25pt;
+	mso-level-number-position:left;
+	margin-left:56.25pt;
+	text-indent:-.25in;
+	font-family:Symbol;}
+@list l75
+	{mso-list-id:1417286470;
+	mso-list-type:simple;
+	mso-list-template-ids:1489677316;}
+@list l75:level1
+	{mso-level-start-at:0;
+	mso-level-number-format:bullet;
+	mso-level-text:-;
+	mso-level-tab-stop:.25in;
+	mso-level-number-position:left;
+	margin-left:.25in;
+	text-indent:-.25in;}
+@list l76
+	{mso-list-id:1418867995;
+	mso-list-type:simple;
+	mso-list-template-ids:67698703;}
+@list l76:level1
+	{mso-level-start-at:7;
+	mso-level-tab-stop:.25in;
+	mso-level-number-position:left;
+	margin-left:.25in;
+	text-indent:-.25in;}
+@list l77
+	{mso-list-id:1441415278;
+	mso-list-type:hybrid;
+	mso-list-template-ids:-309011386 -16597474 67698713 67698715 67698703 67698713 67698715 67698703 67698713 67698715;}
+@list l77:level1
+	{mso-level-tab-stop:.25in;
+	mso-level-number-position:left;
+	margin-left:.1in;
+	text-indent:-.1in;}
+@list l78
+	{mso-list-id:1470631824;
+	mso-list-type:simple;
+	mso-list-template-ids:67698703;}
+@list l78:level1
+	{mso-level-tab-stop:.25in;
+	mso-level-number-position:left;
+	margin-left:.25in;
+	text-indent:-.25in;}
+@list l79
+	{mso-list-id:1488394846;
+	mso-list-type:simple;
+	mso-list-template-ids:67698703;}
+@list l79:level1
+	{mso-level-tab-stop:none;
+	mso-level-number-position:left;
+	mso-level-legacy:yes;
+	mso-level-legacy-indent:.25in;
+	mso-level-legacy-space:0in;
+	margin-left:.25in;
+	text-indent:-.25in;}
+@list l80
+	{mso-list-id:1512140148;
+	mso-list-template-ids:1388319368;}
+@list l80:level1
+	{mso-level-number-format:bullet;
+	mso-level-text:o;
+	mso-level-tab-stop:.25in;
+	mso-level-number-position:left;
+	margin-left:.25in;
+	text-indent:-.25in;
+	font-family:"Courier New";
+	mso-bidi-font-family:"Times New Roman";}
+@list l80:level2
+	{mso-level-text:"%1\.%2";
+	mso-level-tab-stop:.4in;
+	mso-level-number-position:left;
+	margin-left:.4in;
+	text-indent:-.4in;}
+@list l80:level3
+	{mso-level-text:"%1\.%2\.%3";
+	mso-level-tab-stop:.5in;
+	mso-level-number-position:left;
+	margin-left:.5in;
+	text-indent:-.5in;}
+@list l80:level4
+	{mso-level-text:"%1\.%2\.%3\.%4";
+	mso-level-tab-stop:.6in;
+	mso-level-number-position:left;
+	margin-left:.6in;
+	text-indent:-.6in;}
+@list l80:level5
+	{mso-level-text:"%1\.%2\.%3\.%4\.%5";
+	mso-level-tab-stop:.7in;
+	mso-level-number-position:left;
+	margin-left:.7in;
+	text-indent:-.7in;}
+@list l80:level6
+	{mso-level-text:"%1\.%2\.%3\.%4\.%5\.%6";
+	mso-level-tab-stop:.8in;
+	mso-level-number-position:left;
+	margin-left:.8in;
+	text-indent:-.8in;}
+@list l80:level7
+	{mso-level-text:"%1\.%2\.%3\.%4\.%5\.%6\.%7";
+	mso-level-tab-stop:.9in;
+	mso-level-number-position:left;
+	margin-left:.9in;
+	text-indent:-.9in;}
+@list l80:level8
+	{mso-level-text:"%1\.%2\.%3\.%4\.%5\.%6\.%7\.%8";
+	mso-level-tab-stop:1.0in;
+	mso-level-number-position:left;
+	margin-left:1.0in;
+	text-indent:-1.0in;}
+@list l80:level9
+	{mso-level-text:"%1\.%2\.%3\.%4\.%5\.%6\.%7\.%8\.%9";
+	mso-level-tab-stop:1.1in;
+	mso-level-number-position:left;
+	margin-left:1.1in;
+	text-indent:-1.1in;}
+@list l81
+	{mso-list-id:1521312595;
+	mso-list-type:simple;
+	mso-list-template-ids:67698689;}
+@list l81:level1
+	{mso-level-number-format:bullet;
+	mso-level-text:\F0B7;
+	mso-level-tab-stop:.25in;
+	mso-level-number-position:left;
+	margin-left:.25in;
+	text-indent:-.25in;
+	font-family:Symbol;
+	mso-bidi-font-family:"Times New Roman";}
+@list l82
+	{mso-list-id:1531605620;
+	mso-list-type:simple;
+	mso-list-template-ids:1414139148;}
+@list l82:level1
+	{mso-level-start-at:6;
+	mso-level-tab-stop:.5in;
+	mso-level-number-position:left;
+	text-indent:-.25in;}
+@list l83
+	{mso-list-id:1562787954;
+	mso-list-type:simple;
+	mso-list-template-ids:67698689;}
+@list l83:level1
+	{mso-level-number-format:bullet;
+	mso-level-text:\F0B7;
+	mso-level-tab-stop:.25in;
+	mso-level-number-position:left;
+	margin-left:.25in;
+	text-indent:-.25in;
+	font-family:Symbol;
+	mso-bidi-font-family:"Times New Roman";}
+@list l84
+	{mso-list-id:1595822232;
+	mso-list-type:simple;
+	mso-list-template-ids:-1;}
+@list l84:level1
+	{mso-level-number-format:bullet;
+	mso-level-text:\F0B7;
+	mso-level-tab-stop:none;
+	mso-level-number-position:left;
+	mso-level-legacy:yes;
+	mso-level-legacy-indent:.25in;
+	mso-level-legacy-space:0in;
+	text-indent:-.25in;
+	mso-ansi-font-size:10.0pt;
+	mso-bidi-font-size:10.0pt;
+	font-family:Symbol;
+	mso-bidi-font-family:"Times New Roman";
+	mso-ansi-font-weight:normal;
+	mso-ansi-font-style:normal;
+	text-decoration:none;
+	text-underline:none;}
+@list l85
+	{mso-list-id:1596672436;
+	mso-list-type:simple;
+	mso-list-template-ids:67698689;}
+@list l85:level1
+	{mso-level-number-format:bullet;
+	mso-level-text:\F0B7;
+	mso-level-tab-stop:.25in;
+	mso-level-number-position:left;
+	margin-left:.25in;
+	text-indent:-.25in;
+	font-family:Symbol;
+	mso-bidi-font-family:"Times New Roman";}
+@list l86
+	{mso-list-id:1610890037;
+	mso-list-type:simple;
+	mso-list-template-ids:67698689;}
+@list l86:level1
+	{mso-level-number-format:bullet;
+	mso-level-text:\F0B7;
+	mso-level-tab-stop:.25in;
+	mso-level-number-position:left;
+	margin-left:.25in;
+	text-indent:-.25in;
+	font-family:Symbol;
+	mso-bidi-font-family:"Times New Roman";}
+@list l87
+	{mso-list-id:1629161449;
+	mso-list-type:simple;
+	mso-list-template-ids:1471178048;}
+@list l87:level1
+	{mso-level-tab-stop:.75in;
+	mso-level-number-position:left;
+	margin-left:.75in;
+	text-indent:-.25in;}
+@list l88
+	{mso-list-id:1636374779;
+	mso-list-type:simple;
+	mso-list-template-ids:67698689;}
+@list l88:level1
+	{mso-level-number-format:bullet;
+	mso-level-text:\F0B7;
+	mso-level-tab-stop:.25in;
+	mso-level-number-position:left;
+	margin-left:.25in;
+	text-indent:-.25in;
+	font-family:Symbol;
+	mso-bidi-font-family:"Times New Roman";}
+@list l89
+	{mso-list-id:1642688581;
+	mso-list-type:simple;
+	mso-list-template-ids:-1939965692;}
+@list l89:level1
+	{mso-level-start-at:5;
+	mso-level-number-format:bullet;
+	mso-level-text:-;
+	mso-level-tab-stop:.75in;
+	mso-level-number-position:left;
+	margin-left:.75in;
+	text-indent:-.25in;}
+@list l90
+	{mso-list-id:1667241519;
+	mso-list-type:simple;
+	mso-list-template-ids:67698691;}
+@list l90:level1
+	{mso-level-number-format:bullet;
+	mso-level-text:\F0A8;
+	mso-level-tab-stop:.25in;
+	mso-level-number-position:left;
+	margin-left:.25in;
+	text-indent:-.25in;
+	font-family:Symbol;
+	mso-bidi-font-family:"Times New Roman";}
+@list l91
+	{mso-list-id:1720082615;
+	mso-list-type:simple;
+	mso-list-template-ids:67698689;}
+@list l91:level1
+	{mso-level-start-at:0;
+	mso-level-number-format:bullet;
+	mso-level-text:\F0B7;
+	mso-level-tab-stop:.25in;
+	mso-level-number-position:left;
+	margin-left:.25in;
+	text-indent:-.25in;
+	font-family:Symbol;
+	mso-bidi-font-family:"Times New Roman";}
+@list l92
+	{mso-list-id:1745489579;
+	mso-list-template-ids:151178770;}
+@list l92:level1
+	{mso-level-text:%1;
+	mso-level-tab-stop:.3in;
+	mso-level-number-position:left;
+	margin-left:.3in;
+	text-indent:-.3in;}
+@list l92:level2
+	{mso-level-text:"%1\.%2";
+	mso-level-tab-stop:.4in;
+	mso-level-number-position:left;
+	margin-left:.4in;
+	text-indent:-.4in;}
+@list l92:level3
+	{mso-level-text:"%1\.%2\.%3";
+	mso-level-tab-stop:.5in;
+	mso-level-number-position:left;
+	margin-left:.5in;
+	text-indent:-.5in;}
+@list l92:level4
+	{mso-level-text:"%1\.%2\.%3\.%4";
+	mso-level-tab-stop:.6in;
+	mso-level-number-position:left;
+	margin-left:.6in;
+	text-indent:-.6in;}
+@list l92:level5
+	{mso-level-text:"%1\.%2\.%3\.%4\.%5";
+	mso-level-tab-stop:.7in;
+	mso-level-number-position:left;
+	margin-left:.7in;
+	text-indent:-.7in;}
+@list l92:level6
+	{mso-level-text:"%1\.%2\.%3\.%4\.%5\.%6";
+	mso-level-tab-stop:.8in;
+	mso-level-number-position:left;
+	margin-left:.8in;
+	text-indent:-.8in;}
+@list l92:level7
+	{mso-level-text:"%1\.%2\.%3\.%4\.%5\.%6\.%7";
+	mso-level-tab-stop:.9in;
+	mso-level-number-position:left;
+	margin-left:.9in;
+	text-indent:-.9in;}
+@list l92:level8
+	{mso-level-text:"%1\.%2\.%3\.%4\.%5\.%6\.%7\.%8";
+	mso-level-tab-stop:1.0in;
+	mso-level-number-position:left;
+	margin-left:1.0in;
+	text-indent:-1.0in;}
+@list l92:level9
+	{mso-level-text:"%1\.%2\.%3\.%4\.%5\.%6\.%7\.%8\.%9";
+	mso-level-tab-stop:1.1in;
+	mso-level-number-position:left;
+	margin-left:1.1in;
+	text-indent:-1.1in;}
+@list l93
+	{mso-list-id:1751584881;
+	mso-list-type:simple;
+	mso-list-template-ids:-1;}
+@list l93:level1
+	{mso-level-number-format:bullet;
+	mso-level-text:\F0B7;
+	mso-level-tab-stop:none;
+	mso-level-number-position:left;
+	mso-level-legacy:yes;
+	mso-level-legacy-indent:.25in;
+	mso-level-legacy-space:0in;
+	text-indent:-.25in;
+	mso-ansi-font-size:10.0pt;
+	mso-bidi-font-size:10.0pt;
+	font-family:Symbol;
+	mso-bidi-font-family:"Times New Roman";
+	mso-ansi-font-weight:normal;
+	mso-ansi-font-style:normal;
+	text-decoration:none;
+	text-underline:none;}
+@list l94
+	{mso-list-id:1775173833;
+	mso-list-type:simple;
+	mso-list-template-ids:2113716810;}
+@list l94:level1
+	{mso-level-tab-stop:none;
+	mso-level-number-position:left;
+	mso-level-legacy:yes;
+	mso-level-legacy-indent:.25in;
+	mso-level-legacy-space:0in;
+	text-indent:-.25in;}
+@list l95
+	{mso-list-id:1806507101;
+	mso-list-type:hybrid;
+	mso-list-template-ids:-1244632816 67698689 67698691 67698693 67698689 67698691 67698693 67698689 67698691 67698693;}
+@list l95:level1
+	{mso-level-number-format:bullet;
+	mso-level-text:\F0B7;
+	mso-level-tab-stop:74.25pt;
+	mso-level-number-position:left;
+	margin-left:74.25pt;
+	text-indent:-.25in;
+	font-family:Symbol;}
+@list l96
+	{mso-list-id:1821801855;
+	mso-list-type:simple;
+	mso-list-template-ids:67698703;}
+@list l96:level1
+	{mso-level-tab-stop:.25in;
+	mso-level-number-position:left;
+	margin-left:.25in;
+	text-indent:-.25in;}
+@list l97
+	{mso-list-id:1852253403;
+	mso-list-type:hybrid;
+	mso-list-template-ids:572552886 67698689 67698691 67698693 67698689 67698691 67698693 67698689 67698691 67698693;}
+@list l97:level1
+	{mso-level-number-format:bullet;
+	mso-level-text:\F0B7;
+	mso-level-tab-stop:1.0in;
+	mso-level-number-position:left;
+	margin-left:1.0in;
+	text-indent:-.25in;
+	font-family:Symbol;}
+@list l98
+	{mso-list-id:1883131448;
+	mso-list-type:simple;
+	mso-list-template-ids:67698691;}
+@list l98:level1
+	{mso-level-number-format:bullet;
+	mso-level-text:\F0A8;
+	mso-level-tab-stop:.25in;
+	mso-level-number-position:left;
+	margin-left:.25in;
+	text-indent:-.25in;
+	font-family:Symbol;
+	mso-bidi-font-family:"Times New Roman";}
+@list l99
+	{mso-list-id:1920865781;
+	mso-list-template-ids:1676708296;}
+@list l99:level1
+	{mso-level-tab-stop:.25in;
+	mso-level-number-position:left;
+	margin-left:.25in;
+	text-indent:-.25in;}
+@list l99:level2
+	{mso-level-text:"%1\.%2\.";
+	mso-level-tab-stop:.55in;
+	mso-level-number-position:left;
+	margin-left:.55in;
+	text-indent:-.3in;}
+@list l99:level3
+	{mso-level-text:"%1\.%2\.%3\.";
+	mso-level-tab-stop:.85in;
+	mso-level-number-position:left;
+	margin-left:.85in;
+	text-indent:-.35in;}
+@list l99:level4
+	{mso-level-text:"%1\.%2\.%3\.%4\.";
+	mso-level-tab-stop:1.2in;
+	mso-level-number-position:left;
+	margin-left:1.2in;
+	text-indent:-.45in;}
+@list l99:level5
+	{mso-level-text:"%1\.%2\.%3\.%4\.%5\.";
+	mso-level-tab-stop:1.55in;
+	mso-level-number-position:left;
+	margin-left:1.55in;
+	text-indent:-.55in;}
+@list l99:level6
+	{mso-level-text:"%1\.%2\.%3\.%4\.%5\.%6\.";
+	mso-level-tab-stop:1.9in;
+	mso-level-number-position:left;
+	margin-left:1.9in;
+	text-indent:-.65in;}
+@list l99:level7
+	{mso-level-text:"%1\.%2\.%3\.%4\.%5\.%6\.%7\.";
+	mso-level-tab-stop:2.25in;
+	mso-level-number-position:left;
+	margin-left:2.25in;
+	text-indent:-.75in;}
+@list l99:level8
+	{mso-level-text:"%1\.%2\.%3\.%4\.%5\.%6\.%7\.%8\.";
+	mso-level-tab-stop:2.6in;
+	mso-level-number-position:left;
+	margin-left:2.6in;
+	text-indent:-.85in;}
+@list l99:level9
+	{mso-level-text:"%1\.%2\.%3\.%4\.%5\.%6\.%7\.%8\.%9\.";
+	mso-level-tab-stop:3.0in;
+	mso-level-number-position:left;
+	margin-left:3.0in;
+	text-indent:-1.0in;}
+@list l100
+	{mso-list-id:1981767411;
+	mso-list-type:simple;
+	mso-list-template-ids:67698689;}
+@list l100:level1
+	{mso-level-number-format:bullet;
+	mso-level-text:\F0B7;
+	mso-level-tab-stop:.25in;
+	mso-level-number-position:left;
+	margin-left:.25in;
+	text-indent:-.25in;
+	font-family:Symbol;
+	mso-bidi-font-family:"Times New Roman";}
+@list l101
+	{mso-list-id:1984843384;
+	mso-list-type:simple;
+	mso-list-template-ids:67698689;}
+@list l101:level1
+	{mso-level-number-format:bullet;
+	mso-level-text:\F0B7;
+	mso-level-tab-stop:.25in;
+	mso-level-number-position:left;
+	margin-left:.25in;
+	text-indent:-.25in;
+	font-family:Symbol;
+	mso-bidi-font-family:"Times New Roman";}
+@list l102
+	{mso-list-id:2006739226;
+	mso-list-type:simple;
+	mso-list-template-ids:-1349776376;}
+@list l102:level1
+	{mso-level-start-at:5;
+	mso-level-number-format:bullet;
+	mso-level-text:-;
+	mso-level-tab-stop:.75in;
+	mso-level-number-position:left;
+	margin-left:.75in;
+	text-indent:-.25in;}
+@list l103
+	{mso-list-id:2018312543;
+	mso-list-type:simple;
+	mso-list-template-ids:67698703;}
+@list l103:level1
+	{mso-level-tab-stop:.25in;
+	mso-level-number-position:left;
+	margin-left:.25in;
+	text-indent:-.25in;}
+@list l104
+	{mso-list-id:2027825838;
+	mso-list-template-ids:1168675398;}
+@list l104:level1
+	{mso-level-tab-stop:.25in;
+	mso-level-number-position:left;
+	margin-left:.25in;
+	text-indent:-.25in;}
+@list l104:level2
+	{mso-level-text:"%1\.%2\.";
+	mso-level-tab-stop:.75in;
+	mso-level-number-position:left;
+	margin-left:.55in;
+	text-indent:-.3in;}
+@list l104:level3
+	{mso-level-text:"%1\.%2\.%3\.";
+	mso-level-tab-stop:1.0in;
+	mso-level-number-position:left;
+	margin-left:.85in;
+	text-indent:-.35in;}
+@list l104:level4
+	{mso-level-text:"%1\.%2\.%3\.%4\.";
+	mso-level-tab-stop:1.2in;
+	mso-level-number-position:left;
+	margin-left:1.2in;
+	text-indent:-.45in;}
+@list l104:level5
+	{mso-level-text:"%1\.%2\.%3\.%4\.%5\.";
+	mso-level-tab-stop:1.55in;
+	mso-level-number-position:left;
+	margin-left:1.55in;
+	text-indent:-.55in;}
+@list l104:level6
+	{mso-level-text:"%1\.%2\.%3\.%4\.%5\.%6\.";
+	mso-level-tab-stop:1.9in;
+	mso-level-number-position:left;
+	margin-left:1.9in;
+	text-indent:-.65in;}
+@list l104:level7
+	{mso-level-text:"%1\.%2\.%3\.%4\.%5\.%6\.%7\.";
+	mso-level-tab-stop:2.25in;
+	mso-level-number-position:left;
+	margin-left:2.25in;
+	text-indent:-.75in;}
+@list l104:level8
+	{mso-level-text:"%1\.%2\.%3\.%4\.%5\.%6\.%7\.%8\.";
+	mso-level-tab-stop:2.6in;
+	mso-level-number-position:left;
+	margin-left:2.6in;
+	text-indent:-.85in;}
+@list l104:level9
+	{mso-level-text:"%1\.%2\.%3\.%4\.%5\.%6\.%7\.%8\.%9\.";
+	mso-level-tab-stop:3.0in;
+	mso-level-number-position:left;
+	margin-left:3.0in;
+	text-indent:-1.0in;}
+@list l105
+	{mso-list-id:2053532773;
+	mso-list-type:simple;
+	mso-list-template-ids:67698691;}
+@list l105:level1
+	{mso-level-number-format:bullet;
+	mso-level-text:\F0A8;
+	mso-level-tab-stop:.25in;
+	mso-level-number-position:left;
+	margin-left:.25in;
+	text-indent:-.25in;
+	font-family:Symbol;
+	mso-bidi-font-family:"Times New Roman";}
+@list l106
+	{mso-list-id:2061247124;
+	mso-list-type:hybrid;
+	mso-list-template-ids:-1725427328 67698689 67698691 67698693 67698689 67698691 67698693 67698689 67698691 67698693;}
+@list l106:level1
+	{mso-level-number-format:bullet;
+	mso-level-text:\F0B7;
+	mso-level-tab-stop:1.0in;
+	mso-level-number-position:left;
+	margin-left:1.0in;
+	text-indent:-.25in;
+	font-family:Symbol;}
+@list l107
+	{mso-list-id:2063673267;
+	mso-list-type:simple;
+	mso-list-template-ids:67698689;}
+@list l107:level1
+	{mso-level-number-format:bullet;
+	mso-level-text:\F0B7;
+	mso-level-tab-stop:.25in;
+	mso-level-number-position:left;
+	margin-left:.25in;
+	text-indent:-.25in;
+	font-family:Symbol;
+	mso-bidi-font-family:"Times New Roman";}
+@list l108
+	{mso-list-id:2078899905;
+	mso-list-type:simple;
+	mso-list-template-ids:-357254546;}
+@list l108:level1
+	{mso-level-start-at:7;
+	mso-level-tab-stop:.5in;
+	mso-level-number-position:left;
+	text-indent:-.25in;}
+@list l109
+	{mso-list-id:2118869796;
+	mso-list-template-ids:-2067084522;}
+@list l109:level1
+	{mso-level-tab-stop:.25in;
+	mso-level-number-position:left;
+	margin-left:.25in;
+	text-indent:-.25in;}
+@list l109:level2
+	{mso-level-text:"%1\.%2\.";
+	mso-level-tab-stop:.55in;
+	mso-level-number-position:left;
+	margin-left:.55in;
+	text-indent:-.3in;}
+@list l109:level3
+	{mso-level-text:"%1\.%2\.%3\.";
+	mso-level-tab-stop:.85in;
+	mso-level-number-position:left;
+	margin-left:.85in;
+	text-indent:-.35in;}
+@list l109:level4
+	{mso-level-text:"%1\.%2\.%3\.%4\.";
+	mso-level-tab-stop:1.25in;
+	mso-level-number-position:left;
+	margin-left:1.2in;
+	text-indent:-.45in;}
+@list l109:level5
+	{mso-level-text:"%1\.%2\.%3\.%4\.%5\.";
+	mso-level-tab-stop:1.75in;
+	mso-level-number-position:left;
+	margin-left:1.55in;
+	text-indent:-.55in;}
+@list l109:level6
+	{mso-level-text:"%1\.%2\.%3\.%4\.%5\.%6\.";
+	mso-level-tab-stop:2.0in;
+	mso-level-number-position:left;
+	margin-left:1.9in;
+	text-indent:-.65in;}
+@list l109:level7
+	{mso-level-text:"%1\.%2\.%3\.%4\.%5\.%6\.%7\.";
+	mso-level-tab-stop:2.5in;
+	mso-level-number-position:left;
+	margin-left:2.25in;
+	text-indent:-.75in;}
+@list l109:level8
+	{mso-level-text:"%1\.%2\.%3\.%4\.%5\.%6\.%7\.%8\.";
+	mso-level-tab-stop:2.75in;
+	mso-level-number-position:left;
+	margin-left:2.6in;
+	text-indent:-.85in;}
+@list l109:level9
+	{mso-level-text:"%1\.%2\.%3\.%4\.%5\.%6\.%7\.%8\.%9\.";
+	mso-level-tab-stop:3.25in;
+	mso-level-number-position:left;
+	margin-left:3.0in;
+	text-indent:-1.0in;}
+@list l110
+	{mso-list-id:2131975790;
+	mso-list-type:simple;
+	mso-list-template-ids:67698703;}
+@list l110:level1
+	{mso-level-tab-stop:.25in;
+	mso-level-number-position:left;
+	margin-left:.25in;
+	text-indent:-.25in;}
+@list l111
+	{mso-list-id:2142262581;
+	mso-list-template-ids:-859954566;}
+@list l111:level1
+	{mso-level-text:%1;
+	mso-level-tab-stop:.3in;
+	mso-level-number-position:left;
+	margin-left:.3in;
+	text-indent:-.3in;}
+@list l111:level2
+	{mso-level-suffix:space;
+	mso-level-text:"%1\.%2";
+	mso-level-tab-stop:none;
+	mso-level-number-position:left;
+	margin-left:.4in;
+	text-indent:-.4in;}
+@list l111:level3
+	{mso-level-suffix:space;
+	mso-level-text:"%1\.%2\.%3";
+	mso-level-tab-stop:none;
+	mso-level-number-position:left;
+	margin-left:.5in;
+	text-indent:-.5in;}
+@list l111:level4
+	{mso-level-text:"%1\.%2\.%3\.%4";
+	mso-level-tab-stop:.6in;
+	mso-level-number-position:left;
+	margin-left:.6in;
+	text-indent:-.6in;}
+@list l111:level5
+	{mso-level-text:"%1\.%2\.%3\.%4\.%5";
+	mso-level-tab-stop:.7in;
+	mso-level-number-position:left;
+	margin-left:.7in;
+	text-indent:-.7in;}
+@list l111:level6
+	{mso-level-text:"%1\.%2\.%3\.%4\.%5\.%6";
+	mso-level-tab-stop:.8in;
+	mso-level-number-position:left;
+	margin-left:.8in;
+	text-indent:-.8in;}
+@list l111:level7
+	{mso-level-text:"%1\.%2\.%3\.%4\.%5\.%6\.%7";
+	mso-level-tab-stop:.9in;
+	mso-level-number-position:left;
+	margin-left:.9in;
+	text-indent:-.9in;}
+@list l111:level8
+	{mso-level-text:"%1\.%2\.%3\.%4\.%5\.%6\.%7\.%8";
+	mso-level-tab-stop:1.0in;
+	mso-level-number-position:left;
+	margin-left:1.0in;
+	text-indent:-1.0in;}
+@list l111:level9
+	{mso-level-text:"%1\.%2\.%3\.%4\.%5\.%6\.%7\.%8\.%9";
+	mso-level-tab-stop:1.1in;
+	mso-level-number-position:left;
+	margin-left:1.1in;
+	text-indent:-1.1in;}
+@list l39:level1 lfo5
+	{mso-level-numbering:continue;
+	mso-level-tab-stop:none;
+	mso-level-number-position:left;
+	mso-level-legacy:yes;
+	mso-level-legacy-indent:.25in;
+	mso-level-legacy-space:0in;
+	margin-left:.25in;
+	text-indent:-.25in;}
+@list l39:level1 lfo6
+	{mso-level-numbering:continue;
+	mso-level-tab-stop:none;
+	mso-level-number-position:left;
+	mso-level-legacy:yes;
+	mso-level-legacy-indent:.25in;
+	mso-level-legacy-space:0in;
+	margin-left:.25in;
+	text-indent:-.25in;}
+@list l39:level1 lfo7
+	{mso-level-numbering:continue;
+	mso-level-tab-stop:none;
+	mso-level-number-position:left;
+	mso-level-legacy:yes;
+	mso-level-legacy-indent:.25in;
+	mso-level-legacy-space:0in;
+	margin-left:.25in;
+	text-indent:-.25in;}
+@list l39:level1 lfo8
+	{mso-level-numbering:continue;
+	mso-level-tab-stop:none;
+	mso-level-number-position:left;
+	mso-level-legacy:yes;
+	mso-level-legacy-indent:.25in;
+	mso-level-legacy-space:0in;
+	margin-left:.25in;
+	text-indent:-.25in;}
+@list l94:level1 lfo10
+	{mso-level-numbering:continue;
+	mso-level-tab-stop:none;
+	mso-level-number-position:left;
+	mso-level-legacy:yes;
+	mso-level-legacy-indent:.25in;
+	mso-level-legacy-space:0in;
+	text-indent:-.25in;}
+@list l94:level1 lfo11
+	{mso-level-numbering:continue;
+	mso-level-tab-stop:none;
+	mso-level-number-position:left;
+	mso-level-legacy:yes;
+	mso-level-legacy-indent:.25in;
+	mso-level-legacy-space:0in;
+	text-indent:-.25in;}
+@list l11:level1 lfo12
+	{mso-level-start-at:1;
+	mso-level-number-format:bullet;
+	mso-level-numbering:continue;
+	mso-level-text:\F0B7;
+	mso-level-tab-stop:none;
+	mso-level-number-position:left;
+	mso-level-legacy:yes;
+	mso-level-legacy-indent:.25in;
+	mso-level-legacy-space:0in;
+	text-indent:-.25in;
+	font-family:Symbol;
+	mso-bidi-font-family:"Times New Roman";}
+@list l22:level1 lfo14
+	{mso-level-numbering:continue;
+	mso-level-tab-stop:none;
+	mso-level-number-position:left;
+	mso-level-legacy:yes;
+	mso-level-legacy-indent:.25in;
+	mso-level-legacy-space:0in;
+	text-indent:-.25in;}
+@list l22:level1 lfo15
+	{mso-level-numbering:continue;
+	mso-level-tab-stop:none;
+	mso-level-number-position:left;
+	mso-level-legacy:yes;
+	mso-level-legacy-indent:.25in;
+	mso-level-legacy-space:0in;
+	text-indent:-.25in;}
+@list l22:level1 lfo16
+	{mso-level-numbering:continue;
+	mso-level-tab-stop:none;
+	mso-level-number-position:left;
+	mso-level-legacy:yes;
+	mso-level-legacy-indent:.25in;
+	mso-level-legacy-space:0in;
+	text-indent:-.25in;}
+@list l22:level1 lfo17
+	{mso-level-numbering:continue;
+	mso-level-tab-stop:none;
+	mso-level-number-position:left;
+	mso-level-legacy:yes;
+	mso-level-legacy-indent:.25in;
+	mso-level-legacy-space:0in;
+	text-indent:-.25in;}
+@list l22:level1 lfo18
+	{mso-level-numbering:continue;
+	mso-level-tab-stop:none;
+	mso-level-number-position:left;
+	mso-level-legacy:yes;
+	mso-level-legacy-indent:.25in;
+	mso-level-legacy-space:0in;
+	text-indent:-.25in;}
+@list l22:level1 lfo19
+	{mso-level-numbering:continue;
+	mso-level-tab-stop:none;
+	mso-level-number-position:left;
+	mso-level-legacy:yes;
+	mso-level-legacy-indent:.25in;
+	mso-level-legacy-space:0in;
+	text-indent:-.25in;}
+@list l79:level1 lfo21
+	{mso-level-numbering:continue;
+	mso-level-tab-stop:none;
+	mso-level-number-position:left;
+	mso-level-legacy:yes;
+	mso-level-legacy-indent:.25in;
+	mso-level-legacy-space:0in;
+	margin-left:.25in;
+	text-indent:-.25in;}
+@list l79:level1 lfo22
+	{mso-level-numbering:continue;
+	mso-level-tab-stop:none;
+	mso-level-number-position:left;
+	mso-level-legacy:yes;
+	mso-level-legacy-indent:.25in;
+	mso-level-legacy-space:0in;
+	margin-left:.25in;
+	text-indent:-.25in;}
+@list l79:level1 lfo23
+	{mso-level-numbering:continue;
+	mso-level-tab-stop:.25in;
+	mso-level-number-position:left;
+	margin-left:.25in;
+	text-indent:-.25in;}
+@list l11:level1 lfo25
+	{mso-level-start-at:1;
+	mso-level-number-format:bullet;
+	mso-level-numbering:continue;
+	mso-level-text:\F0B7;
+	mso-level-tab-stop:none;
+	mso-level-number-position:left;
+	mso-level-legacy:yes;
+	mso-level-legacy-indent:.25in;
+	mso-level-legacy-space:0in;
+	text-indent:-.25in;
+	mso-ansi-font-size:10.0pt;
+	mso-bidi-font-size:10.0pt;
+	font-family:Symbol;
+	mso-bidi-font-family:"Times New Roman";
+	mso-ansi-font-weight:normal;
+	mso-ansi-font-style:normal;
+	text-decoration:none;
+	text-underline:none;}
+@list l39:level1 lfo26
+	{mso-level-numbering:continue;
+	mso-level-tab-stop:none;
+	mso-level-number-position:left;
+	mso-level-legacy:yes;
+	mso-level-legacy-indent:.25in;
+	mso-level-legacy-space:0in;
+	margin-left:.25in;
+	text-indent:-.25in;}
+@list l39:level1 lfo27
+	{mso-level-numbering:continue;
+	mso-level-tab-stop:none;
+	mso-level-number-position:left;
+	mso-level-legacy:yes;
+	mso-level-legacy-indent:.25in;
+	mso-level-legacy-space:0in;
+	margin-left:.25in;
+	text-indent:-.25in;}
+@list l39:level1 lfo28
+	{mso-level-numbering:continue;
+	mso-level-tab-stop:none;
+	mso-level-number-position:left;
+	mso-level-legacy:yes;
+	mso-level-legacy-indent:.25in;
+	mso-level-legacy-space:0in;
+	margin-left:.25in;
+	text-indent:-.25in;}
+@list l39:level1 lfo29
+	{mso-level-numbering:continue;
+	mso-level-tab-stop:none;
+	mso-level-number-position:left;
+	mso-level-legacy:yes;
+	mso-level-legacy-indent:.25in;
+	mso-level-legacy-space:0in;
+	margin-left:.25in;
+	text-indent:-.25in;}
+@list l94:level1 lfo30
+	{mso-level-numbering:continue;
+	mso-level-tab-stop:none;
+	mso-level-number-position:left;
+	mso-level-legacy:yes;
+	mso-level-legacy-indent:.25in;
+	mso-level-legacy-space:0in;
+	text-indent:-.25in;}
+@list l94:level1 lfo31
+	{mso-level-numbering:continue;
+	mso-level-tab-stop:none;
+	mso-level-number-position:left;
+	mso-level-legacy:yes;
+	mso-level-legacy-indent:.25in;
+	mso-level-legacy-space:0in;
+	text-indent:-.25in;}
+@list l11:level1 lfo32
+	{mso-level-start-at:1;
+	mso-level-number-format:bullet;
+	mso-level-numbering:continue;
+	mso-level-text:\F0B7;
+	mso-level-tab-stop:none;
+	mso-level-number-position:left;
+	mso-level-legacy:yes;
+	mso-level-legacy-indent:.25in;
+	mso-level-legacy-space:0in;
+	text-indent:-.25in;
+	font-family:Symbol;
+	mso-bidi-font-family:"Times New Roman";}
+@list l22:level1 lfo33
+	{mso-level-numbering:continue;
+	mso-level-tab-stop:none;
+	mso-level-number-position:left;
+	mso-level-legacy:yes;
+	mso-level-legacy-indent:.25in;
+	mso-level-legacy-space:0in;
+	text-indent:-.25in;}
+@list l22:level1 lfo34
+	{mso-level-numbering:continue;
+	mso-level-tab-stop:none;
+	mso-level-number-position:left;
+	mso-level-legacy:yes;
+	mso-level-legacy-indent:.25in;
+	mso-level-legacy-space:0in;
+	text-indent:-.25in;}
+@list l22:level1 lfo35
+	{mso-level-numbering:continue;
+	mso-level-tab-stop:none;
+	mso-level-number-position:left;
+	mso-level-legacy:yes;
+	mso-level-legacy-indent:.25in;
+	mso-level-legacy-space:0in;
+	text-indent:-.25in;}
+@list l22:level1 lfo36
+	{mso-level-numbering:continue;
+	mso-level-tab-stop:none;
+	mso-level-number-position:left;
+	mso-level-legacy:yes;
+	mso-level-legacy-indent:.25in;
+	mso-level-legacy-space:0in;
+	text-indent:-.25in;}
+@list l22:level1 lfo37
+	{mso-level-numbering:continue;
+	mso-level-tab-stop:none;
+	mso-level-number-position:left;
+	mso-level-legacy:yes;
+	mso-level-legacy-indent:.25in;
+	mso-level-legacy-space:0in;
+	text-indent:-.25in;}
+@list l22:level1 lfo38
+	{mso-level-numbering:continue;
+	mso-level-tab-stop:none;
+	mso-level-number-position:left;
+	mso-level-legacy:yes;
+	mso-level-legacy-indent:.25in;
+	mso-level-legacy-space:0in;
+	text-indent:-.25in;}
+@list l79:level1 lfo39
+	{mso-level-numbering:continue;
+	mso-level-tab-stop:none;
+	mso-level-number-position:left;
+	mso-level-legacy:yes;
+	mso-level-legacy-indent:.25in;
+	mso-level-legacy-space:0in;
+	margin-left:.25in;
+	text-indent:-.25in;}
+@list l79:level1 lfo40
+	{mso-level-numbering:continue;
+	mso-level-tab-stop:none;
+	mso-level-number-position:left;
+	mso-level-legacy:yes;
+	mso-level-legacy-indent:.25in;
+	mso-level-legacy-space:0in;
+	margin-left:.25in;
+	text-indent:-.25in;}
+@list l79:level1 lfo41
+	{mso-level-numbering:continue;
+	mso-level-tab-stop:none;
+	mso-level-number-position:left;
+	mso-level-legacy:yes;
+	mso-level-legacy-indent:.25in;
+	mso-level-legacy-space:0in;
+	margin-left:.25in;
+	text-indent:-.25in;}
+@list l11:level1 lfo42
+	{mso-level-start-at:1;
+	mso-level-number-format:bullet;
+	mso-level-numbering:continue;
+	mso-level-text:\F0B7;
+	mso-level-tab-stop:none;
+	mso-level-number-position:left;
+	mso-level-legacy:yes;
+	mso-level-legacy-indent:.25in;
+	mso-level-legacy-space:0in;
+	text-indent:-.25in;
+	mso-ansi-font-size:10.0pt;
+	mso-bidi-font-size:10.0pt;
+	font-family:Symbol;
+	mso-bidi-font-family:"Times New Roman";
+	mso-ansi-font-weight:normal;
+	mso-ansi-font-style:normal;
+	text-decoration:none;
+	text-underline:none;}
+@list l11:level1 lfo88
+	{mso-level-start-at:2;
+	mso-level-number-format:bullet;
+	mso-level-numbering:continue;
+	mso-level-text:-;
+	mso-level-tab-stop:none;
+	mso-level-number-position:left;
+	mso-level-legacy:yes;
+	mso-level-legacy-indent:75.75pt;
+	mso-level-legacy-space:0in;
+	margin-left:133.35pt;
+	text-indent:-75.75pt;}
+@list l11:level1 lfo100
+	{mso-level-number-format:bullet;
+	mso-level-numbering:continue;
+	mso-level-text:-;
+	mso-level-tab-stop:none;
+	mso-level-number-position:left;
+	mso-level-legacy:yes;
+	mso-level-legacy-indent:.25in;
+	mso-level-legacy-space:0in;
+	margin-left:.25in;
+	text-indent:-.25in;}
+@list l71:level1 lfo105
+	{mso-level-start-at:2;
+	mso-level-numbering:continue;
+	mso-level-tab-stop:none;
+	mso-level-number-position:left;
+	mso-level-legacy:yes;
+	mso-level-legacy-indent:.25in;
+	mso-level-legacy-space:0in;
+	margin-left:.25in;
+	text-indent:-.25in;}
+@list l11:level1 lfo106
+	{mso-level-start-at:1;
+	mso-level-number-format:bullet;
+	mso-level-numbering:continue;
+	mso-level-text:\F0B7;
+	mso-level-tab-stop:none;
+	mso-level-number-position:left;
+	mso-level-legacy:yes;
+	mso-level-legacy-indent:.25in;
+	mso-level-legacy-space:0in;
+	margin-left:.25in;
+	text-indent:-.25in;
+	font-family:Symbol;
+	mso-bidi-font-family:"Times New Roman";}
+@list l69:level1 lfo110
+	{mso-level-start-at:2;
+	mso-level-numbering:continue;
+	mso-level-tab-stop:none;
+	mso-level-number-position:left;
+	mso-level-legacy:yes;
+	mso-level-legacy-indent:.25in;
+	mso-level-legacy-space:0in;
+	margin-left:.25in;
+	text-indent:-.25in;}
+@list l11:level1 lfo111
+	{mso-level-start-at:1;
+	mso-level-number-format:bullet;
+	mso-level-numbering:continue;
+	mso-level-text:\F0B7;
+	mso-level-tab-stop:none;
+	mso-level-number-position:left;
+	mso-level-legacy:yes;
+	mso-level-legacy-indent:.25in;
+	mso-level-legacy-space:0in;
+	margin-left:20.35pt;
+	text-indent:-.25in;
+	font-family:Symbol;
+	mso-bidi-font-family:"Times New Roman";}
+@list l49:level1 lfo113
+	{mso-level-start-at:2;
+	mso-level-numbering:continue;
+	mso-level-tab-stop:none;
+	mso-level-number-position:left;
+	mso-level-legacy:yes;
+	mso-level-legacy-indent:.25in;
+	mso-level-legacy-space:0in;
+	margin-left:.25in;
+	text-indent:-.25in;}
+ol
+	{margin-bottom:0in;}
+ul
+	{margin-bottom:0in;}
+-->
+</style>
+<!--[if gte mso 9]><xml>
+ <o:shapedefaults v:ext="edit" spidmax="2050"/>
+</xml><![endif]--><!--[if gte mso 9]><xml>
+ <o:shapelayout v:ext="edit">
+  <o:idmap v:ext="edit" data="1"/>
+ </o:shapelayout></xml><![endif]-->
+</head>
+
+<body lang=EN-US link=blue vlink=purple style='tab-interval:.5in'>
+
+<div class=Section1>
+
+<table border=0 cellspacing=0 cellpadding=0 style='border-collapse:collapse;
+ mso-padding-alt:0in 5.4pt 0in 5.4pt'>
+ <tr>
+  <td width=325 valign=top style='width:243.9pt;padding:0in 5.4pt 0in 5.4pt'>
+  <p class=Preformatted style='text-indent:-.5in'>INTERNET-DRAFT</p>
+  <p class=Preformatted style='margin-left:22.5pt;text-indent:-22.5pt'>draft-ietf-webdav-advacl-00</p>
+  <p class=Preformatted style='margin-left:0in'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+  <p class=Preformatted style='text-indent:-.5in'>Expires April 16, 2001</p>
+  </td>
+  <td width=355 valign=top style='width:266.6pt;padding:0in 5.4pt 0in 5.4pt'>
+  <p class=Preformatted style='margin-left:0in'>Anne Hopkins, Microsoft
+  Corporation</p>
+  <p class=Preformatted style='margin-left:0in'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+  <p class=Preformatted style='margin-left:0in'><br>
+  October 16, 2000</p>
+  </td>
+ </tr>
+</table>
+
+<p class=MsoTitle>Access Control Extensions to WebDAV</p>
+
+<p class=MsoTitle align=left style='text-align:left'>Status of this Memo</p>
+
+<p class=MsoNormal>This document is an Internet-Draft and is in full
+conformance with all provisions of Section 10 of RFC2026.</p>
+
+<p class=MsoNormal>Internet-Drafts are working documents of the Internet
+Engineering Task Force (IETF), its areas, and its working groups. Note that
+other groups may also distribute working documents as Internet-Drafts.</p>
+
+<p class=MsoNormal>Internet-Drafts are draft documents valid for a maximum of
+six months and may be updated, replaced, or obsoleted by other documents at any
+time. It is inappropriate to use Internet- Drafts as reference material or to
+cite them other than as &quot;work in progress.&quot;</p>
+
+<p class=MsoNormal>The list of current Internet-Drafts can be accessed at
+http://www.ietf.org/ietf/1id-abstracts.txt</p>
+
+<p class=MsoNormal>The list of Internet-Draft Shadow Directories can be
+accessed at http://www.ietf.org/shadow.html.</p>
+
+<p class=MsoTitle align=left style='text-align:left'>Abstract</p>
+
+<p class=MsoBodyText style='margin-left:0in'>This document specifies a set of
+methods, headers, and resource-types that define the WebDAV Advanced Access
+Control extensions to the HTTP/1.1 protocol.</p>
+
+<i><span style='font-size:16.0pt;font-family:"Times New Roman";mso-fareast-font-family:
+"Times New Roman";mso-font-kerning:14.0pt;mso-ansi-language:EN-US;mso-fareast-language:
+EN-US;mso-bidi-language:HE'><br clear=all style='page-break-before:always'>
+</span></i>
+
+<p class=MsoTitle align=left style='text-align:left'>Table of Contents</p>
+
+<p class=MsoToc1 style='tab-stops:20.0pt right dotted 6.0in'><!--[if supportFields]><span
+style='text-transform:none'><span style='mso-element:field-begin'></span><span
+style="mso-spacerun: yes"> </span>TOC \o &quot;2-3&quot; \h \z \t &quot;Heading
+1,1&quot; <span style='mso-element:field-separator'></span></span><![endif]--><span
+class=MsoHyperlink><a href="#_Toc496345071">1<span style='font-size:12.0pt;
+font-family:"Times New Roman";color:windowtext;text-transform:none;mso-bidi-language:
+AR-SA'><span style='mso-tab-count:1'>       </span></span>Introduction<span
+style='color:windowtext;display:none;mso-hide:screen'><span style='mso-tab-count:
+1'>  </span></span><!--[if supportFields]><span style='color:windowtext;
+display:none;mso-hide:screen'><span style='mso-element:field-begin'></span></span><span
+style='color:windowtext;display:none;mso-hide:screen'> PAGEREF _Toc496345071 \h
+</span><span style='color:windowtext;display:none;mso-hide:screen'><span
+style='mso-element:field-separator'></span></span><![endif]--><span
+style='color:windowtext;display:none;mso-hide:screen'>2</span><span
+style='color:windowtext;display:none;mso-hide:screen'><!--[if gte mso 9]><xml>
+ <w:data>08D0C9EA79F9BACE118C8200AA004BA90B02000000080000000E0000005F0054006F0063003400390036003300340035003000370031000000</w:data>
+</xml><![endif]--></span><!--[if supportFields]><span style='color:windowtext;
+display:none;mso-hide:screen'><span style='mso-element:field-end'></span></span><![endif]--></a></span><span
+style='font-size:12.0pt;font-family:"Times New Roman";text-transform:none;
+mso-bidi-language:AR-SA'><o:p></o:p></span></p>
+
+<p class=MsoToc2 style='tab-stops:30.0pt 40.0pt right dotted 6.0in 532.3pt'><span
+class=MsoHyperlink><a href="#_Toc496345072">1.1<span style='font-size:12.0pt;
+font-family:"Times New Roman";color:windowtext;mso-bidi-language:AR-SA'><span
+style='mso-tab-count:1'>          </span></span>Notational Conventions<span
+style='color:windowtext;display:none;mso-hide:screen'><span style='mso-tab-count:
+1 dotted'>. </span></span><!--[if supportFields]><span style='color:windowtext;
+display:none;mso-hide:screen'><span style='mso-element:field-begin'></span></span><span
+style='color:windowtext;display:none;mso-hide:screen'> PAGEREF _Toc496345072 \h
+</span><span style='color:windowtext;display:none;mso-hide:screen'><span
+style='mso-element:field-separator'></span></span><![endif]--><span
+style='color:windowtext;display:none;mso-hide:screen'>2</span><span
+style='color:windowtext;display:none;mso-hide:screen'><!--[if gte mso 9]><xml>
+ <w:data>08D0C9EA79F9BACE118C8200AA004BA90B02000000080000000E0000005F0054006F0063003400390036003300340035003000370032000000</w:data>
+</xml><![endif]--></span><!--[if supportFields]><span style='color:windowtext;
+display:none;mso-hide:screen'><span style='mso-element:field-end'></span></span><![endif]--></a></span><span
+style='font-size:12.0pt;font-family:"Times New Roman";mso-bidi-language:AR-SA'><o:p></o:p></span></p>
+
+<p class=MsoToc1 style='tab-stops:20.0pt right dotted 6.0in'><span
+class=MsoHyperlink><a href="#_Toc496345073"><span style='mso-fareast-font-family:
+"MS Mincho"'>2</span><span style='font-size:12.0pt;font-family:"Times New Roman";
+color:windowtext;text-transform:none;mso-bidi-language:AR-SA'><span
+style='mso-tab-count:1'>       </span></span><span style='mso-fareast-font-family:
+"MS Mincho"'>Advanced Access Control Properties</span><span style='color:windowtext;
+display:none;mso-hide:screen'><span style='mso-tab-count:1 dotted'>. </span></span><!--[if supportFields]><span
+style='color:windowtext;display:none;mso-hide:screen'><span style='mso-element:
+field-begin'></span></span><span style='color:windowtext;display:none;
+mso-hide:screen'> PAGEREF _Toc496345073 \h </span><span style='color:windowtext;
+display:none;mso-hide:screen'><span style='mso-element:field-separator'></span></span><![endif]--><span
+style='color:windowtext;display:none;mso-hide:screen'>3</span><span
+style='color:windowtext;display:none;mso-hide:screen'><!--[if gte mso 9]><xml>
+ <w:data>08D0C9EA79F9BACE118C8200AA004BA90B02000000080000000E0000005F0054006F0063003400390036003300340035003000370033000000</w:data>
+</xml><![endif]--></span><!--[if supportFields]><span style='color:windowtext;
+display:none;mso-hide:screen'><span style='mso-element:field-end'></span></span><![endif]--></a></span><span
+style='font-size:12.0pt;font-family:"Times New Roman";text-transform:none;
+mso-bidi-language:AR-SA'><o:p></o:p></span></p>
+
+<p class=MsoToc1 style='tab-stops:20.0pt right dotted 6.0in'><span
+class=MsoHyperlink><a href="#_Toc496345074">3<span style='font-size:12.0pt;
+font-family:"Times New Roman";color:windowtext;text-transform:none;mso-bidi-language:
+AR-SA'><span style='mso-tab-count:1'>     </span></span>ACL Inheritance<span
+style='color:windowtext;display:none;mso-hide:screen'><span style='mso-tab-count:
+1 dotted'>. </span></span><!--[if supportFields]><span style='color:windowtext;
+display:none;mso-hide:screen'><span style='mso-element:field-begin'></span></span><span
+style='color:windowtext;display:none;mso-hide:screen'> PAGEREF _Toc496345074 \h
+</span><span style='color:windowtext;display:none;mso-hide:screen'><span
+style='mso-element:field-separator'></span></span><![endif]--><span
+style='color:windowtext;display:none;mso-hide:screen'>4</span><span
+style='color:windowtext;display:none;mso-hide:screen'><!--[if gte mso 9]><xml>
+ <w:data>08D0C9EA79F9BACE118C8200AA004BA90B02000000080000000E0000005F0054006F0063003400390036003300340035003000370034000000</w:data>
+</xml><![endif]--></span><!--[if supportFields]><span style='color:windowtext;
+display:none;mso-hide:screen'><span style='mso-element:field-end'></span></span><![endif]--></a></span><span
+style='font-size:12.0pt;font-family:"Times New Roman";text-transform:none;
+mso-bidi-language:AR-SA'><o:p></o:p></span></p>
+
+<p class=MsoToc2 style='tab-stops:30.0pt 40.0pt right dotted 6.0in 532.3pt'><span
+class=MsoHyperlink><a href="#_Toc496345075"><span style='mso-fareast-font-family:
+"MS Mincho"'>3.1</span><span style='font-size:12.0pt;font-family:"Times New Roman";
+color:windowtext;mso-bidi-language:AR-SA'><span style='mso-tab-count:1'>          </span></span><span
+style='mso-fareast-font-family:"MS Mincho"'>Inheritable ACEs</span><span
+style='color:windowtext;display:none;mso-hide:screen'><span style='mso-tab-count:
+1'>  </span></span><!--[if supportFields]><span style='color:windowtext;
+display:none;mso-hide:screen'><span style='mso-element:field-begin'></span></span><span
+style='color:windowtext;display:none;mso-hide:screen'> PAGEREF _Toc496345075 \h
+</span><span style='color:windowtext;display:none;mso-hide:screen'><span
+style='mso-element:field-separator'></span></span><![endif]--><span
+style='color:windowtext;display:none;mso-hide:screen'>4</span><span
+style='color:windowtext;display:none;mso-hide:screen'><!--[if gte mso 9]><xml>
+ <w:data>08D0C9EA79F9BACE118C8200AA004BA90B02000000080000000E0000005F0054006F0063003400390036003300340035003000370035000000</w:data>
+</xml><![endif]--></span><!--[if supportFields]><span style='color:windowtext;
+display:none;mso-hide:screen'><span style='mso-element:field-end'></span></span><![endif]--></a></span><span
+style='font-size:12.0pt;font-family:"Times New Roman";mso-bidi-language:AR-SA'><o:p></o:p></span></p>
+
+<p class=MsoToc2 style='tab-stops:30.0pt 40.0pt right dotted 6.0in 532.3pt'><span
+class=MsoHyperlink><a href="#_Toc496345076"><span style='mso-fareast-font-family:
+"MS Mincho"'>3.2</span><span style='font-size:12.0pt;font-family:"Times New Roman";
+color:windowtext;mso-bidi-language:AR-SA'><span style='mso-tab-count:1'>      </span></span><span
+style='mso-fareast-font-family:"MS Mincho"'>Updating an inherited ACE</span><span
+style='color:windowtext;display:none;mso-hide:screen'><span style='mso-tab-count:
+1'>  </span></span><!--[if supportFields]><span style='color:windowtext;
+display:none;mso-hide:screen'><span style='mso-element:field-begin'></span></span><span
+style='color:windowtext;display:none;mso-hide:screen'> PAGEREF _Toc496345076 \h
+</span><span style='color:windowtext;display:none;mso-hide:screen'><span
+style='mso-element:field-separator'></span></span><![endif]--><span
+style='color:windowtext;display:none;mso-hide:screen'>4</span><span
+style='color:windowtext;display:none;mso-hide:screen'><!--[if gte mso 9]><xml>
+ <w:data>08D0C9EA79F9BACE118C8200AA004BA90B02000000080000000E0000005F0054006F0063003400390036003300340035003000370036000000</w:data>
+</xml><![endif]--></span><!--[if supportFields]><span style='color:windowtext;
+display:none;mso-hide:screen'><span style='mso-element:field-end'></span></span><![endif]--></a></span><span
+style='font-size:12.0pt;font-family:"Times New Roman";mso-bidi-language:AR-SA'><o:p></o:p></span></p>
+
+<p class=MsoToc2 style='tab-stops:30.0pt 40.0pt right dotted 6.0in 532.3pt'><span
+class=MsoHyperlink><a href="#_Toc496345077"><span style='mso-fareast-font-family:
+"MS Mincho"'>3.3</span><span style='font-size:12.0pt;font-family:"Times New Roman";
+color:windowtext;mso-bidi-language:AR-SA'><span style='mso-tab-count:1'>          </span></span><span
+style='mso-fareast-font-family:"MS Mincho"'>Propagate ACE but do not use for
+Access Check on this resource</span><span style='color:windowtext;display:none;
+mso-hide:screen'><span style='mso-tab-count:1 dotted'>. </span></span><!--[if supportFields]><span
+style='color:windowtext;display:none;mso-hide:screen'><span style='mso-element:
+field-begin'></span></span><span style='color:windowtext;display:none;
+mso-hide:screen'> PAGEREF _Toc496345077 \h </span><span style='color:windowtext;
+display:none;mso-hide:screen'><span style='mso-element:field-separator'></span></span><![endif]--><span
+style='color:windowtext;display:none;mso-hide:screen'>4</span><span
+style='color:windowtext;display:none;mso-hide:screen'><!--[if gte mso 9]><xml>
+ <w:data>08D0C9EA79F9BACE118C8200AA004BA90B02000000080000000E0000005F0054006F0063003400390036003300340035003000370037000000</w:data>
+</xml><![endif]--></span><!--[if supportFields]><span style='color:windowtext;
+display:none;mso-hide:screen'><span style='mso-element:field-end'></span></span><![endif]--></a></span><span
+style='font-size:12.0pt;font-family:"Times New Roman";mso-bidi-language:AR-SA'><o:p></o:p></span></p>
+
+<p class=MsoToc2 style='tab-stops:30.0pt 40.0pt right dotted 6.0in 532.3pt'><span
+class=MsoHyperlink><a href="#_Toc496345078"><span style='mso-fareast-font-family:
+"MS Mincho"'>3.4</span><span style='font-size:12.0pt;font-family:"Times New Roman";
+color:windowtext;mso-bidi-language:AR-SA'><span style='mso-tab-count:1'>          </span></span><span
+style='mso-fareast-font-family:"MS Mincho"'>Propagate to immediate children
+only</span><span style='color:windowtext;display:none;mso-hide:screen'><span
+style='mso-tab-count:1 dotted'>. </span></span><!--[if supportFields]><span
+style='color:windowtext;display:none;mso-hide:screen'><span style='mso-element:
+field-begin'></span></span><span style='color:windowtext;display:none;
+mso-hide:screen'> PAGEREF _Toc496345078 \h </span><span style='color:windowtext;
+display:none;mso-hide:screen'><span style='mso-element:field-separator'></span></span><![endif]--><span
+style='color:windowtext;display:none;mso-hide:screen'>5</span><span
+style='color:windowtext;display:none;mso-hide:screen'><!--[if gte mso 9]><xml>
+ <w:data>08D0C9EA79F9BACE118C8200AA004BA90B02000000080000000E0000005F0054006F0063003400390036003300340035003000370038000000</w:data>
+</xml><![endif]--></span><!--[if supportFields]><span style='color:windowtext;
+display:none;mso-hide:screen'><span style='mso-element:field-end'></span></span><![endif]--></a></span><span
+style='font-size:12.0pt;font-family:"Times New Roman";mso-bidi-language:AR-SA'><o:p></o:p></span></p>
+
+<p class=MsoToc2 style='tab-stops:30.0pt 40.0pt right dotted 6.0in 532.3pt'><span
+class=MsoHyperlink><a href="#_Toc496345079"><span style='mso-fareast-font-family:
+"MS Mincho"'>3.5</span><span style='font-size:12.0pt;font-family:"Times New Roman";
+color:windowtext;mso-bidi-language:AR-SA'><span style='mso-tab-count:1'>      </span></span><span
+style='mso-fareast-font-family:"MS Mincho"'>Protect ACL from inheritance</span><span
+style='color:windowtext;display:none;mso-hide:screen'><span style='mso-tab-count:
+1 dotted'>. </span></span><!--[if supportFields]><span style='color:windowtext;
+display:none;mso-hide:screen'><span style='mso-element:field-begin'></span></span><span
+style='color:windowtext;display:none;mso-hide:screen'> PAGEREF _Toc496345079 \h
+</span><span style='color:windowtext;display:none;mso-hide:screen'><span
+style='mso-element:field-separator'></span></span><![endif]--><span
+style='color:windowtext;display:none;mso-hide:screen'>5</span><span
+style='color:windowtext;display:none;mso-hide:screen'><!--[if gte mso 9]><xml>
+ <w:data>08D0C9EA79F9BACE118C8200AA004BA90B02000000080000000E0000005F0054006F0063003400390036003300340035003000370039000000</w:data>
+</xml><![endif]--></span><!--[if supportFields]><span style='color:windowtext;
+display:none;mso-hide:screen'><span style='mso-element:field-end'></span></span><![endif]--></a></span><span
+style='font-size:12.0pt;font-family:"Times New Roman";mso-bidi-language:AR-SA'><o:p></o:p></span></p>
+
+<p class=MsoToc1 style='tab-stops:20.0pt right dotted 6.0in'><span
+class=MsoHyperlink><a href="#_Toc496345080">4<span style='font-size:12.0pt;
+font-family:"Times New Roman";color:windowtext;text-transform:none;mso-bidi-language:
+AR-SA'><span style='mso-tab-count:1'>       </span></span>Internationalization
+Considerations<span style='color:windowtext;display:none;mso-hide:screen'><span
+style='mso-tab-count:1'>  </span></span><!--[if supportFields]><span
+style='color:windowtext;display:none;mso-hide:screen'><span style='mso-element:
+field-begin'></span></span><span style='color:windowtext;display:none;
+mso-hide:screen'> PAGEREF _Toc496345080 \h </span><span style='color:windowtext;
+display:none;mso-hide:screen'><span style='mso-element:field-separator'></span></span><![endif]--><span
+style='color:windowtext;display:none;mso-hide:screen'>6</span><span
+style='color:windowtext;display:none;mso-hide:screen'><!--[if gte mso 9]><xml>
+ <w:data>08D0C9EA79F9BACE118C8200AA004BA90B02000000080000000E0000005F0054006F0063003400390036003300340035003000380030000000</w:data>
+</xml><![endif]--></span><!--[if supportFields]><span style='color:windowtext;
+display:none;mso-hide:screen'><span style='mso-element:field-end'></span></span><![endif]--></a></span><span
+style='font-size:12.0pt;font-family:"Times New Roman";text-transform:none;
+mso-bidi-language:AR-SA'><o:p></o:p></span></p>
+
+<p class=MsoToc1 style='tab-stops:20.0pt right dotted 6.0in'><span
+class=MsoHyperlink><a href="#_Toc496345081">5<span style='font-size:12.0pt;
+font-family:"Times New Roman";color:windowtext;text-transform:none;mso-bidi-language:
+AR-SA'><span style='mso-tab-count:1'>     </span></span>Security Considerations<span
+style='color:windowtext;display:none;mso-hide:screen'><span style='mso-tab-count:
+1'>  </span></span><!--[if supportFields]><span style='color:windowtext;
+display:none;mso-hide:screen'><span style='mso-element:field-begin'></span></span><span
+style='color:windowtext;display:none;mso-hide:screen'> PAGEREF _Toc496345081 \h
+</span><span style='color:windowtext;display:none;mso-hide:screen'><span
+style='mso-element:field-separator'></span></span><![endif]--><span
+style='color:windowtext;display:none;mso-hide:screen'>6</span><span
+style='color:windowtext;display:none;mso-hide:screen'><!--[if gte mso 9]><xml>
+ <w:data>08D0C9EA79F9BACE118C8200AA004BA90B02000000080000000E0000005F0054006F0063003400390036003300340035003000380031000000</w:data>
+</xml><![endif]--></span><!--[if supportFields]><span style='color:windowtext;
+display:none;mso-hide:screen'><span style='mso-element:field-end'></span></span><![endif]--></a></span><span
+style='font-size:12.0pt;font-family:"Times New Roman";text-transform:none;
+mso-bidi-language:AR-SA'><o:p></o:p></span></p>
+
+<p class=MsoToc1 style='tab-stops:20.0pt right dotted 6.0in'><span
+class=MsoHyperlink><a href="#_Toc496345082">6<span style='font-size:12.0pt;
+font-family:"Times New Roman";color:windowtext;text-transform:none;mso-bidi-language:
+AR-SA'><span style='mso-tab-count:1'>       </span></span>Scalability<span
+style='color:windowtext;display:none;mso-hide:screen'><span style='mso-tab-count:
+1'>  </span></span><!--[if supportFields]><span style='color:windowtext;
+display:none;mso-hide:screen'><span style='mso-element:field-begin'></span></span><span
+style='color:windowtext;display:none;mso-hide:screen'> PAGEREF _Toc496345082 \h
+</span><span style='color:windowtext;display:none;mso-hide:screen'><span
+style='mso-element:field-separator'></span></span><![endif]--><span
+style='color:windowtext;display:none;mso-hide:screen'>6</span><span
+style='color:windowtext;display:none;mso-hide:screen'><!--[if gte mso 9]><xml>
+ <w:data>08D0C9EA79F9BACE118C8200AA004BA90B02000000080000000E0000005F0054006F0063003400390036003300340035003000380032000000</w:data>
+</xml><![endif]--></span><!--[if supportFields]><span style='color:windowtext;
+display:none;mso-hide:screen'><span style='mso-element:field-end'></span></span><![endif]--></a></span><span
+style='font-size:12.0pt;font-family:"Times New Roman";text-transform:none;
+mso-bidi-language:AR-SA'><o:p></o:p></span></p>
+
+<p class=MsoToc1 style='tab-stops:20.0pt right dotted 6.0in'><span
+class=MsoHyperlink><a href="#_Toc496345083">7<span style='font-size:12.0pt;
+font-family:"Times New Roman";color:windowtext;text-transform:none;mso-bidi-language:
+AR-SA'><span style='mso-tab-count:1'>       </span></span>Authentication<span
+style='color:windowtext;display:none;mso-hide:screen'><span style='mso-tab-count:
+1 dotted'>. </span></span><!--[if supportFields]><span style='color:windowtext;
+display:none;mso-hide:screen'><span style='mso-element:field-begin'></span></span><span
+style='color:windowtext;display:none;mso-hide:screen'> PAGEREF _Toc496345083 \h
+</span><span style='color:windowtext;display:none;mso-hide:screen'><span
+style='mso-element:field-separator'></span></span><![endif]--><span
+style='color:windowtext;display:none;mso-hide:screen'>6</span><span
+style='color:windowtext;display:none;mso-hide:screen'><!--[if gte mso 9]><xml>
+ <w:data>08D0C9EA79F9BACE118C8200AA004BA90B02000000080000000E0000005F0054006F0063003400390036003300340035003000380033000000</w:data>
+</xml><![endif]--></span><!--[if supportFields]><span style='color:windowtext;
+display:none;mso-hide:screen'><span style='mso-element:field-end'></span></span><![endif]--></a></span><span
+style='font-size:12.0pt;font-family:"Times New Roman";text-transform:none;
+mso-bidi-language:AR-SA'><o:p></o:p></span></p>
+
+<p class=MsoToc1 style='tab-stops:20.0pt right dotted 6.0in'><span
+class=MsoHyperlink><a href="#_Toc496345084">8<span style='font-size:12.0pt;
+font-family:"Times New Roman";color:windowtext;text-transform:none;mso-bidi-language:
+AR-SA'><span style='mso-tab-count:1'>     </span></span>IANA Considerations<span
+style='color:windowtext;display:none;mso-hide:screen'><span style='mso-tab-count:
+1'>  </span></span><!--[if supportFields]><span style='color:windowtext;
+display:none;mso-hide:screen'><span style='mso-element:field-begin'></span></span><span
+style='color:windowtext;display:none;mso-hide:screen'> PAGEREF _Toc496345084 \h
+</span><span style='color:windowtext;display:none;mso-hide:screen'><span
+style='mso-element:field-separator'></span></span><![endif]--><span
+style='color:windowtext;display:none;mso-hide:screen'>6</span><span
+style='color:windowtext;display:none;mso-hide:screen'><!--[if gte mso 9]><xml>
+ <w:data>08D0C9EA79F9BACE118C8200AA004BA90B02000000080000000E0000005F0054006F0063003400390036003300340035003000380034000000</w:data>
+</xml><![endif]--></span><!--[if supportFields]><span style='color:windowtext;
+display:none;mso-hide:screen'><span style='mso-element:field-end'></span></span><![endif]--></a></span><span
+style='font-size:12.0pt;font-family:"Times New Roman";text-transform:none;
+mso-bidi-language:AR-SA'><o:p></o:p></span></p>
+
+<p class=MsoToc1 style='tab-stops:20.0pt right dotted 6.0in'><span
+class=MsoHyperlink><a href="#_Toc496345085">9<span style='font-size:12.0pt;
+font-family:"Times New Roman";color:windowtext;text-transform:none;mso-bidi-language:
+AR-SA'><span style='mso-tab-count:1'>       </span></span>Intellectual Property<span
+style='color:windowtext;display:none;mso-hide:screen'><span style='mso-tab-count:
+1 dotted'>. </span></span><!--[if supportFields]><span style='color:windowtext;
+display:none;mso-hide:screen'><span style='mso-element:field-begin'></span></span><span
+style='color:windowtext;display:none;mso-hide:screen'> PAGEREF _Toc496345085 \h
+</span><span style='color:windowtext;display:none;mso-hide:screen'><span
+style='mso-element:field-separator'></span></span><![endif]--><span
+style='color:windowtext;display:none;mso-hide:screen'>6</span><span
+style='color:windowtext;display:none;mso-hide:screen'><!--[if gte mso 9]><xml>
+ <w:data>08D0C9EA79F9BACE118C8200AA004BA90B02000000080000000E0000005F0054006F0063003400390036003300340035003000380035000000</w:data>
+</xml><![endif]--></span><!--[if supportFields]><span style='color:windowtext;
+display:none;mso-hide:screen'><span style='mso-element:field-end'></span></span><![endif]--></a></span><span
+style='font-size:12.0pt;font-family:"Times New Roman";text-transform:none;
+mso-bidi-language:AR-SA'><o:p></o:p></span></p>
+
+<p class=MsoToc1 style='tab-stops:30.0pt right dotted 6.0in'><span
+class=MsoHyperlink><a href="#_Toc496345086">10<span style='font-size:12.0pt;
+font-family:"Times New Roman";color:windowtext;text-transform:none;mso-bidi-language:
+AR-SA'><span style='mso-tab-count:1'>          </span></span>Acknowledgements<span
+style='color:windowtext;display:none;mso-hide:screen'><span style='mso-tab-count:
+1'>  </span></span><!--[if supportFields]><span style='color:windowtext;
+display:none;mso-hide:screen'><span style='mso-element:field-begin'></span></span><span
+style='color:windowtext;display:none;mso-hide:screen'> PAGEREF _Toc496345086 \h
+</span><span style='color:windowtext;display:none;mso-hide:screen'><span
+style='mso-element:field-separator'></span></span><![endif]--><span
+style='color:windowtext;display:none;mso-hide:screen'>6</span><span
+style='color:windowtext;display:none;mso-hide:screen'><!--[if gte mso 9]><xml>
+ <w:data>08D0C9EA79F9BACE118C8200AA004BA90B02000000080000000E0000005F0054006F0063003400390036003300340035003000380036000000</w:data>
+</xml><![endif]--></span><!--[if supportFields]><span style='color:windowtext;
+display:none;mso-hide:screen'><span style='mso-element:field-end'></span></span><![endif]--></a></span><span
+style='font-size:12.0pt;font-family:"Times New Roman";text-transform:none;
+mso-bidi-language:AR-SA'><o:p></o:p></span></p>
+
+<p class=MsoToc1 style='tab-stops:30.0pt right dotted 6.0in'><span
+class=MsoHyperlink><a href="#_Toc496345087">11<span style='font-size:12.0pt;
+font-family:"Times New Roman";color:windowtext;text-transform:none;mso-bidi-language:
+AR-SA'><span style='mso-tab-count:1'>       </span></span>Index<span
+style='color:windowtext;display:none;mso-hide:screen'><span style='mso-tab-count:
+1 dotted'>. </span></span><!--[if supportFields]><span style='color:windowtext;
+display:none;mso-hide:screen'><span style='mso-element:field-begin'></span></span><span
+style='color:windowtext;display:none;mso-hide:screen'> PAGEREF _Toc496345087 \h
+</span><span style='color:windowtext;display:none;mso-hide:screen'><span
+style='mso-element:field-separator'></span></span><![endif]--><span
+style='color:windowtext;display:none;mso-hide:screen'>7</span><span
+style='color:windowtext;display:none;mso-hide:screen'><!--[if gte mso 9]><xml>
+ <w:data>08D0C9EA79F9BACE118C8200AA004BA90B02000000080000000E0000005F0054006F0063003400390036003300340035003000380037000000</w:data>
+</xml><![endif]--></span><!--[if supportFields]><span style='color:windowtext;
+display:none;mso-hide:screen'><span style='mso-element:field-end'></span></span><![endif]--></a></span><span
+style='font-size:12.0pt;font-family:"Times New Roman";text-transform:none;
+mso-bidi-language:AR-SA'><o:p></o:p></span></p>
+
+<p class=MsoToc1 style='tab-stops:30.0pt right dotted 6.0in'><span
+class=MsoHyperlink><a href="#_Toc496345088">12<span style='font-size:12.0pt;
+font-family:"Times New Roman";color:windowtext;text-transform:none;mso-bidi-language:
+AR-SA'><span style='mso-tab-count:1'>          </span></span>References<span
+style='color:windowtext;display:none;mso-hide:screen'><span style='mso-tab-count:
+1'>  </span></span><!--[if supportFields]><span style='color:windowtext;
+display:none;mso-hide:screen'><span style='mso-element:field-begin'></span></span><span
+style='color:windowtext;display:none;mso-hide:screen'> PAGEREF _Toc496345088 \h
+</span><span style='color:windowtext;display:none;mso-hide:screen'><span
+style='mso-element:field-separator'></span></span><![endif]--><span
+style='color:windowtext;display:none;mso-hide:screen'>7</span><span
+style='color:windowtext;display:none;mso-hide:screen'><!--[if gte mso 9]><xml>
+ <w:data>08D0C9EA79F9BACE118C8200AA004BA90B02000000080000000E0000005F0054006F0063003400390036003300340035003000380038000000</w:data>
+</xml><![endif]--></span><!--[if supportFields]><span style='color:windowtext;
+display:none;mso-hide:screen'><span style='mso-element:field-end'></span></span><![endif]--></a></span><span
+style='font-size:12.0pt;font-family:"Times New Roman";text-transform:none;
+mso-bidi-language:AR-SA'><o:p></o:p></span></p>
+
+<p class=MsoToc1 style='tab-stops:30.0pt right dotted 6.0in'><span
+class=MsoHyperlink><a href="#_Toc496345089">13<span style='font-size:12.0pt;
+font-family:"Times New Roman";color:windowtext;text-transform:none;mso-bidi-language:
+AR-SA'><span style='mso-tab-count:1'>          </span></span>Authors’ Addresses<span
+style='color:windowtext;display:none;mso-hide:screen'><span style='mso-tab-count:
+1 dotted'>. </span></span><!--[if supportFields]><span style='color:windowtext;
+display:none;mso-hide:screen'><span style='mso-element:field-begin'></span></span><span
+style='color:windowtext;display:none;mso-hide:screen'> PAGEREF _Toc496345089 \h
+</span><span style='color:windowtext;display:none;mso-hide:screen'><span
+style='mso-element:field-separator'></span></span><![endif]--><span
+style='color:windowtext;display:none;mso-hide:screen'>7</span><span
+style='color:windowtext;display:none;mso-hide:screen'><!--[if gte mso 9]><xml>
+ <w:data>08D0C9EA79F9BACE118C8200AA004BA90B02000000080000000E0000005F0054006F0063003400390036003300340035003000380039000000</w:data>
+</xml><![endif]--></span><!--[if supportFields]><span style='color:windowtext;
+display:none;mso-hide:screen'><span style='mso-element:field-end'></span></span><![endif]--></a></span><span
+style='font-size:12.0pt;font-family:"Times New Roman";text-transform:none;
+mso-bidi-language:AR-SA'><o:p></o:p></span></p>
+
+<p class=MsoToc1 style='tab-stops:30.0pt right dotted 6.0in'><span
+class=MsoHyperlink><a href="#_Toc496345090">14<span style='font-size:12.0pt;
+font-family:"Times New Roman";color:windowtext;text-transform:none;mso-bidi-language:
+AR-SA'><span style='mso-tab-count:1'>       </span></span>Still to do :<span
+style='color:windowtext;display:none;mso-hide:screen'><span style='mso-tab-count:
+1'> </span></span><!--[if supportFields]><span style='color:windowtext;
+display:none;mso-hide:screen'><span style='mso-element:field-begin'></span></span><span
+style='color:windowtext;display:none;mso-hide:screen'> PAGEREF _Toc496345090 \h
+</span><span style='color:windowtext;display:none;mso-hide:screen'><span
+style='mso-element:field-separator'></span></span><![endif]--><span
+style='color:windowtext;display:none;mso-hide:screen'>7</span><span
+style='color:windowtext;display:none;mso-hide:screen'><!--[if gte mso 9]><xml>
+ <w:data>08D0C9EA79F9BACE118C8200AA004BA90B02000000080000000E0000005F0054006F0063003400390036003300340035003000390030000000</w:data>
+</xml><![endif]--></span><!--[if supportFields]><span style='color:windowtext;
+display:none;mso-hide:screen'><span style='mso-element:field-end'></span></span><![endif]--></a></span><span
+style='font-size:12.0pt;font-family:"Times New Roman";text-transform:none;
+mso-bidi-language:AR-SA'><o:p></o:p></span></p>
+
+<p class=MsoToc3><!--[if supportFields]><span style='font-size:10.0pt;
+text-transform:uppercase'><span style='mso-element:field-end'></span></span><![endif]--><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<h1><a name="_Toc496345071"><![if !supportLists]><span style='font-variant:
+normal;text-transform:uppercase'>1<span style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</span></span><![endif]><span style='font-variant:normal;text-transform:uppercase'>Introduction</span></a><span
+style='font-variant:normal;text-transform:uppercase'><o:p></o:p></span></h1>
+
+<p class=MsoBodyText><span style='mso-fareast-font-family:"MS Mincho"'>This
+protocol defines advanced extensions to the access control protocol.<span
+style="mso-spacerun: yes">  </span>In particular, finer control over
+inheritance and control over individual property access control is defined.<o:p></o:p></span></p>
+
+<h2><a name="_Toc443723986"></a><a name="_Toc496345072"></a><a
+name="def_version_graph"></a><![if !supportLists]><span style='mso-bookmark:
+_Toc443723986'><span style='mso-bookmark:_Toc496345072'>1.1<span
+style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</span></span></span><![endif]><span style='mso-bookmark:_Toc443723986'><span
+style='mso-bookmark:_Toc496345072'>Notational Conventions</span></span></h2>
+
+<p class=MsoBodyText><span style='mso-bookmark:_Toc443723986'>The augmented BNF
+used by this document to describe protocol elements is described in Section 2.1
+of [RFC2068]. Because this augmented BNF uses the basic production rules
+provided in Section 2.2 of [RFC2068], those rules apply to this document as
+well.</span></p>
+
+<p class=MsoBodyText><span style='mso-bookmark:_Toc443723986'>The key words
+&quot;MUST&quot;, &quot;MUST NOT&quot;, &quot;REQUIRED&quot;,
+&quot;SHALL&quot;, &quot;SHALL NOT&quot;, &quot;SHOULD&quot;, &quot;SHOULD
+NOT&quot;, &quot;RECOMMENDED&quot;, &quot;MAY&quot;, and &quot;OPTIONAL&quot;
+in this document are to be interpreted as described in [RFC2119].</span></p>
+
+<h1 style='tab-stops:.5in'><span style='mso-bookmark:_Toc443723986'><a
+name="_Toc496345073"><![if !supportLists]><span style='mso-fareast-font-family:
+"MS Mincho";font-variant:normal;text-transform:uppercase'>2<span
+style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</span></span><![endif]><span style='mso-fareast-font-family:"MS Mincho";
+font-variant:normal;text-transform:uppercase'>Advanced Access Control
+Properties</span></a></span><span style='mso-bookmark:_Toc443723986'><span
+style='mso-fareast-font-family:"MS Mincho";font-variant:normal;text-transform:
+uppercase'><o:p></o:p></span></span></h1>
+
+<p class=MsoBodyText><span style='mso-bookmark:_Toc443723986'><span
+style='mso-fareast-font-family:"MS Mincho"'>This specification defines a number
+of new properties for WebDAV resources.<span style="mso-spacerun: yes"> 
+</span>Access control properties may be set and retrieved just like other
+WebDAV properties, using the PROPFIND and PROPPATCH method (subject to
+permissions and “liveness.”<o:p></o:p></span></span></p>
+
+<p class=MsoBodyText style='margin-top:0in;margin-right:0in;margin-bottom:12.0pt;
+margin-left:.75in;text-indent:-.25in;mso-list:l74 level1 lfo273;tab-stops:list 56.25pt'><span
+style='mso-bookmark:_Toc443723986'><![if !supportLists]><span style='font-family:
+Symbol;mso-fareast-font-family:"MS Mincho"'>·<span style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</span></span><![endif]><span style='mso-fareast-font-family:"MS Mincho"'>DAV:protectaclfrominheritance:
+A &quot;live&quot; property indicating that the ACL does not inherit any
+ACEs.<span style="mso-spacerun: yes">  </span>If this property is present, the
+ACL should contain no ACEs with the DAV:inherited element present.<span
+style="mso-spacerun: yes">  </span>If this property is not present and the
+system supports ACL inheritance, then the ACL will contain inheritable ACEs
+from its parent resource.<span style="mso-spacerun: yes">  </span>If a resource
+without this property present is updated with this property, it is a client
+choice whether to remove the inherited ACEs or retain them but remove the
+DAV:inherited element from the ACEs. <o:p></o:p></span></span></p>
+
+<p class=MsoBodyText><span style='mso-bookmark:_Toc443723986'><span
+style='mso-fareast-font-family:"MS Mincho"'>The DAV:ace element of a the
+DAV:acl property contains the following additional XML elements:<o:p></o:p></span></span></p>
+
+<p class=MsoBodyText style='margin-top:0in;margin-right:0in;margin-bottom:12.0pt;
+margin-left:.75in;text-indent:-.25in;mso-list:l74 level1 lfo273;tab-stops:list 56.25pt'><span
+style='mso-bookmark:_Toc443723986'><![if !supportLists]><span style='font-family:
+Symbol;mso-fareast-font-family:"MS Mincho"'>·<span style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</span></span><![endif]><span style='mso-fareast-font-family:"MS Mincho"'>DAV:acepropertytypes:
+A &quot;live&quot; property containing one or more elements, each of which is
+an XML tag identifying either a property on this resource or a property on a
+child resource that may inherit this ACE.<span style="mso-spacerun: yes"> 
+</span></span>Presence of DAV:acepropertytypes distinguishes this ACE as a
+&quot;Property ACE.&quot;&nbsp; The </span><span style='mso-bookmark:_Toc443723986'><span
+style='mso-fareast-font-family:"MS Mincho"'>permission</span>s associated with
+a &quot;Property ACE&quot; control access to only the property(ies) contained
+in DAV:acepropertytypes, and do not control access to the resource as a
+whole.&nbsp; The set of access </span><span style='mso-bookmark:_Toc443723986'><span
+style='mso-fareast-font-family:"MS Mincho"'>permission</span>s supported on
+Property ACEs may be all or a subset of the DAV:access-</span><span
+style='mso-bookmark:_Toc443723986'><span style='mso-fareast-font-family:"MS Mincho"'>permission</span>s
+present on this resource.&nbsp; This spec does not provide a mechanism to
+specify a different set of access-</span><span style='mso-bookmark:_Toc443723986'><span
+style='mso-fareast-font-family:"MS Mincho"'>permission</span>s for a property,
+than for the resource.&nbsp; An implementation that supports a different set of
+access-</span><span style='mso-bookmark:_Toc443723986'><span style='mso-fareast-font-family:
+"MS Mincho"'>permission</span>s for a property than for the resource, must
+return an error &quot;Unsupported Permission&quot; on an attempt to write a
+Property ACE with permissions not supported by the server.</span><span
+style='mso-bookmark:_Toc443723986'><span style='mso-fareast-font-family:"MS Mincho"'><span
+style="mso-spacerun: yes">  </span>[OPTIONAL]<o:p></o:p></span></span></p>
+
+<p class=MsoBodyText style='margin-top:0in;margin-right:0in;margin-bottom:12.0pt;
+margin-left:.75in;text-indent:-.25in;mso-list:l74 level1 lfo273;tab-stops:list 56.25pt'><span
+style='mso-bookmark:_Toc443723986'><![if !supportLists]><span style='font-family:
+Symbol;mso-fareast-font-family:"MS Mincho"'>·<span style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</span></span><![endif]><span style='mso-fareast-font-family:"MS Mincho"'>DAV:inherittochildtype:
+A &quot;live&quot; property containing one or more elements, each of which is
+an XML tag identifying the type of child object that will inherit this
+ACE.<span style="mso-spacerun: yes">  </span>This property is only present if
+DAV:inheritanceflags contains at least one of the following: DAV:inheritonly,
+DAV:containerinherit, or DAV:objectinherit.<span style="mso-spacerun: yes"> 
+</span>A child of the current resource will only inherit this ACE if the type
+of the child object is present in DAV:inherittochildtype.<o:p></o:p></span></span></p>
+
+<p class=MsoBodyText style='margin-top:0in;margin-right:0in;margin-bottom:12.0pt;
+margin-left:.75in;text-indent:-.25in;mso-list:l74 level1 lfo273;tab-stops:list 56.25pt'><span
+style='mso-bookmark:_Toc443723986'><![if !supportLists]><span style='font-family:
+Symbol;mso-fareast-font-family:"MS Mincho"'>·<span style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</span></span><![endif]><span style='mso-fareast-font-family:"MS Mincho"'>DAV:inheritanceflags:
+A &quot;live&quot; property containing flags indicating the inheritance
+features of this ACE.<span style="mso-spacerun: yes">  </span>For an ACE that
+is neither inherited, nor inheritable, this element may be either not present,
+or present but empty.<span style="mso-spacerun: yes">  </span>[OPTIONAL]<o:p></o:p></span></span></p>
+
+<p class=MsoBodyText><span style='mso-bookmark:_Toc443723986'><span
+style='mso-fareast-font-family:"MS Mincho"'>The DAV:inheritanceflags element
+contains 0 or more of the following XML elements:<o:p></o:p></span></span></p>
+
+<p class=MsoBodyText style='margin-top:0in;margin-right:0in;margin-bottom:12.0pt;
+margin-left:.75in;text-indent:-.25in;mso-list:l74 level1 lfo273;tab-stops:list 56.25pt'><span
+style='mso-bookmark:_Toc443723986'><![if !supportLists]><span style='font-family:
+Symbol;mso-fareast-font-family:"MS Mincho"'>·<span style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</span></span><![endif]><span style='mso-fareast-font-family:"MS Mincho"'>DAV:inherited:
+This flag indicates the ACE is inherited from the ACL on a different resource,
+identified in DAV:inheritancesource.<span style="mso-spacerun: yes"> 
+</span>This flag MUST be present for an inherited ACE and MUST NOT be present
+for an explicit ACE.<span style="mso-spacerun: yes">  </span>This flag must not
+be present if the DAV:protectaclfrominheritance element is present on this
+resource unless the DAV:inheritancesource element contains the special value
+DAV:system-ace, indicating that this ACE wasn't really inherited, but reflects
+implicit system-granted permissions.<span style="mso-spacerun: yes"> 
+</span>[REQUIRED]<o:p></o:p></span></span></p>
+
+<p class=MsoBodyText style='margin-top:0in;margin-right:0in;margin-bottom:12.0pt;
+margin-left:.75in;text-indent:-.25in;mso-list:l74 level1 lfo273;tab-stops:list 56.25pt'><span
+style='mso-bookmark:_Toc443723986'><![if !supportLists]><span style='font-family:
+Symbol;mso-fareast-font-family:"MS Mincho"'>·<span style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</span></span><![endif]><span style='mso-fareast-font-family:"MS Mincho"'>DAV:inheritonly:
+This flag indicates the ACE should be ignored during access check.<span
+style="mso-spacerun: yes">  </span>The ACE is present for the purposes of
+inheritance only and does not affect the security of the current resource.<span
+style="mso-spacerun: yes">  </span>[OPTIONAL]<o:p></o:p></span></span></p>
+
+<p class=MsoBodyText style='margin-top:0in;margin-right:0in;margin-bottom:12.0pt;
+margin-left:.75in;text-indent:-.25in;mso-list:l74 level1 lfo273;tab-stops:list 56.25pt'><span
+style='mso-bookmark:_Toc443723986'><![if !supportLists]><span style='font-family:
+Symbol;mso-fareast-font-family:"MS Mincho"'>·<span style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</span></span><![endif]><span style='mso-fareast-font-family:"MS Mincho"'>DAV:containerinherit:
+This flag indicates that container objects inherit this ACE as an effective
+ACE.<span style="mso-spacerun: yes">  </span>The DAV:inheritonly flag, if also
+present on this ACE, will be removed from the inherited effective ACE on the
+container.<span style="mso-spacerun: yes">  </span>If the
+DAV:nopropagateinheritance flag is present on the current ACE, the DAV:
+containerinherit flag is removed from the inherited ACE on the container.<span
+style="mso-spacerun: yes">  </span>[REQUIRED]<o:p></o:p></span></span></p>
+
+<p class=MsoBodyText style='margin-top:0in;margin-right:0in;margin-bottom:12.0pt;
+margin-left:.75in;text-indent:-.25in;mso-list:l74 level1 lfo273;tab-stops:list 56.25pt'><span
+style='mso-bookmark:_Toc443723986'><![if !supportLists]><span style='font-family:
+Symbol;mso-fareast-font-family:"MS Mincho"'>·<span style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</span></span><![endif]><span style='mso-fareast-font-family:"MS Mincho"'>DAV:objectinherit:
+This flag indicates that non-container resources inherit this ACE as an
+effective ACE.<span style="mso-spacerun: yes">  </span>The DAV:inheritonly
+flag, if also present on this ACE, will be removed from the inherited effective
+ACE on the non-container resource.<span style="mso-spacerun: yes">  </span>If
+the DAV:nopropagateinheritance&gt; flag is not present, then container
+resources will also inherit this ACE with the addition of the
+DAV:inheritonly&gt; flag.<span style="mso-spacerun: yes">  </span>[REQUIRED]<o:p></o:p></span></span></p>
+
+<p class=MsoBodyText style='margin-top:0in;margin-right:0in;margin-bottom:12.0pt;
+margin-left:.75in;text-indent:-.25in;mso-list:l74 level1 lfo273;tab-stops:list 56.25pt'><span
+style='mso-bookmark:_Toc443723986'><![if !supportLists]><span style='font-family:
+Symbol;mso-fareast-font-family:"MS Mincho"'>·<span style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</span></span><![endif]><span style='mso-fareast-font-family:"MS Mincho"'>DAV:nopropagateinheritance:
+This flag indicates the ACE should be inherited one level only.<span
+style="mso-spacerun: yes">  </span>If an object inherits this ACE, the
+DAV:containerinherit and DAV:objectinherit flags are removed from the resultant
+inherited ACE, preventing further propagation of this ACE.<span
+style="mso-spacerun: yes">  </span>[OPTIONAL]<o:p></o:p></span></span></p>
+
+<span style='mso-bookmark:_Toc443723986'></span>
+
+<h1><a name="_Toc414080839"></a><a name="_Toc414263531"></a><a
+name="_Toc419475092"></a><a name="_Toc422827171"></a><a name="_Toc423005066"></a><a
+name="_Toc414080824"></a><a name="_Toc414263516"></a><a name="_Toc414080827"></a><a
+name="_Toc414263519"></a><a name="_Toc496345074"><span style='mso-bookmark:
+_Toc414263519'><span style='mso-bookmark:_Toc414080827'><span style='mso-bookmark:
+_Toc414263516'><span style='mso-bookmark:_Toc414080824'><span style='mso-bookmark:
+_Toc423005066'><span style='mso-bookmark:_Toc422827171'><span style='mso-bookmark:
+_Toc419475092'><span style='mso-bookmark:_Toc414263531'><span style='mso-bookmark:
+_Toc414080839'><![if !supportLists]><span style='font-variant:normal;
+text-transform:uppercase'>3<span style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</span></span><![endif]><span style='font-variant:normal;text-transform:uppercase'>ACL
+Inheritance</span></span></span></span></span></span></span></span></span></span></a><span
+style='mso-bookmark:_Toc414263519'><span style='mso-bookmark:_Toc414080827'><span
+style='mso-bookmark:_Toc414263516'><span style='mso-bookmark:_Toc414080824'><span
+style='mso-bookmark:_Toc423005066'><span style='mso-bookmark:_Toc422827171'><span
+style='mso-bookmark:_Toc419475092'><span style='mso-bookmark:_Toc414263531'><span
+style='mso-bookmark:_Toc414080839'><span style='font-variant:normal;text-transform:
+uppercase'><o:p></o:p></span></span></span></span></span></span></span></span></span></span></h1>
+
+<p class=MsoBodyText><span style='mso-bookmark:_Toc414263519'><span
+style='mso-bookmark:_Toc414080827'><span style='mso-bookmark:_Toc414263516'><span
+style='mso-bookmark:_Toc414080824'><span style='mso-bookmark:_Toc423005066'><span
+style='mso-bookmark:_Toc422827171'><span style='mso-bookmark:_Toc419475092'><span
+style='mso-bookmark:_Toc414263531'><span style='mso-bookmark:_Toc414080839'><span
+style='mso-fareast-font-family:"MS Mincho"'>To support a more scalable
+administration model for configuration of access control information, the spec
+defines an ACL inheritance model that enables an ACL, or elements of an ACL, to
+be inherited and reused by other resources.<span style="mso-spacerun: yes"> 
+</span>An ACL-compliant implementation is not required to support
+inheritance.<span style="mso-spacerun: yes">  </span>Typically, an ACL defined
+on a container resource may be inherited by children of that container,
+grandchildren if they exist, and so on down the tree.<span style="mso-spacerun:
+yes">  </span>Although this hierarchical tree model of inheritance is popular,
+this spec does not require an implementation's ACL inheritance model to follow
+a tree structure where child resource inherits from parent resource.<span
+style="mso-spacerun: yes">  </span>Nonetheless, for convenience, this
+description of inheritance assumes that a child resource would inherit access
+control information from its parent.<o:p></o:p></span></span></span></span></span></span></span></span></span></span></p>
+
+<h2><span style='mso-bookmark:_Toc414263519'><span style='mso-bookmark:_Toc414080827'><span
+style='mso-bookmark:_Toc414263516'><span style='mso-bookmark:_Toc414080824'><span
+style='mso-bookmark:_Toc423005066'><span style='mso-bookmark:_Toc422827171'><span
+style='mso-bookmark:_Toc419475092'><span style='mso-bookmark:_Toc414263531'><span
+style='mso-bookmark:_Toc414080839'><a name="_Toc496345075"><![if !supportLists]><span
+style='mso-fareast-font-family:"MS Mincho"'>3.1<span style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</span></span><![endif]><span style='mso-fareast-font-family:"MS Mincho"'>Inheritable
+ACEs</span></a></span></span></span></span></span></span></span></span></span><span
+style='mso-bookmark:_Toc414263519'><span style='mso-bookmark:_Toc414080827'><span
+style='mso-bookmark:_Toc414263516'><span style='mso-bookmark:_Toc414080824'><span
+style='mso-bookmark:_Toc423005066'><span style='mso-bookmark:_Toc422827171'><span
+style='mso-bookmark:_Toc419475092'><span style='mso-bookmark:_Toc414263531'><span
+style='mso-bookmark:_Toc414080839'><span style='mso-fareast-font-family:"MS Mincho"'><o:p></o:p></span></span></span></span></span></span></span></span></span></span></h2>
+
+<p class=MsoBodyText><span style='mso-bookmark:_Toc414263519'><span
+style='mso-bookmark:_Toc414080827'><span style='mso-bookmark:_Toc414263516'><span
+style='mso-bookmark:_Toc414080824'><span style='mso-bookmark:_Toc423005066'><span
+style='mso-bookmark:_Toc422827171'><span style='mso-bookmark:_Toc419475092'><span
+style='mso-bookmark:_Toc414263531'><span style='mso-bookmark:_Toc414080839'><span
+style='mso-fareast-font-family:"MS Mincho"'>Access control information is
+inherited at the granularity of an ACE.<span style="mso-spacerun: yes"> 
+</span>An inherited ace is identified by the presence of the DAV:inherited
+element in the DAV:inheritanceflags property.<span style="mso-spacerun: yes"> 
+</span>An &quot;Explicit&quot; ACE is an ACE defined directly on a resource,
+rather than inherited from a different resource.<span style="mso-spacerun:
+yes">  </span>An ACE without the DAV:inherited element is by definition an
+Explicit ACE.<span style="mso-spacerun: yes">  </span>Only Explicit ACEs may
+updated by the client.<o:p></o:p></span></span></span></span></span></span></span></span></span></span></p>
+
+<p class=MsoBodyText><span style='mso-bookmark:_Toc414263519'><span
+style='mso-bookmark:_Toc414080827'><span style='mso-bookmark:_Toc414263516'><span
+style='mso-bookmark:_Toc414080824'><span style='mso-bookmark:_Toc423005066'><span
+style='mso-bookmark:_Toc422827171'><span style='mso-bookmark:_Toc419475092'><span
+style='mso-bookmark:_Toc414263531'><span style='mso-bookmark:_Toc414080839'><span
+style='mso-fareast-font-family:"MS Mincho"'>To indicate that an ACE should be
+inherited by child resources, the DAV:inheritanceflags should contain:<o:p></o:p></span></span></span></span></span></span></span></span></span></span></p>
+
+<p class=MsoBodyText style='margin-top:0in;margin-right:0in;margin-bottom:12.0pt;
+margin-left:.75in;text-indent:-.25in;mso-list:l74 level1 lfo273;tab-stops:list 56.25pt'><span
+style='mso-bookmark:_Toc414263519'><span style='mso-bookmark:_Toc414080827'><span
+style='mso-bookmark:_Toc414263516'><span style='mso-bookmark:_Toc414080824'><span
+style='mso-bookmark:_Toc423005066'><span style='mso-bookmark:_Toc422827171'><span
+style='mso-bookmark:_Toc419475092'><span style='mso-bookmark:_Toc414263531'><span
+style='mso-bookmark:_Toc414080839'><![if !supportLists]><span style='font-family:
+Symbol;mso-fareast-font-family:"MS Mincho"'>·<span style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</span></span><![endif]><span style='mso-fareast-font-family:"MS Mincho"'>DAV:objectinherit
+to indicate that non-container children should inherit the ACE, <o:p></o:p></span></span></span></span></span></span></span></span></span></span></p>
+
+<p class=MsoBodyText style='margin-top:0in;margin-right:0in;margin-bottom:12.0pt;
+margin-left:.75in;text-indent:-.25in;mso-list:l74 level1 lfo273;tab-stops:list 56.25pt'><span
+style='mso-bookmark:_Toc414263519'><span style='mso-bookmark:_Toc414080827'><span
+style='mso-bookmark:_Toc414263516'><span style='mso-bookmark:_Toc414080824'><span
+style='mso-bookmark:_Toc423005066'><span style='mso-bookmark:_Toc422827171'><span
+style='mso-bookmark:_Toc419475092'><span style='mso-bookmark:_Toc414263531'><span
+style='mso-bookmark:_Toc414080839'><![if !supportLists]><span style='font-family:
+Symbol;mso-fareast-font-family:"MS Mincho"'>·<span style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</span></span><![endif]><span style='mso-fareast-font-family:"MS Mincho"'>DAV:containerinherit
+to indicate that container children should inherit the ACE, or <o:p></o:p></span></span></span></span></span></span></span></span></span></span></p>
+
+<p class=MsoBodyText style='margin-top:0in;margin-right:0in;margin-bottom:12.0pt;
+margin-left:.75in;text-indent:-.25in;mso-list:l74 level1 lfo273;tab-stops:list 56.25pt'><span
+style='mso-bookmark:_Toc414263519'><span style='mso-bookmark:_Toc414080827'><span
+style='mso-bookmark:_Toc414263516'><span style='mso-bookmark:_Toc414080824'><span
+style='mso-bookmark:_Toc423005066'><span style='mso-bookmark:_Toc422827171'><span
+style='mso-bookmark:_Toc419475092'><span style='mso-bookmark:_Toc414263531'><span
+style='mso-bookmark:_Toc414080839'><![if !supportLists]><span style='font-family:
+Symbol;mso-fareast-font-family:"MS Mincho"'>·<span style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</span></span><![endif]><span style='mso-fareast-font-family:"MS Mincho"'>both
+to indicate that all child resources should inherit the ACE.<span
+style="mso-spacerun: yes">  </span><o:p></o:p></span></span></span></span></span></span></span></span></span></span></p>
+
+<h2><span style='mso-bookmark:_Toc414263519'><span style='mso-bookmark:_Toc414080827'><span
+style='mso-bookmark:_Toc414263516'><span style='mso-bookmark:_Toc414080824'><span
+style='mso-bookmark:_Toc423005066'><span style='mso-bookmark:_Toc422827171'><span
+style='mso-bookmark:_Toc419475092'><span style='mso-bookmark:_Toc414263531'><span
+style='mso-bookmark:_Toc414080839'><a name="_Toc496345076"><![if !supportLists]><span
+style='mso-fareast-font-family:"MS Mincho"'>3.2<span style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</span></span><![endif]><span style='mso-fareast-font-family:"MS Mincho"'>Updating
+an inherited ACE</span></a></span></span></span></span></span></span></span></span></span><span
+style='mso-bookmark:_Toc414263519'><span style='mso-bookmark:_Toc414080827'><span
+style='mso-bookmark:_Toc414263516'><span style='mso-bookmark:_Toc414080824'><span
+style='mso-bookmark:_Toc423005066'><span style='mso-bookmark:_Toc422827171'><span
+style='mso-bookmark:_Toc419475092'><span style='mso-bookmark:_Toc414263531'><span
+style='mso-bookmark:_Toc414080839'><span style='mso-fareast-font-family:"MS Mincho"'><o:p></o:p></span></span></span></span></span></span></span></span></span></span></h2>
+
+<p class=MsoBodyText style='margin-left:38.25pt'><span style='mso-bookmark:
+_Toc414263519'><span style='mso-bookmark:_Toc414080827'><span style='mso-bookmark:
+_Toc414263516'><span style='mso-bookmark:_Toc414080824'><span style='mso-bookmark:
+_Toc423005066'><span style='mso-bookmark:_Toc422827171'><span style='mso-bookmark:
+_Toc419475092'><span style='mso-bookmark:_Toc414263531'><span style='mso-bookmark:
+_Toc414080839'><span style='mso-fareast-font-family:"MS Mincho"'>When a child
+resource ACL inherits an ACE, the DAV:inherited flag is present on the ACE to
+indicate that this ACE is read-only (it may only be edited on the resource
+where the ACE was explicitly defined).<span style="mso-spacerun: yes"> 
+</span>To assist users who want to make changes to the permissions that appear
+in an inherited ACE, the resource from which the ACE was inherited (and
+therefore, on which the explicit ACE is defined and editable) is identified in
+the DAV:inheritancesource property.<span style="mso-spacerun: yes">  </span>If
+the inheritance source cannot be determined or if the system is unable to
+generate a valid URI to the resource from which the ACE was inherited,
+DAV:inheritancesource contains the special tag DAV:unknown.<o:p></o:p></span></span></span></span></span></span></span></span></span></span></p>
+
+<h2><span style='mso-bookmark:_Toc414263519'><span style='mso-bookmark:_Toc414080827'><span
+style='mso-bookmark:_Toc414263516'><span style='mso-bookmark:_Toc414080824'><span
+style='mso-bookmark:_Toc423005066'><span style='mso-bookmark:_Toc422827171'><span
+style='mso-bookmark:_Toc419475092'><span style='mso-bookmark:_Toc414263531'><span
+style='mso-bookmark:_Toc414080839'><a name="_Toc496345077"><![if !supportLists]><span
+style='mso-fareast-font-family:"MS Mincho"'>3.3<span style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</span></span><![endif]><span style='mso-fareast-font-family:"MS Mincho"'>Propagate
+ACE but do not use for Access Check on this resource</span></a></span></span></span></span></span></span></span></span></span><span
+style='mso-bookmark:_Toc414263519'><span style='mso-bookmark:_Toc414080827'><span
+style='mso-bookmark:_Toc414263516'><span style='mso-bookmark:_Toc414080824'><span
+style='mso-bookmark:_Toc423005066'><span style='mso-bookmark:_Toc422827171'><span
+style='mso-bookmark:_Toc419475092'><span style='mso-bookmark:_Toc414263531'><span
+style='mso-bookmark:_Toc414080839'><span style='mso-fareast-font-family:"MS Mincho"'><o:p></o:p></span></span></span></span></span></span></span></span></span></span></h2>
+
+<p class=MsoBodyText style='margin-left:38.25pt'><span style='mso-bookmark:
+_Toc414263519'><span style='mso-bookmark:_Toc414080827'><span style='mso-bookmark:
+_Toc414263516'><span style='mso-bookmark:_Toc414080824'><span style='mso-bookmark:
+_Toc423005066'><span style='mso-bookmark:_Toc422827171'><span style='mso-bookmark:
+_Toc419475092'><span style='mso-bookmark:_Toc414263531'><span style='mso-bookmark:
+_Toc414080839'><span style='mso-fareast-font-family:"MS Mincho"'>In some cases,
+an ACE (whether explicit or inherited) may be present on a container ACL purely
+for the sake of propagating the ACE to child objects and NOT to be used for
+access control on the container itself.<span style="mso-spacerun: yes"> 
+</span>In this case, the<span style="mso-spacerun: yes">  </span>optional
+DAV:inheritonly flag is present on the ACE to indicate it should not be used
+for access check on this container.<o:p></o:p></span></span></span></span></span></span></span></span></span></span></p>
+
+<h2><span style='mso-bookmark:_Toc414263519'><span style='mso-bookmark:_Toc414080827'><span
+style='mso-bookmark:_Toc414263516'><span style='mso-bookmark:_Toc414080824'><span
+style='mso-bookmark:_Toc423005066'><span style='mso-bookmark:_Toc422827171'><span
+style='mso-bookmark:_Toc419475092'><span style='mso-bookmark:_Toc414263531'><span
+style='mso-bookmark:_Toc414080839'><a name="_Toc496345078"><![if !supportLists]><span
+style='mso-fareast-font-family:"MS Mincho"'>3.4<span style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</span></span><![endif]><span style='mso-fareast-font-family:"MS Mincho"'>Propagate
+to immediate children only</span></a></span></span></span></span></span></span></span></span></span><span
+style='mso-bookmark:_Toc414263519'><span style='mso-bookmark:_Toc414080827'><span
+style='mso-bookmark:_Toc414263516'><span style='mso-bookmark:_Toc414080824'><span
+style='mso-bookmark:_Toc423005066'><span style='mso-bookmark:_Toc422827171'><span
+style='mso-bookmark:_Toc419475092'><span style='mso-bookmark:_Toc414263531'><span
+style='mso-bookmark:_Toc414080839'><span style='mso-fareast-font-family:"MS Mincho"'><o:p></o:p></span></span></span></span></span></span></span></span></span></span></h2>
+
+<p class=MsoBodyText style='margin-left:38.25pt'><span style='mso-bookmark:
+_Toc414263519'><span style='mso-bookmark:_Toc414080827'><span style='mso-bookmark:
+_Toc414263516'><span style='mso-bookmark:_Toc414080824'><span style='mso-bookmark:
+_Toc423005066'><span style='mso-bookmark:_Toc422827171'><span style='mso-bookmark:
+_Toc419475092'><span style='mso-bookmark:_Toc414263531'><span style='mso-bookmark:
+_Toc414080839'><span style='mso-fareast-font-family:"MS Mincho"'>To indicate
+that an ACE should be inherited by children, but not by grandchildren or any
+further down the tree, the optional DAV:nopropagateinheritance flag is present
+on the ACE.<span style="mso-spacerun: yes">  </span>This flag indicates that
+when this ACE is inherited by child objects, the DAV:objectinherit and/or
+DAV:containerinherit elements must be removed from the inherited ACE.<o:p></o:p></span></span></span></span></span></span></span></span></span></span></p>
+
+<h2><span style='mso-bookmark:_Toc414263519'><span style='mso-bookmark:_Toc414080827'><span
+style='mso-bookmark:_Toc414263516'><span style='mso-bookmark:_Toc414080824'><span
+style='mso-bookmark:_Toc423005066'><span style='mso-bookmark:_Toc422827171'><span
+style='mso-bookmark:_Toc419475092'><span style='mso-bookmark:_Toc414263531'><span
+style='mso-bookmark:_Toc414080839'><a name="_Toc496345079"><![if !supportLists]><span
+style='mso-fareast-font-family:"MS Mincho"'>3.5<span style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</span></span><![endif]><span style='mso-fareast-font-family:"MS Mincho"'>Protect
+ACL from inheritance</span></a></span></span></span></span></span></span></span></span></span><span
+style='mso-bookmark:_Toc414263519'><span style='mso-bookmark:_Toc414080827'><span
+style='mso-bookmark:_Toc414263516'><span style='mso-bookmark:_Toc414080824'><span
+style='mso-bookmark:_Toc423005066'><span style='mso-bookmark:_Toc422827171'><span
+style='mso-bookmark:_Toc419475092'><span style='mso-bookmark:_Toc414263531'><span
+style='mso-bookmark:_Toc414080839'><span style='mso-fareast-font-family:"MS Mincho"'><o:p></o:p></span></span></span></span></span></span></span></span></span></span></h2>
+
+<p class=MsoBodyText style='margin-left:38.25pt'><span style='mso-bookmark:
+_Toc414263519'><span style='mso-bookmark:_Toc414080827'><span style='mso-bookmark:
+_Toc414263516'><span style='mso-bookmark:_Toc414080824'><span style='mso-bookmark:
+_Toc423005066'><span style='mso-bookmark:_Toc422827171'><span style='mso-bookmark:
+_Toc419475092'><span style='mso-bookmark:_Toc414263531'><span style='mso-bookmark:
+_Toc414080839'><span style='mso-fareast-font-family:"MS Mincho"'>To prevent an
+ACL from inheriting any ACEs, the optional DAV:protectaclfrominheritance
+property is set on the resource.<span style="mso-spacerun: yes">  </span>If
+this property is present on a resource, the DAV:inherited element must not be
+present on any ACEs in that resource's ACL.<span style="mso-spacerun: yes"> 
+</span>Other inheritance flags may be present on the ACEs of this resource,
+since this ACL may be the source of inheritable ACEs for the subtree under this
+resource.<o:p></o:p></span></span></span></span></span></span></span></span></span></span></p>
+
+<span style='font-size:10.0pt;font-family:"Courier New";mso-fareast-font-family:
+"Courier New";mso-ansi-language:EN-US;mso-fareast-language:EN-US;mso-bidi-language:
+AR-SA'><br clear=all style='mso-special-character:line-break;page-break-before:
+always'>
+</span><pre style='margin-top:0in;margin-right:12.25pt;margin-bottom:0in;
+margin-left:52.55pt;margin-bottom:.0001pt'><span style='mso-bookmark:_Toc414263519'><span
+style='mso-bookmark:_Toc414080827'><span style='mso-bookmark:_Toc414263516'><span
+style='mso-bookmark:_Toc414080824'><span style='mso-bookmark:_Toc423005066'><span
+style='mso-bookmark:_Toc422827171'><span style='mso-bookmark:_Toc419475092'><span
+style='mso-bookmark:_Toc414263531'><span style='mso-bookmark:_Toc414080839'><span
+style='color:black'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></span></span></span></span></span></span></span></span></span></span></pre>
+
+<h1 style='mso-list:l66 level1 lfo157'><span style='mso-bookmark:_Toc414263519'><span
+style='mso-bookmark:_Toc414080827'><span style='mso-bookmark:_Toc414263516'><span
+style='mso-bookmark:_Toc414080824'><span style='mso-bookmark:_Toc423005066'><span
+style='mso-bookmark:_Toc422827171'><span style='mso-bookmark:_Toc419475092'><span
+style='mso-bookmark:_Toc414263531'><span style='mso-bookmark:_Toc414080839'><a
+name="_Toc496345080"><![if !supportLists]><span style='font-variant:normal;
+text-transform:uppercase'>4<span style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</span></span><![endif]><span style='font-variant:normal;text-transform:uppercase'>Internationaliz</span></a></span></span></span></span></span></span></span></span></span><span
+style='mso-bookmark:_Toc414263519'><span style='mso-bookmark:_Toc414080827'><span
+style='mso-bookmark:_Toc414263516'><span style='mso-bookmark:_Toc414080824'><span
+style='mso-bookmark:_Toc496345080'><span style='font-variant:normal;text-transform:
+uppercase'>ation Considerations</span></span></span></span></span></span><span
+style='mso-bookmark:_Toc414263519'><span style='mso-bookmark:_Toc414080827'><span
+style='mso-bookmark:_Toc414263516'><span style='mso-bookmark:_Toc414080824'><span
+style='font-variant:normal;text-transform:uppercase'><o:p></o:p></span></span></span></span></span></h1>
+
+<p class=MsoBodyText><span style='mso-bookmark:_Toc414263519'><span
+style='mso-bookmark:_Toc414080827'><span style='mso-bookmark:_Toc414263516'><span
+style='mso-bookmark:_Toc414080824'>To be supplied.</span></span></span></span></p>
+
+<h1><span style='mso-bookmark:_Toc414263519'><span style='mso-bookmark:_Toc414080827'><span
+style='mso-bookmark:_Toc414263516'><span style='mso-bookmark:_Toc414080824'><a
+name="_Toc414080837"></a><a name="_Toc414263529"></a><a name="_Toc419475093"></a><a
+name="_Toc422827172"></a><a name="_Toc423005067"></a><a name="_Toc496345081"><span
+style='mso-bookmark:_Toc423005067'><span style='mso-bookmark:_Toc422827172'><span
+style='mso-bookmark:_Toc419475093'><span style='mso-bookmark:_Toc414263529'><span
+style='mso-bookmark:_Toc414080837'><![if !supportLists]><span style='font-variant:
+normal;text-transform:uppercase'>5<span style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</span></span><![endif]><span style='font-variant:normal;text-transform:uppercase'>Security
+Considerations</span></span></span></span></span></span></a></span></span></span></span><span
+style='mso-bookmark:_Toc414263519'><span style='mso-bookmark:_Toc414080827'><span
+style='mso-bookmark:_Toc414263516'><span style='mso-bookmark:_Toc414080824'><span
+style='font-variant:normal;text-transform:uppercase'> <o:p></o:p></span></span></span></span></span></h1>
+
+<p class=MsoBodyText><span style='mso-bookmark:_Toc414263519'><span
+style='mso-bookmark:_Toc414080827'><span style='mso-bookmark:_Toc414263516'><span
+style='mso-bookmark:_Toc414080824'><a name="_Toc414080838"></a><a
+name="_Toc414263530"></a><a name="_Toc419475094"></a><a name="_Toc422827173"></a><a
+name="_Toc423005068"><span style='mso-bookmark:_Toc422827173'><span
+style='mso-bookmark:_Toc419475094'><span style='mso-bookmark:_Toc414263530'><span
+style='mso-bookmark:_Toc414080838'>To be supplied.<span style='layout-grid-mode:
+line'><o:p></o:p></span></span></span></span></span></a></span></span></span></span></p>
+
+<h1><span style='mso-bookmark:_Toc414263519'><span style='mso-bookmark:_Toc414080827'><span
+style='mso-bookmark:_Toc414263516'><span style='mso-bookmark:_Toc414080824'><span
+style='mso-bookmark:_Toc423005068'><span style='mso-bookmark:_Toc422827173'><span
+style='mso-bookmark:_Toc419475094'><span style='mso-bookmark:_Toc414263530'><span
+style='mso-bookmark:_Toc414080838'><a name="_Toc496345082"><![if !supportLists]><span
+style='font-variant:normal;text-transform:uppercase'>6<span style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</span></span><![endif]><span style='font-variant:normal;text-transform:uppercase'>Scalability</span></a></span></span></span></span></span></span></span></span></span><span
+style='mso-bookmark:_Toc414263519'><span style='mso-bookmark:_Toc414080827'><span
+style='mso-bookmark:_Toc414263516'><span style='mso-bookmark:_Toc414080824'><span
+style='mso-bookmark:_Toc423005068'><span style='mso-bookmark:_Toc422827173'><span
+style='mso-bookmark:_Toc419475094'><span style='mso-bookmark:_Toc414263530'><span
+style='mso-bookmark:_Toc414080838'><span style='font-variant:normal;text-transform:
+uppercase'><o:p></o:p></span></span></span></span></span></span></span></span></span></span></h1>
+
+<p class=MsoBodyText><span style='mso-bookmark:_Toc414263519'><span
+style='mso-bookmark:_Toc414080827'><span style='mso-bookmark:_Toc414263516'><span
+style='mso-bookmark:_Toc414080824'><span style='mso-bookmark:_Toc423005068'><span
+style='mso-bookmark:_Toc422827173'><span style='mso-bookmark:_Toc419475094'><span
+style='mso-bookmark:_Toc414263530'><span style='mso-bookmark:_Toc414080838'>To
+be supplied.<span style='layout-grid-mode:line'><o:p></o:p></span></span></span></span></span></span></span></span></span></span></p>
+
+<h1><span style='mso-bookmark:_Toc414263519'><span style='mso-bookmark:_Toc414080827'><span
+style='mso-bookmark:_Toc414263516'><span style='mso-bookmark:_Toc414080824'><span
+style='mso-bookmark:_Toc423005068'><span style='mso-bookmark:_Toc422827173'><span
+style='mso-bookmark:_Toc419475094'><span style='mso-bookmark:_Toc414263530'><span
+style='mso-bookmark:_Toc414080838'><a name="_Toc496345083"><![if !supportLists]><span
+style='font-variant:normal;text-transform:uppercase'>7<span style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</span></span><![endif]><span style='font-variant:normal;text-transform:uppercase'>Authentication</span></a></span></span></span></span></span></span></span></span></span><span
+style='mso-bookmark:_Toc414263519'><span style='mso-bookmark:_Toc414080827'><span
+style='mso-bookmark:_Toc414263516'><span style='mso-bookmark:_Toc414080824'><span
+style='font-variant:normal;text-transform:uppercase'><o:p></o:p></span></span></span></span></span></h1>
+
+<p class=MsoBodyText><span style='mso-bookmark:_Toc414263519'><span
+style='mso-bookmark:_Toc414080827'><span style='mso-bookmark:_Toc414263516'><span
+style='mso-bookmark:_Toc414080824'>Authentication mechanisms defined in WebDAV
+will also apply to WebDAV ACL.</span></span></span></span></p>
+
+<h1><span style='mso-bookmark:_Toc414263519'><span style='mso-bookmark:_Toc414080827'><span
+style='mso-bookmark:_Toc414263516'><span style='mso-bookmark:_Toc414080824'><a
+name="_Toc414080840"></a><a name="_Toc414263532"></a><a name="_Toc419475095"></a><a
+name="_Toc422827174"></a><a name="_Toc423005069"></a><a name="_Toc496345084"><span
+style='mso-bookmark:_Toc423005069'><span style='mso-bookmark:_Toc422827174'><span
+style='mso-bookmark:_Toc419475095'><span style='mso-bookmark:_Toc414263532'><span
+style='mso-bookmark:_Toc414080840'><![if !supportLists]><span style='font-variant:
+normal;text-transform:uppercase'>8<span style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</span></span><![endif]><span style='font-variant:normal;text-transform:uppercase'>IANA
+Considerations</span></span></span></span></span></span></a></span></span></span></span><span
+style='mso-bookmark:_Toc414263519'><span style='mso-bookmark:_Toc414080827'><span
+style='mso-bookmark:_Toc414263516'><span style='mso-bookmark:_Toc414080824'><span
+style='font-variant:normal;text-transform:uppercase'><o:p></o:p></span></span></span></span></span></h1>
+
+<p class=MsoBodyText><span style='mso-bookmark:_Toc414263519'><span
+style='mso-bookmark:_Toc414080827'><span style='mso-bookmark:_Toc414263516'><span
+style='mso-bookmark:_Toc414080824'>This document uses the namespace defined by
+[RFC2518] for XML elements.<span style="mso-spacerun: yes">  </span>All other
+IANA considerations mentioned in [RFC2518] also applicable to WebDAV ACL.</span></span></span></span></p>
+
+<h1><span style='mso-bookmark:_Toc414263519'><span style='mso-bookmark:_Toc414080827'><span
+style='mso-bookmark:_Toc414263516'><span style='mso-bookmark:_Toc414080824'><a
+name="_Toc496345085"><![if !supportLists]><span style='font-variant:normal;
+text-transform:uppercase'>9<span style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</span></span><![endif]><span style='font-variant:normal;text-transform:uppercase'>Intellectual
+Property</span></a></span></span></span></span><span style='mso-bookmark:_Toc414263519'><span
+style='mso-bookmark:_Toc414080827'><span style='mso-bookmark:_Toc414263516'><span
+style='mso-bookmark:_Toc414080824'><span style='font-variant:normal;text-transform:
+uppercase'><o:p></o:p></span></span></span></span></span></h1>
+
+<p class=MsoBodyText><span style='mso-bookmark:_Toc414263519'><span
+style='mso-bookmark:_Toc414080827'><span style='mso-bookmark:_Toc414263516'><span
+style='mso-bookmark:_Toc414080824'>The following notice is copied from RFC
+2026, section 10.4, and describes the position of the IETF concerning
+intellectual property claims made against this document.</span></span></span></span></p>
+
+<p class=MsoBodyText><span style='mso-bookmark:_Toc414263519'><span
+style='mso-bookmark:_Toc414080827'><span style='mso-bookmark:_Toc414263516'><span
+style='mso-bookmark:_Toc414080824'>The IETF takes no position regarding the
+validity or scope of any intellectual property or other rights that might be
+claimed to pertain to the implementation or use other technology described in
+this document or the extent to which any license under such rights might or
+might not be available; neither does it represent that it has made any effort
+to identify any such rights.<span style="mso-spacerun: yes"> 
+</span>Information on the IETF's procedures with respect to rights in
+standards-track and standards-related documentation can be found in
+BCP-11.<span style="mso-spacerun: yes">  </span>Copies of claims of rights made
+available for publication and any assurances of licenses to be made available,
+or the result of an attempt made to obtain a general license or permission for
+the use of such proprietary rights by implementers or users of this
+specification can be obtained from the IETF Secretariat.</span></span></span></span></p>
+
+<p class=MsoPlainText><span style='mso-bookmark:_Toc414263519'><span
+style='mso-bookmark:_Toc414080827'><span style='mso-bookmark:_Toc414263516'><span
+style='mso-bookmark:_Toc414080824'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></span></span></span></span></p>
+
+<p class=MsoBodyText><span style='mso-bookmark:_Toc414263519'><span
+style='mso-bookmark:_Toc414080827'><span style='mso-bookmark:_Toc414263516'><span
+style='mso-bookmark:_Toc414080824'>The IETF invites any interested party to
+bring to its attention any copyrights, patents or patent applications, or other
+proprietary rights that may cover technology that may be required to practice
+this standard.<span style="mso-spacerun: yes">  </span>Please address the
+information to the IETF Executive Director.</span></span></span></span></p>
+
+<h1><span style='mso-bookmark:_Toc414263519'><span style='mso-bookmark:_Toc414080827'><span
+style='mso-bookmark:_Toc414263516'><span style='mso-bookmark:_Toc414080824'><a
+name="_Toc414080842"></a><a name="_Toc414263534"></a><a name="_Toc419475097"></a><a
+name="_Toc422827180"></a><a name="_Toc423005074"></a><a name="_Toc496345086"><span
+style='mso-bookmark:_Toc423005074'><span style='mso-bookmark:_Toc422827180'><span
+style='mso-bookmark:_Toc419475097'><span style='mso-bookmark:_Toc414263534'><span
+style='mso-bookmark:_Toc414080842'><![if !supportLists]><span style='font-variant:
+normal;text-transform:uppercase'>10<span style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;
+</span></span><![endif]><span style='font-variant:normal;text-transform:uppercase'>Acknowledgements</span></span></span></span></span></span></a></span></span></span></span><span
+style='mso-bookmark:_Toc414263519'><span style='mso-bookmark:_Toc414080827'><span
+style='mso-bookmark:_Toc414263516'><span style='mso-bookmark:_Toc414080824'><span
+style='mso-bookmark:_Toc423005074'><span style='mso-bookmark:_Toc422827180'><span
+style='mso-bookmark:_Toc419475097'><span style='mso-bookmark:_Toc414263534'><span
+style='mso-bookmark:_Toc414080842'><span style='font-variant:normal;text-transform:
+uppercase'><o:p></o:p></span></span></span></span></span></span></span></span></span></span></h1>
+
+<p class=MsoBodyText><span style='mso-bookmark:_Toc414263519'><span
+style='mso-bookmark:_Toc414080827'><span style='mso-bookmark:_Toc414263516'><span
+style='mso-bookmark:_Toc414080824'><span style='mso-bookmark:_Toc423005074'><span
+style='mso-bookmark:_Toc422827180'><span style='mso-bookmark:_Toc419475097'><span
+style='mso-bookmark:_Toc414263534'><span style='mso-bookmark:_Toc414080842'>This
+protocol is the collaborative product of the WebDAV ACL design team: xxx, yyy,
+zzz.<span style="mso-spacerun: yes">  </span>We would like to acknowledge the
+foundation laid for us by the authors of the WebDAV and HTTP protocols upon
+which this protocol is layered, and the invaluable feedback from the WebDAV
+working group.</span></span></span></span></span></span></span></span></span></p>
+
+<h1><span style='mso-bookmark:_Toc414263519'><span style='mso-bookmark:_Toc414080827'><span
+style='mso-bookmark:_Toc414263516'><span style='mso-bookmark:_Toc414080824'><span
+style='mso-bookmark:_Toc423005074'><span style='mso-bookmark:_Toc422827180'><span
+style='mso-bookmark:_Toc419475097'><span style='mso-bookmark:_Toc414263534'><span
+style='mso-bookmark:_Toc414080842'><a name="_Toc496345087"><![if !supportLists]><span
+style='font-variant:normal;text-transform:uppercase'>11<span style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;
+</span></span><![endif]><span style='font-variant:normal;text-transform:uppercase'>Index</span></a></span></span></span></span></span></span></span></span></span><span
+style='mso-bookmark:_Toc414263519'><span style='mso-bookmark:_Toc414080827'><span
+style='mso-bookmark:_Toc414263516'><span style='mso-bookmark:_Toc414080824'><span
+style='mso-bookmark:_Toc423005074'><span style='mso-bookmark:_Toc422827180'><span
+style='mso-bookmark:_Toc419475097'><span style='mso-bookmark:_Toc414263534'><span
+style='mso-bookmark:_Toc414080842'><span style='font-variant:normal;text-transform:
+uppercase'><o:p></o:p></span></span></span></span></span></span></span></span></span></span></h1>
+
+<p class=MsoBodyText><span style='mso-bookmark:_Toc414263519'><span
+style='mso-bookmark:_Toc414080827'><span style='mso-bookmark:_Toc414263516'><span
+style='mso-bookmark:_Toc414080824'><span style='mso-bookmark:_Toc423005074'><span
+style='mso-bookmark:_Toc422827180'><span style='mso-bookmark:_Toc419475097'><span
+style='mso-bookmark:_Toc414263534'><span style='mso-bookmark:_Toc414080842'>To
+be supplied.</span></span></span></span></span></span></span></span></span></p>
+
+<h1><span style='mso-bookmark:_Toc414263519'><span style='mso-bookmark:_Toc414080827'><span
+style='mso-bookmark:_Toc414263516'><span style='mso-bookmark:_Toc414080824'><span
+style='mso-bookmark:_Toc423005074'><span style='mso-bookmark:_Toc422827180'><span
+style='mso-bookmark:_Toc419475097'><span style='mso-bookmark:_Toc414263534'><span
+style='mso-bookmark:_Toc414080842'><a name="_Toc496345088"><![if !supportLists]><span
+style='font-variant:normal;text-transform:uppercase'>12<span style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;
+</span></span><![endif]><span style='font-variant:normal;text-transform:uppercase'>References</span></a></span></span></span></span></span></span></span></span></span><span
+style='mso-bookmark:_Toc414263519'><span style='mso-bookmark:_Toc414080827'><span
+style='mso-bookmark:_Toc414263516'><span style='mso-bookmark:_Toc414080824'><span
+style='font-variant:normal;text-transform:uppercase'><o:p></o:p></span></span></span></span></span></h1>
+
+<p class=MsoBodyText><span style='mso-bookmark:_Toc414263519'><span
+style='mso-bookmark:_Toc414080827'><span style='mso-bookmark:_Toc414263516'><span
+style='mso-bookmark:_Toc414080824'>[RFC2026] S.Bradner, &quot;The Internet
+Standards Process&quot;, Harvard, 1996, &lt;</span></span></span></span><a
+href="http://www.ietf.org/rfc/rfc2026.txt"><span style='mso-bookmark:_Toc414263519'><span
+style='mso-bookmark:_Toc414080827'><span style='mso-bookmark:_Toc414263516'><span
+style='mso-bookmark:_Toc414080824'>http://www.ietf.org/<span style='mso-bookmark:
+_Hlt465062092'>r</span>fc/rfc2026.txt</span></span></span></span><span
+style='mso-bookmark:_Toc414263519'><span style='mso-bookmark:_Toc414080827'><span
+style='mso-bookmark:_Toc414263516'><span style='mso-bookmark:_Toc414080824'></span></span></span></span></a><![if !supportNestedAnchors]><a
+name="_Hlt465062092"></a><![endif]><span style='mso-bookmark:_Toc414263519'><span
+style='mso-bookmark:_Toc414080827'><span style='mso-bookmark:_Toc414263516'><span
+style='mso-bookmark:_Toc414080824'>&gt;.</span></span></span></span></p>
+
+<p class=MsoBodyText><span style='mso-bookmark:_Toc414263519'><span
+style='mso-bookmark:_Toc414080827'><span style='mso-bookmark:_Toc414263516'><span
+style='mso-bookmark:_Toc414080824'>[RFC2068] R.Fielding, J.Gettys, J.C.Mogul,
+H.Frystyk, and T.Berners-Lee, &quot;Hypertext Transfer Protocol --
+HTTP/1.1&quot;, RFC 2068, U.C. Irvine, DEC, MIT/LCS, 1997, &lt;</span></span></span></span><a
+href="http://www.ietf.org/rfc/rfc2068.txt"><span style='mso-bookmark:_Toc414263519'><span
+style='mso-bookmark:_Toc414080827'><span style='mso-bookmark:_Toc414263516'><span
+style='mso-bookmark:_Toc414080824'>http://www.ietf.org/rf<span
+style='mso-bookmark:_Hlt465060432'>c</span>/rfc2068.txt</span></span></span></span><span
+style='mso-bookmark:_Toc414263519'><span style='mso-bookmark:_Toc414080827'><span
+style='mso-bookmark:_Toc414263516'><span style='mso-bookmark:_Toc414080824'></span></span></span></span></a><![if !supportNestedAnchors]><a
+name="_Hlt465060432"></a><![endif]><span style='mso-bookmark:_Toc414263519'><span
+style='mso-bookmark:_Toc414080827'><span style='mso-bookmark:_Toc414263516'><span
+style='mso-bookmark:_Toc414080824'> &gt;. </span></span></span></span></p>
+
+<p class=MsoBodyText><span style='mso-bookmark:_Toc414263519'><span
+style='mso-bookmark:_Toc414080827'><span style='mso-bookmark:_Toc414263516'><span
+style='mso-bookmark:_Toc414080824'>[RFC2119] S.Bradner, &quot;Key words for use
+in RFCs to Indicate Requirement Levels&quot;, Harvard, 1997, &lt;</span></span></span></span><a
+href="http://www.ietf.org/rfc/rfc2119.txt"><span style='mso-bookmark:_Toc414263519'><span
+style='mso-bookmark:_Toc414080827'><span style='mso-bookmark:_Toc414263516'><span
+style='mso-bookmark:_Toc414080824'>http://ww<span style='mso-bookmark:_Hlt465061376'>w</span>.ietf.org/rfc/rfc2<span
+style='mso-bookmark:_Hlt465059936'>1</span>19.txt</span></span></span></span><span
+style='mso-bookmark:_Toc414263519'><span style='mso-bookmark:_Toc414080827'><span
+style='mso-bookmark:_Toc414263516'><span style='mso-bookmark:_Toc414080824'></span></span></span></span></a><![if !supportNestedAnchors]><a
+name="_Hlt465059936"></a><a name="_Hlt465061376"></a><![endif]><span
+style='mso-bookmark:_Toc414263519'><span style='mso-bookmark:_Toc414080827'><span
+style='mso-bookmark:_Toc414263516'><span style='mso-bookmark:_Toc414080824'>
+&gt;.</span></span></span></span></p>
+
+<p class=MsoBodyText><span style='mso-bookmark:_Toc414263519'><span
+style='mso-bookmark:_Toc414080827'><span style='mso-bookmark:_Toc414263516'><span
+style='mso-bookmark:_Toc414080824'><span style="mso-spacerun:
+yes"> </span>[RFC2518] Y. Goland, E.Whitehead, A.Faizi, S.R.Carter, D.Jensen,
+&quot;HTTP Extensions for Distributed Authoring - WEBDAV&quot;, Microsoft,
+U.C.Irvine, Netscape, Novell, 1999 &lt;</span></span></span></span><a
+href="http://www.ietf.org/rfc/rfc2518.txt"><span style='mso-bookmark:_Toc414263519'><span
+style='mso-bookmark:_Toc414080827'><span style='mso-bookmark:_Toc414263516'><span
+style='mso-bookmark:_Toc414080824'>http<span style='mso-bookmark:_Hlt465060484'>:</span>//<span
+style='mso-bookmark:_Hlt465060474'>w</span>ww.i<span style='mso-bookmark:_Hlt465059702'>e</span>tf.org/rfc/rfc2518.txt</span></span></span></span><span
+style='mso-bookmark:_Toc414263519'><span style='mso-bookmark:_Toc414080827'><span
+style='mso-bookmark:_Toc414263516'><span style='mso-bookmark:_Toc414080824'></span></span></span></span></a><![if !supportNestedAnchors]><a
+name="_Hlt465059702"></a><a name="_Hlt465060474"></a><a name="_Hlt465060484"></a><![endif]><span
+style='mso-bookmark:_Toc414263519'><span style='mso-bookmark:_Toc414080827'><span
+style='mso-bookmark:_Toc414263516'><span style='mso-bookmark:_Toc414080824'>&gt;.</span></span></span></span></p>
+
+<h1><span style='mso-bookmark:_Toc414263519'><span style='mso-bookmark:_Toc414080827'><span
+style='mso-bookmark:_Toc414263516'><span style='mso-bookmark:_Toc414080824'><a
+name="_Toc414080843"></a><a name="_Toc414263535"></a><a name="_Toc419475098"></a><a
+name="_Toc422827181"></a><a name="_Toc423005075"></a><a name="_Toc496345089"><span
+style='mso-bookmark:_Toc423005075'><span style='mso-bookmark:_Toc422827181'><span
+style='mso-bookmark:_Toc419475098'><span style='mso-bookmark:_Toc414263535'><span
+style='mso-bookmark:_Toc414080843'><![if !supportLists]><span style='font-variant:
+normal;text-transform:uppercase'>13<span style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;
+</span></span><![endif]><span style='font-variant:normal;text-transform:uppercase'>Authors’
+Address</span></span></span></span></span></span></a></span></span></span></span><span
+style='mso-bookmark:_Toc414263519'><span style='mso-bookmark:_Toc414080827'><span
+style='mso-bookmark:_Toc414263516'><span style='mso-bookmark:_Toc414080824'><span
+style='mso-bookmark:_Toc496345089'><span style='font-variant:normal;text-transform:
+uppercase'>es</span></span></span></span></span></span><span style='mso-bookmark:
+_Toc414263519'><span style='mso-bookmark:_Toc414080827'><span style='mso-bookmark:
+_Toc414263516'><span style='mso-bookmark:_Toc414080824'><span style='font-variant:
+normal;text-transform:uppercase'><o:p></o:p></span></span></span></span></span></h1>
+
+<p class=Preformatted><span style='mso-bookmark:_Toc414263519'><span
+style='mso-bookmark:_Toc414080827'><span style='mso-bookmark:_Toc414263516'><span
+style='mso-bookmark:_Toc414080824'><span style='layout-grid-mode:line'>Anne
+Hopkins<o:p></o:p></span></span></span></span></span></p>
+
+<p class=Preformatted><span style='mso-bookmark:_Toc414263519'><span
+style='mso-bookmark:_Toc414080827'><span style='mso-bookmark:_Toc414263516'><span
+style='mso-bookmark:_Toc414080824'><span style='layout-grid-mode:line'>Microsoft
+Corporation<o:p></o:p></span></span></span></span></span></p>
+
+<p class=Preformatted><span style='mso-bookmark:_Toc414263519'><span
+style='mso-bookmark:_Toc414080827'><span style='mso-bookmark:_Toc414263516'><span
+style='mso-bookmark:_Toc414080824'><span style='layout-grid-mode:line'>One
+Microsoft Way<o:p></o:p></span></span></span></span></span></p>
+
+<p class=Preformatted><span style='mso-bookmark:_Toc414263519'><span
+style='mso-bookmark:_Toc414080827'><span style='mso-bookmark:_Toc414263516'><span
+style='mso-bookmark:_Toc414080824'><span style='layout-grid-mode:line'>Redmond,
+WA<o:p></o:p></span></span></span></span></span></p>
+
+<p class=Preformatted><span style='mso-bookmark:_Toc414263519'><span
+style='mso-bookmark:_Toc414080827'><span style='mso-bookmark:_Toc414263516'><span
+style='mso-bookmark:_Toc414080824'><span style='layout-grid-mode:line'>Email:
+annehop@microsoft.com<o:p></o:p></span></span></span></span></span></p>
+
+<span style='mso-bookmark:_Toc414080824'></span><span style='mso-bookmark:_Toc414263516'></span><span
+style='mso-bookmark:_Toc414080827'></span><span style='mso-bookmark:_Toc414263519'></span>
+
+<p class=Preformatted><span style='layout-grid-mode:line'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></span></p>
+
+<h1><a name="_Toc496345090"><![if !supportLists]><span style='font-variant:
+normal;text-transform:uppercase'>14<span style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;
+</span></span><![endif]><span style='font-variant:normal;text-transform:uppercase'>Still
+to do :</span></a><span style='font-variant:normal;text-transform:uppercase'><o:p></o:p></span></h1>
+
+<p class=MsoBodyText style='margin-top:0in;margin-right:0in;margin-bottom:12.0pt;
+margin-left:.75in;text-indent:-.25in;mso-list:l74 level1 lfo273;tab-stops:list 56.25pt'><![if !supportLists]><span
+style='font-family:Symbol;layout-grid-mode:line'>·<span style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</span></span><![endif]><span style='mso-fareast-font-family:"MS Mincho"'>Revisit</span>
+description of Property ACEs to reflect group agreement.<span
+style="mso-spacerun: yes">  </span>Add sample code.&nbsp; Anne will need to
+update Semantics descriptions to address property ACEs. <span style='layout-grid-mode:
+line'><span style="mso-spacerun: yes"> </span><o:p></o:p></span></p>
+
+</div>
+
+</body>
+
+</html>
