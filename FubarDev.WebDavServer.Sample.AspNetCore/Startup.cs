@@ -60,7 +60,6 @@ namespace FubarDev.WebDavServer.Sample.AspNetCore
                     })
                 .AddMemoryCache()
                 .AddTransient<IPropertyStoreFactory, TextFilePropertyStoreFactory>()
-                .AddSingleton<IRemoteHttpClientFactory, HttpClientFactory>()
                 .AddSingleton<IFileSystemFactory, TestFileSystemFactory>()
                 .AddTransient(sp =>
                 {

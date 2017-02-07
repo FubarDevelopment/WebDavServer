@@ -3,6 +3,7 @@
 // </copyright>
 
 using System;
+using System.Net.Http;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -12,23 +13,28 @@ namespace FubarDev.WebDavServer.Engines.Remote
 {
     public class DefaultRemoteTargetActionsFactory : IRemoteCopyTargetActionsFactory, IRemoteMoveTargetActionsFactory
     {
-        private readonly IRemoteHttpClientFactory _httpClientFactory;
+        private readonly IHttpMessageHandlerFactory _httpMessageHandlerFactory;
 
-        public DefaultRemoteTargetActionsFactory(IRemoteHttpClientFactory httpClientFactory)
+        public DefaultRemoteTargetActionsFactory(IHttpMessageHandlerFactory httpMessageHandlerFactory)
         {
-            _httpClientFactory = httpClientFactory;
+            _httpMessageHandlerFactory = httpMessageHandlerFactory;
         }
 
         public async Task<IRemoteCopyTargetActions> CreateCopyTargetActionsAsync(Uri destinationUrl, CancellationToken cancellationToken)
         {
             // Copy or move from server to server (slow)
-            if (_httpClientFactory == null)
+            if (_httpMessageHandlerFactory == null)
                 throw new WebDavException(WebDavStatusCode.BadGateway, "No HttpClient factory for remote access");
 
             var parentCollectionUrl = destinationUrl.GetParent();
-            var httpClient = await _httpClientFactory.CreateAsync(parentCollectionUrl, cancellationToken).ConfigureAwait(false);
-            if (httpClient == null)
+            var httpMessageHandler = await _httpMessageHandlerFactory.CreateAsync(parentCollectionUrl, cancellationToken).ConfigureAwait(false);
+            if (httpMessageHandler == null)
                 throw new WebDavException(WebDavStatusCode.BadGateway, "No HttpClient created");
+
+            var httpClient = new HttpClient(httpMessageHandler)
+            {
+                BaseAddress = destinationUrl,
+            };
 
             return new CopyRemoteHttpClientTargetActions(httpClient);
         }
@@ -36,13 +42,18 @@ namespace FubarDev.WebDavServer.Engines.Remote
         public async Task<IRemoteMoveTargetActions> CreateMoveTargetActionsAsync(Uri destinationUrl, CancellationToken cancellationToken)
         {
             // Copy or move from server to server (slow)
-            if (_httpClientFactory == null)
+            if (_httpMessageHandlerFactory == null)
                 throw new WebDavException(WebDavStatusCode.BadGateway, "No HttpClient factory for remote access");
 
             var parentCollectionUrl = destinationUrl.GetParent();
-            var httpClient = await _httpClientFactory.CreateAsync(parentCollectionUrl, cancellationToken).ConfigureAwait(false);
-            if (httpClient == null)
+            var httpMessageHandler = await _httpMessageHandlerFactory.CreateAsync(parentCollectionUrl, cancellationToken).ConfigureAwait(false);
+            if (httpMessageHandler == null)
                 throw new WebDavException(WebDavStatusCode.BadGateway, "No HttpClient created");
+
+            var httpClient = new HttpClient(httpMessageHandler)
+            {
+                BaseAddress = destinationUrl,
+            };
 
             return new MoveRemoteHttpClientTargetActions(httpClient);
         }

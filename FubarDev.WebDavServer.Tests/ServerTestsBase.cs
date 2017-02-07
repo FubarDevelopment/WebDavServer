@@ -66,7 +66,7 @@ namespace FubarDev.WebDavServer.Tests
                         opt.Mode = processingMode;
                     })
                 .AddScoped<IWebDavHost>(sp => new TestHost(container.Server.BaseAddress))
-                .AddScoped<IRemoteHttpClientFactory>(sp => new TestHttpClientFactory(container.Server))
+                .AddScoped<IHttpMessageHandlerFactory>(sp => new TestHttpMessageHandlerFactory(container.Server))
                 .AddSingleton<IFileSystemFactory>(sp => new TestFileSystemFactory(container.FileSystem))
                 .AddTransient(sp =>
                 {
@@ -104,18 +104,18 @@ namespace FubarDev.WebDavServer.Tests
             }
         }
 
-        private class TestHttpClientFactory : IRemoteHttpClientFactory
+        private class TestHttpMessageHandlerFactory : IHttpMessageHandlerFactory
         {
             private readonly TestServer _server;
 
-            public TestHttpClientFactory(TestServer server)
+            public TestHttpMessageHandlerFactory(TestServer server)
             {
                 _server = server;
             }
 
-            public Task<HttpClient> CreateAsync(Uri baseUrl, CancellationToken cancellationToken)
+            public Task<HttpMessageHandler> CreateAsync(Uri baseUrl, CancellationToken cancellationToken)
             {
-                return Task.FromResult(_server.CreateClient());
+                return Task.FromResult(_server.CreateHandler());
             }
         }
     }
