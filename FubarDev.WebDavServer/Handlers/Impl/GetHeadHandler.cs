@@ -9,13 +9,12 @@ using System.Threading;
 using System.Threading.Tasks;
 
 using FubarDev.WebDavServer.FileSystem;
-using FubarDev.WebDavServer.Handlers;
 using FubarDev.WebDavServer.Model;
 using FubarDev.WebDavServer.Props.Store;
 
 using JetBrains.Annotations;
 
-namespace FubarDev.WebDavServer.DefaultHandlers
+namespace FubarDev.WebDavServer.Handlers.Impl
 {
     public class GetHeadHandler : IGetHandler, IHeadHandler
     {

@@ -11,14 +11,13 @@ using FubarDev.WebDavServer.Engines;
 using FubarDev.WebDavServer.Engines.Local;
 using FubarDev.WebDavServer.Engines.Remote;
 using FubarDev.WebDavServer.FileSystem;
-using FubarDev.WebDavServer.Handlers;
 using FubarDev.WebDavServer.Model;
 
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 
-namespace FubarDev.WebDavServer.DefaultHandlers
+namespace FubarDev.WebDavServer.Handlers.Impl
 {
     public class MoveHandler : CopyMoveHandlerBase, IMoveHandler
     {

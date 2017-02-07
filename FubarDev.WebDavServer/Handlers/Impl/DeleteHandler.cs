@@ -8,10 +8,9 @@ using System.Threading;
 using System.Threading.Tasks;
 
 using FubarDev.WebDavServer.FileSystem;
-using FubarDev.WebDavServer.Handlers;
 using FubarDev.WebDavServer.Model;
 
-namespace FubarDev.WebDavServer.DefaultHandlers
+namespace FubarDev.WebDavServer.Handlers.Impl
 {
     public class DeleteHandler : IDeleteHandler
     {

@@ -12,14 +12,13 @@ using System.Threading.Tasks;
 using System.Xml.Linq;
 
 using FubarDev.WebDavServer.FileSystem;
-using FubarDev.WebDavServer.Handlers;
 using FubarDev.WebDavServer.Model;
 using FubarDev.WebDavServer.Props;
 using FubarDev.WebDavServer.Props.Dead;
 
 using JetBrains.Annotations;
 
-namespace FubarDev.WebDavServer.DefaultHandlers
+namespace FubarDev.WebDavServer.Handlers.Impl
 {
     public class PropPatchHandler : IPropPatchHandler
     {

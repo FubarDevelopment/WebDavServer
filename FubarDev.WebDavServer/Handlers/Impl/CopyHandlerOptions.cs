@@ -2,7 +2,7 @@
 // Copyright (c) Fubar Development Junker. All rights reserved.
 // </copyright>
 
-namespace FubarDev.WebDavServer.DefaultHandlers
+namespace FubarDev.WebDavServer.Handlers.Impl
 {
     public class CopyHandlerOptions
     {

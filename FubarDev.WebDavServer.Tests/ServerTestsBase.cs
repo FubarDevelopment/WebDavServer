@@ -11,10 +11,10 @@ using System.Threading.Tasks;
 using DecaTec.WebDav;
 
 using FubarDev.WebDavServer.AspNetCore;
-using FubarDev.WebDavServer.DefaultHandlers;
 using FubarDev.WebDavServer.Engines.Remote;
 using FubarDev.WebDavServer.FileSystem;
 using FubarDev.WebDavServer.FileSystem.InMemory;
+using FubarDev.WebDavServer.Handlers.Impl;
 using FubarDev.WebDavServer.Props.Store.InMemory;
 using FubarDev.WebDavServer.Tests.Support;
 

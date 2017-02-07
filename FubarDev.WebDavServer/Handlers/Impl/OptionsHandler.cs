@@ -7,10 +7,9 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 
-using FubarDev.WebDavServer.Handlers;
 using FubarDev.WebDavServer.Model;
 
-namespace FubarDev.WebDavServer.DefaultHandlers
+namespace FubarDev.WebDavServer.Handlers.Impl
 {
     public class OptionsHandler : IOptionsHandler
     {
