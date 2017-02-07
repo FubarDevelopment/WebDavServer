@@ -28,7 +28,7 @@
   <ItemGroup>
     <ProjectReference Include="..\FubarDev.WebDavServer.AspNetCore\FubarDev.WebDavServer.AspNetCore.csproj" />
     <ProjectReference Include="..\FubarDev.WebDavServer.FileSystem.DotNet\FubarDev.WebDavServer.FileSystem.DotNet.csproj" />
-    <ProjectReference Include="..\FubarDev.WebDavServer.Properties.Store.TextFile\FubarDev.WebDavServer.Properties.Store.TextFile.csproj" />
+    <ProjectReference Include="..\FubarDev.WebDavServer.Props.Store.TextFile\FubarDev.WebDavServer.Props.Store.TextFile.csproj" />
     <ProjectReference Include="..\FubarDev.WebDavServer\FubarDev.WebDavServer.csproj" />
   </ItemGroup>
 </Project>

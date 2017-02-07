@@ -11,13 +11,13 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FubarDev.WebDavServer", "Fu
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FubarDev.WebDavServer.Sample.AspNetCore", "FubarDev.WebDavServer.Sample.AspNetCore\FubarDev.WebDavServer.Sample.AspNetCore.csproj", "{28AD150F-3644-4372-8D57-5AC92A95DAD0}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FubarDev.WebDavServer.Properties.Store.TextFile", "FubarDev.WebDavServer.Properties.Store.TextFile\FubarDev.WebDavServer.Properties.Store.TextFile.csproj", "{D2E3C2D1-8E3A-4426-AB8E-052C6E425C53}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FubarDev.WebDavServer.Props.Store.TextFile", "FubarDev.WebDavServer.Props.Store.TextFile\FubarDev.WebDavServer.Props.Store.TextFile.csproj", "{D2E3C2D1-8E3A-4426-AB8E-052C6E425C53}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FubarDev.WebDavServer.FileSystem.InMemory", "FubarDev.WebDavServer.FileSystem.InMemory\FubarDev.WebDavServer.FileSystem.InMemory.csproj", "{A55D609A-1ABB-4CA3-84F6-6BBBC77E6572}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FubarDev.WebDavServer.Tests", "FubarDev.WebDavServer.Tests\FubarDev.WebDavServer.Tests.csproj", "{86F9218F-7254-4F75-8E4D-DF3F4A265DF1}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FubarDev.WebDavServer.Properties.Store.InMemory", "FubarDev.WebDavServer.Properties.Store.InMemory\FubarDev.WebDavServer.Properties.Store.InMemory.csproj", "{45B560CF-76B5-4AD9-A22F-66EA6B09C5FE}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FubarDev.WebDavServer.Props.Store.InMemory", "FubarDev.WebDavServer.Props.Store.InMemory\FubarDev.WebDavServer.Props.Store.InMemory.csproj", "{45B560CF-76B5-4AD9-A22F-66EA6B09C5FE}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
