@@ -1,4 +1,8 @@
-﻿using FubarDev.WebDavServer.AspNetCore;
+﻿// <copyright file="TestWebDavController.cs" company="Fubar Development Junker">
+// Copyright (c) Fubar Development Junker. All rights reserved.
+// </copyright>
+
+using FubarDev.WebDavServer.AspNetCore;
 
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;

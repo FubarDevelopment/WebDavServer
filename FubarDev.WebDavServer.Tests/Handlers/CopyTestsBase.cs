@@ -1,4 +1,4 @@
-﻿// <copyright file="CopyHandlerTestsBase.cs" company="Fubar Development Junker">
+﻿// <copyright file="CopyTestsBase.cs" company="Fubar Development Junker">
 // Copyright (c) Fubar Development Junker. All rights reserved.
 // </copyright>
 
@@ -30,7 +30,7 @@ namespace FubarDev.WebDavServer.Tests.Handlers
         public async Task CopyFileAsync()
         {
             var ct = CancellationToken.None;
-            var root = await FileSystem.Root.GetValueAsync(ct).ConfigureAwait(false);
+            var root = await FileSystem.Root.ConfigureAwait(false);
             var doc1 = await root.CreateDocumentAsync("text1.txt", ct).ConfigureAwait(false);
             await doc1.FillWithAsync("Dokument 1", ct).ConfigureAwait(false);
             Assert.Equal("Dokument 1", await doc1.ReadAllAsync(ct).ConfigureAwait(false));
@@ -54,7 +54,7 @@ namespace FubarDev.WebDavServer.Tests.Handlers
         public async Task CopyEmptyDirectoryAsync()
         {
             var ct = CancellationToken.None;
-            var root = await FileSystem.Root.GetValueAsync(ct).ConfigureAwait(false);
+            var root = await FileSystem.Root.ConfigureAwait(false);
             var coll1 = await root.CreateCollectionAsync("test1", ct).ConfigureAwait(false);
             Assert.NotNull(coll1);
             var props1 = await coll1.GetPropertyElementsAsync(ct).ConfigureAwait(false);
@@ -77,7 +77,7 @@ namespace FubarDev.WebDavServer.Tests.Handlers
         public async Task CopyDirectoryWithDocumentDepthZeroAsync()
         {
             var ct = CancellationToken.None;
-            var root = await FileSystem.Root.GetValueAsync(ct).ConfigureAwait(false);
+            var root = await FileSystem.Root.ConfigureAwait(false);
             var coll1 = await root.CreateCollectionAsync("test1", ct).ConfigureAwait(false);
             Assert.NotNull(coll1);
 
@@ -110,7 +110,7 @@ namespace FubarDev.WebDavServer.Tests.Handlers
         public async Task CopyDirectoryWithDocumentDepthOneAsync()
         {
             var ct = CancellationToken.None;
-            var root = await FileSystem.Root.GetValueAsync(ct).ConfigureAwait(false);
+            var root = await FileSystem.Root.ConfigureAwait(false);
             var coll1 = await root.CreateCollectionAsync("test1", ct).ConfigureAwait(false);
             Assert.NotNull(coll1);
 
@@ -147,7 +147,7 @@ namespace FubarDev.WebDavServer.Tests.Handlers
         public async Task CopyDirectoryWithSubDirectoryDepthZeroAsync()
         {
             var ct = CancellationToken.None;
-            var root = await FileSystem.Root.GetValueAsync(ct).ConfigureAwait(false);
+            var root = await FileSystem.Root.ConfigureAwait(false);
             var coll1 = await root.CreateCollectionAsync("test1", ct).ConfigureAwait(false);
             Assert.NotNull(coll1);
 
@@ -178,7 +178,7 @@ namespace FubarDev.WebDavServer.Tests.Handlers
         public async Task CopyDirectoryWithSubDirectoryDepthOneAsync()
         {
             var ct = CancellationToken.None;
-            var root = await FileSystem.Root.GetValueAsync(ct).ConfigureAwait(false);
+            var root = await FileSystem.Root.ConfigureAwait(false);
             var coll1 = await root.CreateCollectionAsync("test1", ct).ConfigureAwait(false);
             Assert.NotNull(coll1);
 
@@ -213,7 +213,7 @@ namespace FubarDev.WebDavServer.Tests.Handlers
         public async Task CopyDirectoryWithFileAndSubDirectoryDepthOneAsync()
         {
             var ct = CancellationToken.None;
-            var root = await FileSystem.Root.GetValueAsync(ct).ConfigureAwait(false);
+            var root = await FileSystem.Root.ConfigureAwait(false);
             var coll1 = await root.CreateCollectionAsync("test1", ct).ConfigureAwait(false);
             Assert.NotNull(coll1);
 
@@ -259,7 +259,7 @@ namespace FubarDev.WebDavServer.Tests.Handlers
         public async Task CopyDirectoryWithFileAndSubDirectoryDepthZeroAsync()
         {
             var ct = CancellationToken.None;
-            var root = await FileSystem.Root.GetValueAsync(ct).ConfigureAwait(false);
+            var root = await FileSystem.Root.ConfigureAwait(false);
             var coll1 = await root.CreateCollectionAsync("test1", ct).ConfigureAwait(false);
             Assert.NotNull(coll1);
 
@@ -297,7 +297,7 @@ namespace FubarDev.WebDavServer.Tests.Handlers
         public async Task CopyDirectoryWithSubDirectoryAndFileDepthOneAsync()
         {
             var ct = CancellationToken.None;
-            var root = await FileSystem.Root.GetValueAsync(ct).ConfigureAwait(false);
+            var root = await FileSystem.Root.ConfigureAwait(false);
             var coll1 = await root.CreateCollectionAsync("test1", ct).ConfigureAwait(false);
             Assert.NotNull(coll1);
 
@@ -339,7 +339,7 @@ namespace FubarDev.WebDavServer.Tests.Handlers
         public async Task CopyDirectoryWithSubDirectoryAndFileDepthInfinityAsync()
         {
             var ct = CancellationToken.None;
-            var root = await FileSystem.Root.GetValueAsync(ct).ConfigureAwait(false);
+            var root = await FileSystem.Root.ConfigureAwait(false);
             var coll1 = await root.CreateCollectionAsync("test1", ct).ConfigureAwait(false);
             Assert.NotNull(coll1);
 
@@ -385,7 +385,7 @@ namespace FubarDev.WebDavServer.Tests.Handlers
         public async Task CopyDirectoryWithTwoSubDirectoriesDepthZeroAsync()
         {
             var ct = CancellationToken.None;
-            var root = await FileSystem.Root.GetValueAsync(ct).ConfigureAwait(false);
+            var root = await FileSystem.Root.ConfigureAwait(false);
             var coll1 = await root.CreateCollectionAsync("test1", ct).ConfigureAwait(false);
             Assert.NotNull(coll1);
 
@@ -420,7 +420,7 @@ namespace FubarDev.WebDavServer.Tests.Handlers
         public async Task CopyDirectoryWithTwoSubDirectoriesDepthOneAsync()
         {
             var ct = CancellationToken.None;
-            var root = await FileSystem.Root.GetValueAsync(ct).ConfigureAwait(false);
+            var root = await FileSystem.Root.ConfigureAwait(false);
             var coll1 = await root.CreateCollectionAsync("test1", ct).ConfigureAwait(false);
             Assert.NotNull(coll1);
 
@@ -463,7 +463,7 @@ namespace FubarDev.WebDavServer.Tests.Handlers
         public async Task CopyDirectoryWithSubDocumentAndTwoSubDirectoriesWithTwoDocumentsAsync()
         {
             var ct = CancellationToken.None;
-            var root = await FileSystem.Root.GetValueAsync(ct).ConfigureAwait(false);
+            var root = await FileSystem.Root.ConfigureAwait(false);
 
             var coll1 = await root.CreateCollectionAsync("test1", ct).ConfigureAwait(false);
             Assert.NotNull(coll1);

@@ -21,7 +21,7 @@ namespace FubarDev.WebDavServer.Tests.FileSystem
         {
             var ct = CancellationToken.None;
             var fs = new InMemoryFileSystem(new PathTraversalEngine(), new InMemoryPropertyStoreFactory());
-            var root = await fs.Root.GetValueAsync(ct).ConfigureAwait(false);
+            var root = await fs.Root.ConfigureAwait(false);
             var rootChildren = await root.GetChildrenAsync(ct).ConfigureAwait(false);
             Assert.Equal(0, rootChildren.Count);
         }
@@ -31,7 +31,7 @@ namespace FubarDev.WebDavServer.Tests.FileSystem
         {
             var ct = CancellationToken.None;
             var fs = new InMemoryFileSystem(new PathTraversalEngine(), new InMemoryPropertyStoreFactory());
-            var root = await fs.Root.GetValueAsync(ct).ConfigureAwait(false);
+            var root = await fs.Root.ConfigureAwait(false);
             var test1 = await root.CreateCollectionAsync("test1", ct).ConfigureAwait(false);
             var rootChildren = await root.GetChildrenAsync(ct).ConfigureAwait(false);
             Assert.Collection(
@@ -51,7 +51,7 @@ namespace FubarDev.WebDavServer.Tests.FileSystem
         {
             var ct = CancellationToken.None;
             var fs = new InMemoryFileSystem(new PathTraversalEngine(), new InMemoryPropertyStoreFactory());
-            var root = await fs.Root.GetValueAsync(ct).ConfigureAwait(false);
+            var root = await fs.Root.ConfigureAwait(false);
             var test1 = await root.CreateCollectionAsync("test1", ct).ConfigureAwait(false);
             var test2 = await root.CreateCollectionAsync("test2", ct).ConfigureAwait(false);
             var rootChildren = await root.GetChildrenAsync(ct).ConfigureAwait(false);
@@ -80,7 +80,7 @@ namespace FubarDev.WebDavServer.Tests.FileSystem
         {
             var ct = CancellationToken.None;
             var fs = new InMemoryFileSystem(new PathTraversalEngine(), new InMemoryPropertyStoreFactory());
-            var root = await fs.Root.GetValueAsync(ct).ConfigureAwait(false);
+            var root = await fs.Root.ConfigureAwait(false);
             await root.CreateCollectionAsync("test1", ct).ConfigureAwait(false);
             await Assert.ThrowsAnyAsync<IOException>(async () => await root.CreateCollectionAsync("test1", ct).ConfigureAwait(false)).ConfigureAwait(false);
         }
