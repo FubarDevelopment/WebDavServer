@@ -35,11 +35,11 @@ namespace FubarDev.WebDavServer.Tests.Handlers
             var props1 = await doc1.GetPropertyElementsAsync(ct).ConfigureAwait(false);
 
             var response = await Client
-                .MoveAsync(
+                .Move(
                     new Uri("text1.txt", UriKind.Relative),
                     new Uri("text2.txt", UriKind.Relative))
                 .ConfigureAwait(false);
-            response.EnsureSuccessStatusCode();
+            Assert.True(response.IsSuccessful);
 
             var child = await root.GetChildAsync("text2.txt", ct).ConfigureAwait(false);
             var doc2 = Assert.IsType<InMemoryFile>(child);
@@ -58,11 +58,11 @@ namespace FubarDev.WebDavServer.Tests.Handlers
             var props1 = await coll1.GetPropertyElementsAsync(ct).ConfigureAwait(false);
 
             var response = await Client
-                .MoveAsync(
+                .Move(
                     new Uri("test1", UriKind.Relative),
                     new Uri("test2", UriKind.Relative))
                 .ConfigureAwait(false);
-            response.EnsureSuccessStatusCode();
+            Assert.True(response.IsSuccessful);
 
             var child = await root.GetChildAsync("test2", ct).ConfigureAwait(false);
             var coll2 = Assert.IsType<InMemoryDirectory>(child);
@@ -87,11 +87,11 @@ namespace FubarDev.WebDavServer.Tests.Handlers
             var docProps1 = await doc1.GetPropertyElementsAsync(ct).ConfigureAwait(false);
 
             var response = await Client
-                .MoveAsync(
+                .Move(
                     new Uri("test1", UriKind.Relative),
                     new Uri("test2", UriKind.Relative))
                 .ConfigureAwait(false);
-            response.EnsureSuccessStatusCode();
+            Assert.True(response.IsSuccessful);
 
             var child = await root.GetChildAsync("test2", ct).ConfigureAwait(false);
             var coll2 = Assert.IsType<InMemoryDirectory>(child);
@@ -120,11 +120,11 @@ namespace FubarDev.WebDavServer.Tests.Handlers
             var subProps1 = await sub1.GetPropertyElementsAsync(ct).ConfigureAwait(false);
 
             var response = await Client
-                .MoveAsync(
+                .Move(
                     new Uri("test1", UriKind.Relative),
                     new Uri("test2", UriKind.Relative))
                 .ConfigureAwait(false);
-            response.EnsureSuccessStatusCode();
+            Assert.True(response.IsSuccessful);
 
             var child = await root.GetChildAsync("test2", ct).ConfigureAwait(false);
             var coll2 = Assert.IsType<InMemoryDirectory>(child);
@@ -158,11 +158,11 @@ namespace FubarDev.WebDavServer.Tests.Handlers
             var subProps1 = await sub1.GetPropertyElementsAsync(ct).ConfigureAwait(false);
 
             var response = await Client
-                .MoveAsync(
+                .Move(
                     new Uri("test1", UriKind.Relative),
                     new Uri("test2", UriKind.Relative))
                 .ConfigureAwait(false);
-            response.EnsureSuccessStatusCode();
+            Assert.True(response.IsSuccessful);
 
             var child = await root.GetChildAsync("test2", ct).ConfigureAwait(false);
             var coll2 = Assert.IsType<InMemoryDirectory>(child);
@@ -202,11 +202,11 @@ namespace FubarDev.WebDavServer.Tests.Handlers
             var docProps1 = await doc1.GetPropertyElementsAsync(ct).ConfigureAwait(false);
 
             var response = await Client
-                .MoveAsync(
+                .Move(
                     new Uri("test1", UriKind.Relative),
                     new Uri("test2", UriKind.Relative))
                 .ConfigureAwait(false);
-            response.EnsureSuccessStatusCode();
+            Assert.True(response.IsSuccessful);
 
             var child = await root.GetChildAsync("test2", ct).ConfigureAwait(false);
             var coll2 = Assert.IsType<InMemoryDirectory>(child);
@@ -243,11 +243,11 @@ namespace FubarDev.WebDavServer.Tests.Handlers
             var subProps12 = await sub12.GetPropertyElementsAsync(ct).ConfigureAwait(false);
 
             var response = await Client
-                .MoveAsync(
+                .Move(
                     new Uri("test1", UriKind.Relative),
                     new Uri("test2", UriKind.Relative))
                 .ConfigureAwait(false);
-            response.EnsureSuccessStatusCode();
+            Assert.True(response.IsSuccessful);
 
             var child = await root.GetChildAsync("test2", ct).ConfigureAwait(false);
             var coll2 = Assert.IsType<InMemoryDirectory>(child);
@@ -311,11 +311,11 @@ namespace FubarDev.WebDavServer.Tests.Handlers
             var docProps122 = await doc122.GetPropertyElementsAsync(ct).ConfigureAwait(false);
 
             var response = await Client
-                .MoveAsync(
+                .Move(
                     new Uri("test1", UriKind.Relative),
                     new Uri("test2", UriKind.Relative))
                 .ConfigureAwait(false);
-            response.EnsureSuccessStatusCode();
+            Assert.True(response.IsSuccessful);
 
             var child = await root.GetChildAsync("test2", ct).ConfigureAwait(false);
             var coll2 = Assert.IsType<InMemoryDirectory>(child);

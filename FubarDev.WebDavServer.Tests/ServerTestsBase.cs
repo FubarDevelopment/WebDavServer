@@ -8,8 +8,6 @@ using System.Security.Principal;
 using System.Threading;
 using System.Threading.Tasks;
 
-using DecaTec.WebDav;
-
 using FubarDev.WebDavServer.AspNetCore;
 using FubarDev.WebDavServer.Engines.Remote;
 using FubarDev.WebDavServer.FileSystem;
@@ -27,9 +25,11 @@ using Microsoft.AspNetCore.TestHost;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 
+using WebDav;
+
 namespace FubarDev.WebDavServer.Tests
 {
-    public class ServerTestsBase
+    public class ServerTestsBase : IDisposable
     {
         protected ServerTestsBase(RecursiveProcessingMode processingMode)
         {
@@ -38,17 +38,22 @@ namespace FubarDev.WebDavServer.Tests
                 .ConfigureServices(sc => ConfigureServices(this, processingMode, sc))
                 .UseStartup<TestStartup>();
             Server = new TestServer(builder);
-            Client = new WebDavClient(Server.CreateHandler())
-            {
-                BaseAddress = Server.BaseAddress,
-            };
+            Client = new WebDavClient(Server.CreateClient());
         }
 
         protected IFileSystem FileSystem { get; }
 
+        [NotNull]
         protected TestServer Server { get; }
 
+        [NotNull]
         protected WebDavClient Client { get; }
+
+        public void Dispose()
+        {
+            Server.Dispose();
+            Client.Dispose();
+        }
 
         private void ConfigureServices(ServerTestsBase container, RecursiveProcessingMode processingMode, IServiceCollection services)
         {

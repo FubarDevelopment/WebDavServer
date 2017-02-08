@@ -20,6 +20,7 @@
     <PackageReference Include="xunit.runner.visualstudio" Version="2.2.0-beta5-build1225" />
     <PackageReference Include="Microsoft.Extensions.Logging" Version="1.1.0" />
     <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="1.1.0" />
+    <PackageReference Include="WebDAV-Client" Version="1.0.1.0" />
     <PackageReference Include="StyleCop.Analyzers" Version="1.1.0-beta001">
       <PrivateAssets>All</PrivateAssets>
     </PackageReference>
@@ -28,7 +29,6 @@
     </PackageReference>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\DecaTec.WebDav\DecaTec.WebDav.csproj" />
     <ProjectReference Include="..\FubarDev.WebDavServer.AspNetCore\FubarDev.WebDavServer.AspNetCore.csproj" />
     <ProjectReference Include="..\FubarDev.WebDavServer.FileSystem.InMemory\FubarDev.WebDavServer.FileSystem.InMemory.csproj" />
     <ProjectReference Include="..\FubarDev.WebDavServer.Props.Store.InMemory\FubarDev.WebDavServer.Props.Store.InMemory.csproj" />
