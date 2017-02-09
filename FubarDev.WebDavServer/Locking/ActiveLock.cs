@@ -11,7 +11,7 @@ namespace FubarDev.WebDavServer.Locking
     {
         public ActiveLock(ILock l)
             : this(
-                l.RootUrl,
+                l.Path,
                 l.Recursive,
                 l.GetOwner(),
                 l.AccessType,
@@ -21,14 +21,14 @@ namespace FubarDev.WebDavServer.Locking
         }
 
         public ActiveLock(
-            string rootUrl,
+            string path,
             bool recursive,
             XElement owner,
             string accessType,
             string shareMode,
             TimeSpan timeout)
         {
-            RootUrl = rootUrl;
+            Path = path;
             Recursive = recursive;
             Owner = owner;
             AccessType = accessType;
@@ -39,7 +39,7 @@ namespace FubarDev.WebDavServer.Locking
             StateToken = $"urn:uuid:{Guid.NewGuid():D}";
         }
 
-        public string RootUrl { get; }
+        public string Path { get; }
 
         public bool Recursive { get; }
 

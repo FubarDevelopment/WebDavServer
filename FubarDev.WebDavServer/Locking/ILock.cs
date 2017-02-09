@@ -5,20 +5,26 @@
 using System;
 using System.Xml.Linq;
 
+using JetBrains.Annotations;
+
 namespace FubarDev.WebDavServer.Locking
 {
     public interface ILock
     {
-        string RootUrl { get; }
+        [NotNull]
+        string Path { get; }
 
         bool Recursive { get; }
 
+        [NotNull]
         string AccessType { get; }
 
+        [NotNull]
         string ShareMode { get; }
 
         TimeSpan Timeout { get; }
 
+        [NotNull]
         XElement GetOwner();
     }
 }

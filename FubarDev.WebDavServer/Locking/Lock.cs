@@ -10,14 +10,14 @@ namespace FubarDev.WebDavServer.Locking
     public class Lock : ILock
     {
         public Lock(
-            string rootUrl,
+            string path,
             bool recursive,
             XElement owner,
             string accessType,
             string shareMode,
             TimeSpan timeout)
         {
-            RootUrl = rootUrl;
+            Path = path;
             Recursive = recursive;
             Owner = owner;
             AccessType = accessType;
@@ -25,7 +25,7 @@ namespace FubarDev.WebDavServer.Locking
             Timeout = timeout;
         }
 
-        public string RootUrl { get; }
+        public string Path { get; }
 
         public bool Recursive { get; }
 

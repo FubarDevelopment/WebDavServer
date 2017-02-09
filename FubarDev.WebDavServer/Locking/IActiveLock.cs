@@ -3,12 +3,14 @@
 // </copyright>
 
 using System;
-using System.Xml.Linq;
+
+using JetBrains.Annotations;
 
 namespace FubarDev.WebDavServer.Locking
 {
     public interface IActiveLock : ILock
     {
+        [NotNull]
         string StateToken { get; }
 
         DateTime Issued { get; }
