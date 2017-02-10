@@ -5,29 +5,51 @@
 using System;
 using System.Xml.Linq;
 
+using JetBrains.Annotations;
+
 namespace FubarDev.WebDavServer.Locking
 {
-    public class ActiveLock : IActiveLock
+    /// <summary>
+    /// A generic implementation of an active lock
+    /// </summary>
+    /// <remarks>
+    /// The <see cref="ILockManager"/> implementation might use a different implementation
+    /// of an <see cref="IActiveLock"/>.
+    /// </remarks>
+    public class ActiveLock : Lock, IActiveLock
     {
-        public ActiveLock(ILock l)
+        /// <summary>
+        /// Initializes a new instance of the <see cref="ActiveLock"/> class.
+        /// </summary>
+        /// <param name="l">The lock to create this active lock from</param>
+        public ActiveLock([NotNull] ILock l)
             : this(
                 l.Path,
                 l.Recursive,
                 l.GetOwner(),
-                l.AccessType,
-                l.ShareMode,
+                LockAccessType.Parse(l.AccessType),
+                LockShareMode.Parse(l.ShareMode),
                 l.Timeout)
         {
         }
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="ActiveLock"/> class.
+        /// </summary>
+        /// <param name="path">The path (root-relative) this lock should be applied to</param>
+        /// <param name="recursive">Must the lock be applied recursively to all children?</param>
+        /// <param name="owner">The owner of the lock</param>
+        /// <param name="accessType">The <see cref="LockAccessType"/> of the lock</param>
+        /// <param name="shareMode">The <see cref="LockShareMode"/> of the lock</param>
+        /// <param name="timeout">The lock timeout</param>
         public ActiveLock(
-            string path,
+            [NotNull] string path,
             bool recursive,
             XElement owner,
             LockAccessType accessType,
             LockShareMode shareMode,
             TimeSpan timeout)
-            : this(
+            : base(
                 path,
                 recursive,
                 owner,
@@ -35,46 +57,18 @@ namespace FubarDev.WebDavServer.Locking
                 shareMode.Id,
                 timeout)
         {
-        }
-
-        public ActiveLock(
-            string path,
-            bool recursive,
-            XElement owner,
-            string accessType,
-            string shareMode,
-            TimeSpan timeout)
-        {
-            Path = path;
-            Recursive = recursive;
-            Owner = owner;
-            AccessType = accessType;
-            ShareMode = shareMode;
-            Timeout = timeout;
             Issued = DateTime.UtcNow;
             Expiration = Issued + timeout;
             StateToken = $"urn:uuid:{Guid.NewGuid():D}";
         }
 
-        public string Path { get; }
-
-        public bool Recursive { get; }
-
-        public XElement Owner { get; }
-
-        public string AccessType { get; }
-
-        public string ShareMode { get; }
-
-        public TimeSpan Timeout { get; }
-
+        /// <inheritdoc />
         public string StateToken { get; }
 
+        /// <inheritdoc />
         public DateTime Issued { get; }
 
+        /// <inheritdoc />
         public DateTime Expiration { get; }
-
-        public XElement GetOwner()
-            => Owner;
     }
 }

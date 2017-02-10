@@ -16,11 +16,14 @@ namespace FubarDev.WebDavServer.Locking
         private const string SharedId = "shared";
         private const string ExclusiveId = "exclusive";
 
-        public LockShareMode(string id)
+        public LockShareMode([NotNull] string id)
         {
+            if (id == null)
+                throw new ArgumentNullException(nameof(id));
             Id = id;
         }
 
+        [NotNull]
         public string Id { get; }
 
         public static LockShareMode Parse([NotNull] string shareMode)

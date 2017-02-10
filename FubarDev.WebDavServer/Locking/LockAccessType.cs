@@ -14,11 +14,14 @@ namespace FubarDev.WebDavServer.Locking
 
         private const string WriteId = "write";
 
-        public LockAccessType(string id)
+        public LockAccessType([NotNull] string id)
         {
+            if (id == null)
+                throw new ArgumentNullException(nameof(id));
             Id = id;
         }
 
+        [NotNull]
         public string Id { get; }
 
         public static LockAccessType Parse([NotNull] string accessType)
