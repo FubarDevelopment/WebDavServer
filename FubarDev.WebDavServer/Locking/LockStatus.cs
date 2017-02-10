@@ -3,6 +3,7 @@
 // </copyright>
 
 using System.Collections.Generic;
+using System.Linq;
 
 using JetBrains.Annotations;
 
@@ -31,5 +32,14 @@ namespace FubarDev.WebDavServer.Locking
         [NotNull]
         [ItemNotNull]
         public IReadOnlyCollection<IActiveLock> ChildLocks { get; }
+
+        public bool IsEmpty => Count == 0;
+
+        public int Count => ReferenceLocks.Count + ParentLocks.Count + ChildLocks.Count;
+
+        public IEnumerable<IActiveLock> GetLocks()
+        {
+            return ParentLocks.Concat(ReferenceLocks).Concat(ChildLocks);
+        }
     }
 }
