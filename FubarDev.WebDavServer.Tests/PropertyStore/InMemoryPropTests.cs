@@ -21,7 +21,7 @@ namespace FubarDev.WebDavServer.Tests.PropertyStore
         public async Task Empty()
         {
             var ct = CancellationToken.None;
-            var fs = new InMemoryFileSystem(new PathTraversalEngine(), new InMemoryPropertyStoreFactory());
+            var fs = new InMemoryFileSystem(new PathTraversalEngine(), new SystemClock(), new InMemoryPropertyStoreFactory());
             var root = await fs.Root;
             Assert.NotNull(fs.PropertyStore);
             var displayNameProperty = await GetDisplayNamePropertyAsync(root, ct).ConfigureAwait(false);
@@ -32,7 +32,7 @@ namespace FubarDev.WebDavServer.Tests.PropertyStore
         public async Task DocumentWithExtension()
         {
             var ct = CancellationToken.None;
-            var fs = new InMemoryFileSystem(new PathTraversalEngine(), new InMemoryPropertyStoreFactory());
+            var fs = new InMemoryFileSystem(new PathTraversalEngine(), new SystemClock(), new InMemoryPropertyStoreFactory());
             Assert.NotNull(fs.PropertyStore);
 
             var root = await fs.Root;
@@ -46,7 +46,7 @@ namespace FubarDev.WebDavServer.Tests.PropertyStore
         public async Task SameNameDocumentsInDifferentCollections()
         {
             var ct = CancellationToken.None;
-            var fs = new InMemoryFileSystem(new PathTraversalEngine(), new InMemoryPropertyStoreFactory());
+            var fs = new InMemoryFileSystem(new PathTraversalEngine(), new SystemClock(), new InMemoryPropertyStoreFactory());
             Assert.NotNull(fs.PropertyStore);
 
             var root = await fs.Root;
@@ -62,7 +62,7 @@ namespace FubarDev.WebDavServer.Tests.PropertyStore
         public async Task DisplayNameChangeable()
         {
             var ct = CancellationToken.None;
-            var fs = new InMemoryFileSystem(new PathTraversalEngine(), new InMemoryPropertyStoreFactory());
+            var fs = new InMemoryFileSystem(new PathTraversalEngine(), new SystemClock(), new InMemoryPropertyStoreFactory());
             Assert.NotNull(fs.PropertyStore);
 
             var root = await fs.Root;

@@ -7,6 +7,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 
+using Microsoft.Extensions.Options;
+
 namespace FubarDev.WebDavServer.Locking
 {
     /// <summary>
@@ -14,17 +16,24 @@ namespace FubarDev.WebDavServer.Locking
     /// </summary>
     public class LockCleanupTask : IDisposable
     {
+        private readonly ISystemClock _systemClock;
         private static readonly TimeSpan _deactivated = TimeSpan.FromMilliseconds(-1);
         private readonly MultiValueDictionary<DateTime, ActiveLockItem> _activeLocks = new MultiValueDictionary<DateTime, ActiveLockItem>();
         private readonly object _syncRoot = new object();
         private readonly Timer _timer;
+        private readonly Func<TimeSpan, TimeSpan> _roundingFunc;
         private ActiveLockItem _mostRecentExpirationLockItem;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="LockCleanupTask"/> class.
         /// </summary>
-        public LockCleanupTask()
+        /// <param name="options">The options for the lock cleanup task</param>
+        /// <param name="systemClock">The system clock</param>
+        public LockCleanupTask(IOptions<LockCleanupTaskOptions> options, ISystemClock systemClock)
         {
+            _systemClock = systemClock;
+            var opt = options?.Value ?? new LockCleanupTaskOptions();
+            _roundingFunc = opt.RoundingFunc ?? new LockCleanupTaskOptions.DefaultRounding(LockCleanupTaskOptions.DefaultRoundingMode.OneSecond).Round;
             _timer = new Timer(TimerExpirationCallback, null, _deactivated, _deactivated);
         }
 
@@ -118,7 +127,7 @@ namespace FubarDev.WebDavServer.Locking
                     removeResult = false;
                     nextLockItem = FindMostRecentExpirationItem();
                 }
-                else if (lockItem.Expiration > DateTime.UtcNow)
+                else if (lockItem.Expiration > _systemClock.UtcNow)
                 {
                     // The expiration might be in the future, because this timer event might be one
                     // that belongs to an already removed item.
@@ -163,15 +172,13 @@ namespace FubarDev.WebDavServer.Locking
 
         private void ConfigureTimer(ActiveLockItem lockItem)
         {
-            var remainingTime = lockItem.Expiration - DateTime.UtcNow;
+            var remainingTime = lockItem.Expiration - _systemClock.UtcNow;
             if (remainingTime < TimeSpan.Zero)
                 remainingTime = TimeSpan.Zero;
 
             // Round up to the next full second to avoid problems with
             // timer inaccuracies
-            var addSec = remainingTime.Milliseconds != 0 ? 1 : 0;
-            remainingTime = new TimeSpan(remainingTime.Days, remainingTime.Hours, remainingTime.Minutes, remainingTime.Seconds)
-                .Add(TimeSpan.FromSeconds(addSec));
+            remainingTime = _roundingFunc(remainingTime);
 
             _timer.Change(remainingTime, _deactivated);
         }

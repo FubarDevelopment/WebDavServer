@@ -33,7 +33,7 @@ namespace FubarDev.WebDavServer.Tests
     {
         protected ServerTestsBase(RecursiveProcessingMode processingMode)
         {
-            FileSystem = new InMemoryFileSystem(new PathTraversalEngine(), new InMemoryPropertyStoreFactory());
+            FileSystem = new InMemoryFileSystem(new PathTraversalEngine(), new SystemClock(), new InMemoryPropertyStoreFactory());
             var builder = new WebHostBuilder()
                 .ConfigureServices(sc => ConfigureServices(this, processingMode, sc))
                 .UseStartup<TestStartup>();

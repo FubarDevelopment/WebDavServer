@@ -24,12 +24,19 @@ namespace FubarDev.WebDavServer.Locking.InMemory
 
         private readonly LockCleanupTask _cleanupTask;
 
+        private readonly ISystemClock _systemClock;
+
         private IImmutableDictionary<Uri, IActiveLock> _locks = ImmutableDictionary<Uri, IActiveLock>.Empty;
 
-        public InMemoryLockManager()
+        public InMemoryLockManager(LockCleanupTask cleanupTask, ISystemClock systemClock)
         {
-            _cleanupTask = new LockCleanupTask();
+            _cleanupTask = cleanupTask;
+            _systemClock = systemClock;
         }
+
+        public event EventHandler<LockEventArgs> LockAdded;
+
+        public event EventHandler<LockEventArgs> LockReleased;
 
         public Task<Either<IReadOnlyCollection<IActiveLock>, IActiveLock>> LockAsync(ILock l, CancellationToken cancellationToken)
         {
@@ -42,12 +49,15 @@ namespace FubarDev.WebDavServer.Locking.InMemory
                 if (conflictingLocks.Count != 0)
                     return Task.FromResult(Left<IReadOnlyCollection<IActiveLock>, IActiveLock>(conflictingLocks));
 
-                newActiveLock = new ActiveLock(l);
+                newActiveLock = new ActiveLock(l, _systemClock.UtcNow);
                 var stateToken = new Uri(newActiveLock.StateToken);
                 _locks = _locks.Add(stateToken, newActiveLock);
             }
 
+            OnLockAdded(newActiveLock);
+
             _cleanupTask.Add(this, newActiveLock);
+
             return Task.FromResult(Right<IReadOnlyCollection<IActiveLock>, IActiveLock>(newActiveLock));
         }
 
@@ -63,7 +73,8 @@ namespace FubarDev.WebDavServer.Locking.InMemory
             }
 
             _cleanupTask.Remove(activeLock);
-            _cleanupTask.Remove(activeLock);
+
+            OnLockReleased(activeLock);
 
             return Task.FromResult(true);
         }
@@ -71,6 +82,16 @@ namespace FubarDev.WebDavServer.Locking.InMemory
         public Task<IEnumerable<IActiveLock>> GetLocksAsync(CancellationToken cancellationToken)
         {
             return Task.FromResult(_locks.Values);
+        }
+
+        protected virtual void OnLockAdded(IActiveLock activeLock)
+        {
+            LockAdded?.Invoke(this, new LockEventArgs(activeLock));
+        }
+
+        protected virtual void OnLockReleased(IActiveLock activeLock)
+        {
+            LockReleased?.Invoke(this, new LockEventArgs(activeLock));
         }
 
         private static IReadOnlyCollection<IActiveLock> GetConflictingLocks(LockStatus affactingLocks, LockShareMode shareMode)

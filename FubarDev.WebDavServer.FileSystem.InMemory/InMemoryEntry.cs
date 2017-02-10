@@ -17,11 +17,11 @@ namespace FubarDev.WebDavServer.FileSystem.InMemory
     {
         private readonly InMemoryDirectory _parent;
 
-        protected InMemoryEntry(IFileSystem fileSystem, InMemoryDirectory parent, Uri path, string name)
+        protected InMemoryEntry(InMemoryFileSystem fileSystem, InMemoryDirectory parent, Uri path, string name)
         {
             _parent = parent;
             Name = name;
-            RootFileSystem = FileSystem = fileSystem;
+            RootFileSystem = FileSystem = InMemoryFileSystem = fileSystem;
             Path = path;
             CreationTimeUtc = LastWriteTimeUtc = DateTime.UtcNow;
         }
@@ -37,6 +37,8 @@ namespace FubarDev.WebDavServer.FileSystem.InMemory
         public Uri Path { get; }
 
         public DateTime LastWriteTimeUtc { get; protected set; }
+
+        protected InMemoryFileSystem InMemoryFileSystem { get; }
 
         protected InMemoryDirectory InMemoryParent => _parent;
 

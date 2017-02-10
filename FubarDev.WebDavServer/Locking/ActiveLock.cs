@@ -22,14 +22,16 @@ namespace FubarDev.WebDavServer.Locking
         /// Initializes a new instance of the <see cref="ActiveLock"/> class.
         /// </summary>
         /// <param name="l">The lock to create this active lock from</param>
-        public ActiveLock([NotNull] ILock l)
+        /// <param name="issued">The date/time when this lock was issued</param>
+        public ActiveLock([NotNull] ILock l, DateTime issued)
             : this(
                 l.Path,
                 l.Recursive,
                 l.GetOwner(),
                 LockAccessType.Parse(l.AccessType),
                 LockShareMode.Parse(l.ShareMode),
-                l.Timeout)
+                l.Timeout,
+                issued)
         {
         }
 
@@ -42,13 +44,15 @@ namespace FubarDev.WebDavServer.Locking
         /// <param name="accessType">The <see cref="LockAccessType"/> of the lock</param>
         /// <param name="shareMode">The <see cref="LockShareMode"/> of the lock</param>
         /// <param name="timeout">The lock timeout</param>
+        /// <param name="issued">The date/time when this lock was issued</param>
         public ActiveLock(
             [NotNull] string path,
             bool recursive,
             XElement owner,
             LockAccessType accessType,
             LockShareMode shareMode,
-            TimeSpan timeout)
+            TimeSpan timeout,
+            DateTime issued)
             : base(
                 path,
                 recursive,
@@ -57,7 +61,7 @@ namespace FubarDev.WebDavServer.Locking
                 shareMode.Id,
                 timeout)
         {
-            Issued = DateTime.UtcNow;
+            Issued = issued;
             Expiration = Issued + timeout;
             StateToken = $"urn:uuid:{Guid.NewGuid():D}";
         }

@@ -19,7 +19,7 @@ namespace FubarDev.WebDavServer.Tests.FileSystem
         public async Task Empty()
         {
             var ct = CancellationToken.None;
-            var fs = new InMemoryFileSystem(new PathTraversalEngine(), new InMemoryPropertyStoreFactory());
+            var fs = new InMemoryFileSystem(new PathTraversalEngine(), new SystemClock(), new InMemoryPropertyStoreFactory());
             var root = await fs.Root.ConfigureAwait(false);
             var rootNode = await root.GetNodeAsync(int.MaxValue, ct).ConfigureAwait(false);
             Assert.Same(root, rootNode.Collection);
@@ -31,7 +31,7 @@ namespace FubarDev.WebDavServer.Tests.FileSystem
         public async Task SingleEmptyDirectory()
         {
             var ct = CancellationToken.None;
-            var fs = new InMemoryFileSystem(new PathTraversalEngine(), new InMemoryPropertyStoreFactory());
+            var fs = new InMemoryFileSystem(new PathTraversalEngine(), new SystemClock(), new InMemoryPropertyStoreFactory());
             var root = await fs.Root.ConfigureAwait(false);
             await root.CreateCollectionAsync("test1", ct).ConfigureAwait(false);
             var rootNode = await root.GetNodeAsync(int.MaxValue, ct).ConfigureAwait(false);
@@ -53,7 +53,7 @@ namespace FubarDev.WebDavServer.Tests.FileSystem
         public async Task TwoNestedEmptyDirectories()
         {
             var ct = CancellationToken.None;
-            var fs = new InMemoryFileSystem(new PathTraversalEngine(), new InMemoryPropertyStoreFactory());
+            var fs = new InMemoryFileSystem(new PathTraversalEngine(), new SystemClock(), new InMemoryPropertyStoreFactory());
             var root = await fs.Root.ConfigureAwait(false);
             var test1 = await root.CreateCollectionAsync("test1", ct).ConfigureAwait(false);
             await test1.CreateCollectionAsync("test1.1", ct).ConfigureAwait(false);
@@ -85,7 +85,7 @@ namespace FubarDev.WebDavServer.Tests.FileSystem
         public async Task TwoEmptyDirectories()
         {
             var ct = CancellationToken.None;
-            var fs = new InMemoryFileSystem(new PathTraversalEngine(), new InMemoryPropertyStoreFactory());
+            var fs = new InMemoryFileSystem(new PathTraversalEngine(), new SystemClock(), new InMemoryPropertyStoreFactory());
             var root = await fs.Root.ConfigureAwait(false);
             await root.CreateCollectionAsync("test1", ct).ConfigureAwait(false);
             await root.CreateCollectionAsync("test2", ct).ConfigureAwait(false);
@@ -116,7 +116,7 @@ namespace FubarDev.WebDavServer.Tests.FileSystem
         public async Task TwoDirectoriesWithOneEmptyChildDirectory()
         {
             var ct = CancellationToken.None;
-            var fs = new InMemoryFileSystem(new PathTraversalEngine(), new InMemoryPropertyStoreFactory());
+            var fs = new InMemoryFileSystem(new PathTraversalEngine(), new SystemClock(), new InMemoryPropertyStoreFactory());
             var root = await fs.Root.ConfigureAwait(false);
             var test1 = await root.CreateCollectionAsync("test1", ct).ConfigureAwait(false);
             await test1.CreateCollectionAsync("test1.1", ct).ConfigureAwait(false);
@@ -167,7 +167,7 @@ namespace FubarDev.WebDavServer.Tests.FileSystem
         public async Task TwoDirectoriesWithTwoEmptyChildDirectories()
         {
             var ct = CancellationToken.None;
-            var fs = new InMemoryFileSystem(new PathTraversalEngine(), new InMemoryPropertyStoreFactory());
+            var fs = new InMemoryFileSystem(new PathTraversalEngine(), new SystemClock(), new InMemoryPropertyStoreFactory());
             var root = await fs.Root.ConfigureAwait(false);
             var test1 = await root.CreateCollectionAsync("test1", ct).ConfigureAwait(false);
             await test1.CreateCollectionAsync("test1.1", ct).ConfigureAwait(false);
@@ -236,7 +236,7 @@ namespace FubarDev.WebDavServer.Tests.FileSystem
         public async Task TwoDirectoriesWithTwoEmptyFiles()
         {
             var ct = CancellationToken.None;
-            var fs = new InMemoryFileSystem(new PathTraversalEngine(), new InMemoryPropertyStoreFactory());
+            var fs = new InMemoryFileSystem(new PathTraversalEngine(), new SystemClock(), new InMemoryPropertyStoreFactory());
             var root = await fs.Root.ConfigureAwait(false);
             var test1 = await root.CreateCollectionAsync("test1", ct).ConfigureAwait(false);
             await test1.CreateDocumentAsync("test1.1", ct).ConfigureAwait(false);
@@ -293,7 +293,7 @@ namespace FubarDev.WebDavServer.Tests.FileSystem
         public async Task TwoDirectoriesWithTwoEmptyFilesAndEmptyDirectory()
         {
             var ct = CancellationToken.None;
-            var fs = new InMemoryFileSystem(new PathTraversalEngine(), new InMemoryPropertyStoreFactory());
+            var fs = new InMemoryFileSystem(new PathTraversalEngine(), new SystemClock(), new InMemoryPropertyStoreFactory());
             var root = await fs.Root.ConfigureAwait(false);
             var test1 = await root.CreateCollectionAsync("test1", ct).ConfigureAwait(false);
             await test1.CreateDocumentAsync("test1.1", ct).ConfigureAwait(false);

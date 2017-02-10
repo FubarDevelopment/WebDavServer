@@ -17,7 +17,7 @@ namespace FubarDev.WebDavServer.FileSystem.InMemory
     {
         private readonly Dictionary<string, InMemoryEntry> _children = new Dictionary<string, InMemoryEntry>(StringComparer.OrdinalIgnoreCase);
 
-        public InMemoryDirectory(IFileSystem fileSystem, InMemoryDirectory parent, Uri path, string name)
+        public InMemoryDirectory(InMemoryFileSystem fileSystem, InMemoryDirectory parent, Uri path, string name)
             : base(fileSystem, parent, path, name)
         {
         }
@@ -54,7 +54,7 @@ namespace FubarDev.WebDavServer.FileSystem.InMemory
         {
             if (_children.ContainsKey(name))
                 throw new IOException("Document or collection with the same name already exists");
-            var newItem = new InMemoryFile(FileSystem, this, Path.Append(name, false), name);
+            var newItem = new InMemoryFile(InMemoryFileSystem, this, Path.Append(name, false), name);
             _children.Add(newItem.Name, newItem);
             return Task.FromResult<IDocument>(newItem);
         }
@@ -63,7 +63,7 @@ namespace FubarDev.WebDavServer.FileSystem.InMemory
         {
             if (_children.ContainsKey(name))
                 throw new IOException("Document or collection with the same name already exists");
-            var newItem = new InMemoryDirectory(FileSystem, this, Path.AppendDirectory(name), name);
+            var newItem = new InMemoryDirectory(InMemoryFileSystem, this, Path.AppendDirectory(name), name);
             _children.Add(newItem.Name, newItem);
             return Task.FromResult<ICollection>(newItem);
         }

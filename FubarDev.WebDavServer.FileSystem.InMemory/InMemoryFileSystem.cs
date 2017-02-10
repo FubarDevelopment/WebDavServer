@@ -14,13 +14,16 @@ namespace FubarDev.WebDavServer.FileSystem.InMemory
     {
         private readonly PathTraversalEngine _pathTraversalEngine;
 
-        public InMemoryFileSystem(PathTraversalEngine pathTraversalEngine, IPropertyStoreFactory propertyStoreFactory = null)
+        public InMemoryFileSystem(PathTraversalEngine pathTraversalEngine, ISystemClock systemClock, IPropertyStoreFactory propertyStoreFactory = null)
         {
+            SystemClock = systemClock;
             _pathTraversalEngine = pathTraversalEngine;
             var rootDir = new InMemoryDirectory(this, null, new Uri(string.Empty, UriKind.Relative), string.Empty);
             Root = new AsyncLazy<ICollection>(() => Task.FromResult<ICollection>(rootDir));
             PropertyStore = propertyStoreFactory?.Create(this);
         }
+
+        public ISystemClock SystemClock { get; }
 
         public AsyncLazy<ICollection> Root { get; }
 

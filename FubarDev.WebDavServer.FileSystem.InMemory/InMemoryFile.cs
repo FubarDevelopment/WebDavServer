@@ -19,12 +19,12 @@ namespace FubarDev.WebDavServer.FileSystem.InMemory
     {
         private MemoryStream _data;
 
-        public InMemoryFile(IFileSystem fileSystem, InMemoryDirectory parent, Uri path, string name)
+        public InMemoryFile(InMemoryFileSystem fileSystem, InMemoryDirectory parent, Uri path, string name)
             : this(fileSystem, parent, path, name, new byte[0])
         {
         }
 
-        public InMemoryFile(IFileSystem fileSystem, InMemoryDirectory parent, Uri path, string name, byte[] data)
+        public InMemoryFile(InMemoryFileSystem fileSystem, InMemoryDirectory parent, Uri path, string name, byte[] data)
             : base(fileSystem, parent, path, name)
         {
             _data = new MemoryStream(data);
