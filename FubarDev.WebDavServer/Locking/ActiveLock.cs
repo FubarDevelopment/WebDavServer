@@ -24,6 +24,23 @@ namespace FubarDev.WebDavServer.Locking
             string path,
             bool recursive,
             XElement owner,
+            LockAccessType accessType,
+            LockShareMode shareMode,
+            TimeSpan timeout)
+            : this(
+                path,
+                recursive,
+                owner,
+                accessType.Id,
+                shareMode.Id,
+                timeout)
+        {
+        }
+
+        public ActiveLock(
+            string path,
+            bool recursive,
+            XElement owner,
             string accessType,
             string shareMode,
             TimeSpan timeout)

@@ -13,15 +13,15 @@ namespace FubarDev.WebDavServer.Locking
             string path,
             bool recursive,
             XElement owner,
-            string accessType,
-            string shareMode,
+            LockAccessType accessType,
+            LockShareMode shareMode,
             TimeSpan timeout)
         {
             Path = path;
             Recursive = recursive;
             Owner = owner;
-            AccessType = accessType;
-            ShareMode = shareMode;
+            AccessType = accessType.Id;
+            ShareMode = shareMode.Id;
             Timeout = timeout;
         }
 
