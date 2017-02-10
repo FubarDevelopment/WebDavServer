@@ -15,7 +15,7 @@ namespace FubarDev.WebDavServer.Locking
     {
         Task<Either<IReadOnlyCollection<IActiveLock>, IActiveLock>> LockAsync(ILock l, CancellationToken cancellationToken);
 
-        Task ReleaseAsync(Uri stateToken, CancellationToken cancellationToken);
+        Task<bool> ReleaseAsync(Uri stateToken, CancellationToken cancellationToken);
 
         Task<IEnumerable<IActiveLock>> GetLocksAsync(CancellationToken cancellationToken);
     }

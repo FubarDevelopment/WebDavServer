@@ -5,6 +5,7 @@
 using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -17,11 +18,13 @@ namespace FubarDev.WebDavServer.Locking.InMemory
     {
         private static readonly Uri _baseUrl = new Uri("http://localhost/");
 
-        private readonly LockCleanupTask _cleanupTask;
+        private static readonly IReadOnlyCollection<IActiveLock> _emptyActiveLocks = new ActiveLock[0];
 
         private readonly object _syncRoot = new object();
 
-        private IImmutableDictionary<string, IActiveLock> _locks = ImmutableDictionary<string, IActiveLock>.Empty;
+        private readonly LockCleanupTask _cleanupTask;
+
+        private IImmutableDictionary<Uri, IActiveLock> _locks = ImmutableDictionary<Uri, IActiveLock>.Empty;
 
         public InMemoryLockManager()
         {
@@ -30,24 +33,39 @@ namespace FubarDev.WebDavServer.Locking.InMemory
 
         public Task<Either<IReadOnlyCollection<IActiveLock>, IActiveLock>> LockAsync(ILock l, CancellationToken cancellationToken)
         {
+            IActiveLock newActiveLock;
             var destinationUrl = new Uri(_baseUrl, l.Path);
             lock (_syncRoot)
             {
-                var status = Find(destinationUrl);
-                var conflictingLocks = GetConflictingLocks(l.ShareMode, status);
+                var status = Find(destinationUrl, l.Recursive);
+                var conflictingLocks = GetConflictingLocks(status, LockShareMode.Parse(l.ShareMode));
                 if (conflictingLocks.Count != 0)
                     return Task.FromResult(Left<IReadOnlyCollection<IActiveLock>, IActiveLock>(conflictingLocks));
 
-                var newActiveLock = new ActiveLock(l);
-                _locks = _locks.Add(newActiveLock.StateToken, newActiveLock);
-                _cleanupTask.Add(this, newActiveLock);
-                return Task.FromResult(Right<IReadOnlyCollection<IActiveLock>, IActiveLock>(newActiveLock));
+                newActiveLock = new ActiveLock(l);
+                var stateToken = new Uri(newActiveLock.StateToken);
+                _locks = _locks.Add(stateToken, newActiveLock);
             }
+
+            _cleanupTask.Add(this, newActiveLock);
+            return Task.FromResult(Right<IReadOnlyCollection<IActiveLock>, IActiveLock>(newActiveLock));
         }
 
-        public Task ReleaseAsync(Uri stateToken, CancellationToken cancellationToken)
+        public Task<bool> ReleaseAsync(Uri stateToken, CancellationToken cancellationToken)
         {
-            throw new NotImplementedException();
+            IActiveLock activeLock;
+            lock (_syncRoot)
+            {
+                if (!_locks.TryGetValue(stateToken, out activeLock))
+                    return Task.FromResult(false);
+
+                _locks = _locks.Remove(stateToken);
+            }
+
+            _cleanupTask.Remove(activeLock);
+            _cleanupTask.Remove(activeLock);
+
+            return Task.FromResult(true);
         }
 
         public Task<IEnumerable<IActiveLock>> GetLocksAsync(CancellationToken cancellationToken)
@@ -55,12 +73,25 @@ namespace FubarDev.WebDavServer.Locking.InMemory
             return Task.FromResult(_locks.Values);
         }
 
-        private IReadOnlyCollection<IActiveLock> GetConflictingLocks(string shareMode, LockStatus affactingLocks)
+        private static IReadOnlyCollection<IActiveLock> GetConflictingLocks(LockStatus affactingLocks, LockShareMode shareMode)
         {
-            throw new NotImplementedException();
+            if (shareMode.Id == LockShareMode.Exclusive.Id)
+            {
+                if (affactingLocks.IsEmpty)
+                    return _emptyActiveLocks;
+                return affactingLocks.GetLocks().ToList();
+            }
+
+            var exclusiveLocks =
+                (from activeLock in affactingLocks.GetLocks()
+                 let lockShareMode = LockShareMode.Parse(activeLock.ShareMode)
+                 where lockShareMode.Id == LockShareMode.Exclusive.Id
+                 select activeLock)
+                .ToList();
+            return exclusiveLocks;
         }
 
-        private LockStatus Find(Uri destinationUrl)
+        private LockStatus Find(Uri destinationUrl, bool withChildren)
         {
             var refLocks = new List<IActiveLock>();
             var childLocks = new List<IActiveLock>();
@@ -73,11 +104,11 @@ namespace FubarDev.WebDavServer.Locking.InMemory
                 {
                     refLocks.Add(activeLock);
                 }
-                else if (destinationUrl.IsBaseOf(lockUrl))
+                else if (withChildren && destinationUrl.IsBaseOf(lockUrl))
                 {
                     childLocks.Add(activeLock);
                 }
-                else if (lockUrl.IsBaseOf(destinationUrl))
+                else if (activeLock.Recursive && lockUrl.IsBaseOf(destinationUrl))
                 {
                     parentLocks.Add(activeLock);
                 }
