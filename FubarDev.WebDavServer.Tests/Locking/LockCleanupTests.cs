@@ -30,21 +30,13 @@ namespace FubarDev.WebDavServer.Tests.Locking
         [Fact]
         public async Task TestCleanupOneAsync()
         {
+            var releasedLocks = new HashSet<string>();
+            var systemClock = (TestSystemClock)ServiceProvider.GetRequiredService<ISystemClock>();
             var lockManager = (InMemoryLockManager)ServiceProvider.GetRequiredService<ILockManager>();
             var ct = CancellationToken.None;
-            var l = new Lock("/", false, new XElement("test"), LockAccessType.Write, LockShareMode.Exclusive, TimeSpan.FromMilliseconds(100));
-            var sem = new SemaphoreSlim(0, 1);
-            lockManager.LockReleased += (s, e) =>
-            {
-                sem.Release();
-            };
 
-            var stopwatch = new Stopwatch();
-            stopwatch.Start();
-            await lockManager.LockAsync(l, ct).ConfigureAwait(false);
-            Assert.True(await sem.WaitAsync(250, ct).ConfigureAwait(false));
-            stopwatch.Stop();
-            Assert.True(stopwatch.ElapsedMilliseconds >= 100, $"Duration should be at least 100ms, but was {stopwatch.ElapsedMilliseconds}");
+            systemClock.RoundTo(DefaultLockTimeRoundingMode.OneSecond);
+            await TestSingleLockAsync(releasedLocks, lockManager, ct).ConfigureAwait(false);
         }
 
         [Fact]
@@ -71,7 +63,7 @@ namespace FubarDev.WebDavServer.Tests.Locking
             await lockManager.LockAsync(l1, ct).ConfigureAwait(false);
             await lockManager.LockAsync(l2, ct).ConfigureAwait(false);
 
-            Assert.True(evt.Wait(350, ct));
+            Assert.True(evt.Wait(1000, ct));
             stopwatch.Stop();
             Assert.True(stopwatch.ElapsedMilliseconds >= 200, $"Duration should be at least 200ms, but was {stopwatch.ElapsedMilliseconds}");
         }
@@ -88,66 +80,46 @@ namespace FubarDev.WebDavServer.Tests.Locking
             var outerStopwatch = new Stopwatch();
             outerStopwatch.Start();
 
-            {
-                var l = new Lock(
-                    "/",
-                    false,
-                    new XElement("test"),
-                    LockAccessType.Write,
-                    LockShareMode.Exclusive,
-                    TimeSpan.FromMilliseconds(100));
-                var sem = new SemaphoreSlim(0, 1);
-                var evt = new EventHandler<LockEventArgs>((s, e) =>
-                {
-                    Assert.True(releasedLocks.Add(e.Lock.StateToken));
-                    sem.Release();
-                });
-                lockManager.LockReleased += evt;
-
-                var stopwatch = new Stopwatch();
-                stopwatch.Start();
-                await lockManager.LockAsync(l, ct).ConfigureAwait(false);
-                Assert.True(await sem.WaitAsync(250, ct).ConfigureAwait(false));
-                stopwatch.Stop();
-                Assert.True(
-                    stopwatch.ElapsedMilliseconds >= 100,
-                    $"Duration should be at least 100ms, but was {stopwatch.ElapsedMilliseconds}");
-
-                lockManager.LockReleased -= evt;
-            }
-
-            {
-                var l = new Lock(
-                    "/",
-                    false,
-                    new XElement("test"),
-                    LockAccessType.Write,
-                    LockShareMode.Exclusive,
-                    TimeSpan.FromMilliseconds(100));
-                var sem = new SemaphoreSlim(0, 1);
-                var evt = new EventHandler<LockEventArgs>((s, e) =>
-                {
-                    Assert.True(releasedLocks.Add(e.Lock.StateToken));
-                    sem.Release();
-                });
-                lockManager.LockReleased += evt;
-
-                var stopwatch = new Stopwatch();
-                stopwatch.Start();
-                await lockManager.LockAsync(l, ct).ConfigureAwait(false);
-                Assert.True(await sem.WaitAsync(250, ct).ConfigureAwait(false));
-                stopwatch.Stop();
-                Assert.True(
-                    stopwatch.ElapsedMilliseconds >= 100,
-                    $"Duration should be at least 100ms, but was {stopwatch.ElapsedMilliseconds}");
-
-                lockManager.LockReleased -= evt;
-            }
+            await TestSingleLockAsync(releasedLocks, lockManager, ct).ConfigureAwait(false);
+            await TestSingleLockAsync(releasedLocks, lockManager, ct).ConfigureAwait(false);
 
             outerStopwatch.Stop();
             Assert.True(
                 outerStopwatch.ElapsedMilliseconds >= 200,
                 $"Duration should be at least 200ms, but was {outerStopwatch.ElapsedMilliseconds}");
+        }
+
+        private async Task TestSingleLockAsync(ISet<string> releasedLocks, InMemoryLockManager lockManager, CancellationToken ct)
+        {
+            var l = new Lock(
+                "/",
+                false,
+                new XElement("test"),
+                LockAccessType.Write,
+                LockShareMode.Exclusive,
+                TimeSpan.FromMilliseconds(100));
+            var sem = new SemaphoreSlim(0, 1);
+            var evt = new EventHandler<LockEventArgs>((s, e) =>
+            {
+                Assert.True(releasedLocks.Add(e.Lock.StateToken));
+                sem.Release();
+            });
+            lockManager.LockReleased += evt;
+            try
+            {
+                var stopwatch = new Stopwatch();
+                stopwatch.Start();
+                await lockManager.LockAsync(l, ct).ConfigureAwait(false);
+                Assert.True(await sem.WaitAsync(1000, ct).ConfigureAwait(false));
+                stopwatch.Stop();
+                Assert.True(
+                    stopwatch.ElapsedMilliseconds >= 100,
+                    $"Duration should be at least 100ms, but was {stopwatch.ElapsedMilliseconds}");
+            }
+            finally
+            {
+                lockManager.LockReleased -= evt;
+            }
         }
     }
 }
