@@ -103,12 +103,15 @@ namespace FubarDev.WebDavServer.Locking
                 if (lockItem.ActiveLock.StateToken == _mostRecentExpirationLockItem.ActiveLock.StateToken)
                 {
                     // Removed lock item was the most recent
-                    var nextLockItem = FindMostRecentExpirationItem();
-                    if (nextLockItem != null)
+                    _mostRecentExpirationLockItem = FindMostRecentExpirationItem();
+                    if (_mostRecentExpirationLockItem != null)
                     {
                         // Found a new one and reconfigure timer
-                        _mostRecentExpirationLockItem = nextLockItem;
-                        ConfigureTimer(nextLockItem);
+                        ConfigureTimer(_mostRecentExpirationLockItem);
+                    }
+                    else if (_logger.IsEnabled(LogLevel.Debug))
+                    {
+                        _logger.LogDebug("No more locks to cleanup.");
                     }
                 }
             }
@@ -163,11 +166,15 @@ namespace FubarDev.WebDavServer.Locking
                     nextLockItem = FindMostRecentExpirationItem();
                 }
 
-                if (nextLockItem != null)
+                _mostRecentExpirationLockItem = nextLockItem;
+                if (_mostRecentExpirationLockItem != null)
                 {
                     // There is another lock that needs to be tracked.
-                    _mostRecentExpirationLockItem = nextLockItem;
-                    ConfigureTimer(nextLockItem);
+                    ConfigureTimer(_mostRecentExpirationLockItem);
+                }
+                else if (_logger.IsEnabled(LogLevel.Debug))
+                {
+                    _logger.LogDebug("No more locks to cleanup.");
                 }
             }
 
