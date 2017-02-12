@@ -96,7 +96,7 @@ namespace FubarDev.WebDavServer.Locking
         /// <inheritdoc />
         public override string ToString()
         {
-            return $"{Path} [Recursive={Recursive}, AccessType={AccessType}, ShareMode={ShareMode}, Timeout={Timeout}, Owner={Owner}, StateToken={StateToken}, Issued={Issued:O}, Expiration={Expiration:O}]";
+            return $"Path={Path} [Recursive={Recursive}, AccessType={AccessType}, ShareMode={ShareMode}, Timeout={Timeout}, Owner={Owner}, StateToken={StateToken}, Issued={Issued:O}, Expiration={Expiration:O}]";
         }
     }
 }
