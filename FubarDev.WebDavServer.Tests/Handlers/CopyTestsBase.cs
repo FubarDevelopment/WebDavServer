@@ -317,52 +317,6 @@ namespace FubarDev.WebDavServer.Tests.Handlers
             Assert.Null(subChild);
         }
 
-        [Fact(Skip = "Not working with this client")]
-        public async Task CopyDirectoryWithSubDirectoryAndFileDepthOneAsync()
-        {
-            var ct = CancellationToken.None;
-            var root = await FileSystem.Root.ConfigureAwait(false);
-            var coll1 = await root.CreateCollectionAsync("test1", ct).ConfigureAwait(false);
-            Assert.NotNull(coll1);
-
-            var sub1 = await coll1.CreateCollectionAsync("subcoll", ct).ConfigureAwait(false);
-
-            var doc1 = await sub1.CreateDocumentAsync("text.txt", ct).ConfigureAwait(false);
-            await doc1.FillWithAsync("Dokument 1", ct).ConfigureAwait(false);
-            Assert.Equal("Dokument 1", await doc1.ReadAllAsync(ct).ConfigureAwait(false));
-
-            var props1 = await coll1.GetPropertyElementsAsync(ct).ConfigureAwait(false);
-            var subProps1 = await sub1.GetPropertyElementsAsync(ct).ConfigureAwait(false);
-
-            var response = await Client
-                .Copy(
-                    new Uri("test1", UriKind.Relative),
-                    new Uri("test2", UriKind.Relative),
-                    new CopyParameters()
-                    {
-                        Overwrite = true,
-                        ApplyTo = ApplyTo.Copy.ResourceAndAncestors,
-                        CancellationToken = ct,
-                    })
-                .ConfigureAwait(false);
-            Assert.True(response.IsSuccessful);
-
-            var child = await root.GetChildAsync("test2", ct).ConfigureAwait(false);
-            var coll2 = Assert.IsType<InMemoryDirectory>(child);
-            var props2 = await coll2.GetPropertyElementsAsync(ct).ConfigureAwait(false);
-            var changes = PropertyComparer.FindChanges(props1, props2, _propsToIgnore);
-            Assert.Empty(changes);
-
-            var subChild = await coll2.GetChildAsync("subcoll", ct).ConfigureAwait(false);
-            var sub2 = Assert.IsType<InMemoryDirectory>(subChild);
-            var subProps2 = await sub2.GetPropertyElementsAsync(ct).ConfigureAwait(false);
-            var subChanges = PropertyComparer.FindChanges(subProps1, subProps2, _propsToIgnore);
-            Assert.Empty(subChanges);
-
-            var docChild = await sub2.GetChildAsync("text.txt", ct).ConfigureAwait(false);
-            Assert.Null(docChild);
-        }
-
         [Fact]
         public async Task CopyDirectoryWithSubDirectoryAndFileDepthInfinityAsync()
         {
