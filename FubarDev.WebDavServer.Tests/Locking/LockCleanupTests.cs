@@ -3,6 +3,7 @@
 // </copyright>
 
 using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.Threading;
 using System.Threading.Tasks;
@@ -10,6 +11,7 @@ using System.Xml.Linq;
 
 using FubarDev.WebDavServer.Locking;
 using FubarDev.WebDavServer.Locking.InMemory;
+using FubarDev.WebDavServer.Tests.Support;
 
 using Microsoft.Extensions.DependencyInjection;
 
@@ -31,7 +33,7 @@ namespace FubarDev.WebDavServer.Tests.Locking
             var ct = CancellationToken.None;
             var l = new Lock("/", false, new XElement("test"), LockAccessType.Write, LockShareMode.Exclusive, TimeSpan.FromMilliseconds(100));
             var sem = new SemaphoreSlim(0, 1);
-            lockManager.LockAdded += (s, e) =>
+            lockManager.LockReleased += (s, e) =>
             {
                 sem.Release();
             };
@@ -47,19 +49,30 @@ namespace FubarDev.WebDavServer.Tests.Locking
         [Fact]
         public async Task TestCleanupTwoAsync()
         {
+            var releasedLocks = new HashSet<string>();
             var lockManager = (InMemoryLockManager)ServiceProvider.GetRequiredService<ILockManager>();
             var ct = CancellationToken.None;
             var owner = new XElement("test");
             var l1 = new Lock("/", false, owner, LockAccessType.Write, LockShareMode.Shared, TimeSpan.FromMilliseconds(100));
             var l2 = new Lock("/", false, owner, LockAccessType.Write, LockShareMode.Shared, TimeSpan.FromMilliseconds(200));
-            var sem = new SemaphoreSlim(0, 2);
-            lockManager.LockAdded += (s, e) =>
+            var evt = new CountdownEvent(2);
+            lockManager.LockReleased += (s, e) =>
             {
-                sem.Release();
+                Assert.True(releasedLocks.Add(e.Lock.StateToken));
+                evt.Signal();
             };
+
+            var systemClock = (TestSystemClock)ServiceProvider.GetRequiredService<ISystemClock>();
+            systemClock.RoundTo(DefaultLockTimeRoundingMode.OneSecond);
+
+            var stopwatch = new Stopwatch();
+            stopwatch.Start();
             await lockManager.LockAsync(l1, ct).ConfigureAwait(false);
             await lockManager.LockAsync(l2, ct).ConfigureAwait(false);
-            Assert.True(await sem.WaitAsync(300, ct).ConfigureAwait(false));
+
+            Assert.True(evt.Wait(300, ct));
+            stopwatch.Stop();
+            Assert.True(stopwatch.ElapsedMilliseconds >= 200, $"Duration should be at least 200ms, but was {stopwatch.ElapsedMilliseconds}");
         }
     }
 }
