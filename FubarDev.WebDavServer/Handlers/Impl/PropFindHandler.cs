@@ -104,7 +104,7 @@ namespace FubarDev.WebDavServer.Handlers.Impl
                 var href = _host.BaseUrl.Append(entry.Path);
 
                 var collector = new PropertyCollector(_host, new ReadableFilter(), new PropFilter(prop));
-                var propStats = await collector.GetPropertiesAsync(entry, code => code != WebDavStatusCode.NotFound, cancellationToken).ConfigureAwait(false);
+                var propStats = await collector.GetPropertiesAsync(entry, code => true, cancellationToken).ConfigureAwait(false);
 
                 var response = new Response()
                 {
