@@ -17,7 +17,12 @@ namespace FubarDev.WebDavServer.Sample.AspNetCore.Support
 {
     public class RequestLogMiddleware
     {
-        private readonly IEnumerable<MediaType> _supportedMediaTypes = new[] { "text/xml", "application/xml" }.Select(x => new MediaType(x)).ToList();
+        private readonly IEnumerable<MediaType> _supportedMediaTypes = new[]
+        {
+            "text/xml",
+            "application/xml",
+            "text/plain"
+        }.Select(x => new MediaType(x)).ToList();
         private readonly RequestDelegate _next;
         private readonly ILogger<RequestLogMiddleware> _logger;
 

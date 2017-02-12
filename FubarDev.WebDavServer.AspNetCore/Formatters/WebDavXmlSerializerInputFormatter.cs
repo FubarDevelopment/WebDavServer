@@ -8,6 +8,11 @@ namespace FubarDev.WebDavServer.AspNetCore.Formatters
 {
     public class WebDavXmlSerializerInputFormatter : XmlSerializerInputFormatter
     {
+        public WebDavXmlSerializerInputFormatter()
+        {
+            SupportedMediaTypes.Add("text/plain");
+        }
+
         public override bool CanRead(InputFormatterContext context)
         {
             var request = context.HttpContext.Request;
