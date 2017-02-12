@@ -12,6 +12,7 @@ using System.Xml.Linq;
 using FubarDev.WebDavServer.Locking;
 using FubarDev.WebDavServer.Locking.InMemory;
 using FubarDev.WebDavServer.Tests.Support;
+using FubarDev.WebDavServer.Tests.Support.ServiceBuilders;
 
 using Microsoft.Extensions.DependencyInjection;
 

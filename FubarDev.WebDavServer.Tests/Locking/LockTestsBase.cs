@@ -4,6 +4,8 @@
 
 using System;
 
+using FubarDev.WebDavServer.Tests.Support.ServiceBuilders;
+
 using Microsoft.Extensions.DependencyInjection;
 
 using Xunit;

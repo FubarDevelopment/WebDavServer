@@ -1,13 +1,16 @@
-﻿using System;
+﻿// <copyright file="LockServices.cs" company="Fubar Development Junker">
+// Copyright (c) Fubar Development Junker. All rights reserved.
+// </copyright>
+
+using System;
 
 using FubarDev.WebDavServer.Locking;
 using FubarDev.WebDavServer.Locking.InMemory;
-using FubarDev.WebDavServer.Tests.Support;
 
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 
-namespace FubarDev.WebDavServer.Tests.Locking
+namespace FubarDev.WebDavServer.Tests.Support.ServiceBuilders
 {
     public class LockServices
     {
