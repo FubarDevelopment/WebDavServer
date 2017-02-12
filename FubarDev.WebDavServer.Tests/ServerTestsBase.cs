@@ -41,6 +41,7 @@ namespace FubarDev.WebDavServer.Tests
             Client = new WebDavClient(Server.CreateClient());
         }
 
+        [NotNull]
         protected IFileSystem FileSystem { get; }
 
         [NotNull]
@@ -48,6 +49,9 @@ namespace FubarDev.WebDavServer.Tests
 
         [NotNull]
         protected WebDavClient Client { get; }
+
+        [NotNull]
+        protected IServiceProvider ServiceProvider => Server.Host.Services;
 
         public void Dispose()
         {
