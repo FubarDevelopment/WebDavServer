@@ -6,7 +6,7 @@ namespace FubarDev.WebDavServer.Props.Store.TextFile
 {
     public class TextFilePropertyStoreOptions
     {
-        public int EstimatedCost { get; set; }
+        public int EstimatedCost { get; set; } = 10;
 
         public string RootFolder { get; set; }
 
