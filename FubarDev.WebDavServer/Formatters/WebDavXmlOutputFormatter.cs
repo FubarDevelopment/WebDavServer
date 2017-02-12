@@ -7,6 +7,8 @@ using System.Text;
 using System.Xml;
 using System.Xml.Serialization;
 
+using FubarDev.WebDavServer.Model;
+
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 
@@ -15,6 +17,7 @@ namespace FubarDev.WebDavServer.Formatters
     public class WebDavXmlOutputFormatter : IWebDavOutputFormatter
     {
         private readonly ILogger<WebDavXmlOutputFormatter> _logger;
+        private readonly string _namespacePrefix;
 
         public WebDavXmlOutputFormatter(IOptions<WebDavFormatterOptions> options, ILogger<WebDavXmlOutputFormatter> logger)
         {
@@ -23,6 +26,8 @@ namespace FubarDev.WebDavServer.Formatters
 
             var contentType = options.Value.ContentType ?? "text/xml";
             ContentType = $"{contentType}; charset=\"{Encoding.WebName}\"";
+
+            _namespacePrefix = options.Value.NamespacePrefix;
         }
 
         public string ContentType { get; }
@@ -35,16 +40,22 @@ namespace FubarDev.WebDavServer.Formatters
             if (Encoding != null)
                 writerSettings.Encoding = Encoding;
 
+            var ns = new XmlSerializerNamespaces();
+            if (!string.IsNullOrEmpty(_namespacePrefix))
+            {
+                ns.Add(_namespacePrefix, WebDavXml.Dav.NamespaceName);
+            }
+
             if (_logger.IsEnabled(LogLevel.Debug))
             {
                 var debugOutput = new StringWriter();
-                SerializerInstance<T>.Serializer.Serialize(debugOutput, data);
+                SerializerInstance<T>.Serializer.Serialize(debugOutput, data, ns);
                 _logger.LogDebug(debugOutput.ToString());
             }
 
             using (var writer = XmlWriter.Create(output, writerSettings))
             {
-                SerializerInstance<T>.Serializer.Serialize(writer, data);
+                SerializerInstance<T>.Serializer.Serialize(writer, data, ns);
             }
         }
 
