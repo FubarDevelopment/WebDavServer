@@ -42,8 +42,7 @@ namespace Microsoft.Extensions.DependencyInjection
                 .AddScoped<IWebDavDispatcher, WebDavServer>()
                 .AddSingleton<WebDavExceptionFilter>()
                 .AddScoped<IWebDavOutputFormatter, WebDavXmlOutputFormatter>()
-                .AddSingleton<PathTraversalEngine>()
-                .AddSingleton<IDeadPropertyFactory, DeadPropertyFactory>();
+                .AddSingleton<PathTraversalEngine>();
             services.Scan(
                 scan => scan
                     .FromAssemblyOf<IHandler>()
