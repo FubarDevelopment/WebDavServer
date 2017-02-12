@@ -20,10 +20,16 @@ using Microsoft.Extensions.Options;
 
 using Newtonsoft.Json;
 
+using Polly;
+
 namespace FubarDev.WebDavServer.Props.Store.TextFile
 {
     public class TextFilePropertyStore : PropertyStoreBase, IFileSystemPropertyStore
     {
+        private readonly Policy<string> _fileReadPolicy;
+
+        private readonly Policy _fileWritePolicy;
+
         private readonly IMemoryCache _cache;
 
         private readonly TextFilePropertyStoreOptions _options;
@@ -46,6 +52,13 @@ namespace FubarDev.WebDavServer.Props.Store.TextFile
             _cache = cache;
             _options = options;
             RootPath = rootFolder;
+            var rnd = new Random();
+            _fileReadPolicy = Policy<string>
+                .Handle<IOException>()
+                .WaitAndRetry(100, n => TimeSpan.FromMilliseconds(100 + rnd.Next(-10, 10)));
+            _fileWritePolicy = Policy
+                .Handle<IOException>()
+                .WaitAndRetry(100, n => TimeSpan.FromMilliseconds(100 + rnd.Next(-10, 10)));
         }
 
         public override int Cost => _options.EstimatedCost;
@@ -59,7 +72,7 @@ namespace FubarDev.WebDavServer.Props.Store.TextFile
 
         public override async Task<IReadOnlyCollection<XElement>> GetAsync(IEntry entry, CancellationToken cancellationToken)
         {
-            var storeData = Load(entry, false);
+            var storeData = Load(entry, false, cancellationToken);
             EntryInfo info;
             IReadOnlyCollection<XElement> result;
             if (storeData.Entries.TryGetValue(GetEntryKey(entry), out info))
@@ -78,26 +91,26 @@ namespace FubarDev.WebDavServer.Props.Store.TextFile
 
         public override Task SetAsync(IEntry entry, IEnumerable<XElement> elements, CancellationToken cancellationToken)
         {
-            var info = GetInfo(entry) ?? new EntryInfo();
+            var info = GetInfo(entry, cancellationToken) ?? new EntryInfo();
             foreach (var element in elements)
             {
                 info.Attributes[element.Name] = element;
             }
 
-            UpdateInfo(entry, info);
+            UpdateInfo(entry, info, cancellationToken);
             return Task.FromResult(0);
         }
 
         public override Task<IReadOnlyCollection<bool>> RemoveAsync(IEntry entry, IEnumerable<XName> names, CancellationToken cancellationToken)
         {
-            var info = GetInfo(entry) ?? new EntryInfo();
+            var info = GetInfo(entry, cancellationToken) ?? new EntryInfo();
             var result = new List<bool>();
             foreach (var name in names)
             {
                 result.Add(info.Attributes.Remove(name));
             }
 
-            UpdateInfo(entry, info);
+            UpdateInfo(entry, info, cancellationToken);
             return Task.FromResult<IReadOnlyCollection<bool>>(result);
         }
 
@@ -108,17 +121,17 @@ namespace FubarDev.WebDavServer.Props.Store.TextFile
             return entry.Name.ToLower();
         }
 
-        private void UpdateInfo(IEntry entry, EntryInfo info)
+        private void UpdateInfo(IEntry entry, EntryInfo info, CancellationToken cancellationToken)
         {
-            var storeData = Load(entry, true);
+            var storeData = Load(entry, true, cancellationToken);
             var entryKey = GetEntryKey(entry);
             storeData.Entries[entryKey] = info;
-            Save(entry, storeData);
+            Save(entry, storeData, cancellationToken);
         }
 
-        private EntryInfo GetInfo(IEntry entry)
+        private EntryInfo GetInfo(IEntry entry, CancellationToken cancellationToken)
         {
-            var storeData = Load(entry, false);
+            var storeData = Load(entry, false, cancellationToken);
 
             EntryInfo info;
             if (!storeData.Entries.TryGetValue(GetEntryKey(entry), out info))
@@ -127,22 +140,22 @@ namespace FubarDev.WebDavServer.Props.Store.TextFile
             return info;
         }
 
-        private void Save(IEntry entry, StoreData data)
+        private void Save(IEntry entry, StoreData data, CancellationToken cancellationToken)
         {
-            Save(GetFileNameFor(entry), data);
+            Save(GetFileNameFor(entry), data, cancellationToken);
         }
 
-        private StoreData Load(IEntry entry, bool useCache)
+        private StoreData Load(IEntry entry, bool useCache, CancellationToken cancellationToken)
         {
-            return Load(GetFileNameFor(entry), useCache);
+            return Load(GetFileNameFor(entry), useCache, cancellationToken);
         }
 
-        private void Save(string fileName, StoreData data)
+        private void Save(string fileName, StoreData data, CancellationToken cancellationToken)
         {
             try
             {
                 var key = fileName.ToLower();
-                File.WriteAllText(fileName, JsonConvert.SerializeObject(data));
+                _fileWritePolicy.Execute(ct => File.WriteAllText(fileName, JsonConvert.SerializeObject(data)), cancellationToken);
                 _cache.Set(key, data);
             }
             catch (Exception)
@@ -151,7 +164,7 @@ namespace FubarDev.WebDavServer.Props.Store.TextFile
             }
         }
 
-        private StoreData Load(string fileName, bool useCache)
+        private StoreData Load(string fileName, bool useCache, CancellationToken cancellationToken)
         {
             if (!File.Exists(fileName))
                 return new StoreData();
@@ -159,12 +172,14 @@ namespace FubarDev.WebDavServer.Props.Store.TextFile
             var key = fileName.ToLower();
             if (!useCache)
             {
-                var result = JsonConvert.DeserializeObject<StoreData>(File.ReadAllText(fileName));
+                var result = JsonConvert.DeserializeObject<StoreData>(
+                    _fileReadPolicy.Execute(ct => File.ReadAllText(fileName), cancellationToken));
                 _cache.Set(key, result);
                 return result;
             }
 
-            return _cache.GetOrCreate(key, ce => JsonConvert.DeserializeObject<StoreData>(File.ReadAllText(fileName)));
+            return _cache.GetOrCreate(key, ce => JsonConvert.DeserializeObject<StoreData>(
+                _fileReadPolicy.Execute(ct => File.ReadAllText(fileName), cancellationToken)));
         }
 
         private string GetFileNameFor(IEntry entry)
