@@ -137,19 +137,20 @@ namespace FubarDev.WebDavServer.Locking.InMemory
             var refLocks = new List<IActiveLock>();
             var childLocks = new List<IActiveLock>();
             var parentLocks = new List<IActiveLock>();
+            var parentUrl = new Uri(destinationUrl.OriginalString + (destinationUrl.OriginalString.EndsWith("/") ? string.Empty : "/"));
 
             foreach (var activeLock in _locks.Values)
             {
-                var lockUrl = new Uri(_baseUrl, activeLock.Path);
-                if (destinationUrl == lockUrl)
+                var lockUrl = new Uri(_baseUrl, activeLock.Path + (activeLock.Path.EndsWith("/") ? string.Empty : "/"));
+                if (parentUrl == lockUrl)
                 {
                     refLocks.Add(activeLock);
                 }
-                else if (withChildren && destinationUrl.IsBaseOf(lockUrl))
+                else if (withChildren && parentUrl.IsBaseOf(lockUrl))
                 {
                     childLocks.Add(activeLock);
                 }
-                else if (activeLock.Recursive && lockUrl.IsBaseOf(destinationUrl))
+                else if (activeLock.Recursive && lockUrl.IsBaseOf(parentUrl))
                 {
                     parentLocks.Add(activeLock);
                 }
