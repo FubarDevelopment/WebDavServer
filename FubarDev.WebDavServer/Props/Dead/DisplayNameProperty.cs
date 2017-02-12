@@ -46,7 +46,6 @@ namespace FubarDev.WebDavServer.Props.Dead
             }
 
             var newName = _value = _hideExtension ? Path.GetFileNameWithoutExtension(_entry.Name) : _entry.Name;
-            await SetValueAsync(newName, ct).ConfigureAwait(false);
             return newName;
         }
 
