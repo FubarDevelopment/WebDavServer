@@ -3,51 +3,63 @@
 // </copyright>
 
 using System;
+using System.Diagnostics;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Xml.Linq;
 
 using FubarDev.WebDavServer.Locking;
 using FubarDev.WebDavServer.Locking.InMemory;
-using FubarDev.WebDavServer.Tests.Support;
 
-using Microsoft.Extensions.Options;
+using Microsoft.Extensions.DependencyInjection;
 
 using Xunit;
 
 namespace FubarDev.WebDavServer.Tests.Locking
 {
-    public class LockCleanupTests
+    public class LockCleanupTests : LockTestsBase
     {
-        private readonly TestSystemClock _systemClock;
-        private readonly InMemoryLockManager _lockManager;
-        private readonly LockCleanupTask _lockCleanupTask;
-
-        public LockCleanupTests()
+        public LockCleanupTests(LockServices services)
+            : base(services)
         {
-            _systemClock = new TestSystemClock();
-            var lockCleanupOptions = new LockCleanupTaskOptions()
-            {
-                RoundingFunc = new LockCleanupTaskOptions.DefaultRounding(
-                        LockCleanupTaskOptions.DefaultRoundingMode.OneHundredMilliseconds)
-                    .Round,
-            };
-            _lockCleanupTask = new LockCleanupTask(new OptionsWrapper<LockCleanupTaskOptions>(lockCleanupOptions), _systemClock);
-            _lockManager = new InMemoryLockManager(_lockCleanupTask, _systemClock);
         }
 
         [Fact]
-        public async Task TestCleanupSingleAsync()
+        public async Task TestCleanupOneAsync()
         {
+            var lockManager = (InMemoryLockManager)ServiceProvider.GetRequiredService<ILockManager>();
             var ct = CancellationToken.None;
             var l = new Lock("/", false, new XElement("test"), LockAccessType.Write, LockShareMode.Exclusive, TimeSpan.FromMilliseconds(100));
             var sem = new SemaphoreSlim(0, 1);
-            _lockManager.LockAdded += (s, e) =>
+            lockManager.LockAdded += (s, e) =>
             {
                 sem.Release();
             };
-            await _lockManager.LockAsync(l, ct).ConfigureAwait(false);
+
+            var stopwatch = new Stopwatch();
+            stopwatch.Start();
+            await lockManager.LockAsync(l, ct).ConfigureAwait(false);
             Assert.True(await sem.WaitAsync(200, ct).ConfigureAwait(false));
+            stopwatch.Stop();
+            Assert.True(stopwatch.ElapsedMilliseconds >= 100, $"Duration should be at least 100ms, but was {stopwatch.ElapsedMilliseconds}");
+        }
+
+        [Fact]
+        public async Task TestCleanupTwoAsync()
+        {
+            var lockManager = (InMemoryLockManager)ServiceProvider.GetRequiredService<ILockManager>();
+            var ct = CancellationToken.None;
+            var owner = new XElement("test");
+            var l1 = new Lock("/", false, owner, LockAccessType.Write, LockShareMode.Shared, TimeSpan.FromMilliseconds(100));
+            var l2 = new Lock("/", false, owner, LockAccessType.Write, LockShareMode.Shared, TimeSpan.FromMilliseconds(200));
+            var sem = new SemaphoreSlim(0, 2);
+            lockManager.LockAdded += (s, e) =>
+            {
+                sem.Release();
+            };
+            await lockManager.LockAsync(l1, ct).ConfigureAwait(false);
+            await lockManager.LockAsync(l2, ct).ConfigureAwait(false);
+            Assert.True(await sem.WaitAsync(300, ct).ConfigureAwait(false));
         }
     }
 }

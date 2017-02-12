@@ -86,5 +86,11 @@ namespace FubarDev.WebDavServer.Locking
         /// <inheritdoc />
         public XElement GetOwner()
             => Owner;
+
+        /// <inheritdoc />
+        public override string ToString()
+        {
+            return $"{Path} [Recursive={Recursive}, AccessType={AccessType}, ShareMode={ShareMode}, Timeout={Timeout}, Owner={Owner}]";
+        }
     }
 }

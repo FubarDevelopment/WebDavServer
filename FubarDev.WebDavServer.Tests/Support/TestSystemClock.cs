@@ -3,6 +3,8 @@
 // </copyright>
 
 using System;
+using System.Collections.Concurrent;
+using System.Collections.Generic;
 
 using FubarDev.WebDavServer.Locking;
 
@@ -10,6 +12,8 @@ namespace FubarDev.WebDavServer.Tests.Support
 {
     public class TestSystemClock : ISystemClock
     {
+        private readonly ConcurrentDictionary<DefaultLockTimeRoundingMode, ILockTimeRounding> _roundingForMode = new ConcurrentDictionary<DefaultLockTimeRoundingMode, ILockTimeRounding>();
+
         private TimeSpan _diff;
 
         public DateTime UtcNow => DateTime.UtcNow + _diff;
@@ -20,28 +24,17 @@ namespace FubarDev.WebDavServer.Tests.Support
             _diff = dt - current;
         }
 
-        public void RoundTo(LockCleanupTaskOptions.DefaultRoundingMode roundingMode)
+        public void RoundTo(DefaultLockTimeRoundingMode roundingMode)
         {
             var now = DateTime.UtcNow;
             var rounded = GetRoundedDate(now, roundingMode);
             _diff = rounded - now;
         }
 
-        private static DateTime GetRoundedDate(DateTime dt, LockCleanupTaskOptions.DefaultRoundingMode roundingMode)
+        private DateTime GetRoundedDate(DateTime dt, DefaultLockTimeRoundingMode roundingMode)
         {
-            switch (roundingMode)
-            {
-                case LockCleanupTaskOptions.DefaultRoundingMode.OneSecond:
-                    return new DateTime(dt.Year, dt.Month, dt.Day, dt.Hour, dt.Minute, dt.Second, dt.Kind)
-                        + TimeSpan.FromSeconds(dt.Millisecond != 0 ? 1 : 0);
-                case LockCleanupTaskOptions.DefaultRoundingMode.OneHundredMilliseconds:
-                    var millis = dt.Millisecond + 99;
-                    millis = millis - (millis % 100);
-                    return new DateTime(dt.Year, dt.Month, dt.Day, dt.Hour, dt.Minute, dt.Second, dt.Kind)
-                        + TimeSpan.FromMilliseconds(millis);
-            }
-
-            return dt;
+            var rounding = _roundingForMode.GetOrAdd(roundingMode, mode => new DefaultLockTimeRounding(mode));
+            return rounding.Round(dt);
         }
     }
 }

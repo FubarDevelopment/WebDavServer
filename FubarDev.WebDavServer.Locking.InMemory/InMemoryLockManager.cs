@@ -10,6 +10,10 @@ using System.Threading;
 using System.Threading.Tasks;
 
 using LanguageExt;
+
+using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Options;
+
 using static LanguageExt.Prelude;
 
 namespace FubarDev.WebDavServer.Locking.InMemory
@@ -26,12 +30,19 @@ namespace FubarDev.WebDavServer.Locking.InMemory
 
         private readonly ISystemClock _systemClock;
 
+        private readonly ILogger<InMemoryLockManager> _logger;
+
+        private readonly ILockTimeRounding _rounding;
+
         private IImmutableDictionary<Uri, IActiveLock> _locks = ImmutableDictionary<Uri, IActiveLock>.Empty;
 
-        public InMemoryLockManager(LockCleanupTask cleanupTask, ISystemClock systemClock)
+        public InMemoryLockManager(IOptions<LockManagerOptions> options, LockCleanupTask cleanupTask, ISystemClock systemClock, ILogger<InMemoryLockManager> logger)
         {
+            var opt = options?.Value ?? new LockManagerOptions();
+            _rounding = opt.Rounding ?? new DefaultLockTimeRounding(DefaultLockTimeRoundingMode.OneSecond);
             _cleanupTask = cleanupTask;
             _systemClock = systemClock;
+            _logger = logger;
         }
 
         public event EventHandler<LockEventArgs> LockAdded;
@@ -47,9 +58,13 @@ namespace FubarDev.WebDavServer.Locking.InMemory
                 var status = Find(destinationUrl, l.Recursive);
                 var conflictingLocks = GetConflictingLocks(status, LockShareMode.Parse(l.ShareMode));
                 if (conflictingLocks.Count != 0)
+                {
+                    if (_logger.IsEnabled(LogLevel.Information))
+                        _logger.LogInformation($"Found conflicting locks for {l}: {string.Join(",", conflictingLocks.Select(x => x.ToString()))}");
                     return Task.FromResult(Left<IReadOnlyCollection<IActiveLock>, IActiveLock>(conflictingLocks));
+                }
 
-                newActiveLock = new ActiveLock(l, _systemClock.UtcNow);
+                newActiveLock = new ActiveLock(l, _rounding.Round(_systemClock.UtcNow), _rounding.Round(l.Timeout));
                 var stateToken = new Uri(newActiveLock.StateToken);
                 _locks = _locks.Add(stateToken, newActiveLock);
             }
@@ -67,11 +82,16 @@ namespace FubarDev.WebDavServer.Locking.InMemory
             lock (_syncRoot)
             {
                 if (!_locks.TryGetValue(stateToken, out activeLock))
+                {
+                    if (_logger.IsEnabled(LogLevel.Information))
+                        _logger.LogInformation($"Tried to remove non-existent lock {stateToken}");
                     return Task.FromResult(false);
+                }
 
                 _locks = _locks.Remove(stateToken);
             }
 
+            // ReSharper disable once InconsistentlySynchronizedField
             _cleanupTask.Remove(activeLock);
 
             OnLockReleased(activeLock);

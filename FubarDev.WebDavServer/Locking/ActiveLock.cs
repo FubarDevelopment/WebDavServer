@@ -38,6 +38,24 @@ namespace FubarDev.WebDavServer.Locking
         /// <summary>
         /// Initializes a new instance of the <see cref="ActiveLock"/> class.
         /// </summary>
+        /// <param name="l">The lock to create this active lock from</param>
+        /// <param name="issued">The date/time when this lock was issued</param>
+        /// <param name="timeout">Override the timeout from the original lock (to enforce rounding)</param>
+        public ActiveLock([NotNull] ILock l, DateTime issued, TimeSpan timeout)
+            : this(
+                l.Path,
+                l.Recursive,
+                l.GetOwner(),
+                LockAccessType.Parse(l.AccessType),
+                LockShareMode.Parse(l.ShareMode),
+                timeout,
+                issued)
+        {
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="ActiveLock"/> class.
+        /// </summary>
         /// <param name="path">The path (root-relative) this lock should be applied to</param>
         /// <param name="recursive">Must the lock be applied recursively to all children?</param>
         /// <param name="owner">The owner of the lock</param>
@@ -74,5 +92,11 @@ namespace FubarDev.WebDavServer.Locking
 
         /// <inheritdoc />
         public DateTime Expiration { get; }
+
+        /// <inheritdoc />
+        public override string ToString()
+        {
+            return $"{Path} [Recursive={Recursive}, AccessType={AccessType}, ShareMode={ShareMode}, Timeout={Timeout}, Owner={Owner}, StateToken={StateToken}, Issued={Issued:O}, Expiration={Expiration:O}]";
+        }
     }
 }
