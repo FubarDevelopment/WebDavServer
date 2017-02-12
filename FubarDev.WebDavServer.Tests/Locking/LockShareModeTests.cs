@@ -139,6 +139,102 @@ namespace FubarDev.WebDavServer.Tests.Locking
             ValidateLockResult(result2);
         }
 
+        [Fact]
+        public async Task TestSharedRootWithSharedSubAsync()
+        {
+            var lockManager = ServiceProvider.GetRequiredService<ILockManager>();
+            var ct = CancellationToken.None;
+            var owner = new XElement("test");
+            var result1 = await lockManager
+                .LockAsync(
+                    new Lock(
+                        "/",
+                        true,
+                        owner,
+                        LockAccessType.Write,
+                        LockShareMode.Shared,
+                        TimeSpan.FromMinutes(1)),
+                    ct)
+                .ConfigureAwait(false);
+            ValidateLockResult(result1);
+            var result2 = await lockManager
+                .LockAsync(
+                    new Lock(
+                        "/test",
+                        true,
+                        owner,
+                        LockAccessType.Write,
+                        LockShareMode.Shared,
+                        TimeSpan.FromMinutes(1)),
+                    ct)
+                .ConfigureAwait(false);
+            ValidateLockResult(result2);
+        }
+
+        [Fact]
+        public async Task TestSharedRootWithExclusiveSubAsync()
+        {
+            var lockManager = ServiceProvider.GetRequiredService<ILockManager>();
+            var ct = CancellationToken.None;
+            var owner = new XElement("test");
+            var result1 = await lockManager
+                .LockAsync(
+                    new Lock(
+                        "/",
+                        true,
+                        owner,
+                        LockAccessType.Write,
+                        LockShareMode.Shared,
+                        TimeSpan.FromMinutes(1)),
+                    ct)
+                .ConfigureAwait(false);
+            ValidateLockResult(result1);
+            var result2 = await lockManager
+                .LockAsync(
+                    new Lock(
+                        "/test",
+                        true,
+                        owner,
+                        LockAccessType.Write,
+                        LockShareMode.Exclusive,
+                        TimeSpan.FromMinutes(1)),
+                    ct)
+                .ConfigureAwait(false);
+            Assert.True(result2.IsLeft, "The second lock is expected to fail");
+        }
+
+        [Fact]
+        public async Task TestExclusiveRootWithSharedSubAsync()
+        {
+            var lockManager = ServiceProvider.GetRequiredService<ILockManager>();
+            var ct = CancellationToken.None;
+            var owner = new XElement("test");
+            var result1 = await lockManager
+                .LockAsync(
+                    new Lock(
+                        "/",
+                        true,
+                        owner,
+                        LockAccessType.Write,
+                        LockShareMode.Exclusive,
+                        TimeSpan.FromMinutes(1)),
+                    ct)
+                .ConfigureAwait(false);
+            ValidateLockResult(result1);
+            var result2 = await lockManager
+                .LockAsync(
+                    new Lock(
+                        "/test",
+                        true,
+                        owner,
+                        LockAccessType.Write,
+                        LockShareMode.Shared,
+                        TimeSpan.FromMinutes(1)),
+                    ct)
+                .ConfigureAwait(false);
+            Assert.True(result2.IsLeft, "The second lock is expected to fail");
+        }
+
         private IActiveLock ValidateLockResult(Either<IReadOnlyCollection<IActiveLock>, IActiveLock> result)
         {
             if (!result.IsLeft)
