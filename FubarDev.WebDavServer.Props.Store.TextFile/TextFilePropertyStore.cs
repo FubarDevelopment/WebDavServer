@@ -114,6 +114,14 @@ namespace FubarDev.WebDavServer.Props.Store.TextFile
             return Task.FromResult<IReadOnlyCollection<bool>>(result);
         }
 
+        public override Task RemoveAsync(IEntry entry, CancellationToken cancellationToken)
+        {
+            var fileName = GetFileNameFor(entry);
+            if (!File.Exists(fileName))
+                return Task.FromResult(0);
+            return base.RemoveAsync(entry, cancellationToken);
+        }
+
         private static string GetEntryKey(IEntry entry)
         {
             if (entry is ICollection)
