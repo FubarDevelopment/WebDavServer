@@ -17,6 +17,7 @@ namespace FubarDev.WebDavServer.Sample.AspNetCore.Support
 {
     public class RequestLogMiddleware
     {
+        private static readonly Encoding _defaultEncoding = new UTF8Encoding(false);
         private readonly IEnumerable<MediaType> _supportedMediaTypes = new[]
         {
             "text/xml",
@@ -57,7 +58,7 @@ namespace FubarDev.WebDavServer.Sample.AspNetCore.Support
                     var isXml = _supportedMediaTypes.Any(x => contentType.IsSubsetOf(x));
                     if (isXml)
                     {
-                        var encoding = Encoding.UTF8;
+                        var encoding = _defaultEncoding;
                         if (contentType.Charset.HasValue)
                         {
                             encoding = Encoding.GetEncoding(contentType.Charset.Value);
