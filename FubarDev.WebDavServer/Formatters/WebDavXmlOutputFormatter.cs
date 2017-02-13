@@ -16,13 +16,14 @@ namespace FubarDev.WebDavServer.Formatters
 {
     public class WebDavXmlOutputFormatter : IWebDavOutputFormatter
     {
+        private static readonly Encoding _defaultEncoding = new UTF8Encoding(false);
         private readonly ILogger<WebDavXmlOutputFormatter> _logger;
         private readonly string _namespacePrefix;
 
         public WebDavXmlOutputFormatter(IOptions<WebDavFormatterOptions> options, ILogger<WebDavXmlOutputFormatter> logger)
         {
             _logger = logger;
-            Encoding = Encoding.UTF8;
+            Encoding = _defaultEncoding;
 
             var contentType = options.Value.ContentType ?? "text/xml";
             ContentType = $"{contentType}; charset=\"{Encoding.WebName}\"";
