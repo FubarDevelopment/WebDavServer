@@ -63,7 +63,7 @@ namespace FubarDev.WebDavServer.Tests.Locking
             await lockManager.LockAsync(l1, ct).ConfigureAwait(false);
             await lockManager.LockAsync(l2, ct).ConfigureAwait(false);
 
-            Assert.True(evt.Wait(1000, ct));
+            Assert.True(evt.Wait(2000, ct));
             stopwatch.Stop();
             Assert.True(stopwatch.ElapsedMilliseconds >= 200, $"Duration should be at least 200ms, but was {stopwatch.ElapsedMilliseconds}");
         }
