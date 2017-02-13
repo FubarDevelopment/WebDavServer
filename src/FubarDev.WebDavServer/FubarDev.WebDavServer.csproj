@@ -26,6 +26,7 @@
   </ItemGroup>
   <ItemGroup>
     <AdditionalFiles Include="$(SolutionDir)stylecop.json" Link="stylecop.json" />
+    <EmbeddedResource Include="Utils\UAParser\UAParser.regexes.yaml" />
     <None Include="$(SolutionDir)WebDavServer.ruleset" Link="WebDavServer.ruleset" />
     <None Include="Model\webdav.xsd" />
   </ItemGroup>
