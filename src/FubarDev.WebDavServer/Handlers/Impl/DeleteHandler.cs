@@ -16,9 +16,9 @@ namespace FubarDev.WebDavServer.Handlers.Impl
     {
         private readonly IFileSystem _rootFileSystem;
 
-        private readonly IWebDavHost _host;
+        private readonly IWebDavContext _host;
 
-        public DeleteHandler(IFileSystem rootFileSystem, IWebDavHost host)
+        public DeleteHandler(IFileSystem rootFileSystem, IWebDavContext host)
         {
             _rootFileSystem = rootFileSystem;
             _host = host;

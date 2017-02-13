@@ -25,17 +25,17 @@ namespace FubarDev.WebDavServer.Handlers.Impl
         private readonly IFileSystem _rootFileSystem;
 
         [NotNull]
-        private readonly IWebDavHost _host;
-
-        [NotNull]
         private readonly ILogger _logger;
 
-        protected CopyMoveHandlerBase([NotNull] IFileSystem rootFileSystem, [NotNull] IWebDavHost host, [NotNull] ILogger logger)
+        protected CopyMoveHandlerBase([NotNull] IFileSystem rootFileSystem, [NotNull] IWebDavContext context, [NotNull] ILogger logger)
         {
             _rootFileSystem = rootFileSystem;
-            _host = host;
+            WebDavContext = context;
             _logger = logger;
         }
+
+        [NotNull]
+        protected IWebDavContext WebDavContext { get; }
 
         public async Task<IWebDavResult> ExecuteAsync(
             [NotNull] string sourcePath,
@@ -49,7 +49,7 @@ namespace FubarDev.WebDavServer.Handlers.Impl
             if (sourceSelectionResult.IsMissing)
                 throw new WebDavException(WebDavStatusCode.NotFound);
 
-            var baseUrl = _host.BaseUrl;
+            var baseUrl = WebDavContext.BaseUrl;
             var sourceUrl = new Uri(baseUrl, sourcePath);
             var destinationUrl = new Uri(sourceUrl, destination);
 
@@ -68,7 +68,7 @@ namespace FubarDev.WebDavServer.Handlers.Impl
                         throw new WebDavException(WebDavStatusCode.BadGateway, "No remote handler for given client");
 
                     var remoteTargetResult = await RemoteExecuteAsync(remoteHandler, sourceUrl, sourceSelectionResult, destinationUrl, depth, overwrite, cancellationToken).ConfigureAwait(false);
-                    return remoteTargetResult.Evaluate(_host);
+                    return remoteTargetResult.Evaluate(WebDavContext);
                 }
             }
 
@@ -89,7 +89,7 @@ namespace FubarDev.WebDavServer.Handlers.Impl
 
             var targetInfo = FileSystemTarget.FromSelectionResult(destinationSelectionResult, destinationUrl, handler);
             var targetResult = await LocalExecuteAsync(handler, sourceUrl, sourceSelectionResult, targetInfo, depth, overwrite, cancellationToken).ConfigureAwait(false);
-            return targetResult.Evaluate(_host);
+            return targetResult.Evaluate(WebDavContext);
         }
 
         protected static async Task<Engines.CollectionActionResult> ExecuteAsync<TCollection, TDocument, TMissing>(

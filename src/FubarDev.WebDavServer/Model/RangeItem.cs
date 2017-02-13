@@ -12,19 +12,12 @@ namespace FubarDev.WebDavServer.Model
     /// <summary>
     /// Range for a HTTP request or response
     /// </summary>
-    public class RangeItem
+    public struct RangeItem
     {
         private static readonly Regex _rangePattern = new Regex(@"^((\d+)-(\d+))|((\d+)-)|(-(\d+))|(\d+)$", RegexOptions.CultureInvariant);
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="RangeItem"/> class.
-        /// </summary>
-        public RangeItem()
-        {
-        }
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="RangeItem"/> class.
+        /// Initializes a new instance of the <see cref="RangeItem"/> struct.
         /// </summary>
         /// <param name="from">From byte</param>
         /// <param name="to">To byte</param>
@@ -56,7 +49,7 @@ namespace FubarDev.WebDavServer.Model
         public static RangeItem Parse(string rangeItem)
         {
             if (rangeItem == "*")
-                return new RangeItem();
+                return default(RangeItem);
             var match = _rangePattern.Match(rangeItem);
             if (!match.Success)
                 throw new ArgumentOutOfRangeException(nameof(rangeItem));

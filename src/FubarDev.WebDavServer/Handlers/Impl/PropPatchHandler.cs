@@ -25,9 +25,9 @@ namespace FubarDev.WebDavServer.Handlers.Impl
     {
         private readonly IFileSystem _fileSystem;
 
-        private readonly IWebDavHost _host;
+        private readonly IWebDavContext _host;
 
-        public PropPatchHandler(IFileSystem fileSystem, IWebDavHost host)
+        public PropPatchHandler(IFileSystem fileSystem, IWebDavContext host)
         {
             _fileSystem = fileSystem;
             _host = host;

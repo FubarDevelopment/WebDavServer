@@ -13,7 +13,7 @@ namespace FubarDev.WebDavServer
 {
     public static class CollectionActionResultExtensions
     {
-        public static IWebDavResult Evaluate(this CollectionActionResult collectionResult, IWebDavHost host)
+        public static IWebDavResult Evaluate(this CollectionActionResult collectionResult, IWebDavContext host)
         {
             if (collectionResult.Status == ActionStatus.Ignored)
             {
@@ -73,7 +73,7 @@ namespace FubarDev.WebDavServer
             throw new NotSupportedException();
         }
 
-        private static Response CreateResponse(ActionStatus status, IEnumerable<ActionResult> result, IWebDavHost host)
+        private static Response CreateResponse(ActionStatus status, IEnumerable<ActionResult> result, IWebDavContext host)
         {
             var hrefs = result.Select(x => x.Href.OriginalString).Distinct().ToList();
             var items = new List<Tuple<ItemsChoiceType2, object>>();

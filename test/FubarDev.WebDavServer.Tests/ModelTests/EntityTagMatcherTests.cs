@@ -5,8 +5,13 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 
+using FubarDev.WebDavServer.FileSystem;
+using FubarDev.WebDavServer.FileSystem.InMemory;
 using FubarDev.WebDavServer.Model;
+using FubarDev.WebDavServer.Props.Dead;
+using FubarDev.WebDavServer.Props.Store.InMemory;
 
 using Xunit;
 
@@ -17,102 +22,127 @@ namespace FubarDev.WebDavServer.Tests.ModelTests
         private static readonly IReadOnlyCollection<EntityTag> _entityTags = EntityTag.Parse("\"qwe\", w/\"qwe\", \"asd\"").ToList();
         private static readonly IReadOnlyCollection<Uri> _stateTokens = new List<Uri>();
 
-        [Fact]
-        public void IfMatchAllNullTest()
+        public EntityTagMatcherTests()
         {
-            var matcher = IfMatch.Parse(null);
-            Assert.All(_entityTags, etag => Assert.True(matcher.IsMatch(etag, _stateTokens)));
+            FileSystem = new InMemoryFileSystem(
+                new PathTraversalEngine(),
+                new SystemClock(),
+                new DeadPropertyFactory(),
+                new InMemoryPropertyStoreFactory());
+        }
+
+        public IFileSystem FileSystem { get; }
+
+        [Fact]
+        public async Task IfMatchAllNullTest()
+        {
+            var root = await FileSystem.Root;
+            var matcher = IfMatch.Parse((string)null);
+            Assert.All(_entityTags, etag => Assert.True(matcher.IsMatch(root, etag, _stateTokens)));
         }
 
         [Fact]
-        public void IfMatchAllEmptyTest()
+        public async Task IfMatchAllEmptyTest()
         {
+            var root = await FileSystem.Root;
             var matcher = IfMatch.Parse(string.Empty);
-            Assert.All(_entityTags, etag => Assert.True(matcher.IsMatch(etag, _stateTokens)));
+            Assert.All(_entityTags, etag => Assert.True(matcher.IsMatch(root, etag, _stateTokens)));
         }
 
         [Fact]
-        public void IfMatchAllStarTest()
+        public async Task IfMatchAllStarTest()
         {
+            var root = await FileSystem.Root;
             var matcher = IfMatch.Parse("*");
-            Assert.All(_entityTags, etag => Assert.True(matcher.IsMatch(etag, _stateTokens)));
+            Assert.All(_entityTags, etag => Assert.True(matcher.IsMatch(root, etag, _stateTokens)));
         }
 
         [Fact]
-        public void IfMatchStrongTest()
+        public async Task IfMatchStrongTest()
         {
+            var root = await FileSystem.Root;
             var matcher = IfMatch.Parse("\"qwe\"");
-            Assert.Equal(1, _entityTags.Count(etag => matcher.IsMatch(etag, _stateTokens)));
+            Assert.Equal(1, _entityTags.Count(etag => matcher.IsMatch(root, etag, _stateTokens)));
         }
 
         [Fact]
-        public void IfMatchWeakTest()
+        public async Task IfMatchWeakTest()
         {
+            var root = await FileSystem.Root;
             var matcher = IfMatch.Parse("w/\"qwe\"");
-            Assert.Equal(1, _entityTags.Count(etag => matcher.IsMatch(etag, _stateTokens)));
+            Assert.Equal(1, _entityTags.Count(etag => matcher.IsMatch(root, etag, _stateTokens)));
         }
 
         [Fact]
-        public void IfMatchOtherTest()
+        public async Task IfMatchOtherTest()
         {
+            var root = await FileSystem.Root;
             var matcher = IfMatch.Parse("\"asd\"");
-            Assert.Equal(1, _entityTags.Count(etag => matcher.IsMatch(etag, _stateTokens)));
+            Assert.Equal(1, _entityTags.Count(etag => matcher.IsMatch(root, etag, _stateTokens)));
         }
 
         [Fact]
-        public void IfMatchNoneTest()
+        public async Task IfMatchNoneTest()
         {
+            var root = await FileSystem.Root;
             var matcher = IfMatch.Parse("\"qweqwe\"");
-            Assert.Equal(0, _entityTags.Count(etag => matcher.IsMatch(etag, _stateTokens)));
+            Assert.Equal(0, _entityTags.Count(etag => matcher.IsMatch(root, etag, _stateTokens)));
         }
 
         [Fact]
-        public void IfNoneMatchAllNullTest()
+        public async Task IfNoneMatchAllNullTest()
         {
-            var matcher = IfNoneMatch.Parse(null);
-            Assert.All(_entityTags, etag => Assert.False(matcher.IsMatch(etag, _stateTokens)));
+            var root = await FileSystem.Root;
+            var matcher = IfNoneMatch.Parse((string)null);
+            Assert.All(_entityTags, etag => Assert.False(matcher.IsMatch(root, etag, _stateTokens)));
         }
 
         [Fact]
-        public void IfNoneMatchAllEmptyTest()
+        public async Task IfNoneMatchAllEmptyTest()
         {
+            var root = await FileSystem.Root;
             var matcher = IfNoneMatch.Parse(string.Empty);
-            Assert.All(_entityTags, etag => Assert.False(matcher.IsMatch(etag, _stateTokens)));
+            Assert.All(_entityTags, etag => Assert.False(matcher.IsMatch(root, etag, _stateTokens)));
         }
 
         [Fact]
-        public void IfNoneMatchAllStarTest()
+        public async Task IfNoneMatchAllStarTest()
         {
+            var root = await FileSystem.Root;
             var matcher = IfNoneMatch.Parse("*");
-            Assert.All(_entityTags, etag => Assert.False(matcher.IsMatch(etag, _stateTokens)));
+            Assert.All(_entityTags, etag => Assert.False(matcher.IsMatch(root, etag, _stateTokens)));
         }
 
         [Fact]
-        public void IfNoneMatchStrongTest()
+        public async Task IfNoneMatchStrongTest()
         {
+            var root = await FileSystem.Root;
             var matcher = IfNoneMatch.Parse("\"qwe\"");
-            Assert.Equal(2, _entityTags.Count(etag => matcher.IsMatch(etag, _stateTokens)));
+            Assert.Equal(2, _entityTags.Count(etag => matcher.IsMatch(root, etag, _stateTokens)));
         }
 
         [Fact]
-        public void IfNoneMatchWeakTest()
+        public async Task IfNoneMatchWeakTest()
         {
+            var root = await FileSystem.Root;
             var matcher = IfNoneMatch.Parse("w/\"qwe\"");
-            Assert.Equal(2, _entityTags.Count(etag => matcher.IsMatch(etag, _stateTokens)));
+            Assert.Equal(2, _entityTags.Count(etag => matcher.IsMatch(root, etag, _stateTokens)));
         }
 
         [Fact]
-        public void IfNoneMatchOtherTest()
+        public async Task IfNoneMatchOtherTest()
         {
+            var root = await FileSystem.Root;
             var matcher = IfNoneMatch.Parse("\"asd\"");
-            Assert.Equal(2, _entityTags.Count(etag => matcher.IsMatch(etag, _stateTokens)));
+            Assert.Equal(2, _entityTags.Count(etag => matcher.IsMatch(root, etag, _stateTokens)));
         }
 
         [Fact]
-        public void IfNoneMatchNoneTest()
+        public async Task IfNoneMatchNoneTest()
         {
+            var root = await FileSystem.Root;
             var matcher = IfNoneMatch.Parse("\"qweqwe\"");
-            Assert.Equal(3, _entityTags.Count(etag => matcher.IsMatch(etag, _stateTokens)));
+            Assert.Equal(3, _entityTags.Count(etag => matcher.IsMatch(root, etag, _stateTokens)));
         }
     }
 }

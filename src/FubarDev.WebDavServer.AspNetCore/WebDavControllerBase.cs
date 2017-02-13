@@ -73,11 +73,9 @@ namespace FubarDev.WebDavServer.AspNetCore
         public async Task<IActionResult> PropFindAsync(
             string path,
             [FromBody] Propfind request,
-            [FromHeader(Name = "Depth")] string depth = null,
             CancellationToken cancellationToken = default(CancellationToken))
         {
-            var parsedDepth = Depth.Parse(depth);
-            var result = await _dispatcher.Class1.PropFindAsync(path, request, parsedDepth, cancellationToken).ConfigureAwait(false);
+            var result = await _dispatcher.Class1.PropFindAsync(path, request, cancellationToken).ConfigureAwait(false);
             return new WebDavIndirectResult(_dispatcher, result, _responseLogger);
         }
 
@@ -99,12 +97,9 @@ namespace FubarDev.WebDavServer.AspNetCore
         public async Task<IActionResult> CopyAsync(
             string path,
             [FromHeader(Name = "Destination")] string destination,
-            [FromHeader(Name = "Depth")] string depth = null,
-            [FromHeader(Name = "Overwrite")] string overwrite = null,
             CancellationToken cancellationToken = default(CancellationToken))
         {
-            var parsedDepth = Depth.Parse(depth);
-            var result = await _dispatcher.Class1.CopyAsync(path, new Uri(destination, UriKind.RelativeOrAbsolute), parsedDepth, ParseOverwrite(overwrite), cancellationToken).ConfigureAwait(false);
+            var result = await _dispatcher.Class1.CopyAsync(path, new Uri(destination, UriKind.RelativeOrAbsolute), cancellationToken).ConfigureAwait(false);
             return new WebDavIndirectResult(_dispatcher, result, _responseLogger);
         }
 
@@ -112,12 +107,9 @@ namespace FubarDev.WebDavServer.AspNetCore
         public async Task<IActionResult> MoveAsync(
             string path,
             [FromHeader(Name = "Destination")] string destination,
-            [FromHeader(Name = "Depth")] string depth = null,
-            [FromHeader(Name = "Overwrite")] string overwrite = null,
             CancellationToken cancellationToken = default(CancellationToken))
         {
-            var parsedDepth = Depth.Parse(depth);
-            var result = await _dispatcher.Class1.MoveAsync(path, new Uri(destination, UriKind.RelativeOrAbsolute), parsedDepth, ParseOverwrite(overwrite), cancellationToken).ConfigureAwait(false);
+            var result = await _dispatcher.Class1.MoveAsync(path, new Uri(destination, UriKind.RelativeOrAbsolute), cancellationToken).ConfigureAwait(false);
             return new WebDavIndirectResult(_dispatcher, result, _responseLogger);
         }
 
@@ -135,18 +127,6 @@ namespace FubarDev.WebDavServer.AspNetCore
             CancellationToken cancellationToken = default(CancellationToken))
         {
             throw new WebDavException(WebDavStatusCode.NotImplemented);
-        }
-
-        private static bool? ParseOverwrite(string overwrite)
-        {
-            if (string.IsNullOrWhiteSpace(overwrite))
-                return null;
-            overwrite = overwrite.Trim();
-            if (overwrite == "T")
-                return true;
-            if (overwrite == "F")
-                return false;
-            throw new NotSupportedException($"Overwrite value '{overwrite}' isn't supported");
         }
     }
 }

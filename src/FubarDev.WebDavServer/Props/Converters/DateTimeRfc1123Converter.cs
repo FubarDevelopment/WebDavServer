@@ -10,12 +10,16 @@ namespace FubarDev.WebDavServer.Props.Converters
 {
     public class DateTimeRfc1123Converter : IPropertyConverter<DateTime>
     {
+        public static DateTime Parse(string s)
+        {
+            if (s.EndsWith("UTC"))
+                s = s.Substring(0, s.Length - 3) + "GMT";
+            return DateTime.ParseExact(s, "R", CultureInfo.InvariantCulture);
+        }
+
         public DateTime FromElement(XElement element)
         {
-            var v = element.Value;
-            if (v.EndsWith("UTC"))
-                v = v.Substring(0, v.Length - 3) + "GMT";
-            return DateTime.ParseExact(v, "R", CultureInfo.InvariantCulture);
+            return Parse(element.Value);
         }
 
         public XElement ToElement(XName name, DateTime value)

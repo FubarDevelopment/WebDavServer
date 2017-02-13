@@ -6,6 +6,8 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 
+using FubarDev.WebDavServer.FileSystem;
+
 using JetBrains.Annotations;
 
 namespace FubarDev.WebDavServer.Model
@@ -31,9 +33,9 @@ namespace FubarDev.WebDavServer.Model
             return new If(lists);
         }
 
-        public bool IsMatch(EntityTag etag, IReadOnlyCollection<Uri> stateTokens)
+        public bool IsMatch(IEntry entry, EntityTag etag, IReadOnlyCollection<Uri> stateTokens)
         {
-            return Lists.Any(x => x.IsMatch(etag, stateTokens));
+            return Lists.Any(x => x.IsMatch(entry, etag, stateTokens));
         }
     }
 }

@@ -23,14 +23,14 @@ namespace FubarDev.WebDavServer.Dispatchers
 
         Task<IWebDavResult> DeleteAsync(string path, CancellationToken cancellationToken);
 
-        Task<IWebDavResult> PropFindAsync(string path, Propfind request, Depth depth, CancellationToken cancellationToken);
+        Task<IWebDavResult> PropFindAsync(string path, Propfind request, CancellationToken cancellationToken);
 
         Task<IWebDavResult> PropPatchAsync(string path, Propertyupdate request, CancellationToken cancellationToken);
 
         Task<IWebDavResult> MkColAsync(string path, CancellationToken cancellationToken);
 
-        Task<IWebDavResult> CopyAsync(string path, Uri destination, Depth depth, bool? allowOverwrite, CancellationToken cancellationToken);
+        Task<IWebDavResult> CopyAsync(string path, Uri destination, CancellationToken cancellationToken);
 
-        Task<IWebDavResult> MoveAsync(string path, Uri destination, Depth depth, bool? allowOverwrite, CancellationToken cancellationToken);
+        Task<IWebDavResult> MoveAsync(string path, Uri destination, CancellationToken cancellationToken);
     }
 }

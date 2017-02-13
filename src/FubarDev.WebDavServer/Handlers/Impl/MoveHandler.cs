@@ -24,7 +24,7 @@ namespace FubarDev.WebDavServer.Handlers.Impl
         private readonly IServiceProvider _serviceProvider;
         private readonly MoveHandlerOptions _options;
 
-        public MoveHandler(IFileSystem rootFileSystem, IWebDavHost host, IOptions<MoveHandlerOptions> options, ILogger<MoveHandler> logger, IServiceProvider serviceProvider)
+        public MoveHandler(IFileSystem rootFileSystem, IWebDavContext host, IOptions<MoveHandlerOptions> options, ILogger<MoveHandler> logger, IServiceProvider serviceProvider)
             : base(rootFileSystem, host, logger)
         {
             _serviceProvider = serviceProvider;
@@ -35,9 +35,9 @@ namespace FubarDev.WebDavServer.Handlers.Impl
         public IEnumerable<string> HttpMethods { get; } = new[] { "MOVE" };
 
         /// <inheritdoc />
-        public Task<IWebDavResult> MoveAsync(string sourcePath, Uri destination, bool? overwrite, CancellationToken cancellationToken)
+        public Task<IWebDavResult> MoveAsync(string sourcePath, Uri destination, CancellationToken cancellationToken)
         {
-            var doOverwrite = overwrite ?? _options.OverwriteAsDefault;
+            var doOverwrite = WebDavContext.RequestHeaders.Overwrite ?? _options.OverwriteAsDefault;
             return ExecuteAsync(sourcePath, destination, Depth.Infinity, doOverwrite, _options.Mode, cancellationToken);
         }
 

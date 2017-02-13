@@ -48,7 +48,7 @@ namespace FubarDev.WebDavServer.Dispatchers
         [CanBeNull]
         private readonly IMoveHandler _moveHandler;
 
-        public WebDavDispatcherClass1(IEnumerable<IClass1Handler> class1Handlers)
+        public WebDavDispatcherClass1(IEnumerable<IClass1Handler> class1Handlers, IWebDavContext context)
         {
             var httpMethods = new HashSet<string>();
 
@@ -128,6 +128,7 @@ namespace FubarDev.WebDavServer.Dispatchers
             }
 
             HttpMethods = httpMethods.ToList();
+            WebDavContext = context;
         }
 
         /// <inheritdoc />
@@ -135,6 +136,9 @@ namespace FubarDev.WebDavServer.Dispatchers
 
         /// <inheritdoc />
         public IEnumerable<string> HttpMethods { get; }
+
+        /// <inheritdoc />
+        public IWebDavContext WebDavContext { get; }
 
         /// <inheritdoc />
         public Task<IWebDavResult> GetAsync(string path, CancellationToken cancellationToken)
@@ -169,11 +173,11 @@ namespace FubarDev.WebDavServer.Dispatchers
         }
 
         /// <inheritdoc />
-        public Task<IWebDavResult> PropFindAsync(string path, Propfind request, Depth depth, CancellationToken cancellationToken)
+        public Task<IWebDavResult> PropFindAsync(string path, Propfind request, CancellationToken cancellationToken)
         {
             if (_propFindHandler == null)
                 throw new NotSupportedException();
-            return _propFindHandler.PropFindAsync(path, request, depth, cancellationToken);
+            return _propFindHandler.PropFindAsync(path, request, cancellationToken);
         }
 
         /// <inheritdoc />
@@ -201,19 +205,19 @@ namespace FubarDev.WebDavServer.Dispatchers
         }
 
         /// <inheritdoc />
-        public Task<IWebDavResult> CopyAsync(string path, Uri destination, Depth depth, bool? allowOverwrite, CancellationToken cancellationToken)
+        public Task<IWebDavResult> CopyAsync(string path, Uri destination, CancellationToken cancellationToken)
         {
             if (_copyHandler == null)
                 throw new NotSupportedException();
-            return _copyHandler.CopyAsync(path, destination, depth, allowOverwrite, cancellationToken);
+            return _copyHandler.CopyAsync(path, destination, cancellationToken);
         }
 
         /// <inheritdoc />
-        public Task<IWebDavResult> MoveAsync(string path, Uri destination, Depth depth, bool? allowOverwrite, CancellationToken cancellationToken)
+        public Task<IWebDavResult> MoveAsync(string path, Uri destination, CancellationToken cancellationToken)
         {
             if (_moveHandler == null)
                 throw new NotSupportedException();
-            return _moveHandler.MoveAsync(path, destination, allowOverwrite, cancellationToken);
+            return _moveHandler.MoveAsync(path, destination, cancellationToken);
         }
     }
 }

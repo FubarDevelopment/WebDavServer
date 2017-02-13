@@ -22,13 +22,13 @@ namespace FubarDev.WebDavServer.Handlers.Impl
 {
     public class PropFindHandler : IPropFindHandler
     {
-        private readonly IWebDavHost _host;
+        private readonly IWebDavContext _context;
         private readonly PropFindHandlerOptions _options;
 
-        public PropFindHandler(IFileSystem fileSystem, IWebDavHost host, IOptions<PropFindHandlerOptions> options)
+        public PropFindHandler(IFileSystem fileSystem, IWebDavContext context, IOptions<PropFindHandlerOptions> options)
         {
             _options = options?.Value ?? new PropFindHandlerOptions();
-            _host = host;
+            _context = context;
             FileSystem = fileSystem;
         }
 
@@ -38,7 +38,7 @@ namespace FubarDev.WebDavServer.Handlers.Impl
         public IFileSystem FileSystem { get; }
 
         /// <inheritdoc />
-        public async Task<IWebDavResult> PropFindAsync(string path, Propfind request, Depth depth, CancellationToken cancellationToken)
+        public async Task<IWebDavResult> PropFindAsync(string path, Propfind request, CancellationToken cancellationToken)
         {
             var selectionResult = await FileSystem.SelectAsync(path, cancellationToken).ConfigureAwait(false);
             if (selectionResult.IsMissing)
@@ -56,13 +56,14 @@ namespace FubarDev.WebDavServer.Handlers.Impl
                 Debug.Assert(selectionResult.Collection != null, "selectionResult.Collection != null");
                 Debug.Assert(selectionResult.ResultType == SelectionResultType.FoundCollection, "selectionResult.ResultType == SelectionResultType.FoundCollection");
                 entries.Add(selectionResult.Collection);
+                var collector = selectionResult.Collection as IRecusiveChildrenCollector;
+                var depth = _context.RequestHeaders.Depth ?? (collector == null ? Depth.One : Depth.Infinity);
                 if (depth == Depth.One)
                 {
                     entries.AddRange(await selectionResult.Collection.GetChildrenAsync(cancellationToken).ConfigureAwait(false));
                 }
                 else if (depth == Depth.Infinity)
                 {
-                    var collector = selectionResult.Collection as IRecusiveChildrenCollector;
                     if (collector == null)
                     {
                         // Cannot recursively collect the children with infinite depth
@@ -102,19 +103,19 @@ namespace FubarDev.WebDavServer.Handlers.Impl
 
         private async Task<IWebDavResult> HandlePropAsync(Prop prop, IReadOnlyCollection<IEntry> entries, CancellationToken cancellationToken)
         {
-            var baseIsRoot = _host.BaseUrl.IsRootUri();
+            var baseIsRoot = _context.BaseUrl.IsRootUri();
             var responses = new List<Response>();
             foreach (var entry in entries)
             {
                 var entryPath = entry.Path.OriginalString;
-                var href = _host.BaseUrl.Append(entryPath, true);
+                var href = _context.BaseUrl.Append(entryPath, true);
 
-                var collector = new PropertyCollector(_host, new ReadableFilter(), new PropFilter(prop));
+                var collector = new PropertyCollector(_context, new ReadableFilter(), new PropFilter(prop));
                 var propStats = await collector.GetPropertiesAsync(entry, int.MaxValue, cancellationToken).ConfigureAwait(false);
 
                 var response = new Response()
                 {
-                    Href = _options.UseAbsoluteHref ? href.OriginalString : _host.BaseUrl.GetRelativeUri(href, baseIsRoot),
+                    Href = _options.UseAbsoluteHref ? href.OriginalString : _context.BaseUrl.GetRelativeUri(href, baseIsRoot),
                     ItemsElementName = propStats.Select(x => ItemsChoiceType2.Propstat).ToArray(),
                     Items = propStats.Cast<object>().ToArray(),
                 };
@@ -144,19 +145,19 @@ namespace FubarDev.WebDavServer.Handlers.Impl
         // ReSharper disable once UnusedParameter.Local
         private async Task<IWebDavResult> HandleAllPropAsync([CanBeNull] Include include, IEnumerable<IEntry> entries, CancellationToken cancellationToken)
         {
-            var baseIsRoot = _host.BaseUrl.IsRootUri();
+            var baseIsRoot = _context.BaseUrl.IsRootUri();
             var responses = new List<Response>();
             foreach (var entry in entries)
             {
                 var entryPath = entry.Path.OriginalString;
-                var href = _host.BaseUrl.Append(entryPath, true);
+                var href = _context.BaseUrl.Append(entryPath, true);
 
-                var collector = new PropertyCollector(_host, new ReadableFilter(), new CostFilter(0));
+                var collector = new PropertyCollector(_context, new ReadableFilter(), new CostFilter(0));
                 var propStats = await collector.GetPropertiesAsync(entry, 0, cancellationToken).ConfigureAwait(false);
 
                 var response = new Response()
                 {
-                    Href = _options.UseAbsoluteHref ? href.OriginalString : _host.BaseUrl.GetRelativeUri(href, baseIsRoot),
+                    Href = _options.UseAbsoluteHref ? href.OriginalString : _context.BaseUrl.GetRelativeUri(href, baseIsRoot),
                     ItemsElementName = propStats.Select(x => ItemsChoiceType2.Propstat).ToArray(),
                     Items = propStats.Cast<object>().ToArray(),
                 };
@@ -174,19 +175,19 @@ namespace FubarDev.WebDavServer.Handlers.Impl
 
         private async Task<IWebDavResult> HandlePropNameAsync(IEnumerable<IEntry> entries, CancellationToken cancellationToken)
         {
-            var baseIsRoot = _host.BaseUrl.IsRootUri();
+            var baseIsRoot = _context.BaseUrl.IsRootUri();
             var responses = new List<Response>();
             foreach (var entry in entries)
             {
                 var entryPath = entry.Path.OriginalString;
-                var href = _host.BaseUrl.Append(entryPath, true);
+                var href = _context.BaseUrl.Append(entryPath, true);
 
-                var collector = new PropertyCollector(_host, new ReadableFilter(), new CostFilter(0));
+                var collector = new PropertyCollector(_context, new ReadableFilter(), new CostFilter(0));
                 var propStats = await collector.GetPropertyNamesAsync(entry, cancellationToken).ConfigureAwait(false);
 
                 var response = new Response()
                 {
-                    Href = _options.UseAbsoluteHref ? href.OriginalString : _host.BaseUrl.GetRelativeUri(href, baseIsRoot),
+                    Href = _options.UseAbsoluteHref ? href.OriginalString : _context.BaseUrl.GetRelativeUri(href, baseIsRoot),
                     ItemsElementName = propStats.Select(x => ItemsChoiceType2.Propstat).ToArray(),
                     Items = propStats.Cast<object>().ToArray(),
                 };
@@ -204,11 +205,11 @@ namespace FubarDev.WebDavServer.Handlers.Impl
 
         private class PropertyCollector
         {
-            private readonly IWebDavHost _host;
+            private readonly IWebDavContext _host;
 
             private readonly IPropertyFilter[] _filters;
 
-            public PropertyCollector(IWebDavHost host, params IPropertyFilter[] filters)
+            public PropertyCollector(IWebDavContext host, params IPropertyFilter[] filters)
             {
                 _host = host;
                 _filters = filters;

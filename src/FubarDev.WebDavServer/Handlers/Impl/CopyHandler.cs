@@ -24,7 +24,7 @@ namespace FubarDev.WebDavServer.Handlers.Impl
         private readonly IServiceProvider _serviceProvider;
         private readonly CopyHandlerOptions _options;
 
-        public CopyHandler(IFileSystem rootFileSystem, IWebDavHost host, IOptions<CopyHandlerOptions> options, ILogger<CopyHandler> logger, IServiceProvider serviceProvider)
+        public CopyHandler(IFileSystem rootFileSystem, IWebDavContext host, IOptions<CopyHandlerOptions> options, ILogger<CopyHandler> logger, IServiceProvider serviceProvider)
             : base(rootFileSystem, host, logger)
         {
             _serviceProvider = serviceProvider;
@@ -35,9 +35,10 @@ namespace FubarDev.WebDavServer.Handlers.Impl
         public IEnumerable<string> HttpMethods { get; } = new[] { "COPY" };
 
         /// <inheritdoc />
-        public Task<IWebDavResult> CopyAsync(string sourcePath, Uri destination, Depth depth, bool? overwrite, CancellationToken cancellationToken)
+        public Task<IWebDavResult> CopyAsync(string sourcePath, Uri destination, CancellationToken cancellationToken)
         {
-            var doOverwrite = overwrite ?? _options.OverwriteAsDefault;
+            var doOverwrite = WebDavContext.RequestHeaders.Overwrite ?? _options.OverwriteAsDefault;
+            var depth = WebDavContext.RequestHeaders.Depth ?? Depth.Infinity;
             return ExecuteAsync(sourcePath, destination, depth, doOverwrite, _options.Mode, cancellationToken);
         }
 

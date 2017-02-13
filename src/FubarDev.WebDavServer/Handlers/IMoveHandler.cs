@@ -6,10 +6,14 @@ using System;
 using System.Threading;
 using System.Threading.Tasks;
 
+using JetBrains.Annotations;
+
 namespace FubarDev.WebDavServer.Handlers
 {
     public interface IMoveHandler : IClass1Handler
     {
-        Task<IWebDavResult> MoveAsync(string path, Uri destination, bool? allowOverwrite, CancellationToken cancellationToken);
+        [NotNull]
+        [ItemNotNull]
+        Task<IWebDavResult> MoveAsync([NotNull] string path, [NotNull] Uri destination, CancellationToken cancellationToken);
     }
 }

@@ -5,12 +5,14 @@
 using System;
 using System.Collections.Generic;
 
+using FubarDev.WebDavServer.FileSystem;
+
 using JetBrains.Annotations;
 
 namespace FubarDev.WebDavServer.Model
 {
     public interface IIfMatcher
     {
-        bool IsMatch(EntityTag etag, [NotNull] [ItemNotNull] IReadOnlyCollection<Uri> stateTokens);
+        bool IsMatch([NotNull] IEntry entry, EntityTag etag, [NotNull] [ItemNotNull] IReadOnlyCollection<Uri> stateTokens);
     }
 }

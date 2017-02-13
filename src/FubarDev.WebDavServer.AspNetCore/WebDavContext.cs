@@ -1,8 +1,9 @@
-﻿// <copyright file="WebDavHost.cs" company="Fubar Development Junker">
+﻿// <copyright file="WebDavContext.cs" company="Fubar Development Junker">
 // Copyright (c) Fubar Development Junker. All rights reserved.
 // </copyright>
 
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
@@ -11,22 +12,27 @@ using Microsoft.Extensions.Options;
 
 namespace FubarDev.WebDavServer.AspNetCore
 {
-    public class WebDavHost : IWebDavHost
+    public class WebDavContext : IWebDavContext
     {
         private readonly IHttpContextAccessor _httpContextAccessor;
 
         private readonly Lazy<Uri> _baseUrl;
 
-        public WebDavHost(IHttpContextAccessor httpContextAccessor, IOptions<WebDavHostOptions> options)
+        private readonly Lazy<WebDavRequestHeaders> _requestHeaders;
+
+        public WebDavContext(IHttpContextAccessor httpContextAccessor, IOptions<WebDavHostOptions> options)
         {
             var opt = options?.Value ?? new WebDavHostOptions();
             _httpContextAccessor = httpContextAccessor;
             _baseUrl = new Lazy<Uri>(() => BuildBaseUrl(httpContextAccessor.HttpContext, opt));
+            _requestHeaders = new Lazy<WebDavRequestHeaders>(() => new WebDavRequestHeaders(httpContextAccessor.HttpContext.Request.Headers.Select(x => new KeyValuePair<string, IEnumerable<string>>(x.Key, x.Value))));
         }
 
         public Uri BaseUrl => _baseUrl.Value;
 
         public string RequestProtocol => _httpContextAccessor.HttpContext.Request.Protocol;
+
+        public IWebDavRequestHeaders RequestHeaders => _requestHeaders.Value;
 
         public DetectedClient DetectedClient
         {

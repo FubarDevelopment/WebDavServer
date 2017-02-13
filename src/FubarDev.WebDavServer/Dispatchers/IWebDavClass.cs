@@ -15,5 +15,8 @@ namespace FubarDev.WebDavServer.Dispatchers
         [NotNull]
         [ItemNotNull]
         IEnumerable<string> HttpMethods { get; }
+
+        [NotNull]
+        IWebDavContext WebDavContext { get; }
     }
 }

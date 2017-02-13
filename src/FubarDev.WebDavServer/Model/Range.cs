@@ -28,7 +28,7 @@ namespace FubarDev.WebDavServer.Model
         {
         }
 
-        private Range([NotNull] string unit, bool ignoreInvalidUnit, params RangeItem[] rangeItems)
+        private Range([NotNull] string unit, bool ignoreInvalidUnit, IReadOnlyCollection<RangeItem> rangeItems)
         {
             if (!ignoreInvalidUnit && !string.IsNullOrEmpty(unit) && unit != "bytes")
                 throw new NotSupportedException();
@@ -47,7 +47,7 @@ namespace FubarDev.WebDavServer.Model
         /// </summary>
         [NotNull]
         [ItemNotNull]
-        public IReadOnlyList<RangeItem> RangeItems { get; }
+        public IReadOnlyCollection<RangeItem> RangeItems { get; }
 
         /// <summary>
         /// Parses a <paramref name="range"/> into a new <see cref="Range"/> instance
@@ -57,11 +57,55 @@ namespace FubarDev.WebDavServer.Model
         /// </remarks>
         /// <param name="range">The range to parse</param>
         /// <returns>The new <see cref="Range"/></returns>
-        public static Range Parse(string range)
+        [NotNull]
+        public static Range Parse([NotNull] string range)
         {
-            var parts = range.Split(_splitEqualChar, 2);
-            var unit = parts[0];
-            var rangeItems = parts[1].Split(',').Select(x => RangeItem.Parse(x.Trim())).ToArray();
+            return Range.Parse(range.Split(','));
+        }
+
+        /// <summary>
+        /// Parses the <paramref name="ranges"/> into a new <see cref="Range"/> instance
+        /// </summary>
+        /// <remarks>
+        /// The range must be in the form <code>unit=(range)+</code>
+        /// </remarks>
+        /// <param name="ranges">The ranges to parse</param>
+        /// <returns>The new <see cref="Range"/></returns>
+        [NotNull]
+        public static Range Parse([NotNull][ItemNotNull] IEnumerable<string> ranges)
+        {
+            var rangeItems = new List<RangeItem>();
+            var firstEntry = true;
+            string unit = null;
+            foreach (var range in ranges)
+            {
+                RangeItem item;
+                string rangeValue;
+                if (firstEntry)
+                {
+                    var parts = range.Split(_splitEqualChar, 2);
+                    if (parts.Length == 1)
+                    {
+                        rangeValue = parts[0];
+                    }
+                    else
+                    {
+                        unit = parts[0].TrimEnd();
+                        rangeValue = parts[1].TrimStart();
+                    }
+                }
+                else
+                {
+                    rangeValue = range;
+                }
+
+                foreach (var rangeValueItem in rangeValue.Split(',').Select(x => x.Trim()).Where(x => !string.IsNullOrEmpty(x)))
+                {
+                    item = RangeItem.Parse(rangeValueItem);
+                    rangeItems.Add(item);
+                }
+            }
+
             return new Range(unit, true, rangeItems);
         }
 

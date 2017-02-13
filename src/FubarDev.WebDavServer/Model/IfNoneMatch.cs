@@ -5,6 +5,8 @@
 using System;
 using System.Collections.Generic;
 
+using FubarDev.WebDavServer.FileSystem;
+
 using JetBrains.Annotations;
 
 namespace FubarDev.WebDavServer.Model
@@ -33,7 +35,25 @@ namespace FubarDev.WebDavServer.Model
             return new IfNoneMatch(EntityTag.Parse(s));
         }
 
-        public bool IsMatch(EntityTag etag, IReadOnlyCollection<Uri> stateTokens)
+        [NotNull]
+        public static IfNoneMatch Parse([NotNull][ItemNotNull] IEnumerable<string> s)
+        {
+            var result = new List<EntityTag>();
+            foreach (var etag in s)
+            {
+                if (etag == "*")
+                    return new IfNoneMatch();
+
+                result.AddRange(EntityTag.Parse(etag));
+            }
+
+            if (result.Count == 0)
+                return new IfNoneMatch();
+
+            return new IfNoneMatch(result);
+        }
+
+        public bool IsMatch(IEntry entry, EntityTag etag, IReadOnlyCollection<Uri> stateTokens)
         {
             if (_etags == null)
                 return false;

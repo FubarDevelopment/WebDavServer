@@ -7,6 +7,8 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 
+using FubarDev.WebDavServer.FileSystem;
+
 using JetBrains.Annotations;
 
 namespace FubarDev.WebDavServer.Model
@@ -27,7 +29,7 @@ namespace FubarDev.WebDavServer.Model
 
         public EntityTag? ETag { get; }
 
-        public bool IsMatch(EntityTag etag, IReadOnlyCollection<Uri> stateTokens)
+        public bool IsMatch(IEntry entry, EntityTag etag, IReadOnlyCollection<Uri> stateTokens)
         {
             bool result;
 

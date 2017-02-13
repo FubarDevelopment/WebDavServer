@@ -110,7 +110,7 @@ namespace FubarDev.WebDavServer.Tests.Locking
                 var stopwatch = new Stopwatch();
                 stopwatch.Start();
                 await lockManager.LockAsync(l, ct).ConfigureAwait(false);
-                Assert.True(await sem.WaitAsync(1000, ct).ConfigureAwait(false));
+                Assert.True(await sem.WaitAsync(5000, ct).ConfigureAwait(false));
                 stopwatch.Stop();
                 Assert.True(
                     stopwatch.ElapsedMilliseconds >= 100,

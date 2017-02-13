@@ -71,6 +71,11 @@ namespace FubarDev.WebDavServer.FileSystem.InMemory
             return Task.FromResult<ICollection>(newItem);
         }
 
+        internal bool Remove(string name)
+        {
+            return _children.Remove(name);
+        }
+
         protected override IEnumerable<ILiveProperty> GetLiveProperties()
         {
             return base.GetLiveProperties()
@@ -90,11 +95,6 @@ namespace FubarDev.WebDavServer.FileSystem.InMemory
                 {
                     contentType,
                 });
-        }
-
-        internal bool Remove(string name)
-        {
-            return _children.Remove(name);
         }
     }
 }

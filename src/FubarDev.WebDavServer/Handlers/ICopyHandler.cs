@@ -16,6 +16,6 @@ namespace FubarDev.WebDavServer.Handlers
     {
         [NotNull]
         [ItemNotNull]
-        Task<IWebDavResult> CopyAsync([NotNull] string sourcePath, [NotNull] Uri destination, Depth depth, bool? overwrite, CancellationToken cancellationToken);
+        Task<IWebDavResult> CopyAsync([NotNull] string sourcePath, [NotNull] Uri destination, CancellationToken cancellationToken);
     }
 }
