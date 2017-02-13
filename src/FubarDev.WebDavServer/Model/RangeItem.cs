@@ -45,7 +45,6 @@ namespace FubarDev.WebDavServer.Model
         /// </remarks>
         /// <param name="rangeItem">The string to parse</param>
         /// <returns>The new <see cref="RangeItem"/></returns>
-        [NotNull]
         public static RangeItem Parse(string rangeItem)
         {
             if (rangeItem == "*")

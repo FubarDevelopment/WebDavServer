@@ -11,6 +11,7 @@ namespace FubarDev.WebDavServer.Model
         OK = HttpStatusCode.OK,
         Created = HttpStatusCode.Created,
         NoContent = HttpStatusCode.NoContent,
+        PartialContent = HttpStatusCode.PartialContent,
         MultiStatus = 207,
 
         BadRequest = HttpStatusCode.BadRequest,
@@ -21,6 +22,7 @@ namespace FubarDev.WebDavServer.Model
         PreconditionFailed = HttpStatusCode.PreconditionFailed,
         RequestUriTooLong = HttpStatusCode.RequestUriTooLong,
         UnsupportedMediaType = HttpStatusCode.UnsupportedMediaType,
+        RequestedRangeNotSatisfiable = HttpStatusCode.RequestedRangeNotSatisfiable,
         UnprocessableEntity = 422,
         Locked = 423,
         FailedDependency = 424,

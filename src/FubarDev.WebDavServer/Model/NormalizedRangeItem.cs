@@ -4,7 +4,7 @@
 
 namespace FubarDev.WebDavServer.Model
 {
-    public class NormalizedRangeItem
+    public struct NormalizedRangeItem
     {
         public NormalizedRangeItem(long from, long to)
         {

@@ -46,7 +46,6 @@ namespace FubarDev.WebDavServer.Model
         /// Gets the HTTP range items
         /// </summary>
         [NotNull]
-        [ItemNotNull]
         public IReadOnlyCollection<RangeItem> RangeItems { get; }
 
         /// <summary>
@@ -60,7 +59,7 @@ namespace FubarDev.WebDavServer.Model
         [NotNull]
         public static Range Parse([NotNull] string range)
         {
-            return Range.Parse(range.Split(','));
+            return Parse(range.Split(','));
         }
 
         /// <summary>
@@ -79,7 +78,6 @@ namespace FubarDev.WebDavServer.Model
             string unit = null;
             foreach (var range in ranges)
             {
-                RangeItem item;
                 string rangeValue;
                 if (firstEntry)
                 {
@@ -93,6 +91,8 @@ namespace FubarDev.WebDavServer.Model
                         unit = parts[0].TrimEnd();
                         rangeValue = parts[1].TrimStart();
                     }
+
+                    firstEntry = false;
                 }
                 else
                 {
@@ -101,19 +101,19 @@ namespace FubarDev.WebDavServer.Model
 
                 foreach (var rangeValueItem in rangeValue.Split(',').Select(x => x.Trim()).Where(x => !string.IsNullOrEmpty(x)))
                 {
-                    item = RangeItem.Parse(rangeValueItem);
+                    var item = RangeItem.Parse(rangeValueItem);
                     rangeItems.Add(item);
                 }
             }
 
-            return new Range(unit, true, rangeItems);
+            return new Range(unit ?? "bytes", true, rangeItems);
         }
 
         /// <summary>
         /// Returns the textual representation of this range.
         /// </summary>
         /// <remarks>
-        /// The return value of this function can be parsed using <see cref="Parse"/>.
+        /// The return value of this function can be parsed using <see cref="Parse(string)"/>.
         /// </remarks>
         /// <returns>The textual representation of this range</returns>
         public override string ToString()
@@ -129,7 +129,7 @@ namespace FubarDev.WebDavServer.Model
         /// </remarks>
         /// <param name="rangeItem">The <see cref="RangeItem"/> to get the textual representation for</param>
         /// <returns>The textual representation of <paramref name="rangeItem"/></returns>
-        public virtual string ToString([NotNull] RangeItem rangeItem)
+        public virtual string ToString(RangeItem rangeItem)
         {
             return ToString(rangeItem, null);
         }
@@ -143,7 +143,7 @@ namespace FubarDev.WebDavServer.Model
         /// <param name="rangeItem">The <see cref="RangeItem"/> to get the textual representation for</param>
         /// <param name="length">The length value to be used in the textual representation</param>
         /// <returns>The textual representation of <paramref name="rangeItem"/></returns>
-        public virtual string ToString([NotNull] RangeItem rangeItem, long? length)
+        public virtual string ToString(RangeItem rangeItem, long? length)
         {
             return $"{Unit} {rangeItem}/{(length.HasValue ? length.Value.ToString(CultureInfo.InvariantCulture) : "*")}";
         }
@@ -158,7 +158,7 @@ namespace FubarDev.WebDavServer.Model
             var rangeItems = RangeItems.Select(x => x.Normalize(totalLength))
                 .OrderBy(x => x.From).ThenBy(x => x.To);
             var result = new List<NormalizedRangeItem>();
-            NormalizedRangeItem currentRangeItem = null;
+            NormalizedRangeItem? currentRangeItem = null;
             long currentTo = 0;
             foreach (var rangeItem in rangeItems)
             {
@@ -172,11 +172,11 @@ namespace FubarDev.WebDavServer.Model
                     var currentFrom = rangeItem.From;
                     if (currentFrom <= (currentTo + 1))
                     {
-                        currentRangeItem = new NormalizedRangeItem(currentRangeItem.From, rangeItem.To);
+                        currentRangeItem = new NormalizedRangeItem(currentRangeItem.Value.From, rangeItem.To);
                     }
                     else
                     {
-                        result.Add(currentRangeItem);
+                        result.Add(currentRangeItem.Value);
                         currentRangeItem = rangeItem;
                         currentTo = rangeItem.To;
                     }
@@ -184,7 +184,7 @@ namespace FubarDev.WebDavServer.Model
             }
 
             if (currentRangeItem != null)
-                result.Add(currentRangeItem);
+                result.Add(currentRangeItem.Value);
             return result;
         }
     }
