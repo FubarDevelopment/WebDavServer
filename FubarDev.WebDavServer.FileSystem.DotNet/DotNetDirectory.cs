@@ -5,10 +5,14 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 
 using FubarDev.WebDavServer.Model;
+using FubarDev.WebDavServer.Props.Converters;
+using FubarDev.WebDavServer.Props.Dead;
+using FubarDev.WebDavServer.Props.Live;
 using FubarDev.WebDavServer.Props.Store;
 
 namespace FubarDev.WebDavServer.FileSystem.DotNet
@@ -87,6 +91,27 @@ namespace FubarDev.WebDavServer.FileSystem.DotNet
         public IAsyncEnumerable<IEntry> GetEntries(int maxDepth)
         {
             return this.EnumerateEntries(maxDepth);
+        }
+
+        protected override IEnumerable<ILiveProperty> GetLiveProperties()
+        {
+            return base.GetLiveProperties()
+                .Concat(new ILiveProperty[]
+                {
+                    new ContentLengthProperty(ct => Task.FromResult(0L)),
+                });
+        }
+
+        protected override IEnumerable<IDeadProperty> GetPredefinedDeadProperties()
+        {
+            var contentType = DotNetFileSystem.DeadPropertyFactory
+                .Create(FileSystem.PropertyStore, this, GetContentTypeProperty.PropertyName);
+            contentType.Init(new StringConverter().ToElement(GetContentTypeProperty.PropertyName, "httpd/unix-directory"));
+            return base.GetPredefinedDeadProperties()
+                .Concat(new[]
+                {
+                    contentType,
+                });
         }
 
         private IEntry CreateEntry(FileSystemInfo fsInfo)
