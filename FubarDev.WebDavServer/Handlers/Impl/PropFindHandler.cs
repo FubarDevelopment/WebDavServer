@@ -104,7 +104,7 @@ namespace FubarDev.WebDavServer.Handlers.Impl
                 var href = _host.BaseUrl.Append(entry.Path);
 
                 var collector = new PropertyCollector(_host, new ReadableFilter(), new PropFilter(prop));
-                var propStats = await collector.GetPropertiesAsync(entry, code => true, cancellationToken).ConfigureAwait(false);
+                var propStats = await collector.GetPropertiesAsync(entry, int.MaxValue, cancellationToken).ConfigureAwait(false);
 
                 var response = new Response()
                 {
@@ -145,7 +145,7 @@ namespace FubarDev.WebDavServer.Handlers.Impl
                 var href = _host.BaseUrl.Append(entryPath, true);
 
                 var collector = new PropertyCollector(_host, new ReadableFilter(), new CostFilter(0));
-                var propStats = await collector.GetPropertiesAsync(entry, cancellationToken).ConfigureAwait(false);
+                var propStats = await collector.GetPropertiesAsync(entry, 0, cancellationToken).ConfigureAwait(false);
 
                 var response = new Response()
                 {
@@ -206,17 +206,7 @@ namespace FubarDev.WebDavServer.Handlers.Impl
                 _filters = filters;
             }
 
-            public Task<IReadOnlyCollection<Propstat>> GetPropertyNamesAsync(IEntry entry, CancellationToken cancellationToken)
-            {
-                return GetPropertyNamesAsync(entry, code => code != WebDavStatusCode.NotFound, cancellationToken);
-            }
-
-            public Task<IReadOnlyCollection<Propstat>> GetPropertiesAsync(IEntry entry, CancellationToken cancellationToken)
-            {
-                return GetPropertiesAsync(entry, code => code != WebDavStatusCode.NotFound, cancellationToken);
-            }
-
-            public async Task<IReadOnlyCollection<Propstat>> GetPropertiesAsync(IEntry entry, Func<WebDavStatusCode, bool> statusCodeFilter, CancellationToken cancellationToken)
+            public async Task<IReadOnlyCollection<Propstat>> GetPropertiesAsync(IEntry entry, int maxCost, CancellationToken cancellationToken)
             {
                 foreach (var filter in _filters)
                 {
@@ -224,7 +214,7 @@ namespace FubarDev.WebDavServer.Handlers.Impl
                 }
 
                 var propElements = new List<XElement>();
-                using (var propsEnumerator = entry.GetProperties().GetEnumerator())
+                using (var propsEnumerator = entry.GetProperties(maxCost).GetEnumerator())
                 {
                     while (await propsEnumerator.MoveNext(cancellationToken).ConfigureAwait(false))
                     {
@@ -260,7 +250,6 @@ namespace FubarDev.WebDavServer.Handlers.Impl
 
                 var missingProperties = _filters
                     .SelectMany(x => x.GetMissingProperties())
-                    .Where(x => statusCodeFilter(x.StatusCode))
                     .GroupBy(x => x.StatusCode, x => x.PropertyName)
                     .ToDictionary(x => x.Key, x => x.Distinct().ToList());
                 foreach (var item in missingProperties)
@@ -279,7 +268,7 @@ namespace FubarDev.WebDavServer.Handlers.Impl
                 return result;
             }
 
-            private async Task<IReadOnlyCollection<Propstat>> GetPropertyNamesAsync(IEntry entry, Func<WebDavStatusCode, bool> statusCodeFilter, CancellationToken cancellationToken)
+            public async Task<IReadOnlyCollection<Propstat>> GetPropertyNamesAsync(IEntry entry, CancellationToken cancellationToken)
             {
                 foreach (var filter in _filters)
                 {
@@ -287,7 +276,7 @@ namespace FubarDev.WebDavServer.Handlers.Impl
                 }
 
                 var propElements = new List<XElement>();
-                using (var propsEnumerator = entry.GetProperties().GetEnumerator())
+                using (var propsEnumerator = entry.GetProperties(int.MaxValue).GetEnumerator())
                 {
                     while (await propsEnumerator.MoveNext(cancellationToken).ConfigureAwait(false))
                     {
@@ -323,7 +312,6 @@ namespace FubarDev.WebDavServer.Handlers.Impl
 
                 var missingProperties = _filters
                     .SelectMany(x => x.GetMissingProperties())
-                    .Where(x => statusCodeFilter(x.StatusCode))
                     .GroupBy(x => x.StatusCode, x => x.PropertyName)
                     .ToDictionary(x => x.Key, x => x.Distinct().ToList());
                 foreach (var item in missingProperties)

@@ -44,9 +44,9 @@ namespace FubarDev.WebDavServer.FileSystem.InMemory
 
         protected DateTime CreationTimeUtc { get; set; }
 
-        public IAsyncEnumerable<IUntypedReadableProperty> GetProperties()
+        public IAsyncEnumerable<IUntypedReadableProperty> GetProperties(int? maxCost)
         {
-            return new EntryProperties(this, GetLiveProperties(), GetPredefinedDeadProperties(), FileSystem.PropertyStore);
+            return new EntryProperties(this, GetLiveProperties(), GetPredefinedDeadProperties(), FileSystem.PropertyStore, maxCost);
         }
 
         public abstract Task<DeleteResult> DeleteAsync(CancellationToken cancellationToken);

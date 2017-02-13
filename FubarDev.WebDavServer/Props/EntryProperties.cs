@@ -34,21 +34,25 @@ namespace FubarDev.WebDavServer.Props
         [CanBeNull]
         private readonly IPropertyStore _propertyStore;
 
+        private readonly int? _maxCost;
+
         public EntryProperties(
             [NotNull] IEntry entry,
             [NotNull] [ItemNotNull] IEnumerable<ILiveProperty> liveProperties,
             [NotNull] [ItemNotNull] IEnumerable<IDeadProperty> predefinedDeadProperties,
-            [CanBeNull] IPropertyStore propertyStore)
+            [CanBeNull] IPropertyStore propertyStore,
+            int? maxCost)
         {
             _entry = entry;
             _liveProperties = liveProperties;
             _predefinedDeadProperties = predefinedDeadProperties;
             _propertyStore = propertyStore;
+            _maxCost = maxCost;
         }
 
         public IAsyncEnumerator<IUntypedReadableProperty> GetEnumerator()
         {
-            return new PropertiesEnumerator(_entry, _liveProperties, _predefinedDeadProperties, _propertyStore);
+            return new PropertiesEnumerator(_entry, _liveProperties, _predefinedDeadProperties, _propertyStore, _maxCost);
         }
 
         private class PropertiesEnumerator : IAsyncEnumerator<IUntypedReadableProperty>
@@ -58,6 +62,8 @@ namespace FubarDev.WebDavServer.Props
 
             [CanBeNull]
             private readonly IPropertyStore _propertyStore;
+
+            private readonly int? _maxCost;
 
             [NotNull]
             private readonly IEnumerator<IUntypedReadableProperty> _predefinedPropertiesEnumerator;
@@ -73,10 +79,12 @@ namespace FubarDev.WebDavServer.Props
                 [NotNull] IEntry entry,
                 [NotNull] [ItemNotNull] IEnumerable<ILiveProperty> liveProperties,
                 [NotNull] [ItemNotNull] IEnumerable<IDeadProperty> predefinedDeadProperties,
-                [CanBeNull] IPropertyStore propertyStore)
+                [CanBeNull] IPropertyStore propertyStore,
+                int? maxCost)
             {
                 _entry = entry;
                 _propertyStore = propertyStore;
+                _maxCost = maxCost;
                 _predefinedPropertiesEnumerator = liveProperties.Cast<IUntypedReadableProperty>().Concat(predefinedDeadProperties).GetEnumerator();
             }
 
@@ -126,14 +134,14 @@ namespace FubarDev.WebDavServer.Props
 
                     _predefinedPropertiesFinished = true;
 
-                    if (_propertyStore == null)
+                    if (_propertyStore == null || (_maxCost.HasValue && _propertyStore.Cost > _maxCost))
                         return null;
 
                     var deadProperties = await _propertyStore.LoadAsync(_entry, cancellationToken).ConfigureAwait(false);
                     _deadPropertiesEnumerator = deadProperties.GetEnumerator();
                 }
 
-                if (_propertyStore == null)
+                if (_propertyStore == null || (_maxCost.HasValue && _propertyStore.Cost > _maxCost))
                     return null;
 
                 Debug.Assert(_deadPropertiesEnumerator != null, "_deadPropertiesEnumerator != null");

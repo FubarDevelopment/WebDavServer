@@ -33,7 +33,7 @@ namespace FubarDev.WebDavServer.FileSystem
         DateTime LastWriteTimeUtc { get; }
 
         [NotNull]
-        IAsyncEnumerable<IUntypedReadableProperty> GetProperties();
+        IAsyncEnumerable<IUntypedReadableProperty> GetProperties(int? maxCost = null);
 
         [NotNull]
         [ItemNotNull]

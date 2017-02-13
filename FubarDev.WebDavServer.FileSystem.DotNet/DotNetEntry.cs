@@ -42,9 +42,9 @@ namespace FubarDev.WebDavServer.FileSystem.DotNet
 
         public DateTime LastWriteTimeUtc => Info.LastWriteTimeUtc;
 
-        public IAsyncEnumerable<IUntypedReadableProperty> GetProperties()
+        public IAsyncEnumerable<IUntypedReadableProperty> GetProperties(int? maxCost)
         {
-            return new EntryProperties(this, GetLiveProperties(), GetPredefinedDeadProperties(), FileSystem.PropertyStore);
+            return new EntryProperties(this, GetLiveProperties(), GetPredefinedDeadProperties(), FileSystem.PropertyStore, maxCost);
         }
 
         public abstract Task<DeleteResult> DeleteAsync(CancellationToken cancellationToken);
@@ -54,8 +54,8 @@ namespace FubarDev.WebDavServer.FileSystem.DotNet
             var properties = new List<ILiveProperty>()
             {
                 this.GetResourceTypeProperty(),
-                new LastModifiedProperty(ct => Task.FromResult(Info.LastWriteTimeUtc), SetLastWriteTimeUtc),
-                new CreationDateProperty(ct => Task.FromResult(Info.CreationTimeUtc), SetCreateTimeUtc),
+                new LastModifiedProperty(ct => Task.FromResult(Info.LastWriteTimeUtc), SetLastWriteTimeUtcAsync),
+                new CreationDateProperty(ct => Task.FromResult(Info.CreationTimeUtc), SetCreateTimeUtcAsync),
             };
             return properties;
         }
@@ -68,13 +68,13 @@ namespace FubarDev.WebDavServer.FileSystem.DotNet
             yield return new GetETagProperty(FileSystem.PropertyStore, this, 0);
         }
 
-        private Task SetCreateTimeUtc(DateTime value, CancellationToken cancellationToken)
+        private Task SetCreateTimeUtcAsync(DateTime value, CancellationToken cancellationToken)
         {
             Info.CreationTimeUtc = value;
             return Task.FromResult(0);
         }
 
-        private Task SetLastWriteTimeUtc(DateTime timestamp, CancellationToken ct)
+        private Task SetLastWriteTimeUtcAsync(DateTime timestamp, CancellationToken ct)
         {
             Info.LastWriteTimeUtc = timestamp;
             return Task.FromResult(0);
