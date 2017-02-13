@@ -15,6 +15,7 @@ using FubarDev.WebDavServer.FileSystem;
 using FubarDev.WebDavServer.Model;
 using FubarDev.WebDavServer.Props;
 using FubarDev.WebDavServer.Props.Dead;
+using FubarDev.WebDavServer.Props.Live;
 
 using JetBrains.Annotations;
 
@@ -58,7 +59,7 @@ namespace FubarDev.WebDavServer.Handlers.Impl
             Debug.Assert(entry != null, "entry != null");
 
             var propertiesList = new List<IUntypedReadableProperty>();
-            using (var propEnum = entry.GetProperties().GetEnumerator())
+            using (var propEnum = entry.GetProperties(int.MaxValue).GetEnumerator())
             {
                 while (await propEnum.MoveNext(cancellationToken).ConfigureAwait(false))
                 {
@@ -265,13 +266,24 @@ namespace FubarDev.WebDavServer.Handlers.Impl
                 var property = FindProperty(properties, element.Name);
                 if (property != null)
                 {
-                    if (entry.FileSystem.PropertyStore == null)
-                    {
-                        result.Add(ChangeItem.ReadOnly(property, element, "No property store"));
-                    }
-                    else if (!(property is IUntypedWriteableProperty))
+                    if (!(property is IUntypedWriteableProperty))
                     {
                         result.Add(ChangeItem.ReadOnly(property, element, "Cannot remove protected property"));
+                    }
+                    else if (entry.FileSystem.PropertyStore == null)
+                    {
+                        if (property is IDeadProperty)
+                        {
+                            result.Add(ChangeItem.ReadOnly(property, element, "Cannot remove dead without property store"));
+                        }
+                        else
+                        {
+                            result.Add(ChangeItem.ReadOnly(property, element, "Cannot remove live property"));
+                        }
+                    }
+                    else if (property is ILiveProperty)
+                    {
+                        result.Add(ChangeItem.Failed(property, "Cannot remove live property"));
                     }
                     else
                     {
@@ -281,7 +293,7 @@ namespace FubarDev.WebDavServer.Handlers.Impl
                             var success = await entry.FileSystem.PropertyStore.RemoveAsync(entry, element.Name, cancellationToken).ConfigureAwait(false);
                             if (!success)
                             {
-                                result.Add(ChangeItem.Failed(property, "Cannot remove live property"));
+                                result.Add(ChangeItem.Failed(property, "Couldn't remove property from property store (concurrent access?)"));
                             }
                             else
                             {
@@ -329,9 +341,20 @@ namespace FubarDev.WebDavServer.Handlers.Impl
                         var writeableProperty = property as IUntypedWriteableProperty;
                         if (writeableProperty != null)
                         {
-                            var oldValue = await writeableProperty.GetXmlValueAsync(cancellationToken).ConfigureAwait(false);
-                            await writeableProperty.SetXmlValueAsync(element, cancellationToken).ConfigureAwait(false);
-                            changeItem = ChangeItem.Modified(property, element, oldValue);
+                            if (entry.FileSystem.PropertyStore == null && writeableProperty is IDeadProperty)
+                            {
+                                changeItem = ChangeItem.ReadOnly(property, element, "Cannot modify dead without property store");
+                            }
+                            else
+                            {
+                                var oldValue = await writeableProperty
+                                    .GetXmlValueAsync(cancellationToken)
+                                    .ConfigureAwait(false);
+                                await writeableProperty
+                                    .SetXmlValueAsync(element, cancellationToken)
+                                    .ConfigureAwait(false);
+                                changeItem = ChangeItem.Modified(property, element, oldValue);
+                            }
                         }
                         else
                         {
@@ -350,7 +373,7 @@ namespace FubarDev.WebDavServer.Handlers.Impl
                 {
                     if (entry.FileSystem.PropertyStore == null)
                     {
-                        result.Add(ChangeItem.InsufficientStorage(element, "No property store"));
+                        result.Add(ChangeItem.InsufficientStorage(element, "Cannot add dead property without property store"));
                         failed = true;
                     }
                     else

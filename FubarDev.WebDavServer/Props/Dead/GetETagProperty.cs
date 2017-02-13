@@ -12,24 +12,27 @@ using FubarDev.WebDavServer.Model;
 using FubarDev.WebDavServer.Props.Converters;
 using FubarDev.WebDavServer.Props.Store;
 
+using JetBrains.Annotations;
+
 namespace FubarDev.WebDavServer.Props.Dead
 {
     public class GetETagProperty : ITypedReadableProperty<EntityTag>, IDeadProperty
     {
         public static readonly XName PropertyName = WebDavXml.Dav + "getetag";
 
+        [CanBeNull]
         private readonly IPropertyStore _propertyStore;
 
         private readonly IEntry _entry;
 
         private XElement _element;
 
-        public GetETagProperty(IPropertyStore propertyStore, IEntry entry, int? cost = null)
+        public GetETagProperty([CanBeNull] IPropertyStore propertyStore, IEntry entry, int? cost = null)
         {
             _propertyStore = propertyStore;
             _entry = entry;
             Name = PropertyName;
-            Cost = cost ?? _propertyStore.Cost;
+            Cost = cost ?? _propertyStore?.Cost ?? 0;
         }
 
         public XName Name { get; }
@@ -44,8 +47,15 @@ namespace FubarDev.WebDavServer.Props.Dead
         {
             if (_element == null)
             {
-                var etag = await _propertyStore.GetETagAsync(_entry, ct).ConfigureAwait(false);
-                _element = Converter.ToElement(Name, etag);
+                if (_propertyStore != null)
+                {
+                    var etag = await _propertyStore.GetETagAsync(_entry, ct).ConfigureAwait(false);
+                    _element = Converter.ToElement(Name, etag);
+                }
+                else
+                {
+                    _element = new EntityTag(false).ToXml();
+                }
             }
 
             return _element;

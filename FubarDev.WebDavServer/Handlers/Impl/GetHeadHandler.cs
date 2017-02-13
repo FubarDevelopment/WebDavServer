@@ -5,12 +5,14 @@
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 
 using FubarDev.WebDavServer.FileSystem;
 using FubarDev.WebDavServer.Model;
-using FubarDev.WebDavServer.Props.Store;
+using FubarDev.WebDavServer.Props.Dead;
+using FubarDev.WebDavServer.Props.Live;
 
 using JetBrains.Annotations;
 
@@ -54,23 +56,19 @@ namespace FubarDev.WebDavServer.Handlers.Impl
             }
 
             Debug.Assert(searchResult.Document != null, "searchResult.Document != null");
-            return new WebDavDocumentResult(FileSystem.PropertyStore, searchResult.Document, returnFile);
+            return new WebDavDocumentResult(searchResult.Document, returnFile);
         }
 
         private class WebDavDocumentResult : WebDavResult
         {
-            [CanBeNull]
-            private readonly IPropertyStore _propertyStore;
-
             [NotNull]
             private readonly IDocument _document;
 
             private readonly bool _returnFile;
 
-            public WebDavDocumentResult([CanBeNull] IPropertyStore propertyStore, [NotNull] IDocument document, bool returnFile)
+            public WebDavDocumentResult([NotNull] IDocument document, bool returnFile)
                 : base(WebDavStatusCode.OK)
             {
-                _propertyStore = propertyStore;
                 _document = document;
                 _returnFile = returnFile;
             }
@@ -78,18 +76,42 @@ namespace FubarDev.WebDavServer.Handlers.Impl
             public override async Task ExecuteResultAsync(IWebDavResponse response, CancellationToken ct)
             {
                 await base.ExecuteResultAsync(response, ct).ConfigureAwait(false);
-                if (_propertyStore != null)
+
+                var properties = await _document.GetProperties(int.MaxValue).ToList(ct).ConfigureAwait(false);
+                var etagProperty = properties.OfType<GetETagProperty>().FirstOrDefault();
+                if (etagProperty != null)
                 {
-                    var etag = await _propertyStore.GetETagAsync(_document, ct).ConfigureAwait(false);
-                    response.Headers["ETag"] = new[] { etag.ToString() };
+                    var propValue = await etagProperty.GetValueAsync(ct).ConfigureAwait(false);
+                    response.Headers["ETag"] = new[] { propValue.ToString() };
                 }
 
-                response.Headers["Last-Modified"] = new[] { _document.LastWriteTimeUtc.ToString("R") };
+                var lastModifiedProp = properties.OfType<LastModifiedProperty>().FirstOrDefault();
+                if (lastModifiedProp != null)
+                {
+                    var propValue = await lastModifiedProp.GetValueAsync(ct).ConfigureAwait(false);
+                    response.Headers["Last-Modified"] = new[] { propValue.ToString("R") };
+                }
 
                 if (!_returnFile)
                     return;
 
-                response.ContentType = "application/octet-stream";
+                var contentLanguage = properties.OfType<GetContentLanguageProperty>().FirstOrDefault();
+                if (contentLanguage != null)
+                {
+                    var propValue = await contentLanguage.TryGetValueAsync(ct).ConfigureAwait(false);
+                    propValue.IfSome(v => response.Headers["Content-Language"] = new[] { v });
+                }
+
+                var contentType = properties.OfType<GetContentTypeProperty>().FirstOrDefault();
+                if (contentType != null)
+                {
+                    var propValue = await contentType.GetValueAsync(ct).ConfigureAwait(false);
+                    response.ContentType = propValue;
+                }
+                else
+                {
+                    response.ContentType = Utils.MimeTypesMap.DefaultMimeType;
+                }
 
                 using (var stream = await _document.OpenReadAsync(ct).ConfigureAwait(false))
                 {

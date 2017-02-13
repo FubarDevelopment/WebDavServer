@@ -62,10 +62,9 @@ namespace FubarDev.WebDavServer.FileSystem.DotNet
 
         protected virtual IEnumerable<IDeadProperty> GetPredefinedDeadProperties()
         {
-            var displayProperty = FileSystem.PropertyStore?.Create(this, DisplayNameProperty.PropertyName);
-            if (displayProperty != null)
-                yield return displayProperty;
-            yield return new GetETagProperty(FileSystem.PropertyStore, this, 0);
+            yield return DotNetFileSystem
+                .DeadPropertyFactory.Create(FileSystem.PropertyStore, this, DisplayNameProperty.PropertyName);
+            yield return new GetETagProperty(FileSystem.PropertyStore, this);
         }
 
         private Task SetCreateTimeUtcAsync(DateTime value, CancellationToken cancellationToken)

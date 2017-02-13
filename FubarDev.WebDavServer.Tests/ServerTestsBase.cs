@@ -13,6 +13,7 @@ using FubarDev.WebDavServer.Engines.Remote;
 using FubarDev.WebDavServer.FileSystem;
 using FubarDev.WebDavServer.FileSystem.InMemory;
 using FubarDev.WebDavServer.Handlers.Impl;
+using FubarDev.WebDavServer.Props.Dead;
 using FubarDev.WebDavServer.Props.Store.InMemory;
 using FubarDev.WebDavServer.Tests.Support;
 
@@ -33,7 +34,11 @@ namespace FubarDev.WebDavServer.Tests
     {
         protected ServerTestsBase(RecursiveProcessingMode processingMode)
         {
-            FileSystem = new InMemoryFileSystem(new PathTraversalEngine(), new SystemClock(), new InMemoryPropertyStoreFactory());
+            FileSystem = new InMemoryFileSystem(
+                new PathTraversalEngine(),
+                new SystemClock(),
+                new DeadPropertyFactory(),
+                new InMemoryPropertyStoreFactory());
             var builder = new WebHostBuilder()
                 .ConfigureServices(sc => ConfigureServices(this, processingMode, sc))
                 .UseStartup<TestStartup>();

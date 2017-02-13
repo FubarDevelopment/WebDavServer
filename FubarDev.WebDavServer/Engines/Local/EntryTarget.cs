@@ -96,7 +96,7 @@ namespace FubarDev.WebDavServer.Engines.Local
                 return new XName[0];
             }
 
-            using (var propEnum = _entry.GetProperties().GetEnumerator())
+            using (var propEnum = _entry.GetProperties(int.MaxValue).GetEnumerator())
             {
                 while (await propEnum.MoveNext(cancellationToken).ConfigureAwait(false))
                 {

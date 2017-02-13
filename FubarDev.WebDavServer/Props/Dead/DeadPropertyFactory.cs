@@ -30,6 +30,8 @@ namespace FubarDev.WebDavServer.Props.Dead
             {
                 [EntityTag.PropertyName] = (store, entry, name) => new GetETagProperty(store, entry),
                 [DisplayNameProperty.PropertyName] = (store, entry, name) => new DisplayNameProperty(entry, store, options.HideExtensionForDisplayName),
+                [GetContentLanguageProperty.PropertyName] = (store, entry, name) => new GetContentLanguageProperty(entry, store),
+                [GetContentTypeProperty.PropertyName] = (store, entry, name) => new GetContentTypeProperty(entry, store),
             };
         }
 

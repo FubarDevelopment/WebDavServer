@@ -7,6 +7,7 @@ using System.IO;
 using System.Threading;
 using System.Threading.Tasks;
 
+using FubarDev.WebDavServer.Props.Dead;
 using FubarDev.WebDavServer.Props.Store;
 
 namespace FubarDev.WebDavServer.FileSystem.DotNet
@@ -15,9 +16,10 @@ namespace FubarDev.WebDavServer.FileSystem.DotNet
     {
         private readonly PathTraversalEngine _pathTraversalEngine;
 
-        public DotNetFileSystem(DotNetFileSystemOptions options, string rootFolder, PathTraversalEngine pathTraversalEngine, IPropertyStoreFactory propertyStoreFactory = null)
+        public DotNetFileSystem(DotNetFileSystemOptions options, string rootFolder, PathTraversalEngine pathTraversalEngine, IDeadPropertyFactory deadPropertyFactory, IPropertyStoreFactory propertyStoreFactory = null)
         {
             RootDirectoryPath = rootFolder;
+            DeadPropertyFactory = deadPropertyFactory;
             _pathTraversalEngine = pathTraversalEngine;
             Options = options;
             PropertyStore = propertyStoreFactory?.Create(this);
@@ -26,6 +28,8 @@ namespace FubarDev.WebDavServer.FileSystem.DotNet
         }
 
         public string RootDirectoryPath { get; }
+
+        public IDeadPropertyFactory DeadPropertyFactory { get; }
 
         public AsyncLazy<ICollection> Root { get; }
 

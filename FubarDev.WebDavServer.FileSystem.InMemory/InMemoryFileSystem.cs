@@ -6,6 +6,7 @@ using System;
 using System.Threading;
 using System.Threading.Tasks;
 
+using FubarDev.WebDavServer.Props.Dead;
 using FubarDev.WebDavServer.Props.Store;
 
 namespace FubarDev.WebDavServer.FileSystem.InMemory
@@ -14,9 +15,10 @@ namespace FubarDev.WebDavServer.FileSystem.InMemory
     {
         private readonly PathTraversalEngine _pathTraversalEngine;
 
-        public InMemoryFileSystem(PathTraversalEngine pathTraversalEngine, ISystemClock systemClock, IPropertyStoreFactory propertyStoreFactory = null)
+        public InMemoryFileSystem(PathTraversalEngine pathTraversalEngine, ISystemClock systemClock, IDeadPropertyFactory deadPropertyFactory, IPropertyStoreFactory propertyStoreFactory = null)
         {
             SystemClock = systemClock;
+            DeadPropertyFactory = deadPropertyFactory;
             _pathTraversalEngine = pathTraversalEngine;
             var rootDir = new InMemoryDirectory(this, null, new Uri(string.Empty, UriKind.Relative), string.Empty);
             Root = new AsyncLazy<ICollection>(() => Task.FromResult<ICollection>(rootDir));
@@ -24,6 +26,8 @@ namespace FubarDev.WebDavServer.FileSystem.InMemory
         }
 
         public ISystemClock SystemClock { get; }
+
+        public IDeadPropertyFactory DeadPropertyFactory { get; }
 
         public AsyncLazy<ICollection> Root { get; }
 

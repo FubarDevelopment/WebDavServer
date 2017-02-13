@@ -9,7 +9,10 @@ using System.Threading.Tasks;
 using FubarDev.WebDavServer.FileSystem;
 using FubarDev.WebDavServer.FileSystem.InMemory;
 using FubarDev.WebDavServer.Props.Dead;
+using FubarDev.WebDavServer.Props.Store;
 using FubarDev.WebDavServer.Props.Store.InMemory;
+
+using JetBrains.Annotations;
 
 using Xunit;
 
@@ -17,13 +20,32 @@ namespace FubarDev.WebDavServer.Tests.PropertyStore
 {
     public class InMemoryPropTests
     {
+        public InMemoryPropTests()
+        {
+            FileSystem = new InMemoryFileSystem(
+                new PathTraversalEngine(),
+                new SystemClock(),
+                new DeadPropertyFactory(),
+                new InMemoryPropertyStoreFactory());
+        }
+
+        public IFileSystem FileSystem { get; }
+
+        [NotNull]
+        public IPropertyStore PropertyStore
+        {
+            get
+            {
+                Assert.NotNull(FileSystem.PropertyStore);
+                return FileSystem.PropertyStore;
+            }
+        }
+
         [Fact]
         public async Task Empty()
         {
             var ct = CancellationToken.None;
-            var fs = new InMemoryFileSystem(new PathTraversalEngine(), new SystemClock(), new InMemoryPropertyStoreFactory());
-            var root = await fs.Root;
-            Assert.NotNull(fs.PropertyStore);
+            var root = await FileSystem.Root;
             var displayNameProperty = await GetDisplayNamePropertyAsync(root, ct).ConfigureAwait(false);
             Assert.Equal(string.Empty, await displayNameProperty.GetValueAsync(ct).ConfigureAwait(false));
         }
@@ -32,10 +54,8 @@ namespace FubarDev.WebDavServer.Tests.PropertyStore
         public async Task DocumentWithExtension()
         {
             var ct = CancellationToken.None;
-            var fs = new InMemoryFileSystem(new PathTraversalEngine(), new SystemClock(), new InMemoryPropertyStoreFactory());
-            Assert.NotNull(fs.PropertyStore);
 
-            var root = await fs.Root;
+            var root = await FileSystem.Root;
             var doc = await root.CreateDocumentAsync("test1.txt", ct).ConfigureAwait(false);
 
             var displayNameProperty = await GetDisplayNamePropertyAsync(doc, ct).ConfigureAwait(false);
@@ -46,15 +66,13 @@ namespace FubarDev.WebDavServer.Tests.PropertyStore
         public async Task SameNameDocumentsInDifferentCollections()
         {
             var ct = CancellationToken.None;
-            var fs = new InMemoryFileSystem(new PathTraversalEngine(), new SystemClock(), new InMemoryPropertyStoreFactory());
-            Assert.NotNull(fs.PropertyStore);
 
-            var root = await fs.Root;
+            var root = await FileSystem.Root;
             var coll1 = await root.CreateCollectionAsync("coll1", ct).ConfigureAwait(false);
             var docRoot = await root.CreateDocumentAsync("test1.txt", ct).ConfigureAwait(false);
             var docColl1 = await coll1.CreateDocumentAsync("test1.txt", ct).ConfigureAwait(false);
-            var eTagDocRoot = await fs.PropertyStore.GetETagAsync(docRoot, ct).ConfigureAwait(false);
-            var eTagDocColl1 = await fs.PropertyStore.GetETagAsync(docColl1, ct).ConfigureAwait(false);
+            var eTagDocRoot = await PropertyStore.GetETagAsync(docRoot, ct).ConfigureAwait(false);
+            var eTagDocColl1 = await PropertyStore.GetETagAsync(docColl1, ct).ConfigureAwait(false);
             Assert.NotEqual(eTagDocRoot, eTagDocColl1);
         }
 
@@ -62,10 +80,8 @@ namespace FubarDev.WebDavServer.Tests.PropertyStore
         public async Task DisplayNameChangeable()
         {
             var ct = CancellationToken.None;
-            var fs = new InMemoryFileSystem(new PathTraversalEngine(), new SystemClock(), new InMemoryPropertyStoreFactory());
-            Assert.NotNull(fs.PropertyStore);
 
-            var root = await fs.Root;
+            var root = await FileSystem.Root;
             var doc = await root.CreateDocumentAsync("test1.txt", ct).ConfigureAwait(false);
             var displayNameProperty = await GetDisplayNamePropertyAsync(doc, ct).ConfigureAwait(false);
 

@@ -11,6 +11,7 @@ using System.Threading.Tasks;
 using System.Xml.Linq;
 
 using FubarDev.WebDavServer.Model;
+using FubarDev.WebDavServer.Props.Dead;
 using FubarDev.WebDavServer.Props.Live;
 
 namespace FubarDev.WebDavServer.FileSystem.InMemory
@@ -127,6 +128,18 @@ namespace FubarDev.WebDavServer.FileSystem.InMemory
                        {
                            new ContentLengthProperty(ct => Task.FromResult(Length)),
                        });
+        }
+
+        protected override IEnumerable<IDeadProperty> GetPredefinedDeadProperties()
+        {
+            return base.GetPredefinedDeadProperties()
+                .Concat(new[]
+                {
+                    InMemoryFileSystem.DeadPropertyFactory
+                        .Create(FileSystem.PropertyStore, this, GetContentLanguageProperty.PropertyName),
+                    InMemoryFileSystem.DeadPropertyFactory
+                        .Create(FileSystem.PropertyStore, this, GetContentTypeProperty.PropertyName),
+                });
         }
 
         private class MyMemoryStream : MemoryStream

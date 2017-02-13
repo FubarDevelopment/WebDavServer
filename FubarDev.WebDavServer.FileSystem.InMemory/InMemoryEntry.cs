@@ -64,9 +64,8 @@ namespace FubarDev.WebDavServer.FileSystem.InMemory
 
         protected virtual IEnumerable<IDeadProperty> GetPredefinedDeadProperties()
         {
-            var displayProperty = FileSystem.PropertyStore?.Create(this, DisplayNameProperty.PropertyName);
-            if (displayProperty != null)
-                yield return displayProperty;
+            yield return InMemoryFileSystem
+                .DeadPropertyFactory.Create(FileSystem.PropertyStore, this, DisplayNameProperty.PropertyName);
             yield return new GetETagProperty(FileSystem.PropertyStore, this, 0);
         }
     }

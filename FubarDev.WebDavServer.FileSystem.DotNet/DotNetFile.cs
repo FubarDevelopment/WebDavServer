@@ -5,11 +5,13 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Xml.Linq;
 
 using FubarDev.WebDavServer.Model;
+using FubarDev.WebDavServer.Props.Dead;
 using FubarDev.WebDavServer.Props.Live;
 
 namespace FubarDev.WebDavServer.FileSystem.DotNet
@@ -111,12 +113,23 @@ namespace FubarDev.WebDavServer.FileSystem.DotNet
 
         protected override IEnumerable<ILiveProperty> GetLiveProperties()
         {
-            foreach (var property in base.GetLiveProperties())
-            {
-                yield return property;
-            }
+            return base.GetLiveProperties()
+                .Concat(new ILiveProperty[]
+                {
+                    new ContentLengthProperty(ct => Task.FromResult(Length)),
+                });
+        }
 
-            yield return new ContentLengthProperty(ct => Task.FromResult(Length));
+        protected override IEnumerable<IDeadProperty> GetPredefinedDeadProperties()
+        {
+            return base.GetPredefinedDeadProperties()
+                .Concat(new[]
+                {
+                    DotNetFileSystem.DeadPropertyFactory
+                        .Create(FileSystem.PropertyStore, this, GetContentLanguageProperty.PropertyName),
+                    DotNetFileSystem.DeadPropertyFactory
+                        .Create(FileSystem.PropertyStore, this, GetContentTypeProperty.PropertyName),
+                });
         }
     }
 }
