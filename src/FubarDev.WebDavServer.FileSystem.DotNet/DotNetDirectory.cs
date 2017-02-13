@@ -106,7 +106,7 @@ namespace FubarDev.WebDavServer.FileSystem.DotNet
         {
             var contentType = DotNetFileSystem.DeadPropertyFactory
                 .Create(FileSystem.PropertyStore, this, GetContentTypeProperty.PropertyName);
-            contentType.Init(new StringConverter().ToElement(GetContentTypeProperty.PropertyName, "httpd/unix-directory"));
+            contentType.Init(new StringConverter().ToElement(GetContentTypeProperty.PropertyName, Utils.MimeTypesMap.FolderContentType));
             return base.GetPredefinedDeadProperties()
                 .Concat(new[]
                 {

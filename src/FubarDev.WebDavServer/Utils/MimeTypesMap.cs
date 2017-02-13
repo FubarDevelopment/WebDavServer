@@ -13,9 +13,11 @@ namespace FubarDev.WebDavServer.Utils
     /// <remarks>
     /// Taken from the project https://github.com/hey-red/MimeTypesMap
     /// </remarks>
-    internal static class MimeTypesMap
+    public static class MimeTypesMap
     {
         public const string DefaultMimeType = "application/octet-stream";
+
+        public const string FolderContentType = "httpd/unix-directory";
 
         // http://svn.apache.org/repos/asf/httpd/httpd/trunk/docs/conf/mime.types
         private static Lazy<Dictionary<string, string>> _mimeTypeMap = new Lazy<Dictionary<string, string>>(() => new Dictionary<string, string>()

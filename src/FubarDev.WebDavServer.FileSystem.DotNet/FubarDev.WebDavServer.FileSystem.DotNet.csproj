@@ -1,16 +1,18 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk" ToolsVersion="15.0">
   <PropertyGroup>
-    <TargetFrameworks>net451;netstandard1.3</TargetFrameworks>
-    <CodeAnalysisRuleSet>..\WebDavServer.ruleset</CodeAnalysisRuleSet>
+    <TargetFrameworks>netstandard1.3;net451</TargetFrameworks>
+    <CodeAnalysisRuleSet>$(SolutionDir)WebDavServer.ruleset</CodeAnalysisRuleSet>
+    <DocumentationFile Condition=" '$(Configuration)' == 'Release' ">$(TargetDir)$(TargetName).xml</DocumentationFile>
   </PropertyGroup>
   <ItemGroup>
-    <AdditionalFiles Include="..\stylecop.json" Link="stylecop.json" />
+    <AdditionalFiles Include="$(SolutionDir)stylecop.json" Link="stylecop.json" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="..\WebDavServer.ruleset" Link="WebDavServer.ruleset" />
+    <None Include="$(SolutionDir)WebDavServer.ruleset" Link="WebDavServer.ruleset" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Update="NETStandard.Library" Version="1.6.1" />
+    <PackageReference Include="System.Interactive.Async" Version="3.1.1" />
     <PackageReference Include="StyleCop.Analyzers" Version="1.1.0-beta001">
       <PrivateAssets>All</PrivateAssets>
     </PackageReference>

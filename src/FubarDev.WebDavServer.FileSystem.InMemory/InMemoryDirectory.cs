@@ -10,6 +10,9 @@ using System.Threading;
 using System.Threading.Tasks;
 
 using FubarDev.WebDavServer.Model;
+using FubarDev.WebDavServer.Props.Converters;
+using FubarDev.WebDavServer.Props.Dead;
+using FubarDev.WebDavServer.Props.Live;
 
 namespace FubarDev.WebDavServer.FileSystem.InMemory
 {
@@ -66,6 +69,27 @@ namespace FubarDev.WebDavServer.FileSystem.InMemory
             var newItem = new InMemoryDirectory(InMemoryFileSystem, this, Path.AppendDirectory(name), name);
             _children.Add(newItem.Name, newItem);
             return Task.FromResult<ICollection>(newItem);
+        }
+
+        protected override IEnumerable<ILiveProperty> GetLiveProperties()
+        {
+            return base.GetLiveProperties()
+                .Concat(new ILiveProperty[]
+                {
+                    new ContentLengthProperty(ct => Task.FromResult(0L)),
+                });
+        }
+
+        protected override IEnumerable<IDeadProperty> GetPredefinedDeadProperties()
+        {
+            var contentType = InMemoryFileSystem.DeadPropertyFactory
+                .Create(FileSystem.PropertyStore, this, GetContentTypeProperty.PropertyName);
+            contentType.Init(new StringConverter().ToElement(GetContentTypeProperty.PropertyName, Utils.MimeTypesMap.FolderContentType));
+            return base.GetPredefinedDeadProperties()
+                .Concat(new[]
+                {
+                    contentType,
+                });
         }
 
         internal bool Remove(string name)
