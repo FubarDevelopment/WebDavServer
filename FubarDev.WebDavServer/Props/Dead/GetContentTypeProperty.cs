@@ -2,6 +2,7 @@
 // Copyright (c) Fubar Development Junker. All rights reserved.
 // </copyright>
 
+using System.IO;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Xml.Linq;
@@ -41,7 +42,11 @@ namespace FubarDev.WebDavServer.Props.Dead
                 return storedValue.Value;
             }
 
-            var newName = Utils.MimeTypesMap.GetMimeType(_entry.Name);
+            var fileExt = Path.GetExtension(_entry.Name);
+            if (string.IsNullOrEmpty(fileExt))
+                return Utils.MimeTypesMap.DefaultMimeType;
+
+            var newName = Utils.MimeTypesMap.GetMimeType(fileExt.Substring(1));
             return newName;
         }
 
