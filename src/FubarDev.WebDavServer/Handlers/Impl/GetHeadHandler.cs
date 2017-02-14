@@ -169,7 +169,7 @@ namespace FubarDev.WebDavServer.Handlers.Impl
                     else
                     {
                         // Multipart content
-                        var multipart = new MultipartContent("multipart/byteranges");
+                        var multipart = new MultipartContent("byteranges");
                         try
                         {
                             var index = 0;
@@ -195,6 +195,10 @@ namespace FubarDev.WebDavServer.Handlers.Impl
                     {
                         await SetPropertiesToContentHeaderAsync(content, properties, ct)
                             .ConfigureAwait(false);
+
+                        foreach (var header in content.Headers)
+                            response.Headers.Add(header.Key, header.Value.ToArray());
+
                         await content.CopyToAsync(response.Body).ConfigureAwait(false);
                     }
                 }
@@ -270,6 +274,10 @@ namespace FubarDev.WebDavServer.Handlers.Impl
                 {
                     var content = new StreamContent(stream);
                     await SetPropertiesToContentHeaderAsync(content, properties, ct).ConfigureAwait(false);
+
+                    foreach (var header in content.Headers)
+                        response.Headers.Add(header.Key, header.Value.ToArray());
+
                     await content.CopyToAsync(response.Body).ConfigureAwait(false);
                 }
             }
