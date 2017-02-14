@@ -3,6 +3,7 @@
 // </copyright>
 
 using System;
+using System.IO;
 using System.Net;
 using System.Net.Http;
 using System.Net.Http.Headers;
@@ -13,21 +14,29 @@ using System.Threading.Tasks;
 using FubarDev.WebDavServer.FileSystem;
 using FubarDev.WebDavServer.Model;
 
+using MimeKit;
+using MimeKit.IO;
+
+using Portable.Text;
+
 using Xunit;
+
+using Encoding = System.Text.Encoding;
 
 namespace FubarDev.WebDavServer.Tests.Handlers
 {
     public class GetRangeTests : ServerTestsBase
     {
-        private static readonly Lazy<byte[]> _testBlock = new Lazy<byte[]>(() =>
+        private static readonly Lazy<string> _testText = new Lazy<string>(() =>
         {
             var testTextBuilder = new StringBuilder();
             for (var i = 0; i != 7000; ++i)
                 testTextBuilder.Append("1234567890");
             var testText = testTextBuilder.ToString();
-            var testData = Encoding.UTF8.GetBytes(testText);
-            return testData;
+            return testText;
         });
+
+        private static readonly Lazy<byte[]> _testBlock = new Lazy<byte[]>(() => Encoding.UTF8.GetBytes(_testText.Value));
 
         public GetRangeTests()
             : base(RecursiveProcessingMode.PreferFastest)
@@ -36,6 +45,32 @@ namespace FubarDev.WebDavServer.Tests.Handlers
 
         [Fact]
         public async Task GetWithoutRangeTest()
+        {
+            var ct = CancellationToken.None;
+            var root = await FileSystem.Root;
+            var testFile = await root.CreateDocumentAsync("test1.txt", ct).ConfigureAwait(false);
+            await FillAsync(testFile, int.MaxValue, ct).ConfigureAwait(false);
+
+            using (var client = Server.CreateClient())
+            {
+                using (var response = await client.GetAsync("test1.txt", ct).ConfigureAwait(false))
+                {
+                    var content = response
+                        .EnsureSuccessStatusCode().Content;
+
+                    Assert.Equal(HttpStatusCode.OK, response.StatusCode);
+                    Assert.Equal(_testBlock.Value.Length, content.Headers.ContentLength);
+
+                    var data = await content
+                        .ReadAsByteArrayAsync().ConfigureAwait(false);
+                    var s = Encoding.UTF8.GetString(data);
+                    Assert.Equal(_testText.Value, s);
+                }
+            }
+        }
+
+        [Fact]
+        public async Task GetWithSingleRangeTest()
         {
             var ct = CancellationToken.None;
             var root = await FileSystem.Root;
@@ -71,18 +106,83 @@ namespace FubarDev.WebDavServer.Tests.Handlers
                         .ReadAsByteArrayAsync().ConfigureAwait(false);
                     var s = Encoding.UTF8.GetString(data);
                     Assert.Equal("12", s);
-                    /*
-                    var responseStream = await response
-                        .EnsureSuccessStatusCode().Content
-                        .ReadAsStreamAsync().ConfigureAwait(false);
-
-                    var opt = new MimeKit.ParserOptions()
-                    {
-                        RespectContentLength = true,
-                    };
-                    var parser = new MimeKit.MimeParser(opt, responseStream);
-                    */
                 }
+            }
+        }
+
+        [Fact]
+        public async Task GetWithTwoRangesTest()
+        {
+            var ct = CancellationToken.None;
+            var root = await FileSystem.Root;
+            var testFile = await root.CreateDocumentAsync("test1.txt", ct).ConfigureAwait(false);
+            await FillAsync(testFile, int.MaxValue, ct).ConfigureAwait(false);
+
+            using (var client = Server.CreateClient())
+            {
+                var range = new Range("bytes", new RangeItem(0, 1), new RangeItem(3, 4));
+                var request = new HttpRequestMessage(HttpMethod.Get, "test1.txt")
+                {
+                    Headers =
+                    {
+                        Range = RangeHeaderValue.Parse(range.ToString()),
+                    },
+                };
+
+                using (var response = await client.SendAsync(request, ct).ConfigureAwait(false))
+                {
+                    var content = response
+                        .EnsureSuccessStatusCode().Content;
+
+                    Assert.Equal(HttpStatusCode.PartialContent, response.StatusCode);
+
+                    var multipart = await ReadMultipartAsync(content, ct).ConfigureAwait(false);
+                    Assert.Equal(2, multipart.Count);
+                    Assert.All(multipart, entity => Assert.True(entity.ContentType.IsMimeType("text", "plain")));
+                    /*
+                    Assert.Collection(
+                        multipart,
+                        entity =>
+                        {
+                            
+                        },
+                        entity =>
+                        {
+
+                        });*/
+                }
+            }
+        }
+
+        private static async Task<Multipart> ReadMultipartAsync(HttpContent content, CancellationToken ct)
+        {
+            var responseStream = await content
+                .ReadAsStreamAsync().ConfigureAwait(false);
+
+            var headerStream = new MemoryStream();
+            using (var headerWriter = new StreamWriter(headerStream, new System.Text.UTF8Encoding(false), 1000, true)
+            {
+                NewLine = "\r\n",
+            })
+            {
+                foreach (var contentHeader in content.Headers)
+                {
+                    var line = $"{contentHeader.Key}: {string.Join(", ", contentHeader.Value)}";
+                    await headerWriter.WriteLineAsync(line).ConfigureAwait(false);
+                }
+
+                await headerWriter.WriteLineAsync().ConfigureAwait(false);
+            }
+
+            headerStream.Position = 0;
+
+            using (var input = new ChainedStream())
+            {
+                input.Add(headerStream);
+                input.Add(responseStream, true);
+
+                var multipart = MimeEntity.Load(input, ct);
+                return Assert.IsType<Multipart>(multipart);
             }
         }
 
