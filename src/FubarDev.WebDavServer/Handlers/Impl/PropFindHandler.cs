@@ -103,19 +103,20 @@ namespace FubarDev.WebDavServer.Handlers.Impl
 
         private async Task<IWebDavResult> HandlePropAsync(Prop prop, IReadOnlyCollection<IEntry> entries, CancellationToken cancellationToken)
         {
-            var baseIsRoot = _context.BaseUrl.IsRootUri();
             var responses = new List<Response>();
             foreach (var entry in entries)
             {
                 var entryPath = entry.Path.OriginalString;
                 var href = _context.BaseUrl.Append(entryPath, true);
+                if (!_options.UseAbsoluteHref)
+                    href = new Uri("/" + _context.RootUrl.MakeRelativeUri(href).OriginalString);
 
                 var collector = new PropertyCollector(_context, new ReadableFilter(), new PropFilter(prop));
                 var propStats = await collector.GetPropertiesAsync(entry, int.MaxValue, cancellationToken).ConfigureAwait(false);
 
                 var response = new Response()
                 {
-                    Href = _options.UseAbsoluteHref ? href.OriginalString : _context.BaseUrl.GetRelativeUri(href, baseIsRoot),
+                    Href = href.OriginalString,
                     ItemsElementName = propStats.Select(x => ItemsChoiceType2.Propstat).ToArray(),
                     Items = propStats.Cast<object>().ToArray(),
                 };
@@ -145,19 +146,20 @@ namespace FubarDev.WebDavServer.Handlers.Impl
         // ReSharper disable once UnusedParameter.Local
         private async Task<IWebDavResult> HandleAllPropAsync([CanBeNull] Include include, IEnumerable<IEntry> entries, CancellationToken cancellationToken)
         {
-            var baseIsRoot = _context.BaseUrl.IsRootUri();
             var responses = new List<Response>();
             foreach (var entry in entries)
             {
                 var entryPath = entry.Path.OriginalString;
                 var href = _context.BaseUrl.Append(entryPath, true);
+                if (!_options.UseAbsoluteHref)
+                    href = new Uri("/" + _context.RootUrl.MakeRelativeUri(href).OriginalString);
 
                 var collector = new PropertyCollector(_context, new ReadableFilter(), new CostFilter(0));
                 var propStats = await collector.GetPropertiesAsync(entry, 0, cancellationToken).ConfigureAwait(false);
 
                 var response = new Response()
                 {
-                    Href = _options.UseAbsoluteHref ? href.OriginalString : _context.BaseUrl.GetRelativeUri(href, baseIsRoot),
+                    Href = href.OriginalString,
                     ItemsElementName = propStats.Select(x => ItemsChoiceType2.Propstat).ToArray(),
                     Items = propStats.Cast<object>().ToArray(),
                 };
@@ -175,19 +177,20 @@ namespace FubarDev.WebDavServer.Handlers.Impl
 
         private async Task<IWebDavResult> HandlePropNameAsync(IEnumerable<IEntry> entries, CancellationToken cancellationToken)
         {
-            var baseIsRoot = _context.BaseUrl.IsRootUri();
             var responses = new List<Response>();
             foreach (var entry in entries)
             {
                 var entryPath = entry.Path.OriginalString;
                 var href = _context.BaseUrl.Append(entryPath, true);
+                if (!_options.UseAbsoluteHref)
+                    href = new Uri("/" + _context.RootUrl.MakeRelativeUri(href).OriginalString);
 
                 var collector = new PropertyCollector(_context, new ReadableFilter(), new CostFilter(0));
                 var propStats = await collector.GetPropertyNamesAsync(entry, cancellationToken).ConfigureAwait(false);
 
                 var response = new Response()
                 {
-                    Href = _options.UseAbsoluteHref ? href.OriginalString : _context.BaseUrl.GetRelativeUri(href, baseIsRoot),
+                    Href = href.OriginalString,
                     ItemsElementName = propStats.Select(x => ItemsChoiceType2.Propstat).ToArray(),
                     Items = propStats.Cast<object>().ToArray(),
                 };

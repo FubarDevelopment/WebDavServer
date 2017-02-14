@@ -17,26 +17,6 @@ namespace FubarDev.WebDavServer
             return new Uri(url, ".");
         }
 
-        public static bool IsRootUri(this Uri uri)
-        {
-            if (!uri.IsAbsoluteUri)
-                return uri.OriginalString == "/";
-            return uri == new Uri(uri, "/");
-        }
-
-        public static string GetRelativeUri(this Uri baseUrl, Uri uri)
-        {
-            return GetRelativeUri(baseUrl, uri, baseUrl.IsRootUri());
-        }
-
-        public static string GetRelativeUri(this Uri baseUrl, Uri uri, bool baseIsRoot)
-        {
-            var relativeUrl = baseUrl.MakeRelativeUri(uri).OriginalString;
-            if (baseIsRoot)
-                return $"/{relativeUrl}";
-            return string.IsNullOrEmpty(relativeUrl) ? "." : relativeUrl;
-        }
-
         public static string GetName(this Uri url)
         {
             var s = url.OriginalString;
