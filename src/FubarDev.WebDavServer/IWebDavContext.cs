@@ -4,6 +4,8 @@
 
 using System;
 
+using FubarDev.WebDavServer.Utils.UAParser;
+
 using JetBrains.Annotations;
 
 namespace FubarDev.WebDavServer
@@ -16,7 +18,11 @@ namespace FubarDev.WebDavServer
         [NotNull]
         Uri BaseUrl { get; }
 
-        DetectedClient DetectedClient { get; }
+        [NotNull]
+        Uri RootUrl { get; }
+
+        [NotNull]
+        IUAParserOutput DetectedClient { get; }
 
         [NotNull]
         IWebDavRequestHeaders RequestHeaders { get; }
