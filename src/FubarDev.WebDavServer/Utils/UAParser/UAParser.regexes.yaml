@@ -760,7 +760,7 @@ os_parsers:
   - regex: 'Win32'
     os_replacement: 'Windows 95'
 
-  - regex: '(Microsoft-WebDAV-MiniRedir)/(\d+)\.(\d+)(?:[.\-]([a-z0-9]+))?'
+  - regex: '(Microsoft-WebDAV-MiniRedir)/(10)\.(\d+)(?:[.\-]([a-z0-9]+))?'
     os_replacement: 'Windows 10'
 
   ##########
@@ -4614,7 +4614,7 @@ device_parsers:
     device_replacement: 'Microsoft Surface RT'
     brand_replacement: 'Microsoft'
     model_replacement: 'Surface RT'
-  - regex: 'Microsoft-WebDAV-MiniRedir/(10)\.(\d+)(\.(\d+))*'
+  - regex: 'Microsoft-WebDAV-MiniRedir/(\d+)\.(\d+)(?:[.\-]([a-z0-9]+))?'
     device_replacement: 'PC'
     brand_replacement: 'Microsoft'
     model_replacement: 'Desktop'
