@@ -32,8 +32,8 @@ namespace FubarDev.WebDavServer.Locking
                 path,
                 recursive,
                 owner,
-                accessType.Id,
-                shareMode.Id,
+                accessType.Name.LocalName,
+                shareMode.Name.LocalName,
                 timeout)
         {
         }

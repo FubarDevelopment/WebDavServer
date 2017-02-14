@@ -3,12 +3,15 @@
 // </copyright>
 
 using System;
+using System.Xml.Linq;
+
+using FubarDev.WebDavServer.Model;
 
 using JetBrains.Annotations;
 
 namespace FubarDev.WebDavServer.Locking
 {
-    public struct LockAccessType
+    public struct LockAccessType : IEquatable<LockAccessType>
     {
         public static LockAccessType Write = new LockAccessType(WriteId);
 
@@ -18,11 +21,21 @@ namespace FubarDev.WebDavServer.Locking
         {
             if (id == null)
                 throw new ArgumentNullException(nameof(id));
-            Id = id;
+            Name = WebDavXml.Dav + id;
         }
 
         [NotNull]
-        public string Id { get; }
+        public XName Name { get; }
+
+        public static bool operator ==(LockAccessType x, LockAccessType y)
+        {
+            return x.Name == y.Name;
+        }
+
+        public static bool operator !=(LockAccessType x, LockAccessType y)
+        {
+            return x.Name != y.Name;
+        }
 
         public static LockAccessType Parse([NotNull] string accessType)
         {
@@ -36,6 +49,23 @@ namespace FubarDev.WebDavServer.Locking
             }
 
             throw new ArgumentOutOfRangeException(nameof(accessType), $"The access type {accessType} is not supported.");
+        }
+
+        public bool Equals(LockAccessType other)
+        {
+            return Name.Equals(other.Name);
+        }
+
+        public override bool Equals(object obj)
+        {
+            if (ReferenceEquals(null, obj))
+                return false;
+            return obj is LockAccessType && Equals((LockAccessType)obj);
+        }
+
+        public override int GetHashCode()
+        {
+            return Name.GetHashCode();
         }
     }
 }

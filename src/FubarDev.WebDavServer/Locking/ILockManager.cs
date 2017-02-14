@@ -17,6 +17,16 @@ namespace FubarDev.WebDavServer.Locking
     public interface ILockManager
     {
         /// <summary>
+        /// Gets called when a lock was added
+        /// </summary>
+        event EventHandler<LockEventArgs> LockAdded;
+
+        /// <summary>
+        /// Gets called when a lock was released
+        /// </summary>
+        event EventHandler<LockEventArgs> LockReleased;
+
+        /// <summary>
         /// Tries to issue a lock
         /// </summary>
         /// <param name="l">The lock to issue</param>

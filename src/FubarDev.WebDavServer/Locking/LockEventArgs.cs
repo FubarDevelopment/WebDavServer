@@ -4,7 +4,7 @@
 
 using System;
 
-namespace FubarDev.WebDavServer.Locking.InMemory
+namespace FubarDev.WebDavServer.Locking
 {
     public class LockEventArgs : EventArgs
     {

@@ -3,12 +3,15 @@
 // </copyright>
 
 using System;
+using System.Xml.Linq;
+
+using FubarDev.WebDavServer.Model;
 
 using JetBrains.Annotations;
 
 namespace FubarDev.WebDavServer.Locking
 {
-    public struct LockShareMode
+    public struct LockShareMode : IEquatable<LockShareMode>
     {
         public static readonly LockShareMode Shared = new LockShareMode(SharedId);
         public static readonly LockShareMode Exclusive = new LockShareMode(ExclusiveId);
@@ -20,11 +23,21 @@ namespace FubarDev.WebDavServer.Locking
         {
             if (id == null)
                 throw new ArgumentNullException(nameof(id));
-            Id = id;
+            Name = WebDavXml.Dav + id;
         }
 
         [NotNull]
-        public string Id { get; }
+        public XName Name { get; }
+
+        public static bool operator ==(LockShareMode x, LockShareMode y)
+        {
+            return x.Name == y.Name;
+        }
+
+        public static bool operator !=(LockShareMode x, LockShareMode y)
+        {
+            return x.Name != y.Name;
+        }
 
         public static LockShareMode Parse([NotNull] string shareMode)
         {
@@ -40,6 +53,23 @@ namespace FubarDev.WebDavServer.Locking
             }
 
             throw new ArgumentOutOfRangeException(nameof(shareMode), $"The share mode {shareMode} is not supported.");
+        }
+
+        public bool Equals(LockShareMode other)
+        {
+            return Name.Equals(other.Name);
+        }
+
+        public override bool Equals(object obj)
+        {
+            if (ReferenceEquals(null, obj))
+                return false;
+            return obj is LockShareMode && Equals((LockShareMode)obj);
+        }
+
+        public override int GetHashCode()
+        {
+            return Name.GetHashCode();
         }
     }
 }

@@ -116,7 +116,7 @@ namespace FubarDev.WebDavServer.Locking.InMemory
 
         private static IReadOnlyCollection<IActiveLock> GetConflictingLocks(LockStatus affactingLocks, LockShareMode shareMode)
         {
-            if (shareMode.Id == LockShareMode.Exclusive.Id)
+            if (shareMode == LockShareMode.Exclusive)
             {
                 if (affactingLocks.IsEmpty)
                     return _emptyActiveLocks;
@@ -126,7 +126,7 @@ namespace FubarDev.WebDavServer.Locking.InMemory
             var exclusiveLocks =
                 (from activeLock in affactingLocks.GetLocks()
                  let lockShareMode = LockShareMode.Parse(activeLock.ShareMode)
-                 where lockShareMode.Id == LockShareMode.Exclusive.Id
+                 where lockShareMode == LockShareMode.Exclusive
                  select activeLock)
                 .ToList();
             return exclusiveLocks;

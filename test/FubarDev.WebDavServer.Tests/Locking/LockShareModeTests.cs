@@ -54,8 +54,8 @@ namespace FubarDev.WebDavServer.Tests.Locking
             Assert.Equal("/", activeLock.Path);
             Assert.True(activeLock.Recursive);
             Assert.Equal(owner, activeLock.GetOwner());
-            Assert.Equal(LockAccessType.Write.Id, activeLock.AccessType);
-            Assert.Equal(LockShareMode.Shared.Id, activeLock.ShareMode);
+            Assert.Equal(LockAccessType.Write.Name.LocalName, activeLock.AccessType);
+            Assert.Equal(LockShareMode.Shared.Name.LocalName, activeLock.ShareMode);
             Assert.Equal(TimeSpan.FromMinutes(1), activeLock.Timeout);
             Assert.True(Uri.IsWellFormedUriString(activeLock.StateToken, UriKind.RelativeOrAbsolute));
         }
