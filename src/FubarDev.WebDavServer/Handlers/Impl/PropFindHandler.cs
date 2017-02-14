@@ -38,7 +38,7 @@ namespace FubarDev.WebDavServer.Handlers.Impl
         public IFileSystem FileSystem { get; }
 
         /// <inheritdoc />
-        public async Task<IWebDavResult> PropFindAsync(string path, Propfind request, CancellationToken cancellationToken)
+        public async Task<IWebDavResult> PropFindAsync(string path, propfind request, CancellationToken cancellationToken)
         {
             var selectionResult = await FileSystem.SelectAsync(path, cancellationToken).ConfigureAwait(false);
             if (selectionResult.IsMissing)
@@ -67,9 +67,9 @@ namespace FubarDev.WebDavServer.Handlers.Impl
                     if (collector == null)
                     {
                         // Cannot recursively collect the children with infinite depth
-                        return new WebDavResult<Error>(WebDavStatusCode.Forbidden, new Error()
+                        return new WebDavResult<error>(WebDavStatusCode.Forbidden, new error()
                         {
-                            ItemsElementName = new[] { ItemsChoiceType.PropfindFiniteDepth, },
+                            ItemsElementName = new[] { ItemsChoiceType.propfindfinitedepth, },
                             Items = new[] { new object(), },
                         });
                     }
@@ -90,20 +90,20 @@ namespace FubarDev.WebDavServer.Handlers.Impl
 
             switch (request.ItemsElementName[0])
             {
-                case ItemsChoiceType1.Allprop:
+                case ItemsChoiceType1.allprop:
                     return await HandleAllPropAsync(request, entries, cancellationToken).ConfigureAwait(false);
-                case ItemsChoiceType1.Prop:
-                    return await HandlePropAsync((Prop)request.Items[0], entries, cancellationToken).ConfigureAwait(false);
-                case ItemsChoiceType1.Propname:
+                case ItemsChoiceType1.prop:
+                    return await HandlePropAsync((prop)request.Items[0], entries, cancellationToken).ConfigureAwait(false);
+                case ItemsChoiceType1.propname:
                     return await HandlePropNameAsync(entries, cancellationToken).ConfigureAwait(false);
             }
 
             throw new WebDavException(WebDavStatusCode.Forbidden);
         }
 
-        private async Task<IWebDavResult> HandlePropAsync(Prop prop, IReadOnlyCollection<IEntry> entries, CancellationToken cancellationToken)
+        private async Task<IWebDavResult> HandlePropAsync(prop prop, IReadOnlyCollection<IEntry> entries, CancellationToken cancellationToken)
         {
-            var responses = new List<Response>();
+            var responses = new List<response>();
             foreach (var entry in entries)
             {
                 var entryPath = entry.Path.OriginalString;
@@ -114,39 +114,39 @@ namespace FubarDev.WebDavServer.Handlers.Impl
                 var collector = new PropertyCollector(_context, new ReadableFilter(), new PropFilter(prop));
                 var propStats = await collector.GetPropertiesAsync(entry, int.MaxValue, cancellationToken).ConfigureAwait(false);
 
-                var response = new Response()
+                var response = new response()
                 {
-                    Href = href.OriginalString,
-                    ItemsElementName = propStats.Select(x => ItemsChoiceType2.Propstat).ToArray(),
+                    href = href.OriginalString,
+                    ItemsElementName = propStats.Select(x => ItemsChoiceType2.propstat).ToArray(),
                     Items = propStats.Cast<object>().ToArray(),
                 };
 
                 responses.Add(response);
             }
 
-            var result = new Multistatus()
+            var result = new multistatus()
             {
-                Response = responses.ToArray(),
+                response = responses.ToArray(),
             };
 
-            return new WebDavResult<Multistatus>(WebDavStatusCode.MultiStatus, result);
+            return new WebDavResult<multistatus>(WebDavStatusCode.MultiStatus, result);
         }
 
-        private Task<IWebDavResult> HandleAllPropAsync([NotNull] Propfind request, IEnumerable<IEntry> entries, CancellationToken cancellationToken)
+        private Task<IWebDavResult> HandleAllPropAsync([NotNull] propfind request, IEnumerable<IEntry> entries, CancellationToken cancellationToken)
         {
-            var include = request.ItemsElementName.Select((x, i) => Tuple.Create(x, i)).Where(x => x.Item1 == ItemsChoiceType1.Include).Select(x => (Include)request.Items[x.Item2]).FirstOrDefault();
+            var include = request.ItemsElementName.Select((x, i) => Tuple.Create(x, i)).Where(x => x.Item1 == ItemsChoiceType1.include).Select(x => (include)request.Items[x.Item2]).FirstOrDefault();
             return HandleAllPropAsync(include, entries, cancellationToken);
         }
 
         private Task<IWebDavResult> HandleAllPropAsync(IEnumerable<IEntry> entries, CancellationToken cancellationToken)
         {
-            return HandleAllPropAsync((Include)null, entries, cancellationToken);
+            return HandleAllPropAsync((include)null, entries, cancellationToken);
         }
 
         // ReSharper disable once UnusedParameter.Local
-        private async Task<IWebDavResult> HandleAllPropAsync([CanBeNull] Include include, IEnumerable<IEntry> entries, CancellationToken cancellationToken)
+        private async Task<IWebDavResult> HandleAllPropAsync([CanBeNull] include include, IEnumerable<IEntry> entries, CancellationToken cancellationToken)
         {
-            var responses = new List<Response>();
+            var responses = new List<response>();
             foreach (var entry in entries)
             {
                 var entryPath = entry.Path.OriginalString;
@@ -157,27 +157,27 @@ namespace FubarDev.WebDavServer.Handlers.Impl
                 var collector = new PropertyCollector(_context, new ReadableFilter(), new CostFilter(0));
                 var propStats = await collector.GetPropertiesAsync(entry, 0, cancellationToken).ConfigureAwait(false);
 
-                var response = new Response()
+                var response = new response()
                 {
-                    Href = href.OriginalString,
-                    ItemsElementName = propStats.Select(x => ItemsChoiceType2.Propstat).ToArray(),
+                    href = href.OriginalString,
+                    ItemsElementName = propStats.Select(x => ItemsChoiceType2.propstat).ToArray(),
                     Items = propStats.Cast<object>().ToArray(),
                 };
 
                 responses.Add(response);
             }
 
-            var result = new Multistatus()
+            var result = new multistatus()
             {
-                Response = responses.ToArray(),
+                response = responses.ToArray(),
             };
 
-            return new WebDavResult<Multistatus>(WebDavStatusCode.MultiStatus, result);
+            return new WebDavResult<multistatus>(WebDavStatusCode.MultiStatus, result);
         }
 
         private async Task<IWebDavResult> HandlePropNameAsync(IEnumerable<IEntry> entries, CancellationToken cancellationToken)
         {
-            var responses = new List<Response>();
+            var responses = new List<response>();
             foreach (var entry in entries)
             {
                 var entryPath = entry.Path.OriginalString;
@@ -188,22 +188,22 @@ namespace FubarDev.WebDavServer.Handlers.Impl
                 var collector = new PropertyCollector(_context, new ReadableFilter(), new CostFilter(0));
                 var propStats = await collector.GetPropertyNamesAsync(entry, cancellationToken).ConfigureAwait(false);
 
-                var response = new Response()
+                var response = new response()
                 {
-                    Href = href.OriginalString,
-                    ItemsElementName = propStats.Select(x => ItemsChoiceType2.Propstat).ToArray(),
+                    href = href.OriginalString,
+                    ItemsElementName = propStats.Select(x => ItemsChoiceType2.propstat).ToArray(),
                     Items = propStats.Cast<object>().ToArray(),
                 };
 
                 responses.Add(response);
             }
 
-            var result = new Multistatus()
+            var result = new multistatus()
             {
-                Response = responses.ToArray(),
+                response = responses.ToArray(),
             };
 
-            return new WebDavResult<Multistatus>(WebDavStatusCode.MultiStatus, result);
+            return new WebDavResult<multistatus>(WebDavStatusCode.MultiStatus, result);
         }
 
         private class PropertyCollector
@@ -218,7 +218,7 @@ namespace FubarDev.WebDavServer.Handlers.Impl
                 _filters = filters;
             }
 
-            public async Task<IReadOnlyCollection<Propstat>> GetPropertiesAsync(IEntry entry, int maxCost, CancellationToken cancellationToken)
+            public async Task<IReadOnlyCollection<propstat>> GetPropertiesAsync(IEntry entry, int maxCost, CancellationToken cancellationToken)
             {
                 foreach (var filter in _filters)
                 {
@@ -246,17 +246,17 @@ namespace FubarDev.WebDavServer.Handlers.Impl
                     }
                 }
 
-                var result = new List<Propstat>();
+                var result = new List<propstat>();
                 if (propElements.Count != 0)
                 {
                     result.Add(
-                        new Propstat()
+                        new propstat()
                         {
-                            Prop = new Prop()
+                            prop = new prop()
                             {
                                 Any = propElements.ToArray(),
                             },
-                            Status = new Status(_host.RequestProtocol, WebDavStatusCode.OK).ToString(),
+                            status = new Status(_host.RequestProtocol, WebDavStatusCode.OK).ToString(),
                         });
                 }
 
@@ -267,20 +267,20 @@ namespace FubarDev.WebDavServer.Handlers.Impl
                 foreach (var item in missingProperties)
                 {
                     result.Add(
-                        new Propstat()
+                        new propstat()
                         {
-                            Prop = new Prop()
+                            prop = new prop()
                             {
                                 Any = item.Value.Select(x => new XElement(x)).ToArray(),
                             },
-                            Status = new Status(_host.RequestProtocol, item.Key).ToString(),
+                            status = new Status(_host.RequestProtocol, item.Key).ToString(),
                         });
                 }
 
                 return result;
             }
 
-            public async Task<IReadOnlyCollection<Propstat>> GetPropertyNamesAsync(IEntry entry, CancellationToken cancellationToken)
+            public async Task<IReadOnlyCollection<propstat>> GetPropertyNamesAsync(IEntry entry, CancellationToken cancellationToken)
             {
                 foreach (var filter in _filters)
                 {
@@ -308,17 +308,17 @@ namespace FubarDev.WebDavServer.Handlers.Impl
                     }
                 }
 
-                var result = new List<Propstat>();
+                var result = new List<propstat>();
                 if (propElements.Count != 0)
                 {
                     result.Add(
-                        new Propstat()
+                        new propstat()
                         {
-                            Prop = new Prop()
+                            prop = new prop()
                             {
                                 Any = propElements.ToArray(),
                             },
-                            Status = new Status(_host.RequestProtocol, WebDavStatusCode.OK).ToString(),
+                            status = new Status(_host.RequestProtocol, WebDavStatusCode.OK).ToString(),
                         });
                 }
 
@@ -329,13 +329,13 @@ namespace FubarDev.WebDavServer.Handlers.Impl
                 foreach (var item in missingProperties)
                 {
                     result.Add(
-                        new Propstat()
+                        new propstat()
                         {
-                            Prop = new Prop()
+                            prop = new prop()
                             {
                                 Any = item.Value.Select(x => new XElement(x)).ToArray(),
                             },
-                            Status = new Status(_host.RequestProtocol, item.Key).ToString(),
+                            status = new Status(_host.RequestProtocol, item.Key).ToString(),
                         });
                 }
 

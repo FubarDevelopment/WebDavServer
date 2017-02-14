@@ -53,20 +53,20 @@ namespace FubarDev.WebDavServer.Handlers.Impl
                 deleteResult = new DeleteResult(WebDavStatusCode.Forbidden, targetEntry);
             }
 
-            var result = new Multistatus()
+            var result = new multistatus()
             {
-                Response = new[]
+                response = new[]
                 {
-                    new Response()
+                    new response()
                     {
-                        Href = _host.BaseUrl.Append((deleteResult.FailedEntry ?? targetEntry).Path).OriginalString,
-                        ItemsElementName = new[] { ItemsChoiceType2.Status, },
+                        href = _host.BaseUrl.Append((deleteResult.FailedEntry ?? targetEntry).Path).OriginalString,
+                        ItemsElementName = new[] { ItemsChoiceType2.status, },
                         Items = new object[] { new Status(_host.RequestProtocol, deleteResult.StatusCode).ToString() },
                     },
                 },
             };
 
-            return new WebDavResult<Multistatus>(WebDavStatusCode.MultiStatus, result);
+            return new WebDavResult<multistatus>(WebDavStatusCode.MultiStatus, result);
         }
     }
 }

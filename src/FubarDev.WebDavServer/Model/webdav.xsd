@@ -47,6 +47,37 @@
       </choice>
     </complexType>
   </element>
+  
+  <element name="lockinfo">
+    <complexType>
+      <sequence>
+        <element name="lockscope" type="dav:lockscope" />
+        <element name="locktype" type="dav:locktype" />
+        <element name="owner" minOccurs="0" type="dav:owner" />
+      </sequence>
+    </complexType>
+  </element>
+
+  <element name="prop" type="dav:prop" />
+
+  <complexType name="owner" mixed="true">
+    <sequence>
+      <any namespace="##other" minOccurs="0" maxOccurs="unbounded" />
+    </sequence>
+  </complexType>
+
+  <complexType name="lockscope">
+    <choice>
+      <element name="shared" />
+      <element name="exclusive" />
+    </choice>
+  </complexType>
+  
+  <complexType name="locktype">
+    <choice>
+      <element name="write" />
+    </choice>
+  </complexType>
 
   <complexType name="prop-remove">
     <sequence>
@@ -63,6 +94,51 @@
   <complexType name="prop">
     <sequence>
       <any namespace="##any" minOccurs="0" maxOccurs="unbounded" />
+    </sequence>
+  </complexType>
+
+  <complexType name="activelock">
+    <sequence>
+      <element name="lockscope" type="dav:lockscope" />
+      <element name="locktype" type="dav:locktype" />
+      <element name="depth">
+        <simpleType>
+          <restriction base="string">
+            <enumeration value="0" />
+            <enumeration value="1" />
+            <enumeration value="infinity" />
+          </restriction>
+        </simpleType>
+      </element>
+      <element name="owner" type="dav:owner" minOccurs="0" />
+      <element name="timeout" type="dav:timeout" />
+      <element name="locktoken" type="dav:locktoken" minOccurs="0" />
+      <element name="lockroot" type="dav:lockroot" />
+    </sequence>
+  </complexType>
+  
+  <simpleType name="timeout">
+    <restriction base="string">
+      <pattern value="(Infinite)|(Second-\d+)" />
+    </restriction>
+  </simpleType>
+
+  <complexType name="lockentry">
+    <sequence>
+      <element name="lockscope" type="dav:lockscope" />
+      <element name="locktype" type="dav:locktype" />
+    </sequence>
+  </complexType>
+
+  <complexType name="lockroot">
+    <sequence>
+      <element name="href" type="anyURI" maxOccurs="unbounded" />
+    </sequence>
+  </complexType>
+
+  <complexType name="locktoken">
+    <sequence>
+      <element name="href" type="anyURI" maxOccurs="unbounded" />
     </sequence>
   </complexType>
 

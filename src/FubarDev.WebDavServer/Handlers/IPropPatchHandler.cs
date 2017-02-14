@@ -11,6 +11,6 @@ namespace FubarDev.WebDavServer.Handlers
 {
     public interface IPropPatchHandler : IClass1Handler
     {
-        Task<IWebDavResult> PropPatchAsync(string path, Propertyupdate request, CancellationToken cancellationToken);
+        Task<IWebDavResult> PropPatchAsync(string path, propertyupdate request, CancellationToken cancellationToken);
     }
 }

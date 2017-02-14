@@ -173,7 +173,7 @@ namespace FubarDev.WebDavServer.Dispatchers
         }
 
         /// <inheritdoc />
-        public Task<IWebDavResult> PropFindAsync(string path, Propfind request, CancellationToken cancellationToken)
+        public Task<IWebDavResult> PropFindAsync(string path, propfind request, CancellationToken cancellationToken)
         {
             if (_propFindHandler == null)
                 throw new NotSupportedException();
@@ -181,7 +181,7 @@ namespace FubarDev.WebDavServer.Dispatchers
         }
 
         /// <inheritdoc />
-        public Task<IWebDavResult> PropPatchAsync(string path, Propertyupdate request, CancellationToken cancellationToken)
+        public Task<IWebDavResult> PropPatchAsync(string path, propertyupdate request, CancellationToken cancellationToken)
         {
             if (_propPatchHandler == null)
                 throw new NotSupportedException();

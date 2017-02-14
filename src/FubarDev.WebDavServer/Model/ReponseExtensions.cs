@@ -8,16 +8,16 @@ namespace FubarDev.WebDavServer.Model
 {
     public static class ReponseExtensions
     {
-        public static IEnumerable<string> GetHrefs(this Response response)
+        public static IEnumerable<string> GetHrefs(this response response)
         {
-            if (!string.IsNullOrEmpty(response.Href))
-                yield return response.Href;
+            if (!string.IsNullOrEmpty(response.href))
+                yield return response.href;
             if (response.ItemsElementName != null)
             {
                 var index = 0;
                 foreach (var choiceType in response.ItemsElementName)
                 {
-                    if (choiceType == ItemsChoiceType2.Href)
+                    if (choiceType == ItemsChoiceType2.href)
                         yield return (string)response.Items[index];
                     index += 1;
                 }

@@ -32,21 +32,21 @@ namespace FubarDev.WebDavServer
                 if (resultItem.Value.Count == 1)
                 {
                     var response = CreateResponse(resultItem.Key, resultItem.Value, host);
-                    if (response.Error != null)
+                    if (response.error != null)
                     {
-                        return new WebDavResult<Error>(statusCode, response.Error);
+                        return new WebDavResult<error>(statusCode, response.error);
                     }
                 }
 
                 return new WebDavResult(statusCode);
             }
 
-            var result = new Multistatus()
+            var result = new multistatus()
             {
-                Response = resultsByStatus.Select(x => CreateResponse(x.Key, x.Value, host)).ToArray(),
+                response = resultsByStatus.Select(x => CreateResponse(x.Key, x.Value, host)).ToArray(),
             };
 
-            return new WebDavResult<Multistatus>(WebDavStatusCode.MultiStatus, result);
+            return new WebDavResult<multistatus>(WebDavStatusCode.MultiStatus, result);
         }
 
         private static WebDavStatusCode GetWebDavStatusCode(ActionStatus status)
@@ -73,30 +73,30 @@ namespace FubarDev.WebDavServer
             throw new NotSupportedException();
         }
 
-        private static Response CreateResponse(ActionStatus status, IEnumerable<ActionResult> result, IWebDavContext host)
+        private static response CreateResponse(ActionStatus status, IEnumerable<ActionResult> result, IWebDavContext host)
         {
             var hrefs = result.Select(x => x.Href.OriginalString).Distinct().ToList();
             var items = new List<Tuple<ItemsChoiceType2, object>>();
-            var response = new Response()
+            var response = new response()
             {
-                Href = hrefs.First(),
+                href = hrefs.First(),
             };
 
-            items.AddRange(hrefs.Skip(1).Select(x => Tuple.Create(ItemsChoiceType2.Href, (object)x)));
+            items.AddRange(hrefs.Skip(1).Select(x => Tuple.Create(ItemsChoiceType2.href, (object)x)));
 
             switch (status)
             {
                 case ActionStatus.PropSetFailed:
-                    response.Error = new Error()
+                    response.error = new error()
                     {
-                        ItemsElementName = new[] { ItemsChoiceType.PreservedLiveProperties, },
+                        ItemsElementName = new[] { ItemsChoiceType.preservedliveproperties, },
                         Items = new[] { new object(), },
                     };
                     break;
             }
 
             var statusCode = GetWebDavStatusCode(status);
-            items.Add(Tuple.Create(ItemsChoiceType2.Status, (object)new Status(host.RequestProtocol, statusCode).ToString()));
+            items.Add(Tuple.Create(ItemsChoiceType2.status, (object)new Status(host.RequestProtocol, statusCode).ToString()));
 
             response.ItemsElementName = items.Select(x => x.Item1).ToArray();
             response.Items = items.Select(x => x.Item2).ToArray();

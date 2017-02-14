@@ -72,7 +72,7 @@ namespace FubarDev.WebDavServer.AspNetCore
         [HttpPropFind]
         public async Task<IActionResult> PropFindAsync(
             string path,
-            [FromBody] Propfind request,
+            [FromBody] propfind request,
             CancellationToken cancellationToken = default(CancellationToken))
         {
             var result = await _dispatcher.Class1.PropFindAsync(path, request, cancellationToken).ConfigureAwait(false);
@@ -80,7 +80,7 @@ namespace FubarDev.WebDavServer.AspNetCore
         }
 
         [HttpPropPatch]
-        public async Task<IActionResult> PropPatchAsync(string path, [FromBody] Propertyupdate request, CancellationToken cancellationToken)
+        public async Task<IActionResult> PropPatchAsync(string path, [FromBody] propertyupdate request, CancellationToken cancellationToken)
         {
             var result = await _dispatcher.Class1.PropPatchAsync(path, request, cancellationToken).ConfigureAwait(false);
             return new WebDavIndirectResult(_dispatcher, result, _responseLogger);

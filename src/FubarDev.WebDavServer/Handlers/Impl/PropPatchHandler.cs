@@ -49,7 +49,7 @@ namespace FubarDev.WebDavServer.Handlers.Impl
         public IEnumerable<string> HttpMethods { get; } = new[] { "PROPPATCH" };
 
         /// <inheritdoc />
-        public async Task<IWebDavResult> PropPatchAsync(string path, Propertyupdate request, CancellationToken cancellationToken)
+        public async Task<IWebDavResult> PropPatchAsync(string path, propertyupdate request, CancellationToken cancellationToken)
         {
             var selectionResult = await _fileSystem.SelectAsync(path, cancellationToken).ConfigureAwait(false);
             if (selectionResult.IsMissing)
@@ -94,7 +94,7 @@ namespace FubarDev.WebDavServer.Handlers.Impl
             }
 
             var statusCode = hasError ? WebDavStatusCode.Forbidden : WebDavStatusCode.MultiStatus;
-            var propStats = new List<Propstat>();
+            var propStats = new List<propstat>();
 
             var readOnlyProperties = changes.Where(x => x.Status == ChangeStatus.ReadOnlyProperty).ToList();
             if (readOnlyProperties.Count != 0)
@@ -102,9 +102,9 @@ namespace FubarDev.WebDavServer.Handlers.Impl
                 propStats.AddRange(
                     CreatePropStats(
                         readOnlyProperties,
-                        new Error()
+                        new error()
                         {
-                            ItemsElementName = new[] { ItemsChoiceType.CannotModifyProtectedProperty, },
+                            ItemsElementName = new[] { ItemsChoiceType.cannotmodifyprotectedproperty, },
                             Items = new[] { new object(), },
                         }));
                 changes = changes.Except(readOnlyProperties).ToList();
@@ -112,20 +112,20 @@ namespace FubarDev.WebDavServer.Handlers.Impl
 
             propStats.AddRange(CreatePropStats(changes, null));
 
-            var status = new Multistatus()
+            var status = new multistatus()
             {
-                Response = new[]
+                response = new[]
                 {
-                    new Response()
+                    new response()
                     {
-                        Href = _host.BaseUrl.Append(path, true).OriginalString,
-                        ItemsElementName = propStats.Select(x => ItemsChoiceType2.Propstat).ToArray(),
+                        href = _host.BaseUrl.Append(path, true).OriginalString,
+                        ItemsElementName = propStats.Select(x => ItemsChoiceType2.propstat).ToArray(),
                         Items = propStats.Cast<object>().ToArray(),
                     },
                 },
             };
 
-            return new WebDavResult<Multistatus>(statusCode, status);
+            return new WebDavResult<multistatus>(statusCode, status);
         }
 
         private static IUntypedReadableProperty FindProperty(IReadOnlyDictionary<XName, IUntypedReadableProperty> properties, XName name)
@@ -143,7 +143,7 @@ namespace FubarDev.WebDavServer.Handlers.Impl
             return null;
         }
 
-        private IEnumerable<Propstat> CreatePropStats(IEnumerable<ChangeItem> changes, Error error)
+        private IEnumerable<propstat> CreatePropStats(IEnumerable<ChangeItem> changes, error error)
         {
             var changesByStatusCodes = changes.GroupBy(x => x.StatusCode);
             foreach (var changesByStatusCode in changesByStatusCodes)
@@ -154,14 +154,14 @@ namespace FubarDev.WebDavServer.Handlers.Impl
                     elements.Add(new XElement(changeItem.Name));
                 }
 
-                var propStat = new Propstat()
+                var propStat = new propstat()
                 {
-                    Prop = new Prop()
+                    prop = new prop()
                     {
                         Any = elements.ToArray(),
                     },
-                    Status = new Status(_host.RequestProtocol, changesByStatusCode.Key).ToString(),
-                    Error = error,
+                    status = new Status(_host.RequestProtocol, changesByStatusCode.Key).ToString(),
+                    error = error,
                 };
 
                 yield return propStat;
@@ -218,7 +218,7 @@ namespace FubarDev.WebDavServer.Handlers.Impl
             return newChangeItems;
         }
 
-        private async Task<IReadOnlyCollection<ChangeItem>> ApplyChangesAsync(IEntry entry, Dictionary<XName, IUntypedReadableProperty> properties, Propertyupdate request, CancellationToken cancellationToken)
+        private async Task<IReadOnlyCollection<ChangeItem>> ApplyChangesAsync(IEntry entry, Dictionary<XName, IUntypedReadableProperty> properties, propertyupdate request, CancellationToken cancellationToken)
         {
             var result = new List<ChangeItem>();
             if (request.Items == null)
@@ -228,14 +228,14 @@ namespace FubarDev.WebDavServer.Handlers.Impl
             foreach (var item in request.Items)
             {
                 IReadOnlyCollection<ChangeItem> changeItems;
-                var set = item as Propset;
+                var set = item as propset;
                 if (set != null)
                 {
                     changeItems = await ApplySetAsync(entry, properties, set, failed, cancellationToken).ConfigureAwait(false);
                 }
                 else
                 {
-                    var remove = (Propremove)item;
+                    var remove = (propremove)item;
                     changeItems = await ApplyRemoveAsync(entry, properties, remove, failed, cancellationToken).ConfigureAwait(false);
                 }
 
@@ -247,15 +247,15 @@ namespace FubarDev.WebDavServer.Handlers.Impl
             return result;
         }
 
-        private async Task<IReadOnlyCollection<ChangeItem>> ApplyRemoveAsync(IEntry entry, IReadOnlyDictionary<XName, IUntypedReadableProperty> properties, Propremove remove, bool previouslyFailed, CancellationToken cancellationToken)
+        private async Task<IReadOnlyCollection<ChangeItem>> ApplyRemoveAsync(IEntry entry, IReadOnlyDictionary<XName, IUntypedReadableProperty> properties, propremove remove, bool previouslyFailed, CancellationToken cancellationToken)
         {
             var result = new List<ChangeItem>();
 
-            if (remove.Prop.Any == null)
+            if (remove.prop.Any == null)
                 return result;
 
             var failed = previouslyFailed;
-            foreach (var element in remove.Prop.Any)
+            foreach (var element in remove.prop.Any)
             {
                 if (failed)
                 {
@@ -316,15 +316,15 @@ namespace FubarDev.WebDavServer.Handlers.Impl
             return result;
         }
 
-        private async Task<IReadOnlyCollection<ChangeItem>> ApplySetAsync(IEntry entry, Dictionary<XName, IUntypedReadableProperty> properties, Propset set, bool previouslyFailed, CancellationToken cancellationToken)
+        private async Task<IReadOnlyCollection<ChangeItem>> ApplySetAsync(IEntry entry, Dictionary<XName, IUntypedReadableProperty> properties, propset set, bool previouslyFailed, CancellationToken cancellationToken)
         {
             var result = new List<ChangeItem>();
 
-            if (set.Prop.Any == null)
+            if (set.prop.Any == null)
                 return result;
 
             var failed = previouslyFailed;
-            foreach (var element in set.Prop.Any)
+            foreach (var element in set.prop.Any)
             {
                 if (failed)
                 {

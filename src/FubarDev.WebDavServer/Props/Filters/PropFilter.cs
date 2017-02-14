@@ -16,7 +16,7 @@ namespace FubarDev.WebDavServer.Props.Filters
 
         private readonly HashSet<XName> _requestedProperties;
 
-        public PropFilter(Prop prop)
+        public PropFilter(prop prop)
         {
             _requestedProperties = new HashSet<XName>(prop.Any.Select(x => x.Name));
             _selectedProperties = new HashSet<XName>();

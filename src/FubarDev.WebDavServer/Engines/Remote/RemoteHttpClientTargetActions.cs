@@ -30,10 +30,10 @@ namespace FubarDev.WebDavServer.Engines.Remote
         private static readonly HttpMethod _propFindHttpMethod = new HttpMethod("PROPFIND");
         private static readonly HttpMethod _propPatchHttpMethod = new HttpMethod("PROPPATCH");
         private static readonly HttpMethod _mkColHttpMethod = new HttpMethod("MKCOL");
-        private static readonly XmlSerializer _errorSerializer = new XmlSerializer(typeof(Error));
-        private static readonly XmlSerializer _multiStatusSerializer = new XmlSerializer(typeof(Multistatus));
-        private static readonly XmlSerializer _propFindSerializer = new XmlSerializer(typeof(Propfind));
-        private static readonly XmlSerializer _propertyUpdateSerializer = new XmlSerializer(typeof(Propertyupdate));
+        private static readonly XmlSerializer _errorSerializer = new XmlSerializer(typeof(error));
+        private static readonly XmlSerializer _multiStatusSerializer = new XmlSerializer(typeof(multistatus));
+        private static readonly XmlSerializer _propFindSerializer = new XmlSerializer(typeof(propfind));
+        private static readonly XmlSerializer _propertyUpdateSerializer = new XmlSerializer(typeof(propertyupdate));
 
         protected RemoteHttpClientTargetActions(HttpClient httpClient)
         {
@@ -81,22 +81,22 @@ namespace FubarDev.WebDavServer.Engines.Remote
                     }
 
                     var result = Parse(targetUrl, httpResponse, resultDoc);
-                    if (result.Response.Length == 0)
+                    if (result.response.Length == 0)
                         return new RemoteCollectionTarget(collection, name, targetUrl, true, this);
 
-                    if (result.Response.Length > 1)
+                    if (result.response.Length > 1)
                         throw new RemoteTargetException("Received more than one multi-status response", targetUrl);
 
-                    var response = result.Response[0];
+                    var response = result.response[0];
 
                     var hrefs = response.GetHrefs().Select(x => new Uri(x, UriKind.RelativeOrAbsolute)).ToList();
                     if (hrefs.Count == 0)
                         hrefs.Add(targetUrl);
 
-                    if (response.Error != null)
-                        throw CreateException(targetUrl, response.Error);
+                    if (response.error != null)
+                        throw CreateException(targetUrl, response.error);
 
-                    var statusIndex = Array.IndexOf(response.ItemsElementName, ItemsChoiceType2.Status);
+                    var statusIndex = Array.IndexOf(response.ItemsElementName, ItemsChoiceType2.status);
                     if (statusIndex == -1)
                         return new RemoteCollectionTarget(collection, name, targetUrl, true, this);
 
@@ -111,12 +111,12 @@ namespace FubarDev.WebDavServer.Engines.Remote
 
         public async Task<ITarget> GetAsync(RemoteCollectionTarget collection, string name, CancellationToken cancellationToken)
         {
-            var requestData = new Propfind()
+            var requestData = new propfind()
             {
-                ItemsElementName = new[] { ItemsChoiceType1.Prop, },
+                ItemsElementName = new[] { ItemsChoiceType1.prop, },
                 Items = new object[]
                 {
-                    new Prop()
+                    new prop()
                     {
                         Any = new[]
                         {
@@ -126,7 +126,7 @@ namespace FubarDev.WebDavServer.Engines.Remote
                 },
             };
 
-            Multistatus result;
+            multistatus result;
 
             var targetUrl = collection.DestinationUrl.Append(name, false);
             using (var httpRequest = new HttpRequestMessage(_propFindHttpMethod, targetUrl)
@@ -151,38 +151,38 @@ namespace FubarDev.WebDavServer.Engines.Remote
                 }
             }
 
-            if (result.Response == null || result.Response.Length == 0)
+            if (result.response == null || result.response.Length == 0)
                 throw new RemoteTargetException("The destination server didn't return a response", targetUrl);
-            if (result.Response.Length != 1)
+            if (result.response.Length != 1)
                 throw new RemoteTargetException("Received more than one multi-status response", targetUrl);
 
-            var response = result.Response[0];
+            var response = result.response[0];
 
             var hrefs = response.GetHrefs().Select(x => new Uri(x, UriKind.RelativeOrAbsolute)).ToList();
             if (hrefs.Count == 0)
                 hrefs.Add(targetUrl);
 
-            var statusIndex = Array.IndexOf(response.ItemsElementName, ItemsChoiceType2.Status);
+            var statusIndex = Array.IndexOf(response.ItemsElementName, ItemsChoiceType2.status);
             var responseStatus = GetStatusCode(
-                response.Error,
+                response.error,
                 statusIndex == -1 ? null : (string)response.Items[statusIndex],
                 targetUrl,
                 hrefs);
             if (responseStatus == (int)WebDavStatusCode.NotFound)
                 return new RemoteMissingTarget(collection, targetUrl, name, this);
 
-            var propStatIndex = Array.IndexOf(response.ItemsElementName, ItemsChoiceType2.Propstat);
+            var propStatIndex = Array.IndexOf(response.ItemsElementName, ItemsChoiceType2.propstat);
             if (propStatIndex == -1)
                 throw new RemoteTargetException("No result returned", hrefs);
 
-            var propStat = (Propstat)response.Items[propStatIndex];
-            var location = string.IsNullOrEmpty(propStat.Location?.Href) ? targetUrl : new Uri(propStat.Location.Href, UriKind.RelativeOrAbsolute);
-            var propStatus = GetStatusCode(propStat.Error, propStat.Status, location, hrefs);
+            var propStat = (propstat)response.Items[propStatIndex];
+            var location = string.IsNullOrEmpty(propStat.location?.href) ? targetUrl : new Uri(propStat.location.href, UriKind.RelativeOrAbsolute);
+            var propStatus = GetStatusCode(propStat.error, propStat.status, location, hrefs);
             if (propStatus == (int)WebDavStatusCode.NotFound)
                 return new RemoteMissingTarget(collection, targetUrl, name, this);
 
             var resourceType = propStat
-                .Prop.Any
+                .prop.Any
                 .SingleOrDefault(x => x.Name == Props.Live.ResourceTypeProperty.PropertyName);
             var collectionElement = resourceType?.Element(WebDavXml.Dav + "collection");
             if (collectionElement == null)
@@ -213,7 +213,7 @@ namespace FubarDev.WebDavServer.Engines.Remote
         }
 
         [NotNull]
-        protected static RemoteTargetException CreateException(Uri requestUrl, [NotNull] Error error)
+        protected static RemoteTargetException CreateException(Uri requestUrl, [NotNull] error error)
         {
             var hrefs = new List<Uri>();
             string message = "Unknown error";
@@ -223,30 +223,30 @@ namespace FubarDev.WebDavServer.Engines.Remote
                 var choiceItem = error.Items[index++];
                 switch (choiceType)
                 {
-                    case ItemsChoiceType.Any:
+                    case ItemsChoiceType.Item:
                         message = "Request failed with element {choiceItem}";
                         break;
-                    case ItemsChoiceType.CannotModifyProtectedProperty:
+                    case ItemsChoiceType.cannotmodifyprotectedproperty:
                         message = "Request tried to modify a protected property";
                         break;
-                    case ItemsChoiceType.LockTokenMatchesRequestUri:
+                    case ItemsChoiceType.locktokenmatchesrequesturi:
                         message = "No lock token found for the given request URI";
                         break;
-                    case ItemsChoiceType.LockTokenSubmitted:
+                    case ItemsChoiceType.locktokensubmitted:
                         message = "Locked resource found";
-                        hrefs.AddRange(((LockTokenSubmitted)choiceItem).Href?.Select(x => new Uri(x, UriKind.RelativeOrAbsolute)) ?? new Uri[0]);
+                        hrefs.AddRange(((errorLocktokensubmitted)choiceItem).href?.Select(x => new Uri(x, UriKind.RelativeOrAbsolute)) ?? new Uri[0]);
                         break;
-                    case ItemsChoiceType.NoConflictingLock:
+                    case ItemsChoiceType.noconflictinglock:
                         message = "Conflicting lock";
-                        hrefs.AddRange(((NoConflictingLock)choiceItem).Href?.Select(x => new Uri(x, UriKind.RelativeOrAbsolute)) ?? new Uri[0]);
+                        hrefs.AddRange(((errorNoconflictinglock)choiceItem).href?.Select(x => new Uri(x, UriKind.RelativeOrAbsolute)) ?? new Uri[0]);
                         break;
-                    case ItemsChoiceType.NoExternalEntities:
+                    case ItemsChoiceType.noexternalentities:
                         message = "External XML entities unsupported";
                         break;
-                    case ItemsChoiceType.PreservedLiveProperties:
+                    case ItemsChoiceType.preservedliveproperties:
                         message = "Request failed to modify a live property";
                         break;
-                    case ItemsChoiceType.PropfindFiniteDepth:
+                    case ItemsChoiceType.propfindfinitedepth:
                         message = "The server doesn't support infinite depth";
                         break;
                     default:
@@ -261,19 +261,19 @@ namespace FubarDev.WebDavServer.Engines.Remote
             return new RemoteTargetException(message, hrefs);
         }
 
-        protected Multistatus Parse(Uri requrestUrl, HttpResponseMessage responseMessage, XDocument document)
+        protected multistatus Parse(Uri requrestUrl, HttpResponseMessage responseMessage, XDocument document)
         {
             if (document == null)
             {
                 var status = new Status($"HTTP/{responseMessage.Version}", responseMessage.StatusCode, responseMessage.ReasonPhrase);
-                return new Multistatus
+                return new multistatus
                 {
-                    Response = new[]
+                    response = new[]
                     {
-                        new Response()
+                        new response()
                         {
-                            Href = requrestUrl.ToString(),
-                            ItemsElementName = new[] { ItemsChoiceType2.Status, },
+                            href = requrestUrl.ToString(),
+                            ItemsElementName = new[] { ItemsChoiceType2.status, },
                             Items = new object[] { status.ToString() },
                         },
                     },
@@ -284,24 +284,24 @@ namespace FubarDev.WebDavServer.Engines.Remote
             Debug.Assert(document.Root != null, "document.Root != null");
             if (document.Root.Name == errorName)
             {
-                var error = (Error)_errorSerializer.Deserialize(document.Root.CreateReader());
+                var error = (error)_errorSerializer.Deserialize(document.Root.CreateReader());
                 var status = new Status($"HTTP/{responseMessage.Version}", responseMessage.StatusCode, responseMessage.ReasonPhrase);
-                return new Multistatus
+                return new multistatus
                 {
-                    Response = new[]
+                    response = new[]
                     {
-                        new Response()
+                        new response()
                         {
-                            Href = requrestUrl.ToString(),
-                            ItemsElementName = new[] { ItemsChoiceType2.Status, },
+                            href = requrestUrl.ToString(),
+                            ItemsElementName = new[] { ItemsChoiceType2.status, },
                             Items = new object[] { status.ToString() },
-                            Error = error,
+                            error = error,
                         },
                     },
                 };
             }
 
-            var result = (Multistatus)_multiStatusSerializer.Deserialize(document.CreateReader());
+            var result = (multistatus)_multiStatusSerializer.Deserialize(document.CreateReader());
             return result;
         }
 
@@ -346,7 +346,7 @@ namespace FubarDev.WebDavServer.Engines.Remote
             }
         }
 
-        private static int GetStatusCode(Error error, string statusLine, Uri targetUrl, IReadOnlyCollection<Uri> hrefs)
+        private static int GetStatusCode(error error, string statusLine, Uri targetUrl, IReadOnlyCollection<Uri> hrefs)
         {
             if (error != null)
                 throw CreateException(targetUrl, error);
@@ -395,13 +395,13 @@ namespace FubarDev.WebDavServer.Engines.Remote
                 elements.Add(element);
             }
 
-            var requestData = new Propertyupdate()
+            var requestData = new propertyupdate()
             {
                 Items = new object[]
                 {
-                    new Propset()
+                    new propset()
                     {
-                        Prop = new Prop()
+                        prop = new prop()
                         {
                             Any = elements.ToArray(),
                         },
@@ -409,7 +409,7 @@ namespace FubarDev.WebDavServer.Engines.Remote
                 },
             };
 
-            Multistatus result;
+            multistatus result;
 
             using (var httpRequest = new HttpRequestMessage(_propPatchHttpMethod, targetUrl)
             {
@@ -429,19 +429,19 @@ namespace FubarDev.WebDavServer.Engines.Remote
                 }
             }
 
-            if (result.Response == null || result.Response.Length == 0)
+            if (result.response == null || result.response.Length == 0)
                 throw new RemoteTargetException("The destination server didn't return a response", targetUrl);
-            if (result.Response.Length != 1)
+            if (result.response.Length != 1)
                 throw new RemoteTargetException("Received more than one multi-status response", targetUrl);
 
-            var response = result.Response[0];
+            var response = result.response[0];
 
             var hrefs = response.GetHrefs().Select(x => new Uri(x, UriKind.RelativeOrAbsolute)).ToList();
             if (hrefs.Count == 0)
                 hrefs.Add(targetUrl);
 
-            var statusIndex = Array.IndexOf(response.ItemsElementName, ItemsChoiceType2.Status);
-            var isFailure = response.Error != null;
+            var statusIndex = Array.IndexOf(response.ItemsElementName, ItemsChoiceType2.status);
+            var isFailure = response.error != null;
             if (statusIndex != -1 && !isFailure)
             {
                 var responseStatus = Status.Parse((string)response.Items[statusIndex]);
@@ -450,16 +450,16 @@ namespace FubarDev.WebDavServer.Engines.Remote
 
             var hasFailedPropStats = false;
             var failedProperties = new List<XName>();
-            foreach (var propstat in response.Items.OfType<Propstat>())
+            foreach (var propstat in response.Items.OfType<propstat>())
             {
                 var propStatIsFailure =
                     isFailure
-                    || propstat.Error != null
-                    || (!string.IsNullOrEmpty(propstat.Status) && !Status.Parse(propstat.Status).IsSuccessStatusCode);
+                    || propstat.error != null
+                    || (!string.IsNullOrEmpty(propstat.status) && !Status.Parse(propstat.status).IsSuccessStatusCode);
                 hasFailedPropStats |= propStatIsFailure;
-                if (propStatIsFailure && propstat.Prop?.Any != null)
+                if (propStatIsFailure && propstat.prop?.Any != null)
                 {
-                    foreach (var element in propstat.Prop.Any)
+                    foreach (var element in propstat.prop.Any)
                     {
                         failedProperties.Add(element.Name);
                     }

@@ -56,16 +56,16 @@ namespace FubarDev.WebDavServer.AspNetCore.Filters
 
         private IActionResult BuildResultForStatusCode(ExceptionContext context, WebDavStatusCode statusCode, string optionalMessge)
         {
-            var result = new WebDavResult<Multistatus>(
+            var result = new WebDavResult<multistatus>(
                 statusCode,
-                new Multistatus()
+                new multistatus()
                 {
-                    Response = new[]
+                    response = new[]
                     {
-                        new Response()
+                        new response()
                         {
-                            Href = context.HttpContext.Request.GetEncodedUrl(),
-                            ItemsElementName = new[] { ItemsChoiceType2.Status, },
+                            href = context.HttpContext.Request.GetEncodedUrl(),
+                            ItemsElementName = new[] { ItemsChoiceType2.status, },
                             Items = new object[] { new Status(context.HttpContext.Request.Protocol, statusCode, optionalMessge).ToString() },
                         },
                     },
