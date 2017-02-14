@@ -135,6 +135,17 @@ namespace FubarDev.WebDavServer.Handlers.Impl
                         views.Add(streamView);
                     }
 
+                    string contentType;
+                    var contentTypeProp = properties.OfType<GetContentTypeProperty>().FirstOrDefault();
+                    if (contentTypeProp != null)
+                    {
+                        contentType = await contentTypeProp.GetValueAsync(ct).ConfigureAwait(false);
+                    }
+                    else
+                    {
+                        contentType = MimeTypesMap.DefaultMimeType;
+                    }
+
                     HttpContent content;
                     if (_rangeItems.Count == 1)
                     {
@@ -153,17 +164,6 @@ namespace FubarDev.WebDavServer.Handlers.Impl
                             throw;
                         }
 
-                        string contentType;
-                        var contentTypeProp = properties.OfType<GetContentTypeProperty>().FirstOrDefault();
-                        if (contentTypeProp != null)
-                        {
-                            contentType = await contentTypeProp.GetValueAsync(ct).ConfigureAwait(false);
-                        }
-                        else
-                        {
-                            contentType = MimeTypesMap.DefaultMimeType;
-                        }
-
                         content.Headers.ContentType = MediaTypeHeaderValue.Parse(contentType);
                     }
                     else
@@ -178,6 +178,7 @@ namespace FubarDev.WebDavServer.Handlers.Impl
                                 var streamView = views[index++];
                                 var partContent = new StreamContent(streamView);
                                 partContent.Headers.ContentRange = new ContentRangeHeaderValue(rangeItem.From, rangeItem.To, _document.Length);
+                                partContent.Headers.ContentType = MediaTypeHeaderValue.Parse(contentType);
                                 partContent.Headers.ContentLength = rangeItem.Length;
                                 multipart.Add(partContent);
                             }
