@@ -17,8 +17,6 @@ using FubarDev.WebDavServer.Model;
 using MimeKit;
 using MimeKit.IO;
 
-using Portable.Text;
-
 using Xunit;
 
 using Encoding = System.Text.Encoding;
@@ -111,6 +109,47 @@ namespace FubarDev.WebDavServer.Tests.Handlers
         }
 
         [Fact]
+        public async Task GetWithTwoOverlappingRangeTest()
+        {
+            var ct = CancellationToken.None;
+            var root = await FileSystem.Root;
+            var testFile = await root.CreateDocumentAsync("test1.txt", ct).ConfigureAwait(false);
+            await FillAsync(testFile, int.MaxValue, ct).ConfigureAwait(false);
+
+            using (var client = Server.CreateClient())
+            {
+                var range = new Range("bytes", new RangeItem(0, 5), new RangeItem(3, 9));
+                var request = new HttpRequestMessage(HttpMethod.Get, "test1.txt")
+                {
+                    Headers =
+                    {
+                        Range = RangeHeaderValue.Parse(range.ToString()),
+                    },
+                };
+
+                using (var response = await client.SendAsync(request, ct).ConfigureAwait(false))
+                {
+                    var content = response
+                        .EnsureSuccessStatusCode().Content;
+
+                    Assert.Equal(HttpStatusCode.PartialContent, response.StatusCode);
+                    Assert.Equal(10, content.Headers.ContentLength);
+
+                    var contentRange = content.Headers.ContentRange;
+                    Assert.NotNull(contentRange);
+                    Assert.Equal(0, contentRange.From);
+                    Assert.Equal(9, contentRange.To);
+                    Assert.Equal(_testBlock.Value.Length, contentRange.Length);
+
+                    var data = await content
+                        .ReadAsByteArrayAsync().ConfigureAwait(false);
+                    var s = Encoding.UTF8.GetString(data);
+                    Assert.Equal("1234567890", s);
+                }
+            }
+        }
+
+        [Fact]
         public async Task GetWithTwoRangesTest()
         {
             var ct = CancellationToken.None;
@@ -139,17 +178,46 @@ namespace FubarDev.WebDavServer.Tests.Handlers
                     var multipart = await ReadMultipartAsync(content, ct).ConfigureAwait(false);
                     Assert.Equal(2, multipart.Count);
                     Assert.All(multipart, entity => Assert.True(entity.ContentType.IsMimeType("text", "plain")));
-                    /*
                     Assert.Collection(
                         multipart,
                         entity =>
                         {
-                            
+                            var textPart = Assert.IsType<TextPart>(entity);
+                            Assert.Equal($"bytes 0-1/{_testBlock.Value.Length}", textPart.Headers["Content-Range"]);
+                            Assert.Equal("12", textPart.Text);
                         },
                         entity =>
                         {
+                            var textPart = Assert.IsType<TextPart>(entity);
+                            Assert.Equal($"bytes 3-4/{_testBlock.Value.Length}", textPart.Headers["Content-Range"]);
+                            Assert.Equal("45", textPart.Text);
+                        });
+                }
+            }
+        }
 
-                        });*/
+        [Fact]
+        public async Task GetWithUnsatisfiableRangeTest()
+        {
+            var ct = CancellationToken.None;
+            var root = await FileSystem.Root;
+            var testFile = await root.CreateDocumentAsync("test1.txt", ct).ConfigureAwait(false);
+            await FillAsync(testFile, int.MaxValue, ct).ConfigureAwait(false);
+
+            using (var client = Server.CreateClient())
+            {
+                var range = new Range("bytes", new RangeItem(_testBlock.Value.Length - 1, _testBlock.Value.Length));
+                var request = new HttpRequestMessage(HttpMethod.Get, "test1.txt")
+                {
+                    Headers =
+                    {
+                        Range = RangeHeaderValue.Parse(range.ToString()),
+                    },
+                };
+
+                using (var response = await client.SendAsync(request, ct).ConfigureAwait(false))
+                {
+                    Assert.Equal(HttpStatusCode.RequestedRangeNotSatisfiable, response.StatusCode);
                 }
             }
         }
@@ -160,7 +228,7 @@ namespace FubarDev.WebDavServer.Tests.Handlers
                 .ReadAsStreamAsync().ConfigureAwait(false);
 
             var headerStream = new MemoryStream();
-            using (var headerWriter = new StreamWriter(headerStream, new System.Text.UTF8Encoding(false), 1000, true)
+            using (var headerWriter = new StreamWriter(headerStream, new UTF8Encoding(false), 1000, true)
             {
                 NewLine = "\r\n",
             })
