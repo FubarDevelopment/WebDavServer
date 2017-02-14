@@ -5,7 +5,6 @@
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
-using System.IO;
 using System.Linq;
 using System.Net.Http;
 using System.Net.Http.Headers;
@@ -17,6 +16,7 @@ using FubarDev.WebDavServer.Model;
 using FubarDev.WebDavServer.Props;
 using FubarDev.WebDavServer.Props.Dead;
 using FubarDev.WebDavServer.Props.Live;
+using FubarDev.WebDavServer.Utils;
 
 using JetBrains.Annotations;
 
@@ -145,12 +145,26 @@ namespace FubarDev.WebDavServer.Handlers.Impl
                         try
                         {
                             content.Headers.ContentRange = new ContentRangeHeaderValue(rangeItem.From, rangeItem.To, _document.Length);
+                            content.Headers.ContentLength = rangeItem.Length;
                         }
                         catch
                         {
                             content.Dispose();
                             throw;
                         }
+
+                        string contentType;
+                        var contentTypeProp = properties.OfType<GetContentTypeProperty>().FirstOrDefault();
+                        if (contentTypeProp != null)
+                        {
+                            contentType = await contentTypeProp.GetValueAsync(ct).ConfigureAwait(false);
+                        }
+                        else
+                        {
+                            contentType = MimeTypesMap.DefaultMimeType;
+                        }
+
+                        content.Headers.ContentType = MediaTypeHeaderValue.Parse(contentType);
                     }
                     else
                     {
@@ -164,6 +178,7 @@ namespace FubarDev.WebDavServer.Handlers.Impl
                                 var streamView = views[index++];
                                 var partContent = new StreamContent(streamView);
                                 partContent.Headers.ContentRange = new ContentRangeHeaderValue(rangeItem.From, rangeItem.To, _document.Length);
+                                partContent.Headers.ContentLength = rangeItem.Length;
                                 multipart.Add(partContent);
                             }
                         }
@@ -209,147 +224,6 @@ namespace FubarDev.WebDavServer.Handlers.Impl
                 {
                     var propValue = await contentLanguageProp.TryGetValueAsync(ct).ConfigureAwait(false);
                     propValue.IfSome(v => content.Headers.ContentLanguage.Add(v));
-                }
-
-                string contentType;
-                var contentTypeProp = properties.OfType<GetContentTypeProperty>().FirstOrDefault();
-                if (contentTypeProp != null)
-                {
-                    contentType = await contentTypeProp.GetValueAsync(ct).ConfigureAwait(false);
-                }
-                else
-                {
-                    contentType = Utils.MimeTypesMap.DefaultMimeType;
-                }
-
-                content.Headers.ContentType = MediaTypeHeaderValue.Parse(contentType);
-            }
-
-            private class StreamView : Stream
-            {
-                private readonly Stream _baseStream;
-                private long _position;
-
-                private StreamView(Stream baseStream, long startPosition, long length)
-                {
-                    _baseStream = baseStream;
-                    Offset = startPosition;
-                    Length = length;
-                }
-
-                public override bool CanRead { get; } = true;
-
-                public override bool CanSeek => _baseStream.CanSeek;
-
-                public override bool CanWrite { get; } = false;
-
-                public override long Length { get; }
-
-                public override long Position
-                {
-                    get
-                    {
-                        return _position;
-                    }
-
-                    set
-                    {
-                        if (_position == value)
-                            return;
-                        _baseStream.Seek(value - _position, SeekOrigin.Current);
-                        _position = value;
-                    }
-                }
-
-                private long Offset { get; }
-
-                public static async Task<StreamView> CreateAsync(
-                    Stream baseStream,
-                    long position,
-                    long length,
-                    CancellationToken ct)
-                {
-                    if (baseStream.CanSeek)
-                    {
-                        baseStream.Seek(position, SeekOrigin.Begin);
-                    }
-                    else
-                    {
-                        await SkipAsync(baseStream, position, ct).ConfigureAwait(false);
-                    }
-
-                    return new StreamView(baseStream, position, length);
-                }
-
-                public override void Flush()
-                {
-                    _baseStream.Flush();
-                }
-
-                public override int Read(byte[] buffer, int offset, int count)
-                {
-                    var remaining = Math.Min(Length - _position, count);
-                    var readCount = _baseStream.Read(buffer, offset, (int)remaining);
-                    _position += readCount;
-                    return readCount;
-                }
-
-                public override long Seek(long offset, SeekOrigin origin)
-                {
-                    long result;
-                    switch (origin)
-                    {
-                        case SeekOrigin.Begin:
-                            result = _baseStream.Seek(Offset + offset, origin);
-                            _position = offset;
-                            break;
-                        case SeekOrigin.Current:
-                            var newPos = Offset + _position + offset;
-                            if (newPos < Offset)
-                                newPos = Offset;
-                            if (newPos > Offset + Length)
-                                newPos = Offset + Length;
-                            var newOffset = newPos - (Offset + _position);
-                            result = _baseStream.Seek(newOffset, SeekOrigin.Current);
-                            _position = newPos - Offset;
-                            break;
-                        case SeekOrigin.End:
-                            result = _baseStream.Seek(Offset + Length + offset, SeekOrigin.Begin);
-                            _position = Length + offset;
-                            break;
-                        default:
-                            throw new InvalidOperationException();
-                    }
-
-                    return result;
-                }
-
-                public override void SetLength(long value)
-                {
-                    throw new NotSupportedException();
-                }
-
-                public override void Write(byte[] buffer, int offset, int count)
-                {
-                    throw new NotSupportedException();
-                }
-
-                protected override void Dispose(bool disposing)
-                {
-                    base.Dispose(disposing);
-                    if (disposing)
-                        _baseStream.Dispose();
-                }
-
-                private static async Task SkipAsync(Stream baseStream, long count, CancellationToken ct)
-                {
-                    var buffer = new byte[65536];
-                    while (count != 0)
-                    {
-                        var blockSize = Math.Min(65536, count);
-                        await baseStream.ReadAsync(buffer, 0, (int)blockSize, ct).ConfigureAwait(false);
-                        count -= blockSize;
-                    }
                 }
             }
         }
@@ -424,7 +298,7 @@ namespace FubarDev.WebDavServer.Handlers.Impl
                 }
                 else
                 {
-                    contentType = Utils.MimeTypesMap.DefaultMimeType;
+                    contentType = MimeTypesMap.DefaultMimeType;
                 }
 
                 content.Headers.ContentType = MediaTypeHeaderValue.Parse(contentType);
