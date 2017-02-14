@@ -5,6 +5,8 @@
 using System;
 using System.Xml.Linq;
 
+using JetBrains.Annotations;
+
 namespace FubarDev.WebDavServer.Locking
 {
     /// <summary>
@@ -22,9 +24,9 @@ namespace FubarDev.WebDavServer.Locking
         /// <param name="shareMode">The <see cref="LockShareMode"/> of the lock</param>
         /// <param name="timeout">The lock timeout</param>
         public Lock(
-            string path,
+            [NotNull] string path,
             bool recursive,
-            XElement owner,
+            [CanBeNull] XElement owner,
             LockAccessType accessType,
             LockShareMode shareMode,
             TimeSpan timeout)
@@ -48,11 +50,11 @@ namespace FubarDev.WebDavServer.Locking
         /// <param name="shareMode">The <see cref="LockShareMode"/> of the lock</param>
         /// <param name="timeout">The lock timeout</param>
         protected Lock(
-            string path,
+            [NotNull] string path,
             bool recursive,
-            XElement owner,
-            string accessType,
-            string shareMode,
+            [CanBeNull] XElement owner,
+            [NotNull] string accessType,
+            [NotNull] string shareMode,
             TimeSpan timeout)
         {
             Path = path;

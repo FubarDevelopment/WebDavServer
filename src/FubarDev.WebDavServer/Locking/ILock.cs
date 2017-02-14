@@ -53,7 +53,7 @@ namespace FubarDev.WebDavServer.Locking
         /// <returns>
         /// The XML identifying the owner of the lock
         /// </returns>
-        [NotNull]
+        [CanBeNull]
         XElement GetOwner();
     }
 }

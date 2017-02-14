@@ -66,7 +66,7 @@ namespace FubarDev.WebDavServer.Locking
         public ActiveLock(
             [NotNull] string path,
             bool recursive,
-            XElement owner,
+            [CanBeNull] XElement owner,
             LockAccessType accessType,
             LockShareMode shareMode,
             TimeSpan timeout,

@@ -32,5 +32,7 @@ namespace FubarDev.WebDavServer.Dispatchers
         Task<IWebDavResult> CopyAsync(string path, Uri destination, CancellationToken cancellationToken);
 
         Task<IWebDavResult> MoveAsync(string path, Uri destination, CancellationToken cancellationToken);
+
+        Task<IWebDavResult> LockAsync(string path, lockinfo info, CancellationToken cancellationToken);
     }
 }

@@ -23,6 +23,7 @@ namespace FubarDev.WebDavServer
             IfNoneMatch = ParseHeader("If-None-Match", Model.IfNoneMatch.Parse);
             IfModifiedSince = ParseHeader("If-Modified-Since", args => Model.IfModifiedSince.Parse(args.Single()));
             IfUnmodifiedSince = ParseHeader("If-Unmodified-Since", args => Model.IfUnmodifiedSince.Parse(args.Single()));
+            Timeout = ParseHeader("Timeout", Model.Timeout.Parse);
         }
 
         public Model.Depth? Depth { get; set; }
@@ -40,6 +41,8 @@ namespace FubarDev.WebDavServer
         public Model.IfUnmodifiedSince IfUnmodifiedSince { get; set; }
 
         public Model.Range Range { get; set; }
+
+        public Model.Timeout Timeout { get; set; }
 
         public IDictionary<string, List<string>> Headers { get; }
 

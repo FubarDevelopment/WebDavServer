@@ -48,6 +48,9 @@ namespace FubarDev.WebDavServer.Dispatchers
         [CanBeNull]
         private readonly IMoveHandler _moveHandler;
 
+        [CanBeNull]
+        private readonly ILockHandler _lockHandler;
+
         public WebDavDispatcherClass1(IEnumerable<IClass1Handler> class1Handlers, IWebDavContext context)
         {
             var httpMethods = new HashSet<string>();
@@ -113,6 +116,12 @@ namespace FubarDev.WebDavServer.Dispatchers
                 if (class1Handler is IMoveHandler moveHandler)
                 {
                     _moveHandler = moveHandler;
+                    handlerFound = true;
+                }
+
+                if (class1Handler is ILockHandler lockHandler)
+                {
+                    _lockHandler = lockHandler;
                     handlerFound = true;
                 }
 
@@ -218,6 +227,14 @@ namespace FubarDev.WebDavServer.Dispatchers
             if (_moveHandler == null)
                 throw new NotSupportedException();
             return _moveHandler.MoveAsync(path, destination, cancellationToken);
+        }
+
+        /// <inheritdoc />
+        public Task<IWebDavResult> LockAsync(string path, lockinfo info, CancellationToken cancellationToken)
+        {
+            if (_lockHandler == null)
+                throw new NotSupportedException();
+            return _lockHandler.LockAsync(path, info, cancellationToken);
         }
     }
 }

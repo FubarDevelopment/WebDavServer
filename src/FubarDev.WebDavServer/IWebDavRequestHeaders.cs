@@ -32,6 +32,9 @@ namespace FubarDev.WebDavServer
         [CanBeNull]
         Model.Range Range { get; }
 
+        [CanBeNull]
+        Model.Timeout Timeout { get; set; }
+
         [NotNull]
         IDictionary<string, List<string>> Headers { get; }
 
