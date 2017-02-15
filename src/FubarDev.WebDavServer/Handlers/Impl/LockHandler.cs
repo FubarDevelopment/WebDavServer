@@ -5,6 +5,7 @@
 using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
+using System.Diagnostics;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
@@ -67,12 +68,13 @@ namespace FubarDev.WebDavServer.Handlers.Impl
                 timeout);
 
             var lockResult = await _lockManager.LockAsync(l, cancellationToken).ConfigureAwait(false);
-            lockResult.IfLeft(conflictingLocks =>
+            if (lockResult.ConflictingLocks != null)
             {
                 // Lock cannot be acquired
-            });
+            }
 
-            var activeLock = lockResult.RightToArray().Single();
+            var activeLock = lockResult.Lock;
+            Debug.Assert(activeLock != null, "activeLock != null");
             try
             {
                 var selectionResult = await _rootFileSystem.SelectAsync(path, cancellationToken).ConfigureAwait(false);

@@ -228,7 +228,8 @@ namespace FubarDev.WebDavServer.Handlers.Impl
                 if (contentLanguageProp != null)
                 {
                     var propValue = await contentLanguageProp.TryGetValueAsync(ct).ConfigureAwait(false);
-                    propValue.IfSome(v => content.Headers.ContentLanguage.Add(v));
+                    if (propValue.Item1)
+                        content.Headers.ContentLanguage.Add(propValue.Item2);
                 }
             }
         }
@@ -296,7 +297,8 @@ namespace FubarDev.WebDavServer.Handlers.Impl
                 if (contentLanguageProp != null)
                 {
                     var propValue = await contentLanguageProp.TryGetValueAsync(ct).ConfigureAwait(false);
-                    propValue.IfSome(v => content.Headers.ContentLanguage.Add(v));
+                    if (propValue.Item1)
+                        content.Headers.ContentLanguage.Add(propValue.Item2);
                 }
 
                 string contentType;

@@ -3,8 +3,7 @@
 // </copyright>
 
 using System;
-using System.Collections.Generic;
-using System.Linq;
+using System.Diagnostics;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Xml.Linq;
@@ -12,7 +11,7 @@ using System.Xml.Linq;
 using FubarDev.WebDavServer.Locking;
 using FubarDev.WebDavServer.Tests.Support.ServiceBuilders;
 
-using LanguageExt;
+using JetBrains.Annotations;
 
 using Microsoft.Extensions.DependencyInjection;
 
@@ -204,7 +203,7 @@ namespace FubarDev.WebDavServer.Tests.Locking
                         TimeSpan.FromMinutes(1)),
                     ct)
                 .ConfigureAwait(false);
-            Assert.True(result2.IsLeft, "The second lock is expected to fail");
+            Assert.Null(result2.Lock);
         }
 
         [Fact]
@@ -236,22 +235,22 @@ namespace FubarDev.WebDavServer.Tests.Locking
                         TimeSpan.FromMinutes(1)),
                     ct)
                 .ConfigureAwait(false);
-            Assert.True(result2.IsLeft, "The second lock is expected to fail");
+            Assert.Null(result2.Lock);
         }
 
-        private IActiveLock ValidateLockResult(Either<IReadOnlyCollection<IActiveLock>, IActiveLock> result)
+        [NotNull]
+        private IActiveLock ValidateLockResult(LockResult result)
         {
-            if (!result.IsLeft)
-                return result.RightAsEnumerable().Single();
+            if (result.Lock != null)
+                return result.Lock;
 
-            foreach (var activeLock in result.LeftAsEnumerable().Single())
+            Debug.Assert(result.ConflictingLocks != null, "result.ConflictingLocks != null");
+            foreach (var activeLock in result.ConflictingLocks)
             {
                 _output.WriteLine(activeLock.ToString());
             }
 
-            Assert.True(result.IsRight, "Conflicting locks detected");
-
-            return result.RightAsEnumerable().Single();
+            throw new InvalidOperationException("Conflicting locks detected");
         }
     }
 }

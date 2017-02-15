@@ -9,12 +9,8 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 
-using LanguageExt;
-
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
-
-using static LanguageExt.Prelude;
 
 namespace FubarDev.WebDavServer.Locking.InMemory
 {
@@ -49,7 +45,7 @@ namespace FubarDev.WebDavServer.Locking.InMemory
 
         public event EventHandler<LockEventArgs> LockReleased;
 
-        public Task<Either<IReadOnlyCollection<IActiveLock>, IActiveLock>> LockAsync(ILock l, CancellationToken cancellationToken)
+        public Task<LockResult> LockAsync(ILock l, CancellationToken cancellationToken)
         {
             IActiveLock newActiveLock;
             var destinationUrl = new Uri(_baseUrl, l.Path);
@@ -61,7 +57,7 @@ namespace FubarDev.WebDavServer.Locking.InMemory
                 {
                     if (_logger.IsEnabled(LogLevel.Information))
                         _logger.LogInformation($"Found conflicting locks for {l}: {string.Join(",", conflictingLocks.Select(x => x.ToString()))}");
-                    return Task.FromResult(Left<IReadOnlyCollection<IActiveLock>, IActiveLock>(conflictingLocks));
+                    return Task.FromResult(new LockResult(conflictingLocks));
                 }
 
                 newActiveLock = new ActiveLock(l, _rounding.Round(_systemClock.UtcNow), _rounding.Round(l.Timeout));
@@ -73,7 +69,7 @@ namespace FubarDev.WebDavServer.Locking.InMemory
 
             _cleanupTask.Add(this, newActiveLock);
 
-            return Task.FromResult(Right<IReadOnlyCollection<IActiveLock>, IActiveLock>(newActiveLock));
+            return Task.FromResult(new LockResult(newActiveLock));
         }
 
         public Task<bool> ReleaseAsync(Uri stateToken, CancellationToken cancellationToken)

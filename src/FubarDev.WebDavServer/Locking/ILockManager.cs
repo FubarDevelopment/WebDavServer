@@ -7,8 +7,6 @@ using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
 
-using LanguageExt;
-
 namespace FubarDev.WebDavServer.Locking
 {
     /// <summary>
@@ -32,7 +30,7 @@ namespace FubarDev.WebDavServer.Locking
         /// <param name="l">The lock to issue</param>
         /// <param name="cancellationToken">The cancellation token</param>
         /// <returns>Either the list of locks preventing issuing a lock or the active lock created</returns>
-        Task<Either<IReadOnlyCollection<IActiveLock>, IActiveLock>> LockAsync(ILock l, CancellationToken cancellationToken);
+        Task<LockResult> LockAsync(ILock l, CancellationToken cancellationToken);
 
         /// <summary>
         /// Releases a lock with the given state token

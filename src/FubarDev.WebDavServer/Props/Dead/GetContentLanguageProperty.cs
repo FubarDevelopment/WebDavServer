@@ -2,6 +2,7 @@
 // Copyright (c) Fubar Development Junker. All rights reserved.
 // </copyright>
 
+using System;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Xml.Linq;
@@ -10,10 +11,6 @@ using FubarDev.WebDavServer.FileSystem;
 using FubarDev.WebDavServer.Model;
 using FubarDev.WebDavServer.Props.Generic;
 using FubarDev.WebDavServer.Props.Store;
-
-using LanguageExt;
-
-using static LanguageExt.Prelude;
 
 namespace FubarDev.WebDavServer.Props.Dead
 {
@@ -36,12 +33,12 @@ namespace FubarDev.WebDavServer.Props.Dead
             _store = store;
         }
 
-        public async Task<Option<string>> TryGetValueAsync(CancellationToken ct)
+        public async Task<ValueTuple<bool, string>> TryGetValueAsync(CancellationToken ct)
         {
             var result = await GetValueAsync(ct).ConfigureAwait(false);
             if (_value == null)
-                return None;
-            return Some(result);
+                return ValueTuple.Create(false, _value);
+            return ValueTuple.Create(true, result);
         }
 
         public override async Task<string> GetValueAsync(CancellationToken ct)
