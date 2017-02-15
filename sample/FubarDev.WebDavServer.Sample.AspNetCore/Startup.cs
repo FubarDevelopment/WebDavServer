@@ -3,6 +3,8 @@
 using FubarDev.WebDavServer.AspNetCore;
 using FubarDev.WebDavServer.FileSystem;
 using FubarDev.WebDavServer.FileSystem.DotNet;
+using FubarDev.WebDavServer.Locking;
+using FubarDev.WebDavServer.Locking.InMemory;
 using FubarDev.WebDavServer.Props.Store;
 using FubarDev.WebDavServer.Props.Store.TextFile;
 using FubarDev.WebDavServer.Sample.AspNetCore.BasicAuth;
@@ -60,6 +62,7 @@ namespace FubarDev.WebDavServer.Sample.AspNetCore
                 .AddMemoryCache()
                 .AddTransient<IPropertyStoreFactory, TextFilePropertyStoreFactory>()
                 .AddSingleton<IFileSystemFactory, DotNetFileSystemFactory>()
+                .AddSingleton<ILockManager, InMemoryLockManager>()
                 .AddTransient(sp =>
                 {
                     var factory = sp.GetRequiredService<IFileSystemFactory>();

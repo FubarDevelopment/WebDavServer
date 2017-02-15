@@ -12,6 +12,7 @@ using FubarDev.WebDavServer.Engines.Remote;
 using FubarDev.WebDavServer.FileSystem;
 using FubarDev.WebDavServer.Formatters;
 using FubarDev.WebDavServer.Handlers;
+using FubarDev.WebDavServer.Locking;
 using FubarDev.WebDavServer.Props.Dead;
 
 using Microsoft.AspNetCore.Http;
@@ -42,7 +43,8 @@ namespace Microsoft.Extensions.DependencyInjection
                 .AddScoped<IWebDavDispatcher, WebDavServer>()
                 .AddSingleton<WebDavExceptionFilter>()
                 .AddScoped<IWebDavOutputFormatter, WebDavXmlOutputFormatter>()
-                .AddSingleton<PathTraversalEngine>();
+                .AddSingleton<PathTraversalEngine>()
+                .AddSingleton<LockCleanupTask>();
             services.Scan(
                 scan => scan
                     .FromAssemblyOf<IHandler>()

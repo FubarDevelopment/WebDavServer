@@ -13,6 +13,8 @@ using FubarDev.WebDavServer.Engines.Remote;
 using FubarDev.WebDavServer.FileSystem;
 using FubarDev.WebDavServer.FileSystem.InMemory;
 using FubarDev.WebDavServer.Handlers.Impl;
+using FubarDev.WebDavServer.Locking;
+using FubarDev.WebDavServer.Locking.InMemory;
 using FubarDev.WebDavServer.Props.Dead;
 using FubarDev.WebDavServer.Props.Store.InMemory;
 using FubarDev.WebDavServer.Tests.Support;
@@ -81,6 +83,7 @@ namespace FubarDev.WebDavServer.Tests
                     })
                 .AddScoped<IWebDavContext>(sp => new TestHost(container.Server.BaseAddress, sp.GetRequiredService<IHttpContextAccessor>()))
                 .AddScoped<IHttpMessageHandlerFactory>(sp => new TestHttpMessageHandlerFactory(container.Server))
+                .AddSingleton<ILockManager, InMemoryLockManager>()
                 .AddSingleton<IFileSystemFactory>(sp => new TestFileSystemFactory(container.FileSystem))
                 .AddTransient(sp =>
                 {
