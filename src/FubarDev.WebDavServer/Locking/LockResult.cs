@@ -2,8 +2,6 @@
 // Copyright (c) Fubar Development Junker. All rights reserved.
 // </copyright>
 
-using System.Collections.Generic;
-
 using JetBrains.Annotations;
 
 namespace FubarDev.WebDavServer.Locking
@@ -26,7 +24,7 @@ namespace FubarDev.WebDavServer.Locking
         /// Initializes a new instance of the <see cref="LockResult"/> class.
         /// </summary>
         /// <param name="conflictingLocks">The collection of locks preventing locking the given destination</param>
-        public LockResult(IReadOnlyCollection<IActiveLock> conflictingLocks)
+        public LockResult(LockStatus conflictingLocks)
         {
             ConflictingLocks = conflictingLocks;
         }
@@ -41,7 +39,6 @@ namespace FubarDev.WebDavServer.Locking
         /// Gets the collection of locks preventing locking the given destination.
         /// </summary>
         [CanBeNull]
-        [ItemNotNull]
-        public IReadOnlyCollection<IActiveLock> ConflictingLocks { get; }
+        public LockStatus ConflictingLocks { get; }
     }
 }

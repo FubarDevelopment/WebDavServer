@@ -37,6 +37,7 @@ namespace Microsoft.Extensions.DependencyInjection
             services.TryAddSingleton<IRemoteMoveTargetActionsFactory, DefaultRemoteTargetActionsFactory>();
             services.TryAddSingleton<IHttpMessageHandlerFactory, DefaultHttpMessageHandlerFactory>();
             services.TryAddSingleton<ISystemClock, SystemClock>();
+            services.TryAddSingleton<ITimeoutPolicy, DefaultTimeoutPolicy>();
             services.TryAddScoped<IWebDavContext, WebDavContext>();
             services
                 .AddOptions()
