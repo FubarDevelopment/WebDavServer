@@ -645,9 +645,9 @@ namespace FubarDev.WebDavServer.Model {
         
         private string timeoutField;
         
-        private string[] locktokenField;
+        private locktoken locktokenField;
         
-        private string[] lockrootField;
+        private lockroot lockrootField;
         
         /// <remarks/>
         public lockscope lockscope {
@@ -700,8 +700,7 @@ namespace FubarDev.WebDavServer.Model {
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlArrayItemAttribute("href", DataType="anyURI", IsNullable=false)]
-        public string[] locktoken {
+        public locktoken locktoken {
             get {
                 return this.locktokenField;
             }
@@ -711,8 +710,7 @@ namespace FubarDev.WebDavServer.Model {
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlArrayItemAttribute("href", DataType="anyURI", IsNullable=false)]
-        public string[] lockroot {
+        public lockroot lockroot {
             get {
                 return this.lockrootField;
             }
@@ -743,6 +741,46 @@ namespace FubarDev.WebDavServer.Model {
     [System.CodeDom.Compiler.GeneratedCodeAttribute("Xsd2", "1.0.0.0")]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.Xml.Serialization.XmlTypeAttribute(Namespace="DAV:")]
+    public partial class locktoken {
+        
+        private string hrefField;
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(DataType="anyURI")]
+        public string href {
+            get {
+                return this.hrefField;
+            }
+            set {
+                this.hrefField = value;
+            }
+        }
+    }
+    
+    /// <remarks/>
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("Xsd2", "1.0.0.0")]
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="DAV:")]
+    public partial class lockroot {
+        
+        private string hrefField;
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(DataType="anyURI")]
+        public string href {
+            get {
+                return this.hrefField;
+            }
+            set {
+                this.hrefField = value;
+            }
+        }
+    }
+    
+    /// <remarks/>
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("Xsd2", "1.0.0.0")]
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="DAV:")]
     public partial class lockentry {
         
         private lockscope lockscopeField;
@@ -766,46 +804,6 @@ namespace FubarDev.WebDavServer.Model {
             }
             set {
                 this.locktypeField = value;
-            }
-        }
-    }
-    
-    /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("Xsd2", "1.0.0.0")]
-    [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.Xml.Serialization.XmlTypeAttribute(Namespace="DAV:")]
-    public partial class lockroot {
-        
-        private string[] hrefField;
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute("href", DataType="anyURI")]
-        public string[] href {
-            get {
-                return this.hrefField;
-            }
-            set {
-                this.hrefField = value;
-            }
-        }
-    }
-    
-    /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("Xsd2", "1.0.0.0")]
-    [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.Xml.Serialization.XmlTypeAttribute(Namespace="DAV:")]
-    public partial class locktoken {
-        
-        private string[] hrefField;
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute("href", DataType="anyURI")]
-        public string[] href {
-            get {
-                return this.hrefField;
-            }
-            set {
-                this.hrefField = value;
             }
         }
     }

@@ -132,13 +132,13 @@
 
   <complexType name="lockroot">
     <sequence>
-      <element name="href" type="anyURI" maxOccurs="unbounded" />
+      <element name="href" type="anyURI" />
     </sequence>
   </complexType>
 
   <complexType name="locktoken">
     <sequence>
-      <element name="href" type="anyURI" maxOccurs="unbounded" />
+      <element name="href" type="anyURI" />
     </sequence>
   </complexType>
 

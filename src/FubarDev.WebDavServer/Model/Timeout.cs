@@ -17,6 +17,11 @@ namespace FubarDev.WebDavServer.Model
             Values = values;
         }
 
+        public Timeout(params TimeSpan[] values)
+        {
+            Values = values;
+        }
+
         public static TimeSpan Infinite { get; } = TimeSpan.MaxValue;
 
         public IReadOnlyCollection<TimeSpan> Values { get; }

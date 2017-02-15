@@ -4,12 +4,12 @@
 
 using System;
 using System.Collections.Generic;
-using System.Collections.Immutable;
 using System.Diagnostics;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Xml.Linq;
+using System.Xml.Serialization;
 
 using FubarDev.WebDavServer.FileSystem;
 using FubarDev.WebDavServer.Locking;
@@ -23,6 +23,8 @@ namespace FubarDev.WebDavServer.Handlers.Impl
 {
     public class LockHandler : ILockHandler
     {
+        private static readonly XmlSerializer _activeLockSerializer = new XmlSerializer(typeof(activelock));
+
         [NotNull]
         private readonly IFileSystem _rootFileSystem;
 
@@ -33,11 +35,13 @@ namespace FubarDev.WebDavServer.Handlers.Impl
         private readonly ITimeoutPolicy _timeoutPolicy;
 
         [NotNull]
-        private readonly IWebDavContext _webDavContext;
+        private readonly IWebDavContext _context;
+
+        private readonly bool _useAbsoluteHref = false;
 
         public LockHandler(IWebDavContext context, IFileSystem rootFileSystem, ILockManager lockManager, ITimeoutPolicy timeoutPolicy = null)
         {
-            _webDavContext = context;
+            _context = context;
             _rootFileSystem = rootFileSystem;
             _lockManager = lockManager;
             _timeoutPolicy = timeoutPolicy;
@@ -50,13 +54,13 @@ namespace FubarDev.WebDavServer.Handlers.Impl
         public async Task<IWebDavResult> LockAsync(string path, lockinfo info, CancellationToken cancellationToken)
         {
             var owner = info.owner == null ? null : new XElement(WebDavXml.Dav + "owner", info.owner.Any.Cast<object>().ToArray());
-            var recursive = (_webDavContext.RequestHeaders.Depth ?? Depth.Infinity) == Depth.Infinity;
+            var recursive = (_context.RequestHeaders.Depth ?? Depth.Infinity) == Depth.Infinity;
             var accessType = LockAccessType.Write;
             var shareType = info.lockscope.ItemElementName == ItemChoiceType.exclusive
                 ? LockShareMode.Exclusive
                 : LockShareMode.Shared;
             var timeout = _timeoutPolicy?.SelectTimeout(
-                              _webDavContext.RequestHeaders.Timeout?.Values ?? new[] { Timeout.Infinite })
+                              _context.RequestHeaders.Timeout?.Values ?? new[] { Timeout.Infinite })
                           ?? Timeout.Infinite;
 
             var l = new Lock(
@@ -71,33 +75,70 @@ namespace FubarDev.WebDavServer.Handlers.Impl
             if (lockResult.ConflictingLocks != null)
             {
                 // Lock cannot be acquired
+                if (lockResult.ConflictingLocks.ChildLocks.Count == 0)
+                {
+                    return new WebDavResult<error>(WebDavStatusCode.Locked, CreateError(lockResult.ConflictingLocks.GetLocks()));
+                }
+
+                var errorResponses = new List<response>();
+                if (lockResult.ConflictingLocks.ChildLocks.Count != 0
+                    || lockResult.ConflictingLocks.ReferenceLocks.Count != 0)
+                {
+                    errorResponses.Add(CreateErrorResponse(
+                        WebDavStatusCode.Forbidden,
+                        lockResult.ConflictingLocks.ChildLocks.Concat(lockResult.ConflictingLocks.ReferenceLocks)));
+                }
+
+                if (lockResult.ConflictingLocks.ParentLocks.Count != 0)
+                {
+                    var errorResponse = CreateErrorResponse(
+                        WebDavStatusCode.Forbidden,
+                        lockResult.ConflictingLocks.ChildLocks);
+                    errorResponse.error = CreateError(new IActiveLock[0]);
+                    errorResponses.Add(errorResponse);
+                }
+
+                errorResponses.Add(new response()
+                {
+                    href = GetHref(l.Path),
+                    ItemsElementName = new[] { ItemsChoiceType2.status, },
+                    Items = new object[]
+                    {
+                        new Status(_context.RequestProtocol, WebDavStatusCode.FailedDependency).ToString(),
+                    },
+                });
+
+                var multistatus = new multistatus()
+                {
+                    response = errorResponses.ToArray(),
+                };
+
+                return new WebDavResult<multistatus>(WebDavStatusCode.MultiStatus, multistatus);
             }
 
+            WebDavStatusCode statusCode;
             var activeLock = lockResult.Lock;
             Debug.Assert(activeLock != null, "activeLock != null");
             try
             {
                 var selectionResult = await _rootFileSystem.SelectAsync(path, cancellationToken).ConfigureAwait(false);
-                IEntry destination;
                 if (selectionResult.IsMissing)
                 {
-                    var current = selectionResult.Collection;
-                    var names = ImmutableList<string>.Empty.AddRange(selectionResult.MissingNames);
-                    while (names.Count != 1)
-                    {
-                        var name = names[0];
-                        names = names.RemoveAt(0);
-                        var next = await current.CreateCollectionAsync(name, cancellationToken).ConfigureAwait(false);
-                        current = next;
-                    }
+                    if (selectionResult.MissingNames.Count > 1)
+                        return new WebDavResult(WebDavStatusCode.Conflict);
 
-                    var docName = names.Single();
-                    destination = await current.CreateDocumentAsync(docName, cancellationToken).ConfigureAwait(false);
+                    var current = selectionResult.Collection;
+                    var docName = selectionResult.MissingNames.Single();
+                    await current.CreateDocumentAsync(docName, cancellationToken).ConfigureAwait(false);
+                    statusCode = WebDavStatusCode.Created;
                 }
                 else
                 {
-                    destination = selectionResult.TargetEntry;
+                    statusCode = WebDavStatusCode.OK;
                 }
+
+                var result = CreateActiveLockXml(activeLock);
+                return new WebDavXmlResult(statusCode, result);
             }
             catch
             {
@@ -108,6 +149,87 @@ namespace FubarDev.WebDavServer.Handlers.Impl
             }
 
             throw new NotImplementedException();
+        }
+
+        private error CreateError(IEnumerable<IActiveLock> activeLocks)
+        {
+            return new error()
+            {
+                ItemsElementName = new[] { ItemsChoiceType.noconflictinglock, },
+                Items = new object[]
+                {
+                    new errorNoconflictinglock()
+                    {
+                        href = GetHrefs(activeLocks),
+                    },
+                },
+            };
+        }
+
+        private response CreateErrorResponse(WebDavStatusCode statusCode, IEnumerable<IActiveLock> activeLocks)
+        {
+            var hrefs = GetHrefs(activeLocks);
+            var choices = hrefs.Skip(1)
+                .Select(x => Tuple.Create(ItemsChoiceType2.href, x))
+                .ToList();
+            choices.Add(Tuple.Create(
+                ItemsChoiceType2.status,
+                new Status(_context.RequestProtocol, statusCode).ToString()));
+            var response = new response()
+            {
+                href = hrefs.FirstOrDefault(),
+                ItemsElementName = choices.Select(x => x.Item1).ToArray(),
+                Items = choices.Select(x => x.Item2).Cast<object>().ToArray(),
+            };
+
+            return response;
+        }
+
+        private string[] GetHrefs(IEnumerable<IActiveLock> activeLocks)
+        {
+            return activeLocks.Select(x => GetHref(x.Path)).ToArray();
+        }
+
+        private string GetHref(string path)
+        {
+            var href = _context.BaseUrl.Append(path, true);
+            if (!_useAbsoluteHref)
+                href = new Uri("/" + _context.RootUrl.MakeRelativeUri(href).OriginalString);
+            return href.OriginalString;
+        }
+
+        private XElement CreateActiveLockXml(IActiveLock l)
+        {
+            var timeout = l.Timeout == Timeout.Infinite ? "Infinite" : $"Second-{l.Timeout.TotalSeconds:F0}";
+            var depth = l.Recursive ? Depth.Infinity : Depth.Zero;
+            var lockScope = LockShareMode.Parse(l.ShareMode);
+            var lockType = LockAccessType.Parse(l.AccessType);
+            var lockRoot = GetHref(l.Path);
+            var owner = l.GetOwner();
+            var result = new XElement(
+                WebDavXml.Dav + "activelock",
+                new XElement(
+                    WebDavXml.Dav + "lockscope",
+                    new XElement(lockScope.Name)),
+                new XElement(
+                    WebDavXml.Dav + "locktype",
+                    new XElement(lockType.Name)),
+                new XElement(
+                    WebDavXml.Dav + "depth",
+                    depth.Value));
+            if (owner != null)
+                result.Add(owner);
+            result.Add(
+                new XElement(
+                    WebDavXml.Dav + "timeout",
+                    timeout),
+                new XElement(
+                    WebDavXml.Dav + "locktoken",
+                    new XElement(WebDavXml.Dav + "href", l.StateToken)),
+                new XElement(
+                    WebDavXml.Dav + "lockroot",
+                    new XElement(WebDavXml.Dav + "href", lockRoot)));
+            return result;
         }
     }
 }

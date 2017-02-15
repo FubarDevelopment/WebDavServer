@@ -18,8 +18,6 @@ namespace FubarDev.WebDavServer.Locking.InMemory
     {
         private static readonly Uri _baseUrl = new Uri("http://localhost/");
 
-        private static readonly IReadOnlyCollection<IActiveLock> _emptyActiveLocks = new ActiveLock[0];
-
         private readonly object _syncRoot = new object();
 
         private readonly LockCleanupTask _cleanupTask;
@@ -56,7 +54,7 @@ namespace FubarDev.WebDavServer.Locking.InMemory
                 if (conflictingLocks.Count != 0)
                 {
                     if (_logger.IsEnabled(LogLevel.Information))
-                        _logger.LogInformation($"Found conflicting locks for {l}: {string.Join(",", conflictingLocks.Select(x => x.ToString()))}");
+                        _logger.LogInformation($"Found conflicting locks for {l}: {string.Join(",", conflictingLocks.GetLocks().Select(x => x.ToString()))}");
                     return Task.FromResult(new LockResult(conflictingLocks));
                 }
 
@@ -110,22 +108,26 @@ namespace FubarDev.WebDavServer.Locking.InMemory
             LockReleased?.Invoke(this, new LockEventArgs(activeLock));
         }
 
-        private static IReadOnlyCollection<IActiveLock> GetConflictingLocks(LockStatus affactingLocks, LockShareMode shareMode)
+        private static LockStatus GetConflictingLocks(LockStatus affactingLocks, LockShareMode shareMode)
         {
             if (shareMode == LockShareMode.Exclusive)
             {
-                if (affactingLocks.IsEmpty)
-                    return _emptyActiveLocks;
-                return affactingLocks.GetLocks().ToList();
+                return affactingLocks;
             }
 
-            var exclusiveLocks =
-                (from activeLock in affactingLocks.GetLocks()
-                 let lockShareMode = LockShareMode.Parse(activeLock.ShareMode)
-                 where lockShareMode == LockShareMode.Exclusive
-                 select activeLock)
-                .ToList();
-            return exclusiveLocks;
+            return new LockStatus(
+                affactingLocks
+                    .ReferenceLocks
+                    .Where(x => LockShareMode.Parse(x.ShareMode) == LockShareMode.Exclusive)
+                    .ToList(),
+                affactingLocks
+                    .ParentLocks
+                    .Where(x => LockShareMode.Parse(x.ShareMode) == LockShareMode.Exclusive)
+                    .ToList(),
+                affactingLocks
+                    .ChildLocks
+                    .Where(x => LockShareMode.Parse(x.ShareMode) == LockShareMode.Exclusive)
+                    .ToList());
         }
 
         private LockStatus Find(Uri destinationUrl, bool withChildren)

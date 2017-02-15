@@ -245,7 +245,7 @@ namespace FubarDev.WebDavServer.Tests.Locking
                 return result.Lock;
 
             Debug.Assert(result.ConflictingLocks != null, "result.ConflictingLocks != null");
-            foreach (var activeLock in result.ConflictingLocks)
+            foreach (var activeLock in result.ConflictingLocks.GetLocks())
             {
                 _output.WriteLine(activeLock.ToString());
             }

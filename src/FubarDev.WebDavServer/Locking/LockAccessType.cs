@@ -13,19 +13,26 @@ namespace FubarDev.WebDavServer.Locking
 {
     public struct LockAccessType : IEquatable<LockAccessType>
     {
-        public static LockAccessType Write = new LockAccessType(WriteId);
+        public static LockAccessType Write = new LockAccessType(WriteId, new locktype()
+        {
+            Item = new object(),
+        });
 
         private const string WriteId = "write";
 
-        public LockAccessType([NotNull] string id)
+        public LockAccessType([NotNull] string id, [NotNull] locktype xmlValue)
         {
             if (id == null)
                 throw new ArgumentNullException(nameof(id));
             Name = WebDavXml.Dav + id;
+            XmlValue = xmlValue;
         }
 
         [NotNull]
         public XName Name { get; }
+
+        [NotNull]
+        public locktype XmlValue { get; }
 
         public static bool operator ==(LockAccessType x, LockAccessType y)
         {

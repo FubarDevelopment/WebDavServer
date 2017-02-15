@@ -9,19 +9,22 @@ namespace FubarDev.WebDavServer.Model
 {
     public struct Depth : IComparable<Depth>, IEquatable<Depth>
     {
-        public static readonly Depth Zero = new Depth("0", 0);
-        public static readonly Depth One = new Depth("1", 1);
-        public static readonly Depth Infinity = new Depth("infinity", int.MaxValue);
+        public static readonly Depth Zero = new Depth("0", 0, activelockDepth.Item0);
+        public static readonly Depth One = new Depth("1", 1, activelockDepth.Item1);
+        public static readonly Depth Infinity = new Depth("infinity", int.MaxValue, activelockDepth.infinity);
 
-        private Depth(string value, int orderValue)
+        private Depth(string value, int orderValue, activelockDepth xmlValue)
         {
             Value = value;
             OrderValue = orderValue;
+            XmlValue = xmlValue;
         }
 
         public int OrderValue { get; }
 
         public string Value { get; }
+
+        public activelockDepth XmlValue { get; }
 
         public static bool operator ==(Depth x, Depth y)
         {

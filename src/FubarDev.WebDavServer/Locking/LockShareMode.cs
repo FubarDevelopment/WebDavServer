@@ -13,21 +13,34 @@ namespace FubarDev.WebDavServer.Locking
 {
     public struct LockShareMode : IEquatable<LockShareMode>
     {
-        public static readonly LockShareMode Shared = new LockShareMode(SharedId);
-        public static readonly LockShareMode Exclusive = new LockShareMode(ExclusiveId);
+        public static readonly LockShareMode Shared = new LockShareMode(SharedId, new lockscope()
+        {
+            ItemElementName = ItemChoiceType.shared,
+            Item = new object(),
+        });
+
+        public static readonly LockShareMode Exclusive = new LockShareMode(ExclusiveId, new lockscope()
+        {
+            ItemElementName = ItemChoiceType.exclusive,
+            Item = new object(),
+        });
 
         private const string SharedId = "shared";
         private const string ExclusiveId = "exclusive";
 
-        public LockShareMode([NotNull] string id)
+        public LockShareMode([NotNull] string id, [NotNull] lockscope xmlValue)
         {
             if (id == null)
                 throw new ArgumentNullException(nameof(id));
             Name = WebDavXml.Dav + id;
+            XmlValue = xmlValue;
         }
 
         [NotNull]
         public XName Name { get; }
+
+        [NotNull]
+        public lockscope XmlValue { get; }
 
         public static bool operator ==(LockShareMode x, LockShareMode y)
         {
