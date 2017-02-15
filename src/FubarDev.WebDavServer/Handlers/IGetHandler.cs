@@ -5,10 +5,14 @@
 using System.Threading;
 using System.Threading.Tasks;
 
+using JetBrains.Annotations;
+
 namespace FubarDev.WebDavServer.Handlers
 {
     public interface IGetHandler : IClass1Handler
     {
-        Task<IWebDavResult> GetAsync(string path, CancellationToken cancellationToken);
+        [NotNull]
+        [ItemNotNull]
+        Task<IWebDavResult> GetAsync([NotNull] string path, CancellationToken cancellationToken);
     }
 }

@@ -5,10 +5,14 @@
 using System.Threading;
 using System.Threading.Tasks;
 
+using JetBrains.Annotations;
+
 namespace FubarDev.WebDavServer.Handlers
 {
     public interface IMkColHandler : IClass1Handler
     {
-        Task<IWebDavResult> MkColAsync(string path, CancellationToken cancellationToken);
+        [NotNull]
+        [ItemNotNull]
+        Task<IWebDavResult> MkColAsync([NotNull] string path, CancellationToken cancellationToken);
     }
 }

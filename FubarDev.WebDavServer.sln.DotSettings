@@ -1,4 +1,7 @@
 ﻿<wpf:ResourceDictionary xml:space="preserve" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:s="clr-namespace:System;assembly=mscorlib" xmlns:ss="urn:shemas-jetbrains-com:settings-storage-xaml" xmlns:wpf="http://schemas.microsoft.com/winfx/2006/xaml/presentation">
+	<s:String x:Key="/Default/CodeInspection/ExcludedFiles/GeneratedFilesAndFolders/=EF4CE1C7_002DD7DC_002D48EE_002DB5C3_002D051078D3F28D_002Fd_003AProperties_002Ff_003AResources_002EDesigner_002Ecs/@EntryIndexedValue">EF4CE1C7-D7DC-48EE-B5C3-051078D3F28D/d:Properties/f:Resources.Designer.cs</s:String>
+	<s:String x:Key="/Default/CodeInspection/ExcludedFiles/GeneratedFilesAndFolders/=EF4CE1C7_002DD7DC_002D48EE_002DB5C3_002D051078D3F28D_002Fd_003AProperties_002Ff_003AResources_002Eresx/@EntryIndexedValue">EF4CE1C7-D7DC-48EE-B5C3-051078D3F28D/d:Properties/f:Resources.resx</s:String>
+	<s:String x:Key="/Default/CodeInspection/ExcludedFiles/GeneratedFilesAndFolders/=EF4CE1C7_002DD7DC_002D48EE_002DB5C3_002D051078D3F28D_002Fd_003AUtils_002Fd_003AUAParser_002Ff_003AUAParser_002Ecs/@EntryIndexedValue">EF4CE1C7-D7DC-48EE-B5C3-051078D3F28D/d:Utils/d:UAParser/f:UAParser.cs</s:String>
 	<s:String x:Key="/Default/CodeInspection/Highlighting/InspectionSeverities/=RedundantCommaInInitializer/@EntryIndexedValue">DO_NOT_SHOW</s:String>
 	<s:Boolean x:Key="/Default/CodeStyle/CodeFormatting/CSharpFormat/ALIGN_LINQ_QUERY/@EntryValue">True</s:Boolean>
 	<s:Int64 x:Key="/Default/CodeStyle/CodeFormatting/CSharpFormat/BLANK_LINES_BETWEEN_USING_GROUPS/@EntryValue">1</s:Int64>

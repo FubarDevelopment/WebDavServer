@@ -7,6 +7,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 
+using JetBrains.Annotations;
+
 using Microsoft.Extensions.Logging;
 
 namespace FubarDev.WebDavServer.Locking
@@ -17,11 +19,23 @@ namespace FubarDev.WebDavServer.Locking
     public class LockCleanupTask : IDisposable
     {
         private static readonly TimeSpan _deactivated = TimeSpan.FromMilliseconds(-1);
+
+        [NotNull]
         private readonly ISystemClock _systemClock;
+
+        [NotNull]
         private readonly MultiValueDictionary<DateTime, ActiveLockItem> _activeLocks = new MultiValueDictionary<DateTime, ActiveLockItem>();
+
+        [NotNull]
         private readonly object _syncRoot = new object();
+
+        [NotNull]
         private readonly Timer _timer;
+
+        [NotNull]
         private readonly ILogger<LockCleanupTask> _logger;
+
+        [CanBeNull]
         private ActiveLockItem _mostRecentExpirationLockItem;
 
         /// <summary>
@@ -30,8 +44,8 @@ namespace FubarDev.WebDavServer.Locking
         /// <param name="systemClock">The system clock</param>
         /// <param name="logger">The logger for the cleanup task</param>
         public LockCleanupTask(
-            ISystemClock systemClock,
-            ILogger<LockCleanupTask> logger)
+            [NotNull] ISystemClock systemClock,
+            [NotNull] ILogger<LockCleanupTask> logger)
         {
             _systemClock = systemClock;
             _logger = logger;
@@ -43,7 +57,7 @@ namespace FubarDev.WebDavServer.Locking
         /// </summary>
         /// <param name="lockManager">The lock manager that created this active lock.</param>
         /// <param name="activeLock">The active lock to track</param>
-        public void Add(ILockManager lockManager, IActiveLock activeLock)
+        public void Add([NotNull] ILockManager lockManager, [NotNull] IActiveLock activeLock)
         {
             if (_logger.IsEnabled(LogLevel.Trace))
                 _logger.LogTrace($"Adding lock {activeLock}");
@@ -70,7 +84,7 @@ namespace FubarDev.WebDavServer.Locking
         /// Removes the active lock so that it isn't tracked any more by this cleanup task.
         /// </summary>
         /// <param name="activeLock">The active lock to remove</param>
-        public void Remove(IActiveLock activeLock)
+        public void Remove([NotNull] IActiveLock activeLock)
         {
             if (_logger.IsEnabled(LogLevel.Trace))
                 _logger.LogTrace($"Try removing lock {activeLock}");
@@ -100,7 +114,7 @@ namespace FubarDev.WebDavServer.Locking
                 // Remove lock item
                 _activeLocks.Remove(lockItem.Expiration, lockItem);
 
-                if (lockItem.ActiveLock.StateToken == _mostRecentExpirationLockItem.ActiveLock.StateToken)
+                if (_mostRecentExpirationLockItem != null && lockItem.ActiveLock.StateToken == _mostRecentExpirationLockItem.ActiveLock.StateToken)
                 {
                     // Removed lock item was the most recent
                     _mostRecentExpirationLockItem = FindMostRecentExpirationItem();
@@ -202,7 +216,7 @@ namespace FubarDev.WebDavServer.Locking
             return null;
         }
 
-        private void ConfigureTimer(ActiveLockItem lockItem)
+        private void ConfigureTimer([NotNull] ActiveLockItem lockItem)
         {
             if (_logger.IsEnabled(LogLevel.Trace))
                 _logger.LogTrace($"Lock {lockItem.ActiveLock.StateToken} is the next to expire.");
@@ -222,7 +236,7 @@ namespace FubarDev.WebDavServer.Locking
 
         private class ActiveLockItem
         {
-            public ActiveLockItem(ILockManager lockManager, IActiveLock activeLock)
+            public ActiveLockItem([NotNull] ILockManager lockManager, [NotNull] IActiveLock activeLock)
             {
                 LockManager = lockManager;
                 ActiveLock = activeLock;
@@ -230,8 +244,10 @@ namespace FubarDev.WebDavServer.Locking
 
             public DateTime Expiration => ActiveLock.Expiration;
 
+            [NotNull]
             public ILockManager LockManager { get; }
 
+            [NotNull]
             public IActiveLock ActiveLock { get; }
         }
     }

@@ -63,6 +63,7 @@ namespace FubarDev.WebDavServer.Handlers.Impl
 
                 if (selectionResult.ResultType == SelectionResultType.FoundDocument)
                 {
+                    Debug.Assert(selectionResult.Document != null, "selectionResult.Document != null");
                     await docPropertyStore.RemoveAsync(selectionResult.Document, cancellationToken).ConfigureAwait(false);
                 }
             }

@@ -23,11 +23,13 @@ namespace FubarDev.WebDavServer.Handlers.Impl
 {
     public class PropPatchHandler : IPropPatchHandler
     {
+        [NotNull]
         private readonly IFileSystem _fileSystem;
 
+        [NotNull]
         private readonly IWebDavContext _host;
 
-        public PropPatchHandler(IFileSystem fileSystem, IWebDavContext host)
+        public PropPatchHandler([NotNull] IFileSystem fileSystem, [NotNull] IWebDavContext host)
         {
             _fileSystem = fileSystem;
             _host = host;
@@ -128,7 +130,8 @@ namespace FubarDev.WebDavServer.Handlers.Impl
             return new WebDavResult<multistatus>(statusCode, status);
         }
 
-        private static IUntypedReadableProperty FindProperty(IReadOnlyDictionary<XName, IUntypedReadableProperty> properties, XName name)
+        [CanBeNull]
+        private static IUntypedReadableProperty FindProperty([NotNull] IReadOnlyDictionary<XName, IUntypedReadableProperty> properties, [NotNull] XName name)
         {
             IUntypedReadableProperty property;
             if (properties.TryGetValue(name, out property))
@@ -143,7 +146,9 @@ namespace FubarDev.WebDavServer.Handlers.Impl
             return null;
         }
 
-        private IEnumerable<propstat> CreatePropStats(IEnumerable<ChangeItem> changes, error error)
+        [NotNull]
+        [ItemNotNull]
+        private IEnumerable<propstat> CreatePropStats([NotNull][ItemNotNull] IEnumerable<ChangeItem> changes, [CanBeNull] error error)
         {
             var changesByStatusCodes = changes.GroupBy(x => x.StatusCode);
             foreach (var changesByStatusCode in changesByStatusCodes)
@@ -168,7 +173,9 @@ namespace FubarDev.WebDavServer.Handlers.Impl
             }
         }
 
-        private async Task<IReadOnlyCollection<ChangeItem>> RevertChangesAsync(IEntry entry, IReadOnlyCollection<ChangeItem> changes, Dictionary<XName, IUntypedReadableProperty> properties, CancellationToken cancellationToken)
+        [NotNull]
+        [ItemNotNull]
+        private async Task<IReadOnlyCollection<ChangeItem>> RevertChangesAsync([NotNull] IEntry entry, [NotNull][ItemNotNull] IReadOnlyCollection<ChangeItem> changes, [NotNull] Dictionary<XName, IUntypedReadableProperty> properties, CancellationToken cancellationToken)
         {
             var newChangeItems = new List<ChangeItem>();
 
@@ -218,7 +225,9 @@ namespace FubarDev.WebDavServer.Handlers.Impl
             return newChangeItems;
         }
 
-        private async Task<IReadOnlyCollection<ChangeItem>> ApplyChangesAsync(IEntry entry, Dictionary<XName, IUntypedReadableProperty> properties, propertyupdate request, CancellationToken cancellationToken)
+        [NotNull]
+        [ItemNotNull]
+        private async Task<IReadOnlyCollection<ChangeItem>> ApplyChangesAsync([NotNull] IEntry entry, [NotNull] Dictionary<XName, IUntypedReadableProperty> properties, [NotNull] propertyupdate request, CancellationToken cancellationToken)
         {
             var result = new List<ChangeItem>();
             if (request.Items == null)
@@ -247,7 +256,9 @@ namespace FubarDev.WebDavServer.Handlers.Impl
             return result;
         }
 
-        private async Task<IReadOnlyCollection<ChangeItem>> ApplyRemoveAsync(IEntry entry, IReadOnlyDictionary<XName, IUntypedReadableProperty> properties, propremove remove, bool previouslyFailed, CancellationToken cancellationToken)
+        [NotNull]
+        [ItemNotNull]
+        private async Task<IReadOnlyCollection<ChangeItem>> ApplyRemoveAsync([NotNull] IEntry entry, [NotNull] IReadOnlyDictionary<XName, IUntypedReadableProperty> properties, [NotNull] propremove remove, bool previouslyFailed, CancellationToken cancellationToken)
         {
             var result = new List<ChangeItem>();
 
@@ -316,7 +327,9 @@ namespace FubarDev.WebDavServer.Handlers.Impl
             return result;
         }
 
-        private async Task<IReadOnlyCollection<ChangeItem>> ApplySetAsync(IEntry entry, Dictionary<XName, IUntypedReadableProperty> properties, propset set, bool previouslyFailed, CancellationToken cancellationToken)
+        [NotNull]
+        [ItemNotNull]
+        private async Task<IReadOnlyCollection<ChangeItem>> ApplySetAsync([NotNull] IEntry entry, [NotNull] Dictionary<XName, IUntypedReadableProperty> properties, [NotNull] propset set, bool previouslyFailed, CancellationToken cancellationToken)
         {
             var result = new List<ChangeItem>();
 
@@ -448,12 +461,12 @@ namespace FubarDev.WebDavServer.Handlers.Impl
                 }
             }
 
-            public static ChangeItem Added(IUntypedReadableProperty property, XElement newValue)
+            public static ChangeItem Added(IUntypedReadableProperty property, [NotNull] XElement newValue)
             {
                 return new ChangeItem(ChangeStatus.Added, property, newValue, null, newValue.Name, null);
             }
 
-            public static ChangeItem Modified(IUntypedReadableProperty property, XElement newValue, XElement oldValue)
+            public static ChangeItem Modified(IUntypedReadableProperty property, [NotNull] XElement newValue, XElement oldValue)
             {
                 return new ChangeItem(ChangeStatus.Modified, property, newValue, oldValue, newValue.Name, null);
             }
@@ -483,12 +496,12 @@ namespace FubarDev.WebDavServer.Handlers.Impl
                 return new ChangeItem(ChangeStatus.FailedDependency, null, null, null, name, description);
             }
 
-            public static ChangeItem InsufficientStorage(XElement newValue, string description)
+            public static ChangeItem InsufficientStorage([NotNull] XElement newValue, string description)
             {
                 return new ChangeItem(ChangeStatus.InsufficientStorage, null, newValue, null, newValue.Name, description);
             }
 
-            public static ChangeItem ReadOnly(IUntypedReadableProperty property, XElement newValue, string description)
+            public static ChangeItem ReadOnly([NotNull] IUntypedReadableProperty property, XElement newValue, string description)
             {
                 return new ChangeItem(ChangeStatus.ReadOnlyProperty, property, newValue, null, property.Name, description);
             }

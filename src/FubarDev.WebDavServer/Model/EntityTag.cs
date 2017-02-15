@@ -23,7 +23,7 @@ namespace FubarDev.WebDavServer.Model
         {
         }
 
-        internal EntityTag(bool isWeak, string value)
+        internal EntityTag(bool isWeak, [NotNull] string value)
         {
             IsWeak = isWeak;
             Value = value;
@@ -31,6 +31,7 @@ namespace FubarDev.WebDavServer.Model
 
         public bool IsWeak { get; }
 
+        [NotNull]
         public string Value { get; }
 
         public bool IsEmpty => string.IsNullOrEmpty(Value);
@@ -53,7 +54,7 @@ namespace FubarDev.WebDavServer.Model
             return Parse(element.Value).Single();
         }
 
-        public static IEnumerable<EntityTag> Parse(string s)
+        public static IEnumerable<EntityTag> Parse([NotNull] string s)
         {
             var source = new StringSource(s);
             var result = Parse(source).ToList();
@@ -77,6 +78,7 @@ namespace FubarDev.WebDavServer.Model
             return new EntityTag(IsWeak, Guid.NewGuid().ToString("D"));
         }
 
+        [NotNull]
         public XElement ToXml()
         {
             return new XElement(GetETagProperty.PropertyName, ToString());

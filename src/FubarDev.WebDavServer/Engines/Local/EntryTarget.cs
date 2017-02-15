@@ -20,6 +20,7 @@ namespace FubarDev.WebDavServer.Engines.Local
 {
     public abstract class EntryTarget : IExistingTarget
     {
+        [NotNull]
         private readonly IEntry _entry;
 
         protected EntryTarget([CanBeNull] CollectionTarget parent, [NotNull] Uri destinationUrl, [NotNull] IEntry entry)
@@ -40,7 +41,8 @@ namespace FubarDev.WebDavServer.Engines.Local
         public Uri DestinationUrl { get; }
 
         /// <inheritdoc />
-        public async Task<IReadOnlyCollection<XName>> SetPropertiesAsync(IEnumerable<IUntypedWriteableProperty> properties, CancellationToken cancellationToken)
+        [ItemNotNull]
+        public async Task<IReadOnlyCollection<XName>> SetPropertiesAsync([NotNull][ItemNotNull] IEnumerable<IUntypedWriteableProperty> properties, CancellationToken cancellationToken)
         {
             var liveProperties = new List<ILiveProperty>();
             var deadProperties = new List<IDeadProperty>();
@@ -66,7 +68,8 @@ namespace FubarDev.WebDavServer.Engines.Local
             return livePropertiesResult;
         }
 
-        private async Task SetPropertiesAsync(IEnumerable<IDeadProperty> properties, CancellationToken cancellationToken)
+        [NotNull]
+        private async Task SetPropertiesAsync([NotNull][ItemNotNull] IEnumerable<IDeadProperty> properties, CancellationToken cancellationToken)
         {
             var propertyStore = _entry.FileSystem.PropertyStore;
             if (propertyStore == null)
@@ -81,7 +84,9 @@ namespace FubarDev.WebDavServer.Engines.Local
             await propertyStore.SetAsync(_entry, elements, cancellationToken).ConfigureAwait(false);
         }
 
-        private async Task<IReadOnlyCollection<XName>> SetPropertiesAsync(IEnumerable<ILiveProperty> properties, CancellationToken cancellationToken)
+        [NotNull]
+        [ItemNotNull]
+        private async Task<IReadOnlyCollection<XName>> SetPropertiesAsync([NotNull][ItemNotNull] IEnumerable<ILiveProperty> properties, CancellationToken cancellationToken)
         {
             var isPropUsed = new Dictionary<XName, bool>();
             var propNameToValue = new Dictionary<XName, XElement>();

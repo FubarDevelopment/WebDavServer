@@ -5,10 +5,14 @@
 using System.Threading;
 using System.Threading.Tasks;
 
+using JetBrains.Annotations;
+
 namespace FubarDev.WebDavServer.Handlers
 {
     public interface IDeleteHandler : IClass1Handler
     {
-        Task<IWebDavResult> DeleteAsync(string path, CancellationToken cancellationToken);
+        [NotNull]
+        [ItemNotNull]
+        Task<IWebDavResult> DeleteAsync([NotNull] string path, CancellationToken cancellationToken);
     }
 }

@@ -4,10 +4,13 @@
 
 using System.Xml.Linq;
 
+using JetBrains.Annotations;
+
 namespace FubarDev.WebDavServer.Model
 {
     public static class WebDavXml
     {
+        [NotNull]
         public static XNamespace Dav { get; } = XNamespace.Get("DAV:");
     }
 }

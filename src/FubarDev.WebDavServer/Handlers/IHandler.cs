@@ -4,10 +4,14 @@
 
 using System.Collections.Generic;
 
+using JetBrains.Annotations;
+
 namespace FubarDev.WebDavServer.Handlers
 {
     public interface IHandler
     {
+        [NotNull]
+        [ItemNotNull]
         IEnumerable<string> HttpMethods { get; }
     }
 }

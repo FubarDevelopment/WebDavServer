@@ -20,7 +20,7 @@ namespace FubarDev.WebDavServer.Utils
         public const string FolderContentType = "httpd/unix-directory";
 
         // http://svn.apache.org/repos/asf/httpd/httpd/trunk/docs/conf/mime.types
-        private static Lazy<Dictionary<string, string>> _mimeTypeMap = new Lazy<Dictionary<string, string>>(() => new Dictionary<string, string>()
+        private static readonly Lazy<Dictionary<string, string>> _mimeTypeMap = new Lazy<Dictionary<string, string>>(() => new Dictionary<string, string>()
         {
             ["ez"] = "application/andrew-inset",
             ["aw"] = "application/applixware",

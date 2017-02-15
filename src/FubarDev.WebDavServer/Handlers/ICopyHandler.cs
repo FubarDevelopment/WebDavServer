@@ -6,8 +6,6 @@ using System;
 using System.Threading;
 using System.Threading.Tasks;
 
-using FubarDev.WebDavServer.Model;
-
 using JetBrains.Annotations;
 
 namespace FubarDev.WebDavServer.Handlers

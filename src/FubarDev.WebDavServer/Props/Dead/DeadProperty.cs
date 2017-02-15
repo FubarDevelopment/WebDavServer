@@ -2,6 +2,7 @@
 // Copyright (c) Fubar Development Junker. All rights reserved.
 // </copyright>
 
+using System;
 using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
@@ -48,7 +49,10 @@ namespace FubarDev.WebDavServer.Props.Dead
 
         public async Task<XElement> GetXmlValueAsync(CancellationToken ct)
         {
-            return _cachedValue ?? (_cachedValue = await _store.GetAsync(_entry, Name, ct).ConfigureAwait(false));
+            var result = _cachedValue ?? (_cachedValue = await _store.GetAsync(_entry, Name, ct).ConfigureAwait(false));
+            if (result == null)
+                throw new InvalidOperationException("Cannot get value from uninitialized property");
+            return result;
         }
 
         public void Init(XElement initialValue)

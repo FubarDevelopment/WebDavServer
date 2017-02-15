@@ -7,6 +7,8 @@ using System.IO;
 using System.Threading;
 using System.Threading.Tasks;
 
+using JetBrains.Annotations;
+
 namespace FubarDev.WebDavServer.Utils
 {
     /// <summary>
@@ -14,10 +16,11 @@ namespace FubarDev.WebDavServer.Utils
     /// </summary>
     public class StreamView : Stream
     {
+        [NotNull]
         private readonly Stream _baseStream;
         private long _position;
 
-        private StreamView(Stream baseStream, long startPosition, long length)
+        private StreamView([NotNull] Stream baseStream, long startPosition, long length)
         {
             _baseStream = baseStream;
             Offset = startPosition;
@@ -67,7 +70,7 @@ namespace FubarDev.WebDavServer.Utils
         /// <param name="ct">The cancellation token</param>
         /// <returns>The new stream view</returns>
         public static async Task<StreamView> CreateAsync(
-            Stream baseStream,
+            [NotNull] Stream baseStream,
             long position,
             long length,
             CancellationToken ct)
@@ -157,7 +160,7 @@ namespace FubarDev.WebDavServer.Utils
                 _baseStream.Dispose();
         }
 
-        private static async Task SkipAsync(Stream baseStream, long count, CancellationToken ct)
+        private static async Task SkipAsync([NotNull] Stream baseStream, long count, CancellationToken ct)
         {
             var buffer = new byte[65536];
             while (count != 0)

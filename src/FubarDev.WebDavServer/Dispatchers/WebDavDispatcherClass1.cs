@@ -51,7 +51,7 @@ namespace FubarDev.WebDavServer.Dispatchers
         [CanBeNull]
         private readonly ILockHandler _lockHandler;
 
-        public WebDavDispatcherClass1(IEnumerable<IClass1Handler> class1Handlers, IWebDavContext context)
+        public WebDavDispatcherClass1([NotNull] [ItemNotNull] IEnumerable<IClass1Handler> class1Handlers, [NotNull] IWebDavContext context)
         {
             var httpMethods = new HashSet<string>();
 

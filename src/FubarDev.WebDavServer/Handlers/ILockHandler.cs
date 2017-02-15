@@ -7,10 +7,14 @@ using System.Threading.Tasks;
 
 using FubarDev.WebDavServer.Model;
 
+using JetBrains.Annotations;
+
 namespace FubarDev.WebDavServer.Handlers
 {
     public interface ILockHandler : IClass1Handler
     {
-        Task<IWebDavResult> LockAsync(string path, lockinfo info, CancellationToken cancellationToken);
+        [NotNull]
+        [ItemNotNull]
+        Task<IWebDavResult> LockAsync([NotNull] string path, [NotNull] lockinfo info, CancellationToken cancellationToken);
     }
 }

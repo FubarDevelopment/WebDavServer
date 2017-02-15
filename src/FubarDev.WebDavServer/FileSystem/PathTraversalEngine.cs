@@ -24,28 +24,38 @@ namespace FubarDev.WebDavServer.FileSystem
             _logger = logger;
         }
 
-        public Task<SelectionResult> TraverseAsync(IFileSystem fileSystem, string path, CancellationToken ct)
+        [NotNull]
+        [ItemNotNull]
+        public Task<SelectionResult> TraverseAsync([NotNull] IFileSystem fileSystem, [CanBeNull] string path, CancellationToken ct)
         {
             return TraverseAsync(fileSystem, SplitPath(path ?? string.Empty), ct);
         }
 
-        public async Task<SelectionResult> TraverseAsync(IFileSystem fileSystem, IEnumerable<string> pathParts, CancellationToken ct)
+        [NotNull]
+        [ItemNotNull]
+        public async Task<SelectionResult> TraverseAsync([NotNull] IFileSystem fileSystem, [NotNull][ItemNotNull] IEnumerable<string> pathParts, CancellationToken ct)
         {
             var current = await fileSystem.Root.ConfigureAwait(false);
             return await TraverseAsync(current, pathParts, ct).ConfigureAwait(false);
         }
 
-        public Task<SelectionResult> TraverseAsync(ICollection currentCollection, string path, CancellationToken ct)
+        [NotNull]
+        [ItemNotNull]
+        public Task<SelectionResult> TraverseAsync([NotNull] ICollection currentCollection, [CanBeNull] string path, CancellationToken ct)
         {
             return TraverseAsync(currentCollection, SplitPath(path ?? string.Empty), ct);
         }
 
-        public Task<SelectionResult> TraverseAsync(ICollection currentCollection, IEnumerable<string> pathParts, CancellationToken ct)
+        [NotNull]
+        [ItemNotNull]
+        public Task<SelectionResult> TraverseAsync([NotNull] ICollection currentCollection, [NotNull][ItemNotNull] IEnumerable<string> pathParts, CancellationToken ct)
         {
             return TraverseAsync(currentCollection, ToPathElements(pathParts), ct);
         }
 
-        private static IEnumerable<string> SplitPath(string path)
+        [NotNull]
+        [ItemNotNull]
+        private static IEnumerable<string> SplitPath([NotNull] string path)
         {
             var lastIndex = 0;
             var indexOfSlash = path.IndexOf('/');
@@ -61,7 +71,8 @@ namespace FubarDev.WebDavServer.FileSystem
                 yield return remaining;
         }
 
-        private static IEnumerable<PathElement> ToPathElements(IEnumerable<string> pathParts)
+        [NotNull]
+        private static IEnumerable<PathElement> ToPathElements([NotNull][ItemNotNull] IEnumerable<string> pathParts)
         {
             foreach (var pathPart in pathParts)
             {
@@ -71,9 +82,13 @@ namespace FubarDev.WebDavServer.FileSystem
             }
         }
 
-        private async Task<SelectionResult> TraverseAsync(ICollection currentCollection, IEnumerable<PathElement> pathParts, CancellationToken ct)
+        [NotNull]
+        [ItemNotNull]
+        private async Task<SelectionResult> TraverseAsync([NotNull] ICollection startCollection, [NotNull] IEnumerable<PathElement> pathParts, CancellationToken ct)
         {
             var currentPathStack = new Stack<ICollection>();
+
+            var currentCollection = startCollection;
             currentPathStack.Push(currentCollection);
 
             var pathPartsArr = pathParts.ToArray();

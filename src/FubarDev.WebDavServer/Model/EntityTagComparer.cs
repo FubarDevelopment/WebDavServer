@@ -4,10 +4,13 @@
 
 using System.Collections.Generic;
 
+using JetBrains.Annotations;
+
 namespace FubarDev.WebDavServer.Model
 {
     public class EntityTagComparer : IEqualityComparer<EntityTag>
     {
+        [NotNull]
         public static EntityTagComparer Default { get; } = new EntityTagComparer();
 
         public bool Equals(EntityTag x, EntityTag y)

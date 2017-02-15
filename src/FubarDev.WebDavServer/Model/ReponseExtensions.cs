@@ -4,11 +4,15 @@
 
 using System.Collections.Generic;
 
+using JetBrains.Annotations;
+
 namespace FubarDev.WebDavServer.Model
 {
     public static class ReponseExtensions
     {
-        public static IEnumerable<string> GetHrefs(this response response)
+        [NotNull]
+        [ItemNotNull]
+        public static IEnumerable<string> GetHrefs([NotNull] this response response)
         {
             if (!string.IsNullOrEmpty(response.href))
                 yield return response.href;

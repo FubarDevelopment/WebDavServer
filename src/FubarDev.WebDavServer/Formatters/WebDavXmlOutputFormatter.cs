@@ -9,6 +9,8 @@ using System.Xml.Serialization;
 
 using FubarDev.WebDavServer.Model;
 
+using JetBrains.Annotations;
+
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 
@@ -16,11 +18,16 @@ namespace FubarDev.WebDavServer.Formatters
 {
     public class WebDavXmlOutputFormatter : IWebDavOutputFormatter
     {
+        [NotNull]
         private static readonly Encoding _defaultEncoding = new UTF8Encoding(false);
+
+        [NotNull]
         private readonly ILogger<WebDavXmlOutputFormatter> _logger;
+
+        [NotNull]
         private readonly string _namespacePrefix;
 
-        public WebDavXmlOutputFormatter(IOptions<WebDavFormatterOptions> options, ILogger<WebDavXmlOutputFormatter> logger)
+        public WebDavXmlOutputFormatter([NotNull] IOptions<WebDavFormatterOptions> options, [NotNull] ILogger<WebDavXmlOutputFormatter> logger)
         {
             _logger = logger;
             Encoding = _defaultEncoding;
@@ -31,15 +38,15 @@ namespace FubarDev.WebDavServer.Formatters
             _namespacePrefix = options.Value.NamespacePrefix;
         }
 
+        [NotNull]
         public string ContentType { get; }
 
+        [NotNull]
         public Encoding Encoding { get; }
 
         public void Serialize<T>(Stream output, T data)
         {
-            var writerSettings = new XmlWriterSettings();
-            if (Encoding != null)
-                writerSettings.Encoding = Encoding;
+            var writerSettings = new XmlWriterSettings { Encoding = Encoding };
 
             var ns = new XmlSerializerNamespaces();
             if (!string.IsNullOrEmpty(_namespacePrefix))
@@ -62,6 +69,7 @@ namespace FubarDev.WebDavServer.Formatters
 
         private static class SerializerInstance<T>
         {
+            [NotNull]
             public static readonly XmlSerializer Serializer = new XmlSerializer(typeof(T));
         }
     }

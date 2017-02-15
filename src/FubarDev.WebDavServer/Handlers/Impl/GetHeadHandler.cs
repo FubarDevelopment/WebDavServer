@@ -24,9 +24,10 @@ namespace FubarDev.WebDavServer.Handlers.Impl
 {
     public class GetHeadHandler : IGetHandler, IHeadHandler
     {
+        [NotNull]
         private readonly IWebDavContext _context;
 
-        public GetHeadHandler(IFileSystem fileSystem, IWebDavContext context)
+        public GetHeadHandler([NotNull] IFileSystem fileSystem, [NotNull] IWebDavContext context)
         {
             _context = context;
             FileSystem = fileSystem;
@@ -35,6 +36,7 @@ namespace FubarDev.WebDavServer.Handlers.Impl
         /// <inheritdoc />
         public IEnumerable<string> HttpMethods { get; } = new[] { "GET", "HEAD" };
 
+        [NotNull]
         public IFileSystem FileSystem { get; }
 
         /// <inheritdoc />
@@ -49,7 +51,7 @@ namespace FubarDev.WebDavServer.Handlers.Impl
             return HandleAsync(path, false, cancellationToken);
         }
 
-        private async Task<IWebDavResult> HandleAsync(string path, bool returnFile, CancellationToken cancellationToken)
+        private async Task<IWebDavResult> HandleAsync([NotNull] string path, bool returnFile, CancellationToken cancellationToken)
         {
             var searchResult = await FileSystem.SelectAsync(path, cancellationToken).ConfigureAwait(false);
             if (searchResult.IsMissing)
@@ -91,7 +93,7 @@ namespace FubarDev.WebDavServer.Handlers.Impl
             [NotNull]
             private readonly IReadOnlyCollection<NormalizedRangeItem> _rangeItems;
 
-            public WebDavPartialDocumentResult([NotNull] IDocument document, bool returnFile, IReadOnlyCollection<NormalizedRangeItem> rangeItems)
+            public WebDavPartialDocumentResult([NotNull] IDocument document, bool returnFile, [NotNull] IReadOnlyCollection<NormalizedRangeItem> rangeItems)
                 : base(WebDavStatusCode.PartialContent)
             {
                 _document = document;
@@ -284,7 +286,7 @@ namespace FubarDev.WebDavServer.Handlers.Impl
                 }
             }
 
-            private async Task SetPropertiesToContentHeaderAsync(HttpContent content, IReadOnlyCollection<IUntypedReadableProperty> properties, CancellationToken ct)
+            private async Task SetPropertiesToContentHeaderAsync([NotNull] HttpContent content, [NotNull][ItemNotNull] IReadOnlyCollection<IUntypedReadableProperty> properties, CancellationToken ct)
             {
                 var lastModifiedProp = properties.OfType<LastModifiedProperty>().FirstOrDefault();
                 if (lastModifiedProp != null)

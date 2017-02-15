@@ -22,10 +22,13 @@ namespace FubarDev.WebDavServer.Handlers.Impl
 {
     public class PropFindHandler : IPropFindHandler
     {
+        [NotNull]
         private readonly IWebDavContext _context;
+
+        [NotNull]
         private readonly PropFindHandlerOptions _options;
 
-        public PropFindHandler(IFileSystem fileSystem, IWebDavContext context, IOptions<PropFindHandlerOptions> options)
+        public PropFindHandler([NotNull]IFileSystem fileSystem, [NotNull]IWebDavContext context, [CanBeNull] IOptions<PropFindHandlerOptions> options)
         {
             _options = options?.Value ?? new PropFindHandlerOptions();
             _context = context;
@@ -35,6 +38,7 @@ namespace FubarDev.WebDavServer.Handlers.Impl
         /// <inheritdoc />
         public IEnumerable<string> HttpMethods { get; } = new[] { "PROPFIND" };
 
+        [NotNull]
         public IFileSystem FileSystem { get; }
 
         /// <inheritdoc />
@@ -88,11 +92,14 @@ namespace FubarDev.WebDavServer.Handlers.Impl
             if (request == null)
                 return await HandleAllPropAsync(entries, cancellationToken).ConfigureAwait(false);
 
+            Debug.Assert(request.ItemsElementName != null, "request.ItemsElementName != null");
             switch (request.ItemsElementName[0])
             {
                 case ItemsChoiceType1.allprop:
                     return await HandleAllPropAsync(request, entries, cancellationToken).ConfigureAwait(false);
                 case ItemsChoiceType1.prop:
+                    Debug.Assert(request.Items != null, "request.Items != null");
+                    Debug.Assert(request.Items[0] != null, "request.Items[0] != null");
                     return await HandlePropAsync((prop)request.Items[0], entries, cancellationToken).ConfigureAwait(false);
                 case ItemsChoiceType1.propname:
                     return await HandlePropNameAsync(entries, cancellationToken).ConfigureAwait(false);
@@ -101,7 +108,9 @@ namespace FubarDev.WebDavServer.Handlers.Impl
             throw new WebDavException(WebDavStatusCode.Forbidden);
         }
 
-        private async Task<IWebDavResult> HandlePropAsync(prop prop, IReadOnlyCollection<IEntry> entries, CancellationToken cancellationToken)
+        [NotNull]
+        [ItemNotNull]
+        private async Task<IWebDavResult> HandlePropAsync([NotNull] prop prop, [NotNull][ItemNotNull] IReadOnlyCollection<IEntry> entries, CancellationToken cancellationToken)
         {
             var responses = new List<response>();
             foreach (var entry in entries)
@@ -132,19 +141,25 @@ namespace FubarDev.WebDavServer.Handlers.Impl
             return new WebDavResult<multistatus>(WebDavStatusCode.MultiStatus, result);
         }
 
-        private Task<IWebDavResult> HandleAllPropAsync([NotNull] propfind request, IEnumerable<IEntry> entries, CancellationToken cancellationToken)
+        [NotNull]
+        [ItemNotNull]
+        private Task<IWebDavResult> HandleAllPropAsync([NotNull] propfind request, [NotNull][ItemNotNull] IEnumerable<IEntry> entries, CancellationToken cancellationToken)
         {
             var include = request.ItemsElementName.Select((x, i) => Tuple.Create(x, i)).Where(x => x.Item1 == ItemsChoiceType1.include).Select(x => (include)request.Items[x.Item2]).FirstOrDefault();
             return HandleAllPropAsync(include, entries, cancellationToken);
         }
 
-        private Task<IWebDavResult> HandleAllPropAsync(IEnumerable<IEntry> entries, CancellationToken cancellationToken)
+        [NotNull]
+        [ItemNotNull]
+        private Task<IWebDavResult> HandleAllPropAsync([NotNull][ItemNotNull] IEnumerable<IEntry> entries, CancellationToken cancellationToken)
         {
             return HandleAllPropAsync((include)null, entries, cancellationToken);
         }
 
         // ReSharper disable once UnusedParameter.Local
-        private async Task<IWebDavResult> HandleAllPropAsync([CanBeNull] include include, IEnumerable<IEntry> entries, CancellationToken cancellationToken)
+        [NotNull]
+        [ItemNotNull]
+        private async Task<IWebDavResult> HandleAllPropAsync([CanBeNull] include include, [NotNull][ItemNotNull] IEnumerable<IEntry> entries, CancellationToken cancellationToken)
         {
             var responses = new List<response>();
             foreach (var entry in entries)
@@ -175,7 +190,9 @@ namespace FubarDev.WebDavServer.Handlers.Impl
             return new WebDavResult<multistatus>(WebDavStatusCode.MultiStatus, result);
         }
 
-        private async Task<IWebDavResult> HandlePropNameAsync(IEnumerable<IEntry> entries, CancellationToken cancellationToken)
+        [NotNull]
+        [ItemNotNull]
+        private async Task<IWebDavResult> HandlePropNameAsync([NotNull][ItemNotNull] IEnumerable<IEntry> entries, CancellationToken cancellationToken)
         {
             var responses = new List<response>();
             foreach (var entry in entries)
@@ -208,17 +225,20 @@ namespace FubarDev.WebDavServer.Handlers.Impl
 
         private class PropertyCollector
         {
+            [NotNull]
             private readonly IWebDavContext _host;
 
+            [NotNull]
+            [ItemNotNull]
             private readonly IPropertyFilter[] _filters;
 
-            public PropertyCollector(IWebDavContext host, params IPropertyFilter[] filters)
+            public PropertyCollector([NotNull] IWebDavContext host, [NotNull][ItemNotNull] params IPropertyFilter[] filters)
             {
                 _host = host;
                 _filters = filters;
             }
 
-            public async Task<IReadOnlyCollection<propstat>> GetPropertiesAsync(IEntry entry, int maxCost, CancellationToken cancellationToken)
+            public async Task<IReadOnlyCollection<propstat>> GetPropertiesAsync([NotNull] IEntry entry, int maxCost, CancellationToken cancellationToken)
             {
                 foreach (var filter in _filters)
                 {
@@ -280,7 +300,9 @@ namespace FubarDev.WebDavServer.Handlers.Impl
                 return result;
             }
 
-            public async Task<IReadOnlyCollection<propstat>> GetPropertyNamesAsync(IEntry entry, CancellationToken cancellationToken)
+            [NotNull]
+            [ItemNotNull]
+            public async Task<IReadOnlyCollection<propstat>> GetPropertyNamesAsync([NotNull] IEntry entry, CancellationToken cancellationToken)
             {
                 foreach (var filter in _filters)
                 {

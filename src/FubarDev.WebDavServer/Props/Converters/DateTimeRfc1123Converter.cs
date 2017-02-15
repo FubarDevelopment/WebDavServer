@@ -6,11 +6,13 @@ using System;
 using System.Globalization;
 using System.Xml.Linq;
 
+using JetBrains.Annotations;
+
 namespace FubarDev.WebDavServer.Props.Converters
 {
     public class DateTimeRfc1123Converter : IPropertyConverter<DateTime>
     {
-        public static DateTime Parse(string s)
+        public static DateTime Parse([NotNull] string s)
         {
             if (s.EndsWith("UTC"))
                 s = s.Substring(0, s.Length - 3) + "GMT";

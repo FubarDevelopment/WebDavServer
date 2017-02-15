@@ -26,22 +26,38 @@ namespace FubarDev.WebDavServer.Engines.Remote
 {
     public abstract class RemoteHttpClientTargetActions : IRemoteTargetActions
     {
+        [NotNull]
         private static readonly Encoding _defaultEncoding = new UTF8Encoding(false);
+
+        [NotNull]
         private static readonly HttpMethod _propFindHttpMethod = new HttpMethod("PROPFIND");
+
+        [NotNull]
         private static readonly HttpMethod _propPatchHttpMethod = new HttpMethod("PROPPATCH");
+
+        [NotNull]
         private static readonly HttpMethod _mkColHttpMethod = new HttpMethod("MKCOL");
+
+        [NotNull]
         private static readonly XmlSerializer _errorSerializer = new XmlSerializer(typeof(error));
+
+        [NotNull]
         private static readonly XmlSerializer _multiStatusSerializer = new XmlSerializer(typeof(multistatus));
+
+        [NotNull]
         private static readonly XmlSerializer _propFindSerializer = new XmlSerializer(typeof(propfind));
+
+        [NotNull]
         private static readonly XmlSerializer _propertyUpdateSerializer = new XmlSerializer(typeof(propertyupdate));
 
-        protected RemoteHttpClientTargetActions(HttpClient httpClient)
+        protected RemoteHttpClientTargetActions([NotNull] HttpClient httpClient)
         {
             Client = httpClient;
         }
 
         public RecursiveTargetBehaviour ExistingTargetBehaviour { get; } = RecursiveTargetBehaviour.DeleteTarget;
 
+        [NotNull]
         protected HttpClient Client { get; }
 
         public abstract Task<RemoteDocumentTarget> ExecuteAsync(IDocument source, RemoteMissingTarget destination, CancellationToken cancellationToken);
@@ -213,7 +229,7 @@ namespace FubarDev.WebDavServer.Engines.Remote
         }
 
         [NotNull]
-        protected static RemoteTargetException CreateException(Uri requestUrl, [NotNull] error error)
+        protected static RemoteTargetException CreateException([NotNull] Uri requestUrl, [NotNull] error error)
         {
             var hrefs = new List<Uri>();
             string message = "Unknown error";
@@ -261,7 +277,7 @@ namespace FubarDev.WebDavServer.Engines.Remote
             return new RemoteTargetException(message, hrefs);
         }
 
-        protected multistatus Parse(Uri requrestUrl, HttpResponseMessage responseMessage, XDocument document)
+        protected multistatus Parse([NotNull] Uri requrestUrl, [NotNull] HttpResponseMessage responseMessage, [CanBeNull] XDocument document)
         {
             if (document == null)
             {
@@ -346,7 +362,7 @@ namespace FubarDev.WebDavServer.Engines.Remote
             }
         }
 
-        private static int GetStatusCode(error error, string statusLine, Uri targetUrl, IReadOnlyCollection<Uri> hrefs)
+        private static int GetStatusCode([CanBeNull] error error, [CanBeNull] string statusLine, [NotNull] Uri targetUrl, [NotNull][ItemNotNull] IReadOnlyCollection<Uri> hrefs)
         {
             if (error != null)
                 throw CreateException(targetUrl, error);
@@ -361,7 +377,7 @@ namespace FubarDev.WebDavServer.Engines.Remote
             return status.StatusCode;
         }
 
-        private static HttpContent CreateContent(XmlSerializer serializer, object requestData)
+        private static HttpContent CreateContent([NotNull] XmlSerializer serializer, [NotNull] object requestData)
         {
             byte[] data;
             using (var requestStream = new MemoryStream())
@@ -385,7 +401,7 @@ namespace FubarDev.WebDavServer.Engines.Remote
             return content;
         }
 
-        private async Task<IReadOnlyCollection<XName>> SetPropertiesAsync(Uri targetUrl, IEnumerable<IUntypedWriteableProperty> properties, CancellationToken cancellationToken)
+        private async Task<IReadOnlyCollection<XName>> SetPropertiesAsync([NotNull] Uri targetUrl, [NotNull][ItemNotNull] IEnumerable<IUntypedWriteableProperty> properties, CancellationToken cancellationToken)
         {
             var elements = new List<XElement>();
 

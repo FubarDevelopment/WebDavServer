@@ -7,12 +7,15 @@ using System.Threading.Tasks;
 
 using FubarDev.WebDavServer.Model;
 
+using JetBrains.Annotations;
+
 namespace FubarDev.WebDavServer
 {
     public interface IWebDavResult
     {
         WebDavStatusCode StatusCode { get; }
 
-        Task ExecuteResultAsync(IWebDavResponse response, CancellationToken ct);
+        [NotNull]
+        Task ExecuteResultAsync([NotNull] IWebDavResponse response, CancellationToken ct);
     }
 }

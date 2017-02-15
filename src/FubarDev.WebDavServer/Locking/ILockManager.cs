@@ -7,6 +7,8 @@ using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
 
+using JetBrains.Annotations;
+
 namespace FubarDev.WebDavServer.Locking
 {
     /// <summary>
@@ -30,6 +32,8 @@ namespace FubarDev.WebDavServer.Locking
         /// <param name="l">The lock to issue</param>
         /// <param name="cancellationToken">The cancellation token</param>
         /// <returns>Either the list of locks preventing issuing a lock or the active lock created</returns>
+        [NotNull]
+        [ItemNotNull]
         Task<LockResult> LockAsync(ILock l, CancellationToken cancellationToken);
 
         /// <summary>
@@ -38,7 +42,8 @@ namespace FubarDev.WebDavServer.Locking
         /// <param name="stateToken">The state token of the lock to release</param>
         /// <param name="cancellationToken">The cancellation token</param>
         /// <returns><see langword="true" /> when there was a lock to remove</returns>
-        Task<bool> ReleaseAsync(Uri stateToken, CancellationToken cancellationToken);
+        [NotNull]
+        Task<bool> ReleaseAsync([NotNull] Uri stateToken, CancellationToken cancellationToken);
 
         /// <summary>
         /// Gets all active locks
@@ -49,6 +54,8 @@ namespace FubarDev.WebDavServer.Locking
         /// </remarks>
         /// <param name="cancellationToken">The cancellation token</param>
         /// <returns>Returns all active locks</returns>
+        [NotNull]
+        [ItemNotNull]
         Task<IEnumerable<IActiveLock>> GetLocksAsync(CancellationToken cancellationToken);
     }
 }

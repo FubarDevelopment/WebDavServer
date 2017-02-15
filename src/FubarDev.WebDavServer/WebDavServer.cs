@@ -8,11 +8,13 @@ using System.Linq;
 using FubarDev.WebDavServer.Dispatchers;
 using FubarDev.WebDavServer.Formatters;
 
+using JetBrains.Annotations;
+
 namespace FubarDev.WebDavServer
 {
     public class WebDavServer : IWebDavDispatcher
     {
-        public WebDavServer(IWebDavClass1 webDavClass1, IWebDavOutputFormatter formatter)
+        public WebDavServer([NotNull] IWebDavClass1 webDavClass1, [NotNull] IWebDavOutputFormatter formatter)
         {
             Formatter = formatter;
             Class1 = webDavClass1;

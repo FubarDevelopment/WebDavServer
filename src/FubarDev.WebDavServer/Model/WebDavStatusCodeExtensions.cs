@@ -12,6 +12,7 @@ namespace FubarDev.WebDavServer.Model
 {
     public static class WebDavStatusCodeExtensions
     {
+        [NotNull]
         private static readonly ConcurrentDictionary<WebDavStatusCode, string> _reasonPhrases = new ConcurrentDictionary<WebDavStatusCode, string>()
         {
             [WebDavStatusCode.MultiStatus] = "Multi-Status",
@@ -49,7 +50,9 @@ namespace FubarDev.WebDavServer.Model
             return $"{reasonPhrase} ({additionalMessage})";
         }
 
-        private static IEnumerable<string> GetParts(string name)
+        [NotNull]
+        [ItemNotNull]
+        private static IEnumerable<string> GetParts([NotNull] string name)
         {
             var startIndex = 0;
             var currentIndex = 1;

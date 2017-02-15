@@ -116,6 +116,7 @@ namespace FubarDev.WebDavServer.Model
         /// The return value of this function can be parsed using <see cref="Parse(string)"/>.
         /// </remarks>
         /// <returns>The textual representation of this range</returns>
+        [NotNull]
         public override string ToString()
         {
             return $"{Unit}={string.Join(",", RangeItems.Select(x => x.ToString()))}";
@@ -129,6 +130,7 @@ namespace FubarDev.WebDavServer.Model
         /// </remarks>
         /// <param name="rangeItem">The <see cref="RangeItem"/> to get the textual representation for</param>
         /// <returns>The textual representation of <paramref name="rangeItem"/></returns>
+        [NotNull]
         public virtual string ToString(RangeItem rangeItem)
         {
             return ToString(rangeItem, null);
@@ -143,6 +145,7 @@ namespace FubarDev.WebDavServer.Model
         /// <param name="rangeItem">The <see cref="RangeItem"/> to get the textual representation for</param>
         /// <param name="length">The length value to be used in the textual representation</param>
         /// <returns>The textual representation of <paramref name="rangeItem"/></returns>
+        [NotNull]
         public virtual string ToString(RangeItem rangeItem, long? length)
         {
             return $"{Unit} {rangeItem}/{(length.HasValue ? length.Value.ToString(CultureInfo.InvariantCulture) : "*")}";
@@ -153,6 +156,7 @@ namespace FubarDev.WebDavServer.Model
         /// </summary>
         /// <param name="totalLength">The length of the resource</param>
         /// <returns>The list of normalized byte ranges</returns>
+        [NotNull]
         public IReadOnlyList<NormalizedRangeItem> Normalize(long totalLength)
         {
             var rangeItems = RangeItems.Select(x => x.Normalize(totalLength))

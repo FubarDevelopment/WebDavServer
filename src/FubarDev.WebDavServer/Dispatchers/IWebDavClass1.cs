@@ -9,30 +9,54 @@ using System.Threading.Tasks;
 
 using FubarDev.WebDavServer.Model;
 
+using JetBrains.Annotations;
+
 namespace FubarDev.WebDavServer.Dispatchers
 {
     public interface IWebDavClass1 : IWebDavClass
     {
-        Task<IWebDavResult> OptionsAsync(string path, CancellationToken cancellationToken);
+        [NotNull]
+        [ItemNotNull]
+        Task<IWebDavResult> OptionsAsync([NotNull] string path, CancellationToken cancellationToken);
 
-        Task<IWebDavResult> GetAsync(string path, CancellationToken cancellationToken);
+        [NotNull]
+        [ItemNotNull]
+        Task<IWebDavResult> GetAsync([NotNull] string path, CancellationToken cancellationToken);
 
-        Task<IWebDavResult> HeadAsync(string path, CancellationToken cancellationToken);
+        [NotNull]
+        [ItemNotNull]
+        Task<IWebDavResult> HeadAsync([NotNull] string path, CancellationToken cancellationToken);
 
-        Task<IWebDavResult> PutAsync(string path, Stream data, CancellationToken cancellationToken);
+        [NotNull]
+        [ItemNotNull]
+        Task<IWebDavResult> PutAsync([NotNull] string path, [NotNull] Stream data, CancellationToken cancellationToken);
 
-        Task<IWebDavResult> DeleteAsync(string path, CancellationToken cancellationToken);
+        [NotNull]
+        [ItemNotNull]
+        Task<IWebDavResult> DeleteAsync([NotNull] string path, CancellationToken cancellationToken);
 
-        Task<IWebDavResult> PropFindAsync(string path, propfind request, CancellationToken cancellationToken);
+        [NotNull]
+        [ItemNotNull]
+        Task<IWebDavResult> PropFindAsync([NotNull] string path, [CanBeNull] propfind request, CancellationToken cancellationToken);
 
-        Task<IWebDavResult> PropPatchAsync(string path, propertyupdate request, CancellationToken cancellationToken);
+        [NotNull]
+        [ItemNotNull]
+        Task<IWebDavResult> PropPatchAsync([NotNull] string path, [NotNull] propertyupdate request, CancellationToken cancellationToken);
 
-        Task<IWebDavResult> MkColAsync(string path, CancellationToken cancellationToken);
+        [NotNull]
+        [ItemNotNull]
+        Task<IWebDavResult> MkColAsync([NotNull] string path, CancellationToken cancellationToken);
 
-        Task<IWebDavResult> CopyAsync(string path, Uri destination, CancellationToken cancellationToken);
+        [NotNull]
+        [ItemNotNull]
+        Task<IWebDavResult> CopyAsync([NotNull] string path, [NotNull] Uri destination, CancellationToken cancellationToken);
 
-        Task<IWebDavResult> MoveAsync(string path, Uri destination, CancellationToken cancellationToken);
+        [NotNull]
+        [ItemNotNull]
+        Task<IWebDavResult> MoveAsync([NotNull] string path, [NotNull] Uri destination, CancellationToken cancellationToken);
 
-        Task<IWebDavResult> LockAsync(string path, lockinfo info, CancellationToken cancellationToken);
+        [NotNull]
+        [ItemNotNull]
+        Task<IWebDavResult> LockAsync([NotNull] string path, [NotNull] lockinfo info, CancellationToken cancellationToken);
     }
 }

@@ -50,7 +50,7 @@ namespace FubarDev.WebDavServer.Model
 
         public bool IsSuccessStatusCode => StatusCode >= 200 && StatusCode < 300;
 
-        public static Status Parse(string status)
+        public static Status Parse([NotNull] string status)
         {
             var parts = status.Split(_splitChars, 3, StringSplitOptions.RemoveEmptyEntries);
             var protocol = parts[0];
@@ -68,6 +68,7 @@ namespace FubarDev.WebDavServer.Model
             return $"{Protocol} {StatusCode} {ReasonPhrase}";
         }
 
+        [NotNull]
         private static string GetReasonPhrase(int statusCode)
         {
             string reasonPhrase;

@@ -6,13 +6,17 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 
+using JetBrains.Annotations;
+
 namespace FubarDev.WebDavServer
 {
     public class WebDavRequestHeaders : IWebDavRequestHeaders
     {
+        [NotNull]
+        [ItemNotNull]
         private static readonly string[] _empty = new string[0];
 
-        public WebDavRequestHeaders(IEnumerable<KeyValuePair<string, IEnumerable<string>>> headers)
+        public WebDavRequestHeaders([NotNull] IEnumerable<KeyValuePair<string, IEnumerable<string>>> headers)
         {
             Headers = headers.ToDictionary(x => x.Key, x => x.Value.ToList(), StringComparer.OrdinalIgnoreCase);
             Depth = ParseHeader("Depth", args => Model.Depth.Parse(args.Single()));
@@ -57,7 +61,7 @@ namespace FubarDev.WebDavServer
             }
         }
 
-        private T ParseHeader<T>(string name, Func<List<string>, T> createFunc, T defaultValue = default(T))
+        private T ParseHeader<T>(string name, [NotNull] Func<List<string>, T> createFunc, T defaultValue = default(T))
         {
             List<string> v;
             if (Headers.TryGetValue(name, out v))

@@ -4,10 +4,13 @@
 
 using System.Collections.Generic;
 
+using JetBrains.Annotations;
+
 namespace FubarDev.WebDavServer.Model
 {
     public class DepthComparer : IComparer<Depth>, IEqualityComparer<Depth>
     {
+        [NotNull]
         public static DepthComparer Default { get; } = new DepthComparer();
 
         public int Compare(Depth x, Depth y)

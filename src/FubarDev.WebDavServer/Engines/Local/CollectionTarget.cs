@@ -14,6 +14,7 @@ namespace FubarDev.WebDavServer.Engines.Local
 {
     public class CollectionTarget : EntryTarget, ICollectionTarget<CollectionTarget, DocumentTarget, MissingTarget>
     {
+        [NotNull]
         private readonly ITargetActions<CollectionTarget, DocumentTarget, MissingTarget> _targetActions;
 
         public CollectionTarget(

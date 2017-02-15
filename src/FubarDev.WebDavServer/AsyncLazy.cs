@@ -7,6 +7,8 @@ using System.Diagnostics;
 using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
 
+using JetBrains.Annotations;
+
 namespace FubarDev.WebDavServer
 {
     /// <summary>
@@ -20,18 +22,21 @@ namespace FubarDev.WebDavServer
         /// <summary>
         /// The synchronization object protecting <c>_instance</c>.
         /// </summary>
+        [NotNull]
         private readonly object _mutex = new object();
 
         /// <summary>
         /// The underlying lazy task.
         /// </summary>
+        [NotNull]
+        [ItemNotNull]
         private readonly Lazy<Task<T>> _instance;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="AsyncLazy&lt;T&gt;"/> class.
         /// </summary>
         /// <param name="factory">The asynchronous delegate that is invoked to produce the value when it is needed. May not be <c>null</c>.</param>
-        public AsyncLazy(Func<Task<T>> factory)
+        public AsyncLazy([NotNull] Func<Task<T>> factory)
         {
             if (factory == null)
                 throw new ArgumentNullException(nameof(factory));
@@ -47,8 +52,12 @@ namespace FubarDev.WebDavServer
         }
 
         /// <summary>
-        /// Starts the asynchronous factory method, if it has not already started, and returns the resulting task.
+        /// Gets the resulting task.
         /// </summary>
+        /// <remarks>
+        /// Starts the asynchronous factory method, if it has not already started.
+        /// </remarks>
+        [NotNull]
         public Task<T> Task
         {
             get
@@ -74,6 +83,7 @@ namespace FubarDev.WebDavServer
         /// <summary>
         /// Asynchronous infrastructure support. This method permits instances of <see cref="AsyncLazy&lt;T&gt;"/> to be await'ed.
         /// </summary>
+        /// <returns>the task awaiter</returns>
         [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)]
         public TaskAwaiter<T> GetAwaiter()
         {
@@ -83,6 +93,8 @@ namespace FubarDev.WebDavServer
         /// <summary>
         /// Asynchronous infrastructure support. This method permits instances of <see cref="AsyncLazy&lt;T&gt;"/> to be await'ed.
         /// </summary>
+        /// <param name="continueOnCapturedContext">Continue on captured context?</param>
+        /// <returns>The configured task awaiter</returns>
         [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)]
         public ConfiguredTaskAwaitable<T> ConfigureAwait(bool continueOnCapturedContext)
         {
@@ -97,9 +109,10 @@ namespace FubarDev.WebDavServer
         [DebuggerNonUserCode]
         internal sealed class DebugView
         {
+            [NotNull]
             private readonly AsyncLazy<T> _lazy;
 
-            public DebugView(AsyncLazy<T> lazy)
+            public DebugView([NotNull] AsyncLazy<T> lazy)
             {
                 _lazy = lazy;
             }
