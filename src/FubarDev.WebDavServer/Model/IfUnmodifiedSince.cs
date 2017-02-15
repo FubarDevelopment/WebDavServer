@@ -8,8 +8,6 @@ using System.Collections.Generic;
 using FubarDev.WebDavServer.FileSystem;
 using FubarDev.WebDavServer.Props.Converters;
 
-using JetBrains.Annotations;
-
 namespace FubarDev.WebDavServer.Model
 {
     public class IfUnmodifiedSince : IIfMatcher
@@ -26,7 +24,7 @@ namespace FubarDev.WebDavServer.Model
             return new IfUnmodifiedSince(DateTimeRfc1123Converter.Parse(s));
         }
 
-        public bool IsMatch(IEntry entry, EntityTag etag, [ItemNotNull, NotNull] IReadOnlyCollection<Uri> stateTokens)
+        public bool IsMatch(IEntry entry, EntityTag etag, IReadOnlyCollection<Uri> stateTokens)
         {
             return entry.LastWriteTimeUtc <= LastWriteTimeUtc;
         }
