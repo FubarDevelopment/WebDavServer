@@ -1,4 +1,4 @@
-﻿// <copyright file="IfList.cs" company="Fubar Development Junker">
+﻿// <copyright file="IfHeaderList.cs" company="Fubar Development Junker">
 // Copyright (c) Fubar Development Junker. All rights reserved.
 // </copyright>
 
@@ -13,11 +13,11 @@ using JetBrains.Annotations;
 
 namespace FubarDev.WebDavServer.Model.Headers
 {
-    public class IfList : IIfMatcher
+    public class IfHeaderList : IIfMatcher
     {
-        private IfList(
+        private IfHeaderList(
             [CanBeNull] Uri resourceTag,
-            [NotNull] [ItemNotNull] IReadOnlyCollection<IfCondition> conditions)
+            [NotNull] [ItemNotNull] IReadOnlyCollection<IfHeaderCondition> conditions)
         {
             ResourceTag = resourceTag;
             Conditions = conditions;
@@ -28,7 +28,7 @@ namespace FubarDev.WebDavServer.Model.Headers
 
         [NotNull]
         [ItemNotNull]
-        public IReadOnlyCollection<IfCondition> Conditions { get; }
+        public IReadOnlyCollection<IfHeaderCondition> Conditions { get; }
 
         public bool IsMatch(IEntry entry, EntityTag etag, IReadOnlyCollection<Uri> stateTokens)
         {
@@ -37,7 +37,7 @@ namespace FubarDev.WebDavServer.Model.Headers
 
         [NotNull]
         [ItemNotNull]
-        internal static IEnumerable<IfList> Parse([NotNull] StringSource source)
+        internal static IEnumerable<IfHeaderList> Parse([NotNull] StringSource source)
         {
             while (!source.SkipWhiteSpace())
             {
@@ -55,11 +55,11 @@ namespace FubarDev.WebDavServer.Model.Headers
 
                 if (!source.AdvanceIf("("))
                     throw new ArgumentException($"{source.Remaining} is not a valid list (not starting with a '(')", nameof(source));
-                var conditions = IfCondition.Parse(source).ToList();
+                var conditions = IfHeaderCondition.Parse(source).ToList();
                 if (!source.AdvanceIf(")"))
                     throw new ArgumentException($"{source.Remaining} is not a valid list (not ending with a ')')", nameof(source));
 
-                yield return new IfList(resourceTag, conditions);
+                yield return new IfHeaderList(resourceTag, conditions);
             }
         }
     }

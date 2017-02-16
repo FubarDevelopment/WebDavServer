@@ -39,7 +39,7 @@ namespace FubarDev.WebDavServer.Handlers.Impl
         public Task<IWebDavResult> CopyAsync(string sourcePath, Uri destination, CancellationToken cancellationToken)
         {
             var doOverwrite = WebDavContext.RequestHeaders.Overwrite ?? _options.OverwriteAsDefault;
-            var depth = WebDavContext.RequestHeaders.Depth ?? Depth.Infinity;
+            var depth = WebDavContext.RequestHeaders.Depth ?? DepthHeader.Infinity;
             return ExecuteAsync(sourcePath, destination, depth, doOverwrite, _options.Mode, cancellationToken);
         }
 

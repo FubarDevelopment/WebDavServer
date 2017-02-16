@@ -18,7 +18,7 @@ using FubarDev.WebDavServer.Model.Headers;
 
 using JetBrains.Annotations;
 
-using Timeout = FubarDev.WebDavServer.Model.Headers.Timeout;
+using TimeoutHeader = FubarDev.WebDavServer.Model.Headers.TimeoutHeader;
 
 namespace FubarDev.WebDavServer.Handlers.Impl
 {
@@ -55,14 +55,14 @@ namespace FubarDev.WebDavServer.Handlers.Impl
         public async Task<IWebDavResult> LockAsync(string path, lockinfo info, CancellationToken cancellationToken)
         {
             var owner = info.owner == null ? null : new XElement(WebDavXml.Dav + "owner", info.owner.Any.Cast<object>().ToArray());
-            var recursive = (_context.RequestHeaders.Depth ?? Depth.Infinity) == Depth.Infinity;
+            var recursive = (_context.RequestHeaders.Depth ?? DepthHeader.Infinity) == DepthHeader.Infinity;
             var accessType = LockAccessType.Write;
             var shareType = info.lockscope.ItemElementName == ItemChoiceType.exclusive
                 ? LockShareMode.Exclusive
                 : LockShareMode.Shared;
             var timeout = _timeoutPolicy?.SelectTimeout(
-                              _context.RequestHeaders.Timeout?.Values ?? new[] { Timeout.Infinite })
-                          ?? Timeout.Infinite;
+                              _context.RequestHeaders.Timeout?.Values ?? new[] { TimeoutHeader.Infinite })
+                          ?? TimeoutHeader.Infinite;
 
             var l = new Lock(
                 path,
@@ -201,8 +201,8 @@ namespace FubarDev.WebDavServer.Handlers.Impl
 
         private XElement CreateActiveLockXml(IActiveLock l)
         {
-            var timeout = l.Timeout == Timeout.Infinite ? "Infinite" : $"Second-{l.Timeout.TotalSeconds:F0}";
-            var depth = l.Recursive ? Depth.Infinity : Depth.Zero;
+            var timeout = l.Timeout == TimeoutHeader.Infinite ? "Infinite" : $"Second-{l.Timeout.TotalSeconds:F0}";
+            var depth = l.Recursive ? DepthHeader.Infinity : DepthHeader.Zero;
             var lockScope = LockShareMode.Parse(l.ShareMode);
             var lockType = LockAccessType.Parse(l.AccessType);
             var lockRoot = GetHref(l.Path);

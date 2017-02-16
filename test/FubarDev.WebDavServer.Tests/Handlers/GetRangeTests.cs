@@ -78,7 +78,7 @@ namespace FubarDev.WebDavServer.Tests.Handlers
 
             using (var client = Server.CreateClient())
             {
-                var range = new Range("bytes", new RangeItem(0, 1));
+                var range = new RangeHeader("bytes", new RangeHeaderItem(0, 1));
                 var request = new HttpRequestMessage(HttpMethod.Get, "test1.txt")
                 {
                     Headers =
@@ -119,7 +119,7 @@ namespace FubarDev.WebDavServer.Tests.Handlers
 
             using (var client = Server.CreateClient())
             {
-                var range = new Range("bytes", new RangeItem(0, 5), new RangeItem(3, 9));
+                var range = new RangeHeader("bytes", new RangeHeaderItem(0, 5), new RangeHeaderItem(3, 9));
                 var request = new HttpRequestMessage(HttpMethod.Get, "test1.txt")
                 {
                     Headers =
@@ -160,7 +160,7 @@ namespace FubarDev.WebDavServer.Tests.Handlers
 
             using (var client = Server.CreateClient())
             {
-                var range = new Range("bytes", new RangeItem(0, 1), new RangeItem(3, 4));
+                var range = new RangeHeader("bytes", new RangeHeaderItem(0, 1), new RangeHeaderItem(3, 4));
                 var request = new HttpRequestMessage(HttpMethod.Get, "test1.txt")
                 {
                     Headers =
@@ -207,7 +207,7 @@ namespace FubarDev.WebDavServer.Tests.Handlers
 
             using (var client = Server.CreateClient())
             {
-                var range = new Range("bytes", new RangeItem(_testBlock.Value.Length - 1, _testBlock.Value.Length));
+                var range = new RangeHeader("bytes", new RangeHeaderItem(_testBlock.Value.Length - 1, _testBlock.Value.Length));
                 var request = new HttpRequestMessage(HttpMethod.Get, "test1.txt")
                 {
                     Headers =

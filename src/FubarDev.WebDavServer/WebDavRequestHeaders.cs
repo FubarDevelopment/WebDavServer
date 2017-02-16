@@ -21,34 +21,34 @@ namespace FubarDev.WebDavServer
         public WebDavRequestHeaders([NotNull] IEnumerable<KeyValuePair<string, IEnumerable<string>>> headers)
         {
             Headers = headers.ToDictionary(x => x.Key, x => x.Value.ToList(), StringComparer.OrdinalIgnoreCase);
-            Depth = ParseHeader("Depth", args => Model.Headers.Depth.Parse(args.Single()));
-            Overwrite = ParseHeader("Overwrite", args => Model.Headers.Overwrite.Parse(args.Single()));
-            Range = ParseHeader("Range", Range.Parse);
-            If = ParseHeader("If", args => If.Parse(args.Single()));
-            IfMatch = ParseHeader("If-Match", IfMatch.Parse);
-            IfNoneMatch = ParseHeader("If-None-Match", IfNoneMatch.Parse);
-            IfModifiedSince = ParseHeader("If-Modified-Since", args => IfModifiedSince.Parse(args.Single()));
-            IfUnmodifiedSince = ParseHeader("If-Unmodified-Since", args => IfUnmodifiedSince.Parse(args.Single()));
-            Timeout = ParseHeader("Timeout", Timeout.Parse);
+            Depth = ParseHeader("Depth", args => Model.Headers.DepthHeader.Parse(args.Single()));
+            Overwrite = ParseHeader("Overwrite", args => Model.Headers.OverwriteHeader.Parse(args.Single()));
+            Range = ParseHeader("Range", RangeHeader.Parse);
+            If = ParseHeader("If", args => IfHeader.Parse(args.Single()));
+            IfMatch = ParseHeader("If-Match", IfMatchHeader.Parse);
+            IfNoneMatch = ParseHeader("If-None-Match", IfNoneMatchHeader.Parse);
+            IfModifiedSince = ParseHeader("If-Modified-Since", args => IfModifiedSinceHeader.Parse(args.Single()));
+            IfUnmodifiedSince = ParseHeader("If-Unmodified-Since", args => IfUnmodifiedSinceHeader.Parse(args.Single()));
+            Timeout = ParseHeader("Timeout", TimeoutHeader.Parse);
         }
 
-        public Depth? Depth { get; set; }
+        public DepthHeader? Depth { get; set; }
 
         public bool? Overwrite { get; set; }
 
-        public If If { get; set; }
+        public IfHeader If { get; set; }
 
-        public IfMatch IfMatch { get; set; }
+        public IfMatchHeader IfMatch { get; set; }
 
-        public IfNoneMatch IfNoneMatch { get; set; }
+        public IfNoneMatchHeader IfNoneMatch { get; set; }
 
-        public IfModifiedSince IfModifiedSince { get; set; }
+        public IfModifiedSinceHeader IfModifiedSince { get; set; }
 
-        public IfUnmodifiedSince IfUnmodifiedSince { get; set; }
+        public IfUnmodifiedSinceHeader IfUnmodifiedSince { get; set; }
 
-        public Range Range { get; set; }
+        public RangeHeader Range { get; set; }
 
-        public Timeout Timeout { get; set; }
+        public TimeoutHeader Timeout { get; set; }
 
         public IDictionary<string, List<string>> Headers { get; }
 

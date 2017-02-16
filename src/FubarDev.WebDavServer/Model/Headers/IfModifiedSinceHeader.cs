@@ -1,4 +1,4 @@
-﻿// <copyright file="IfModifiedSince.cs" company="Fubar Development Junker">
+﻿// <copyright file="IfModifiedSinceHeader.cs" company="Fubar Development Junker">
 // Copyright (c) Fubar Development Junker. All rights reserved.
 // </copyright>
 
@@ -10,18 +10,18 @@ using FubarDev.WebDavServer.Props.Converters;
 
 namespace FubarDev.WebDavServer.Model.Headers
 {
-    public class IfModifiedSince : IIfMatcher
+    public class IfModifiedSinceHeader : IIfMatcher
     {
-        public IfModifiedSince(DateTime lastWriteTimeUtc)
+        public IfModifiedSinceHeader(DateTime lastWriteTimeUtc)
         {
             LastWriteTimeUtc = lastWriteTimeUtc;
         }
 
         public DateTime LastWriteTimeUtc { get; }
 
-        public static IfModifiedSince Parse(string s)
+        public static IfModifiedSinceHeader Parse(string s)
         {
-            return new IfModifiedSince(DateTimeRfc1123Converter.Parse(s));
+            return new IfModifiedSinceHeader(DateTimeRfc1123Converter.Parse(s));
         }
 
         public bool IsMatch(IEntry entry, EntityTag etag, IReadOnlyCollection<Uri> stateTokens)

@@ -150,7 +150,7 @@ namespace FubarDev.WebDavServer.Engines.Remote
             {
                 Headers =
                 {
-                    { "Depth", Depth.Zero.Value },
+                    { "Depth", DepthHeader.Zero.Value },
                 },
                 Content = CreateContent(_propFindSerializer, requestData),
             })

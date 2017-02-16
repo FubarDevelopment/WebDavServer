@@ -41,7 +41,7 @@ namespace FubarDev.WebDavServer.Handlers.Impl
         public async Task<IWebDavResult> ExecuteAsync(
             [NotNull] string sourcePath,
             [NotNull] Uri destination,
-            Depth depth,
+            DepthHeader depth,
             bool overwrite,
             RecursiveProcessingMode mode,
             CancellationToken cancellationToken)
@@ -99,7 +99,7 @@ namespace FubarDev.WebDavServer.Handlers.Impl
             [NotNull] SelectionResult sourceSelectionResult,
             [NotNull] TCollection parentCollection,
             [NotNull] ITarget targetItem,
-            Depth depth,
+            DepthHeader depth,
             CancellationToken cancellationToken)
             where TCollection : class, ICollectionTarget<TCollection, TDocument, TMissing>
             where TDocument : class, IDocumentTarget<TCollection, TDocument, TMissing>
@@ -184,7 +184,7 @@ namespace FubarDev.WebDavServer.Handlers.Impl
             [NotNull] Uri sourceUrl,
             [NotNull] SelectionResult sourceSelectionResult,
             [NotNull] Uri targetUrl,
-            Depth depth,
+            DepthHeader depth,
             bool overwrite,
             CancellationToken cancellationToken)
         {
@@ -218,7 +218,7 @@ namespace FubarDev.WebDavServer.Handlers.Impl
             [NotNull] Uri sourceUrl,
             [NotNull] SelectionResult sourceSelectionResult,
             [NotNull] FileSystemTarget targetInfo,
-            Depth depth,
+            DepthHeader depth,
             bool overwrite,
             CancellationToken cancellationToken)
         {

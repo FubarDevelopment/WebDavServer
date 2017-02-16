@@ -1,4 +1,4 @@
-﻿// <copyright file="IfCondition.cs" company="Fubar Development Junker">
+﻿// <copyright file="IfHeaderCondition.cs" company="Fubar Development Junker">
 // Copyright (c) Fubar Development Junker. All rights reserved.
 // </copyright>
 
@@ -14,9 +14,9 @@ using JetBrains.Annotations;
 
 namespace FubarDev.WebDavServer.Model.Headers
 {
-    public class IfCondition : IIfMatcher
+    public class IfHeaderCondition : IIfMatcher
     {
-        private IfCondition(bool not, Uri stateToken, EntityTag? etag)
+        private IfHeaderCondition(bool not, Uri stateToken, EntityTag? etag)
         {
             Not = not;
             StateToken = stateToken;
@@ -49,7 +49,7 @@ namespace FubarDev.WebDavServer.Model.Headers
 
         [NotNull]
         [ItemNotNull]
-        internal static IEnumerable<IfCondition> Parse([NotNull] StringSource source)
+        internal static IEnumerable<IfHeaderCondition> Parse([NotNull] StringSource source)
         {
             while (!source.SkipWhiteSpace())
             {
@@ -85,7 +85,7 @@ namespace FubarDev.WebDavServer.Model.Headers
                     break;
                 }
 
-                yield return new IfCondition(isNot, stateToken, etag);
+                yield return new IfHeaderCondition(isNot, stateToken, etag);
             }
         }
     }

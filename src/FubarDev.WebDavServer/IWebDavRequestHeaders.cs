@@ -12,30 +12,30 @@ namespace FubarDev.WebDavServer
 {
     public interface IWebDavRequestHeaders
     {
-        Depth? Depth { get; }
+        DepthHeader? Depth { get; }
 
         bool? Overwrite { get; }
 
         [CanBeNull]
-        If If { get; }
+        IfHeader If { get; }
 
         [CanBeNull]
-        IfMatch IfMatch { get; }
+        IfMatchHeader IfMatch { get; }
 
         [CanBeNull]
-        IfNoneMatch IfNoneMatch { get; }
+        IfNoneMatchHeader IfNoneMatch { get; }
 
         [CanBeNull]
-        IfModifiedSince IfModifiedSince { get; }
+        IfModifiedSinceHeader IfModifiedSince { get; }
 
         [CanBeNull]
-        IfUnmodifiedSince IfUnmodifiedSince { get; }
+        IfUnmodifiedSinceHeader IfUnmodifiedSince { get; }
 
         [CanBeNull]
-        Range Range { get; }
+        RangeHeader Range { get; }
 
         [CanBeNull]
-        Timeout Timeout { get; set; }
+        TimeoutHeader Timeout { get; set; }
 
         [NotNull]
         IDictionary<string, List<string>> Headers { get; }
