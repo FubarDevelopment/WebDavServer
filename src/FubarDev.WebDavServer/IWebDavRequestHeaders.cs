@@ -4,36 +4,38 @@
 
 using System.Collections.Generic;
 
+using FubarDev.WebDavServer.Model.Headers;
+
 using JetBrains.Annotations;
 
 namespace FubarDev.WebDavServer
 {
     public interface IWebDavRequestHeaders
     {
-        Model.Depth? Depth { get; }
+        Depth? Depth { get; }
 
         bool? Overwrite { get; }
 
         [CanBeNull]
-        Model.If If { get; }
+        If If { get; }
 
         [CanBeNull]
-        Model.IfMatch IfMatch { get; }
+        IfMatch IfMatch { get; }
 
         [CanBeNull]
-        Model.IfNoneMatch IfNoneMatch { get; }
+        IfNoneMatch IfNoneMatch { get; }
 
         [CanBeNull]
-        Model.IfModifiedSince IfModifiedSince { get; }
+        IfModifiedSince IfModifiedSince { get; }
 
         [CanBeNull]
-        Model.IfUnmodifiedSince IfUnmodifiedSince { get; }
+        IfUnmodifiedSince IfUnmodifiedSince { get; }
 
         [CanBeNull]
-        Model.Range Range { get; }
+        Range Range { get; }
 
         [CanBeNull]
-        Model.Timeout Timeout { get; set; }
+        Timeout Timeout { get; set; }
 
         [NotNull]
         IDictionary<string, List<string>> Headers { get; }

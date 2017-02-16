@@ -8,10 +8,11 @@ using System.Diagnostics;
 using System.Linq;
 
 using FubarDev.WebDavServer.FileSystem;
+using FubarDev.WebDavServer.Utils;
 
 using JetBrains.Annotations;
 
-namespace FubarDev.WebDavServer.Model
+namespace FubarDev.WebDavServer.Model.Headers
 {
     public class IfCondition : IIfMatcher
     {

@@ -1,4 +1,4 @@
-﻿// <copyright file="IfMatch.cs" company="Fubar Development Junker">
+﻿// <copyright file="IfNoneMatch.cs" company="Fubar Development Junker">
 // Copyright (c) Fubar Development Junker. All rights reserved.
 // </copyright>
 
@@ -9,55 +9,55 @@ using FubarDev.WebDavServer.FileSystem;
 
 using JetBrains.Annotations;
 
-namespace FubarDev.WebDavServer.Model
+namespace FubarDev.WebDavServer.Model.Headers
 {
-    public class IfMatch : IIfMatcher
+    public class IfNoneMatch : IIfMatcher
     {
         [CanBeNull]
         private readonly ISet<EntityTag> _etags;
 
-        private IfMatch([NotNull] IEnumerable<EntityTag> etags)
+        private IfNoneMatch([NotNull] IEnumerable<EntityTag> etags)
         {
             _etags = new HashSet<EntityTag>(etags, EntityTagComparer.Default);
         }
 
-        private IfMatch()
+        private IfNoneMatch()
         {
             _etags = null;
         }
 
         [NotNull]
-        public static IfMatch Parse([CanBeNull] string s)
+        public static IfNoneMatch Parse([CanBeNull] string s)
         {
             if (string.IsNullOrWhiteSpace(s) || s == "*")
-                return new IfMatch();
+                return new IfNoneMatch();
 
-            return new IfMatch(EntityTag.Parse(s));
+            return new IfNoneMatch(EntityTag.Parse(s));
         }
 
         [NotNull]
-        public static IfMatch Parse([NotNull][ItemNotNull] IEnumerable<string> s)
+        public static IfNoneMatch Parse([NotNull][ItemNotNull] IEnumerable<string> s)
         {
             var result = new List<EntityTag>();
             foreach (var etag in s)
             {
                 if (etag == "*")
-                    return new IfMatch();
+                    return new IfNoneMatch();
 
                 result.AddRange(EntityTag.Parse(etag));
             }
 
             if (result.Count == 0)
-                return new IfMatch();
+                return new IfNoneMatch();
 
-            return new IfMatch(result);
+            return new IfNoneMatch(result);
         }
 
         public bool IsMatch(IEntry entry, EntityTag etag, IReadOnlyCollection<Uri> stateTokens)
         {
             if (_etags == null)
-                return true;
-            return _etags.Contains(etag);
+                return false;
+            return !_etags.Contains(etag);
         }
     }
 }

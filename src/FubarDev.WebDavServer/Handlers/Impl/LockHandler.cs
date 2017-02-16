@@ -14,10 +14,11 @@ using System.Xml.Serialization;
 using FubarDev.WebDavServer.FileSystem;
 using FubarDev.WebDavServer.Locking;
 using FubarDev.WebDavServer.Model;
+using FubarDev.WebDavServer.Model.Headers;
 
 using JetBrains.Annotations;
 
-using Timeout = FubarDev.WebDavServer.Model.Timeout;
+using Timeout = FubarDev.WebDavServer.Model.Headers.Timeout;
 
 namespace FubarDev.WebDavServer.Handlers.Impl
 {

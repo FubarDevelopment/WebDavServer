@@ -4,7 +4,7 @@
 
 using System;
 
-namespace FubarDev.WebDavServer.Model
+namespace FubarDev.WebDavServer.Model.Headers
 {
     public class Overwrite
     {

@@ -5,6 +5,7 @@
 using System.Xml.Linq;
 
 using FubarDev.WebDavServer.Model;
+using FubarDev.WebDavServer.Model.Headers;
 
 namespace FubarDev.WebDavServer.Props.Converters
 {

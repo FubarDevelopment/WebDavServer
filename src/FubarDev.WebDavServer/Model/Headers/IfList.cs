@@ -7,10 +7,11 @@ using System.Collections.Generic;
 using System.Linq;
 
 using FubarDev.WebDavServer.FileSystem;
+using FubarDev.WebDavServer.Utils;
 
 using JetBrains.Annotations;
 
-namespace FubarDev.WebDavServer.Model
+namespace FubarDev.WebDavServer.Model.Headers
 {
     public class IfList : IIfMatcher
     {

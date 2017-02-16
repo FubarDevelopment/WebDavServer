@@ -5,7 +5,7 @@
 using System;
 using System.Diagnostics;
 
-namespace FubarDev.WebDavServer.Model
+namespace FubarDev.WebDavServer.Model.Headers
 {
     public struct Depth : IComparable<Depth>, IEquatable<Depth>
     {

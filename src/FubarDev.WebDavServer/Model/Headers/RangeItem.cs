@@ -5,7 +5,7 @@
 using System;
 using System.Text.RegularExpressions;
 
-namespace FubarDev.WebDavServer.Model
+namespace FubarDev.WebDavServer.Model.Headers
 {
     /// <summary>
     /// Range for a HTTP request or response

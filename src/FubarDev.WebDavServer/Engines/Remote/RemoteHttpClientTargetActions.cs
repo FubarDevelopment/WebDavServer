@@ -18,6 +18,7 @@ using System.Xml.Serialization;
 
 using FubarDev.WebDavServer.FileSystem;
 using FubarDev.WebDavServer.Model;
+using FubarDev.WebDavServer.Model.Headers;
 using FubarDev.WebDavServer.Props;
 
 using JetBrains.Annotations;
