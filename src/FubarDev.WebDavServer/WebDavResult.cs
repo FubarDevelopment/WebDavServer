@@ -2,6 +2,7 @@
 // Copyright (c) Fubar Development Junker. All rights reserved.
 // </copyright>
 
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
@@ -19,10 +20,26 @@ namespace FubarDev.WebDavServer
 
         public WebDavStatusCode StatusCode { get; }
 
+        public IDictionary<string, string[]> Headers { get; } = new Dictionary<string, string[]>();
+
         public virtual Task ExecuteResultAsync(IWebDavResponse response, CancellationToken ct)
         {
-            response.Headers["DAV"] = response.Dispatcher.SupportedClasses.ToArray();
-            response.Headers["Accept-Ranges"] = new[] { "bytes" };
+            var headers = new Dictionary<string, string[]>()
+            {
+                ["DAV"] = response.Dispatcher.SupportedClasses.ToArray(),
+                ["Accept-Ranges"] = new[] { "bytes" },
+            };
+
+            foreach (var header in Headers)
+            {
+                headers[header.Key] = header.Value;
+            }
+
+            foreach (var header in headers)
+            {
+                response.Headers[header.Key] = header.Value;
+            }
+
             return Task.FromResult(0);
         }
     }
