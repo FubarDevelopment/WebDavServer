@@ -7,13 +7,14 @@ using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
 
+using FubarDev.WebDavServer.Model.Headers;
 using FubarDev.WebDavServer.Props;
 using FubarDev.WebDavServer.Props.Dead;
 using FubarDev.WebDavServer.Props.Live;
 
 namespace FubarDev.WebDavServer.FileSystem.InMemory
 {
-    public abstract class InMemoryEntry : IEntry
+    public abstract class InMemoryEntry : IEntry, IEntityTagEntry
     {
         private readonly InMemoryDirectory _parent;
 
@@ -38,6 +39,9 @@ namespace FubarDev.WebDavServer.FileSystem.InMemory
 
         public DateTime LastWriteTimeUtc { get; protected set; }
 
+        /// <inheritdoc />
+        public EntityTag ETag { get; private set; } = new EntityTag(false);
+
         protected InMemoryFileSystem InMemoryFileSystem { get; }
 
         protected InMemoryDirectory InMemoryParent => _parent;
@@ -47,6 +51,12 @@ namespace FubarDev.WebDavServer.FileSystem.InMemory
         public IAsyncEnumerable<IUntypedReadableProperty> GetProperties(int? maxCost)
         {
             return new EntryProperties(this, GetLiveProperties(), GetPredefinedDeadProperties(), FileSystem.PropertyStore, maxCost);
+        }
+
+        /// <inheritdoc />
+        public EntityTag UpdateETag()
+        {
+            return ETag = new EntityTag(false);
         }
 
         public abstract Task<DeleteResult> DeleteAsync(CancellationToken cancellationToken);

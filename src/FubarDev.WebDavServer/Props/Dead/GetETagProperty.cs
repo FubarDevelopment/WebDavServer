@@ -26,14 +26,17 @@ namespace FubarDev.WebDavServer.Props.Dead
 
         private readonly IEntry _entry;
 
+        private readonly IEntityTagEntry _etagEntry;
+
         private XElement _element;
 
         public GetETagProperty([CanBeNull] IPropertyStore propertyStore, IEntry entry, int? cost = null)
         {
             _propertyStore = propertyStore;
             _entry = entry;
+            _etagEntry = entry as IEntityTagEntry;
             Name = PropertyName;
-            Cost = cost ?? _propertyStore?.Cost ?? 0;
+            Cost = cost ?? (_etagEntry != null ? 0 : (int?)null) ?? _propertyStore?.Cost ?? 0;
         }
 
         public XName Name { get; }
@@ -46,6 +49,11 @@ namespace FubarDev.WebDavServer.Props.Dead
 
         public async Task<XElement> GetXmlValueAsync(CancellationToken ct)
         {
+            if (_etagEntry != null)
+            {
+                return Converter.ToElement(Name, _etagEntry.ETag);
+            }
+
             if (_element == null)
             {
                 if (_propertyStore != null)
