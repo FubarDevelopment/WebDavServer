@@ -11,6 +11,7 @@ using System.Threading.Tasks;
 
 using FubarDev.WebDavServer.FileSystem;
 using FubarDev.WebDavServer.Model;
+using FubarDev.WebDavServer.Model.Headers;
 using FubarDev.WebDavServer.Props;
 
 using Microsoft.Extensions.Logging;
@@ -35,13 +36,13 @@ namespace FubarDev.WebDavServer.Engines
             _logger = logger;
         }
 
-        public async Task<CollectionActionResult> ExecuteAsync(Uri sourceUrl, ICollection source, Depth depth, TMissing target, CancellationToken cancellationToken)
+        public async Task<CollectionActionResult> ExecuteAsync(Uri sourceUrl, ICollection source, DepthHeader depth, TMissing target, CancellationToken cancellationToken)
         {
             var nodes = await source.GetNodeAsync(depth.OrderValue, cancellationToken).ConfigureAwait(false);
             return await ExecuteAsync(sourceUrl, nodes, target, cancellationToken).ConfigureAwait(false);
         }
 
-        public async Task<CollectionActionResult> ExecuteAsync(Uri sourceUrl, ICollection source, Depth depth, TCollection target, CancellationToken cancellationToken)
+        public async Task<CollectionActionResult> ExecuteAsync(Uri sourceUrl, ICollection source, DepthHeader depth, TCollection target, CancellationToken cancellationToken)
         {
             var nodes = await source.GetNodeAsync(depth.OrderValue, cancellationToken).ConfigureAwait(false);
             return await ExecuteAsync(sourceUrl, nodes, target, cancellationToken).ConfigureAwait(false);

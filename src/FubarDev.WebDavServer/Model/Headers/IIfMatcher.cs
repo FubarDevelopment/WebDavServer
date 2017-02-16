@@ -9,7 +9,7 @@ using FubarDev.WebDavServer.FileSystem;
 
 using JetBrains.Annotations;
 
-namespace FubarDev.WebDavServer.Model
+namespace FubarDev.WebDavServer.Model.Headers
 {
     public interface IIfMatcher
     {

@@ -13,6 +13,7 @@ using System.Threading.Tasks;
 
 using FubarDev.WebDavServer.FileSystem;
 using FubarDev.WebDavServer.Model;
+using FubarDev.WebDavServer.Model.Headers;
 using FubarDev.WebDavServer.Props;
 using FubarDev.WebDavServer.Props.Dead;
 using FubarDev.WebDavServer.Props.Live;
@@ -75,7 +76,15 @@ namespace FubarDev.WebDavServer.Handlers.Impl
 
                 var rangeItems = rangeHeader.Normalize(doc.Length);
                 if (rangeItems.Any(x => x.Length < 0 || x.To >= doc.Length))
-                    return new WebDavResult(WebDavStatusCode.RequestedRangeNotSatisfiable);
+                {
+                    return new WebDavResult(WebDavStatusCode.RequestedRangeNotSatisfiable)
+                    {
+                        Headers =
+                        {
+                            ["Content-Range"] = new[] { $"bytes */{doc.Length}" },
+                        },
+                    };
+                }
 
                 return new WebDavPartialDocumentResult(doc, returnFile, rangeItems);
             }

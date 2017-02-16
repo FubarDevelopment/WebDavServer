@@ -1,4 +1,4 @@
-﻿// <copyright file="IfMatch.cs" company="Fubar Development Junker">
+﻿// <copyright file="IfMatchHeader.cs" company="Fubar Development Junker">
 // Copyright (c) Fubar Development Junker. All rights reserved.
 // </copyright>
 
@@ -9,48 +9,48 @@ using FubarDev.WebDavServer.FileSystem;
 
 using JetBrains.Annotations;
 
-namespace FubarDev.WebDavServer.Model
+namespace FubarDev.WebDavServer.Model.Headers
 {
-    public class IfMatch : IIfMatcher
+    public class IfMatchHeader : IIfMatcher
     {
         [CanBeNull]
         private readonly ISet<EntityTag> _etags;
 
-        private IfMatch([NotNull] IEnumerable<EntityTag> etags)
+        private IfMatchHeader([NotNull] IEnumerable<EntityTag> etags)
         {
             _etags = new HashSet<EntityTag>(etags, EntityTagComparer.Default);
         }
 
-        private IfMatch()
+        private IfMatchHeader()
         {
             _etags = null;
         }
 
         [NotNull]
-        public static IfMatch Parse([CanBeNull] string s)
+        public static IfMatchHeader Parse([CanBeNull] string s)
         {
             if (string.IsNullOrWhiteSpace(s) || s == "*")
-                return new IfMatch();
+                return new IfMatchHeader();
 
-            return new IfMatch(EntityTag.Parse(s));
+            return new IfMatchHeader(EntityTag.Parse(s));
         }
 
         [NotNull]
-        public static IfMatch Parse([NotNull][ItemNotNull] IEnumerable<string> s)
+        public static IfMatchHeader Parse([NotNull][ItemNotNull] IEnumerable<string> s)
         {
             var result = new List<EntityTag>();
             foreach (var etag in s)
             {
                 if (etag == "*")
-                    return new IfMatch();
+                    return new IfMatchHeader();
 
                 result.AddRange(EntityTag.Parse(etag));
             }
 
             if (result.Count == 0)
-                return new IfMatch();
+                return new IfMatchHeader();
 
-            return new IfMatch(result);
+            return new IfMatchHeader(result);
         }
 
         public bool IsMatch(IEntry entry, EntityTag etag, IReadOnlyCollection<Uri> stateTokens)

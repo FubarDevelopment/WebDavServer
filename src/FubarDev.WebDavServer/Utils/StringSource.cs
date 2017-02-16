@@ -6,7 +6,7 @@ using System;
 
 using JetBrains.Annotations;
 
-namespace FubarDev.WebDavServer.Model
+namespace FubarDev.WebDavServer.Utils
 {
     internal class StringSource
     {

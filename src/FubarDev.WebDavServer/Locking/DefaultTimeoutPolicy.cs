@@ -32,7 +32,7 @@ namespace FubarDev.WebDavServer.Locking
         {
             var t = timeouts.ToImmutableList();
             if (_options.AllowInfiniteTimeout)
-                t = t.Where(x => x != Model.Timeout.Infinite).ToImmutableList();
+                t = t.Where(x => x != Model.Headers.TimeoutHeader.Infinite).ToImmutableList();
 
             if (_options.MaxTimeout != null)
             {
@@ -45,7 +45,7 @@ namespace FubarDev.WebDavServer.Locking
             if (t.Count != 0)
                 return t.Max();
 
-            return Model.Timeout.Infinite;
+            return Model.Headers.TimeoutHeader.Infinite;
         }
     }
 }

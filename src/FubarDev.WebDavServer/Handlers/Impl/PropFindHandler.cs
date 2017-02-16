@@ -12,6 +12,7 @@ using System.Xml.Linq;
 
 using FubarDev.WebDavServer.FileSystem;
 using FubarDev.WebDavServer.Model;
+using FubarDev.WebDavServer.Model.Headers;
 using FubarDev.WebDavServer.Props.Filters;
 
 using JetBrains.Annotations;
@@ -61,12 +62,12 @@ namespace FubarDev.WebDavServer.Handlers.Impl
                 Debug.Assert(selectionResult.ResultType == SelectionResultType.FoundCollection, "selectionResult.ResultType == SelectionResultType.FoundCollection");
                 entries.Add(selectionResult.Collection);
                 var collector = selectionResult.Collection as IRecusiveChildrenCollector;
-                var depth = _context.RequestHeaders.Depth ?? (collector == null ? Depth.One : Depth.Infinity);
-                if (depth == Depth.One)
+                var depth = _context.RequestHeaders.Depth ?? (collector == null ? DepthHeader.One : DepthHeader.Infinity);
+                if (depth == DepthHeader.One)
                 {
                     entries.AddRange(await selectionResult.Collection.GetChildrenAsync(cancellationToken).ConfigureAwait(false));
                 }
-                else if (depth == Depth.Infinity)
+                else if (depth == DepthHeader.Infinity)
                 {
                     if (collector == null)
                     {
@@ -78,7 +79,7 @@ namespace FubarDev.WebDavServer.Handlers.Impl
                         });
                     }
 
-                    var remainingDepth = depth.OrderValue - (depth != Depth.Infinity ? 1 : 0);
+                    var remainingDepth = depth.OrderValue - (depth != DepthHeader.Infinity ? 1 : 0);
                     using (var entriesEnumerator = collector.GetEntries(remainingDepth).GetEnumerator())
                     {
                         while (await entriesEnumerator.MoveNext(cancellationToken).ConfigureAwait(false))

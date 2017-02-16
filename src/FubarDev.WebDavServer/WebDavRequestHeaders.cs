@@ -6,6 +6,8 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 
+using FubarDev.WebDavServer.Model.Headers;
+
 using JetBrains.Annotations;
 
 namespace FubarDev.WebDavServer
@@ -19,34 +21,34 @@ namespace FubarDev.WebDavServer
         public WebDavRequestHeaders([NotNull] IEnumerable<KeyValuePair<string, IEnumerable<string>>> headers)
         {
             Headers = headers.ToDictionary(x => x.Key, x => x.Value.ToList(), StringComparer.OrdinalIgnoreCase);
-            Depth = ParseHeader("Depth", args => Model.Depth.Parse(args.Single()));
-            Overwrite = ParseHeader("Overwrite", args => Model.Overwrite.Parse(args.Single()));
-            Range = ParseHeader("Range", Model.Range.Parse);
-            If = ParseHeader("If", args => Model.If.Parse(args.Single()));
-            IfMatch = ParseHeader("If-Match", Model.IfMatch.Parse);
-            IfNoneMatch = ParseHeader("If-None-Match", Model.IfNoneMatch.Parse);
-            IfModifiedSince = ParseHeader("If-Modified-Since", args => Model.IfModifiedSince.Parse(args.Single()));
-            IfUnmodifiedSince = ParseHeader("If-Unmodified-Since", args => Model.IfUnmodifiedSince.Parse(args.Single()));
-            Timeout = ParseHeader("Timeout", Model.Timeout.Parse);
+            Depth = ParseHeader("Depth", args => Model.Headers.DepthHeader.Parse(args.Single()));
+            Overwrite = ParseHeader("Overwrite", args => Model.Headers.OverwriteHeader.Parse(args.Single()));
+            Range = ParseHeader("Range", RangeHeader.Parse);
+            If = ParseHeader("If", args => IfHeader.Parse(args.Single()));
+            IfMatch = ParseHeader("If-Match", IfMatchHeader.Parse);
+            IfNoneMatch = ParseHeader("If-None-Match", IfNoneMatchHeader.Parse);
+            IfModifiedSince = ParseHeader("If-Modified-Since", args => IfModifiedSinceHeader.Parse(args.Single()));
+            IfUnmodifiedSince = ParseHeader("If-Unmodified-Since", args => IfUnmodifiedSinceHeader.Parse(args.Single()));
+            Timeout = ParseHeader("Timeout", TimeoutHeader.Parse);
         }
 
-        public Model.Depth? Depth { get; set; }
+        public DepthHeader? Depth { get; set; }
 
         public bool? Overwrite { get; set; }
 
-        public Model.If If { get; set; }
+        public IfHeader If { get; set; }
 
-        public Model.IfMatch IfMatch { get; set; }
+        public IfMatchHeader IfMatch { get; set; }
 
-        public Model.IfNoneMatch IfNoneMatch { get; set; }
+        public IfNoneMatchHeader IfNoneMatch { get; set; }
 
-        public Model.IfModifiedSince IfModifiedSince { get; set; }
+        public IfModifiedSinceHeader IfModifiedSince { get; set; }
 
-        public Model.IfUnmodifiedSince IfUnmodifiedSince { get; set; }
+        public IfUnmodifiedSinceHeader IfUnmodifiedSince { get; set; }
 
-        public Model.Range Range { get; set; }
+        public RangeHeader Range { get; set; }
 
-        public Model.Timeout Timeout { get; set; }
+        public TimeoutHeader Timeout { get; set; }
 
         public IDictionary<string, List<string>> Headers { get; }
 

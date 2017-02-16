@@ -1,4 +1,4 @@
-﻿// <copyright file="If.cs" company="Fubar Development Junker">
+﻿// <copyright file="IfHeader.cs" company="Fubar Development Junker">
 // Copyright (c) Fubar Development Junker. All rights reserved.
 // </copyright>
 
@@ -7,30 +7,31 @@ using System.Collections.Generic;
 using System.Linq;
 
 using FubarDev.WebDavServer.FileSystem;
+using FubarDev.WebDavServer.Utils;
 
 using JetBrains.Annotations;
 
-namespace FubarDev.WebDavServer.Model
+namespace FubarDev.WebDavServer.Model.Headers
 {
-    public class If : IIfMatcher
+    public class IfHeader : IIfMatcher
     {
-        private If([NotNull] [ItemNotNull] IReadOnlyCollection<IfList> lists)
+        private IfHeader([NotNull] [ItemNotNull] IReadOnlyCollection<IfHeaderList> lists)
         {
             Lists = lists;
         }
 
         [NotNull]
         [ItemNotNull]
-        public IReadOnlyCollection<IfList> Lists { get; }
+        public IReadOnlyCollection<IfHeaderList> Lists { get; }
 
         [NotNull]
-        public static If Parse([NotNull] string s)
+        public static IfHeader Parse([NotNull] string s)
         {
             var source = new StringSource(s);
-            var lists = IfList.Parse(source).ToList();
+            var lists = IfHeaderList.Parse(source).ToList();
             if (source.Empty)
                 throw new ArgumentException("Not an accepted list of conditions", nameof(s));
-            return new If(lists);
+            return new IfHeader(lists);
         }
 
         public bool IsMatch(IEntry entry, EntityTag etag, IReadOnlyCollection<Uri> stateTokens)

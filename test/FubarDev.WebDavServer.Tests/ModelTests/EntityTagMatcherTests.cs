@@ -10,6 +10,7 @@ using System.Threading.Tasks;
 using FubarDev.WebDavServer.FileSystem;
 using FubarDev.WebDavServer.FileSystem.InMemory;
 using FubarDev.WebDavServer.Model;
+using FubarDev.WebDavServer.Model.Headers;
 using FubarDev.WebDavServer.Props.Dead;
 using FubarDev.WebDavServer.Props.Store.InMemory;
 
@@ -37,7 +38,7 @@ namespace FubarDev.WebDavServer.Tests.ModelTests
         public async Task IfMatchAllNullTest()
         {
             var root = await FileSystem.Root;
-            var matcher = IfMatch.Parse((string)null);
+            var matcher = IfMatchHeader.Parse((string)null);
             Assert.All(_entityTags, etag => Assert.True(matcher.IsMatch(root, etag, _stateTokens)));
         }
 
@@ -45,7 +46,7 @@ namespace FubarDev.WebDavServer.Tests.ModelTests
         public async Task IfMatchAllEmptyTest()
         {
             var root = await FileSystem.Root;
-            var matcher = IfMatch.Parse(string.Empty);
+            var matcher = IfMatchHeader.Parse(string.Empty);
             Assert.All(_entityTags, etag => Assert.True(matcher.IsMatch(root, etag, _stateTokens)));
         }
 
@@ -53,7 +54,7 @@ namespace FubarDev.WebDavServer.Tests.ModelTests
         public async Task IfMatchAllStarTest()
         {
             var root = await FileSystem.Root;
-            var matcher = IfMatch.Parse("*");
+            var matcher = IfMatchHeader.Parse("*");
             Assert.All(_entityTags, etag => Assert.True(matcher.IsMatch(root, etag, _stateTokens)));
         }
 
@@ -61,7 +62,7 @@ namespace FubarDev.WebDavServer.Tests.ModelTests
         public async Task IfMatchStrongTest()
         {
             var root = await FileSystem.Root;
-            var matcher = IfMatch.Parse("\"qwe\"");
+            var matcher = IfMatchHeader.Parse("\"qwe\"");
             Assert.Equal(1, _entityTags.Count(etag => matcher.IsMatch(root, etag, _stateTokens)));
         }
 
@@ -69,7 +70,7 @@ namespace FubarDev.WebDavServer.Tests.ModelTests
         public async Task IfMatchWeakTest()
         {
             var root = await FileSystem.Root;
-            var matcher = IfMatch.Parse("w/\"qwe\"");
+            var matcher = IfMatchHeader.Parse("w/\"qwe\"");
             Assert.Equal(1, _entityTags.Count(etag => matcher.IsMatch(root, etag, _stateTokens)));
         }
 
@@ -77,7 +78,7 @@ namespace FubarDev.WebDavServer.Tests.ModelTests
         public async Task IfMatchOtherTest()
         {
             var root = await FileSystem.Root;
-            var matcher = IfMatch.Parse("\"asd\"");
+            var matcher = IfMatchHeader.Parse("\"asd\"");
             Assert.Equal(1, _entityTags.Count(etag => matcher.IsMatch(root, etag, _stateTokens)));
         }
 
@@ -85,7 +86,7 @@ namespace FubarDev.WebDavServer.Tests.ModelTests
         public async Task IfMatchNoneTest()
         {
             var root = await FileSystem.Root;
-            var matcher = IfMatch.Parse("\"qweqwe\"");
+            var matcher = IfMatchHeader.Parse("\"qweqwe\"");
             Assert.Equal(0, _entityTags.Count(etag => matcher.IsMatch(root, etag, _stateTokens)));
         }
 
@@ -93,7 +94,7 @@ namespace FubarDev.WebDavServer.Tests.ModelTests
         public async Task IfNoneMatchAllNullTest()
         {
             var root = await FileSystem.Root;
-            var matcher = IfNoneMatch.Parse((string)null);
+            var matcher = IfNoneMatchHeader.Parse((string)null);
             Assert.All(_entityTags, etag => Assert.False(matcher.IsMatch(root, etag, _stateTokens)));
         }
 
@@ -101,7 +102,7 @@ namespace FubarDev.WebDavServer.Tests.ModelTests
         public async Task IfNoneMatchAllEmptyTest()
         {
             var root = await FileSystem.Root;
-            var matcher = IfNoneMatch.Parse(string.Empty);
+            var matcher = IfNoneMatchHeader.Parse(string.Empty);
             Assert.All(_entityTags, etag => Assert.False(matcher.IsMatch(root, etag, _stateTokens)));
         }
 
@@ -109,7 +110,7 @@ namespace FubarDev.WebDavServer.Tests.ModelTests
         public async Task IfNoneMatchAllStarTest()
         {
             var root = await FileSystem.Root;
-            var matcher = IfNoneMatch.Parse("*");
+            var matcher = IfNoneMatchHeader.Parse("*");
             Assert.All(_entityTags, etag => Assert.False(matcher.IsMatch(root, etag, _stateTokens)));
         }
 
@@ -117,7 +118,7 @@ namespace FubarDev.WebDavServer.Tests.ModelTests
         public async Task IfNoneMatchStrongTest()
         {
             var root = await FileSystem.Root;
-            var matcher = IfNoneMatch.Parse("\"qwe\"");
+            var matcher = IfNoneMatchHeader.Parse("\"qwe\"");
             Assert.Equal(2, _entityTags.Count(etag => matcher.IsMatch(root, etag, _stateTokens)));
         }
 
@@ -125,7 +126,7 @@ namespace FubarDev.WebDavServer.Tests.ModelTests
         public async Task IfNoneMatchWeakTest()
         {
             var root = await FileSystem.Root;
-            var matcher = IfNoneMatch.Parse("w/\"qwe\"");
+            var matcher = IfNoneMatchHeader.Parse("w/\"qwe\"");
             Assert.Equal(2, _entityTags.Count(etag => matcher.IsMatch(root, etag, _stateTokens)));
         }
 
@@ -133,7 +134,7 @@ namespace FubarDev.WebDavServer.Tests.ModelTests
         public async Task IfNoneMatchOtherTest()
         {
             var root = await FileSystem.Root;
-            var matcher = IfNoneMatch.Parse("\"asd\"");
+            var matcher = IfNoneMatchHeader.Parse("\"asd\"");
             Assert.Equal(2, _entityTags.Count(etag => matcher.IsMatch(root, etag, _stateTokens)));
         }
 
@@ -141,7 +142,7 @@ namespace FubarDev.WebDavServer.Tests.ModelTests
         public async Task IfNoneMatchNoneTest()
         {
             var root = await FileSystem.Root;
-            var matcher = IfNoneMatch.Parse("\"qweqwe\"");
+            var matcher = IfNoneMatchHeader.Parse("\"qweqwe\"");
             Assert.Equal(3, _entityTags.Count(etag => matcher.IsMatch(root, etag, _stateTokens)));
         }
     }

@@ -9,10 +9,11 @@ using System.Text;
 using System.Xml.Linq;
 
 using FubarDev.WebDavServer.Props.Dead;
+using FubarDev.WebDavServer.Utils;
 
 using JetBrains.Annotations;
 
-namespace FubarDev.WebDavServer.Model
+namespace FubarDev.WebDavServer.Model.Headers
 {
     public struct EntityTag
     {
@@ -105,7 +106,8 @@ namespace FubarDev.WebDavServer.Model
 
         public override int GetHashCode()
         {
-            return Value?.GetHashCode() ?? 0;
+            return Value.GetHashCode()
+                ^ IsWeak.GetHashCode();
         }
 
         [NotNull]

@@ -1,4 +1,4 @@
-﻿// <copyright file="Timeout.cs" company="Fubar Development Junker">
+﻿// <copyright file="TimeoutHeader.cs" company="Fubar Development Junker">
 // Copyright (c) Fubar Development Junker. All rights reserved.
 // </copyright>
 
@@ -6,18 +6,18 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace FubarDev.WebDavServer.Model
+namespace FubarDev.WebDavServer.Model.Headers
 {
-    public class Timeout
+    public class TimeoutHeader
     {
         private static readonly char[] _unitValueSplitChar = { '-' };
 
-        public Timeout(IReadOnlyCollection<TimeSpan> values)
+        public TimeoutHeader(IReadOnlyCollection<TimeSpan> values)
         {
             Values = values;
         }
 
-        public Timeout(params TimeSpan[] values)
+        public TimeoutHeader(params TimeSpan[] values)
         {
             Values = values;
         }
@@ -26,12 +26,12 @@ namespace FubarDev.WebDavServer.Model
 
         public IReadOnlyCollection<TimeSpan> Values { get; }
 
-        public static Timeout Parse(string s)
+        public static TimeoutHeader Parse(string s)
         {
             return Parse(s.Split(',').Where(x => !string.IsNullOrEmpty(x)));
         }
 
-        public static Timeout Parse(IEnumerable<string> args)
+        public static TimeoutHeader Parse(IEnumerable<string> args)
         {
             var timespans = new List<TimeSpan>();
             foreach (var arg in args)
@@ -57,7 +57,7 @@ namespace FubarDev.WebDavServer.Model
                 }
             }
 
-            return new Timeout(timespans);
+            return new TimeoutHeader(timespans);
         }
     }
 }

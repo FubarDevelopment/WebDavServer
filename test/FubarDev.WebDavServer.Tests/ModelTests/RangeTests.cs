@@ -3,6 +3,7 @@
 // </copyright>
 
 using FubarDev.WebDavServer.Model;
+using FubarDev.WebDavServer.Model.Headers;
 
 using Xunit;
 
@@ -13,7 +14,7 @@ namespace FubarDev.WebDavServer.Tests.ModelTests
         [Fact]
         public void FromToTest()
         {
-            var range = Range.Parse("bytes=0-499");
+            var range = RangeHeader.Parse("bytes=0-499");
             var rangeItems = range.Normalize(10000);
             Assert.Collection(
                 rangeItems,
@@ -27,7 +28,7 @@ namespace FubarDev.WebDavServer.Tests.ModelTests
         [Fact]
         public void FromToTwiceTest()
         {
-            var range = Range.Parse("bytes=600-999,0-499");
+            var range = RangeHeader.Parse("bytes=600-999,0-499");
             var rangeItems = range.Normalize(10000);
             Assert.Collection(
                 rangeItems,
@@ -46,7 +47,7 @@ namespace FubarDev.WebDavServer.Tests.ModelTests
         [Fact]
         public void FromTest()
         {
-            var range = Range.Parse("bytes=600-");
+            var range = RangeHeader.Parse("bytes=600-");
             var rangeItems = range.Normalize(10000);
             Assert.Collection(
                 rangeItems,
@@ -60,7 +61,7 @@ namespace FubarDev.WebDavServer.Tests.ModelTests
         [Fact]
         public void ToTest()
         {
-            var range = Range.Parse("bytes=-5000");
+            var range = RangeHeader.Parse("bytes=-5000");
             var rangeItems = range.Normalize(10000);
             Assert.Collection(
                 rangeItems,
@@ -74,7 +75,7 @@ namespace FubarDev.WebDavServer.Tests.ModelTests
         [Fact]
         public void OverlapAscendingTest()
         {
-            var range = Range.Parse("bytes=0-499,300-599");
+            var range = RangeHeader.Parse("bytes=0-499,300-599");
             var rangeItems = range.Normalize(10000);
             Assert.Collection(
                 rangeItems,
@@ -88,7 +89,7 @@ namespace FubarDev.WebDavServer.Tests.ModelTests
         [Fact]
         public void OverlapDescendingTest()
         {
-            var range = Range.Parse("bytes=300-599,0-499");
+            var range = RangeHeader.Parse("bytes=300-599,0-499");
             var rangeItems = range.Normalize(10000);
             Assert.Collection(
                 rangeItems,
@@ -102,7 +103,7 @@ namespace FubarDev.WebDavServer.Tests.ModelTests
         [Fact]
         public void OverlapWithToTest()
         {
-            var range = Range.Parse("bytes=4000-5999,-5000");
+            var range = RangeHeader.Parse("bytes=4000-5999,-5000");
             var rangeItems = range.Normalize(10000);
             Assert.Collection(
                 rangeItems,
@@ -116,7 +117,7 @@ namespace FubarDev.WebDavServer.Tests.ModelTests
         [Fact]
         public void OverlapWithFromTest()
         {
-            var range = Range.Parse("bytes=4000-5999,5000-");
+            var range = RangeHeader.Parse("bytes=4000-5999,5000-");
             var rangeItems = range.Normalize(10000);
             Assert.Collection(
                 rangeItems,
@@ -130,7 +131,7 @@ namespace FubarDev.WebDavServer.Tests.ModelTests
         [Fact]
         public void OverlapDescendingWithFromTest()
         {
-            var range = Range.Parse("bytes=5000-,4000-5999");
+            var range = RangeHeader.Parse("bytes=5000-,4000-5999");
             var rangeItems = range.Normalize(10000);
             Assert.Collection(
                 rangeItems,

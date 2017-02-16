@@ -11,6 +11,7 @@ using System.Xml.Linq;
 
 using FubarDev.WebDavServer.FileSystem;
 using FubarDev.WebDavServer.Model;
+using FubarDev.WebDavServer.Model.Headers;
 using FubarDev.WebDavServer.Props.Dead;
 
 namespace FubarDev.WebDavServer.Props.Store.InMemory

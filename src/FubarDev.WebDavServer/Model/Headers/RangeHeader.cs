@@ -1,4 +1,4 @@
-﻿// <copyright file="Range.cs" company="Fubar Development Junker">
+﻿// <copyright file="RangeHeader.cs" company="Fubar Development Junker">
 // Copyright (c) Fubar Development Junker. All rights reserved.
 // </copyright>
 
@@ -9,26 +9,26 @@ using System.Linq;
 
 using JetBrains.Annotations;
 
-namespace FubarDev.WebDavServer.Model
+namespace FubarDev.WebDavServer.Model.Headers
 {
     /// <summary>
     /// This class encapsualtes a HTTP range
     /// </summary>
-    public class Range
+    public class RangeHeader
     {
         private static readonly char[] _splitEqualChar = { '=' };
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="Range"/> class.
+        /// Initializes a new instance of the <see cref="RangeHeader"/> class.
         /// </summary>
         /// <param name="unit">The unit of the range (currently only <code>bytes</code> is allowed)</param>
         /// <param name="rangeItems">The HTTP range items for this range</param>
-        public Range([NotNull] string unit, params RangeItem[] rangeItems)
+        public RangeHeader([NotNull] string unit, params RangeHeaderItem[] rangeItems)
             : this(unit, false, rangeItems)
         {
         }
 
-        private Range([NotNull] string unit, bool ignoreInvalidUnit, IReadOnlyCollection<RangeItem> rangeItems)
+        private RangeHeader([NotNull] string unit, bool ignoreInvalidUnit, IReadOnlyCollection<RangeHeaderItem> rangeItems)
         {
             if (!ignoreInvalidUnit && !string.IsNullOrEmpty(unit) && unit != "bytes")
                 throw new NotSupportedException();
@@ -46,34 +46,34 @@ namespace FubarDev.WebDavServer.Model
         /// Gets the HTTP range items
         /// </summary>
         [NotNull]
-        public IReadOnlyCollection<RangeItem> RangeItems { get; }
+        public IReadOnlyCollection<RangeHeaderItem> RangeItems { get; }
 
         /// <summary>
-        /// Parses a <paramref name="range"/> into a new <see cref="Range"/> instance
+        /// Parses a <paramref name="range"/> into a new <see cref="RangeHeader"/> instance
         /// </summary>
         /// <remarks>
         /// The range must be in the form <code>unit=(range)+</code>
         /// </remarks>
         /// <param name="range">The range to parse</param>
-        /// <returns>The new <see cref="Range"/></returns>
+        /// <returns>The new <see cref="RangeHeader"/></returns>
         [NotNull]
-        public static Range Parse([NotNull] string range)
+        public static RangeHeader Parse([NotNull] string range)
         {
             return Parse(range.Split(','));
         }
 
         /// <summary>
-        /// Parses the <paramref name="ranges"/> into a new <see cref="Range"/> instance
+        /// Parses the <paramref name="ranges"/> into a new <see cref="RangeHeader"/> instance
         /// </summary>
         /// <remarks>
         /// The range must be in the form <code>unit=(range)+</code>
         /// </remarks>
         /// <param name="ranges">The ranges to parse</param>
-        /// <returns>The new <see cref="Range"/></returns>
+        /// <returns>The new <see cref="RangeHeader"/></returns>
         [NotNull]
-        public static Range Parse([NotNull][ItemNotNull] IEnumerable<string> ranges)
+        public static RangeHeader Parse([NotNull][ItemNotNull] IEnumerable<string> ranges)
         {
-            var rangeItems = new List<RangeItem>();
+            var rangeItems = new List<RangeHeaderItem>();
             var firstEntry = true;
             string unit = null;
             foreach (var range in ranges)
@@ -101,12 +101,12 @@ namespace FubarDev.WebDavServer.Model
 
                 foreach (var rangeValueItem in rangeValue.Split(',').Select(x => x.Trim()).Where(x => !string.IsNullOrEmpty(x)))
                 {
-                    var item = RangeItem.Parse(rangeValueItem);
+                    var item = RangeHeaderItem.Parse(rangeValueItem);
                     rangeItems.Add(item);
                 }
             }
 
-            return new Range(unit ?? "bytes", true, rangeItems);
+            return new RangeHeader(unit ?? "bytes", true, rangeItems);
         }
 
         /// <summary>
@@ -123,30 +123,30 @@ namespace FubarDev.WebDavServer.Model
         }
 
         /// <summary>
-        /// Returns the textual representation of a single <see cref="RangeItem"/>
+        /// Returns the textual representation of a single <see cref="RangeHeaderItem"/>
         /// </summary>
         /// <remarks>
         /// The return value of this function looks like <code>unit range/length</code>
         /// </remarks>
-        /// <param name="rangeItem">The <see cref="RangeItem"/> to get the textual representation for</param>
+        /// <param name="rangeItem">The <see cref="RangeHeaderItem"/> to get the textual representation for</param>
         /// <returns>The textual representation of <paramref name="rangeItem"/></returns>
         [NotNull]
-        public virtual string ToString(RangeItem rangeItem)
+        public virtual string ToString(RangeHeaderItem rangeItem)
         {
             return ToString(rangeItem, null);
         }
 
         /// <summary>
-        /// Returns the textual representation of a single <see cref="RangeItem"/>
+        /// Returns the textual representation of a single <see cref="RangeHeaderItem"/>
         /// </summary>
         /// <remarks>
         /// The return value of this function looks like <code>unit range/length</code>
         /// </remarks>
-        /// <param name="rangeItem">The <see cref="RangeItem"/> to get the textual representation for</param>
+        /// <param name="rangeItem">The <see cref="RangeHeaderItem"/> to get the textual representation for</param>
         /// <param name="length">The length value to be used in the textual representation</param>
         /// <returns>The textual representation of <paramref name="rangeItem"/></returns>
         [NotNull]
-        public virtual string ToString(RangeItem rangeItem, long? length)
+        public virtual string ToString(RangeHeaderItem rangeItem, long? length)
         {
             return $"{Unit} {rangeItem}/{(length.HasValue ? length.Value.ToString(CultureInfo.InvariantCulture) : "*")}";
         }

@@ -1,12 +1,12 @@
-﻿// <copyright file="Overwrite.cs" company="Fubar Development Junker">
+﻿// <copyright file="OverwriteHeader.cs" company="Fubar Development Junker">
 // Copyright (c) Fubar Development Junker. All rights reserved.
 // </copyright>
 
 using System;
 
-namespace FubarDev.WebDavServer.Model
+namespace FubarDev.WebDavServer.Model.Headers
 {
-    public class Overwrite
+    public class OverwriteHeader
     {
         public static bool? Parse(string overwrite)
         {

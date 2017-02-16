@@ -18,6 +18,7 @@ using System.Xml.Serialization;
 
 using FubarDev.WebDavServer.FileSystem;
 using FubarDev.WebDavServer.Model;
+using FubarDev.WebDavServer.Model.Headers;
 using FubarDev.WebDavServer.Props;
 
 using JetBrains.Annotations;
@@ -149,7 +150,7 @@ namespace FubarDev.WebDavServer.Engines.Remote
             {
                 Headers =
                 {
-                    { "Depth", Depth.Zero.Value },
+                    { "Depth", DepthHeader.Zero.Value },
                 },
                 Content = CreateContent(_propFindSerializer, requestData),
             })

@@ -6,7 +6,7 @@ using System.Collections.Generic;
 
 using JetBrains.Annotations;
 
-namespace FubarDev.WebDavServer.Model
+namespace FubarDev.WebDavServer.Model.Headers
 {
     public class EntityTagComparer : IEqualityComparer<EntityTag>
     {

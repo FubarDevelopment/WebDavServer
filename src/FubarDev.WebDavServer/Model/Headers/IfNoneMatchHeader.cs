@@ -1,4 +1,4 @@
-﻿// <copyright file="IfNoneMatch.cs" company="Fubar Development Junker">
+﻿// <copyright file="IfNoneMatchHeader.cs" company="Fubar Development Junker">
 // Copyright (c) Fubar Development Junker. All rights reserved.
 // </copyright>
 
@@ -9,48 +9,48 @@ using FubarDev.WebDavServer.FileSystem;
 
 using JetBrains.Annotations;
 
-namespace FubarDev.WebDavServer.Model
+namespace FubarDev.WebDavServer.Model.Headers
 {
-    public class IfNoneMatch : IIfMatcher
+    public class IfNoneMatchHeader : IIfMatcher
     {
         [CanBeNull]
         private readonly ISet<EntityTag> _etags;
 
-        private IfNoneMatch([NotNull] IEnumerable<EntityTag> etags)
+        private IfNoneMatchHeader([NotNull] IEnumerable<EntityTag> etags)
         {
             _etags = new HashSet<EntityTag>(etags, EntityTagComparer.Default);
         }
 
-        private IfNoneMatch()
+        private IfNoneMatchHeader()
         {
             _etags = null;
         }
 
         [NotNull]
-        public static IfNoneMatch Parse([CanBeNull] string s)
+        public static IfNoneMatchHeader Parse([CanBeNull] string s)
         {
             if (string.IsNullOrWhiteSpace(s) || s == "*")
-                return new IfNoneMatch();
+                return new IfNoneMatchHeader();
 
-            return new IfNoneMatch(EntityTag.Parse(s));
+            return new IfNoneMatchHeader(EntityTag.Parse(s));
         }
 
         [NotNull]
-        public static IfNoneMatch Parse([NotNull][ItemNotNull] IEnumerable<string> s)
+        public static IfNoneMatchHeader Parse([NotNull][ItemNotNull] IEnumerable<string> s)
         {
             var result = new List<EntityTag>();
             foreach (var etag in s)
             {
                 if (etag == "*")
-                    return new IfNoneMatch();
+                    return new IfNoneMatchHeader();
 
                 result.AddRange(EntityTag.Parse(etag));
             }
 
             if (result.Count == 0)
-                return new IfNoneMatch();
+                return new IfNoneMatchHeader();
 
-            return new IfNoneMatch(result);
+            return new IfNoneMatchHeader(result);
         }
 
         public bool IsMatch(IEntry entry, EntityTag etag, IReadOnlyCollection<Uri> stateTokens)

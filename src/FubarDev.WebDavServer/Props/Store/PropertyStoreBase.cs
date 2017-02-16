@@ -10,6 +10,7 @@ using System.Xml.Linq;
 
 using FubarDev.WebDavServer.FileSystem;
 using FubarDev.WebDavServer.Model;
+using FubarDev.WebDavServer.Model.Headers;
 using FubarDev.WebDavServer.Props.Dead;
 
 using JetBrains.Annotations;
@@ -77,6 +78,10 @@ namespace FubarDev.WebDavServer.Props.Store
 
         public virtual async Task<EntityTag> GetETagAsync(IEntry entry, CancellationToken cancellationToken)
         {
+            var etagEntry = entry as IEntityTagEntry;
+            if (etagEntry != null)
+                return etagEntry.ETag;
+
             var etag = await GetAsync(entry, EntityTag.PropertyName, cancellationToken).ConfigureAwait(false);
             if (etag == null)
             {
@@ -89,6 +94,10 @@ namespace FubarDev.WebDavServer.Props.Store
 
         public virtual async Task<EntityTag> UpdateETagAsync(IEntry entry, CancellationToken cancellationToken)
         {
+            var etagEntry = entry as IEntityTagEntry;
+            if (etagEntry != null)
+                return etagEntry.UpdateETag();
+
             var etag = EntityTag.FromXml(null);
             var etagElement = etag.ToXml();
             await SetAsync(entry, etagElement, cancellationToken).ConfigureAwait(false);

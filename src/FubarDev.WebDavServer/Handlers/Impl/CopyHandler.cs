@@ -12,6 +12,7 @@ using FubarDev.WebDavServer.Engines.Local;
 using FubarDev.WebDavServer.Engines.Remote;
 using FubarDev.WebDavServer.FileSystem;
 using FubarDev.WebDavServer.Model;
+using FubarDev.WebDavServer.Model.Headers;
 
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
@@ -38,7 +39,7 @@ namespace FubarDev.WebDavServer.Handlers.Impl
         public Task<IWebDavResult> CopyAsync(string sourcePath, Uri destination, CancellationToken cancellationToken)
         {
             var doOverwrite = WebDavContext.RequestHeaders.Overwrite ?? _options.OverwriteAsDefault;
-            var depth = WebDavContext.RequestHeaders.Depth ?? Depth.Infinity;
+            var depth = WebDavContext.RequestHeaders.Depth ?? DepthHeader.Infinity;
             return ExecuteAsync(sourcePath, destination, depth, doOverwrite, _options.Mode, cancellationToken);
         }
 
