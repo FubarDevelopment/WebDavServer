@@ -238,6 +238,41 @@ namespace FubarDev.WebDavServer.Tests.Locking
             Assert.Null(result2.Lock);
         }
 
+        [Fact]
+        public async Task TestExclusiveRootUnlockWithSharedSubAsync()
+        {
+            var lockManager = ServiceProvider.GetRequiredService<ILockManager>();
+            var ct = CancellationToken.None;
+            var owner = new XElement("test");
+            var result1 = await lockManager
+                .LockAsync(
+                    new Lock(
+                        "/",
+                        true,
+                        owner,
+                        LockAccessType.Write,
+                        LockShareMode.Exclusive,
+                        TimeSpan.FromMinutes(1)),
+                    ct)
+                .ConfigureAwait(false);
+            Assert.NotNull(result1.Lock);
+            ValidateLockResult(result1);
+            var resultRelease1 = await lockManager.ReleaseAsync(new Uri(result1.Lock.StateToken), ct).ConfigureAwait(false);
+            Assert.True(resultRelease1);
+            var result2 = await lockManager
+                .LockAsync(
+                    new Lock(
+                        "/test",
+                        true,
+                        owner,
+                        LockAccessType.Write,
+                        LockShareMode.Shared,
+                        TimeSpan.FromMinutes(1)),
+                    ct)
+                .ConfigureAwait(false);
+            ValidateLockResult(result2);
+        }
+
         [NotNull]
         private IActiveLock ValidateLockResult(LockResult result)
         {
