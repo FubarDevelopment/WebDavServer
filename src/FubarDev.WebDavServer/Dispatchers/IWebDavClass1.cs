@@ -8,6 +8,7 @@ using System.Threading;
 using System.Threading.Tasks;
 
 using FubarDev.WebDavServer.Model;
+using FubarDev.WebDavServer.Model.Headers;
 
 using JetBrains.Annotations;
 
@@ -58,5 +59,9 @@ namespace FubarDev.WebDavServer.Dispatchers
         [NotNull]
         [ItemNotNull]
         Task<IWebDavResult> LockAsync([NotNull] string path, [NotNull] lockinfo info, CancellationToken cancellationToken);
+
+        [NotNull]
+        [ItemNotNull]
+        Task<IWebDavResult> UnlockAsync([NotNull] string path, [NotNull] LockTokenHeader stateToken, CancellationToken cancellationToken);
     }
 }

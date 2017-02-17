@@ -257,8 +257,8 @@ namespace FubarDev.WebDavServer.Tests.Locking
                 .ConfigureAwait(false);
             Assert.NotNull(result1.Lock);
             ValidateLockResult(result1);
-            var resultRelease1 = await lockManager.ReleaseAsync(new Uri(result1.Lock.StateToken), ct).ConfigureAwait(false);
-            Assert.True(resultRelease1);
+            var resultRelease1 = await lockManager.ReleaseAsync(result1.Lock.Path, new Uri(result1.Lock.StateToken), ct).ConfigureAwait(false);
+            Assert.Equal(LockReleaseStatus.Success, resultRelease1);
             var result2 = await lockManager
                 .LockAsync(
                     new Lock(

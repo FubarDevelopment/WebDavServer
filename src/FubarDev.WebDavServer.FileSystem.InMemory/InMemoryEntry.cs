@@ -40,7 +40,7 @@ namespace FubarDev.WebDavServer.FileSystem.InMemory
         public DateTime LastWriteTimeUtc { get; protected set; }
 
         /// <inheritdoc />
-        public EntityTag ETag { get; private set; } = new EntityTag(false);
+        public EntityTag ETag { get; protected set; } = new EntityTag(false);
 
         protected InMemoryFileSystem InMemoryFileSystem { get; }
 
@@ -54,9 +54,9 @@ namespace FubarDev.WebDavServer.FileSystem.InMemory
         }
 
         /// <inheritdoc />
-        public EntityTag UpdateETag()
+        public Task<EntityTag> UpdateETagAsync(CancellationToken cancellationToken)
         {
-            return ETag = new EntityTag(false);
+            return Task.FromResult(ETag = new EntityTag(false));
         }
 
         public abstract Task<DeleteResult> DeleteAsync(CancellationToken cancellationToken);

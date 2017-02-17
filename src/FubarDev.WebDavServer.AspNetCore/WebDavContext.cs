@@ -5,6 +5,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Principal;
 using System.Text;
 
 using FubarDev.WebDavServer.Utils.UAParser;
@@ -26,6 +27,8 @@ namespace FubarDev.WebDavServer.AspNetCore
 
         private readonly Lazy<IUAParserOutput> _detectedClient;
 
+        private readonly Lazy<IPrincipal> _principal;
+
         public WebDavContext(IHttpContextAccessor httpContextAccessor, IOptions<WebDavHostOptions> options)
         {
             var opt = options?.Value ?? new WebDavHostOptions();
@@ -34,11 +37,14 @@ namespace FubarDev.WebDavServer.AspNetCore
             _rootUrl = new Lazy<Uri>(() => new Uri(_baseUrl.Value, "/"));
             _requestHeaders = new Lazy<WebDavRequestHeaders>(() => new WebDavRequestHeaders(httpContextAccessor.HttpContext.Request.Headers.Select(x => new KeyValuePair<string, IEnumerable<string>>(x.Key, x.Value))));
             _detectedClient = new Lazy<IUAParserOutput>(() => DetectClient(httpContextAccessor.HttpContext));
+            _principal = new Lazy<IPrincipal>(() => httpContextAccessor.HttpContext.User);
         }
 
         public Uri BaseUrl => _baseUrl.Value;
 
         public Uri RootUrl => _rootUrl.Value;
+
+        public IPrincipal User => _principal.Value;
 
         public string RequestProtocol => _httpContextAccessor.HttpContext.Request.Protocol;
 

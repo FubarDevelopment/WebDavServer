@@ -9,7 +9,7 @@ namespace FubarDev.WebDavServer.Tests.Handlers
     public class MoveCrossFileSystemsTests : MoveTestsBase
     {
         public MoveCrossFileSystemsTests()
-            : base(RecursiveProcessingMode.PreferCrossFileSystem)
+            : base(RecursiveProcessingMode.PreferCrossFileSystem, GetETagProperty.PropertyName)
         {
         }
     }

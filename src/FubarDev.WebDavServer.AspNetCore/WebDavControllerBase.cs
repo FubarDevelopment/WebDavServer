@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 
 using FubarDev.WebDavServer.AspNetCore.Routing;
 using FubarDev.WebDavServer.Model;
+using FubarDev.WebDavServer.Model.Headers;
 
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
@@ -114,19 +115,26 @@ namespace FubarDev.WebDavServer.AspNetCore
         }
 
         [HttpLock]
-        public Task<IActionResult> LockAsync(
+        public async Task<IActionResult> LockAsync(
             string path,
+            [FromBody] lockinfo lockinfo,
             CancellationToken cancellationToken = default(CancellationToken))
         {
-            throw new WebDavException(WebDavStatusCode.NotImplemented);
+            var result = await _dispatcher.Class1.LockAsync(path, lockinfo, cancellationToken).ConfigureAwait(false);
+            return new WebDavIndirectResult(_dispatcher, result, _responseLogger);
         }
 
         [HttpUnlock]
-        public Task<IActionResult> UnlockAsync(
+        public async Task<IActionResult> UnlockAsync(
             string path,
+            [FromHeader(Name = "Lock-Token")] string lockToken,
             CancellationToken cancellationToken = default(CancellationToken))
         {
-            throw new WebDavException(WebDavStatusCode.NotImplemented);
+            if (string.IsNullOrEmpty(lockToken))
+                return new WebDavIndirectResult(_dispatcher, new WebDavResult(WebDavStatusCode.BadRequest), _responseLogger);
+            var lt = LockTokenHeader.Parse(lockToken);
+            var result = await _dispatcher.Class1.UnlockAsync(path, lt, cancellationToken).ConfigureAwait(false);
+            return new WebDavIndirectResult(_dispatcher, result, _responseLogger);
         }
     }
 }

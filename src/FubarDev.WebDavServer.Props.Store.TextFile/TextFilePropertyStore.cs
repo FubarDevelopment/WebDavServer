@@ -12,11 +12,11 @@ using System.Threading.Tasks;
 using System.Xml.Linq;
 
 using FubarDev.WebDavServer.FileSystem;
-using FubarDev.WebDavServer.Model;
 using FubarDev.WebDavServer.Model.Headers;
 using FubarDev.WebDavServer.Props.Dead;
 
 using Microsoft.Extensions.Caching.Memory;
+using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 
 using Newtonsoft.Json;
@@ -33,24 +33,27 @@ namespace FubarDev.WebDavServer.Props.Store.TextFile
 
         private readonly IMemoryCache _cache;
 
+        private readonly ILogger<TextFilePropertyStore> _logger;
+
         private readonly TextFilePropertyStoreOptions _options;
 
         private readonly string _storeEntryName = ".properties";
 
-        public TextFilePropertyStore(IOptions<TextFilePropertyStoreOptions> options, IMemoryCache cache, IDeadPropertyFactory deadPropertyFactory = null)
-            : this(options.Value, cache, deadPropertyFactory ?? new DeadPropertyFactory())
+        public TextFilePropertyStore(IOptions<TextFilePropertyStoreOptions> options, IMemoryCache cache, ILogger<TextFilePropertyStore> logger, IDeadPropertyFactory deadPropertyFactory = null)
+            : this(options.Value, cache, deadPropertyFactory ?? new DeadPropertyFactory(), logger)
         {
         }
 
-        public TextFilePropertyStore(TextFilePropertyStoreOptions options, IMemoryCache cache, IDeadPropertyFactory deadPropertyFactory)
-            : this(options, cache, deadPropertyFactory, options.RootFolder)
+        public TextFilePropertyStore(TextFilePropertyStoreOptions options, IMemoryCache cache, IDeadPropertyFactory deadPropertyFactory, ILogger<TextFilePropertyStore> logger)
+            : this(options, cache, deadPropertyFactory, options.RootFolder, logger)
         {
         }
 
-        public TextFilePropertyStore(TextFilePropertyStoreOptions options, IMemoryCache cache, IDeadPropertyFactory deadPropertyFactory, string rootFolder)
+        public TextFilePropertyStore(TextFilePropertyStoreOptions options, IMemoryCache cache, IDeadPropertyFactory deadPropertyFactory, string rootFolder, ILogger<TextFilePropertyStore> logger)
             : base(deadPropertyFactory)
         {
             _cache = cache;
+            _logger = logger;
             _options = options;
             RootPath = rootFolder;
             var rnd = new Random();
@@ -82,9 +85,16 @@ namespace FubarDev.WebDavServer.Props.Store.TextFile
             }
             else
             {
-                var etagXml = new EntityTag(false).ToXml();
-                await SetAsync(entry, etagXml, cancellationToken).ConfigureAwait(false);
-                result = new[] { etagXml };
+                if (!(entry is IEntityTagEntry))
+                {
+                    var etagXml = new EntityTag(false).ToXml();
+                    await SetAsync(entry, etagXml, cancellationToken).ConfigureAwait(false);
+                    result = new[] { etagXml };
+                }
+                else
+                {
+                    result = new XElement[0];
+                }
             }
 
             return result;
@@ -92,9 +102,16 @@ namespace FubarDev.WebDavServer.Props.Store.TextFile
 
         public override Task SetAsync(IEntry entry, IEnumerable<XElement> elements, CancellationToken cancellationToken)
         {
+            var isETagProperty = entry is IEntityTagEntry;
             var info = GetInfo(entry, cancellationToken) ?? new EntryInfo();
             foreach (var element in elements)
             {
+                if (isETagProperty && element.Name == GetETagProperty.PropertyName)
+                {
+                    _logger.LogWarning("The ETag property must not be set using the property store.");
+                    continue;
+                }
+
                 info.Attributes[element.Name] = element;
             }
 

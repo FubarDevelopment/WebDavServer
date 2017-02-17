@@ -12,8 +12,8 @@ using System.Threading;
 using System.Threading.Tasks;
 
 using FubarDev.WebDavServer.FileSystem;
-using FubarDev.WebDavServer.Model;
 using FubarDev.WebDavServer.Model.Headers;
+using FubarDev.WebDavServer.Tests.Support.ServiceBuilders;
 
 using MimeKit;
 using MimeKit.IO;

@@ -60,6 +60,9 @@ namespace FubarDev.WebDavServer.Engines.Local
 
         private static async Task CopyETagAsync(IEntry source, IEntry dest, CancellationToken cancellationToken)
         {
+            if (dest is IEntityTagEntry)
+                return;
+
             var sourcePropStore = source.FileSystem.PropertyStore;
             var destPropStore = dest.FileSystem.PropertyStore;
             if (sourcePropStore != null && destPropStore != null)

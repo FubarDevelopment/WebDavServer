@@ -2,28 +2,29 @@
 // Copyright (c) Fubar Development Junker. All rights reserved.
 // </copyright>
 
+using System;
 using System.IO;
 using System.Threading;
 using System.Threading.Tasks;
 
 using FubarDev.WebDavServer.FileSystem;
-using FubarDev.WebDavServer.FileSystem.InMemory;
-using FubarDev.WebDavServer.Props.Dead;
-using FubarDev.WebDavServer.Props.Store.InMemory;
+using FubarDev.WebDavServer.Tests.Support.ServiceBuilders;
+
+using Microsoft.Extensions.DependencyInjection;
 
 using Xunit;
 
 namespace FubarDev.WebDavServer.Tests.FileSystem
 {
-    public class InMemoryFsTests
+    public class InMemoryFsTests : IClassFixture<FileSystemServices>, IDisposable
     {
-        public InMemoryFsTests()
+        private readonly IServiceScope _serviceScope;
+
+        public InMemoryFsTests(FileSystemServices fsServices)
         {
-            FileSystem = new InMemoryFileSystem(
-                new PathTraversalEngine(),
-                new SystemClock(),
-                new DeadPropertyFactory(),
-                new InMemoryPropertyStoreFactory());
+            var serviceScopeFactory = fsServices.ServiceProvider.GetRequiredService<IServiceScopeFactory>();
+            _serviceScope = serviceScopeFactory.CreateScope();
+            FileSystem = _serviceScope.ServiceProvider.GetRequiredService<IFileSystem>();
         }
 
         public IFileSystem FileSystem { get; }
@@ -91,6 +92,11 @@ namespace FubarDev.WebDavServer.Tests.FileSystem
             var root = await FileSystem.Root.ConfigureAwait(false);
             await root.CreateCollectionAsync("test1", ct).ConfigureAwait(false);
             await Assert.ThrowsAnyAsync<IOException>(async () => await root.CreateCollectionAsync("test1", ct).ConfigureAwait(false)).ConfigureAwait(false);
+        }
+
+        public void Dispose()
+        {
+            _serviceScope.Dispose();
         }
     }
 }

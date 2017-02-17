@@ -54,7 +54,6 @@ namespace FubarDev.WebDavServer.Model.Headers
             while (!source.SkipWhiteSpace())
             {
                 var isNot = false;
-                Uri stateToken = null;
                 EntityTag? etag = null;
                 if (source.AdvanceIf("Not", StringComparison.OrdinalIgnoreCase))
                 {
@@ -62,17 +61,12 @@ namespace FubarDev.WebDavServer.Model.Headers
                     source.SkipWhiteSpace();
                 }
 
-                var ch = source.Get();
-                if (ch == '<')
+                Uri stateToken;
+                if (CodedUrlParser.TryParse(source, out stateToken))
                 {
                     // Coded-URL found
-                    var codedUrl = source.GetUntil('>');
-                    if (codedUrl == null)
-                        throw new ArgumentException($"{source.Remaining} is not a valid condition (Coded-URL not ending with '>')", nameof(source));
-                    source.Advance(1);
-                    stateToken = new Uri(codedUrl, UriKind.RelativeOrAbsolute);
                 }
-                else if (ch == '[')
+                else if (source.Get() == '[')
                 {
                     // Entity-tag found
                     etag = EntityTag.Parse(source).Single();

@@ -68,6 +68,7 @@ namespace FubarDev.WebDavServer.FileSystem.InMemory
             doc._data = new MemoryStream(_data.ToArray());
             doc.CreationTimeUtc = CreationTimeUtc;
             doc.LastWriteTimeUtc = LastWriteTimeUtc;
+            doc.ETag = ETag;
 
             var sourcePropStore = FileSystem.PropertyStore;
             var destPropStore = collection.FileSystem.PropertyStore;
@@ -105,6 +106,7 @@ namespace FubarDev.WebDavServer.FileSystem.InMemory
             doc._data = new MemoryStream(_data.ToArray());
             doc.CreationTimeUtc = CreationTimeUtc;
             doc.LastWriteTimeUtc = LastWriteTimeUtc;
+            doc.ETag = ETag;
             if (!InMemoryParent.Remove(Name))
                 throw new InvalidOperationException("Failed to remove the document from the source collection.");
 

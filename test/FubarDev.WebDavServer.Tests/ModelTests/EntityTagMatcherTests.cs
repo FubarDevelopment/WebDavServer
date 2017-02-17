@@ -8,28 +8,23 @@ using System.Linq;
 using System.Threading.Tasks;
 
 using FubarDev.WebDavServer.FileSystem;
-using FubarDev.WebDavServer.FileSystem.InMemory;
-using FubarDev.WebDavServer.Model;
 using FubarDev.WebDavServer.Model.Headers;
-using FubarDev.WebDavServer.Props.Dead;
-using FubarDev.WebDavServer.Props.Store.InMemory;
+using FubarDev.WebDavServer.Tests.Support.ServiceBuilders;
+
+using Microsoft.Extensions.DependencyInjection;
 
 using Xunit;
 
 namespace FubarDev.WebDavServer.Tests.ModelTests
 {
-    public class EntityTagMatcherTests
+    public class EntityTagMatcherTests : IClassFixture<FileSystemServices>
     {
         private static readonly IReadOnlyCollection<EntityTag> _entityTags = EntityTag.Parse("\"qwe\", w/\"qwe\", \"asd\"").ToList();
         private static readonly IReadOnlyCollection<Uri> _stateTokens = new List<Uri>();
 
-        public EntityTagMatcherTests()
+        public EntityTagMatcherTests(FileSystemServices fsServices)
         {
-            FileSystem = new InMemoryFileSystem(
-                new PathTraversalEngine(),
-                new SystemClock(),
-                new DeadPropertyFactory(),
-                new InMemoryPropertyStoreFactory());
+            FileSystem = fsServices.ServiceProvider.GetRequiredService<IFileSystem>();
         }
 
         public IFileSystem FileSystem { get; }

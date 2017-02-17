@@ -12,7 +12,6 @@ using FubarDev.WebDavServer.Sample.AspNetCore.Support;
 
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.HttpOverrides;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -66,8 +65,8 @@ namespace FubarDev.WebDavServer.Sample.AspNetCore
                 .AddTransient(sp =>
                 {
                     var factory = sp.GetRequiredService<IFileSystemFactory>();
-                    var context = sp.GetRequiredService<IHttpContextAccessor>();
-                    return factory.CreateFileSystem(context.HttpContext.User.Identity);
+                    var context = sp.GetRequiredService<IWebDavContext>();
+                    return factory.CreateFileSystem(context.User.Identity);
                 })
                 .AddMvcCore()
                 .AddAuthorization()

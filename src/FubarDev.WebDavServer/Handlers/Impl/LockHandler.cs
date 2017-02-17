@@ -9,7 +9,6 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Xml.Linq;
-using System.Xml.Serialization;
 
 using FubarDev.WebDavServer.FileSystem;
 using FubarDev.WebDavServer.Locking;
@@ -24,8 +23,6 @@ namespace FubarDev.WebDavServer.Handlers.Impl
 {
     public class LockHandler : ILockHandler
     {
-        private static readonly XmlSerializer _activeLockSerializer = new XmlSerializer(typeof(activelock));
-
         [NotNull]
         private readonly IFileSystem _rootFileSystem;
 
@@ -117,12 +114,12 @@ namespace FubarDev.WebDavServer.Handlers.Impl
                 return new WebDavResult<multistatus>(WebDavStatusCode.MultiStatus, multistatus);
             }
 
-            WebDavStatusCode statusCode;
             var activeLock = lockResult.Lock;
             Debug.Assert(activeLock != null, "activeLock != null");
             try
             {
                 var selectionResult = await _rootFileSystem.SelectAsync(path, cancellationToken).ConfigureAwait(false);
+                WebDavStatusCode statusCode;
                 if (selectionResult.IsMissing)
                 {
                     if (selectionResult.MissingNames.Count > 1)
@@ -144,12 +141,10 @@ namespace FubarDev.WebDavServer.Handlers.Impl
             catch
             {
                 await _lockManager
-                    .ReleaseAsync(new Uri(activeLock.StateToken, UriKind.RelativeOrAbsolute), cancellationToken)
+                    .ReleaseAsync(activeLock.Path, new Uri(activeLock.StateToken, UriKind.RelativeOrAbsolute), cancellationToken)
                     .ConfigureAwait(false);
                 throw;
             }
-
-            throw new NotImplementedException();
         }
 
         private error CreateError(IEnumerable<IActiveLock> activeLocks)

@@ -2,27 +2,28 @@
 // Copyright (c) Fubar Development Junker. All rights reserved.
 // </copyright>
 
+using System;
 using System.Threading;
 using System.Threading.Tasks;
 
 using FubarDev.WebDavServer.FileSystem;
-using FubarDev.WebDavServer.FileSystem.InMemory;
-using FubarDev.WebDavServer.Props.Dead;
-using FubarDev.WebDavServer.Props.Store.InMemory;
+using FubarDev.WebDavServer.Tests.Support.ServiceBuilders;
+
+using Microsoft.Extensions.DependencyInjection;
 
 using Xunit;
 
 namespace FubarDev.WebDavServer.Tests.FileSystem
 {
-    public class FileSystemTreeCollection
+    public class FileSystemTreeCollection : IClassFixture<FileSystemServices>, IDisposable
     {
-        public FileSystemTreeCollection()
+        private readonly IServiceScope _serviceScope;
+
+        public FileSystemTreeCollection(FileSystemServices fsServices)
         {
-            FileSystem = new InMemoryFileSystem(
-                new PathTraversalEngine(),
-                new SystemClock(),
-                new DeadPropertyFactory(),
-                new InMemoryPropertyStoreFactory());
+            var serviceScopeFactory = fsServices.ServiceProvider.GetRequiredService<IServiceScopeFactory>();
+            _serviceScope = serviceScopeFactory.CreateScope();
+            FileSystem = _serviceScope.ServiceProvider.GetRequiredService<IFileSystem>();
         }
 
         public IFileSystem FileSystem { get; }
@@ -368,6 +369,11 @@ namespace FubarDev.WebDavServer.Tests.FileSystem
                             Assert.Same(node1.Collection, document.Parent);
                         });
                 });
+        }
+
+        public void Dispose()
+        {
+            _serviceScope.Dispose();
         }
     }
 }

@@ -39,11 +39,12 @@ namespace FubarDev.WebDavServer.Locking
         /// <summary>
         /// Releases a lock with the given state token
         /// </summary>
+        /// <param name="path">The path to release the lock for</param>
         /// <param name="stateToken">The state token of the lock to release</param>
         /// <param name="cancellationToken">The cancellation token</param>
         /// <returns><see langword="true" /> when there was a lock to remove</returns>
         [NotNull]
-        Task<bool> ReleaseAsync([NotNull] Uri stateToken, CancellationToken cancellationToken);
+        Task<LockReleaseStatus> ReleaseAsync([NotNull] string path, [NotNull] Uri stateToken, CancellationToken cancellationToken);
 
         /// <summary>
         /// Gets all active locks

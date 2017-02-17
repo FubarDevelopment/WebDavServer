@@ -96,7 +96,7 @@ namespace FubarDev.WebDavServer.Props.Store
         {
             var etagEntry = entry as IEntityTagEntry;
             if (etagEntry != null)
-                return etagEntry.UpdateETag();
+                return await etagEntry.UpdateETagAsync(cancellationToken).ConfigureAwait(false);
 
             var etag = EntityTag.FromXml(null);
             var etagElement = etag.ToXml();

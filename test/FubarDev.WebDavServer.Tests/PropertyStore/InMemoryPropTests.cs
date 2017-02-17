@@ -2,31 +2,33 @@
 // Copyright (c) Fubar Development Junker. All rights reserved.
 // </copyright>
 
+using System;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 
 using FubarDev.WebDavServer.FileSystem;
-using FubarDev.WebDavServer.FileSystem.InMemory;
 using FubarDev.WebDavServer.Props.Dead;
 using FubarDev.WebDavServer.Props.Store;
-using FubarDev.WebDavServer.Props.Store.InMemory;
+using FubarDev.WebDavServer.Tests.Support.ServiceBuilders;
 
 using JetBrains.Annotations;
+
+using Microsoft.Extensions.DependencyInjection;
 
 using Xunit;
 
 namespace FubarDev.WebDavServer.Tests.PropertyStore
 {
-    public class InMemoryPropTests
+    public class InMemoryPropTests : IClassFixture<FileSystemServices>, IDisposable
     {
-        public InMemoryPropTests()
+        private readonly IServiceScope _serviceScope;
+
+        public InMemoryPropTests(FileSystemServices fsServices)
         {
-            FileSystem = new InMemoryFileSystem(
-                new PathTraversalEngine(),
-                new SystemClock(),
-                new DeadPropertyFactory(),
-                new InMemoryPropertyStoreFactory());
+            var serviceScopeFactory = fsServices.ServiceProvider.GetRequiredService<IServiceScopeFactory>();
+            _serviceScope = serviceScopeFactory.CreateScope();
+            FileSystem = _serviceScope.ServiceProvider.GetRequiredService<IFileSystem>();
         }
 
         public IFileSystem FileSystem { get; }
@@ -90,6 +92,11 @@ namespace FubarDev.WebDavServer.Tests.PropertyStore
 
             displayNameProperty = await GetDisplayNamePropertyAsync(doc, ct).ConfigureAwait(false);
             Assert.Equal("test1-Dokument", await displayNameProperty.GetValueAsync(ct).ConfigureAwait(false));
+        }
+
+        public void Dispose()
+        {
+            _serviceScope.Dispose();
         }
 
         private static async Task<DisplayNameProperty> GetDisplayNamePropertyAsync(IEntry entry, CancellationToken ct)

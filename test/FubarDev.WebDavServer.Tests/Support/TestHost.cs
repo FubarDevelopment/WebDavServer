@@ -5,6 +5,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Principal;
 
 using FubarDev.WebDavServer.Utils.UAParser;
 
@@ -15,6 +16,14 @@ namespace FubarDev.WebDavServer.Tests.Support
     public class TestHost : IWebDavContext
     {
         private readonly Lazy<WebDavRequestHeaders> _requestHeaders;
+
+        public TestHost(Uri baseUrl)
+        {
+            BaseUrl = baseUrl;
+            RootUrl = new Uri(baseUrl, "/");
+            RequestProtocol = baseUrl.Scheme;
+            _requestHeaders = new Lazy<WebDavRequestHeaders>(() => new WebDavRequestHeaders(new List<KeyValuePair<string, IEnumerable<string>>>()));
+        }
 
         public TestHost(Uri baseUrl, IHttpContextAccessor httpContextAccessor)
         {
@@ -33,5 +42,7 @@ namespace FubarDev.WebDavServer.Tests.Support
         public IUAParserOutput DetectedClient { get; } = Parser.GetDefault().Parse(string.Empty);
 
         public IWebDavRequestHeaders RequestHeaders => _requestHeaders.Value;
+
+        public IPrincipal User { get; } = new GenericPrincipal(new GenericIdentity("anonymous"), new string[0]);
     }
 }

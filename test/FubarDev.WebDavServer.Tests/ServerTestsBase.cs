@@ -4,7 +4,6 @@
 
 using System;
 using System.Net.Http;
-using System.Security.Principal;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -15,7 +14,7 @@ using FubarDev.WebDavServer.FileSystem.InMemory;
 using FubarDev.WebDavServer.Handlers.Impl;
 using FubarDev.WebDavServer.Locking;
 using FubarDev.WebDavServer.Locking.InMemory;
-using FubarDev.WebDavServer.Props.Dead;
+using FubarDev.WebDavServer.Props.Store;
 using FubarDev.WebDavServer.Props.Store.InMemory;
 using FubarDev.WebDavServer.Tests.Support;
 
@@ -36,15 +35,11 @@ namespace FubarDev.WebDavServer.Tests
     {
         protected ServerTestsBase(RecursiveProcessingMode processingMode)
         {
-            FileSystem = new InMemoryFileSystem(
-                new PathTraversalEngine(),
-                new SystemClock(),
-                new DeadPropertyFactory(),
-                new InMemoryPropertyStoreFactory());
             var builder = new WebHostBuilder()
                 .ConfigureServices(sc => ConfigureServices(this, processingMode, sc))
                 .UseStartup<TestStartup>();
             Server = new TestServer(builder);
+            FileSystem = Server.Host.Services.GetRequiredService<IFileSystem>();
             Client = new WebDavClient(Server.CreateClient());
         }
 
@@ -83,14 +78,21 @@ namespace FubarDev.WebDavServer.Tests
                     })
                 .AddScoped<IWebDavContext>(sp => new TestHost(container.Server.BaseAddress, sp.GetRequiredService<IHttpContextAccessor>()))
                 .AddScoped<IHttpMessageHandlerFactory>(sp => new TestHttpMessageHandlerFactory(container.Server))
-                .AddSingleton<ILockManager, InMemoryLockManager>()
-                .AddSingleton<IFileSystemFactory>(sp => new TestFileSystemFactory(container.FileSystem))
-                .AddTransient(sp =>
+                .AddSingleton<IFileSystemFactory, InMemoryFileSystemFactory>()
+                .AddSingleton<IPropertyStoreFactory, InMemoryPropertyStoreFactory>()
+                .AddScoped(ctx =>
                 {
-                    var factory = sp.GetRequiredService<IFileSystemFactory>();
-                    var context = sp.GetRequiredService<IHttpContextAccessor>();
-                    return factory.CreateFileSystem(context.HttpContext.User.Identity);
+                    var factory = ctx.GetRequiredService<IPropertyStoreFactory>();
+                    var fs = ctx.GetRequiredService<IFileSystem>();
+                    return factory.Create(fs);
                 })
+                .AddScoped(ctx =>
+                {
+                    var factory = ctx.GetRequiredService<IFileSystemFactory>();
+                    var context = ctx.GetRequiredService<IWebDavContext>();
+                    return factory.CreateFileSystem(context.User.Identity);
+                })
+                .AddSingleton<ILockManager, InMemoryLockManager>()
                 .AddMvcCore()
                 .AddWebDav();
         }
@@ -103,21 +105,6 @@ namespace FubarDev.WebDavServer.Tests
             {
                 loggerFactory.AddDebug();
                 app.UseMvc();
-            }
-        }
-
-        private class TestFileSystemFactory : IFileSystemFactory
-        {
-            private readonly IFileSystem _fileSystem;
-
-            public TestFileSystemFactory(IFileSystem fileSystem)
-            {
-                _fileSystem = fileSystem;
-            }
-
-            public IFileSystem CreateFileSystem(IIdentity identity)
-            {
-                return _fileSystem;
             }
         }
 

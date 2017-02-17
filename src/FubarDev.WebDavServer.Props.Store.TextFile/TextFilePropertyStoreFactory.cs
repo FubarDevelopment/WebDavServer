@@ -6,6 +6,7 @@ using FubarDev.WebDavServer.FileSystem;
 using FubarDev.WebDavServer.Props.Dead;
 
 using Microsoft.Extensions.Caching.Memory;
+using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 
 namespace FubarDev.WebDavServer.Props.Store.TextFile
@@ -15,17 +16,19 @@ namespace FubarDev.WebDavServer.Props.Store.TextFile
         private readonly IDeadPropertyFactory _deadPropertyFactory;
         private readonly TextFilePropertyStoreOptions _options;
         private readonly IMemoryCache _cache;
+        private readonly ILogger<TextFilePropertyStore> _logger;
 
-        public TextFilePropertyStoreFactory(IOptions<TextFilePropertyStoreOptions> options, IMemoryCache cache, IDeadPropertyFactory deadPropertyFactory)
-            : this(options.Value, cache)
+        public TextFilePropertyStoreFactory(IOptions<TextFilePropertyStoreOptions> options, IMemoryCache cache, IDeadPropertyFactory deadPropertyFactory, ILogger<TextFilePropertyStore> logger)
+            : this(options.Value, cache, logger)
         {
             _deadPropertyFactory = deadPropertyFactory;
         }
 
-        public TextFilePropertyStoreFactory(TextFilePropertyStoreOptions options, IMemoryCache cache)
+        public TextFilePropertyStoreFactory(TextFilePropertyStoreOptions options, IMemoryCache cache, ILogger<TextFilePropertyStore> logger)
         {
             _options = options;
             _cache = cache;
+            _logger = logger;
         }
 
         public IPropertyStore Create(IFileSystem fileSystem)
@@ -35,11 +38,11 @@ namespace FubarDev.WebDavServer.Props.Store.TextFile
                 var localFs = fileSystem as ILocalFileSystem;
                 if (localFs != null)
                 {
-                    return new TextFilePropertyStore(_options, _cache, _deadPropertyFactory, localFs.RootDirectoryPath);
+                    return new TextFilePropertyStore(_options, _cache, _deadPropertyFactory, localFs.RootDirectoryPath, _logger);
                 }
             }
 
-            return new TextFilePropertyStore(_options, _cache, _deadPropertyFactory);
+            return new TextFilePropertyStore(_options, _cache, _deadPropertyFactory, _logger);
         }
     }
 }

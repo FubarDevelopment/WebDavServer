@@ -3,6 +3,7 @@
 // </copyright>
 
 using System;
+using System.Security.Principal;
 
 using FubarDev.WebDavServer.Utils.UAParser;
 
@@ -26,5 +27,8 @@ namespace FubarDev.WebDavServer
 
         [NotNull]
         IWebDavRequestHeaders RequestHeaders { get; }
+
+        [NotNull]
+        IPrincipal User { get; }
     }
 }

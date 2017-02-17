@@ -199,7 +199,7 @@ namespace FubarDev.WebDavServer.Locking
                 if (_logger.IsEnabled(LogLevel.Trace))
                     _logger.LogTrace($"Lock {lockItem.ActiveLock.StateToken} will now be removed from the lock manager.");
                 var stateToken = new Uri(lockItem.ActiveLock.StateToken, UriKind.RelativeOrAbsolute);
-                await lockItem.LockManager.ReleaseAsync(stateToken, CancellationToken.None).ConfigureAwait(false);
+                await lockItem.LockManager.ReleaseAsync(lockItem.ActiveLock.Path, stateToken, CancellationToken.None).ConfigureAwait(false);
             }
         }
 

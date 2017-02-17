@@ -43,6 +43,14 @@ namespace FubarDev.WebDavServer.Locking.InMemory
 
         public event EventHandler<LockEventArgs> LockReleased;
 
+        private enum LockCompareResult
+        {
+            RightIsParent,
+            LeftIsParent,
+            Reference,
+            NoMatch,
+        }
+
         public Task<LockResult> LockAsync(ILock l, CancellationToken cancellationToken)
         {
             IActiveLock newActiveLock;
@@ -70,7 +78,7 @@ namespace FubarDev.WebDavServer.Locking.InMemory
             return Task.FromResult(new LockResult(newActiveLock));
         }
 
-        public Task<bool> ReleaseAsync(Uri stateToken, CancellationToken cancellationToken)
+        public Task<LockReleaseStatus> ReleaseAsync(string path, Uri stateToken, CancellationToken cancellationToken)
         {
             IActiveLock activeLock;
             lock (_syncRoot)
@@ -79,8 +87,14 @@ namespace FubarDev.WebDavServer.Locking.InMemory
                 {
                     if (_logger.IsEnabled(LogLevel.Information))
                         _logger.LogInformation($"Tried to remove non-existent lock {stateToken}");
-                    return Task.FromResult(false);
+                    return Task.FromResult(LockReleaseStatus.NoLock);
                 }
+
+                var destinationUrl = new Uri(_baseUrl, path);
+                var lockUrl = new Uri(_baseUrl, activeLock.Path);
+                var lockCompareResult = Compare(lockUrl, activeLock.Recursive, destinationUrl, false);
+                if (lockCompareResult != LockCompareResult.Reference)
+                    return Task.FromResult(LockReleaseStatus.InvalidLockRange);
 
                 _locks = _locks.Remove(stateToken);
             }
@@ -90,7 +104,7 @@ namespace FubarDev.WebDavServer.Locking.InMemory
 
             OnLockReleased(activeLock);
 
-            return Task.FromResult(true);
+            return Task.FromResult(LockReleaseStatus.Success);
         }
 
         public Task<IEnumerable<IActiveLock>> GetLocksAsync(CancellationToken cancellationToken)
@@ -135,26 +149,57 @@ namespace FubarDev.WebDavServer.Locking.InMemory
             var refLocks = new List<IActiveLock>();
             var childLocks = new List<IActiveLock>();
             var parentLocks = new List<IActiveLock>();
-            var parentUrl = new Uri(destinationUrl.OriginalString + (destinationUrl.OriginalString.EndsWith("/") ? string.Empty : "/"));
+            var parentUrl = BuildUrl(destinationUrl);
 
             foreach (var activeLock in _locks.Values)
             {
-                var lockUrl = new Uri(_baseUrl, activeLock.Path + (activeLock.Path.EndsWith("/") ? string.Empty : "/"));
-                if (parentUrl == lockUrl)
+                var lockUrl = BuildUrl(activeLock.Path);
+                var result = Compare(parentUrl, withChildren, lockUrl, activeLock.Recursive);
+                switch (result)
                 {
-                    refLocks.Add(activeLock);
-                }
-                else if (withChildren && parentUrl.IsBaseOf(lockUrl))
-                {
-                    childLocks.Add(activeLock);
-                }
-                else if (activeLock.Recursive && lockUrl.IsBaseOf(parentUrl))
-                {
-                    parentLocks.Add(activeLock);
+                    case LockCompareResult.Reference:
+                        refLocks.Add(activeLock);
+                        break;
+                    case LockCompareResult.LeftIsParent:
+                        childLocks.Add(activeLock);
+                        break;
+                    case LockCompareResult.RightIsParent:
+                        parentLocks.Add(activeLock);
+                        break;
                 }
             }
 
             return new LockStatus(refLocks, parentLocks, childLocks);
+        }
+
+        private LockCompareResult Compare(Uri left, bool leftRecursive, Uri right, bool rightRecursive)
+        {
+            if (left == right)
+            {
+                return LockCompareResult.Reference;
+            }
+
+            if (left.IsBaseOf(right) && leftRecursive)
+            {
+                return LockCompareResult.LeftIsParent;
+            }
+
+            if (right.IsBaseOf(left) && rightRecursive)
+            {
+                return LockCompareResult.RightIsParent;
+            }
+
+            return LockCompareResult.NoMatch;
+        }
+
+        private Uri BuildUrl(Uri relativeUrl)
+        {
+            return BuildUrl(relativeUrl.OriginalString);
+        }
+
+        private Uri BuildUrl(string path)
+        {
+            return new Uri(_baseUrl, path + (path.EndsWith("/") ? string.Empty : "/"));
         }
     }
 }

@@ -2,6 +2,9 @@
 // Copyright (c) Fubar Development Junker. All rights reserved.
 // </copyright>
 
+using System.Threading;
+using System.Threading.Tasks;
+
 using FubarDev.WebDavServer.Model.Headers;
 
 namespace FubarDev.WebDavServer.FileSystem
@@ -22,7 +25,8 @@ namespace FubarDev.WebDavServer.FileSystem
         /// <remarks>
         /// This is usually called when the <see cref="IEntry"/> properties were changed.
         /// </remarks>
+        /// <param name="cancellationToken">The cancellation token</param>
         /// <returns>The new <see cref="EntityTag"/></returns>
-        EntityTag UpdateETag();
+        Task<EntityTag> UpdateETagAsync(CancellationToken cancellationToken);
     }
 }
