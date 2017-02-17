@@ -31,8 +31,13 @@ using WebDav;
 
 namespace FubarDev.WebDavServer.Tests
 {
-    public class ServerTestsBase : IDisposable
+    public abstract class ServerTestsBase : IDisposable
     {
+        protected ServerTestsBase()
+            : this(RecursiveProcessingMode.PreferFastest)
+        {
+        }
+
         protected ServerTestsBase(RecursiveProcessingMode processingMode)
         {
             var builder = new WebHostBuilder()
