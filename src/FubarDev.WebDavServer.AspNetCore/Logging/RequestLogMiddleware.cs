@@ -1,4 +1,8 @@
-﻿using System;
+﻿// <copyright file="RequestLogMiddleware.cs" company="Fubar Development Junker">
+// Copyright (c) Fubar Development Junker. All rights reserved.
+// </copyright>
+
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -6,14 +10,12 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Xml.Linq;
 
-using FubarDev.WebDavServer.AspNetCore.Logging;
-
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Http.Extensions;
 using Microsoft.AspNetCore.Mvc.Formatters;
 using Microsoft.Extensions.Logging;
 
-namespace FubarDev.WebDavServer.Sample.AspNetCore.Support
+namespace FubarDev.WebDavServer.AspNetCore.Logging
 {
     public class RequestLogMiddleware
     {
@@ -22,8 +24,9 @@ namespace FubarDev.WebDavServer.Sample.AspNetCore.Support
         {
             "text/xml",
             "application/xml",
-            "text/plain"
+            "text/plain",
         }.Select(x => new MediaType(x)).ToList();
+
         private readonly RequestDelegate _next;
         private readonly ILogger<RequestLogMiddleware> _logger;
 
@@ -40,7 +43,7 @@ namespace FubarDev.WebDavServer.Sample.AspNetCore.Support
             {
                 var info = new List<string>()
                     {
-                        $"{context.Request.Protocol} {context.Request.Method} {context.Request.GetDisplayUrl()}"
+                        $"{context.Request.Protocol} {context.Request.Method} {context.Request.GetDisplayUrl()}",
                     };
 
                 try
