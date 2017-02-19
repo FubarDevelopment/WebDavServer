@@ -10,6 +10,7 @@ using System.Threading;
 using System.Threading.Tasks;
 
 using FubarDev.WebDavServer.Model;
+using FubarDev.WebDavServer.Model.Headers;
 using FubarDev.WebDavServer.Props.Converters;
 using FubarDev.WebDavServer.Props.Dead;
 using FubarDev.WebDavServer.Props.Live;
@@ -59,6 +60,7 @@ namespace FubarDev.WebDavServer.FileSystem.InMemory
                 throw new IOException("Document or collection with the same name already exists");
             var newItem = new InMemoryFile(InMemoryFileSystem, this, Path.Append(name, false), name);
             _children.Add(newItem.Name, newItem);
+            ETag = new EntityTag(false);
             return Task.FromResult<IDocument>(newItem);
         }
 
@@ -68,6 +70,7 @@ namespace FubarDev.WebDavServer.FileSystem.InMemory
                 throw new IOException("Document or collection with the same name already exists");
             var newItem = new InMemoryDirectory(InMemoryFileSystem, this, Path.AppendDirectory(name), name);
             _children.Add(newItem.Name, newItem);
+            ETag = new EntityTag(false);
             return Task.FromResult<ICollection>(newItem);
         }
 

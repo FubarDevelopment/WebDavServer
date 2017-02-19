@@ -33,9 +33,11 @@ namespace FubarDev.WebDavServer.FileSystem.DotNet
             return Task.FromResult<Stream>(FileInfo.OpenRead());
         }
 
-        public Task<Stream> CreateAsync(CancellationToken cancellationToken)
+        public async Task<Stream> CreateAsync(CancellationToken cancellationToken)
         {
-            return Task.FromResult<Stream>(FileInfo.Open(FileMode.Create, FileAccess.Write));
+            if (FileSystem.PropertyStore != null)
+                await FileSystem.PropertyStore.UpdateETagAsync(this, cancellationToken).ConfigureAwait(false);
+            return FileInfo.Open(FileMode.Create, FileAccess.Write);
         }
 
         public override async Task<DeleteResult> DeleteAsync(CancellationToken cancellationToken)
