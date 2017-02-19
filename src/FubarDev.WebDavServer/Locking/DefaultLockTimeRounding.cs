@@ -4,6 +4,8 @@
 
 using System;
 
+using FubarDev.WebDavServer.Model.Headers;
+
 namespace FubarDev.WebDavServer.Locking
 {
     /// <summary>
@@ -53,6 +55,9 @@ namespace FubarDev.WebDavServer.Locking
         /// <inheritdoc />
         public TimeSpan Round(TimeSpan ts)
         {
+            if (ts == TimeoutHeader.Infinite)
+                return ts;
+
             var seconds = 0;
             var millis = ts.Milliseconds;
             switch (_roundingMode)

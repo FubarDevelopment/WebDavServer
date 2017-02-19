@@ -5,6 +5,8 @@
 using System;
 using System.Xml.Linq;
 
+using FubarDev.WebDavServer.Model.Headers;
+
 using JetBrains.Annotations;
 
 namespace FubarDev.WebDavServer.Locking
@@ -80,7 +82,7 @@ namespace FubarDev.WebDavServer.Locking
                 timeout)
         {
             Issued = issued;
-            Expiration = Issued + timeout;
+            Expiration = timeout == TimeoutHeader.Infinite ? DateTime.MaxValue : Issued + timeout;
             StateToken = $"urn:uuid:{Guid.NewGuid():D}";
         }
 

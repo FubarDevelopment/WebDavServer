@@ -51,7 +51,7 @@ namespace FubarDev.WebDavServer.Handlers.Impl
         /// <inheritdoc />
         public async Task<IWebDavResult> LockAsync(string path, lockinfo info, CancellationToken cancellationToken)
         {
-            var owner = info.owner == null ? null : new XElement(WebDavXml.Dav + "owner", info.owner.Any.Cast<object>().ToArray());
+            var owner = info.owner == null ? null : new XElement(WebDavXml.Dav + "owner", info.owner.Items);
             var recursive = (_context.RequestHeaders.Depth ?? DepthHeader.Infinity) == DepthHeader.Infinity;
             var accessType = LockAccessType.Write;
             var shareType = info.lockscope.ItemElementName == ItemChoiceType.exclusive
@@ -135,8 +135,12 @@ namespace FubarDev.WebDavServer.Handlers.Impl
                     statusCode = WebDavStatusCode.OK;
                 }
 
-                var result = CreateActiveLockXml(activeLock);
-                return new WebDavXmlResult(statusCode, result);
+                var activeLockXml = CreateActiveLockXml(activeLock);
+                var result = new prop()
+                {
+                    Any = new[] { new XElement(WebDavXml.Dav + "lockdiscovery", activeLockXml) },
+                };
+                return new WebDavResult<prop>(statusCode, result);
             }
             catch
             {
@@ -190,7 +194,7 @@ namespace FubarDev.WebDavServer.Handlers.Impl
         {
             var href = _context.BaseUrl.Append(path, true);
             if (!_useAbsoluteHref)
-                href = new Uri("/" + _context.RootUrl.MakeRelativeUri(href).OriginalString);
+                return "/" + _context.RootUrl.MakeRelativeUri(href).OriginalString;
             return href.OriginalString;
         }
 
