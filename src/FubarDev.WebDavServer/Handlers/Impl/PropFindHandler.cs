@@ -119,7 +119,7 @@ namespace FubarDev.WebDavServer.Handlers.Impl
                 var entryPath = entry.Path.OriginalString;
                 var href = _context.BaseUrl.Append(entryPath, true);
                 if (!_options.UseAbsoluteHref)
-                    href = new Uri("/" + _context.RootUrl.MakeRelativeUri(href).OriginalString);
+                    href = new Uri("/" + _context.RootUrl.MakeRelativeUri(href).OriginalString, UriKind.Relative);
 
                 var collector = new PropertyCollector(_context, new ReadableFilter(), new PropFilter(prop));
                 var propStats = await collector.GetPropertiesAsync(entry, int.MaxValue, cancellationToken).ConfigureAwait(false);
@@ -168,7 +168,7 @@ namespace FubarDev.WebDavServer.Handlers.Impl
                 var entryPath = entry.Path.OriginalString;
                 var href = _context.BaseUrl.Append(entryPath, true);
                 if (!_options.UseAbsoluteHref)
-                    href = new Uri("/" + _context.RootUrl.MakeRelativeUri(href).OriginalString);
+                    href = new Uri("/" + _context.RootUrl.MakeRelativeUri(href).OriginalString, UriKind.Relative);
 
                 var collector = new PropertyCollector(_context, new ReadableFilter(), new CostFilter(0));
                 var propStats = await collector.GetPropertiesAsync(entry, 0, cancellationToken).ConfigureAwait(false);
@@ -201,7 +201,7 @@ namespace FubarDev.WebDavServer.Handlers.Impl
                 var entryPath = entry.Path.OriginalString;
                 var href = _context.BaseUrl.Append(entryPath, true);
                 if (!_options.UseAbsoluteHref)
-                    href = new Uri("/" + _context.RootUrl.MakeRelativeUri(href).OriginalString);
+                    href = new Uri("/" + _context.RootUrl.MakeRelativeUri(href).OriginalString, UriKind.Relative);
 
                 var collector = new PropertyCollector(_context, new ReadableFilter(), new CostFilter(0));
                 var propStats = await collector.GetPropertyNamesAsync(entry, cancellationToken).ConfigureAwait(false);
