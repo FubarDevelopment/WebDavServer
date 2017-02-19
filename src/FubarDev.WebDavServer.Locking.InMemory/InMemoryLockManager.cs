@@ -39,8 +39,10 @@ namespace FubarDev.WebDavServer.Locking.InMemory
             _logger = logger;
         }
 
+        /// <inheritdoc />
         public event EventHandler<LockEventArgs> LockAdded;
 
+        /// <inheritdoc />
         public event EventHandler<LockEventArgs> LockReleased;
 
         private enum LockCompareResult
@@ -51,6 +53,10 @@ namespace FubarDev.WebDavServer.Locking.InMemory
             NoMatch,
         }
 
+        /// <inheritdoc />
+        public int Cost { get; } = 0;
+
+        /// <inheritdoc />
         public Task<LockResult> LockAsync(ILock l, CancellationToken cancellationToken)
         {
             IActiveLock newActiveLock;
@@ -78,6 +84,7 @@ namespace FubarDev.WebDavServer.Locking.InMemory
             return Task.FromResult(new LockResult(newActiveLock));
         }
 
+        /// <inheritdoc />
         public Task<LockReleaseStatus> ReleaseAsync(string path, Uri stateToken, CancellationToken cancellationToken)
         {
             IActiveLock activeLock;
@@ -107,9 +114,23 @@ namespace FubarDev.WebDavServer.Locking.InMemory
             return Task.FromResult(LockReleaseStatus.Success);
         }
 
+        /// <inheritdoc />
         public Task<IEnumerable<IActiveLock>> GetLocksAsync(CancellationToken cancellationToken)
         {
             return Task.FromResult(_locks.Values);
+        }
+
+        /// <inheritdoc />
+        public Task<IEnumerable<IActiveLock>> GetAffectedLocksAsync(string path, bool recursive, CancellationToken cancellationToken)
+        {
+            var destinationUrl = new Uri(_baseUrl, path);
+            LockStatus status;
+            lock (_locks)
+            {
+                status = Find(destinationUrl, recursive);
+            }
+
+            return Task.FromResult(status.ParentLocks.Concat(status.ReferenceLocks).Concat(status.ChildLocks));
         }
 
         protected virtual void OnLockAdded(IActiveLock activeLock)

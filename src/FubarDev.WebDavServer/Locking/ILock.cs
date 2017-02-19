@@ -21,6 +21,12 @@ namespace FubarDev.WebDavServer.Locking
         string Path { get; }
 
         /// <summary>
+        /// Gets the href the lock is for
+        /// </summary>
+        [NotNull]
+        string Href { get; }
+
+        /// <summary>
         /// Gets a value indicating whether the lock must be applied recusively
         /// </summary>
         bool Recursive { get; }

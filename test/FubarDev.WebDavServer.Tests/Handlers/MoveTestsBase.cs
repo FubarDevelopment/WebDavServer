@@ -10,8 +10,8 @@ using System.Xml.Linq;
 
 using FubarDev.WebDavServer.FileSystem.InMemory;
 using FubarDev.WebDavServer.Props.Dead;
+using FubarDev.WebDavServer.Props.Live;
 using FubarDev.WebDavServer.Tests.Support;
-using FubarDev.WebDavServer.Tests.Support.ServiceBuilders;
 
 using Xunit;
 
@@ -25,8 +25,8 @@ namespace FubarDev.WebDavServer.Tests.Handlers
         protected MoveTestsBase(RecursiveProcessingMode processingMode, params XName[] propertiesToIgnore)
             : base(processingMode)
         {
-            _propsToIgnoreDocument = propertiesToIgnore;
-            _propsToIgnoreCollection = propertiesToIgnore.Union(new[] { GetETagProperty.PropertyName }).ToArray();
+            _propsToIgnoreDocument = propertiesToIgnore.Union(new[] { LockDiscoveryProperty.PropertyName }).ToArray();
+            _propsToIgnoreCollection = propertiesToIgnore.Union(new[] { LockDiscoveryProperty.PropertyName, GetETagProperty.PropertyName }).ToArray();
         }
 
         [Fact]

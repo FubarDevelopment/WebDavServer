@@ -28,6 +28,7 @@ namespace FubarDev.WebDavServer.Locking
         public ActiveLock([NotNull] ILock l, DateTime issued)
             : this(
                 l.Path,
+                l.Href,
                 l.Recursive,
                 l.GetOwner(),
                 LockAccessType.Parse(l.AccessType),
@@ -46,6 +47,7 @@ namespace FubarDev.WebDavServer.Locking
         public ActiveLock([NotNull] ILock l, DateTime issued, TimeSpan timeout)
             : this(
                 l.Path,
+                l.Href,
                 l.Recursive,
                 l.GetOwner(),
                 LockAccessType.Parse(l.AccessType),
@@ -58,7 +60,8 @@ namespace FubarDev.WebDavServer.Locking
         /// <summary>
         /// Initializes a new instance of the <see cref="ActiveLock"/> class.
         /// </summary>
-        /// <param name="path">The path (root-relative) this lock should be applied to</param>
+        /// <param name="path">The file system path (root-relative) this lock should be applied to</param>
+        /// <param name="href">The href this lock should be applied to (might be relative or absolute)</param>
         /// <param name="recursive">Must the lock be applied recursively to all children?</param>
         /// <param name="owner">The owner of the lock</param>
         /// <param name="accessType">The <see cref="LockAccessType"/> of the lock</param>
@@ -67,6 +70,7 @@ namespace FubarDev.WebDavServer.Locking
         /// <param name="issued">The date/time when this lock was issued</param>
         public ActiveLock(
             [NotNull] string path,
+            [NotNull] string href,
             bool recursive,
             [CanBeNull] XElement owner,
             LockAccessType accessType,
@@ -75,6 +79,7 @@ namespace FubarDev.WebDavServer.Locking
             DateTime issued)
             : base(
                 path,
+                href,
                 recursive,
                 owner,
                 accessType.Name.LocalName,
@@ -98,7 +103,7 @@ namespace FubarDev.WebDavServer.Locking
         /// <inheritdoc />
         public override string ToString()
         {
-            return $"Path={Path} [Recursive={Recursive}, AccessType={AccessType}, ShareMode={ShareMode}, Timeout={Timeout}, Owner={Owner}, StateToken={StateToken}, Issued={Issued:O}, Expiration={Expiration:O}]";
+            return $"Path={Path} [Href={Href}, Recursive={Recursive}, AccessType={AccessType}, ShareMode={ShareMode}, Timeout={Timeout}, Owner={Owner}, StateToken={StateToken}, Issued={Issued:O}, Expiration={Expiration:O}]";
         }
     }
 }
