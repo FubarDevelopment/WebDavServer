@@ -39,12 +39,12 @@ namespace FubarDev.WebDavServer.Model.Headers
 
         public static bool operator ==(EntityTag x, EntityTag y)
         {
-            return EntityTagComparer.Default.Equals(x, y);
+            return EntityTagComparer.Strong.Equals(x, y);
         }
 
         public static bool operator !=(EntityTag x, EntityTag y)
         {
-            return !EntityTagComparer.Default.Equals(x, y);
+            return !EntityTagComparer.Strong.Equals(x, y);
         }
 
         public static EntityTag FromXml([CanBeNull] XElement element)
@@ -96,7 +96,7 @@ namespace FubarDev.WebDavServer.Model.Headers
 
         public bool Equals(EntityTag other)
         {
-            return EntityTagComparer.Default.Equals(this, other);
+            return EntityTagComparer.Strong.Equals(this, other);
         }
 
         public override bool Equals(object obj)

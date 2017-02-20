@@ -10,12 +10,24 @@ namespace FubarDev.WebDavServer.Model.Headers
 {
     public class EntityTagComparer : IEqualityComparer<EntityTag>
     {
+        private readonly bool _useStrongComparison;
+
+        private EntityTagComparer(bool useStrongComparison)
+        {
+            _useStrongComparison = useStrongComparison;
+        }
+
         [NotNull]
-        public static EntityTagComparer Default { get; } = new EntityTagComparer();
+        public static EntityTagComparer Strong { get; } = new EntityTagComparer(true);
+
+        [NotNull]
+        public static EntityTagComparer Weak { get; } = new EntityTagComparer(false);
 
         public bool Equals(EntityTag x, EntityTag y)
         {
-            return x.Value == y.Value && x.IsWeak == y.IsWeak;
+            if (_useStrongComparison)
+                return x.Value == y.Value && x.IsWeak == y.IsWeak;
+            return x.Value == y.Value;
         }
 
         public int GetHashCode(EntityTag obj)
@@ -23,7 +35,8 @@ namespace FubarDev.WebDavServer.Model.Headers
             unchecked
             {
                 var result = obj.Value.GetHashCode();
-                result ^= 137 * obj.IsWeak.GetHashCode();
+                if (_useStrongComparison)
+                    result ^= 137 * obj.IsWeak.GetHashCode();
                 return result;
             }
         }
