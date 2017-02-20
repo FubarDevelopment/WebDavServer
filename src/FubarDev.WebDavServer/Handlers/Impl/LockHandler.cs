@@ -51,7 +51,7 @@ namespace FubarDev.WebDavServer.Handlers.Impl
         /// <inheritdoc />
         public async Task<IWebDavResult> LockAsync(string path, lockinfo info, CancellationToken cancellationToken)
         {
-            var owner = info.owner.ToXElement();
+            var owner = info.owner;
             var recursive = (_context.RequestHeaders.Depth ?? DepthHeader.Infinity) == DepthHeader.Infinity;
             var accessType = LockAccessType.Write;
             var shareType = info.lockscope.ItemElementName == ItemChoiceType.exclusive
