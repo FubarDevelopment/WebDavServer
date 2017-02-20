@@ -8,12 +8,12 @@ using System.Threading;
 using System.Threading.Tasks;
 using System.Xml.Linq;
 
+using DecaTec.WebDav;
+
 using FubarDev.WebDavServer.FileSystem.InMemory;
 using FubarDev.WebDavServer.Props.Dead;
 using FubarDev.WebDavServer.Props.Live;
 using FubarDev.WebDavServer.Tests.Support;
-
-using WebDav;
 
 using Xunit;
 
@@ -42,11 +42,11 @@ namespace FubarDev.WebDavServer.Tests.Handlers
             var props1 = await doc1.GetPropertyElementsAsync(ct).ConfigureAwait(false);
 
             var response = await Client
-                .Copy(
+                .CopyAsync(
                     new Uri("text1.txt", UriKind.Relative),
                     new Uri("text2.txt", UriKind.Relative))
                 .ConfigureAwait(false);
-            Assert.True(response.IsSuccessful);
+            Assert.True(response.IsSuccessStatusCode);
 
             var child = await root.GetChildAsync("text2.txt", ct).ConfigureAwait(false);
             var doc2 = Assert.IsType<InMemoryFile>(child);
@@ -65,11 +65,11 @@ namespace FubarDev.WebDavServer.Tests.Handlers
             var props1 = await coll1.GetPropertyElementsAsync(ct).ConfigureAwait(false);
 
             var response = await Client
-                .Copy(
+                .CopyAsync(
                     new Uri("test1", UriKind.Relative),
                     new Uri("test2", UriKind.Relative))
                 .ConfigureAwait(false);
-            Assert.True(response.IsSuccessful);
+            Assert.True(response.IsSuccessStatusCode);
 
             var child = await root.GetChildAsync("test2", ct).ConfigureAwait(false);
             var coll2 = Assert.IsType<InMemoryDirectory>(child);
@@ -93,17 +93,13 @@ namespace FubarDev.WebDavServer.Tests.Handlers
             var props1 = await coll1.GetPropertyElementsAsync(ct).ConfigureAwait(false);
 
             var response = await Client
-                .Copy(
+                .CopyAsync(
                     new Uri("test1", UriKind.Relative),
                     new Uri("test2", UriKind.Relative),
-                    new CopyParameters()
-                    {
-                        Overwrite = true,
-                        ApplyTo = ApplyTo.Copy.ResourceOnly,
-                        CancellationToken = ct,
-                    })
+                    true,
+                    WebDavDepthHeaderValue.Zero)
                 .ConfigureAwait(false);
-            Assert.True(response.IsSuccessful);
+            Assert.True(response.IsSuccessStatusCode);
 
             var child = await root.GetChildAsync("test2", ct).ConfigureAwait(false);
             var coll2 = Assert.IsType<InMemoryDirectory>(child);
@@ -131,17 +127,13 @@ namespace FubarDev.WebDavServer.Tests.Handlers
             var docProps1 = await doc1.GetPropertyElementsAsync(ct).ConfigureAwait(false);
 
             var response = await Client
-                .Copy(
+                .CopyAsync(
                     new Uri("test1", UriKind.Relative),
                     new Uri("test2", UriKind.Relative),
-                    new CopyParameters()
-                    {
-                        Overwrite = false,
-                        ApplyTo = ApplyTo.Copy.ResourceAndAncestors,
-                        CancellationToken = ct,
-                    })
+                    false,
+                    WebDavDepthHeaderValue.Infinity)
                 .ConfigureAwait(false);
-            Assert.True(response.IsSuccessful);
+            Assert.True(response.IsSuccessStatusCode);
 
             var child = await root.GetChildAsync("test2", ct).ConfigureAwait(false);
             var coll2 = Assert.IsType<InMemoryDirectory>(child);
@@ -169,17 +161,13 @@ namespace FubarDev.WebDavServer.Tests.Handlers
             var props1 = await coll1.GetPropertyElementsAsync(ct).ConfigureAwait(false);
 
             var response = await Client
-                .Copy(
+                .CopyAsync(
                     new Uri("test1", UriKind.Relative),
                     new Uri("test2", UriKind.Relative),
-                    new CopyParameters()
-                    {
-                        Overwrite = true,
-                        ApplyTo = ApplyTo.Copy.ResourceOnly,
-                        CancellationToken = ct,
-                    })
+                    true,
+                    WebDavDepthHeaderValue.Zero)
                 .ConfigureAwait(false);
-            Assert.True(response.IsSuccessful);
+            Assert.True(response.IsSuccessStatusCode);
 
             var child = await root.GetChildAsync("test2", ct).ConfigureAwait(false);
             var coll2 = Assert.IsType<InMemoryDirectory>(child);
@@ -205,17 +193,13 @@ namespace FubarDev.WebDavServer.Tests.Handlers
             var subProps1 = await sub1.GetPropertyElementsAsync(ct).ConfigureAwait(false);
 
             var response = await Client
-                .Copy(
+                .CopyAsync(
                     new Uri("test1", UriKind.Relative),
                     new Uri("test2", UriKind.Relative),
-                    new CopyParameters()
-                    {
-                        Overwrite = true,
-                        ApplyTo = ApplyTo.Copy.ResourceAndAncestors,
-                        CancellationToken = ct,
-                    })
+                    true,
+                    WebDavDepthHeaderValue.Infinity)
                 .ConfigureAwait(false);
-            Assert.True(response.IsSuccessful);
+            Assert.True(response.IsSuccessStatusCode);
 
             var child = await root.GetChildAsync("test2", ct).ConfigureAwait(false);
             var coll2 = Assert.IsType<InMemoryDirectory>(child);
@@ -249,17 +233,13 @@ namespace FubarDev.WebDavServer.Tests.Handlers
             var subProps1 = await sub1.GetPropertyElementsAsync(ct).ConfigureAwait(false);
 
             var response = await Client
-                .Copy(
+                .CopyAsync(
                     new Uri("test1", UriKind.Relative),
                     new Uri("test2", UriKind.Relative),
-                    new CopyParameters()
-                    {
-                        Overwrite = true,
-                        ApplyTo = ApplyTo.Copy.ResourceAndAncestors,
-                        CancellationToken = ct,
-                    })
+                    true,
+                    WebDavDepthHeaderValue.Infinity)
                 .ConfigureAwait(false);
-            Assert.True(response.IsSuccessful);
+            Assert.True(response.IsSuccessStatusCode);
 
             var child = await root.GetChildAsync("test2", ct).ConfigureAwait(false);
             var coll2 = Assert.IsType<InMemoryDirectory>(child);
@@ -297,17 +277,13 @@ namespace FubarDev.WebDavServer.Tests.Handlers
             var props1 = await coll1.GetPropertyElementsAsync(ct).ConfigureAwait(false);
 
             var response = await Client
-                .Copy(
+                .CopyAsync(
                     new Uri("test1", UriKind.Relative),
                     new Uri("test2", UriKind.Relative),
-                    new CopyParameters()
-                    {
-                        Overwrite = true,
-                        ApplyTo = ApplyTo.Copy.ResourceOnly,
-                        CancellationToken = ct,
-                    })
+                    true,
+                    WebDavDepthHeaderValue.Zero)
                 .ConfigureAwait(false);
-            Assert.True(response.IsSuccessful);
+            Assert.True(response.IsSuccessStatusCode);
 
             var child = await root.GetChildAsync("test2", ct).ConfigureAwait(false);
             var coll2 = Assert.IsType<InMemoryDirectory>(child);
@@ -341,17 +317,13 @@ namespace FubarDev.WebDavServer.Tests.Handlers
             var docProps1 = await doc1.GetPropertyElementsAsync(ct).ConfigureAwait(false);
 
             var response = await Client
-                .Copy(
+                .CopyAsync(
                     new Uri("test1", UriKind.Relative),
                     new Uri("test2", UriKind.Relative),
-                    new CopyParameters()
-                    {
-                        Overwrite = true,
-                        ApplyTo = ApplyTo.Copy.ResourceAndAncestors,
-                        CancellationToken = ct,
-                    })
+                    true,
+                    WebDavDepthHeaderValue.Infinity)
                 .ConfigureAwait(false);
-            Assert.True(response.IsSuccessful);
+            Assert.True(response.IsSuccessStatusCode);
 
             var child = await root.GetChildAsync("test2", ct).ConfigureAwait(false);
             var coll2 = Assert.IsType<InMemoryDirectory>(child);
@@ -386,17 +358,13 @@ namespace FubarDev.WebDavServer.Tests.Handlers
             var props1 = await coll1.GetPropertyElementsAsync(ct).ConfigureAwait(false);
 
             var response = await Client
-                .Copy(
+                .CopyAsync(
                     new Uri("test1", UriKind.Relative),
                     new Uri("test2", UriKind.Relative),
-                    new CopyParameters()
-                    {
-                        Overwrite = true,
-                        ApplyTo = ApplyTo.Copy.ResourceOnly,
-                        CancellationToken = ct,
-                    })
+                    true,
+                    WebDavDepthHeaderValue.Zero)
                 .ConfigureAwait(false);
-            Assert.True(response.IsSuccessful);
+            Assert.True(response.IsSuccessStatusCode);
 
             var child = await root.GetChildAsync("test2", ct).ConfigureAwait(false);
             var coll2 = Assert.IsType<InMemoryDirectory>(child);
@@ -427,17 +395,13 @@ namespace FubarDev.WebDavServer.Tests.Handlers
             var subProps12 = await sub12.GetPropertyElementsAsync(ct).ConfigureAwait(false);
 
             var response = await Client
-                .Copy(
+                .CopyAsync(
                     new Uri("test1", UriKind.Relative),
                     new Uri("test2", UriKind.Relative),
-                    new CopyParameters()
-                    {
-                        Overwrite = true,
-                        ApplyTo = ApplyTo.Copy.ResourceAndAncestors,
-                        CancellationToken = ct,
-                    })
+                    true,
+                    WebDavDepthHeaderValue.Infinity)
                 .ConfigureAwait(false);
-            Assert.True(response.IsSuccessful);
+            Assert.True(response.IsSuccessStatusCode);
 
             var child = await root.GetChildAsync("test2", ct).ConfigureAwait(false);
             var coll2 = Assert.IsType<InMemoryDirectory>(child);
@@ -501,17 +465,13 @@ namespace FubarDev.WebDavServer.Tests.Handlers
             var docProps122 = await doc122.GetPropertyElementsAsync(ct).ConfigureAwait(false);
 
             var response = await Client
-                .Copy(
+                .CopyAsync(
                     new Uri("test1", UriKind.Relative),
                     new Uri("test2", UriKind.Relative),
-                    new CopyParameters()
-                    {
-                        Overwrite = true,
-                        ApplyTo = ApplyTo.Copy.ResourceAndAncestors,
-                        CancellationToken = ct,
-                    })
+                    true,
+                    WebDavDepthHeaderValue.Infinity)
                 .ConfigureAwait(false);
-            Assert.True(response.IsSuccessful);
+            Assert.True(response.IsSuccessStatusCode);
 
             var child = await root.GetChildAsync("test2", ct).ConfigureAwait(false);
             var coll2 = Assert.IsType<InMemoryDirectory>(child);

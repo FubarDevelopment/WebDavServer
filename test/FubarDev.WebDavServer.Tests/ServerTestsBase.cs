@@ -7,6 +7,8 @@ using System.Net.Http;
 using System.Threading;
 using System.Threading.Tasks;
 
+using DecaTec.WebDav;
+
 using FubarDev.WebDavServer.AspNetCore;
 using FubarDev.WebDavServer.AspNetCore.Logging;
 using FubarDev.WebDavServer.Engines.Remote;
@@ -28,8 +30,6 @@ using Microsoft.AspNetCore.TestHost;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 
-using WebDav;
-
 namespace FubarDev.WebDavServer.Tests
 {
     public abstract class ServerTestsBase : IDisposable
@@ -46,7 +46,10 @@ namespace FubarDev.WebDavServer.Tests
                 .UseStartup<TestStartup>();
             Server = new TestServer(builder);
             FileSystem = Server.Host.Services.GetRequiredService<IFileSystem>();
-            Client = new WebDavClient(Server.CreateClient());
+            Client = new WebDavClient(Server.CreateHandler())
+            {
+                BaseAddress = Server.BaseAddress,
+            };
         }
 
         [NotNull]
