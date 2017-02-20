@@ -127,7 +127,7 @@ namespace FubarDev.WebDavServer.AspNetCore
             {
                 // Refresh
                 var ifHeader = _context.RequestHeaders.If;
-                if (ifHeader == null)
+                if (ifHeader == null || ifHeader.Lists.Count == 0)
                     return BadRequest();
                 var timeoutHeader = _context.RequestHeaders.Timeout;
                 result = await _dispatcher.Class1.RefreshLockAsync(path, ifHeader, timeoutHeader, cancellationToken).ConfigureAwait(false);

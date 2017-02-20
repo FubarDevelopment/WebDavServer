@@ -38,12 +38,17 @@ namespace FubarDev.WebDavServer.Props.Live
 
         public int Cost => _lockManager?.Cost ?? 0;
 
-        public async Task<XElement> GetXmlValueAsync(CancellationToken ct)
+        public Task<XElement> GetXmlValueAsync(CancellationToken ct)
+        {
+            return GetXmlValueAsync(false, false, ct);
+        }
+
+        public async Task<XElement> GetXmlValueAsync(bool omitOwner, bool omitToken, CancellationToken ct)
         {
             if (_lockManager == null)
                 return new XElement(Name);
             var affectedLocks = await _lockManager.GetAffectedLocksAsync(_entry.Path.OriginalString, false, ct).ConfigureAwait(false);
-            var lockElements = affectedLocks.Select(x => x.ToXElement()).Cast<object>().ToArray();
+            var lockElements = affectedLocks.Select(x => x.ToXElement(omitOwner: omitOwner, omitToken: omitToken)).Cast<object>().ToArray();
             return new XElement(Name, lockElements);
         }
     }

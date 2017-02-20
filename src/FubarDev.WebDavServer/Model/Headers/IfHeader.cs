@@ -27,10 +27,10 @@ namespace FubarDev.WebDavServer.Model.Headers
         public IReadOnlyCollection<IfHeaderList> Lists { get; }
 
         [NotNull]
-        public static IfHeader Parse([NotNull] string s, [NotNull] EntityTagComparer etagComparer, [CanBeNull] Uri requestUrl)
+        public static IfHeader Parse([NotNull] string s, [NotNull] EntityTagComparer etagComparer, [NotNull] IWebDavContext context)
         {
             var source = new StringSource(s);
-            var lists = IfHeaderList.Parse(source, etagComparer, requestUrl).ToList();
+            var lists = IfHeaderList.Parse(source, etagComparer, context).ToList();
             if (source.Empty)
                 throw new ArgumentException("Not an accepted list of conditions", nameof(s));
             return new IfHeader(lists);

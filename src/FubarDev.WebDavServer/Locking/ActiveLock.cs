@@ -34,7 +34,8 @@ namespace FubarDev.WebDavServer.Locking
                 LockAccessType.Parse(l.AccessType),
                 LockShareMode.Parse(l.ShareMode),
                 l.Timeout,
-                issued)
+                issued,
+                null)
         {
         }
 
@@ -53,7 +54,8 @@ namespace FubarDev.WebDavServer.Locking
                 LockAccessType.Parse(l.AccessType),
                 LockShareMode.Parse(l.ShareMode),
                 timeout,
-                issued)
+                issued,
+                null)
         {
         }
 
@@ -68,7 +70,8 @@ namespace FubarDev.WebDavServer.Locking
         /// <param name="shareMode">The <see cref="LockShareMode"/> of the lock</param>
         /// <param name="timeout">The lock timeout</param>
         /// <param name="issued">The date/time when this lock was issued</param>
-        public ActiveLock(
+        /// <param name="lastRefresh">The date/time of the last refresh</param>
+        private ActiveLock(
             [NotNull] string path,
             [NotNull] string href,
             bool recursive,
@@ -76,7 +79,8 @@ namespace FubarDev.WebDavServer.Locking
             LockAccessType accessType,
             LockShareMode shareMode,
             TimeSpan timeout,
-            DateTime issued)
+            DateTime issued,
+            DateTime? lastRefresh)
             : base(
                 path,
                 href,
@@ -87,7 +91,8 @@ namespace FubarDev.WebDavServer.Locking
                 timeout)
         {
             Issued = issued;
-            Expiration = timeout == TimeoutHeader.Infinite ? DateTime.MaxValue : Issued + timeout;
+            LastRefresh = lastRefresh;
+            Expiration = timeout == TimeoutHeader.Infinite ? DateTime.MaxValue : (lastRefresh ?? issued) + timeout;
             StateToken = $"urn:uuid:{Guid.NewGuid():D}";
         }
 
@@ -98,12 +103,36 @@ namespace FubarDev.WebDavServer.Locking
         public DateTime Issued { get; }
 
         /// <inheritdoc />
+        public DateTime? LastRefresh { get; }
+
+        /// <inheritdoc />
         public DateTime Expiration { get; }
 
         /// <inheritdoc />
         public override string ToString()
         {
-            return $"Path={Path} [Href={Href}, Recursive={Recursive}, AccessType={AccessType}, ShareMode={ShareMode}, Timeout={Timeout}, Owner={Owner}, StateToken={StateToken}, Issued={Issued:O}, Expiration={Expiration:O}]";
+            return $"Path={Path} [Href={Href}, Recursive={Recursive}, AccessType={AccessType}, ShareMode={ShareMode}, Timeout={Timeout}, Owner={Owner}, StateToken={StateToken}, Issued={Issued:O}, LastRefresh={LastRefresh:O}, Expiration={Expiration:O}]";
+        }
+
+        /// <summary>
+        /// Returns a new active lock whose new expiration date/time is recalculated using <paramref name="lastRefresh"/> and <paramref name="timeout"/>.
+        /// </summary>
+        /// <param name="lastRefresh">The date/time of the last refresh</param>
+        /// <param name="timeout">The new timeout to apply to the lock</param>
+        /// <returns>The new (refreshed) active lock</returns>
+        [Pure]
+        public ActiveLock Refresh(DateTime lastRefresh, TimeSpan timeout)
+        {
+            return new ActiveLock(
+                Path,
+                Href,
+                Recursive,
+                Owner,
+                LockAccessType.Parse(AccessType),
+                LockShareMode.Parse(ShareMode),
+                timeout,
+                Issued,
+                lastRefresh);
         }
     }
 }

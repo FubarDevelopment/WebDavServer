@@ -28,6 +28,11 @@ namespace FubarDev.WebDavServer.Locking
         DateTime Issued { get; }
 
         /// <summary>
+        /// Gets the timestamp when this lock was refreshed
+        /// </summary>
+        DateTime? LastRefresh { get; }
+
+        /// <summary>
         /// Gets the timestamp when this lock expires
         /// </summary>
         /// <seealso cref="ILock.Timeout"/>

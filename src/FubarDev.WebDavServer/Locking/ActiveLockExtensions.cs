@@ -11,7 +11,7 @@ namespace FubarDev.WebDavServer.Locking
 {
     public static class ActiveLockExtensions
     {
-        public static XElement ToXElement(this IActiveLock l)
+        public static XElement ToXElement(this IActiveLock l, bool omitOwner = false, bool omitToken = false)
         {
             var timeout = l.Timeout == TimeoutHeader.Infinite ? "Infinite" : $"Second-{l.Timeout.TotalSeconds:F0}";
             var depth = l.Recursive ? DepthHeader.Infinity : DepthHeader.Zero;
@@ -29,18 +29,28 @@ namespace FubarDev.WebDavServer.Locking
                 new XElement(
                     WebDavXml.Dav + "depth",
                     depth.Value));
-            if (owner != null)
+
+            if (owner != null && !omitOwner)
                 result.Add(owner);
+
             result.Add(
                 new XElement(
                     WebDavXml.Dav + "timeout",
-                    timeout),
-                new XElement(
-                    WebDavXml.Dav + "locktoken",
-                    new XElement(WebDavXml.Dav + "href", l.StateToken)),
+                    timeout));
+
+            if (!omitToken)
+            {
+                result.Add(
+                    new XElement(
+                        WebDavXml.Dav + "locktoken",
+                        new XElement(WebDavXml.Dav + "href", l.StateToken)));
+            }
+
+            result.Add(
                 new XElement(
                     WebDavXml.Dav + "lockroot",
                     new XElement(WebDavXml.Dav + "href", l.Href)));
+
             return result;
         }
     }

@@ -6,6 +6,8 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 
+using FubarDev.WebDavServer.FileSystem;
+using FubarDev.WebDavServer.Locking;
 using FubarDev.WebDavServer.Utils;
 
 using JetBrains.Annotations;
@@ -15,19 +17,62 @@ namespace FubarDev.WebDavServer.Model.Headers
     public class IfHeaderList
     {
         private IfHeaderList(
-            [CanBeNull] Uri resourceTag,
+            [NotNull] Uri resourceTag,
+            [NotNull] Uri relateiveHref,
+            [NotNull] Uri path,
             [NotNull] [ItemNotNull] IReadOnlyCollection<IfHeaderCondition> conditions)
         {
             ResourceTag = resourceTag;
+            RelativeHref = relateiveHref;
+            Path = path;
             Conditions = conditions;
         }
 
-        [CanBeNull]
+        /// <summary>
+        /// Gets the resource tag which is always an absolute URI
+        /// </summary>
+        /// <remarks>
+        /// When a relative URI gets sent from the client, then it gets converted into an
+        /// absolute URI.
+        /// </remarks>
+        [NotNull]
         public Uri ResourceTag { get; }
 
+        /// <summary>
+        /// Gets the resource tag relative to the <see cref="IWebDavContext.RootUrl"/>.
+        /// </summary>
+        /// <remarks>
+        /// Might be an absolute URL when the host or scheme don't match.
+        /// </remarks>
+        [NotNull]
+        public Uri RelativeHref { get; }
+
+        /// <summary>
+        /// Gets the path to the destination relative to the <see cref="IWebDavContext.BaseUrl"/>.
+        /// </summary>
+        /// <remarks>
+        /// Might be an absolute URL when the host or scheme don't match.
+        /// </remarks>
+        [NotNull]
+        public Uri Path { get; }
+
+        /// <summary>
+        /// Gets the collection of conditions that must be satisfied by this list.
+        /// </summary>
         [NotNull]
         [ItemNotNull]
         public IReadOnlyCollection<IfHeaderCondition> Conditions { get; }
+
+        /// <summary>
+        /// Gets a value indicating whether this condition list requires the <see cref="EntityTag"/> of an <see cref="IEntry"/> for
+        /// the evaluation.
+        /// </summary>
+        public bool RequiresEntityTag => Conditions.Any(x => x.ETag != null);
+
+        /// <summary>
+        /// Gets a value indicating whether this condition list requires the <see cref="IActiveLock.StateToken"/> for the evaluation.
+        /// </summary>
+        public bool RequiresStateToken => Conditions.Any(x => x.StateToken != null);
 
         public bool IsMatch(EntityTag? etag, IReadOnlyCollection<Uri> stateTokens)
         {
@@ -36,15 +81,17 @@ namespace FubarDev.WebDavServer.Model.Headers
 
         [NotNull]
         [ItemNotNull]
-        internal static IEnumerable<IfHeaderList> Parse([NotNull] StringSource source, [NotNull] EntityTagComparer etagComparer, [CanBeNull] Uri requestUrl)
+        internal static IEnumerable<IfHeaderList> Parse([NotNull] StringSource source, [NotNull] EntityTagComparer etagComparer, [NotNull] IWebDavContext context)
         {
-            Uri previousResourceTag = requestUrl;
+            Uri previousResourceTag = context.AbsoluteRequestUrl;
             while (!source.SkipWhiteSpace())
             {
                 Uri resourceTag;
                 if (CodedUrlParser.TryParse(source, out resourceTag))
                 {
                     // Coded-URL found
+                    if (!resourceTag.IsAbsoluteUri)
+                        resourceTag = new Uri(context.RootUrl, resourceTag);
                     previousResourceTag = resourceTag;
                     source.SkipWhiteSpace();
                 }
@@ -59,7 +106,9 @@ namespace FubarDev.WebDavServer.Model.Headers
                 if (!source.AdvanceIf(")"))
                     throw new ArgumentException($"{source.Remaining} is not a valid list (not ending with a ')')", nameof(source));
 
-                yield return new IfHeaderList(resourceTag, conditions);
+                var relateiveHref = context.RootUrl.IsBaseOf(resourceTag) ? context.RootUrl.MakeRelativeUri(resourceTag) : resourceTag;
+                var path = context.BaseUrl.IsBaseOf(resourceTag) ? context.BaseUrl.MakeRelativeUri(resourceTag) : resourceTag;
+                yield return new IfHeaderList(resourceTag, relateiveHref, path, conditions);
             }
         }
     }

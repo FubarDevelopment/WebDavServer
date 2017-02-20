@@ -14,6 +14,7 @@ using FubarDev.WebDavServer.FileSystem;
 using FubarDev.WebDavServer.Model;
 using FubarDev.WebDavServer.Model.Headers;
 using FubarDev.WebDavServer.Props.Filters;
+using FubarDev.WebDavServer.Props.Live;
 
 using JetBrains.Annotations;
 
@@ -121,7 +122,7 @@ namespace FubarDev.WebDavServer.Handlers.Impl
                 if (!_options.UseAbsoluteHref)
                     href = new Uri("/" + _context.RootUrl.MakeRelativeUri(href).OriginalString, UriKind.Relative);
 
-                var collector = new PropertyCollector(_context, new ReadableFilter(), new PropFilter(prop));
+                var collector = new PropertyCollector(this, _context, new ReadableFilter(), new PropFilter(prop));
                 var propStats = await collector.GetPropertiesAsync(entry, int.MaxValue, cancellationToken).ConfigureAwait(false);
 
                 var response = new response()
@@ -170,7 +171,7 @@ namespace FubarDev.WebDavServer.Handlers.Impl
                 if (!_options.UseAbsoluteHref)
                     href = new Uri("/" + _context.RootUrl.MakeRelativeUri(href).OriginalString, UriKind.Relative);
 
-                var collector = new PropertyCollector(_context, new ReadableFilter(), new CostFilter(0));
+                var collector = new PropertyCollector(this, _context, new ReadableFilter(), new CostFilter(0));
                 var propStats = await collector.GetPropertiesAsync(entry, 0, cancellationToken).ConfigureAwait(false);
 
                 var response = new response()
@@ -203,7 +204,7 @@ namespace FubarDev.WebDavServer.Handlers.Impl
                 if (!_options.UseAbsoluteHref)
                     href = new Uri("/" + _context.RootUrl.MakeRelativeUri(href).OriginalString, UriKind.Relative);
 
-                var collector = new PropertyCollector(_context, new ReadableFilter(), new CostFilter(0));
+                var collector = new PropertyCollector(this, _context, new ReadableFilter(), new CostFilter(0));
                 var propStats = await collector.GetPropertyNamesAsync(entry, cancellationToken).ConfigureAwait(false);
 
                 var response = new response()
@@ -227,14 +228,18 @@ namespace FubarDev.WebDavServer.Handlers.Impl
         private class PropertyCollector
         {
             [NotNull]
+            private readonly PropFindHandler _handler;
+
+            [NotNull]
             private readonly IWebDavContext _host;
 
             [NotNull]
             [ItemNotNull]
             private readonly IPropertyFilter[] _filters;
 
-            public PropertyCollector([NotNull] IWebDavContext host, [NotNull][ItemNotNull] params IPropertyFilter[] filters)
+            public PropertyCollector([NotNull] PropFindHandler handler, [NotNull] IWebDavContext host, [NotNull][ItemNotNull] params IPropertyFilter[] filters)
             {
+                _handler = handler;
                 _host = host;
                 _filters = filters;
             }
@@ -261,8 +266,20 @@ namespace FubarDev.WebDavServer.Handlers.Impl
                             filter.NotifyOfSelection(property);
                         }
 
-                        var readableProp = property;
-                        var element = await readableProp.GetXmlValueAsync(cancellationToken).ConfigureAwait(false);
+                        XElement element;
+                        var lockDiscoveryProp = property as LockDiscoveryProperty;
+                        if (lockDiscoveryProp != null)
+                        {
+                            element = await lockDiscoveryProp.GetXmlValueAsync(
+                                _handler._options.OmitLockOwner,
+                                _handler._options.OmitLockToken,
+                                cancellationToken).ConfigureAwait(false);
+                        }
+                        else
+                        {
+                            element = await property.GetXmlValueAsync(cancellationToken).ConfigureAwait(false);
+                        }
+
                         propElements.Add(element);
                     }
                 }

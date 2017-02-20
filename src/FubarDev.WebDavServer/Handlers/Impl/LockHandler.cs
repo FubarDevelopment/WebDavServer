@@ -17,8 +17,6 @@ using FubarDev.WebDavServer.Model.Headers;
 
 using JetBrains.Annotations;
 
-using TimeoutHeader = FubarDev.WebDavServer.Model.Headers.TimeoutHeader;
-
 namespace FubarDev.WebDavServer.Handlers.Impl
 {
     public class LockHandler : ILockHandler
@@ -158,12 +156,28 @@ namespace FubarDev.WebDavServer.Handlers.Impl
             }
         }
 
-        public Task<IWebDavResult> RefreshLockAsync(string path, IfHeader ifHeader, TimeoutHeader timeoutHeader, CancellationToken cancellationToken)
+        public async Task<IWebDavResult> RefreshLockAsync(string path, IfHeader ifHeader, TimeoutHeader timeoutHeader, CancellationToken cancellationToken)
         {
             if (_lockManager == null)
                 throw new NotSupportedException();
 
-            throw new NotImplementedException();
+            if (ifHeader.Lists.Any(x => x.Path.IsAbsoluteUri))
+                throw new InvalidOperationException("A Resource-Tag pointing to a different server or application isn't supported.");
+
+            var timeout = _timeoutPolicy?.SelectTimeout(
+                              timeoutHeader?.Values ?? new[] { TimeoutHeader.Infinite })
+                          ?? TimeoutHeader.Infinite;
+
+            var result = await _lockManager.RefreshLockAsync(_rootFileSystem, ifHeader, timeout, cancellationToken).ConfigureAwait(false);
+            if (result.ErrorResponse != null)
+                return new WebDavResult<error>(WebDavStatusCode.PreconditionFailed, result.ErrorResponse.error);
+
+            var prop = new prop()
+            {
+                Any = result.RefreshedLocks.Select(x => x.ToXElement()).ToArray(),
+            };
+
+            return new WebDavResult<prop>(WebDavStatusCode.OK, prop);
         }
 
         private error CreateError(IEnumerable<IActiveLock> activeLocks)

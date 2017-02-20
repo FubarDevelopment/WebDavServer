@@ -9,6 +9,8 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 
+using FubarDev.WebDavServer.FileSystem;
+using FubarDev.WebDavServer.Model;
 using FubarDev.WebDavServer.Model.Headers;
 
 using Microsoft.Extensions.Logging;
@@ -30,7 +32,7 @@ namespace FubarDev.WebDavServer.Locking.InMemory
 
         private readonly ILockTimeRounding _rounding;
 
-        private IImmutableDictionary<Uri, IActiveLock> _locks = ImmutableDictionary<Uri, IActiveLock>.Empty;
+        private IImmutableDictionary<Uri, ActiveLock> _locks = ImmutableDictionary<Uri, ActiveLock>.Empty;
 
         public InMemoryLockManager(IOptions<LockManagerOptions> options, LockCleanupTask cleanupTask, ISystemClock systemClock, ILogger<InMemoryLockManager> logger)
         {
@@ -61,8 +63,8 @@ namespace FubarDev.WebDavServer.Locking.InMemory
         /// <inheritdoc />
         public Task<LockResult> LockAsync(ILock l, CancellationToken cancellationToken)
         {
-            IActiveLock newActiveLock;
-            var destinationUrl = new Uri(_baseUrl, l.Path);
+            ActiveLock newActiveLock;
+            var destinationUrl = BuildUrl(l.Path);
             lock (_syncRoot)
             {
                 var status = Find(destinationUrl, l.Recursive);
@@ -87,15 +89,102 @@ namespace FubarDev.WebDavServer.Locking.InMemory
         }
 
         /// <inheritdoc />
-        public Task<LockResult> RefreshLockAsync(IfHeader ifHeader, TimeoutHeader timeout, CancellationToken cancellationToken)
+        public async Task<LockRefreshResult> RefreshLockAsync(IFileSystem rootFileSystem, IfHeader ifHeader, TimeSpan timeout, CancellationToken cancellationToken)
         {
-            throw new NotImplementedException();
+            var pathToInfo = new Dictionary<Uri, PathInfo>();
+            var failedHrefs = new HashSet<Uri>();
+            var refreshedLocks = new List<IActiveLock>();
+
+            foreach (var ifHeaderList in ifHeader.Lists.Where(x => x.RequiresStateToken))
+            {
+                PathInfo pathInfo;
+                if (!pathToInfo.TryGetValue(ifHeaderList.Path, out pathInfo))
+                {
+                    pathInfo = new PathInfo();
+                    pathToInfo.Add(ifHeaderList.Path, pathInfo);
+                }
+
+                if (pathInfo.EntityTag == null)
+                {
+                    if (ifHeaderList.RequiresEntityTag)
+                    {
+                        var selectionResult = await rootFileSystem.SelectAsync(ifHeaderList.Path.OriginalString, cancellationToken).ConfigureAwait(false);
+                        if (selectionResult.IsMissing)
+                        {
+                            // Probably locked entry not found
+                            failedHrefs.Add(ifHeaderList.RelativeHref);
+                            continue;
+                        }
+
+                        pathInfo.EntityTag = await selectionResult.TargetEntry.GetEntityTagAsync(cancellationToken).ConfigureAwait(false);
+                    }
+                }
+
+                if (pathInfo.ActiveLocks == null)
+                {
+                    var destinationUrl = BuildUrl(ifHeaderList.Path.OriginalString);
+                    var entryLocks = (from l in _locks.Values
+                                      let lockUrl = BuildUrl(l.Path)
+                                      where Compare(destinationUrl, false, lockUrl, false) == LockCompareResult.Reference
+                                      select l).ToList();
+
+                    if (entryLocks.Count == 0)
+                    {
+                        // No lock found for entry
+                        failedHrefs.Add(ifHeaderList.RelativeHref);
+                        continue;
+                    }
+
+                    pathInfo.ActiveLocks = entryLocks;
+                    pathInfo.TokenToLock = entryLocks.ToDictionary(x => new Uri(x.StateToken, UriKind.RelativeOrAbsolute));
+                }
+
+                foreach (var tokenToLock in pathInfo.TokenToLock)
+                {
+                    if (ifHeaderList.IsMatch(pathInfo.EntityTag, new[] { tokenToLock.Key }))
+                    {
+                        var foundLock = tokenToLock.Value;
+                        var refreshedLock = foundLock.Refresh(_rounding.Round(_systemClock.UtcNow), _rounding.Round(timeout));
+
+                        // Remove old lock from clean-up task
+                        _cleanupTask.Remove(foundLock);
+
+                        // Add refreshed lock to the clean-up task
+                        _cleanupTask.Add(this, refreshedLock);
+
+                        refreshedLocks.Add(foundLock);
+                    }
+                }
+            }
+
+            if (refreshedLocks.Count == 0)
+            {
+                var hrefs = failedHrefs.ToList();
+                var href = hrefs.First().OriginalString;
+                var hrefItems = hrefs.Skip(1).Select(x => x.OriginalString).Cast<object>().ToArray();
+                var hrefItemNames = hrefs.Select(x => ItemsChoiceType2.href).ToArray();
+
+                return new LockRefreshResult(
+                    new response()
+                    {
+                        href = href,
+                        Items = hrefItems,
+                        ItemsElementName = hrefItemNames,
+                        error = new error()
+                        {
+                            Items = new[] { new object(), },
+                            ItemsElementName = new[] { ItemsChoiceType.locktokenmatchesrequesturi, },
+                        },
+                    });
+            }
+
+            return new LockRefreshResult(refreshedLocks);
         }
 
         /// <inheritdoc />
         public Task<LockReleaseStatus> ReleaseAsync(string path, Uri stateToken, CancellationToken cancellationToken)
         {
-            IActiveLock activeLock;
+            ActiveLock activeLock;
             lock (_syncRoot)
             {
                 if (!_locks.TryGetValue(stateToken, out activeLock))
@@ -105,8 +194,8 @@ namespace FubarDev.WebDavServer.Locking.InMemory
                     return Task.FromResult(LockReleaseStatus.NoLock);
                 }
 
-                var destinationUrl = new Uri(_baseUrl, path);
-                var lockUrl = new Uri(_baseUrl, activeLock.Path);
+                var destinationUrl = BuildUrl(path);
+                var lockUrl = BuildUrl(activeLock.Path);
                 var lockCompareResult = Compare(lockUrl, activeLock.Recursive, destinationUrl, false);
                 if (lockCompareResult != LockCompareResult.Reference)
                     return Task.FromResult(LockReleaseStatus.InvalidLockRange);
@@ -125,13 +214,13 @@ namespace FubarDev.WebDavServer.Locking.InMemory
         /// <inheritdoc />
         public Task<IEnumerable<IActiveLock>> GetLocksAsync(CancellationToken cancellationToken)
         {
-            return Task.FromResult(_locks.Values);
+            return Task.FromResult(_locks.Values.Select(x => (IActiveLock)x));
         }
 
         /// <inheritdoc />
         public Task<IEnumerable<IActiveLock>> GetAffectedLocksAsync(string path, bool recursive, CancellationToken cancellationToken)
         {
-            var destinationUrl = new Uri(_baseUrl, path);
+            var destinationUrl = BuildUrl(path);
             LockStatus status;
             lock (_locks)
             {
@@ -173,12 +262,11 @@ namespace FubarDev.WebDavServer.Locking.InMemory
                     .ToList());
         }
 
-        private LockStatus Find(Uri destinationUrl, bool withChildren)
+        private LockStatus Find(Uri parentUrl, bool withChildren)
         {
             var refLocks = new List<IActiveLock>();
             var childLocks = new List<IActiveLock>();
             var parentLocks = new List<IActiveLock>();
-            var parentUrl = BuildUrl(destinationUrl);
 
             foreach (var activeLock in _locks.Values)
             {
@@ -221,14 +309,18 @@ namespace FubarDev.WebDavServer.Locking.InMemory
             return LockCompareResult.NoMatch;
         }
 
-        private Uri BuildUrl(Uri relativeUrl)
-        {
-            return BuildUrl(relativeUrl.OriginalString);
-        }
-
         private Uri BuildUrl(string path)
         {
             return new Uri(_baseUrl, path + (path.EndsWith("/") ? string.Empty : "/"));
+        }
+
+        private class PathInfo
+        {
+            public EntityTag? EntityTag { get; set; }
+
+            public IReadOnlyCollection<IActiveLock> ActiveLocks { get; set; }
+
+            public IDictionary<Uri, ActiveLock> TokenToLock { get; set; }
         }
     }
 }
