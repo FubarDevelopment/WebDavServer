@@ -19,6 +19,10 @@ namespace FubarDev.WebDavServer.AspNetCore
     {
         private readonly IHttpContextAccessor _httpContextAccessor;
 
+        private readonly Lazy<Uri> _absoluteRequestUrl;
+
+        private readonly Lazy<Uri> _relativeRequestUrl;
+
         private readonly Lazy<Uri> _baseUrl;
 
         private readonly Lazy<Uri> _rootUrl;
@@ -35,6 +39,14 @@ namespace FubarDev.WebDavServer.AspNetCore
             _httpContextAccessor = httpContextAccessor;
             _baseUrl = new Lazy<Uri>(() => BuildBaseUrl(httpContextAccessor.HttpContext, opt));
             _rootUrl = new Lazy<Uri>(() => new Uri(_baseUrl.Value, "/"));
+            _absoluteRequestUrl = new Lazy<Uri>(() => new Uri(_rootUrl.Value, httpContextAccessor.HttpContext.Request.Path.ToUriComponent()));
+            _relativeRequestUrl = new Lazy<Uri>(() =>
+            {
+                var requestUrl = httpContextAccessor.HttpContext.Request.Path.ToUriComponent();
+                if (!requestUrl.StartsWith("/"))
+                    requestUrl = "/" + requestUrl;
+                return new Uri(requestUrl, UriKind.Relative);
+            });
             _requestHeaders = new Lazy<WebDavRequestHeaders>(() =>
             {
                 var request = httpContextAccessor.HttpContext.Request;
@@ -47,6 +59,10 @@ namespace FubarDev.WebDavServer.AspNetCore
             _detectedClient = new Lazy<IUAParserOutput>(() => DetectClient(httpContextAccessor.HttpContext));
             _principal = new Lazy<IPrincipal>(() => httpContextAccessor.HttpContext.User);
         }
+
+        public Uri RelativeRequestUrl => _relativeRequestUrl.Value;
+
+        public Uri AbsoluteRequestUrl => _absoluteRequestUrl.Value;
 
         public Uri BaseUrl => _baseUrl.Value;
 

@@ -62,6 +62,10 @@ namespace FubarDev.WebDavServer.Dispatchers
 
         [NotNull]
         [ItemNotNull]
+        Task<IWebDavResult> RefreshLockAsync([NotNull] string path, [NotNull] IfHeader ifHeader, [CanBeNull] TimeoutHeader timeoutHeader, CancellationToken cancellationToken);
+
+        [NotNull]
+        [ItemNotNull]
         Task<IWebDavResult> UnlockAsync([NotNull] string path, [NotNull] LockTokenHeader stateToken, CancellationToken cancellationToken);
     }
 }

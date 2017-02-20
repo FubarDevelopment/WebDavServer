@@ -17,6 +17,12 @@ namespace FubarDev.WebDavServer
         string RequestProtocol { get; }
 
         [NotNull]
+        Uri RelativeRequestUrl { get; }
+
+        [NotNull]
+        Uri AbsoluteRequestUrl { get; }
+
+        [NotNull]
         Uri BaseUrl { get; }
 
         [NotNull]

@@ -7,6 +7,8 @@ using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
 
+using FubarDev.WebDavServer.Model.Headers;
+
 using JetBrains.Annotations;
 
 namespace FubarDev.WebDavServer.Locking
@@ -40,6 +42,17 @@ namespace FubarDev.WebDavServer.Locking
         [NotNull]
         [ItemNotNull]
         Task<LockResult> LockAsync(ILock l, CancellationToken cancellationToken);
+
+        /// <summary>
+        /// Tries to refresh a lock
+        /// </summary>
+        /// <param name="ifHeader">The header that tries to identify the lock to refresh</param>
+        /// <param name="timeout">The header containing the new timeouts</param>
+        /// <param name="cancellationToken">The cancellation token</param>
+        /// <returns>Either the list of locks preventing refreshing a lock or the refreshed lock</returns>
+        [NotNull]
+        [ItemNotNull]
+        Task<LockResult> RefreshLockAsync([NotNull] IfHeader ifHeader, [CanBeNull] TimeoutHeader timeout, CancellationToken cancellationToken);
 
         /// <summary>
         /// Releases a lock with the given state token

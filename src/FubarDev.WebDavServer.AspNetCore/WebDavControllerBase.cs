@@ -17,11 +17,13 @@ namespace FubarDev.WebDavServer.AspNetCore
 {
     public class WebDavControllerBase : ControllerBase
     {
+        private readonly IWebDavContext _context;
         private readonly IWebDavDispatcher _dispatcher;
         private readonly ILogger<WebDavIndirectResult> _responseLogger;
 
-        public WebDavControllerBase(IWebDavDispatcher dispatcher, ILogger<WebDavIndirectResult> responseLogger = null)
+        public WebDavControllerBase(IWebDavContext context, IWebDavDispatcher dispatcher, ILogger<WebDavIndirectResult> responseLogger = null)
         {
+            _context = context;
             _dispatcher = dispatcher;
             _responseLogger = responseLogger;
         }
@@ -120,7 +122,22 @@ namespace FubarDev.WebDavServer.AspNetCore
             [FromBody] lockinfo lockinfo,
             CancellationToken cancellationToken = default(CancellationToken))
         {
-            var result = await _dispatcher.Class1.LockAsync(path, lockinfo, cancellationToken).ConfigureAwait(false);
+            IWebDavResult result;
+            if (lockinfo == null)
+            {
+                // Refresh
+                var ifHeader = _context.RequestHeaders.If;
+                if (ifHeader == null)
+                    return BadRequest();
+                var timeoutHeader = _context.RequestHeaders.Timeout;
+                result = await _dispatcher.Class1.RefreshLockAsync(path, ifHeader, timeoutHeader, cancellationToken).ConfigureAwait(false);
+            }
+            else
+            {
+                // Lock
+                result = await _dispatcher.Class1.LockAsync(path, lockinfo, cancellationToken).ConfigureAwait(false);
+            }
+
             return new WebDavIndirectResult(_dispatcher, result, _responseLogger);
         }
 

@@ -9,6 +9,8 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 
+using FubarDev.WebDavServer.Model.Headers;
+
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 
@@ -82,6 +84,12 @@ namespace FubarDev.WebDavServer.Locking.InMemory
             _cleanupTask.Add(this, newActiveLock);
 
             return Task.FromResult(new LockResult(newActiveLock));
+        }
+
+        /// <inheritdoc />
+        public Task<LockResult> RefreshLockAsync(IfHeader ifHeader, TimeoutHeader timeout, CancellationToken cancellationToken)
+        {
+            throw new NotImplementedException();
         }
 
         /// <inheritdoc />

@@ -15,6 +15,10 @@ namespace FubarDev.WebDavServer.Tests.Support
 {
     public class TestHost : IWebDavContext
     {
+        private readonly Lazy<Uri> _absoluteRequestUrl;
+
+        private readonly Lazy<Uri> _relativeRequestUrl;
+
         private readonly Lazy<WebDavRequestHeaders> _requestHeaders;
 
         public TestHost(Uri baseUrl)
@@ -22,6 +26,14 @@ namespace FubarDev.WebDavServer.Tests.Support
             BaseUrl = baseUrl;
             RootUrl = new Uri(baseUrl, "/");
             RequestProtocol = baseUrl.Scheme;
+            _absoluteRequestUrl = new Lazy<Uri>(() => RootUrl);
+            _relativeRequestUrl = new Lazy<Uri>(() =>
+            {
+                var relativeUrl = RootUrl.MakeRelativeUri(baseUrl);
+                if (!relativeUrl.OriginalString.StartsWith("/"))
+                    return new Uri("/" + relativeUrl.OriginalString, UriKind.Relative);
+                return relativeUrl;
+            });
             _requestHeaders = new Lazy<WebDavRequestHeaders>(() => new WebDavRequestHeaders(new List<KeyValuePair<string, IEnumerable<string>>>(), new Uri("/", UriKind.Relative)));
         }
 
@@ -30,6 +42,14 @@ namespace FubarDev.WebDavServer.Tests.Support
             BaseUrl = baseUrl;
             RootUrl = new Uri(baseUrl, "/");
             RequestProtocol = baseUrl.Scheme;
+            _absoluteRequestUrl = new Lazy<Uri>(() => new Uri(RootUrl, httpContextAccessor.HttpContext.Request.Path.ToUriComponent()));
+            _relativeRequestUrl = new Lazy<Uri>(() =>
+            {
+                var requestUrl = httpContextAccessor.HttpContext.Request.Path.ToUriComponent();
+                if (!requestUrl.StartsWith("/"))
+                    requestUrl = "/" + requestUrl;
+                return new Uri(requestUrl, UriKind.Relative);
+            });
             _requestHeaders = new Lazy<WebDavRequestHeaders>(() =>
             {
                 var request = httpContextAccessor.HttpContext.Request;
@@ -42,6 +62,10 @@ namespace FubarDev.WebDavServer.Tests.Support
         }
 
         public string RequestProtocol { get; }
+
+        public Uri RelativeRequestUrl => _relativeRequestUrl.Value;
+
+        public Uri AbsoluteRequestUrl => _absoluteRequestUrl.Value;
 
         public Uri BaseUrl { get; }
 

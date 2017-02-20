@@ -23,6 +23,8 @@ namespace FubarDev.WebDavServer.AspNetCore.Formatters
                 {
                     switch (request.Method)
                     {
+                        case "LOCK":
+                            return true;
                         case "PROPFIND":
                             return true;
                     }

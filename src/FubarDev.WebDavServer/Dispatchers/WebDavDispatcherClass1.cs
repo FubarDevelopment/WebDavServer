@@ -247,6 +247,15 @@ namespace FubarDev.WebDavServer.Dispatchers
             return _lockHandler.LockAsync(path, info, cancellationToken);
         }
 
+        /// <inheritdoc />
+        public Task<IWebDavResult> RefreshLockAsync(string path, IfHeader ifHeader, TimeoutHeader timeoutHeader, CancellationToken cancellationToken)
+        {
+            if (_lockHandler == null)
+                throw new NotSupportedException();
+            return _lockHandler.RefreshLockAsync(path, ifHeader, timeoutHeader, cancellationToken);
+        }
+
+        /// <inheritdoc />
         public Task<IWebDavResult> UnlockAsync(string path, LockTokenHeader stateToken, CancellationToken cancellationToken)
         {
             if (_unlockHandler == null)

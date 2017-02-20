@@ -10,8 +10,8 @@ namespace FubarDev.WebDavServer.Sample.AspNetCore.Controllers
     /* [Authorize] */
     public class WebDavController : WebDavControllerBase
     {
-        public WebDavController(IWebDavDispatcher dispatcher, ILogger<WebDavIndirectResult> responseLogger = null)
-            : base(dispatcher, responseLogger)
+        public WebDavController(IWebDavContext context, IWebDavDispatcher dispatcher, ILogger<WebDavIndirectResult> responseLogger = null)
+            : base(context, dispatcher, responseLogger)
         {
         }
     }

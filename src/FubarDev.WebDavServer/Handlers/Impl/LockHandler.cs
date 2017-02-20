@@ -153,6 +153,11 @@ namespace FubarDev.WebDavServer.Handlers.Impl
             }
         }
 
+        public Task<IWebDavResult> RefreshLockAsync(string path, IfHeader ifHeader, TimeoutHeader timeoutHeader, CancellationToken cancellationToken)
+        {
+            throw new NotImplementedException();
+        }
+
         private error CreateError(IEnumerable<IActiveLock> activeLocks)
         {
             return new error()
