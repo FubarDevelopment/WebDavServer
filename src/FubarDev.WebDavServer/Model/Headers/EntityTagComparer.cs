@@ -26,7 +26,7 @@ namespace FubarDev.WebDavServer.Model.Headers
         public bool Equals(EntityTag x, EntityTag y)
         {
             if (_useStrongComparison)
-                return x.Value == y.Value && x.IsWeak == y.IsWeak;
+                return x.Value == y.Value && x.IsWeak == y.IsWeak && !x.IsWeak;
             return x.Value == y.Value;
         }
 
