@@ -17,7 +17,7 @@ namespace FubarDev.WebDavServer.Model.Headers
 
         private IfMatchHeader([NotNull] IEnumerable<EntityTag> etags)
         {
-            _etags = new HashSet<EntityTag>(etags, EntityTagComparer.Default);
+            _etags = new HashSet<EntityTag>(etags, EntityTagComparer.Strong);
         }
 
         private IfMatchHeader()
