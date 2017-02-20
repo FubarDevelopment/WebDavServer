@@ -36,19 +36,21 @@ namespace FubarDev.WebDavServer.Model.Headers
 
         [NotNull]
         [ItemNotNull]
-        internal static IEnumerable<IfHeaderList> Parse([NotNull] StringSource source, [NotNull] EntityTagComparer etagComparer)
+        internal static IEnumerable<IfHeaderList> Parse([NotNull] StringSource source, [NotNull] EntityTagComparer etagComparer, [CanBeNull] Uri requestUrl)
         {
+            Uri previousResourceTag = requestUrl;
             while (!source.SkipWhiteSpace())
             {
                 Uri resourceTag;
                 if (CodedUrlParser.TryParse(source, out resourceTag))
                 {
                     // Coded-URL found
+                    previousResourceTag = resourceTag;
                     source.SkipWhiteSpace();
                 }
                 else
                 {
-                    resourceTag = null;
+                    resourceTag = previousResourceTag;
                 }
 
                 if (!source.AdvanceIf("("))

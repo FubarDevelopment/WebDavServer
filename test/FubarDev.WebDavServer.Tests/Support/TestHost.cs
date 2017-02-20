@@ -22,7 +22,7 @@ namespace FubarDev.WebDavServer.Tests.Support
             BaseUrl = baseUrl;
             RootUrl = new Uri(baseUrl, "/");
             RequestProtocol = baseUrl.Scheme;
-            _requestHeaders = new Lazy<WebDavRequestHeaders>(() => new WebDavRequestHeaders(new List<KeyValuePair<string, IEnumerable<string>>>()));
+            _requestHeaders = new Lazy<WebDavRequestHeaders>(() => new WebDavRequestHeaders(new List<KeyValuePair<string, IEnumerable<string>>>(), new Uri("/", UriKind.Relative)));
         }
 
         public TestHost(Uri baseUrl, IHttpContextAccessor httpContextAccessor)
@@ -30,7 +30,15 @@ namespace FubarDev.WebDavServer.Tests.Support
             BaseUrl = baseUrl;
             RootUrl = new Uri(baseUrl, "/");
             RequestProtocol = baseUrl.Scheme;
-            _requestHeaders = new Lazy<WebDavRequestHeaders>(() => new WebDavRequestHeaders(httpContextAccessor.HttpContext.Request.Headers.Select(x => new KeyValuePair<string, IEnumerable<string>>(x.Key, x.Value))));
+            _requestHeaders = new Lazy<WebDavRequestHeaders>(() =>
+            {
+                var request = httpContextAccessor.HttpContext.Request;
+                var headerItems = request.Headers.Select(x => new KeyValuePair<string, IEnumerable<string>>(x.Key, x.Value));
+                var requestUrl = request.Path.ToUriComponent();
+                if (!requestUrl.StartsWith("/"))
+                    requestUrl = "/" + requestUrl;
+                return new WebDavRequestHeaders(headerItems, new Uri(requestUrl, UriKind.Relative));
+            });
         }
 
         public string RequestProtocol { get; }

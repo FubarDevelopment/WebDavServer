@@ -18,13 +18,13 @@ namespace FubarDev.WebDavServer
         [ItemNotNull]
         private static readonly string[] _empty = new string[0];
 
-        public WebDavRequestHeaders([NotNull] IEnumerable<KeyValuePair<string, IEnumerable<string>>> headers)
+        public WebDavRequestHeaders([NotNull] IEnumerable<KeyValuePair<string, IEnumerable<string>>> headers, [NotNull] Uri requestUrl)
         {
             Headers = headers.ToDictionary(x => x.Key, x => x.Value.ToList(), StringComparer.OrdinalIgnoreCase);
             Depth = ParseHeader("Depth", args => DepthHeader.Parse(args.Single()));
             Overwrite = ParseHeader("Overwrite", args => OverwriteHeader.Parse(args.Single()));
             Range = ParseHeader("Range", RangeHeader.Parse);
-            If = ParseHeader("If", args => IfHeader.Parse(args.Single(), EntityTagComparer.Strong));
+            If = ParseHeader("If", args => IfHeader.Parse(args.Single(), EntityTagComparer.Strong, requestUrl));
             IfMatch = ParseHeader("If-Match", IfMatchHeader.Parse);
             IfNoneMatch = ParseHeader("If-None-Match", IfNoneMatchHeader.Parse);
             IfModifiedSince = ParseHeader("If-Modified-Since", args => IfModifiedSinceHeader.Parse(args.Single()));

@@ -35,7 +35,15 @@ namespace FubarDev.WebDavServer.AspNetCore
             _httpContextAccessor = httpContextAccessor;
             _baseUrl = new Lazy<Uri>(() => BuildBaseUrl(httpContextAccessor.HttpContext, opt));
             _rootUrl = new Lazy<Uri>(() => new Uri(_baseUrl.Value, "/"));
-            _requestHeaders = new Lazy<WebDavRequestHeaders>(() => new WebDavRequestHeaders(httpContextAccessor.HttpContext.Request.Headers.Select(x => new KeyValuePair<string, IEnumerable<string>>(x.Key, x.Value))));
+            _requestHeaders = new Lazy<WebDavRequestHeaders>(() =>
+            {
+                var request = httpContextAccessor.HttpContext.Request;
+                var headerItems = request.Headers.Select(x => new KeyValuePair<string, IEnumerable<string>>(x.Key, x.Value));
+                var requestUrl = request.Path.ToUriComponent();
+                if (!requestUrl.StartsWith("/"))
+                    requestUrl = "/" + requestUrl;
+                return new WebDavRequestHeaders(headerItems, new Uri(requestUrl, UriKind.Relative));
+            });
             _detectedClient = new Lazy<IUAParserOutput>(() => DetectClient(httpContextAccessor.HttpContext));
             _principal = new Lazy<IPrincipal>(() => httpContextAccessor.HttpContext.User);
         }
