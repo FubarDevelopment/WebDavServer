@@ -311,6 +311,8 @@ namespace FubarDev.WebDavServer.Locking.InMemory
 
         private Uri BuildUrl(string path)
         {
+            if (string.IsNullOrEmpty(path))
+                return _baseUrl;
             return new Uri(_baseUrl, path + (path.EndsWith("/") ? string.Empty : "/"));
         }
 
