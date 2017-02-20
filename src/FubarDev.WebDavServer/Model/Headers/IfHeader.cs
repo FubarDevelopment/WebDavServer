@@ -13,7 +13,7 @@ using JetBrains.Annotations;
 
 namespace FubarDev.WebDavServer.Model.Headers
 {
-    public class IfHeader : IIfMatcher
+    public class IfHeader : IIfWebDavMatcher
     {
         private IfHeader([NotNull] [ItemNotNull] IReadOnlyCollection<IfHeaderList> lists)
         {

@@ -2,7 +2,6 @@
 // Copyright (c) Fubar Development Junker. All rights reserved.
 // </copyright>
 
-using System;
 using System.Collections.Generic;
 
 using FubarDev.WebDavServer.FileSystem;
@@ -11,7 +10,7 @@ using JetBrains.Annotations;
 
 namespace FubarDev.WebDavServer.Model.Headers
 {
-    public class IfMatchHeader : IIfMatcher
+    public class IfMatchHeader : IIfHttpMatcher
     {
         [CanBeNull]
         private readonly ISet<EntityTag> _etags;
@@ -53,7 +52,7 @@ namespace FubarDev.WebDavServer.Model.Headers
             return new IfMatchHeader(result);
         }
 
-        public bool IsMatch(IEntry entry, EntityTag etag, IReadOnlyCollection<Uri> stateTokens)
+        public bool IsMatch(IEntry entry, EntityTag etag)
         {
             if (_etags == null)
                 return true;

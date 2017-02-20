@@ -1,4 +1,4 @@
-﻿// <copyright file="IIfMatcher.cs" company="Fubar Development Junker">
+﻿// <copyright file="IIfWebDavMatcher.cs" company="Fubar Development Junker">
 // Copyright (c) Fubar Development Junker. All rights reserved.
 // </copyright>
 
@@ -11,7 +11,7 @@ using JetBrains.Annotations;
 
 namespace FubarDev.WebDavServer.Model.Headers
 {
-    public interface IIfMatcher
+    public interface IIfWebDavMatcher
     {
         bool IsMatch([NotNull] IEntry entry, EntityTag etag, [NotNull] [ItemNotNull] IReadOnlyCollection<Uri> stateTokens);
     }

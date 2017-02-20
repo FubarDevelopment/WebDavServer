@@ -10,7 +10,7 @@ namespace FubarDev.WebDavServer
 {
     public static class WebDavRequestHeadersExtensions
     {
-        public static IEnumerable<IIfMatcher> GetIfHeaderMatchers(this IWebDavRequestHeaders headers)
+        public static IEnumerable<IIfHttpMatcher> GetIfHttpHeaderMatchers(this IWebDavRequestHeaders headers)
         {
             if (headers.IfMatch != null)
                 yield return headers.IfMatch;
@@ -20,8 +20,6 @@ namespace FubarDev.WebDavServer
                 yield return headers.IfModifiedSince;
             if (headers.IfUnmodifiedSince != null)
                 yield return headers.IfUnmodifiedSince;
-            if (headers.If != null)
-                yield return headers.If;
         }
     }
 }

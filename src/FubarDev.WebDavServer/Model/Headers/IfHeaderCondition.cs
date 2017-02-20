@@ -14,7 +14,7 @@ using JetBrains.Annotations;
 
 namespace FubarDev.WebDavServer.Model.Headers
 {
-    public class IfHeaderCondition : IIfMatcher
+    public class IfHeaderCondition : IIfWebDavMatcher
     {
         private IfHeaderCondition(bool not, Uri stateToken, EntityTag? etag)
         {

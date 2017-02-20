@@ -2,7 +2,6 @@
 // Copyright (c) Fubar Development Junker. All rights reserved.
 // </copyright>
 
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -20,7 +19,6 @@ namespace FubarDev.WebDavServer.Tests.ModelTests
     public class EntityTagMatcherTests : IClassFixture<FileSystemServices>
     {
         private static readonly IReadOnlyCollection<EntityTag> _entityTags = EntityTag.Parse("\"qwe\", w/\"qwe\", \"asd\"").ToList();
-        private static readonly IReadOnlyCollection<Uri> _stateTokens = new List<Uri>();
 
         public EntityTagMatcherTests(FileSystemServices fsServices)
         {
@@ -34,7 +32,7 @@ namespace FubarDev.WebDavServer.Tests.ModelTests
         {
             var root = await FileSystem.Root;
             var matcher = IfMatchHeader.Parse((string)null);
-            Assert.All(_entityTags, etag => Assert.True(matcher.IsMatch(root, etag, _stateTokens)));
+            Assert.All(_entityTags, etag => Assert.True(matcher.IsMatch(root, etag)));
         }
 
         [Fact]
@@ -42,7 +40,7 @@ namespace FubarDev.WebDavServer.Tests.ModelTests
         {
             var root = await FileSystem.Root;
             var matcher = IfMatchHeader.Parse(string.Empty);
-            Assert.All(_entityTags, etag => Assert.True(matcher.IsMatch(root, etag, _stateTokens)));
+            Assert.All(_entityTags, etag => Assert.True(matcher.IsMatch(root, etag)));
         }
 
         [Fact]
@@ -50,7 +48,7 @@ namespace FubarDev.WebDavServer.Tests.ModelTests
         {
             var root = await FileSystem.Root;
             var matcher = IfMatchHeader.Parse("*");
-            Assert.All(_entityTags, etag => Assert.True(matcher.IsMatch(root, etag, _stateTokens)));
+            Assert.All(_entityTags, etag => Assert.True(matcher.IsMatch(root, etag)));
         }
 
         [Fact]
@@ -58,7 +56,7 @@ namespace FubarDev.WebDavServer.Tests.ModelTests
         {
             var root = await FileSystem.Root;
             var matcher = IfMatchHeader.Parse("\"qwe\"");
-            Assert.Equal(1, _entityTags.Count(etag => matcher.IsMatch(root, etag, _stateTokens)));
+            Assert.Equal(1, _entityTags.Count(etag => matcher.IsMatch(root, etag)));
         }
 
         [Fact]
@@ -66,7 +64,7 @@ namespace FubarDev.WebDavServer.Tests.ModelTests
         {
             var root = await FileSystem.Root;
             var matcher = IfMatchHeader.Parse("w/\"qwe\"");
-            Assert.Equal(1, _entityTags.Count(etag => matcher.IsMatch(root, etag, _stateTokens)));
+            Assert.Equal(1, _entityTags.Count(etag => matcher.IsMatch(root, etag)));
         }
 
         [Fact]
@@ -74,7 +72,7 @@ namespace FubarDev.WebDavServer.Tests.ModelTests
         {
             var root = await FileSystem.Root;
             var matcher = IfMatchHeader.Parse("\"asd\"");
-            Assert.Equal(1, _entityTags.Count(etag => matcher.IsMatch(root, etag, _stateTokens)));
+            Assert.Equal(1, _entityTags.Count(etag => matcher.IsMatch(root, etag)));
         }
 
         [Fact]
@@ -82,7 +80,7 @@ namespace FubarDev.WebDavServer.Tests.ModelTests
         {
             var root = await FileSystem.Root;
             var matcher = IfMatchHeader.Parse("\"qweqwe\"");
-            Assert.Equal(0, _entityTags.Count(etag => matcher.IsMatch(root, etag, _stateTokens)));
+            Assert.Equal(0, _entityTags.Count(etag => matcher.IsMatch(root, etag)));
         }
 
         [Fact]
@@ -90,7 +88,7 @@ namespace FubarDev.WebDavServer.Tests.ModelTests
         {
             var root = await FileSystem.Root;
             var matcher = IfNoneMatchHeader.Parse((string)null);
-            Assert.All(_entityTags, etag => Assert.False(matcher.IsMatch(root, etag, _stateTokens)));
+            Assert.All(_entityTags, etag => Assert.False(matcher.IsMatch(root, etag)));
         }
 
         [Fact]
@@ -98,7 +96,7 @@ namespace FubarDev.WebDavServer.Tests.ModelTests
         {
             var root = await FileSystem.Root;
             var matcher = IfNoneMatchHeader.Parse(string.Empty);
-            Assert.All(_entityTags, etag => Assert.False(matcher.IsMatch(root, etag, _stateTokens)));
+            Assert.All(_entityTags, etag => Assert.False(matcher.IsMatch(root, etag)));
         }
 
         [Fact]
@@ -106,7 +104,7 @@ namespace FubarDev.WebDavServer.Tests.ModelTests
         {
             var root = await FileSystem.Root;
             var matcher = IfNoneMatchHeader.Parse("*");
-            Assert.All(_entityTags, etag => Assert.False(matcher.IsMatch(root, etag, _stateTokens)));
+            Assert.All(_entityTags, etag => Assert.False(matcher.IsMatch(root, etag)));
         }
 
         [Fact]
@@ -114,7 +112,7 @@ namespace FubarDev.WebDavServer.Tests.ModelTests
         {
             var root = await FileSystem.Root;
             var matcher = IfNoneMatchHeader.Parse("\"qwe\"");
-            Assert.Equal(2, _entityTags.Count(etag => matcher.IsMatch(root, etag, _stateTokens)));
+            Assert.Equal(2, _entityTags.Count(etag => matcher.IsMatch(root, etag)));
         }
 
         [Fact]
@@ -122,7 +120,7 @@ namespace FubarDev.WebDavServer.Tests.ModelTests
         {
             var root = await FileSystem.Root;
             var matcher = IfNoneMatchHeader.Parse("w/\"qwe\"");
-            Assert.Equal(2, _entityTags.Count(etag => matcher.IsMatch(root, etag, _stateTokens)));
+            Assert.Equal(2, _entityTags.Count(etag => matcher.IsMatch(root, etag)));
         }
 
         [Fact]
@@ -130,7 +128,7 @@ namespace FubarDev.WebDavServer.Tests.ModelTests
         {
             var root = await FileSystem.Root;
             var matcher = IfNoneMatchHeader.Parse("\"asd\"");
-            Assert.Equal(2, _entityTags.Count(etag => matcher.IsMatch(root, etag, _stateTokens)));
+            Assert.Equal(2, _entityTags.Count(etag => matcher.IsMatch(root, etag)));
         }
 
         [Fact]
@@ -138,7 +136,7 @@ namespace FubarDev.WebDavServer.Tests.ModelTests
         {
             var root = await FileSystem.Root;
             var matcher = IfNoneMatchHeader.Parse("\"qweqwe\"");
-            Assert.Equal(3, _entityTags.Count(etag => matcher.IsMatch(root, etag, _stateTokens)));
+            Assert.Equal(3, _entityTags.Count(etag => matcher.IsMatch(root, etag)));
         }
     }
 }

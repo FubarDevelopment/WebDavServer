@@ -13,7 +13,7 @@ using JetBrains.Annotations;
 
 namespace FubarDev.WebDavServer.Model.Headers
 {
-    public class IfHeaderList : IIfMatcher
+    public class IfHeaderList : IIfWebDavMatcher
     {
         private IfHeaderList(
             [CanBeNull] Uri resourceTag,
@@ -42,11 +42,10 @@ namespace FubarDev.WebDavServer.Model.Headers
             while (!source.SkipWhiteSpace())
             {
                 Uri resourceTag;
-                if (source.AdvanceIf("<"))
+                if (CodedUrlParser.TryParse(source, out resourceTag))
                 {
-                    var resourceTagText = source.GetUntil('>');
-                    resourceTag = new Uri(resourceTagText, UriKind.RelativeOrAbsolute);
-                    source.Advance(1).SkipWhiteSpace();
+                    // Coded-URL found
+                    source.SkipWhiteSpace();
                 }
                 else
                 {
