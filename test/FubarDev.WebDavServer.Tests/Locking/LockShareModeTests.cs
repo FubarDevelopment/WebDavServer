@@ -40,6 +40,7 @@ namespace FubarDev.WebDavServer.Tests.Locking
                 .LockAsync(
                     new Lock(
                         "/",
+                        "/",
                         true,
                         owner,
                         LockAccessType.Write,
@@ -67,6 +68,7 @@ namespace FubarDev.WebDavServer.Tests.Locking
             var owner = new XElement("test");
             var testLock = new Lock(
                 "/",
+                "/",
                 true,
                 owner,
                 LockAccessType.Write,
@@ -88,6 +90,7 @@ namespace FubarDev.WebDavServer.Tests.Locking
                 .LockAsync(
                     new Lock(
                         "/",
+                        "/",
                         false,
                         owner,
                         LockAccessType.Write,
@@ -99,6 +102,7 @@ namespace FubarDev.WebDavServer.Tests.Locking
             var result2 = await lockManager
                 .LockAsync(
                     new Lock(
+                        "/test",
                         "/test",
                         true,
                         owner,
@@ -120,6 +124,7 @@ namespace FubarDev.WebDavServer.Tests.Locking
                 .LockAsync(
                     new Lock(
                         "/",
+                        "/",
                         false,
                         owner,
                         LockAccessType.Write,
@@ -131,6 +136,7 @@ namespace FubarDev.WebDavServer.Tests.Locking
             var result2 = await lockManager
                 .LockAsync(
                     new Lock(
+                        "/test",
                         "/test",
                         true,
                         owner,
@@ -152,6 +158,7 @@ namespace FubarDev.WebDavServer.Tests.Locking
                 .LockAsync(
                     new Lock(
                         "/",
+                        "/",
                         true,
                         owner,
                         LockAccessType.Write,
@@ -163,6 +170,7 @@ namespace FubarDev.WebDavServer.Tests.Locking
             var result2 = await lockManager
                 .LockAsync(
                     new Lock(
+                        "/test",
                         "/test",
                         true,
                         owner,
@@ -184,6 +192,7 @@ namespace FubarDev.WebDavServer.Tests.Locking
                 .LockAsync(
                     new Lock(
                         "/",
+                        "/",
                         true,
                         owner,
                         LockAccessType.Write,
@@ -195,6 +204,7 @@ namespace FubarDev.WebDavServer.Tests.Locking
             var result2 = await lockManager
                 .LockAsync(
                     new Lock(
+                        "/test",
                         "/test",
                         true,
                         owner,
@@ -216,6 +226,7 @@ namespace FubarDev.WebDavServer.Tests.Locking
                 .LockAsync(
                     new Lock(
                         "/",
+                        "/",
                         true,
                         owner,
                         LockAccessType.Write,
@@ -227,6 +238,7 @@ namespace FubarDev.WebDavServer.Tests.Locking
             var result2 = await lockManager
                 .LockAsync(
                     new Lock(
+                        "/test",
                         "/test",
                         true,
                         owner,
@@ -248,6 +260,7 @@ namespace FubarDev.WebDavServer.Tests.Locking
                 .LockAsync(
                     new Lock(
                         "/",
+                        "/",
                         true,
                         owner,
                         LockAccessType.Write,
@@ -262,6 +275,7 @@ namespace FubarDev.WebDavServer.Tests.Locking
             var result2 = await lockManager
                 .LockAsync(
                     new Lock(
+                        "/test",
                         "/test",
                         true,
                         owner,

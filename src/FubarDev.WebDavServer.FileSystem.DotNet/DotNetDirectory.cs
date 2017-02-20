@@ -59,20 +59,24 @@ namespace FubarDev.WebDavServer.FileSystem.DotNet
             return Task.FromResult<IReadOnlyCollection<IEntry>>(result);
         }
 
-        public Task<IDocument> CreateDocumentAsync(string name, CancellationToken cancellationToken)
+        public async Task<IDocument> CreateDocumentAsync(string name, CancellationToken cancellationToken)
         {
             var info = new FileInfo(System.IO.Path.Combine(DirectoryInfo.FullName, name));
             info.Create().Dispose();
-            return Task.FromResult((IDocument)CreateEntry(info));
+            if (FileSystem.PropertyStore != null)
+                await FileSystem.PropertyStore.UpdateETagAsync(this, cancellationToken).ConfigureAwait(false);
+            return (IDocument)CreateEntry(info);
         }
 
-        public Task<ICollection> CreateCollectionAsync(string name, CancellationToken cancellationToken)
+        public async Task<ICollection> CreateCollectionAsync(string name, CancellationToken cancellationToken)
         {
             var info = new DirectoryInfo(System.IO.Path.Combine(DirectoryInfo.FullName, name));
             if (info.Exists)
                 throw new IOException("Collection already exists.");
             info.Create();
-            return Task.FromResult((ICollection)CreateEntry(info));
+            if (FileSystem.PropertyStore != null)
+                await FileSystem.PropertyStore.UpdateETagAsync(this, cancellationToken).ConfigureAwait(false);
+            return (ICollection)CreateEntry(info);
         }
 
         public override async Task<DeleteResult> DeleteAsync(CancellationToken cancellationToken)
@@ -81,9 +85,7 @@ namespace FubarDev.WebDavServer.FileSystem.DotNet
 
             var propStore = FileSystem.PropertyStore;
             if (propStore != null)
-            {
                 await propStore.RemoveAsync(this, cancellationToken).ConfigureAwait(false);
-            }
 
             return new DeleteResult(WebDavStatusCode.OK, null);
         }

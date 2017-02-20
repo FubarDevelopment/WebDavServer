@@ -46,8 +46,8 @@ namespace FubarDev.WebDavServer.Tests.Locking
             var lockManager = (InMemoryLockManager)ServiceProvider.GetRequiredService<ILockManager>();
             var ct = CancellationToken.None;
             var owner = new XElement("test");
-            var l1 = new Lock("/", false, owner, LockAccessType.Write, LockShareMode.Shared, TimeSpan.FromMilliseconds(100));
-            var l2 = new Lock("/", false, owner, LockAccessType.Write, LockShareMode.Shared, TimeSpan.FromMilliseconds(200));
+            var l1 = new Lock("/", "/", false, owner, LockAccessType.Write, LockShareMode.Shared, TimeSpan.FromMilliseconds(100));
+            var l2 = new Lock("/", "/", false, owner, LockAccessType.Write, LockShareMode.Shared, TimeSpan.FromMilliseconds(200));
             var evt = new CountdownEvent(2);
             lockManager.LockReleased += (s, e) =>
             {
@@ -92,6 +92,7 @@ namespace FubarDev.WebDavServer.Tests.Locking
         private async Task TestSingleLockAsync(ISet<string> releasedLocks, InMemoryLockManager lockManager, CancellationToken ct)
         {
             var l = new Lock(
+                "/",
                 "/",
                 false,
                 new XElement("test"),

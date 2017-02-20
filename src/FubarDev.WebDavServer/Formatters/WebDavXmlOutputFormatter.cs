@@ -5,6 +5,7 @@
 using System.IO;
 using System.Text;
 using System.Xml;
+using System.Xml.Linq;
 using System.Xml.Serialization;
 
 using FubarDev.WebDavServer.Model;
@@ -52,6 +53,12 @@ namespace FubarDev.WebDavServer.Formatters
             if (!string.IsNullOrEmpty(_namespacePrefix))
             {
                 ns.Add(_namespacePrefix, WebDavXml.Dav.NamespaceName);
+
+                var xelem = data as XElement;
+                if (xelem != null && xelem.GetPrefixOfNamespace(WebDavXml.Dav) != _namespacePrefix)
+                {
+                    xelem.SetAttributeValue(XNamespace.Xmlns + _namespacePrefix, WebDavXml.Dav.NamespaceName);
+                }
             }
 
             if (_logger.IsEnabled(LogLevel.Debug))

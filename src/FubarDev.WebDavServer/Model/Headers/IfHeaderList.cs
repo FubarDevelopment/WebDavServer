@@ -6,14 +6,13 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 
-using FubarDev.WebDavServer.FileSystem;
 using FubarDev.WebDavServer.Utils;
 
 using JetBrains.Annotations;
 
 namespace FubarDev.WebDavServer.Model.Headers
 {
-    public class IfHeaderList : IIfMatcher
+    public class IfHeaderList
     {
         private IfHeaderList(
             [CanBeNull] Uri resourceTag,
@@ -30,23 +29,22 @@ namespace FubarDev.WebDavServer.Model.Headers
         [ItemNotNull]
         public IReadOnlyCollection<IfHeaderCondition> Conditions { get; }
 
-        public bool IsMatch(IEntry entry, EntityTag etag, IReadOnlyCollection<Uri> stateTokens)
+        public bool IsMatch(EntityTag? etag, IReadOnlyCollection<Uri> stateTokens)
         {
-            return Conditions.All(x => x.IsMatch(entry, etag, stateTokens));
+            return Conditions.All(x => x.IsMatch(etag, stateTokens));
         }
 
         [NotNull]
         [ItemNotNull]
-        internal static IEnumerable<IfHeaderList> Parse([NotNull] StringSource source)
+        internal static IEnumerable<IfHeaderList> Parse([NotNull] StringSource source, [NotNull] EntityTagComparer etagComparer)
         {
             while (!source.SkipWhiteSpace())
             {
                 Uri resourceTag;
-                if (source.AdvanceIf("<"))
+                if (CodedUrlParser.TryParse(source, out resourceTag))
                 {
-                    var resourceTagText = source.GetUntil('>');
-                    resourceTag = new Uri(resourceTagText, UriKind.RelativeOrAbsolute);
-                    source.Advance(1).SkipWhiteSpace();
+                    // Coded-URL found
+                    source.SkipWhiteSpace();
                 }
                 else
                 {
@@ -55,7 +53,7 @@ namespace FubarDev.WebDavServer.Model.Headers
 
                 if (!source.AdvanceIf("("))
                     throw new ArgumentException($"{source.Remaining} is not a valid list (not starting with a '(')", nameof(source));
-                var conditions = IfHeaderCondition.Parse(source).ToList();
+                var conditions = IfHeaderCondition.Parse(source, etagComparer).ToList();
                 if (!source.AdvanceIf(")"))
                     throw new ArgumentException($"{source.Remaining} is not a valid list (not ending with a ')')", nameof(source));
 

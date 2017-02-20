@@ -56,6 +56,7 @@ namespace FubarDev.WebDavServer.FileSystem.DotNet
                 this.GetResourceTypeProperty(),
                 new LastModifiedProperty(ct => Task.FromResult(Info.LastWriteTimeUtc), SetLastWriteTimeUtcAsync),
                 new CreationDateProperty(ct => Task.FromResult(Info.CreationTimeUtc), SetCreateTimeUtcAsync),
+                new LockDiscoveryProperty(FileSystem.LockManager, this),
             };
             return properties;
         }

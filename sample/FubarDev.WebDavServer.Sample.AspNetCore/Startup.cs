@@ -1,6 +1,7 @@
 ﻿using System.IO;
 
 using FubarDev.WebDavServer.AspNetCore;
+using FubarDev.WebDavServer.AspNetCore.Logging;
 using FubarDev.WebDavServer.FileSystem;
 using FubarDev.WebDavServer.FileSystem.DotNet;
 using FubarDev.WebDavServer.Locking;
@@ -8,7 +9,6 @@ using FubarDev.WebDavServer.Locking.InMemory;
 using FubarDev.WebDavServer.Props.Store;
 using FubarDev.WebDavServer.Props.Store.TextFile;
 using FubarDev.WebDavServer.Sample.AspNetCore.BasicAuth;
-using FubarDev.WebDavServer.Sample.AspNetCore.Support;
 
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;

@@ -27,6 +27,11 @@ namespace FubarDev.WebDavServer.Locking
         event EventHandler<LockEventArgs> LockReleased;
 
         /// <summary>
+        /// Gets the cost of a LOCK/UNLOCK or lock discovery operation
+        /// </summary>
+        int Cost { get; }
+
+        /// <summary>
         /// Tries to issue a lock
         /// </summary>
         /// <param name="l">The lock to issue</param>
@@ -58,5 +63,20 @@ namespace FubarDev.WebDavServer.Locking
         [NotNull]
         [ItemNotNull]
         Task<IEnumerable<IActiveLock>> GetLocksAsync(CancellationToken cancellationToken);
+
+        /// <summary>
+        /// Gets all active locks
+        /// </summary>
+        /// <remarks>
+        /// Be aware that the locks could've been released in the mean time by a concurrent
+        /// access or by the <see cref="LockCleanupTask"/>.
+        /// </remarks>
+        /// <param name="path">The file system path to get the locks for</param>
+        /// <param name="recursive">Return all locks that are a child of the given <paramref name="path"/>?</param>
+        /// <param name="cancellationToken">The cancellation token</param>
+        /// <returns>Returns all active locks</returns>
+        [NotNull]
+        [ItemNotNull]
+        Task<IEnumerable<IActiveLock>> GetAffectedLocksAsync([NotNull] string path, bool recursive, CancellationToken cancellationToken);
     }
 }

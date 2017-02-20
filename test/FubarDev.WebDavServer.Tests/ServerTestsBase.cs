@@ -8,6 +8,7 @@ using System.Threading;
 using System.Threading.Tasks;
 
 using FubarDev.WebDavServer.AspNetCore;
+using FubarDev.WebDavServer.AspNetCore.Logging;
 using FubarDev.WebDavServer.Engines.Remote;
 using FubarDev.WebDavServer.FileSystem;
 using FubarDev.WebDavServer.FileSystem.InMemory;
@@ -31,7 +32,7 @@ using WebDav;
 
 namespace FubarDev.WebDavServer.Tests
 {
-    public class ServerTestsBase : IDisposable
+    public abstract class ServerTestsBase : IDisposable
     {
         protected ServerTestsBase()
             : this(RecursiveProcessingMode.PreferFastest)
@@ -108,7 +109,14 @@ namespace FubarDev.WebDavServer.Tests
             [UsedImplicitly]
             public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory)
             {
-                loggerFactory.AddDebug();
+                loggerFactory.AddDebug((path, level) =>
+                {
+                    if (path == "FubarDev.WebDavServer.AspNetCore.WebDavIndirectResult")
+                        return level >= LogLevel.Information;
+                    return level >= LogLevel.Debug;
+                });
+
+                app.UseMiddleware<RequestLogMiddleware>();
                 app.UseMvc();
             }
         }

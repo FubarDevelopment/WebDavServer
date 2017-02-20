@@ -614,17 +614,17 @@ namespace FubarDev.WebDavServer.Model {
     [System.Xml.Serialization.XmlTypeAttribute(Namespace="DAV:")]
     public partial class owner {
         
-        private System.Xml.Linq.XNode[] anyField;
+        private object[] itemsField;
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlTextAttribute()]
+        [System.Xml.Serialization.XmlTextAttribute(typeof(string))]
         [System.Xml.Serialization.XmlAnyElementAttribute()]
-        public System.Xml.Linq.XNode[] Any {
+        public object[] Items {
             get {
-                return this.anyField;
+                return this.itemsField;
             }
             set {
-                this.anyField = value;
+                this.itemsField = value;
             }
         }
     }

@@ -11,6 +11,7 @@ using System.Threading.Tasks;
 using System.Xml.Linq;
 
 using FubarDev.WebDavServer.Model;
+using FubarDev.WebDavServer.Model.Headers;
 using FubarDev.WebDavServer.Props.Dead;
 using FubarDev.WebDavServer.Props.Live;
 
@@ -158,6 +159,7 @@ namespace FubarDev.WebDavServer.FileSystem.InMemory
                 if (disposing)
                 {
                     _file._data = new MemoryStream(ToArray());
+                    _file.ETag = new EntityTag(false);
                 }
 
                 base.Dispose(disposing);

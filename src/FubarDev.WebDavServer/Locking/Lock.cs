@@ -17,7 +17,8 @@ namespace FubarDev.WebDavServer.Locking
         /// <summary>
         /// Initializes a new instance of the <see cref="Lock"/> class.
         /// </summary>
-        /// <param name="path">The path (root-relative) this lock should be applied to</param>
+        /// <param name="path">The file system path (root-relative) this lock should be applied to</param>
+        /// <param name="href">The href this lock should be applied to (might be relative or absolute)</param>
         /// <param name="recursive">Must the lock be applied recursively to all children?</param>
         /// <param name="owner">The owner of the lock</param>
         /// <param name="accessType">The <see cref="LockAccessType"/> of the lock</param>
@@ -25,6 +26,7 @@ namespace FubarDev.WebDavServer.Locking
         /// <param name="timeout">The lock timeout</param>
         public Lock(
             [NotNull] string path,
+            [NotNull] string href,
             bool recursive,
             [CanBeNull] XElement owner,
             LockAccessType accessType,
@@ -32,6 +34,7 @@ namespace FubarDev.WebDavServer.Locking
             TimeSpan timeout)
             : this(
                 path,
+                href,
                 recursive,
                 owner,
                 accessType.Name.LocalName,
@@ -43,7 +46,8 @@ namespace FubarDev.WebDavServer.Locking
         /// <summary>
         /// Initializes a new instance of the <see cref="Lock"/> class.
         /// </summary>
-        /// <param name="path">The path (root-relative) this lock should be applied to</param>
+        /// <param name="path">The file system path (root-relative) this lock should be applied to</param>
+        /// <param name="href">The href this lock should be applied to (might be relative or absolute)</param>
         /// <param name="recursive">Must the lock be applied recursively to all children?</param>
         /// <param name="owner">The owner of the lock</param>
         /// <param name="accessType">The <see cref="LockAccessType"/> of the lock</param>
@@ -51,6 +55,7 @@ namespace FubarDev.WebDavServer.Locking
         /// <param name="timeout">The lock timeout</param>
         protected Lock(
             [NotNull] string path,
+            [NotNull] string href,
             bool recursive,
             [CanBeNull] XElement owner,
             [NotNull] string accessType,
@@ -58,6 +63,7 @@ namespace FubarDev.WebDavServer.Locking
             TimeSpan timeout)
         {
             Path = path;
+            Href = href;
             Recursive = recursive;
             Owner = owner;
             AccessType = accessType;
@@ -67,6 +73,9 @@ namespace FubarDev.WebDavServer.Locking
 
         /// <inheritdoc />
         public string Path { get; }
+
+        /// <inheritdoc />
+        public string Href { get; }
 
         /// <inheritdoc />
         public bool Recursive { get; }
@@ -92,7 +101,7 @@ namespace FubarDev.WebDavServer.Locking
         /// <inheritdoc />
         public override string ToString()
         {
-            return $"Path={Path} [Recursive={Recursive}, AccessType={AccessType}, ShareMode={ShareMode}, Timeout={Timeout}, Owner={Owner}]";
+            return $"Path={Path} [Href={Href} Recursive={Recursive}, AccessType={AccessType}, ShareMode={ShareMode}, Timeout={Timeout}, Owner={Owner}]";
         }
     }
 }

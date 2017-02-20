@@ -7,17 +7,20 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 
-using FubarDev.WebDavServer.FileSystem;
 using FubarDev.WebDavServer.Utils;
 
 using JetBrains.Annotations;
 
 namespace FubarDev.WebDavServer.Model.Headers
 {
-    public class IfHeaderCondition : IIfMatcher
+    public class IfHeaderCondition
     {
-        private IfHeaderCondition(bool not, Uri stateToken, EntityTag? etag)
+        [NotNull]
+        private readonly EntityTagComparer _etagComparer;
+
+        private IfHeaderCondition(bool not, [CanBeNull] Uri stateToken, EntityTag? etag, [NotNull] EntityTagComparer etagComparer)
         {
+            _etagComparer = etagComparer;
             Not = not;
             StateToken = stateToken;
             ETag = etag;
@@ -30,13 +33,15 @@ namespace FubarDev.WebDavServer.Model.Headers
 
         public EntityTag? ETag { get; }
 
-        public bool IsMatch(IEntry entry, EntityTag etag, IReadOnlyCollection<Uri> stateTokens)
+        public bool IsMatch(EntityTag? etag, IReadOnlyCollection<Uri> stateTokens)
         {
             bool result;
 
             if (ETag.HasValue)
             {
-                result = etag == ETag.Value;
+                if (etag == null)
+                    return false;
+                result = _etagComparer.Equals(etag.Value, ETag.Value);
             }
             else
             {
@@ -49,7 +54,7 @@ namespace FubarDev.WebDavServer.Model.Headers
 
         [NotNull]
         [ItemNotNull]
-        internal static IEnumerable<IfHeaderCondition> Parse([NotNull] StringSource source)
+        internal static IEnumerable<IfHeaderCondition> Parse([NotNull] StringSource source, [NotNull] EntityTagComparer entityTagComparer)
         {
             while (!source.SkipWhiteSpace())
             {
@@ -79,7 +84,7 @@ namespace FubarDev.WebDavServer.Model.Headers
                     break;
                 }
 
-                yield return new IfHeaderCondition(isNot, stateToken, etag);
+                yield return new IfHeaderCondition(isNot, stateToken, etag, entityTagComparer);
             }
         }
     }

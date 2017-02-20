@@ -46,9 +46,9 @@ namespace FubarDev.WebDavServer.Model.Headers
                     var unit = parts[0].Trim();
                     var value = parts[1].Trim();
 
-                    switch (unit)
+                    switch (unit.ToLowerInvariant())
                     {
-                        case "Seconds":
+                        case "second":
                             timespans.Add(TimeSpan.FromSeconds(Convert.ToInt32(value, 10)));
                             break;
                         default:
@@ -58,6 +58,12 @@ namespace FubarDev.WebDavServer.Model.Headers
             }
 
             return new TimeoutHeader(timespans);
+        }
+
+        public override string ToString()
+        {
+            var output = Values.Select(timeSpan => timeSpan == Infinite ? "Infinite" : $"Second-{timeSpan.TotalSeconds:F0}");
+            return string.Join(",", output);
         }
     }
 }

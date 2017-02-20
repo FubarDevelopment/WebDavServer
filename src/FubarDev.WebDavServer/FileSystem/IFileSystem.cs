@@ -5,6 +5,7 @@
 using System.Threading;
 using System.Threading.Tasks;
 
+using FubarDev.WebDavServer.Locking;
 using FubarDev.WebDavServer.Props.Store;
 
 using JetBrains.Annotations;
@@ -18,6 +19,9 @@ namespace FubarDev.WebDavServer.FileSystem
 
         [CanBeNull]
         IPropertyStore PropertyStore { get; }
+
+        [CanBeNull]
+        ILockManager LockManager { get; }
 
         [NotNull]
         [ItemNotNull]

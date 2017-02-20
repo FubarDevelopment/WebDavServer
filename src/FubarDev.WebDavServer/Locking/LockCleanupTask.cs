@@ -7,6 +7,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 
+using FubarDev.WebDavServer.Model.Headers;
+
 using JetBrains.Annotations;
 
 using Microsoft.Extensions.Logging;
@@ -61,6 +63,10 @@ namespace FubarDev.WebDavServer.Locking
         {
             if (_logger.IsEnabled(LogLevel.Trace))
                 _logger.LogTrace($"Adding lock {activeLock}");
+
+            // Don't track locks with infinite timeout
+            if (activeLock.Timeout == TimeoutHeader.Infinite)
+                return;
 
             lock (_syncRoot)
             {

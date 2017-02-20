@@ -51,7 +51,7 @@ namespace FubarDev.WebDavServer.Handlers.Impl
         /// <inheritdoc />
         public async Task<IWebDavResult> LockAsync(string path, lockinfo info, CancellationToken cancellationToken)
         {
-            var owner = info.owner == null ? null : new XElement(WebDavXml.Dav + "owner", info.owner.Any.Cast<object>().ToArray());
+            var owner = info.owner.ToXElement();
             var recursive = (_context.RequestHeaders.Depth ?? DepthHeader.Infinity) == DepthHeader.Infinity;
             var accessType = LockAccessType.Write;
             var shareType = info.lockscope.ItemElementName == ItemChoiceType.exclusive
@@ -61,8 +61,10 @@ namespace FubarDev.WebDavServer.Handlers.Impl
                               _context.RequestHeaders.Timeout?.Values ?? new[] { TimeoutHeader.Infinite })
                           ?? TimeoutHeader.Infinite;
 
+            var href = GetHref(path);
             var l = new Lock(
                 path,
+                href,
                 recursive,
                 owner,
                 accessType,
@@ -135,8 +137,12 @@ namespace FubarDev.WebDavServer.Handlers.Impl
                     statusCode = WebDavStatusCode.OK;
                 }
 
-                var result = CreateActiveLockXml(activeLock);
-                return new WebDavXmlResult(statusCode, result);
+                var activeLockXml = activeLock.ToXElement();
+                var result = new prop()
+                {
+                    Any = new[] { new XElement(WebDavXml.Dav + "lockdiscovery", activeLockXml) },
+                };
+                return new WebDavResult<prop>(statusCode, result);
             }
             catch
             {
@@ -190,42 +196,8 @@ namespace FubarDev.WebDavServer.Handlers.Impl
         {
             var href = _context.BaseUrl.Append(path, true);
             if (!_useAbsoluteHref)
-                href = new Uri("/" + _context.RootUrl.MakeRelativeUri(href).OriginalString);
+                return "/" + _context.RootUrl.MakeRelativeUri(href).OriginalString;
             return href.OriginalString;
-        }
-
-        private XElement CreateActiveLockXml(IActiveLock l)
-        {
-            var timeout = l.Timeout == TimeoutHeader.Infinite ? "Infinite" : $"Second-{l.Timeout.TotalSeconds:F0}";
-            var depth = l.Recursive ? DepthHeader.Infinity : DepthHeader.Zero;
-            var lockScope = LockShareMode.Parse(l.ShareMode);
-            var lockType = LockAccessType.Parse(l.AccessType);
-            var lockRoot = GetHref(l.Path);
-            var owner = l.GetOwner();
-            var result = new XElement(
-                WebDavXml.Dav + "activelock",
-                new XElement(
-                    WebDavXml.Dav + "lockscope",
-                    new XElement(lockScope.Name)),
-                new XElement(
-                    WebDavXml.Dav + "locktype",
-                    new XElement(lockType.Name)),
-                new XElement(
-                    WebDavXml.Dav + "depth",
-                    depth.Value));
-            if (owner != null)
-                result.Add(owner);
-            result.Add(
-                new XElement(
-                    WebDavXml.Dav + "timeout",
-                    timeout),
-                new XElement(
-                    WebDavXml.Dav + "locktoken",
-                    new XElement(WebDavXml.Dav + "href", l.StateToken)),
-                new XElement(
-                    WebDavXml.Dav + "lockroot",
-                    new XElement(WebDavXml.Dav + "href", lockRoot)));
-            return result;
         }
     }
 }
