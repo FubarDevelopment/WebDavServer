@@ -31,21 +31,21 @@ namespace FubarDev.WebDavServer.AspNetCore
         [HttpOptions]
         public async Task<IActionResult> QueryOptionsAsync(string path, CancellationToken cancellationToken)
         {
-            var result = await _dispatcher.Class1.OptionsAsync(path, cancellationToken).ConfigureAwait(false);
+            var result = await _dispatcher.Class1.OptionsAsync(path ?? string.Empty, cancellationToken).ConfigureAwait(false);
             return new WebDavIndirectResult(_dispatcher, result, _responseLogger);
         }
 
         [HttpMkCol]
         public async Task<IActionResult> MkColAsync(string path, CancellationToken cancellationToken)
         {
-            var result = await _dispatcher.Class1.MkColAsync(path, cancellationToken).ConfigureAwait(false);
+            var result = await _dispatcher.Class1.MkColAsync(path ?? string.Empty, cancellationToken).ConfigureAwait(false);
             return new WebDavIndirectResult(_dispatcher, result, _responseLogger);
         }
 
         [HttpGet]
         public async Task<IActionResult> GetAsync(string path, CancellationToken cancellationToken)
         {
-            var result = await _dispatcher.Class1.GetAsync(path, cancellationToken).ConfigureAwait(false);
+            var result = await _dispatcher.Class1.GetAsync(path ?? string.Empty, cancellationToken).ConfigureAwait(false);
             return new WebDavIndirectResult(_dispatcher, result, _responseLogger);
         }
 
@@ -60,7 +60,7 @@ namespace FubarDev.WebDavServer.AspNetCore
         [HttpPut]
         public async Task<IActionResult> PutAsync(string path, CancellationToken cancellationToken)
         {
-            var result = await _dispatcher.Class1.PutAsync(path, HttpContext.Request.Body, cancellationToken).ConfigureAwait(false);
+            var result = await _dispatcher.Class1.PutAsync(path ?? string.Empty, HttpContext.Request.Body, cancellationToken).ConfigureAwait(false);
             return new WebDavIndirectResult(_dispatcher, result, _responseLogger);
         }
 
@@ -68,7 +68,7 @@ namespace FubarDev.WebDavServer.AspNetCore
         [HttpDelete]
         public async Task<IActionResult> DeleteAsync(string path, CancellationToken cancellationToken)
         {
-            var result = await _dispatcher.Class1.DeleteAsync(path, cancellationToken).ConfigureAwait(false);
+            var result = await _dispatcher.Class1.DeleteAsync(path ?? string.Empty, cancellationToken).ConfigureAwait(false);
             return new WebDavIndirectResult(_dispatcher, result, _responseLogger);
         }
 
@@ -78,21 +78,21 @@ namespace FubarDev.WebDavServer.AspNetCore
             [FromBody] propfind request,
             CancellationToken cancellationToken = default(CancellationToken))
         {
-            var result = await _dispatcher.Class1.PropFindAsync(path, request, cancellationToken).ConfigureAwait(false);
+            var result = await _dispatcher.Class1.PropFindAsync(path ?? string.Empty, request, cancellationToken).ConfigureAwait(false);
             return new WebDavIndirectResult(_dispatcher, result, _responseLogger);
         }
 
         [HttpPropPatch]
         public async Task<IActionResult> PropPatchAsync(string path, [FromBody] propertyupdate request, CancellationToken cancellationToken)
         {
-            var result = await _dispatcher.Class1.PropPatchAsync(path, request, cancellationToken).ConfigureAwait(false);
+            var result = await _dispatcher.Class1.PropPatchAsync(path ?? string.Empty, request, cancellationToken).ConfigureAwait(false);
             return new WebDavIndirectResult(_dispatcher, result, _responseLogger);
         }
 
         [HttpHead]
         public async Task<IActionResult> HeadAsync(string path, CancellationToken cancellationToken)
         {
-            var result = await _dispatcher.Class1.HeadAsync(path, cancellationToken).ConfigureAwait(false);
+            var result = await _dispatcher.Class1.HeadAsync(path ?? string.Empty, cancellationToken).ConfigureAwait(false);
             return new WebDavIndirectResult(_dispatcher, result, _responseLogger);
         }
 
@@ -102,7 +102,7 @@ namespace FubarDev.WebDavServer.AspNetCore
             [FromHeader(Name = "Destination")] string destination,
             CancellationToken cancellationToken = default(CancellationToken))
         {
-            var result = await _dispatcher.Class1.CopyAsync(path, new Uri(destination, UriKind.RelativeOrAbsolute), cancellationToken).ConfigureAwait(false);
+            var result = await _dispatcher.Class1.CopyAsync(path ?? string.Empty, new Uri(destination, UriKind.RelativeOrAbsolute), cancellationToken).ConfigureAwait(false);
             return new WebDavIndirectResult(_dispatcher, result, _responseLogger);
         }
 
@@ -112,7 +112,7 @@ namespace FubarDev.WebDavServer.AspNetCore
             [FromHeader(Name = "Destination")] string destination,
             CancellationToken cancellationToken = default(CancellationToken))
         {
-            var result = await _dispatcher.Class1.MoveAsync(path, new Uri(destination, UriKind.RelativeOrAbsolute), cancellationToken).ConfigureAwait(false);
+            var result = await _dispatcher.Class1.MoveAsync(path ?? string.Empty, new Uri(destination, UriKind.RelativeOrAbsolute), cancellationToken).ConfigureAwait(false);
             return new WebDavIndirectResult(_dispatcher, result, _responseLogger);
         }
 
@@ -130,12 +130,12 @@ namespace FubarDev.WebDavServer.AspNetCore
                 if (ifHeader == null || ifHeader.Lists.Count == 0)
                     return BadRequest();
                 var timeoutHeader = _context.RequestHeaders.Timeout;
-                result = await _dispatcher.Class1.RefreshLockAsync(path, ifHeader, timeoutHeader, cancellationToken).ConfigureAwait(false);
+                result = await _dispatcher.Class1.RefreshLockAsync(path ?? string.Empty, ifHeader, timeoutHeader, cancellationToken).ConfigureAwait(false);
             }
             else
             {
                 // Lock
-                result = await _dispatcher.Class1.LockAsync(path, lockinfo, cancellationToken).ConfigureAwait(false);
+                result = await _dispatcher.Class1.LockAsync(path ?? string.Empty, lockinfo, cancellationToken).ConfigureAwait(false);
             }
 
             return new WebDavIndirectResult(_dispatcher, result, _responseLogger);
@@ -150,7 +150,7 @@ namespace FubarDev.WebDavServer.AspNetCore
             if (string.IsNullOrEmpty(lockToken))
                 return new WebDavIndirectResult(_dispatcher, new WebDavResult(WebDavStatusCode.BadRequest), _responseLogger);
             var lt = LockTokenHeader.Parse(lockToken);
-            var result = await _dispatcher.Class1.UnlockAsync(path, lt, cancellationToken).ConfigureAwait(false);
+            var result = await _dispatcher.Class1.UnlockAsync(path ?? string.Empty, lt, cancellationToken).ConfigureAwait(false);
             return new WebDavIndirectResult(_dispatcher, result, _responseLogger);
         }
     }
