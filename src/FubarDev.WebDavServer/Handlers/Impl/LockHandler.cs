@@ -26,7 +26,7 @@ namespace FubarDev.WebDavServer.Handlers.Impl
         [NotNull]
         private readonly IFileSystem _rootFileSystem;
 
-        [NotNull]
+        [CanBeNull]
         private readonly ILockManager _lockManager;
 
         [CanBeNull]
@@ -37,20 +37,24 @@ namespace FubarDev.WebDavServer.Handlers.Impl
 
         private readonly bool _useAbsoluteHref = false;
 
-        public LockHandler(IWebDavContext context, IFileSystem rootFileSystem, ILockManager lockManager, ITimeoutPolicy timeoutPolicy = null)
+        public LockHandler([NotNull] IWebDavContext context, [NotNull] IFileSystem rootFileSystem, ILockManager lockManager = null, ITimeoutPolicy timeoutPolicy = null)
         {
             _context = context;
             _rootFileSystem = rootFileSystem;
             _lockManager = lockManager;
             _timeoutPolicy = timeoutPolicy;
+            HttpMethods = _lockManager == null ? new string[0] : new[] { "LOCK" };
         }
 
         /// <inheritdoc />
-        public IEnumerable<string> HttpMethods { get; } = new[] { "LOCK" };
+        public IEnumerable<string> HttpMethods { get; }
 
         /// <inheritdoc />
         public async Task<IWebDavResult> LockAsync(string path, lockinfo info, CancellationToken cancellationToken)
         {
+            if (_lockManager == null)
+                throw new NotSupportedException();
+
             var owner = info.owner.ToXElement();
             var recursive = (_context.RequestHeaders.Depth ?? DepthHeader.Infinity) == DepthHeader.Infinity;
             var accessType = LockAccessType.Write;
@@ -71,6 +75,7 @@ namespace FubarDev.WebDavServer.Handlers.Impl
                 shareType,
                 timeout);
 
+            Debug.Assert(_lockManager != null, "_lockManager != null");
             var lockResult = await _lockManager.LockAsync(l, cancellationToken).ConfigureAwait(false);
             if (lockResult.ConflictingLocks != null)
             {
@@ -155,6 +160,9 @@ namespace FubarDev.WebDavServer.Handlers.Impl
 
         public Task<IWebDavResult> RefreshLockAsync(string path, IfHeader ifHeader, TimeoutHeader timeoutHeader, CancellationToken cancellationToken)
         {
+            if (_lockManager == null)
+                throw new NotSupportedException();
+
             throw new NotImplementedException();
         }
 

@@ -4,7 +4,6 @@
 
 using System;
 using System.Collections.Generic;
-using System.Diagnostics.CodeAnalysis;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -12,27 +11,31 @@ using FubarDev.WebDavServer.Locking;
 using FubarDev.WebDavServer.Model;
 using FubarDev.WebDavServer.Model.Headers;
 
+using JetBrains.Annotations;
+
 namespace FubarDev.WebDavServer.Handlers.Impl
 {
     public class UnlockHandler : IUnlockHandler
     {
+        [NotNull]
         private readonly IWebDavContext _context;
+
+        [CanBeNull]
         private readonly ILockManager _lockManager;
 
-        public UnlockHandler(IWebDavContext context, ILockManager lockManager)
+        public UnlockHandler([NotNull] IWebDavContext context, [CanBeNull] ILockManager lockManager = null)
         {
             _context = context;
             _lockManager = lockManager;
+            HttpMethods = _lockManager == null ? new string[0] : new[] { "UNLOCK" };
         }
 
-        public IEnumerable<string> HttpMethods { get; } = new[] { "UNLOCK" };
+        public IEnumerable<string> HttpMethods { get; }
 
-        [SuppressMessage("ReSharper", "HeuristicUnreachableCode", Justification = "The header might be null, but technically it's not allowed")]
         public async Task<IWebDavResult> UnlockAsync(string path, LockTokenHeader stateToken, CancellationToken cancellationToken)
         {
-            // ReSharper disable once ConditionIsAlwaysTrueOrFalse
-            if (stateToken == null)
-                return new WebDavResult(WebDavStatusCode.BadRequest);
+            if (_lockManager == null)
+                throw new NotSupportedException();
 
             var releaseStatus = await _lockManager.ReleaseAsync(path, stateToken.StateToken, cancellationToken).ConfigureAwait(false);
             if (releaseStatus != LockReleaseStatus.Success)
