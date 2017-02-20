@@ -3,13 +3,15 @@
 // </copyright>
 
 using System;
+using System.Threading;
+using System.Threading.Tasks;
 
 using FubarDev.WebDavServer.FileSystem;
 using FubarDev.WebDavServer.Props.Converters;
 
 namespace FubarDev.WebDavServer.Model.Headers
 {
-    public class IfUnmodifiedSinceHeader : IIfHttpMatcher
+    public class IfUnmodifiedSinceHeader
     {
         public IfUnmodifiedSinceHeader(DateTime lastWriteTimeUtc)
         {
@@ -23,9 +25,14 @@ namespace FubarDev.WebDavServer.Model.Headers
             return new IfUnmodifiedSinceHeader(DateTimeRfc1123Converter.Parse(s));
         }
 
-        public bool IsMatch(IEntry entry, EntityTag etag)
+        public bool IsMatch(DateTime lastWriteTimeUtc)
         {
-            return entry.LastWriteTimeUtc <= LastWriteTimeUtc;
+            return lastWriteTimeUtc <= LastWriteTimeUtc;
+        }
+
+        public Task<bool> IsMatchAsync(IEntry entry, CancellationToken cancellationToken)
+        {
+            return Task.FromResult(IsMatch(entry.LastWriteTimeUtc));
         }
     }
 }
