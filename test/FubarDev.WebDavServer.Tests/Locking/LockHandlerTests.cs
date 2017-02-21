@@ -3,10 +3,11 @@
 // </copyright>
 
 using System;
-using System.Threading;
 using System.Threading.Tasks;
+using System.Xml.Linq;
 
-using WebDav;
+using DecaTec.WebDav;
+using DecaTec.WebDav.WebDavArtifacts;
 
 using Xunit;
 
@@ -17,113 +18,147 @@ namespace FubarDev.WebDavServer.Tests.Locking
         [Fact]
         public async Task AddLockToRootRecursiveMinimumTest()
         {
-            var ct = CancellationToken.None;
-            var response = await Client.Lock(
+            var response = await Client.LockAsync(
                 "/",
-                new LockParameters()
+                WebDavTimeoutHeaderValue.CreateInfiniteWebDavTimeout(),
+                WebDavDepthHeaderValue.Infinity,
+                new LockInfo()
                 {
-                    CancellationToken = ct,
-                    LockScope = LockScope.Exclusive,
-                    ApplyTo = ApplyTo.Lock.ResourceAndAncestors,
+                    LockScope = LockScope.CreateExclusiveLockScope(),
+                    LockType = LockType.CreateWriteLockType(),
                 }).ConfigureAwait(false);
-            Assert.True(response.IsSuccessful);
+            var prop = await response.EnsureSuccessStatusCode()
+                .Content.ParsePropResponseContentAsync().ConfigureAwait(false);
+            Assert.NotNull(prop.LockDiscovery);
             Assert.Collection(
-                response.ActiveLocks,
+                prop.LockDiscovery.ActiveLock,
                 activeLock =>
                 {
-                    Assert.Equal("/", activeLock.LockRoot);
-                    Assert.Equal(ApplyTo.Lock.ResourceAndAncestors, activeLock.ApplyTo);
-                    Assert.Equal(LockScope.Exclusive, activeLock.LockScope);
+                    Assert.Equal("/", activeLock.LockRoot.Href);
+                    Assert.Equal(WebDavDepthHeaderValue.Infinity.ToString(), activeLock.Depth, StringComparer.OrdinalIgnoreCase);
+                    Assert.IsType<Exclusive>(activeLock.LockScope.Item);
                     Assert.Null(activeLock.Owner);
-                    Assert.Null(activeLock.Timeout);
-                    Assert.NotNull(activeLock.LockToken);
-                    Assert.True(Uri.IsWellFormedUriString(activeLock.LockToken, UriKind.RelativeOrAbsolute));
+                    Assert.Equal(WebDavTimeoutHeaderValue.CreateInfiniteWebDavTimeout().ToString(), activeLock.Timeout, StringComparer.OrdinalIgnoreCase);
+                    Assert.NotNull(activeLock.LockToken?.Href);
+                    Assert.True(Uri.IsWellFormedUriString(activeLock.LockToken.Href, UriKind.RelativeOrAbsolute));
                 });
         }
 
         [Fact]
         public async Task AddLockToRootRecursiveWithTimeoutTest()
         {
-            var ct = CancellationToken.None;
-            var response = await Client.Lock(
+            var response = await Client.LockAsync(
                 "/",
-                new LockParameters()
+                WebDavTimeoutHeaderValue.CreateWebDavTimeout(TimeSpan.FromSeconds(1)),
+                WebDavDepthHeaderValue.Infinity,
+                new LockInfo()
                 {
-                    CancellationToken = ct,
-                    LockScope = LockScope.Exclusive,
-                    ApplyTo = ApplyTo.Lock.ResourceAndAncestors,
-                    Timeout = TimeSpan.FromSeconds(1),
+                    LockScope = LockScope.CreateExclusiveLockScope(),
+                    LockType = LockType.CreateWriteLockType(),
                 }).ConfigureAwait(false);
-            Assert.True(response.IsSuccessful);
+            var prop = await response.EnsureSuccessStatusCode()
+                .Content.ParsePropResponseContentAsync().ConfigureAwait(false);
             Assert.Collection(
-                response.ActiveLocks,
+                prop.LockDiscovery.ActiveLock,
                 activeLock =>
                 {
-                    Assert.Equal("/", activeLock.LockRoot);
-                    Assert.Equal(ApplyTo.Lock.ResourceAndAncestors, activeLock.ApplyTo);
-                    Assert.Equal(LockScope.Exclusive, activeLock.LockScope);
-                    Assert.Equal(TimeSpan.FromSeconds(1), activeLock.Timeout);
+                    Assert.Equal("/", activeLock.LockRoot.Href);
+                    Assert.Equal(WebDavDepthHeaderValue.Infinity.ToString(), activeLock.Depth, StringComparer.OrdinalIgnoreCase);
+                    Assert.IsType<Exclusive>(activeLock.LockScope.Item);
                     Assert.Null(activeLock.Owner);
-                    Assert.NotNull(activeLock.LockToken);
-                    Assert.True(Uri.IsWellFormedUriString(activeLock.LockToken, UriKind.RelativeOrAbsolute));
+                    Assert.Equal(WebDavTimeoutHeaderValue.CreateWebDavTimeout(TimeSpan.FromSeconds(1)).ToString(), activeLock.Timeout, StringComparer.OrdinalIgnoreCase);
+                    Assert.NotNull(activeLock.LockToken?.Href);
+                    Assert.True(Uri.IsWellFormedUriString(activeLock.LockToken.Href, UriKind.RelativeOrAbsolute));
                 });
         }
 
         [Fact]
         public async Task AddLockToRootRecursiveWithPrincipalOwnerTest()
         {
-            var ct = CancellationToken.None;
-            var response = await Client.Lock(
-                "/",
-                new LockParameters()
-                {
-                    CancellationToken = ct,
-                    LockScope = LockScope.Exclusive,
-                    ApplyTo = ApplyTo.Lock.ResourceAndAncestors,
-                    Owner = new PrincipalLockOwner("principal"),
-                }).ConfigureAwait(false);
-            Assert.True(response.IsSuccessful);
+            var response = await Client.LockAsync(
+                    "/",
+                    WebDavTimeoutHeaderValue.CreateInfiniteWebDavTimeout(),
+                    WebDavDepthHeaderValue.Infinity,
+                    new LockInfo()
+                    {
+                        LockScope = LockScope.CreateExclusiveLockScope(),
+                        LockType = LockType.CreateWriteLockType(),
+                        Owner = new XElement("{DAV:}owner", "principal"),
+                    })
+                .ConfigureAwait(false);
+            var prop = await response.EnsureSuccessStatusCode()
+                .Content.ParsePropResponseContentAsync().ConfigureAwait(false);
             Assert.Collection(
-                response.ActiveLocks,
+                prop.LockDiscovery.ActiveLock,
                 activeLock =>
                 {
-                    Assert.Equal("/", activeLock.LockRoot);
-                    Assert.Equal(ApplyTo.Lock.ResourceAndAncestors, activeLock.ApplyTo);
-                    Assert.Equal(LockScope.Exclusive, activeLock.LockScope);
-                    Assert.Null(activeLock.Timeout);
-                    var owner = Assert.IsType<PrincipalLockOwner>(activeLock.Owner);
-                    Assert.Equal("principal", owner.Value);
-                    Assert.NotNull(activeLock.LockToken);
-                    Assert.True(Uri.IsWellFormedUriString(activeLock.LockToken, UriKind.RelativeOrAbsolute));
+                    Assert.Equal("/", activeLock.LockRoot.Href);
+                    Assert.Equal(WebDavDepthHeaderValue.Infinity.ToString(), activeLock.Depth, StringComparer.OrdinalIgnoreCase);
+                    Assert.IsType<Exclusive>(activeLock.LockScope.Item);
+                    Assert.Equal("<owner xmlns=\"DAV:\">principal</owner>", activeLock.Owner.ToString(SaveOptions.DisableFormatting));
+                    Assert.Equal(WebDavTimeoutHeaderValue.CreateInfiniteWebDavTimeout().ToString(), activeLock.Timeout, StringComparer.OrdinalIgnoreCase);
+                    Assert.NotNull(activeLock.LockToken?.Href);
+                    Assert.True(Uri.IsWellFormedUriString(activeLock.LockToken.Href, UriKind.RelativeOrAbsolute));
                 });
         }
 
         [Fact]
         public async Task AddLockToRootRecursiveWithUriOwnerTest()
         {
-            var ct = CancellationToken.None;
-            var response = await Client.Lock(
-                "/",
-                new LockParameters()
-                {
-                    CancellationToken = ct,
-                    LockScope = LockScope.Exclusive,
-                    ApplyTo = ApplyTo.Lock.ResourceAndAncestors,
-                    Owner = new UriLockOwner("http://localhost/uri-owner"),
-                }).ConfigureAwait(false);
-            Assert.True(response.IsSuccessful);
+            var response = await Client.LockAsync(
+                    "/",
+                    WebDavTimeoutHeaderValue.CreateInfiniteWebDavTimeout(),
+                    WebDavDepthHeaderValue.Infinity,
+                    new LockInfo()
+                    {
+                        LockScope = LockScope.CreateExclusiveLockScope(),
+                        LockType = LockType.CreateWriteLockType(),
+                        Owner = new XElement("{DAV:}owner", new XElement("{DAV:}href", "http://localhost/uri-owner")),
+                    })
+                .ConfigureAwait(false);
+            var prop = await response.EnsureSuccessStatusCode()
+                .Content.ParsePropResponseContentAsync().ConfigureAwait(false);
             Assert.Collection(
-                response.ActiveLocks,
+                prop.LockDiscovery.ActiveLock,
                 activeLock =>
                 {
-                    Assert.Equal("/", activeLock.LockRoot);
-                    Assert.Equal(ApplyTo.Lock.ResourceAndAncestors, activeLock.ApplyTo);
-                    Assert.Equal(LockScope.Exclusive, activeLock.LockScope);
-                    Assert.Null(activeLock.Timeout);
-                    var owner = Assert.IsType<UriLockOwner>(activeLock.Owner);
-                    Assert.Equal("http://localhost/uri-owner", owner.Value);
-                    Assert.NotNull(activeLock.LockToken);
-                    Assert.True(Uri.IsWellFormedUriString(activeLock.LockToken, UriKind.RelativeOrAbsolute));
+                    Assert.Equal("/", activeLock.LockRoot.Href);
+                    Assert.Equal(WebDavDepthHeaderValue.Infinity.ToString(), activeLock.Depth, StringComparer.OrdinalIgnoreCase);
+                    Assert.IsType<Exclusive>(activeLock.LockScope.Item);
+                    Assert.Equal("<owner xmlns=\"DAV:\"><href>http://localhost/uri-owner</href></owner>", activeLock.Owner.ToString(SaveOptions.DisableFormatting));
+                    Assert.Equal(WebDavTimeoutHeaderValue.CreateInfiniteWebDavTimeout().ToString(), activeLock.Timeout, StringComparer.OrdinalIgnoreCase);
+                    Assert.NotNull(activeLock.LockToken?.Href);
+                    Assert.True(Uri.IsWellFormedUriString(activeLock.LockToken.Href, UriKind.RelativeOrAbsolute));
+                });
+        }
+
+        [Fact]
+        public async Task AddLockToRootRecursiveWithAttributeOwnerTest()
+        {
+            var response = await Client.LockAsync(
+                    "/",
+                    WebDavTimeoutHeaderValue.CreateInfiniteWebDavTimeout(),
+                    WebDavDepthHeaderValue.Infinity,
+                    new LockInfo()
+                    {
+                        LockScope = LockScope.CreateExclusiveLockScope(),
+                        LockType = LockType.CreateWriteLockType(),
+                        Owner = new XElement("{DAV:}owner", new XAttribute("attr", "attr-value")),
+                    })
+                .ConfigureAwait(false);
+            var prop = await response.EnsureSuccessStatusCode()
+                .Content.ParsePropResponseContentAsync().ConfigureAwait(false);
+            Assert.Collection(
+                prop.LockDiscovery.ActiveLock,
+                activeLock =>
+                {
+                    Assert.Equal("/", activeLock.LockRoot.Href);
+                    Assert.Equal(WebDavDepthHeaderValue.Infinity.ToString(), activeLock.Depth, StringComparer.OrdinalIgnoreCase);
+                    Assert.IsType<Exclusive>(activeLock.LockScope.Item);
+                    Assert.Equal("<owner attr=\"attr-value\" xmlns=\"DAV:\" />", activeLock.Owner.ToString(SaveOptions.DisableFormatting));
+                    Assert.Equal(WebDavTimeoutHeaderValue.CreateInfiniteWebDavTimeout().ToString(), activeLock.Timeout, StringComparer.OrdinalIgnoreCase);
+                    Assert.NotNull(activeLock.LockToken?.Href);
+                    Assert.True(Uri.IsWellFormedUriString(activeLock.LockToken.Href, UriKind.RelativeOrAbsolute));
                 });
         }
     }

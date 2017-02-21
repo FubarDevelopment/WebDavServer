@@ -53,7 +53,7 @@ namespace FubarDev.WebDavServer.Handlers.Impl
             if (_lockManager == null)
                 throw new NotSupportedException();
 
-            var owner = info.owner.ToXElement();
+            var owner = info.owner;
             var recursive = (_context.RequestHeaders.Depth ?? DepthHeader.Infinity) == DepthHeader.Infinity;
             var accessType = LockAccessType.Write;
             var shareType = info.lockscope.ItemElementName == ItemChoiceType.exclusive

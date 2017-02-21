@@ -64,6 +64,7 @@
     <sequence>
       <any namespace="##other" minOccurs="0" maxOccurs="unbounded" />
     </sequence>
+    <anyAttribute />
   </complexType>
 
   <complexType name="lockscope">
