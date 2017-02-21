@@ -161,5 +161,57 @@ namespace FubarDev.WebDavServer.Tests.Locking
                     Assert.True(Uri.IsWellFormedUriString(activeLock.LockToken.Href, UriKind.RelativeOrAbsolute));
                 });
         }
+
+        [Fact]
+        public async Task AddLockToRootAndQueryLockDiscoveryTest()
+        {
+            var lockResponse = await Client.LockAsync(
+                    "/",
+                    WebDavTimeoutHeaderValue.CreateInfiniteWebDavTimeout(),
+                    WebDavDepthHeaderValue.Infinity,
+                    new LockInfo()
+                    {
+                        LockScope = LockScope.CreateExclusiveLockScope(),
+                        LockType = LockType.CreateWriteLockType(),
+                    })
+                .ConfigureAwait(false);
+            lockResponse.EnsureSuccessStatusCode();
+            var propFindResponse = await Client.PropFindAsync(
+                "/",
+                WebDavDepthHeaderValue.Zero,
+                PropFind.CreatePropFindWithEmptyProperties("lockdiscovery")).ConfigureAwait(false);
+            propFindResponse.EnsureSuccessStatusCode();
+            var multiStatus = await propFindResponse.Content.ParseMultistatusResponseContentAsync().ConfigureAwait(false);
+            Assert.Collection(
+                multiStatus.Response,
+                response =>
+                {
+                    Assert.Equal("/", response.Href);
+                    Assert.Collection(
+                        response.ItemsElementName,
+                        n => Assert.Equal(ItemsChoiceType.propstat, n));
+                    Assert.Collection(
+                        response.Items,
+                        item =>
+                        {
+                            var propStat = Assert.IsType<Propstat>(item);
+                            var status = Model.Status.Parse(propStat.Status);
+                            Assert.Equal(200, status.StatusCode);
+                            Assert.NotNull(propStat.Prop?.LockDiscovery?.ActiveLock);
+                            Assert.Collection(
+                                propStat.Prop.LockDiscovery.ActiveLock,
+                                activeLock =>
+                                {
+                                    Assert.Equal("/", activeLock.LockRoot.Href);
+                                    Assert.Equal(WebDavDepthHeaderValue.Infinity.ToString(), activeLock.Depth, StringComparer.OrdinalIgnoreCase);
+                                    Assert.IsType<Exclusive>(activeLock.LockScope.Item);
+                                    Assert.Null(activeLock.Owner);
+                                    Assert.Equal(WebDavTimeoutHeaderValue.CreateInfiniteWebDavTimeout().ToString(), activeLock.Timeout, StringComparer.OrdinalIgnoreCase);
+                                    Assert.NotNull(activeLock.LockToken?.Href);
+                                    Assert.True(Uri.IsWellFormedUriString(activeLock.LockToken.Href, UriKind.RelativeOrAbsolute));
+                                });
+                        });
+                });
+        }
     }
 }
