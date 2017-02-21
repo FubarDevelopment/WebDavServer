@@ -27,7 +27,6 @@ namespace FubarDev.WebDavServer
             var headers = new Dictionary<string, string[]>()
             {
                 ["DAV"] = response.Dispatcher.SupportedClasses.ToArray(),
-                ["Accept-Ranges"] = new[] { "bytes" },
             };
 
             foreach (var header in Headers)

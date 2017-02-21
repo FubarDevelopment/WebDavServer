@@ -33,6 +33,7 @@ namespace FubarDev.WebDavServer.Handlers.Impl
             {
                 await base.ExecuteResultAsync(response, ct).ConfigureAwait(false);
                 response.Headers["Allow"] = response.Dispatcher.SupportedHttpMethods.ToArray();
+                response.Headers["Accept-Ranges"] = new[] { "bytes" };
             }
         }
     }
