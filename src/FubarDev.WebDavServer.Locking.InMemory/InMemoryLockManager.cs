@@ -2,6 +2,8 @@
 // Copyright (c) Fubar Development Junker. All rights reserved.
 // </copyright>
 
+#define USE_VARIANT_2
+
 using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
@@ -12,6 +14,8 @@ using System.Threading.Tasks;
 using FubarDev.WebDavServer.FileSystem;
 using FubarDev.WebDavServer.Model;
 using FubarDev.WebDavServer.Model.Headers;
+
+using JetBrains.Annotations;
 
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
@@ -101,61 +105,24 @@ namespace FubarDev.WebDavServer.Locking.InMemory
                 return new ImplicitLock(this, newLock);
             }
 
-            var pathToInfo = new Dictionary<Uri, PathInfo>();
-            foreach (var ifHeaderList in ifHeaderLists)
+            var successfulConditions = await FindMatchingIfConditionList(
+                rootFileSystem,
+                ifHeaderLists,
+                lockRequirements,
+                cancellationToken).ConfigureAwait(false);
+            if (successfulConditions == null)
             {
-                PathInfo pathInfo;
-                if (!pathToInfo.TryGetValue(ifHeaderList.Path, out pathInfo))
-                {
-                    pathInfo = new PathInfo();
-                    pathToInfo.Add(ifHeaderList.Path, pathInfo);
-                }
-
-                if (pathInfo.EntityTag == null)
-                {
-                    if (ifHeaderList.RequiresEntityTag)
-                    {
-                        var selectionResult =
-                            await rootFileSystem.SelectAsync(ifHeaderList.Path.OriginalString, cancellationToken).ConfigureAwait(false);
-                        if (selectionResult.IsMissing)
-                        {
-                            // Probably locked entry not found
-                            continue;
-                        }
-
-                        pathInfo.EntityTag = await selectionResult.TargetEntry.GetEntityTagAsync(cancellationToken).ConfigureAwait(false);
-                    }
-                }
-            }
-
-            var successfulConditions = new List<Tuple<PathInfo, IfHeaderList>>();
-            lock (_locks)
-            {
-                foreach (var ifHeaderList in ifHeaderLists)
-                {
-                    var pathInfo = pathToInfo[ifHeaderList.Path];
-
-                    if (pathInfo.ActiveLocks == null)
-                    {
-                        var destinationUrl = BuildUrl(ifHeaderList.Path.OriginalString);
-                        var entryLocks = Find(destinationUrl, false).GetLocks().Cast<ActiveLock>().ToList();
-                        pathInfo.ActiveLocks = entryLocks;
-                        pathInfo.TokenToLock = entryLocks.ToDictionary(x => new Uri(x.StateToken, UriKind.RelativeOrAbsolute));
-                        pathInfo.LockTokens = pathInfo.TokenToLock.Keys.ToList();
-                    }
-
-                    if (ifHeaderList.IsMatch(pathInfo.EntityTag, pathInfo.LockTokens))
-                    {
-                        successfulConditions.Add(Tuple.Create(pathInfo, ifHeaderList));
-                    }
-                }
+                // No if conditions found for the requested path
+                var newLock = await LockAsync(lockRequirements, cancellationToken).ConfigureAwait(false);
+                return new ImplicitLock(this, newLock);
             }
 
             var firstConditionWithStateToken = successfulConditions.FirstOrDefault(x => x.Item2.RequiresStateToken);
             if (firstConditionWithStateToken != null)
             {
+                // Returns the list of locks matched by the first if list
                 var usedLocks = firstConditionWithStateToken
-                    .Item2.Conditions.Where(x => x.StateToken != null)
+                    .Item2.Conditions.Where(x => x.StateToken != null && !x.Not)
                     .Select(x => firstConditionWithStateToken.Item1.TokenToLock[x.StateToken]).ToList();
                 return new ImplicitLock(usedLocks);
             }
@@ -364,13 +331,174 @@ namespace FubarDev.WebDavServer.Locking.InMemory
                     .ToList());
         }
 
+#if USE_VARIANT_1
+        [NotNull]
+        [ItemCanBeNull]
+        private async Task<IReadOnlyCollection<Tuple<PathInfo, IfHeaderList>>> FindMatchingIfConditionList(
+            [NotNull] IFileSystem rootFileSystem,
+            [NotNull] [ItemNotNull] IReadOnlyCollection<IfHeaderList> ifHeaderLists,
+            [NotNull] ILock lockRequirements,
+            CancellationToken cancellationToken)
+        {
+            var lockRequirementUrl = BuildUrl(lockRequirements.Path);
+
+            var supportedIfConditions = new List<IfHeaderList>();
+            var pathToInfo = new Dictionary<Uri, PathInfo>();
+            foreach (var ifHeaderList in ifHeaderLists)
+            {
+                var ifHeaderUrl = BuildUrl(ifHeaderList.Path.OriginalString);
+                var headerCompareResult = Compare(ifHeaderUrl, true, lockRequirementUrl, false);
+                if (headerCompareResult != LockCompareResult.LeftIsParent &&
+                    headerCompareResult != LockCompareResult.Reference)
+                    continue;
+
+                supportedIfConditions.Add(ifHeaderList);
+
+                PathInfo pathInfo;
+                if (!pathToInfo.TryGetValue(ifHeaderList.Path, out pathInfo))
+                {
+                    pathInfo = new PathInfo();
+                    pathToInfo.Add(ifHeaderList.Path, pathInfo);
+                }
+
+                if (pathInfo.EntityTag == null)
+                {
+                    if (ifHeaderList.RequiresEntityTag)
+                    {
+                        var selectionResult = await rootFileSystem
+                            .SelectAsync(ifHeaderList.Path.OriginalString, cancellationToken).ConfigureAwait(false);
+                        if (selectionResult.IsMissing)
+                        {
+                            // Probably locked entry not found
+                            continue;
+                        }
+
+                        pathInfo.EntityTag = await selectionResult
+                            .TargetEntry.GetEntityTagAsync(cancellationToken).ConfigureAwait(false);
+                    }
+                }
+            }
+
+            if (supportedIfConditions.Count == 0)
+                return null;
+
+            var successfulConditions = new List<Tuple<PathInfo, IfHeaderList>>();
+            lock (_syncRoot)
+            {
+                foreach (var ifHeaderList in supportedIfConditions)
+                {
+                    var pathInfo = pathToInfo[ifHeaderList.Path];
+
+                    if (pathInfo.ActiveLocks == null)
+                    {
+                        var destinationUrl = BuildUrl(ifHeaderList.Path.OriginalString);
+                        var entryLocks = Find(destinationUrl, false).GetLocks().Cast<ActiveLock>().ToList();
+                        pathInfo.ActiveLocks = entryLocks;
+                        pathInfo.TokenToLock = entryLocks.ToDictionary(x => new Uri(x.StateToken, UriKind.RelativeOrAbsolute));
+                        pathInfo.LockTokens = pathInfo.TokenToLock.Keys.ToList();
+                    }
+
+                    if (ifHeaderList.IsMatch(pathInfo.EntityTag, pathInfo.LockTokens))
+                    {
+                        successfulConditions.Add(Tuple.Create(pathInfo, ifHeaderList));
+                    }
+                }
+            }
+
+            return successfulConditions;
+        }
+#endif
+
+#if USE_VARIANT_2
+        [NotNull]
+        [ItemCanBeNull]
+        private async Task<IReadOnlyCollection<Tuple<PathInfo, IfHeaderList>>> FindMatchingIfConditionList(
+            [NotNull] IFileSystem rootFileSystem,
+            [NotNull] [ItemNotNull] IReadOnlyCollection<IfHeaderList> ifHeaderLists,
+            [NotNull] ILock lockRequirements,
+            CancellationToken cancellationToken)
+        {
+            var lockRequirementUrl = BuildUrl(lockRequirements.Path);
+
+            IReadOnlyCollection<ActiveLock> affectingLocks;
+            lock (_syncRoot)
+            {
+                var lockStatus = Find(lockRequirementUrl, false);
+                affectingLocks = lockStatus.ParentLocks.Concat(lockStatus.ReferenceLocks).Cast<ActiveLock>().ToList();
+            }
+
+            // Get all If header lists together with all relevant active locks
+            var ifListLocks =
+                (from list in ifHeaderLists
+                 let listUrl = BuildUrl(list.Path.OriginalString)
+                 let compareResult = Compare(listUrl, true, lockRequirementUrl, false)
+                 where compareResult == LockCompareResult.LeftIsParent
+                       || compareResult == LockCompareResult.Reference
+                 let foundLocks = list.RequiresStateToken
+                     ? Find(affectingLocks, listUrl, compareResult == LockCompareResult.LeftIsParent)
+                     : LockStatus.Empty
+                 let locksForIfConditions = foundLocks.GetLocks().Cast<ActiveLock>().ToList()
+                 select Tuple.Create<IfHeaderList, IReadOnlyCollection<ActiveLock>>(list, locksForIfConditions))
+                .ToDictionary(x => x.Item1, x => x.Item2);
+
+            // List of matches between path info and if header lists
+            var successfulConditions = new List<Tuple<PathInfo, IfHeaderList>>();
+            if (ifListLocks.Count == 0)
+                return null;
+
+            // Collect all file system specific information
+            var pathToInfo = new Dictionary<Uri, PathInfo>();
+            foreach (var matchingIfListItem in ifListLocks)
+            {
+                var ifHeaderList = matchingIfListItem.Key;
+                PathInfo pathInfo;
+                if (!pathToInfo.TryGetValue(ifHeaderList.Path, out pathInfo))
+                {
+                    pathInfo = new PathInfo();
+                    pathInfo.ActiveLocks = matchingIfListItem.Value;
+                    pathInfo.TokenToLock = matchingIfListItem
+                        .Value.ToDictionary(x => new Uri(x.StateToken, UriKind.RelativeOrAbsolute));
+                    pathInfo.LockTokens = pathInfo.TokenToLock.Keys.ToList();
+                    pathToInfo.Add(ifHeaderList.Path, pathInfo);
+                }
+
+                if (pathInfo.EntityTag == null)
+                {
+                    if (ifHeaderList.RequiresEntityTag)
+                    {
+                        var selectionResult = await rootFileSystem
+                            .SelectAsync(ifHeaderList.Path.OriginalString, cancellationToken).ConfigureAwait(false);
+                        if (!selectionResult.IsMissing)
+                        {
+                            pathInfo.EntityTag = await selectionResult
+                                .TargetEntry.GetEntityTagAsync(cancellationToken)
+                                .ConfigureAwait(false);
+                        }
+                    }
+                }
+
+                if (ifHeaderList.IsMatch(pathInfo.EntityTag, pathInfo.LockTokens))
+                {
+                    successfulConditions.Add(Tuple.Create(pathInfo, ifHeaderList));
+                }
+            }
+
+            return successfulConditions;
+        }
+#endif
+
         private LockStatus Find(Uri parentUrl, bool withChildren)
+        {
+            return Find(_locks.Values, parentUrl, withChildren);
+        }
+
+        private LockStatus Find(IEnumerable<IActiveLock> locks, Uri parentUrl, bool withChildren)
         {
             var refLocks = new List<IActiveLock>();
             var childLocks = new List<IActiveLock>();
             var parentLocks = new List<IActiveLock>();
 
-            foreach (var activeLock in _locks.Values)
+            foreach (var activeLock in locks)
             {
                 var lockUrl = BuildUrl(activeLock.Path);
                 var result = Compare(parentUrl, withChildren, lockUrl, activeLock.Recursive);
