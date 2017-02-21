@@ -68,6 +68,7 @@ namespace FubarDev.WebDavServer.FileSystem.InMemory
                 this.GetResourceTypeProperty(),
                 new LastModifiedProperty(ct => Task.FromResult(LastWriteTimeUtc), (v, ct) => Task.FromResult(LastWriteTimeUtc = v)),
                 new CreationDateProperty(ct => Task.FromResult(CreationTimeUtc), (v, ct) => Task.FromResult(CreationTimeUtc = v)),
+                new LockDiscoveryProperty(FileSystem.LockManager, this),
             };
             return properties;
         }
