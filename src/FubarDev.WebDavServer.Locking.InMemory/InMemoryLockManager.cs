@@ -91,18 +91,18 @@ namespace FubarDev.WebDavServer.Locking.InMemory
         /// <inheritdoc />
         public async Task<ImplicitLock> LockImplicitAsync(
             IFileSystem rootFileSystem,
-            IfHeader ifHeader,
+            IReadOnlyCollection<IfHeaderList> ifHeaderLists,
             ILock lockRequirements,
             CancellationToken cancellationToken)
         {
-            if (ifHeader == null || ifHeader.Lists.Count == 0)
+            if (ifHeaderLists == null || ifHeaderLists.Count == 0)
             {
                 var newLock = await LockAsync(lockRequirements, cancellationToken).ConfigureAwait(false);
                 return new ImplicitLock(this, newLock);
             }
 
             var pathToInfo = new Dictionary<Uri, PathInfo>();
-            foreach (var ifHeaderList in ifHeader.Lists)
+            foreach (var ifHeaderList in ifHeaderLists)
             {
                 PathInfo pathInfo;
                 if (!pathToInfo.TryGetValue(ifHeaderList.Path, out pathInfo))
@@ -131,7 +131,7 @@ namespace FubarDev.WebDavServer.Locking.InMemory
             var successfulConditions = new List<Tuple<PathInfo, IfHeaderList>>();
             lock (_locks)
             {
-                foreach (var ifHeaderList in ifHeader.Lists)
+                foreach (var ifHeaderList in ifHeaderLists)
                 {
                     var pathInfo = pathToInfo[ifHeaderList.Path];
 
@@ -194,7 +194,6 @@ namespace FubarDev.WebDavServer.Locking.InMemory
                         if (selectionResult.IsMissing)
                         {
                             // Probably locked entry not found
-                            failedHrefs.Add(ifHeaderList.RelativeHref);
                             continue;
                         }
 

@@ -66,13 +66,18 @@ namespace FubarDev.WebDavServer.Handlers.Impl
             var lockManager = FileSystem.LockManager;
             var tempLock = lockManager == null
                 ? new ImplicitLock(true)
-                : await lockManager.LockImplicitAsync(FileSystem, _context.RequestHeaders.If, lockRequirements, cancellationToken)
+                : await lockManager.LockImplicitAsync(FileSystem, _context.RequestHeaders.If?.Lists, lockRequirements, cancellationToken)
                                    .ConfigureAwait(false);
             if (!tempLock.IsSuccessful)
             {
                 if (tempLock.ConflictingLocks == null)
+                {
+                    // No "If" header condition succeeded, but we didn't ask for a lock
                     return new WebDavResult(WebDavStatusCode.NotFound);
+                }
 
+                // An "If" header condition succeeded, but we couldn't find a matching lock.
+                // Obtaining a temporary lock failed.
                 var error = new error()
                 {
                     ItemsElementName = new[] { ItemsChoiceType.locktokensubmitted, },
