@@ -19,12 +19,12 @@ namespace FubarDev.WebDavServer
 
         public T Data { get; }
 
-        public override Task ExecuteResultAsync(IWebDavResponse response, CancellationToken ct)
+        public override async Task ExecuteResultAsync(IWebDavResponse response, CancellationToken ct)
         {
             var formatter = response.Dispatcher.Formatter;
             response.ContentType = formatter.ContentType;
+            await base.ExecuteResultAsync(response, ct).ConfigureAwait(false);
             formatter.Serialize(response.Body, Data);
-            return Task.FromResult(0);
         }
     }
 }
