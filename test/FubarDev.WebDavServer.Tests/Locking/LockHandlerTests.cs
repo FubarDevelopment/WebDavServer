@@ -3,6 +3,7 @@
 // </copyright>
 
 using System;
+using System.Linq;
 using System.Threading.Tasks;
 using System.Xml.Linq;
 
@@ -148,6 +149,7 @@ namespace FubarDev.WebDavServer.Tests.Locking
                 .ConfigureAwait(false);
             var prop = await response.EnsureSuccessStatusCode()
                 .Content.ParsePropResponseContentAsync().ConfigureAwait(false);
+            Assert.NotNull(prop?.LockDiscovery?.ActiveLock);
             Assert.Collection(
                 prop.LockDiscovery.ActiveLock,
                 activeLock =>
@@ -233,6 +235,29 @@ namespace FubarDev.WebDavServer.Tests.Locking
                 WebDavTimeoutHeaderValue.CreateInfiniteWebDavTimeout(),
                 new LockToken("<asasdasd>")).ConfigureAwait(false);
             Assert.Equal(WebDavStatusCode.PreconditionFailed, refreshResult.StatusCode);
+        }
+
+        [Fact]
+        public async Task AddLockToRootAndTryRefreshTest()
+        {
+            var lockResponse = await Client.LockAsync(
+                    "/",
+                    WebDavTimeoutHeaderValue.CreateInfiniteWebDavTimeout(),
+                    WebDavDepthHeaderValue.Infinity,
+                    new LockInfo()
+                    {
+                        LockScope = LockScope.CreateExclusiveLockScope(),
+                        LockType = LockType.CreateWriteLockType(),
+                    })
+                .ConfigureAwait(false);
+            lockResponse.EnsureSuccessStatusCode();
+            var prop = await lockResponse.Content.ParsePropResponseContentAsync().ConfigureAwait(false);
+            var lockToken = prop.LockDiscovery.ActiveLock.Single().LockToken.Href;
+            var refreshResult = await Client.RefreshLockAsync(
+                "/",
+                WebDavTimeoutHeaderValue.CreateInfiniteWebDavTimeout(),
+                new LockToken($"<{lockToken}>")).ConfigureAwait(false);
+            refreshResult.EnsureSuccessStatusCode();
         }
     }
 }
