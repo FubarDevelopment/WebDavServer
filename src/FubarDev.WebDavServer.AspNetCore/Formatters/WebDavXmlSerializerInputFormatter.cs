@@ -19,7 +19,7 @@ namespace FubarDev.WebDavServer.AspNetCore.Formatters
             if (request.ContentType == null)
             {
                 var contentLength = request.ContentLength;
-                if (contentLength.HasValue && contentLength.Value == 0)
+                if (contentLength.GetValueOrDefault() == 0)
                 {
                     switch (request.Method)
                     {

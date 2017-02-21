@@ -106,10 +106,20 @@ namespace FubarDev.WebDavServer.Model.Headers
                 if (!source.AdvanceIf(")"))
                     throw new ArgumentException($"{source.Remaining} is not a valid list (not ending with a ')')", nameof(source));
 
-                var relateiveHref = context.RootUrl.IsBaseOf(resourceTag) ? context.RootUrl.MakeRelativeUri(resourceTag) : resourceTag;
+                var relateiveHref = context.RootUrl.IsBaseOf(resourceTag) ? AddRootSlashToUri(context.RootUrl.MakeRelativeUri(resourceTag)) : resourceTag;
                 var path = context.BaseUrl.IsBaseOf(resourceTag) ? context.BaseUrl.MakeRelativeUri(resourceTag) : resourceTag;
                 yield return new IfHeaderList(resourceTag, relateiveHref, path, conditions);
             }
+        }
+
+        private static Uri AddRootSlashToUri(Uri url)
+        {
+            if (url.IsAbsoluteUri)
+                return url;
+            var s = url.OriginalString;
+            if (s.StartsWith("/"))
+                return url;
+            return new Uri("/" + s, UriKind.Relative);
         }
     }
 }

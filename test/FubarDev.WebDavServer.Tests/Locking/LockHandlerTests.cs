@@ -180,7 +180,7 @@ namespace FubarDev.WebDavServer.Tests.Locking
                 "/",
                 WebDavDepthHeaderValue.Zero,
                 PropFind.CreatePropFindWithEmptyProperties("lockdiscovery")).ConfigureAwait(false);
-            propFindResponse.EnsureSuccessStatusCode();
+            Assert.Equal(WebDavStatusCode.MultiStatus, propFindResponse.StatusCode);
             var multiStatus = await propFindResponse.Content.ParseMultistatusResponseContentAsync().ConfigureAwait(false);
             Assert.Collection(
                 multiStatus.Response,
@@ -212,6 +212,27 @@ namespace FubarDev.WebDavServer.Tests.Locking
                                 });
                         });
                 });
+        }
+
+        [Fact]
+        public async Task AddLockToRootAndTryRefreshWrongLockTest()
+        {
+            var lockResponse = await Client.LockAsync(
+                    "/",
+                    WebDavTimeoutHeaderValue.CreateInfiniteWebDavTimeout(),
+                    WebDavDepthHeaderValue.Infinity,
+                    new LockInfo()
+                    {
+                        LockScope = LockScope.CreateExclusiveLockScope(),
+                        LockType = LockType.CreateWriteLockType(),
+                    })
+                .ConfigureAwait(false);
+            lockResponse.EnsureSuccessStatusCode();
+            var refreshResult = await Client.RefreshLockAsync(
+                "/",
+                WebDavTimeoutHeaderValue.CreateInfiniteWebDavTimeout(),
+                new LockToken("<asasdasd>")).ConfigureAwait(false);
+            Assert.Equal(WebDavStatusCode.PreconditionFailed, refreshResult.StatusCode);
         }
     }
 }

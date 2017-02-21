@@ -93,7 +93,7 @@ namespace FubarDev.WebDavServer.Locking.InMemory
         {
             var pathToInfo = new Dictionary<Uri, PathInfo>();
             var failedHrefs = new HashSet<Uri>();
-            var refreshedLocks = new List<IActiveLock>();
+            var refreshedLocks = new List<ActiveLock>();
 
             foreach (var ifHeaderList in ifHeader.Lists.Where(x => x.RequiresStateToken))
             {
@@ -139,21 +139,19 @@ namespace FubarDev.WebDavServer.Locking.InMemory
                     pathInfo.TokenToLock = entryLocks.ToDictionary(x => new Uri(x.StateToken, UriKind.RelativeOrAbsolute));
                 }
 
-                foreach (var tokenToLock in pathInfo.TokenToLock)
+                var foundLock = pathInfo.TokenToLock.Where(x => ifHeaderList.IsMatch(pathInfo.EntityTag, new[] { x.Key })).Select(x => x.Value).SingleOrDefault();
+                if (foundLock != null)
                 {
-                    if (ifHeaderList.IsMatch(pathInfo.EntityTag, new[] { tokenToLock.Key }))
-                    {
-                        var foundLock = tokenToLock.Value;
-                        var refreshedLock = foundLock.Refresh(_rounding.Round(_systemClock.UtcNow), _rounding.Round(timeout));
+                    var refreshedLock = foundLock.Refresh(_rounding.Round(_systemClock.UtcNow), _rounding.Round(timeout));
 
-                        // Remove old lock from clean-up task
-                        _cleanupTask.Remove(foundLock);
+                    // Remove old lock from clean-up task
+                    _cleanupTask.Remove(foundLock);
 
-                        // Add refreshed lock to the clean-up task
-                        _cleanupTask.Add(this, refreshedLock);
-
-                        refreshedLocks.Add(foundLock);
-                    }
+                    refreshedLocks.Add(refreshedLock);
+                }
+                else
+                {
+                    failedHrefs.Add(ifHeaderList.RelativeHref);
                 }
             }
 
@@ -162,7 +160,7 @@ namespace FubarDev.WebDavServer.Locking.InMemory
                 var hrefs = failedHrefs.ToList();
                 var href = hrefs.First().OriginalString;
                 var hrefItems = hrefs.Skip(1).Select(x => x.OriginalString).Cast<object>().ToArray();
-                var hrefItemNames = hrefs.Select(x => ItemsChoiceType2.href).ToArray();
+                var hrefItemNames = hrefItems.Select(x => ItemsChoiceType2.href).ToArray();
 
                 return new LockRefreshResult(
                     new response()
@@ -176,6 +174,23 @@ namespace FubarDev.WebDavServer.Locking.InMemory
                             ItemsElementName = new[] { ItemsChoiceType.locktokenmatchesrequesturi, },
                         },
                     });
+            }
+
+            lock (_syncRoot)
+            {
+                foreach (var newLock in refreshedLocks)
+                {
+                    var stateToken = new Uri(newLock.StateToken);
+                    _locks = _locks
+                        .Remove(stateToken)
+                        .Add(stateToken, newLock);
+                }
+            }
+
+            foreach (var newLock in refreshedLocks)
+            {
+                // Add refreshed lock to the clean-up task
+                _cleanupTask.Add(this, newLock);
             }
 
             return new LockRefreshResult(refreshedLocks);
