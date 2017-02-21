@@ -71,7 +71,7 @@ namespace FubarDev.WebDavServer.Handlers.Impl
                     ItemsElementName = new[] { ItemsChoiceType.locktokensubmitted, },
                     Items = new object[]
                     {
-                        new errorNoconflictinglock()
+                        new errorLocktokensubmitted()
                         {
                             href = tempLock.ConflictingLocks.Select(x => x.Href).ToArray(),
                         },
