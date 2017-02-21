@@ -1,4 +1,9 @@
-﻿using System;
+﻿// <copyright file="GetHandlerLockingTests.cs" company="Fubar Development Junker">
+// Copyright (c) Fubar Development Junker. All rights reserved.
+// </copyright>
+
+using System;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -42,6 +47,29 @@ namespace FubarDev.WebDavServer.Tests.Locking
             var ct = CancellationToken.None;
             var getResponse = await Client.GetAsync("/test1.txt", ct).ConfigureAwait(false);
             Assert.Equal(WebDavStatusCode.Locked, getResponse.StatusCode);
+        }
+
+        [Fact]
+        public async Task GetAccessToLockedDocumentTest()
+        {
+            var response = await Client.LockAsync(
+                "/test1.txt",
+                WebDavTimeoutHeaderValue.CreateInfiniteWebDavTimeout(),
+                WebDavDepthHeaderValue.Zero,
+                new LockInfo()
+                {
+                    LockScope = LockScope.CreateExclusiveLockScope(),
+                    LockType = LockType.CreateWriteLockType(),
+                }).ConfigureAwait(false);
+            response.EnsureSuccessStatusCode();
+
+            var lockToken = response.Headers.GetValues(WebDavRequestHeader.LockTocken).Single();
+            var ct = CancellationToken.None;
+            Client.DefaultRequestHeaders.Add("If", $"({lockToken})");
+            var getResponse = await Client.GetAsync(
+                "/test1.txt",
+                ct).ConfigureAwait(false);
+            getResponse.EnsureSuccessStatusCode();
         }
     }
 }
