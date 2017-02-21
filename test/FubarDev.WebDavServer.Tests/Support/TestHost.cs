@@ -25,7 +25,7 @@ namespace FubarDev.WebDavServer.Tests.Support
         {
             BaseUrl = baseUrl;
             RootUrl = new Uri(baseUrl, "/");
-            RequestProtocol = baseUrl.Scheme;
+            RequestProtocol = "HTTP/1.1";
             _absoluteRequestUrl = new Lazy<Uri>(() => RootUrl);
             _relativeRequestUrl = new Lazy<Uri>(() =>
             {
@@ -41,7 +41,7 @@ namespace FubarDev.WebDavServer.Tests.Support
         {
             BaseUrl = baseUrl;
             RootUrl = new Uri(baseUrl, "/");
-            RequestProtocol = baseUrl.Scheme;
+            RequestProtocol = "HTTP/1.1";
             _absoluteRequestUrl = new Lazy<Uri>(() => new Uri(RootUrl, httpContextAccessor.HttpContext.Request.Path.ToUriComponent()));
             _relativeRequestUrl = new Lazy<Uri>(() =>
             {
