@@ -25,5 +25,8 @@ namespace FubarDev.WebDavServer
 
         [NotNull]
         IWebDavClass1 Class1 { get; }
+
+        [CanBeNull]
+        IWebDavClass2 Class2 { get; }
     }
 }

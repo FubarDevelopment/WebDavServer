@@ -122,6 +122,9 @@ namespace FubarDev.WebDavServer.AspNetCore
             [FromBody] lockinfo lockinfo,
             CancellationToken cancellationToken = default(CancellationToken))
         {
+            if (_dispatcher.Class2 == null)
+                throw new NotSupportedException();
+
             IWebDavResult result;
             if (lockinfo == null)
             {
@@ -130,12 +133,12 @@ namespace FubarDev.WebDavServer.AspNetCore
                 if (ifHeader == null || ifHeader.Lists.Count == 0)
                     return BadRequest();
                 var timeoutHeader = _context.RequestHeaders.Timeout;
-                result = await _dispatcher.Class1.RefreshLockAsync(path ?? string.Empty, ifHeader, timeoutHeader, cancellationToken).ConfigureAwait(false);
+                result = await _dispatcher.Class2.RefreshLockAsync(path ?? string.Empty, ifHeader, timeoutHeader, cancellationToken).ConfigureAwait(false);
             }
             else
             {
                 // Lock
-                result = await _dispatcher.Class1.LockAsync(path ?? string.Empty, lockinfo, cancellationToken).ConfigureAwait(false);
+                result = await _dispatcher.Class2.LockAsync(path ?? string.Empty, lockinfo, cancellationToken).ConfigureAwait(false);
             }
 
             return new WebDavIndirectResult(_dispatcher, result, _responseLogger);
@@ -147,10 +150,13 @@ namespace FubarDev.WebDavServer.AspNetCore
             [FromHeader(Name = "Lock-Token")] string lockToken,
             CancellationToken cancellationToken = default(CancellationToken))
         {
+            if (_dispatcher.Class2 == null)
+                throw new NotSupportedException();
+
             if (string.IsNullOrEmpty(lockToken))
                 return new WebDavIndirectResult(_dispatcher, new WebDavResult(WebDavStatusCode.BadRequest), _responseLogger);
             var lt = LockTokenHeader.Parse(lockToken);
-            var result = await _dispatcher.Class1.UnlockAsync(path ?? string.Empty, lt, cancellationToken).ConfigureAwait(false);
+            var result = await _dispatcher.Class2.UnlockAsync(path ?? string.Empty, lt, cancellationToken).ConfigureAwait(false);
             return new WebDavIndirectResult(_dispatcher, result, _responseLogger);
         }
     }
