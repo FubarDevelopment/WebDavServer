@@ -11,7 +11,7 @@ using JetBrains.Annotations;
 
 namespace FubarDev.WebDavServer.Handlers
 {
-    public interface IUnlockHandler : IClass1Handler
+    public interface IUnlockHandler : IClass2Handler
     {
         [NotNull]
         [ItemNotNull]

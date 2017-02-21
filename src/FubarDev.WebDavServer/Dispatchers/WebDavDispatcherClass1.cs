@@ -11,7 +11,6 @@ using System.Threading.Tasks;
 
 using FubarDev.WebDavServer.Handlers;
 using FubarDev.WebDavServer.Model;
-using FubarDev.WebDavServer.Model.Headers;
 
 using JetBrains.Annotations;
 
@@ -48,12 +47,6 @@ namespace FubarDev.WebDavServer.Dispatchers
 
         [CanBeNull]
         private readonly IMoveHandler _moveHandler;
-
-        [CanBeNull]
-        private readonly ILockHandler _lockHandler;
-
-        [CanBeNull]
-        private readonly IUnlockHandler _unlockHandler;
 
         public WebDavDispatcherClass1([NotNull] [ItemNotNull] IEnumerable<IClass1Handler> class1Handlers, [NotNull] IWebDavContext context)
         {
@@ -120,18 +113,6 @@ namespace FubarDev.WebDavServer.Dispatchers
                 if (class1Handler is IMoveHandler moveHandler)
                 {
                     _moveHandler = moveHandler;
-                    handlerFound = true;
-                }
-
-                if (class1Handler is ILockHandler lockHandler)
-                {
-                    _lockHandler = lockHandler;
-                    handlerFound = true;
-                }
-
-                if (class1Handler is IUnlockHandler unlockHandler)
-                {
-                    _unlockHandler = unlockHandler;
                     handlerFound = true;
                 }
 
@@ -237,30 +218,6 @@ namespace FubarDev.WebDavServer.Dispatchers
             if (_moveHandler == null)
                 throw new NotSupportedException();
             return _moveHandler.MoveAsync(path, destination, cancellationToken);
-        }
-
-        /// <inheritdoc />
-        public Task<IWebDavResult> LockAsync(string path, lockinfo info, CancellationToken cancellationToken)
-        {
-            if (_lockHandler == null)
-                throw new NotSupportedException();
-            return _lockHandler.LockAsync(path, info, cancellationToken);
-        }
-
-        /// <inheritdoc />
-        public Task<IWebDavResult> RefreshLockAsync(string path, IfHeader ifHeader, TimeoutHeader timeoutHeader, CancellationToken cancellationToken)
-        {
-            if (_lockHandler == null)
-                throw new NotSupportedException();
-            return _lockHandler.RefreshLockAsync(path, ifHeader, timeoutHeader, cancellationToken);
-        }
-
-        /// <inheritdoc />
-        public Task<IWebDavResult> UnlockAsync(string path, LockTokenHeader stateToken, CancellationToken cancellationToken)
-        {
-            if (_unlockHandler == null)
-                throw new NotSupportedException();
-            return _unlockHandler.UnlockAsync(path, stateToken, cancellationToken);
         }
     }
 }

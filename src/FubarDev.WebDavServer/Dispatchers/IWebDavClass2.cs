@@ -1,7 +1,9 @@
-﻿// <copyright file="ILockHandler.cs" company="Fubar Development Junker">
+﻿// <copyright file="IWebDavClass2.cs" company="Fubar Development Junker">
 // Copyright (c) Fubar Development Junker. All rights reserved.
 // </copyright>
 
+using System;
+using System.IO;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -10,9 +12,9 @@ using FubarDev.WebDavServer.Model.Headers;
 
 using JetBrains.Annotations;
 
-namespace FubarDev.WebDavServer.Handlers
+namespace FubarDev.WebDavServer.Dispatchers
 {
-    public interface ILockHandler : IClass2Handler
+    public interface IWebDavClass2 : IWebDavClass
     {
         [NotNull]
         [ItemNotNull]
@@ -21,5 +23,9 @@ namespace FubarDev.WebDavServer.Handlers
         [NotNull]
         [ItemNotNull]
         Task<IWebDavResult> RefreshLockAsync([NotNull] string path, [NotNull] IfHeader ifHeader, [CanBeNull] TimeoutHeader timeoutHeader, CancellationToken cancellationToken);
+
+        [NotNull]
+        [ItemNotNull]
+        Task<IWebDavResult> UnlockAsync([NotNull] string path, [NotNull] LockTokenHeader stateToken, CancellationToken cancellationToken);
     }
 }
