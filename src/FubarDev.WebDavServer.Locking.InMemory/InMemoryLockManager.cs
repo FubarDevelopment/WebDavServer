@@ -324,7 +324,7 @@ namespace FubarDev.WebDavServer.Locking.InMemory
         {
             var destinationUrl = BuildUrl(path);
             LockStatus status;
-            lock (_locks)
+            lock (_syncRoot)
             {
                 status = Find(destinationUrl, recursive);
             }
