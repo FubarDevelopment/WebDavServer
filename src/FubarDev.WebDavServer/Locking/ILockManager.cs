@@ -45,6 +45,18 @@ namespace FubarDev.WebDavServer.Locking
         Task<LockResult> LockAsync(ILock l, CancellationToken cancellationToken);
 
         /// <summary>
+        /// Tries to find a lock identified by the <paramref name="ifHeader"/> or creates a new one if none was found.
+        /// </summary>
+        /// <param name="rootFileSystem">The root file system to identify the lock for</param>
+        /// <param name="ifHeader">The header that tries to identify the lock to use</param>
+        /// <param name="lockRequirements">The requirements the found lock must meet</param>
+        /// <param name="cancellationToken">The cancellation token</param>
+        /// <returns>Either the list of locks preventing issuing a lock or the active lock created or reused</returns>
+        [NotNull]
+        [ItemNotNull]
+        Task<ImplicitLock> LockImplicitAsync([NotNull] IFileSystem rootFileSystem, [CanBeNull] IfHeader ifHeader, ILock lockRequirements, CancellationToken cancellationToken);
+
+        /// <summary>
         /// Tries to refresh a lock
         /// </summary>
         /// <param name="rootFileSystem">The root file system</param>

@@ -67,12 +67,12 @@ namespace FubarDev.WebDavServer.Model.Headers
         /// Gets a value indicating whether this condition list requires the <see cref="EntityTag"/> of an <see cref="IEntry"/> for
         /// the evaluation.
         /// </summary>
-        public bool RequiresEntityTag => Conditions.Any(x => x.ETag != null);
+        public bool RequiresEntityTag => Conditions.Any(x => x.ETag != null && !x.Not);
 
         /// <summary>
         /// Gets a value indicating whether this condition list requires the <see cref="IActiveLock.StateToken"/> for the evaluation.
         /// </summary>
-        public bool RequiresStateToken => Conditions.Any(x => x.StateToken != null);
+        public bool RequiresStateToken => Conditions.Any(x => x.StateToken != null && !x.Not);
 
         public bool IsMatch(EntityTag? etag, IReadOnlyCollection<Uri> stateTokens)
         {

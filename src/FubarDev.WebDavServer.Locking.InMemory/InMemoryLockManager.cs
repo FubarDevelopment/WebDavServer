@@ -89,12 +89,94 @@ namespace FubarDev.WebDavServer.Locking.InMemory
         }
 
         /// <inheritdoc />
+        public async Task<ImplicitLock> LockImplicitAsync(
+            IFileSystem rootFileSystem,
+            IfHeader ifHeader,
+            ILock lockRequirements,
+            CancellationToken cancellationToken)
+        {
+            if (ifHeader == null || ifHeader.Lists.Count == 0)
+            {
+                var newLock = await LockAsync(lockRequirements, cancellationToken).ConfigureAwait(false);
+                return new ImplicitLock(this, newLock);
+            }
+
+            var pathToInfo = new Dictionary<Uri, PathInfo>();
+            foreach (var ifHeaderList in ifHeader.Lists)
+            {
+                PathInfo pathInfo;
+                if (!pathToInfo.TryGetValue(ifHeaderList.Path, out pathInfo))
+                {
+                    pathInfo = new PathInfo();
+                    pathToInfo.Add(ifHeaderList.Path, pathInfo);
+                }
+
+                if (pathInfo.EntityTag == null)
+                {
+                    if (ifHeaderList.RequiresEntityTag)
+                    {
+                        var selectionResult =
+                            await rootFileSystem.SelectAsync(ifHeaderList.Path.OriginalString, cancellationToken).ConfigureAwait(false);
+                        if (selectionResult.IsMissing)
+                        {
+                            // Probably locked entry not found
+                            continue;
+                        }
+
+                        pathInfo.EntityTag = await selectionResult.TargetEntry.GetEntityTagAsync(cancellationToken).ConfigureAwait(false);
+                    }
+                }
+            }
+
+            var successfulConditions = new List<Tuple<PathInfo, IfHeaderList>>();
+            lock (_locks)
+            {
+                foreach (var ifHeaderList in ifHeader.Lists)
+                {
+                    var pathInfo = pathToInfo[ifHeaderList.Path];
+
+                    if (pathInfo.ActiveLocks == null)
+                    {
+                        var destinationUrl = BuildUrl(ifHeaderList.Path.OriginalString);
+                        var entryLocks = Find(destinationUrl, false).GetLocks().Cast<ActiveLock>().ToList();
+                        pathInfo.ActiveLocks = entryLocks;
+                        pathInfo.TokenToLock = entryLocks.ToDictionary(x => new Uri(x.StateToken, UriKind.RelativeOrAbsolute));
+                        pathInfo.LockTokens = pathInfo.TokenToLock.Keys.ToList();
+                    }
+
+                    if (ifHeaderList.IsMatch(pathInfo.EntityTag, pathInfo.LockTokens))
+                    {
+                        successfulConditions.Add(Tuple.Create(pathInfo, ifHeaderList));
+                    }
+                }
+            }
+
+            var firstConditionWithStateToken = successfulConditions.FirstOrDefault(x => x.Item2.RequiresStateToken);
+            if (firstConditionWithStateToken != null)
+            {
+                var usedLocks = firstConditionWithStateToken
+                    .Item2.Conditions.Where(x => x.StateToken != null)
+                    .Select(x => firstConditionWithStateToken.Item1.TokenToLock[x.StateToken]).ToList();
+                return new ImplicitLock(usedLocks);
+            }
+
+            if (successfulConditions.Count != 0)
+            {
+                // At least one "If" header condition was successful, but we didn't find any with a state token
+                var newLock = await LockAsync(lockRequirements, cancellationToken).ConfigureAwait(false);
+                return new ImplicitLock(this, newLock);
+            }
+
+            return new ImplicitLock();
+        }
+
+        /// <inheritdoc />
         public async Task<LockRefreshResult> RefreshLockAsync(IFileSystem rootFileSystem, IfHeader ifHeader, TimeSpan timeout, CancellationToken cancellationToken)
         {
-            var pathToInfo = new Dictionary<Uri, PathInfo>();
             var failedHrefs = new HashSet<Uri>();
             var refreshedLocks = new List<ActiveLock>();
 
+            var pathToInfo = new Dictionary<Uri, PathInfo>();
             foreach (var ifHeaderList in ifHeader.Lists.Where(x => x.RequiresStateToken))
             {
                 PathInfo pathInfo;
@@ -119,65 +201,71 @@ namespace FubarDev.WebDavServer.Locking.InMemory
                         pathInfo.EntityTag = await selectionResult.TargetEntry.GetEntityTagAsync(cancellationToken).ConfigureAwait(false);
                     }
                 }
-
-                if (pathInfo.ActiveLocks == null)
-                {
-                    var destinationUrl = BuildUrl(ifHeaderList.Path.OriginalString);
-                    var entryLocks = (from l in _locks.Values
-                                      let lockUrl = BuildUrl(l.Path)
-                                      where Compare(destinationUrl, false, lockUrl, false) == LockCompareResult.Reference
-                                      select l).ToList();
-
-                    if (entryLocks.Count == 0)
-                    {
-                        // No lock found for entry
-                        failedHrefs.Add(ifHeaderList.RelativeHref);
-                        continue;
-                    }
-
-                    pathInfo.ActiveLocks = entryLocks;
-                    pathInfo.TokenToLock = entryLocks.ToDictionary(x => new Uri(x.StateToken, UriKind.RelativeOrAbsolute));
-                }
-
-                var foundLock = pathInfo.TokenToLock.Where(x => ifHeaderList.IsMatch(pathInfo.EntityTag, new[] { x.Key })).Select(x => x.Value).SingleOrDefault();
-                if (foundLock != null)
-                {
-                    var refreshedLock = foundLock.Refresh(_rounding.Round(_systemClock.UtcNow), _rounding.Round(timeout));
-
-                    // Remove old lock from clean-up task
-                    _cleanupTask.Remove(foundLock);
-
-                    refreshedLocks.Add(refreshedLock);
-                }
-                else
-                {
-                    failedHrefs.Add(ifHeaderList.RelativeHref);
-                }
-            }
-
-            if (refreshedLocks.Count == 0)
-            {
-                var hrefs = failedHrefs.ToList();
-                var href = hrefs.First().OriginalString;
-                var hrefItems = hrefs.Skip(1).Select(x => x.OriginalString).Cast<object>().ToArray();
-                var hrefItemNames = hrefItems.Select(x => ItemsChoiceType2.href).ToArray();
-
-                return new LockRefreshResult(
-                    new response()
-                    {
-                        href = href,
-                        Items = hrefItems,
-                        ItemsElementName = hrefItemNames,
-                        error = new error()
-                        {
-                            Items = new[] { new object(), },
-                            ItemsElementName = new[] { ItemsChoiceType.locktokenmatchesrequesturi, },
-                        },
-                    });
             }
 
             lock (_syncRoot)
             {
+                foreach (var ifHeaderList in ifHeader.Lists.Where(x => x.RequiresStateToken))
+                {
+                    var pathInfo = pathToInfo[ifHeaderList.Path];
+
+                    if (pathInfo.ActiveLocks == null)
+                    {
+                        var destinationUrl = BuildUrl(ifHeaderList.Path.OriginalString);
+                        var entryLocks = (from l in _locks.Values
+                                          let lockUrl = BuildUrl(l.Path)
+                                          where Compare(destinationUrl, false, lockUrl, false) == LockCompareResult.Reference
+                                          select l).ToList();
+
+                        if (entryLocks.Count == 0)
+                        {
+                            // No lock found for entry
+                            failedHrefs.Add(ifHeaderList.RelativeHref);
+                            continue;
+                        }
+
+                        pathInfo.ActiveLocks = entryLocks;
+                        pathInfo.TokenToLock = entryLocks.ToDictionary(x => new Uri(x.StateToken, UriKind.RelativeOrAbsolute));
+                        pathInfo.LockTokens = pathInfo.TokenToLock.Keys.ToList();
+                    }
+
+                    var foundLock = pathInfo.TokenToLock.Where(x => ifHeaderList.IsMatch(pathInfo.EntityTag, new[] { x.Key })).Select(x => x.Value).SingleOrDefault();
+                    if (foundLock != null)
+                    {
+                        var refreshedLock = foundLock.Refresh(_rounding.Round(_systemClock.UtcNow), _rounding.Round(timeout));
+
+                        // Remove old lock from clean-up task
+                        _cleanupTask.Remove(foundLock);
+
+                        refreshedLocks.Add(refreshedLock);
+                    }
+                    else
+                    {
+                        failedHrefs.Add(ifHeaderList.RelativeHref);
+                    }
+                }
+
+                if (refreshedLocks.Count == 0)
+                {
+                    var hrefs = failedHrefs.ToList();
+                    var href = hrefs.First().OriginalString;
+                    var hrefItems = hrefs.Skip(1).Select(x => x.OriginalString).Cast<object>().ToArray();
+                    var hrefItemNames = hrefItems.Select(x => ItemsChoiceType2.href).ToArray();
+
+                    return new LockRefreshResult(
+                        new response()
+                        {
+                            href = href,
+                            Items = hrefItems,
+                            ItemsElementName = hrefItemNames,
+                            error = new error()
+                            {
+                                Items = new[] { new object(), },
+                                ItemsElementName = new[] { ItemsChoiceType.locktokenmatchesrequesturi, },
+                            },
+                        });
+                }
+
                 foreach (var newLock in refreshedLocks)
                 {
                     var stateToken = new Uri(newLock.StateToken);
@@ -338,6 +426,8 @@ namespace FubarDev.WebDavServer.Locking.InMemory
             public IReadOnlyCollection<IActiveLock> ActiveLocks { get; set; }
 
             public IDictionary<Uri, ActiveLock> TokenToLock { get; set; }
+
+            public IReadOnlyCollection<Uri> LockTokens { get; set; }
         }
     }
 }

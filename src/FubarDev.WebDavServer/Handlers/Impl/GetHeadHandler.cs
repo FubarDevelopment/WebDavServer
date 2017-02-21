@@ -63,9 +63,16 @@ namespace FubarDev.WebDavServer.Handlers.Impl
                 LockAccessType.Write,
                 LockShareMode.Shared,
                 TimeoutHeader.Infinite);
-            var tempLock = await ImplicitLock.CreateAsync(FileSystem.LockManager, _context.RequestHeaders, lockRequirements, cancellationToken).ConfigureAwait(false);
+            var lockManager = FileSystem.LockManager;
+            var tempLock = lockManager == null
+                ? new ImplicitLock(true)
+                : await lockManager.LockImplicitAsync(FileSystem, _context.RequestHeaders.If, lockRequirements, cancellationToken)
+                                   .ConfigureAwait(false);
             if (!tempLock.IsSuccessful)
             {
+                if (tempLock.ConflictingLocks == null)
+                    return new WebDavResult(WebDavStatusCode.NotFound);
+
                 var error = new error()
                 {
                     ItemsElementName = new[] { ItemsChoiceType.locktokensubmitted, },
