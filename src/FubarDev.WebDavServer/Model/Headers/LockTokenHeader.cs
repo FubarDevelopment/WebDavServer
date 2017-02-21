@@ -26,5 +26,10 @@ namespace FubarDev.WebDavServer.Model.Headers
                 throw new ArgumentException($"{s} is not a valid lock token", nameof(s));
             return new LockTokenHeader(stateToken);
         }
+
+        public override string ToString()
+        {
+            return $"<{StateToken}>";
+        }
     }
 }

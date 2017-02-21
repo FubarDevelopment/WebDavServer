@@ -145,7 +145,9 @@ namespace FubarDev.WebDavServer.Handlers.Impl
                 {
                     Any = new[] { new XElement(WebDavXml.Dav + "lockdiscovery", activeLockXml) },
                 };
-                return new WebDavResult<prop>(statusCode, result);
+                var webDavResult = new WebDavResult<prop>(statusCode, result);
+                webDavResult.Headers["Lock-Token"] = new[] { new LockTokenHeader(new Uri(activeLock.StateToken)).ToString() };
+                return webDavResult;
             }
             catch
             {

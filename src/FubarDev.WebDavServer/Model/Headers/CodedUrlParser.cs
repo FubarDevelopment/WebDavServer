@@ -12,9 +12,23 @@ namespace FubarDev.WebDavServer.Model.Headers
 {
     public static class CodedUrlParser
     {
-        internal static bool TryParse([NotNull] string source, out Uri stateToken)
+        public static Uri Parse([NotNull] string source)
         {
-            return TryParse(new StringSource(source), out stateToken);
+            var src = new StringSource(source);
+            Uri stateToken;
+            if (!TryParse(src, out stateToken))
+                throw new FormatException("No Coded-URL found");
+            if (!src.Empty)
+                throw new FormatException("Unknown content after Coded-URL");
+            return stateToken;
+        }
+
+        public static bool TryParse([NotNull] string source, out Uri stateToken)
+        {
+            var src = new StringSource(source);
+            if (!TryParse(src, out stateToken))
+                return false;
+            return src.Empty;
         }
 
         internal static bool TryParse([NotNull] StringSource source, out Uri stateToken)

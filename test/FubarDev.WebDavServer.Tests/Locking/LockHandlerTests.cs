@@ -11,6 +11,8 @@ using System.Xml.Linq;
 using DecaTec.WebDav;
 using DecaTec.WebDav.WebDavArtifacts;
 
+using FubarDev.WebDavServer.Model.Headers;
+
 using Xunit;
 
 namespace FubarDev.WebDavServer.Tests.Locking
@@ -31,6 +33,7 @@ namespace FubarDev.WebDavServer.Tests.Locking
                 }).ConfigureAwait(false);
             var prop = await response.EnsureSuccessStatusCode()
                 .Content.ParsePropResponseContentAsync().ConfigureAwait(false);
+            var lockToken = CodedUrlParser.Parse(response.Headers.GetValues(WebDavRequestHeader.LockTocken).Single());
             Assert.NotNull(prop.LockDiscovery);
             Assert.Collection(
                 prop.LockDiscovery.ActiveLock,
@@ -43,6 +46,7 @@ namespace FubarDev.WebDavServer.Tests.Locking
                     Assert.Equal(WebDavTimeoutHeaderValue.CreateInfiniteWebDavTimeout().ToString(), activeLock.Timeout, StringComparer.OrdinalIgnoreCase);
                     Assert.NotNull(activeLock.LockToken?.Href);
                     Assert.True(Uri.IsWellFormedUriString(activeLock.LockToken.Href, UriKind.RelativeOrAbsolute));
+                    Assert.Equal(lockToken.OriginalString, activeLock.LockToken.Href);
                 });
         }
 
