@@ -31,6 +31,11 @@ namespace FubarDev.WebDavServer.Locking
         }
 
         /// <summary>
+        /// Gets the empty lock status
+        /// </summary>
+        public static LockStatus Empty { get; } = new LockStatus(new IActiveLock[0], new IActiveLock[0], new IActiveLock[0]);
+
+        /// <summary>
         /// Gets the locks found at the reference position
         /// </summary>
         [NotNull]
