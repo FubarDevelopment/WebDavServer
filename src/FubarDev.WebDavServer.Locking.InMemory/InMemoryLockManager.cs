@@ -93,7 +93,7 @@ namespace FubarDev.WebDavServer.Locking.InMemory
         }
 
         /// <inheritdoc />
-        public async Task<ImplicitLock> LockImplicitAsync(
+        public async Task<IImplicitLock> LockImplicitAsync(
             IFileSystem rootFileSystem,
             IReadOnlyCollection<IfHeaderList> ifHeaderLists,
             ILock lockRequirements,

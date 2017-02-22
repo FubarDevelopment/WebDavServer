@@ -63,26 +63,34 @@ namespace FubarDev.WebDavServer.Handlers.Impl
                 .ValidateAsync(sourceSelectionResult.TargetEntry, cancellationToken).ConfigureAwait(false);
 
             IWebDavResult result;
-
+            IImplicitLock sourceTempLock;
             var lockManager = _rootFileSystem.LockManager;
-            var sourceLockRequirements = new Lock(
-                sourceSelectionResult.TargetEntry.Path,
-                WebDavContext.RelativeRequestUrl,
-                depth != DepthHeader.Zero,
-                new XElement(WebDavXml.Dav + "owner", WebDavContext.User.Identity.Name),
-                LockAccessType.Write,
-                isMove ? LockShareMode.Exclusive : LockShareMode.Shared,
-                TimeoutHeader.Infinite);
-            var sourceTempLock = lockManager == null
-                ? new ImplicitLock(true)
-                : await lockManager.LockImplicitAsync(
-                        _rootFileSystem,
-                        WebDavContext.RequestHeaders.If?.Lists,
-                        sourceLockRequirements,
-                        cancellationToken)
-                    .ConfigureAwait(false);
-            if (!sourceTempLock.IsSuccessful)
-                return sourceTempLock.CreateErrorResponse();
+
+            if (isMove)
+            {
+                var sourceLockRequirements = new Lock(
+                    sourceSelectionResult.TargetEntry.Path,
+                    WebDavContext.RelativeRequestUrl,
+                    depth != DepthHeader.Zero,
+                    new XElement(WebDavXml.Dav + "owner", WebDavContext.User.Identity.Name),
+                    LockAccessType.Write,
+                    LockShareMode.Shared,
+                    TimeoutHeader.Infinite);
+                sourceTempLock = lockManager == null
+                    ? new ImplicitLock(true)
+                    : await lockManager.LockImplicitAsync(
+                            _rootFileSystem,
+                            WebDavContext.RequestHeaders.If?.Lists,
+                            sourceLockRequirements,
+                            cancellationToken)
+                        .ConfigureAwait(false);
+                if (!sourceTempLock.IsSuccessful)
+                    return sourceTempLock.CreateErrorResponse();
+            }
+            else
+            {
+                sourceTempLock = new ImplicitLock(true);
+            }
 
             try
             {
@@ -127,10 +135,10 @@ namespace FubarDev.WebDavServer.Handlers.Impl
                     var destLockRequirements = new Lock(
                         sourceSelectionResult.TargetEntry.Path,
                         WebDavContext.RelativeRequestUrl,
-                        depth != DepthHeader.Zero,
+                        isMove || depth != DepthHeader.Zero,
                         new XElement(WebDavXml.Dav + "owner", WebDavContext.User.Identity.Name),
                         LockAccessType.Write,
-                        LockShareMode.Exclusive,
+                        LockShareMode.Shared,
                         TimeoutHeader.Infinite);
                     var destTempLock = lockManager == null
                         ? new ImplicitLock(true)
@@ -189,7 +197,7 @@ namespace FubarDev.WebDavServer.Handlers.Impl
                 await sourceTempLock.DisposeAsync(cancellationToken).ConfigureAwait(false);
             }
 
-            if (lockManager != null)
+            if (isMove && lockManager != null)
             {
                 var locksToRemove = await lockManager
                     .GetAffectedLocksAsync(sourcePath, true, false, cancellationToken)

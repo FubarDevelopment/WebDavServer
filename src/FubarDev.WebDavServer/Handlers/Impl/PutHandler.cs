@@ -2,6 +2,7 @@
 // Copyright (c) Fubar Development Junker. All rights reserved.
 // </copyright>
 
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
@@ -41,16 +42,24 @@ namespace FubarDev.WebDavServer.Handlers.Impl
             if (selectionResult.ResultType == SelectionResultType.FoundCollection)
                 throw new WebDavException(WebDavStatusCode.MethodNotAllowed);
 
-            await _context.RequestHeaders
-                .ValidateAsync(selectionResult.TargetEntry, cancellationToken).ConfigureAwait(false);
+            if (selectionResult.IsMissing)
+            {
+                if (_context.RequestHeaders.IfNoneMatch != null)
+                    throw new WebDavException(WebDavStatusCode.PreconditionFailed);
+            }
+            else
+            {
+                await _context.RequestHeaders
+                    .ValidateAsync(selectionResult.TargetEntry, cancellationToken).ConfigureAwait(false);
+            }
 
             var lockRequirements = new Lock(
-                selectionResult.TargetEntry.Path,
+                new Uri(path, UriKind.Relative),
                 _context.RelativeRequestUrl,
                 false,
                 new XElement(WebDavXml.Dav + "owner", _context.User.Identity.Name),
                 LockAccessType.Write,
-                LockShareMode.Exclusive,
+                LockShareMode.Shared,
                 TimeoutHeader.Infinite);
             var lockManager = _fileSystem.LockManager;
             var tempLock = lockManager == null

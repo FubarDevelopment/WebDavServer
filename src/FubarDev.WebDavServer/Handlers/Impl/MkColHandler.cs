@@ -47,12 +47,12 @@ namespace FubarDev.WebDavServer.Handlers.Impl
                 .ValidateAsync(selectionResult.TargetEntry, cancellationToken).ConfigureAwait(false);
 
             var lockRequirements = new Lock(
-                selectionResult.TargetEntry.Path,
+                new Uri(path, UriKind.Relative),
                 _context.RelativeRequestUrl,
                 false,
                 new XElement(WebDavXml.Dav + "owner", _context.User.Identity.Name),
                 LockAccessType.Write,
-                LockShareMode.Exclusive,
+                LockShareMode.Shared,
                 TimeoutHeader.Infinite);
             var lockManager = _rootFileSystem.LockManager;
             var tempLock = lockManager == null

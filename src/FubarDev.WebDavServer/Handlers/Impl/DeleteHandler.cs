@@ -51,7 +51,7 @@ namespace FubarDev.WebDavServer.Handlers.Impl
                 .ValidateAsync(selectionResult.TargetEntry, cancellationToken).ConfigureAwait(false);
 
             var lockRequirements = new Lock(
-                selectionResult.TargetEntry.Path,
+                new Uri(path, UriKind.Relative),
                 _context.RelativeRequestUrl,
                 selectionResult.ResultType == SelectionResultType.FoundCollection,
                 new XElement(WebDavXml.Dav + "owner", _context.User.Identity.Name),
