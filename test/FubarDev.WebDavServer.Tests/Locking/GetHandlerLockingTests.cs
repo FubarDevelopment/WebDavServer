@@ -17,7 +17,7 @@ namespace FubarDev.WebDavServer.Tests.Locking
     public class GetHandlerLockingTests : ServerTestsBase
     {
         [Fact]
-        public async Task GetFailsAccessToLockedDocumentTest()
+        public async Task GetSucceedsAccessToLockedDocumentTest()
         {
             var response = await Client.LockAsync(
                 "/test1.txt",
@@ -46,7 +46,7 @@ namespace FubarDev.WebDavServer.Tests.Locking
 
             var ct = CancellationToken.None;
             var getResponse = await Client.GetAsync("/test1.txt", ct).ConfigureAwait(false);
-            Assert.Equal(WebDavStatusCode.Locked, getResponse.StatusCode);
+            getResponse.EnsureSuccessStatusCode();
         }
 
         [Fact]

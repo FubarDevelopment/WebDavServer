@@ -14,7 +14,6 @@ using FubarDev.WebDavServer.FileSystem;
 using FubarDev.WebDavServer.Locking;
 using FubarDev.WebDavServer.Model;
 using FubarDev.WebDavServer.Model.Headers;
-using FubarDev.WebDavServer.Utils;
 
 namespace FubarDev.WebDavServer.Handlers.Impl
 {
@@ -43,8 +42,8 @@ namespace FubarDev.WebDavServer.Handlers.Impl
             if (selectionResult.MissingNames.Count != 1)
                 throw new WebDavException(WebDavStatusCode.Conflict);
 
-            await _context.RequestHeaders
-                .ValidateAsync(selectionResult.TargetEntry, cancellationToken).ConfigureAwait(false);
+            if (_context.RequestHeaders.IfNoneMatch != null)
+                throw new WebDavException(WebDavStatusCode.PreconditionFailed);
 
             var lockRequirements = new Lock(
                 new Uri(path, UriKind.Relative),
