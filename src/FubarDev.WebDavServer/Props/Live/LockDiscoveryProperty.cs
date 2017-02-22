@@ -47,7 +47,7 @@ namespace FubarDev.WebDavServer.Props.Live
         {
             if (_lockManager == null)
                 return new XElement(Name);
-            var affectedLocks = await _lockManager.GetAffectedLocksAsync(_entry.Path.OriginalString, false, ct).ConfigureAwait(false);
+            var affectedLocks = await _lockManager.GetAffectedLocksAsync(_entry.Path.OriginalString, false, true, ct).ConfigureAwait(false);
             var lockElements = affectedLocks.Select(x => x.ToXElement(omitOwner: omitOwner, omitToken: omitToken)).Cast<object>().ToArray();
             return new XElement(Name, lockElements);
         }

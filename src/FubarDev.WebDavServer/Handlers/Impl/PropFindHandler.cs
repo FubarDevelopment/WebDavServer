@@ -15,6 +15,7 @@ using FubarDev.WebDavServer.Model;
 using FubarDev.WebDavServer.Model.Headers;
 using FubarDev.WebDavServer.Props.Filters;
 using FubarDev.WebDavServer.Props.Live;
+using FubarDev.WebDavServer.Utils;
 
 using JetBrains.Annotations;
 
@@ -49,8 +50,14 @@ namespace FubarDev.WebDavServer.Handlers.Impl
             var selectionResult = await FileSystem.SelectAsync(path, cancellationToken).ConfigureAwait(false);
             if (selectionResult.IsMissing)
             {
+                if (_context.RequestHeaders.IfNoneMatch != null)
+                    throw new WebDavException(WebDavStatusCode.PreconditionFailed);
+
                 throw new WebDavException(WebDavStatusCode.NotFound);
             }
+
+            await _context.RequestHeaders
+                .ValidateAsync(selectionResult.TargetEntry, cancellationToken).ConfigureAwait(false);
 
             var entries = new List<IEntry>();
             if (selectionResult.ResultType == SelectionResultType.FoundDocument)

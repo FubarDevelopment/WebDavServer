@@ -52,9 +52,9 @@ namespace FubarDev.WebDavServer.Handlers.Impl
 
         private async Task<IWebDavResult> HandleAsync([NotNull] string path, bool returnFile, CancellationToken cancellationToken)
         {
-            var searchResult = await FileSystem.SelectAsync(path, cancellationToken).ConfigureAwait(false);
+            var selectionResult = await FileSystem.SelectAsync(path, cancellationToken).ConfigureAwait(false);
 
-            if (searchResult.IsMissing)
+            if (selectionResult.IsMissing)
             {
                 if (_context.RequestHeaders.IfNoneMatch != null)
                     throw new WebDavException(WebDavStatusCode.PreconditionFailed);
@@ -63,10 +63,10 @@ namespace FubarDev.WebDavServer.Handlers.Impl
             }
 
             await _context.RequestHeaders
-                .ValidateAsync(searchResult.TargetEntry, cancellationToken).ConfigureAwait(false);
+                .ValidateAsync(selectionResult.TargetEntry, cancellationToken).ConfigureAwait(false);
 
             var lockRequirements = new Lock(
-                searchResult.TargetEntry.Path,
+                selectionResult.TargetEntry.Path,
                 _context.RelativeRequestUrl,
                 false,
                 new XElement(WebDavXml.Dav + "owner", _context.User.Identity.Name),
@@ -83,17 +83,17 @@ namespace FubarDev.WebDavServer.Handlers.Impl
 
             try
             {
-                if (searchResult.ResultType == SelectionResultType.FoundCollection)
+                if (selectionResult.ResultType == SelectionResultType.FoundCollection)
                 {
                     if (returnFile)
                         throw new NotSupportedException();
-                    Debug.Assert(searchResult.Collection != null, "searchResult.Collection != null");
-                    return new WebDavCollectionResult(searchResult.Collection);
+                    Debug.Assert(selectionResult.Collection != null, "selectionResult.Collection != null");
+                    return new WebDavCollectionResult(selectionResult.Collection);
                 }
 
-                Debug.Assert(searchResult.Document != null, "searchResult.Document != null");
+                Debug.Assert(selectionResult.Document != null, "selectionResult.Document != null");
 
-                var doc = searchResult.Document;
+                var doc = selectionResult.Document;
                 var rangeHeader = _context.RequestHeaders.Range;
                 if (rangeHeader != null)
                 {

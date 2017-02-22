@@ -8,19 +8,25 @@ using System.IO;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
+using System.Xml.Linq;
 
 using FubarDev.WebDavServer.FileSystem;
+using FubarDev.WebDavServer.Locking;
 using FubarDev.WebDavServer.Model;
+using FubarDev.WebDavServer.Model.Headers;
+using FubarDev.WebDavServer.Utils;
 
 namespace FubarDev.WebDavServer.Handlers.Impl
 {
     public class PutHandler : IPutHandler
     {
         private readonly IFileSystem _fileSystem;
+        private readonly IWebDavContext _context;
 
-        public PutHandler(IFileSystem fileSystem)
+        public PutHandler(IFileSystem fileSystem, IWebDavContext context)
         {
             _fileSystem = fileSystem;
+            _context = context;
         }
 
         /// <inheritdoc />
@@ -35,48 +41,86 @@ namespace FubarDev.WebDavServer.Handlers.Impl
             if (selectionResult.ResultType == SelectionResultType.FoundCollection)
                 throw new WebDavException(WebDavStatusCode.MethodNotAllowed);
 
-            IDocument document;
-            if (selectionResult.ResultType == SelectionResultType.FoundDocument)
-            {
-                Debug.Assert(selectionResult.Document != null, "selectionResult.Document != null");
-                document = selectionResult.Document;
-            }
-            else
-            {
-                Debug.Assert(selectionResult.ResultType == SelectionResultType.MissingDocumentOrCollection, "selectionResult.ResultType == SelectionResultType.MissingDocumentOrCollection");
-                Debug.Assert(selectionResult.MissingNames != null, "selectionResult.PathEntries != null");
-                Debug.Assert(selectionResult.MissingNames.Count == 1, "selectionResult.MissingNames.Count == 1");
-                Debug.Assert(selectionResult.Collection != null, "selectionResult.Collection != null");
-                var newName = selectionResult.MissingNames.Single();
-                document = await selectionResult.Collection.CreateDocumentAsync(newName, cancellationToken).ConfigureAwait(false);
-            }
+            await _context.RequestHeaders
+                .ValidateAsync(selectionResult.TargetEntry, cancellationToken).ConfigureAwait(false);
 
-            using (var fileStream = await document.CreateAsync(cancellationToken).ConfigureAwait(false))
-            {
-                await data.CopyToAsync(fileStream).ConfigureAwait(false);
-            }
+            var lockRequirements = new Lock(
+                selectionResult.TargetEntry.Path,
+                _context.RelativeRequestUrl,
+                false,
+                new XElement(WebDavXml.Dav + "owner", _context.User.Identity.Name),
+                LockAccessType.Write,
+                LockShareMode.Exclusive,
+                TimeoutHeader.Infinite);
+            var lockManager = _fileSystem.LockManager;
+            var tempLock = lockManager == null
+                ? new ImplicitLock(true)
+                : await lockManager.LockImplicitAsync(
+                        _fileSystem,
+                        _context.RequestHeaders.If?.Lists,
+                        lockRequirements,
+                        cancellationToken)
+                    .ConfigureAwait(false);
+            if (!tempLock.IsSuccessful)
+                return tempLock.CreateErrorResponse();
 
-            var docPropertyStore = document.FileSystem.PropertyStore;
-            if (docPropertyStore != null)
+            try
             {
-                await docPropertyStore.UpdateETagAsync(document, cancellationToken).ConfigureAwait(false);
-
+                IDocument document;
                 if (selectionResult.ResultType == SelectionResultType.FoundDocument)
                 {
                     Debug.Assert(selectionResult.Document != null, "selectionResult.Document != null");
-                    await docPropertyStore.RemoveAsync(selectionResult.Document, cancellationToken).ConfigureAwait(false);
+                    document = selectionResult.Document;
                 }
-            }
+                else
+                {
+                    Debug.Assert(
+                        selectionResult.ResultType == SelectionResultType.MissingDocumentOrCollection,
+                        "selectionResult.ResultType == SelectionResultType.MissingDocumentOrCollection");
+                    Debug.Assert(selectionResult.MissingNames != null, "selectionResult.PathEntries != null");
+                    Debug.Assert(selectionResult.MissingNames.Count == 1, "selectionResult.MissingNames.Count == 1");
+                    Debug.Assert(selectionResult.Collection != null, "selectionResult.Collection != null");
+                    var newName = selectionResult.MissingNames.Single();
+                    document =
+                        await selectionResult.Collection.CreateDocumentAsync(newName, cancellationToken)
+                            .ConfigureAwait(false);
+                }
 
-            var parent = document.Parent;
-            Debug.Assert(parent != null, "parent != null");
-            var parentPropStore = parent.FileSystem.PropertyStore;
-            if (parentPropStore != null)
+                using (var fileStream = await document.CreateAsync(cancellationToken).ConfigureAwait(false))
+                {
+                    await data.CopyToAsync(fileStream).ConfigureAwait(false);
+                }
+
+                var docPropertyStore = document.FileSystem.PropertyStore;
+                if (docPropertyStore != null)
+                {
+                    await docPropertyStore.UpdateETagAsync(document, cancellationToken).ConfigureAwait(false);
+
+                    if (selectionResult.ResultType == SelectionResultType.FoundDocument)
+                    {
+                        Debug.Assert(selectionResult.Document != null, "selectionResult.Document != null");
+                        await docPropertyStore.RemoveAsync(selectionResult.Document, cancellationToken)
+                            .ConfigureAwait(false);
+                    }
+                }
+
+                var parent = document.Parent;
+                Debug.Assert(parent != null, "parent != null");
+                var parentPropStore = parent.FileSystem.PropertyStore;
+                if (parentPropStore != null)
+                {
+                    await parentPropStore.UpdateETagAsync(parent, cancellationToken).ConfigureAwait(false);
+                }
+
+                return
+                    new WebDavResult(selectionResult.ResultType != SelectionResultType.FoundDocument
+                        ? WebDavStatusCode.Created
+                        : WebDavStatusCode.OK);
+            }
+            finally
             {
-                await parentPropStore.UpdateETagAsync(parent, cancellationToken).ConfigureAwait(false);
+                await tempLock.DisposeAsync(cancellationToken).ConfigureAwait(false);
             }
-
-            return new WebDavResult(selectionResult.ResultType != SelectionResultType.FoundDocument ? WebDavStatusCode.Created : WebDavStatusCode.OK);
         }
     }
 }

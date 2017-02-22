@@ -71,7 +71,7 @@ namespace FubarDev.WebDavServer.Locking.InMemory
             var destinationUrl = BuildUrl(l.Path);
             lock (_syncRoot)
             {
-                var status = Find(destinationUrl, l.Recursive);
+                var status = Find(destinationUrl, l.Recursive, true);
                 var conflictingLocks = GetConflictingLocks(status, LockShareMode.Parse(l.ShareMode));
                 if (conflictingLocks.Count != 0)
                 {
@@ -105,7 +105,7 @@ namespace FubarDev.WebDavServer.Locking.InMemory
                 return new ImplicitLock(this, newLock);
             }
 
-            var successfulConditions = await FindMatchingIfConditionList(
+            var successfulConditions = await FindMatchingIfConditionListAsync(
                 rootFileSystem,
                 ifHeaderLists,
                 lockRequirements,
@@ -287,13 +287,13 @@ namespace FubarDev.WebDavServer.Locking.InMemory
         }
 
         /// <inheritdoc />
-        public Task<IEnumerable<IActiveLock>> GetAffectedLocksAsync(string path, bool recursive, CancellationToken cancellationToken)
+        public Task<IEnumerable<IActiveLock>> GetAffectedLocksAsync(string path, bool findChildren, bool findParents, CancellationToken cancellationToken)
         {
             var destinationUrl = BuildUrl(path);
             LockStatus status;
             lock (_syncRoot)
             {
-                status = Find(destinationUrl, recursive);
+                status = Find(destinationUrl, findChildren, findParents);
             }
 
             return Task.FromResult(status.ParentLocks.Concat(status.ReferenceLocks).Concat(status.ChildLocks));
@@ -334,7 +334,7 @@ namespace FubarDev.WebDavServer.Locking.InMemory
 #if USE_VARIANT_1
         [NotNull]
         [ItemCanBeNull]
-        private async Task<IReadOnlyCollection<Tuple<PathInfo, IfHeaderList>>> FindMatchingIfConditionList(
+        private async Task<IReadOnlyCollection<Tuple<PathInfo, IfHeaderList>>> FindMatchingIfConditionListAsync(
             [NotNull] IFileSystem rootFileSystem,
             [NotNull] [ItemNotNull] IReadOnlyCollection<IfHeaderList> ifHeaderLists,
             [NotNull] ILock lockRequirements,
@@ -412,7 +412,7 @@ namespace FubarDev.WebDavServer.Locking.InMemory
 #if USE_VARIANT_2
         [NotNull]
         [ItemCanBeNull]
-        private async Task<IReadOnlyCollection<Tuple<PathInfo, IfHeaderList>>> FindMatchingIfConditionList(
+        private async Task<IReadOnlyCollection<Tuple<PathInfo, IfHeaderList>>> FindMatchingIfConditionListAsync(
             [NotNull] IFileSystem rootFileSystem,
             [NotNull] [ItemNotNull] IReadOnlyCollection<IfHeaderList> ifHeaderLists,
             [NotNull] ILock lockRequirements,
@@ -423,7 +423,7 @@ namespace FubarDev.WebDavServer.Locking.InMemory
             IReadOnlyCollection<ActiveLock> affectingLocks;
             lock (_syncRoot)
             {
-                var lockStatus = Find(lockRequirementUrl, false);
+                var lockStatus = Find(lockRequirementUrl, false, true);
                 affectingLocks = lockStatus.ParentLocks.Concat(lockStatus.ReferenceLocks).Cast<ActiveLock>().ToList();
             }
 
@@ -435,7 +435,7 @@ namespace FubarDev.WebDavServer.Locking.InMemory
                  where compareResult == LockCompareResult.LeftIsParent
                        || compareResult == LockCompareResult.Reference
                  let foundLocks = list.RequiresStateToken
-                     ? Find(affectingLocks, listUrl, compareResult == LockCompareResult.LeftIsParent)
+                     ? Find(affectingLocks, listUrl, compareResult == LockCompareResult.LeftIsParent, true)
                      : LockStatus.Empty
                  let locksForIfConditions = foundLocks.GetLocks().Cast<ActiveLock>().ToList()
                  select Tuple.Create<IfHeaderList, IReadOnlyCollection<ActiveLock>>(list, locksForIfConditions))
@@ -454,10 +454,12 @@ namespace FubarDev.WebDavServer.Locking.InMemory
                 PathInfo pathInfo;
                 if (!pathToInfo.TryGetValue(ifHeaderList.Path, out pathInfo))
                 {
-                    pathInfo = new PathInfo();
-                    pathInfo.ActiveLocks = matchingIfListItem.Value;
-                    pathInfo.TokenToLock = matchingIfListItem
-                        .Value.ToDictionary(x => new Uri(x.StateToken, UriKind.RelativeOrAbsolute));
+                    pathInfo = new PathInfo
+                    {
+                        ActiveLocks = matchingIfListItem.Value,
+                        TokenToLock = matchingIfListItem
+                            .Value.ToDictionary(x => new Uri(x.StateToken, UriKind.RelativeOrAbsolute)),
+                    };
                     pathInfo.LockTokens = pathInfo.TokenToLock.Keys.ToList();
                     pathToInfo.Add(ifHeaderList.Path, pathInfo);
                 }
@@ -487,12 +489,12 @@ namespace FubarDev.WebDavServer.Locking.InMemory
         }
 #endif
 
-        private LockStatus Find(Uri parentUrl, bool withChildren)
+        private LockStatus Find(Uri parentUrl, bool withChildren, bool findParents)
         {
-            return Find(_locks.Values, parentUrl, withChildren);
+            return Find(_locks.Values, parentUrl, withChildren, findParents);
         }
 
-        private LockStatus Find(IEnumerable<IActiveLock> locks, Uri parentUrl, bool withChildren)
+        private LockStatus Find(IEnumerable<IActiveLock> locks, Uri parentUrl, bool withChildren, bool findParents)
         {
             var refLocks = new List<IActiveLock>();
             var childLocks = new List<IActiveLock>();
@@ -511,7 +513,8 @@ namespace FubarDev.WebDavServer.Locking.InMemory
                         childLocks.Add(activeLock);
                         break;
                     case LockCompareResult.RightIsParent:
-                        parentLocks.Add(activeLock);
+                        if (findParents)
+                            parentLocks.Add(activeLock);
                         break;
                 }
             }

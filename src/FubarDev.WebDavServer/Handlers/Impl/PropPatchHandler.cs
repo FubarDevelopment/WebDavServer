@@ -12,10 +12,13 @@ using System.Threading.Tasks;
 using System.Xml.Linq;
 
 using FubarDev.WebDavServer.FileSystem;
+using FubarDev.WebDavServer.Locking;
 using FubarDev.WebDavServer.Model;
+using FubarDev.WebDavServer.Model.Headers;
 using FubarDev.WebDavServer.Props;
 using FubarDev.WebDavServer.Props.Dead;
 using FubarDev.WebDavServer.Props.Live;
+using FubarDev.WebDavServer.Utils;
 
 using JetBrains.Annotations;
 
@@ -27,12 +30,12 @@ namespace FubarDev.WebDavServer.Handlers.Impl
         private readonly IFileSystem _fileSystem;
 
         [NotNull]
-        private readonly IWebDavContext _host;
+        private readonly IWebDavContext _context;
 
-        public PropPatchHandler([NotNull] IFileSystem fileSystem, [NotNull] IWebDavContext host)
+        public PropPatchHandler([NotNull] IFileSystem fileSystem, [NotNull] IWebDavContext context)
         {
             _fileSystem = fileSystem;
-            _host = host;
+            _context = context;
         }
 
         private enum ChangeStatus
@@ -51,83 +54,128 @@ namespace FubarDev.WebDavServer.Handlers.Impl
         public IEnumerable<string> HttpMethods { get; } = new[] { "PROPPATCH" };
 
         /// <inheritdoc />
-        public async Task<IWebDavResult> PropPatchAsync(string path, propertyupdate request, CancellationToken cancellationToken)
+        public async Task<IWebDavResult> PropPatchAsync(
+            string path,
+            propertyupdate request,
+            CancellationToken cancellationToken)
         {
             var selectionResult = await _fileSystem.SelectAsync(path, cancellationToken).ConfigureAwait(false);
             if (selectionResult.IsMissing)
+            {
+                if (_context.RequestHeaders.IfNoneMatch != null)
+                    throw new WebDavException(WebDavStatusCode.PreconditionFailed);
+
                 throw new WebDavException(WebDavStatusCode.NotFound);
-
-            var entry = selectionResult.ResultType == SelectionResultType.FoundDocument ? (IEntry)selectionResult.Document : selectionResult.Collection;
-            Debug.Assert(entry != null, "entry != null");
-
-            var propertiesList = new List<IUntypedReadableProperty>();
-            using (var propEnum = entry.GetProperties(int.MaxValue).GetEnumerator())
-            {
-                while (await propEnum.MoveNext(cancellationToken).ConfigureAwait(false))
-                {
-                    propertiesList.Add(propEnum.Current);
-                }
             }
 
-            var properties = propertiesList.ToDictionary(x => x.Name);
-            var changes = await ApplyChangesAsync(entry, properties, request, cancellationToken).ConfigureAwait(false);
-            var hasError = changes.Any(x => !x.IsSuccess);
-            if (hasError)
+            var targetEntry = selectionResult.TargetEntry;
+            Debug.Assert(targetEntry != null, "targetEntry != null");
+
+            await _context.RequestHeaders
+                .ValidateAsync(selectionResult.TargetEntry, cancellationToken).ConfigureAwait(false);
+
+            var lockRequirements = new Lock(
+                selectionResult.TargetEntry.Path,
+                _context.RelativeRequestUrl,
+                false,
+                new XElement(WebDavXml.Dav + "owner", _context.User.Identity.Name),
+                LockAccessType.Write,
+                LockShareMode.Exclusive,
+                TimeoutHeader.Infinite);
+            var lockManager = _fileSystem.LockManager;
+            var tempLock = lockManager == null
+                ? new ImplicitLock(true)
+                : await lockManager.LockImplicitAsync(
+                        _fileSystem,
+                        _context.RequestHeaders.If?.Lists,
+                        lockRequirements,
+                        cancellationToken)
+                    .ConfigureAwait(false);
+            if (!tempLock.IsSuccessful)
+                return tempLock.CreateErrorResponse();
+
+            try
             {
-                changes = await RevertChangesAsync(entry, changes, properties, cancellationToken).ConfigureAwait(false);
-            }
-            else
-            {
-                var targetPropStore = entry.FileSystem.PropertyStore;
-                if (targetPropStore != null)
-                    await targetPropStore.UpdateETagAsync(entry, cancellationToken).ConfigureAwait(false);
-                var parent = entry.Parent;
-                while (parent != null)
+                var propertiesList = new List<IUntypedReadableProperty>();
+                using (var propEnum = targetEntry.GetProperties(int.MaxValue).GetEnumerator())
                 {
-                    var parentPropStore = parent.FileSystem.PropertyStore;
-                    if (parentPropStore != null)
+                    while (await propEnum.MoveNext(cancellationToken).ConfigureAwait(false))
                     {
-                        Debug.Assert(entry.Parent != null, "entry.Parent != null");
-                        await parentPropStore.UpdateETagAsync(entry.Parent, cancellationToken).ConfigureAwait(false);
+                        propertiesList.Add(propEnum.Current);
                     }
-
-                    parent = parent.Parent;
                 }
-            }
 
-            var statusCode = hasError ? WebDavStatusCode.Forbidden : WebDavStatusCode.MultiStatus;
-            var propStats = new List<propstat>();
-
-            var readOnlyProperties = changes.Where(x => x.Status == ChangeStatus.ReadOnlyProperty).ToList();
-            if (readOnlyProperties.Count != 0)
-            {
-                propStats.AddRange(
-                    CreatePropStats(
-                        readOnlyProperties,
-                        new error()
-                        {
-                            ItemsElementName = new[] { ItemsChoiceType.cannotmodifyprotectedproperty, },
-                            Items = new[] { new object(), },
-                        }));
-                changes = changes.Except(readOnlyProperties).ToList();
-            }
-
-            propStats.AddRange(CreatePropStats(changes, null));
-
-            var status = new multistatus()
-            {
-                response = new[]
+                var properties = propertiesList.ToDictionary(x => x.Name);
+                var changes =
+                    await ApplyChangesAsync(targetEntry, properties, request, cancellationToken).ConfigureAwait(false);
+                var hasError = changes.Any(x => !x.IsSuccess);
+                if (hasError)
                 {
-                    new response()
+                    changes = await RevertChangesAsync(
+                            targetEntry,
+                            changes,
+                            properties,
+                            cancellationToken)
+                        .ConfigureAwait(false);
+                }
+                else
+                {
+                    var targetPropStore = targetEntry.FileSystem.PropertyStore;
+                    if (targetPropStore != null)
+                        await targetPropStore.UpdateETagAsync(targetEntry, cancellationToken).ConfigureAwait(false);
+                    var parent = targetEntry.Parent;
+                    while (parent != null)
                     {
-                        href = _host.BaseUrl.Append(path, true).OriginalString,
-                        ItemsElementName = propStats.Select(x => ItemsChoiceType2.propstat).ToArray(),
-                        Items = propStats.Cast<object>().ToArray(),
-                    },
-                },
-            };
+                        var parentPropStore = parent.FileSystem.PropertyStore;
+                        if (parentPropStore != null)
+                        {
+                            Debug.Assert(targetEntry.Parent != null, "entry.Parent != null");
+                            await parentPropStore.UpdateETagAsync(targetEntry.Parent, cancellationToken)
+                                .ConfigureAwait(false);
+                        }
 
-            return new WebDavResult<multistatus>(statusCode, status);
+                        parent = parent.Parent;
+                    }
+                }
+
+                var statusCode = hasError ? WebDavStatusCode.Forbidden : WebDavStatusCode.MultiStatus;
+                var propStats = new List<propstat>();
+
+                var readOnlyProperties = changes.Where(x => x.Status == ChangeStatus.ReadOnlyProperty).ToList();
+                if (readOnlyProperties.Count != 0)
+                {
+                    propStats.AddRange(
+                        CreatePropStats(
+                            readOnlyProperties,
+                            new error()
+                            {
+                                ItemsElementName = new[] { ItemsChoiceType.cannotmodifyprotectedproperty, },
+                                Items = new[] { new object(), },
+                            }));
+                    changes = changes.Except(readOnlyProperties).ToList();
+                }
+
+                propStats.AddRange(CreatePropStats(changes, null));
+
+                var status = new multistatus()
+                {
+                    response = new[]
+                    {
+                        new response()
+                        {
+                            href = _context.BaseUrl.Append(path, true).OriginalString,
+                            ItemsElementName = propStats.Select(x => ItemsChoiceType2.propstat).ToArray(),
+                            Items = propStats.Cast<object>().ToArray(),
+                        },
+                    },
+                };
+
+                return new WebDavResult<multistatus>(statusCode, status);
+            }
+            finally
+            {
+                await tempLock.DisposeAsync(cancellationToken).ConfigureAwait(false);
+            }
         }
 
         [CanBeNull]
@@ -165,7 +213,7 @@ namespace FubarDev.WebDavServer.Handlers.Impl
                     {
                         Any = elements.ToArray(),
                     },
-                    status = new Status(_host.RequestProtocol, changesByStatusCode.Key).ToString(),
+                    status = new Status(_context.RequestProtocol, changesByStatusCode.Key).ToString(),
                     error = error,
                 };
 

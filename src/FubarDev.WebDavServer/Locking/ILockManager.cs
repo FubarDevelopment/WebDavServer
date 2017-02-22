@@ -99,11 +99,12 @@ namespace FubarDev.WebDavServer.Locking
         /// access or by the <see cref="LockCleanupTask"/>.
         /// </remarks>
         /// <param name="path">The file system path to get the locks for</param>
-        /// <param name="recursive">Return all locks that are a child of the given <paramref name="path"/>?</param>
+        /// <param name="findChildren">Return all locks that are a child of the given <paramref name="path"/>?</param>
+        /// <param name="findParents">Return all locks that are a parent of the given <paramref name="path"/>?</param>
         /// <param name="cancellationToken">The cancellation token</param>
         /// <returns>Returns all active locks</returns>
         [NotNull]
         [ItemNotNull]
-        Task<IEnumerable<IActiveLock>> GetAffectedLocksAsync([NotNull] string path, bool recursive, CancellationToken cancellationToken);
+        Task<IEnumerable<IActiveLock>> GetAffectedLocksAsync([NotNull] string path, bool findChildren, bool findParents, CancellationToken cancellationToken);
     }
 }
