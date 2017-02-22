@@ -14,6 +14,7 @@ using FubarDev.WebDavServer.FileSystem;
 using FubarDev.WebDavServer.Locking;
 using FubarDev.WebDavServer.Model;
 using FubarDev.WebDavServer.Model.Headers;
+using FubarDev.WebDavServer.Utils;
 
 using JetBrains.Annotations;
 
@@ -124,9 +125,13 @@ namespace FubarDev.WebDavServer.Handlers.Impl
             try
             {
                 var selectionResult = await _rootFileSystem.SelectAsync(path, cancellationToken).ConfigureAwait(false);
+
                 WebDavStatusCode statusCode;
                 if (selectionResult.IsMissing)
                 {
+                    if (_context.RequestHeaders.IfNoneMatch != null)
+                        throw new WebDavException(WebDavStatusCode.PreconditionFailed);
+
                     if (selectionResult.MissingNames.Count > 1)
                         return new WebDavResult(WebDavStatusCode.Conflict);
 
@@ -137,6 +142,10 @@ namespace FubarDev.WebDavServer.Handlers.Impl
                 }
                 else
                 {
+                    await _context
+                        .RequestHeaders.ValidateAsync(selectionResult.TargetEntry, cancellationToken)
+                        .ConfigureAwait(false);
+
                     statusCode = WebDavStatusCode.OK;
                 }
 
