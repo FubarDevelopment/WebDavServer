@@ -66,9 +66,10 @@ namespace FubarDev.WebDavServer.FileSystem.InMemory
             var properties = new List<ILiveProperty>()
             {
                 this.GetResourceTypeProperty(),
+                new LockDiscoveryProperty(FileSystem.LockManager, this),
+                new SupportedLockProperty(this),
                 new LastModifiedProperty(ct => Task.FromResult(LastWriteTimeUtc), (v, ct) => Task.FromResult(LastWriteTimeUtc = v)),
                 new CreationDateProperty(ct => Task.FromResult(CreationTimeUtc), (v, ct) => Task.FromResult(CreationTimeUtc = v)),
-                new LockDiscoveryProperty(FileSystem.LockManager, this),
             };
             return properties;
         }

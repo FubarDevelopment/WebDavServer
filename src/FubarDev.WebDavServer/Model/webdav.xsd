@@ -60,6 +60,21 @@
 
   <element name="prop" type="dav:prop" />
 
+  <element name="supportedlock">
+    <complexType>
+      <sequence>
+        <element name="lockentry" minOccurs="0" maxOccurs="unbounded">
+          <complexType>
+            <sequence>
+              <element name="lockscope" type="dav:lockscope" />
+              <element name="locktype" type="dav:locktype" />
+            </sequence>
+          </complexType>
+        </element>
+      </sequence>
+    </complexType>
+  </element>
+
   <complexType name="owner" mixed="true">
     <sequence>
       <any namespace="##other" minOccurs="0" maxOccurs="unbounded" />

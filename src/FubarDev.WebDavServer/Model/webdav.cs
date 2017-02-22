@@ -11,6 +11,9 @@
 // 
 // Dieser Quellcode wurde automatisch generiert von xsd, Version=4.6.1055.0.
 // 
+
+using System.Xml.Linq;
+
 namespace FubarDev.WebDavServer.Model {
     using System.Xml.Serialization;
     
@@ -152,11 +155,11 @@ namespace FubarDev.WebDavServer.Model {
     [System.Xml.Serialization.XmlRootAttribute(Namespace="DAV:", IsNullable=false)]
     public partial class prop {
         
-        private System.Xml.Linq.XElement[] anyField;
+        private XElement[] anyField;
         
         /// <remarks/>
         [System.Xml.Serialization.XmlAnyElementAttribute()]
-        public System.Xml.Linq.XElement[] Any {
+        public XElement[] Any {
             get {
                 return this.anyField;
             }
@@ -297,11 +300,11 @@ namespace FubarDev.WebDavServer.Model {
     [System.Xml.Serialization.XmlTypeAttribute(Namespace="DAV:")]
     public partial class include {
         
-        private System.Xml.Linq.XElement[] anyField;
+        private XElement[] anyField;
         
         /// <remarks/>
         [System.Xml.Serialization.XmlAnyElementAttribute()]
-        public System.Xml.Linq.XElement[] Any {
+        public XElement[] Any {
             get {
                 return this.anyField;
             }
@@ -467,7 +470,7 @@ namespace FubarDev.WebDavServer.Model {
         
         private activelockDepth depthField;
         
-        private System.Xml.Linq.XElement ownerField;
+        private XElement ownerField;
         
         private string timeoutField;
         
@@ -507,7 +510,7 @@ namespace FubarDev.WebDavServer.Model {
         
         /// <remarks/>
         [System.Xml.Serialization.XmlAnyElementAttribute(Name="owner", Namespace="DAV:")]
-        public System.Xml.Linq.XElement owner {
+        public XElement owner {
             get {
                 return this.ownerField;
             }
@@ -784,7 +787,7 @@ namespace FubarDev.WebDavServer.Model {
         
         private locktype locktypeField;
         
-        private System.Xml.Linq.XElement ownerField;
+        private XElement ownerField;
         
         /// <remarks/>
         public lockscope lockscope {
@@ -808,12 +811,66 @@ namespace FubarDev.WebDavServer.Model {
         
         /// <remarks/>
         [System.Xml.Serialization.XmlAnyElementAttribute(Name="owner", Namespace="DAV:")]
-        public System.Xml.Linq.XElement owner {
+        public XElement owner {
             get {
                 return this.ownerField;
             }
             set {
                 this.ownerField = value;
+            }
+        }
+    }
+    
+    /// <remarks/>
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("xsd", "4.6.1055.0")]
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.ComponentModel.DesignerCategoryAttribute("code")]
+    [System.Xml.Serialization.XmlTypeAttribute(AnonymousType=true, Namespace="DAV:")]
+    [System.Xml.Serialization.XmlRootAttribute(Namespace="DAV:", IsNullable=false)]
+    public partial class supportedlock {
+        
+        private supportedlockLockentry[] lockentryField;
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute("lockentry")]
+        public supportedlockLockentry[] lockentry {
+            get {
+                return this.lockentryField;
+            }
+            set {
+                this.lockentryField = value;
+            }
+        }
+    }
+    
+    /// <remarks/>
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("xsd", "4.6.1055.0")]
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.ComponentModel.DesignerCategoryAttribute("code")]
+    [System.Xml.Serialization.XmlTypeAttribute(AnonymousType=true, Namespace="DAV:")]
+    public partial class supportedlockLockentry {
+        
+        private lockscope lockscopeField;
+        
+        private locktype locktypeField;
+        
+        /// <remarks/>
+        public lockscope lockscope {
+            get {
+                return this.lockscopeField;
+            }
+            set {
+                this.lockscopeField = value;
+            }
+        }
+        
+        /// <remarks/>
+        public locktype locktype {
+            get {
+                return this.locktypeField;
+            }
+            set {
+                this.locktypeField = value;
             }
         }
     }
