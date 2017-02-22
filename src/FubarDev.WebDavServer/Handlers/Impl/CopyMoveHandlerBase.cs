@@ -6,13 +6,16 @@ using System;
 using System.Diagnostics;
 using System.Threading;
 using System.Threading.Tasks;
+using System.Xml.Linq;
 
 using FubarDev.WebDavServer.Engines;
 using FubarDev.WebDavServer.Engines.Local;
 using FubarDev.WebDavServer.Engines.Remote;
 using FubarDev.WebDavServer.FileSystem;
+using FubarDev.WebDavServer.Locking;
 using FubarDev.WebDavServer.Model;
 using FubarDev.WebDavServer.Model.Headers;
+using FubarDev.WebDavServer.Utils;
 
 using JetBrains.Annotations;
 
@@ -44,53 +47,164 @@ namespace FubarDev.WebDavServer.Handlers.Impl
             DepthHeader depth,
             bool overwrite,
             RecursiveProcessingMode mode,
+            bool isMove,
             CancellationToken cancellationToken)
         {
             var sourceSelectionResult = await _rootFileSystem.SelectAsync(sourcePath, cancellationToken).ConfigureAwait(false);
             if (sourceSelectionResult.IsMissing)
-                throw new WebDavException(WebDavStatusCode.NotFound);
-
-            var baseUrl = WebDavContext.BaseUrl;
-            var sourceUrl = new Uri(baseUrl, sourcePath);
-            var destinationUrl = new Uri(sourceUrl, destination);
-
-            // Ignore different schemes
-            if (!baseUrl.IsBaseOf(destinationUrl) || mode == RecursiveProcessingMode.PreferCrossServer)
             {
-                if (_logger.IsEnabled(LogLevel.Trace))
-                    _logger.LogTrace("Using cross-server mode");
+                if (WebDavContext.RequestHeaders.IfNoneMatch != null)
+                    throw new WebDavException(WebDavStatusCode.PreconditionFailed);
 
-                if (_logger.IsEnabled(LogLevel.Debug))
-                    _logger.LogDebug($"{baseUrl} is not a base of {destinationUrl}");
+                throw new WebDavException(WebDavStatusCode.NotFound);
+            }
 
-                using (var remoteHandler = await CreateRemoteTargetActionsAsync(destinationUrl, cancellationToken).ConfigureAwait(false))
+            await WebDavContext.RequestHeaders
+                .ValidateAsync(sourceSelectionResult.TargetEntry, cancellationToken).ConfigureAwait(false);
+
+            IWebDavResult result;
+
+            var lockManager = _rootFileSystem.LockManager;
+            var sourceLockRequirements = new Lock(
+                sourceSelectionResult.TargetEntry.Path,
+                WebDavContext.RelativeRequestUrl,
+                depth != DepthHeader.Zero,
+                new XElement(WebDavXml.Dav + "owner", WebDavContext.User.Identity.Name),
+                LockAccessType.Write,
+                isMove ? LockShareMode.Exclusive : LockShareMode.Shared,
+                TimeoutHeader.Infinite);
+            var sourceTempLock = lockManager == null
+                ? new ImplicitLock(true)
+                : await lockManager.LockImplicitAsync(
+                        _rootFileSystem,
+                        WebDavContext.RequestHeaders.If?.Lists,
+                        sourceLockRequirements,
+                        cancellationToken)
+                    .ConfigureAwait(false);
+            if (!sourceTempLock.IsSuccessful)
+                return sourceTempLock.CreateErrorResponse();
+
+            try
+            {
+                var baseUrl = WebDavContext.BaseUrl;
+                var sourceUrl = new Uri(baseUrl, sourcePath);
+                var destinationUrl = new Uri(sourceUrl, destination);
+
+                // Ignore different schemes
+                if (!baseUrl.IsBaseOf(destinationUrl) || mode == RecursiveProcessingMode.PreferCrossServer)
                 {
-                    if (remoteHandler == null)
-                        throw new WebDavException(WebDavStatusCode.BadGateway, "No remote handler for given client");
+                    if (_logger.IsEnabled(LogLevel.Trace))
+                        _logger.LogTrace("Using cross-server mode");
 
-                    var remoteTargetResult = await RemoteExecuteAsync(remoteHandler, sourceUrl, sourceSelectionResult, destinationUrl, depth, overwrite, cancellationToken).ConfigureAwait(false);
-                    return remoteTargetResult.Evaluate(WebDavContext);
+                    if (_logger.IsEnabled(LogLevel.Debug))
+                        _logger.LogDebug($"{baseUrl} is not a base of {destinationUrl}");
+
+                    using (var remoteHandler = await CreateRemoteTargetActionsAsync(
+                            destinationUrl,
+                            cancellationToken)
+                        .ConfigureAwait(false))
+                    {
+                        if (remoteHandler == null)
+                        {
+                            throw new WebDavException(
+                                WebDavStatusCode.BadGateway,
+                                "No remote handler for given client");
+                        }
+
+                        var remoteTargetResult = await RemoteExecuteAsync(
+                            remoteHandler,
+                            sourceUrl,
+                            sourceSelectionResult,
+                            destinationUrl,
+                            depth,
+                            overwrite,
+                            cancellationToken).ConfigureAwait(false);
+                        result = remoteTargetResult.Evaluate(WebDavContext);
+                    }
+                }
+                else
+                {
+                    var destLockRequirements = new Lock(
+                        sourceSelectionResult.TargetEntry.Path,
+                        WebDavContext.RelativeRequestUrl,
+                        depth != DepthHeader.Zero,
+                        new XElement(WebDavXml.Dav + "owner", WebDavContext.User.Identity.Name),
+                        LockAccessType.Write,
+                        LockShareMode.Exclusive,
+                        TimeoutHeader.Infinite);
+                    var destTempLock = lockManager == null
+                        ? new ImplicitLock(true)
+                        : await lockManager.LockImplicitAsync(
+                                _rootFileSystem,
+                                WebDavContext.RequestHeaders.If?.Lists,
+                                destLockRequirements,
+                                cancellationToken)
+                            .ConfigureAwait(false);
+                    if (!destTempLock.IsSuccessful)
+                        return destTempLock.CreateErrorResponse();
+
+                    try
+                    {
+                        // Copy or move from one known file system to another
+                        var destinationPath = baseUrl.MakeRelativeUri(destinationUrl).ToString();
+                        var destinationSelectionResult =
+                            await _rootFileSystem.SelectAsync(destinationPath, cancellationToken).ConfigureAwait(false);
+                        if (destinationSelectionResult.IsMissing && destinationSelectionResult.MissingNames.Count != 1)
+                        {
+                            _logger.LogDebug(
+                                $"{destinationUrl}: The target is missing with the following path parts: {string.Join(", ", destinationSelectionResult.MissingNames)}");
+                            throw new WebDavException(WebDavStatusCode.Conflict);
+                        }
+
+                        var isSameFileSystem = ReferenceEquals(
+                            sourceSelectionResult.TargetFileSystem,
+                            destinationSelectionResult.TargetFileSystem);
+                        var localMode = isSameFileSystem && mode == RecursiveProcessingMode.PreferFastest
+                            ? RecursiveProcessingMode.PreferFastest
+                            : RecursiveProcessingMode.PreferCrossFileSystem;
+                        var handler = CreateLocalTargetActions(localMode);
+
+                        var targetInfo = FileSystemTarget.FromSelectionResult(
+                            destinationSelectionResult,
+                            destinationUrl,
+                            handler);
+                        var targetResult = await LocalExecuteAsync(
+                            handler,
+                            sourceUrl,
+                            sourceSelectionResult,
+                            targetInfo,
+                            depth,
+                            overwrite,
+                            cancellationToken).ConfigureAwait(false);
+                        result = targetResult.Evaluate(WebDavContext);
+                    }
+                    finally
+                    {
+                        await destTempLock.DisposeAsync(cancellationToken).ConfigureAwait(false);
+                    }
+                }
+            }
+            finally
+            {
+                await sourceTempLock.DisposeAsync(cancellationToken).ConfigureAwait(false);
+            }
+
+            if (lockManager != null)
+            {
+                var locksToRemove = await lockManager
+                    .GetAffectedLocksAsync(sourcePath, true, false, cancellationToken)
+                    .ConfigureAwait(false);
+                foreach (var activeLock in locksToRemove)
+                {
+                    await lockManager.ReleaseAsync(
+                            activeLock.Path,
+                            new Uri(activeLock.StateToken),
+                            cancellationToken)
+                        .ConfigureAwait(false);
                 }
             }
 
-            // Copy or move from one known file system to another
-            var destinationPath = baseUrl.MakeRelativeUri(destinationUrl).ToString();
-            var destinationSelectionResult = await _rootFileSystem.SelectAsync(destinationPath, cancellationToken).ConfigureAwait(false);
-            if (destinationSelectionResult.IsMissing && destinationSelectionResult.MissingNames.Count != 1)
-            {
-                _logger.LogDebug($"{destinationUrl}: The target is missing with the following path parts: {string.Join(", ", destinationSelectionResult.MissingNames)}");
-                throw new WebDavException(WebDavStatusCode.Conflict);
-            }
-
-            var isSameFileSystem = ReferenceEquals(sourceSelectionResult.TargetFileSystem, destinationSelectionResult.TargetFileSystem);
-            var localMode = isSameFileSystem && mode == RecursiveProcessingMode.PreferFastest
-                ? RecursiveProcessingMode.PreferFastest
-                : RecursiveProcessingMode.PreferCrossFileSystem;
-            var handler = CreateLocalTargetActions(localMode);
-
-            var targetInfo = FileSystemTarget.FromSelectionResult(destinationSelectionResult, destinationUrl, handler);
-            var targetResult = await LocalExecuteAsync(handler, sourceUrl, sourceSelectionResult, targetInfo, depth, overwrite, cancellationToken).ConfigureAwait(false);
-            return targetResult.Evaluate(WebDavContext);
+            return result;
         }
 
         protected static async Task<Engines.CollectionActionResult> ExecuteAsync<TCollection, TDocument, TMissing>(

@@ -11,7 +11,6 @@ using FubarDev.WebDavServer.Engines;
 using FubarDev.WebDavServer.Engines.Local;
 using FubarDev.WebDavServer.Engines.Remote;
 using FubarDev.WebDavServer.FileSystem;
-using FubarDev.WebDavServer.Model;
 using FubarDev.WebDavServer.Model.Headers;
 
 using Microsoft.Extensions.DependencyInjection;
@@ -40,7 +39,7 @@ namespace FubarDev.WebDavServer.Handlers.Impl
         {
             var doOverwrite = WebDavContext.RequestHeaders.Overwrite ?? _options.OverwriteAsDefault;
             var depth = WebDavContext.RequestHeaders.Depth ?? DepthHeader.Infinity;
-            return ExecuteAsync(sourcePath, destination, depth, doOverwrite, _options.Mode, cancellationToken);
+            return ExecuteAsync(sourcePath, destination, depth, doOverwrite, _options.Mode, false, cancellationToken);
         }
 
         protected override async Task<IRemoteTargetActions> CreateRemoteTargetActionsAsync(Uri destinationUrl, CancellationToken cancellationToken)
