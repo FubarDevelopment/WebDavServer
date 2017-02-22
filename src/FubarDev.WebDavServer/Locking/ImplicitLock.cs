@@ -8,6 +8,8 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 
+using FubarDev.WebDavServer.Model;
+
 using JetBrains.Annotations;
 
 namespace FubarDev.WebDavServer.Locking
@@ -47,6 +49,34 @@ namespace FubarDev.WebDavServer.Locking
         public bool IsTemporaryLock { get; }
 
         public bool IsSuccessful { get; }
+
+        public IWebDavResult CreateErrorResponse()
+        {
+            if (IsSuccessful)
+                throw new InvalidOperationException("No error to create a response for.");
+
+            if (ConflictingLocks == null)
+            {
+                // No "If" header condition succeeded, but we didn't ask for a lock
+                return new WebDavResult(WebDavStatusCode.NotFound);
+            }
+
+            // An "If" header condition succeeded, but we couldn't find a matching lock.
+            // Obtaining a temporary lock failed.
+            var error = new error()
+            {
+                ItemsElementName = new[] { ItemsChoiceType.locktokensubmitted, },
+                Items = new object[]
+                {
+                    new errorLocktokensubmitted()
+                    {
+                        href = ConflictingLocks.Select(x => x.Href).ToArray(),
+                    },
+                },
+            };
+
+            return new WebDavResult<error>(WebDavStatusCode.Locked, error);
+        }
 
         public Task DisposeAsync(CancellationToken cancellationToken)
         {

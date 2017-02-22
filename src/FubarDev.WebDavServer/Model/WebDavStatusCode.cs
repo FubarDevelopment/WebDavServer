@@ -14,6 +14,8 @@ namespace FubarDev.WebDavServer.Model
         PartialContent = HttpStatusCode.PartialContent,
         MultiStatus = 207,
 
+        NotModified = HttpStatusCode.NotModified,
+
         BadRequest = HttpStatusCode.BadRequest,
         Forbidden = HttpStatusCode.Forbidden,
         NotFound = HttpStatusCode.NotFound,

@@ -19,5 +19,7 @@ namespace FubarDev.WebDavServer.Locking
         bool IsSuccessful { get; }
 
         Task DisposeAsync(CancellationToken cancellationToken);
+
+        IWebDavResult CreateErrorResponse();
     }
 }

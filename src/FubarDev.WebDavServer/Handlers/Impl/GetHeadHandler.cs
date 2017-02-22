@@ -15,6 +15,7 @@ using FubarDev.WebDavServer.Handlers.Impl.GetResults;
 using FubarDev.WebDavServer.Locking;
 using FubarDev.WebDavServer.Model;
 using FubarDev.WebDavServer.Model.Headers;
+using FubarDev.WebDavServer.Utils;
 
 using JetBrains.Annotations;
 
@@ -52,12 +53,21 @@ namespace FubarDev.WebDavServer.Handlers.Impl
         private async Task<IWebDavResult> HandleAsync([NotNull] string path, bool returnFile, CancellationToken cancellationToken)
         {
             var searchResult = await FileSystem.SelectAsync(path, cancellationToken).ConfigureAwait(false);
+
             if (searchResult.IsMissing)
+            {
+                if (_context.RequestHeaders.IfNoneMatch != null)
+                    throw new WebDavException(WebDavStatusCode.PreconditionFailed);
+
                 throw new WebDavException(WebDavStatusCode.NotFound);
+            }
+
+            await _context.RequestHeaders
+                .ValidateAsync(searchResult.TargetEntry, cancellationToken).ConfigureAwait(false);
 
             var lockRequirements = new Lock(
-                path,
-                _context.RelativeRequestUrl.OriginalString,
+                searchResult.TargetEntry.Path,
+                _context.RelativeRequestUrl,
                 false,
                 new XElement(WebDavXml.Dav + "owner", _context.User.Identity.Name),
                 LockAccessType.Write,
@@ -69,29 +79,7 @@ namespace FubarDev.WebDavServer.Handlers.Impl
                 : await lockManager.LockImplicitAsync(FileSystem, _context.RequestHeaders.If?.Lists, lockRequirements, cancellationToken)
                                    .ConfigureAwait(false);
             if (!tempLock.IsSuccessful)
-            {
-                if (tempLock.ConflictingLocks == null)
-                {
-                    // No "If" header condition succeeded, but we didn't ask for a lock
-                    return new WebDavResult(WebDavStatusCode.NotFound);
-                }
-
-                // An "If" header condition succeeded, but we couldn't find a matching lock.
-                // Obtaining a temporary lock failed.
-                var error = new error()
-                {
-                    ItemsElementName = new[] { ItemsChoiceType.locktokensubmitted, },
-                    Items = new object[]
-                    {
-                        new errorLocktokensubmitted()
-                        {
-                            href = tempLock.ConflictingLocks.Select(x => x.Href).ToArray(),
-                        },
-                    },
-                };
-
-                return new WebDavResult<error>(WebDavStatusCode.Locked, error);
-            }
+                return tempLock.CreateErrorResponse();
 
             try
             {
