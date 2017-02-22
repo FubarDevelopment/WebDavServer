@@ -42,6 +42,8 @@ namespace FubarDev.WebDavServer.FileSystem.DotNet
 
         public DateTime LastWriteTimeUtc => Info.LastWriteTimeUtc;
 
+        public DateTime CreationTimeUtc => Info.CreationTimeUtc;
+
         public IAsyncEnumerable<IUntypedReadableProperty> GetProperties(int? maxCost)
         {
             return new EntryProperties(this, GetLiveProperties(), GetPredefinedDeadProperties(), FileSystem.PropertyStore, maxCost);
@@ -54,9 +56,9 @@ namespace FubarDev.WebDavServer.FileSystem.DotNet
             var properties = new List<ILiveProperty>()
             {
                 this.GetResourceTypeProperty(),
+                new LockDiscoveryProperty(FileSystem.LockManager, this),
                 new LastModifiedProperty(ct => Task.FromResult(Info.LastWriteTimeUtc), SetLastWriteTimeUtcAsync),
                 new CreationDateProperty(ct => Task.FromResult(Info.CreationTimeUtc), SetCreateTimeUtcAsync),
-                new LockDiscoveryProperty(FileSystem.LockManager, this),
             };
             return properties;
         }

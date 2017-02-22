@@ -39,14 +39,14 @@ namespace FubarDev.WebDavServer.FileSystem.InMemory
 
         public DateTime LastWriteTimeUtc { get; protected set; }
 
+        public DateTime CreationTimeUtc { get; protected set; }
+
         /// <inheritdoc />
         public EntityTag ETag { get; protected set; } = new EntityTag(false);
 
         protected InMemoryFileSystem InMemoryFileSystem { get; }
 
         protected InMemoryDirectory InMemoryParent => _parent;
-
-        protected DateTime CreationTimeUtc { get; set; }
 
         public IAsyncEnumerable<IUntypedReadableProperty> GetProperties(int? maxCost)
         {
