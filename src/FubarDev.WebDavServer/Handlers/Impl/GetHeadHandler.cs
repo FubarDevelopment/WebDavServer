@@ -8,13 +8,10 @@ using System.Diagnostics;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
-using System.Xml.Linq;
 
 using FubarDev.WebDavServer.FileSystem;
 using FubarDev.WebDavServer.Handlers.Impl.GetResults;
-using FubarDev.WebDavServer.Locking;
 using FubarDev.WebDavServer.Model;
-using FubarDev.WebDavServer.Model.Headers;
 using FubarDev.WebDavServer.Utils;
 
 using JetBrains.Annotations;
@@ -50,7 +47,10 @@ namespace FubarDev.WebDavServer.Handlers.Impl
             return HandleAsync(path, false, cancellationToken);
         }
 
-        private async Task<IWebDavResult> HandleAsync([NotNull] string path, bool returnFile, CancellationToken cancellationToken)
+        private async Task<IWebDavResult> HandleAsync(
+            [NotNull] string path,
+            bool returnFile,
+            CancellationToken cancellationToken)
         {
             var selectionResult = await FileSystem.SelectAsync(path, cancellationToken).ConfigureAwait(false);
 
@@ -65,62 +65,39 @@ namespace FubarDev.WebDavServer.Handlers.Impl
             await _context.RequestHeaders
                 .ValidateAsync(selectionResult.TargetEntry, cancellationToken).ConfigureAwait(false);
 
-            var lockRequirements = new Lock(
-                selectionResult.TargetEntry.Path,
-                _context.RelativeRequestUrl,
-                false,
-                new XElement(WebDavXml.Dav + "owner", _context.User.Identity.Name),
-                LockAccessType.Write,
-                LockShareMode.Shared,
-                TimeoutHeader.Infinite);
-            var lockManager = FileSystem.LockManager;
-            var tempLock = lockManager == null
-                ? new ImplicitLock(true)
-                : await lockManager.LockImplicitAsync(FileSystem, _context.RequestHeaders.If?.Lists, lockRequirements, cancellationToken)
-                                   .ConfigureAwait(false);
-            if (!tempLock.IsSuccessful)
-                return tempLock.CreateErrorResponse();
-
-            try
+            if (selectionResult.ResultType == SelectionResultType.FoundCollection)
             {
-                if (selectionResult.ResultType == SelectionResultType.FoundCollection)
+                if (returnFile)
+                    throw new NotSupportedException();
+                Debug.Assert(selectionResult.Collection != null, "selectionResult.Collection != null");
+                return new WebDavCollectionResult(selectionResult.Collection);
+            }
+
+            Debug.Assert(selectionResult.Document != null, "selectionResult.Document != null");
+
+            var doc = selectionResult.Document;
+            var rangeHeader = _context.RequestHeaders.Range;
+            if (rangeHeader != null)
+            {
+                if (rangeHeader.Unit != "bytes")
+                    throw new NotSupportedException();
+
+                var rangeItems = rangeHeader.Normalize(doc.Length);
+                if (rangeItems.Any(x => x.Length < 0 || x.To >= doc.Length))
                 {
-                    if (returnFile)
-                        throw new NotSupportedException();
-                    Debug.Assert(selectionResult.Collection != null, "selectionResult.Collection != null");
-                    return new WebDavCollectionResult(selectionResult.Collection);
-                }
-
-                Debug.Assert(selectionResult.Document != null, "selectionResult.Document != null");
-
-                var doc = selectionResult.Document;
-                var rangeHeader = _context.RequestHeaders.Range;
-                if (rangeHeader != null)
-                {
-                    if (rangeHeader.Unit != "bytes")
-                        throw new NotSupportedException();
-
-                    var rangeItems = rangeHeader.Normalize(doc.Length);
-                    if (rangeItems.Any(x => x.Length < 0 || x.To >= doc.Length))
+                    return new WebDavResult(WebDavStatusCode.RequestedRangeNotSatisfiable)
                     {
-                        return new WebDavResult(WebDavStatusCode.RequestedRangeNotSatisfiable)
+                        Headers =
                         {
-                            Headers =
-                            {
-                                ["Content-Range"] = new[] { $"bytes */{doc.Length}" },
-                            },
-                        };
-                    }
-
-                    return new WebDavPartialDocumentResult(doc, returnFile, rangeItems);
+                            ["Content-Range"] = new[] { $"bytes */{doc.Length}" },
+                        },
+                    };
                 }
 
-                return new WebDavFullDocumentResult(doc, returnFile);
+                return new WebDavPartialDocumentResult(doc, returnFile, rangeItems);
             }
-            finally
-            {
-                await tempLock.DisposeAsync(cancellationToken).ConfigureAwait(false);
-            }
+
+            return new WebDavFullDocumentResult(doc, returnFile);
         }
     }
 }
