@@ -2,7 +2,7 @@
 // Copyright (c) Fubar Development Junker. All rights reserved.
 // </copyright>
 
-using System.IO;
+using System.Linq;
 using System.Xml.Linq;
 using System.Xml.Serialization;
 
@@ -19,10 +19,11 @@ namespace FubarDev.WebDavServer.Props.Converters
 
         public XElement ToElement(XName name, T value)
         {
-            var output = new StringWriter();
-            _serializer.Serialize(output, value);
-            var doc = XDocument.Parse(output.ToString());
-            return doc.Root;
+            var doc = new XDocument();
+            using (var writer = doc.CreateWriter())
+                _serializer.Serialize(writer, value);
+            var element = new XElement(name, doc.Root.Elements().Cast<object>().ToArray());
+            return element;
         }
     }
 }
