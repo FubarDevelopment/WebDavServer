@@ -56,6 +56,13 @@ namespace FubarDev.WebDavServer.AspNetCore.Filters
 
         private IActionResult BuildResultForStatusCode(ExceptionContext context, WebDavStatusCode statusCode, string optionalMessge)
         {
+            switch (statusCode)
+            {
+                case WebDavStatusCode.NotModified:
+                    // 304 must not return a body
+                    return new StatusCodeResult((int)statusCode);
+            }
+
             var result = new WebDavResult<multistatus>(
                 statusCode,
                 new multistatus()
