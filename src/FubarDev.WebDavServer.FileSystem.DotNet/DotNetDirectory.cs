@@ -61,22 +61,28 @@ namespace FubarDev.WebDavServer.FileSystem.DotNet
 
         public async Task<IDocument> CreateDocumentAsync(string name, CancellationToken cancellationToken)
         {
-            var info = new FileInfo(System.IO.Path.Combine(DirectoryInfo.FullName, name));
+            var fullFileName = System.IO.Path.Combine(DirectoryInfo.FullName, name);
+            var info = new FileInfo(fullFileName);
             info.Create().Dispose();
             if (FileSystem.PropertyStore != null)
                 await FileSystem.PropertyStore.UpdateETagAsync(this, cancellationToken).ConfigureAwait(false);
-            return (IDocument)CreateEntry(info);
+            return (IDocument)CreateEntry(new FileInfo(fullFileName));
         }
 
         public async Task<ICollection> CreateCollectionAsync(string name, CancellationToken cancellationToken)
         {
-            var info = new DirectoryInfo(System.IO.Path.Combine(DirectoryInfo.FullName, name));
+            var fullDirPath = System.IO.Path.Combine(DirectoryInfo.FullName, name);
+
+            var info = new DirectoryInfo(fullDirPath);
             if (info.Exists)
                 throw new IOException("Collection already exists.");
+
             info.Create();
+
             if (FileSystem.PropertyStore != null)
                 await FileSystem.PropertyStore.UpdateETagAsync(this, cancellationToken).ConfigureAwait(false);
-            return (ICollection)CreateEntry(info);
+
+            return (ICollection)CreateEntry(new DirectoryInfo(fullDirPath));
         }
 
         public override async Task<DeleteResult> DeleteAsync(CancellationToken cancellationToken)
