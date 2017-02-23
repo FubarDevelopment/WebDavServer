@@ -1,0 +1,672 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+      <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+   <title>Quota and Size Properties for&nbsp;Distributed&nbsp;Authoring&nbsp;and&nbsp;Versioning&nbsp;(DAV)&nbsp;Collections</title><script type="application/javascript">
+function getMeta(rfcno, container) {
+
+  var xhr = new XMLHttpRequest();
+  xhr.open("GET", "https://tools.ietf.org/draft/rfc" + rfcno + "/state.xml", true);
+  xhr.onload = function (e) {
+    if (xhr.readyState === 4) {
+      if (xhr.status === 200) {
+        var doc = xhr.responseXML;
+        var info = getChildByName(doc.documentElement, "info");
+  
+        var cont = document.getElementById(container);
+        // empty the container
+        while (cont.firstChild) {
+          cont.removeChild(myNode.firstChild);
+        }      
+  
+        var c = getChildByName(info, "stdstatus");
+        if (c !== null) {
+          var bld = newElementWithText("b", c.textContent);
+          cont.appendChild(bld);
+        }
+  
+        c = getChildByName(info, "updatedby");
+        if (c !== null) {
+          cont.appendChild(newElement("br"));
+          cont.appendChild(newText("Updated by: "));
+          appendRfcLinks(cont, c.textContent);
+        }
+  
+        c = getChildByName(info, "obsoletedby");
+        if (c !== null) {
+          cont.appendChild(newElement("br"));
+          cont.appendChild(newText("Obsoleted by: "));
+          appendRfcLinks(cont, c.textContent);
+        }
+        
+        c = getChildByName(info, "errata");
+        if (c !== null) {
+          cont.appendChild(newElement("br"));
+          var link = newElementWithText("a", "errata");
+          link.setAttribute("href", "http://www.rfc-editor.org/errata_search.php?rfc=" + rfcno);
+          var errata = newElementWithText("i", "This document has ");
+          errata.appendChild(link);
+          errata.appendChild(newText("."));
+          cont.appendChild(errata);
+        }
+
+        cont.style.display = "block";
+      } else {
+        console.error(xhr.statusText);
+      }
+    }
+  };
+  xhr.onerror = function (e) {
+    console.error(xhr.status + " " + xhr.statusText);
+  };
+  xhr.send(null);
+}
+
+// DOM helpers
+function newElement(name) {
+  return document.createElement(name);
+}
+function newElementWithText(name, txt) {
+  var e = document.createElement(name);
+  e.appendChild(newText(txt));
+  return e;
+}
+function newText(text) {
+  return document.createTextNode(text);
+}
+
+function getChildByName(parent, name) {
+  if (parent === null) {
+    return null;
+  }
+  else {
+    for (var c = parent.firstChild; c !== null; c = c.nextSibling) {
+      if (name == c.nodeName) {
+        return c;
+      }
+    }
+    return null;
+  }
+}
+
+function appendRfcLinks(parent, text) {
+  var updates = text.split(",");
+  for (var i = 0; i < updates.length; i++) {
+    var rfc = updates[i].trim();
+    if (rfc.substring(0, 3) == "rfc") {
+      var link = newElement("a");
+      link.setAttribute("href", "http://tools.ietf.org/html/" + rfc);
+      link.appendChild(newText(rfc.substring(3)));
+      parent.appendChild(link);
+    } else {
+      parent.appendChild(newText(rfc));
+    }
+    if (i != updates.length - 1) {
+      parent.appendChild(newText(", "));
+    }
+  }
+}
+</script><script type="application/javascript">
+function anchorRewrite() {
+  map = { };
+  if (window.location.hash.length >= 1) {
+    var fragid = window.location.hash.substr(1);
+    if (fragid) {
+      if (! document.getElementById(fragid)) {
+        var prefix = "rfc.";
+        var mapped = map[fragid];
+        if (mapped) {
+          window.location.hash = mapped;
+        } else if (fragid.indexOf("section-") == 0) {
+          window.location.hash = prefix + "section." + fragid.substring(8);
+        } else if (fragid.indexOf("appendix-") == 0) {
+          window.location.hash = prefix + "section." + fragid.substring(9);
+        } else if (fragid.indexOf("s-") == 0) {
+          window.location.hash = prefix + "section." + fragid.substring(2);
+        } else if (fragid.indexOf("p-") == 0) {
+          var r = fragid.substring(2);
+          var p = r.indexOf("-");
+          if (p >= 0) {
+            window.location.hash = prefix + "section." + r.substring(0, p) + ".p." + r.substring(p + 1);
+          }
+        }
+      }
+    }  
+  }
+}
+window.addEventListener('hashchange', anchorRewrite);
+window.addEventListener('DOMContentLoaded', anchorRewrite);
+</script><style type="text/css" title="Xml2Rfc (sans serif)">
+a {
+  text-decoration: none;
+}
+a.smpl {
+  color: black;
+}
+a:hover {
+  text-decoration: underline;
+}
+a:active {
+  text-decoration: underline;
+}
+address {
+  margin-top: 1em;
+  margin-left: 2em;
+  font-style: normal;
+}
+body {
+  color: black;
+  font-family: cambria, georgia, serif;
+  font-size: 12pt;
+  margin: 2em auto;
+  max-width: 1000px;
+}
+samp, span.tt, code, pre {
+  font-family: consolas, monaco, monospace;
+}
+cite {
+  font-style: normal;
+}
+dl {
+  margin-left: 2em;
+}
+dl > dt {
+  float: left;
+  margin-right: 1em;
+}
+dl.nohang > dt {
+  float: none;
+}
+dl > dd {
+  margin-bottom: .5em;
+}
+dl.compact > dd {
+  margin-bottom: .0em;
+}
+dl > dd > dl {
+  margin-top: 0.5em;
+}
+ul.empty {
+  list-style-type: none;
+}
+ul.empty li {
+  margin-top: .5em;
+}
+dl p {
+  margin-left: 0em;
+}
+dl.reference > dt {
+  font-weight: bold;
+}
+dl.reference > dd {
+  margin-left: 6em;
+}
+h1 {
+  color: green;
+  font-size: 150%;
+  line-height: 18pt;
+  font-weight: bold;
+  text-align: center;
+  margin-top: 36pt;
+  margin-bottom: 0pt;
+}
+h2 {
+  font-size: 130%;
+  line-height: 21pt;
+  page-break-after: avoid;
+}
+h2.np {
+  page-break-before: always;
+}
+h3 {
+  font-size: 120%;
+  line-height: 15pt;
+  page-break-after: avoid;
+}
+h4 {
+  font-size: 110%;
+  page-break-after: avoid;
+}
+h5, h6 {
+  page-break-after: avoid;
+}
+h1 a, h2 a, h3 a, h4 a, h5 a, h6 a {
+  color: black;
+}
+img {
+  margin-left: 3em;
+}
+li {
+  margin-left: 2em;
+}
+ol {
+  margin-left: 2em;
+}
+ol.la {
+  list-style-type: lower-alpha;
+}
+ol.ua {
+  list-style-type: upper-alpha;
+}
+ol p {
+  margin-left: 0em;
+}
+p {
+  margin-left: 2em;
+}
+pre {
+  font-size: 11pt;
+  margin-left: 3em;
+  background-color: lightyellow;
+  padding: .25em;
+  page-break-inside: avoid;
+}
+pre.text2 {
+  border-style: dotted;
+  border-width: 1px;
+  background-color: #f0f0f0;
+}
+pre.inline {
+  background-color: white;
+  padding: 0em;
+  page-break-inside: auto;
+}
+pre.text {
+  border-style: dotted;
+  border-width: 1px;
+  background-color: #f8f8f8;
+}
+pre.drawing {
+  border-style: solid;
+  border-width: 1px;
+  background-color: #f8f8f8;
+  padding: 2em;
+}
+table {
+  margin-left: 2em;
+}
+table.header {
+  border-spacing: 1px;
+  width: 95%;
+  font-size: 11pt;
+  color: white;
+}
+td.top {
+  vertical-align: top;
+}
+td.topnowrap {
+  vertical-align: top;
+  white-space: nowrap;
+}
+table.header td {
+  background-color: gray;
+  width: 50%;
+}
+ul.toc, ul.toc ul {
+  list-style: none;
+  margin-left: 1.5em;
+  padding-left: 0em;
+}
+ul.toc li {
+  line-height: 150%;
+  font-weight: bold;
+  margin-left: 0em;
+}
+ul.toc li li {
+  line-height: normal;
+  font-weight: normal;
+  font-size: 11pt;
+  margin-left: 0em;
+}
+li.excluded {
+  font-size: 0pt;
+}
+ul p {
+  margin-left: 0em;
+}
+.filename, h1, h2, h3, h4 {
+  font-family: candara, calibri, segoe, optima, arial, sans-serif;
+}
+ul.ind, ul.ind ul {
+  list-style: none;
+  margin-left: 1.5em;
+  padding-left: 0em;
+  page-break-before: avoid;
+}
+ul.ind li {
+  font-weight: bold;
+  line-height: 200%;
+  margin-left: 0em;
+}
+ul.ind li li {
+  font-weight: normal;
+  line-height: 150%;
+  margin-left: 0em;
+}
+.avoidbreakinside {
+  page-break-inside: avoid;
+}
+.avoidbreakafter {
+  page-break-after: avoid;
+}
+.bcp14 {
+  font-style: normal;
+  text-transform: lowercase;
+  font-variant: small-caps;
+}
+.comment {
+  background-color: yellow;
+}
+.center {
+  text-align: center;
+}
+.error {
+  color: red;
+  font-style: italic;
+  font-weight: bold;
+}
+.figure {
+  font-weight: bold;
+  text-align: center;
+  font-size: 10pt;
+}
+.filename {
+  color: #333333;
+  font-size: 112%;
+  font-weight: bold;
+  line-height: 21pt;
+  text-align: center;
+  margin-top: 0pt;
+}
+.fn {
+  font-weight: bold;
+}
+.left {
+  text-align: left;
+}
+.right {
+  text-align: right;
+}
+.warning {
+  font-size: 130%;
+  background-color: yellow;
+}
+.self {
+    color: #999999;
+    margin-left: .3em;
+    text-decoration: none;
+    visibility: hidden;
+    -webkit-user-select: none; 
+    -moz-user-select: none;
+    -ms-user-select: none;
+}
+.self:hover {
+    text-decoration: none;
+}
+p:hover .self {
+    visibility: visible;
+}
+.docstatus {
+  border: 1px solid black;
+  display: none;
+  float: right;
+  margin: 2em;
+  padding: 1em;
+}
+
+@media screen {
+  pre.text, pre.text2 {
+    width: 69em;
+  }
+}
+
+@media print {
+  .noprint {
+    display: none;
+  }
+
+  a {
+    color: black;
+    text-decoration: none;
+  }
+
+  table.header {
+    width: 90%;
+  }
+
+  td.header {
+    width: 50%;
+    color: black;
+    background-color: white;
+    vertical-align: top;
+    font-size: 110%;
+  }
+
+  ul.toc a:last-child::after {
+    content: leader('.') target-counter(attr(href), page);
+  }
+
+  ul.ind li li a {
+    content: target-counter(attr(href), page);
+  }
+
+  pre {
+    font-size: 10pt;
+  }
+
+  .print2col {
+    column-count: 2;
+    -moz-column-count: 2;
+    column-fill: auto;
+  }
+}
+@page {
+  @top-left {
+       content: "RFC 4331";
+  }
+  @top-right {
+       content: "February 2006";
+  }
+  @top-center {
+       content: "WebDAV Quotas";
+  }
+  @bottom-left {
+       content: "Korver & Dusseault";
+  }
+  @bottom-center {
+       content: "Standards Track";
+  }
+  @bottom-right {
+       content: "[Page " counter(page) "]";
+  }
+}
+@page:first {
+    @top-left {
+      content: normal;
+    }
+    @top-right {
+      content: normal;
+    }
+    @top-center {
+      content: normal;
+    }
+}
+</style><link rel="Contents" href="#rfc.toc"><link rel="Author" href="#rfc.authors"><link rel="Copyright" href="#rfc.copyright"><link rel="Index" href="#rfc.index"><link rel="Chapter" title="1 Introduction" href="#rfc.section.1"><link rel="Chapter" title="2 Solution Overview" href="#rfc.section.2"><link rel="Chapter" title="3 DAV:quota-available-bytes" href="#rfc.section.3"><link rel="Chapter" title="4 DAV:quota-used-bytes" href="#rfc.section.4"><link rel="Chapter" title="5 Example PROPFIND Request and Response" href="#rfc.section.5"><link rel="Chapter" title="6 Error Reporting" href="#rfc.section.6"><link rel="Chapter" title="7 Notes" href="#rfc.section.7"><link rel="Chapter" title="8 Security Considerations" href="#rfc.section.8"><link rel="Chapter" title="9 Internationalization Considerations" href="#rfc.section.9"><link rel="Chapter" title="10 Acknowledgements" href="#rfc.section.10"><link rel="Chapter" href="#rfc.section.11" title="11 References"><link rel="Alternate" title="Authoritative ASCII Version" href="http://www.ietf.org/rfc/rfc4331.txt"><link rel="Help" title="RFC-Editor's Status Page" href="http://www.rfc-editor.org/info/rfc4331"><link rel="Help" title="Additional Information on tools.ietf.org" href="http://tools.ietf.org/html/rfc4331"><meta name="generator" content="http://greenbytes.de/tech/webdav/rfc2629.xslt, Revision 1.840, 2016/11/16 05:32:10, XSLT vendor: SAXON 6.5.5 from Michael Kay http://saxon.sf.net/"><meta name="keywords" content="quota"><link rel="schema.dcterms" href="http://purl.org/dc/terms/"><meta name="dcterms.creator" content="Korver, B."><meta name="dcterms.creator" content="Dusseault, L."><meta name="dcterms.identifier" content="urn:ietf:rfc:4331"><meta name="dcterms.issued" content="2006-02"><meta name="dcterms.abstract" content="Web Distributed Authoring and Versioning (WebDAV) servers are frequently deployed with quota (size) limitations. This document discusses the properties and minor behaviors needed for clients to interoperate with quota (size) implementations on WebDAV repositories."><meta name="dcterms.isPartOf" content="urn:issn:2070-1721"><meta name="description" content="Web Distributed Authoring and Versioning (WebDAV) servers are frequently deployed with quota (size) limitations. This document discusses the properties and minor behaviors needed for clients to interoperate with quota (size) implementations on WebDAV repositories."></head><body onload='getMeta(4331,"rfc.meta");'><header><table class="header" id="rfc.headerblock"><tbody><tr><td class="left">Network Working Group</td><td class="right">B. Korver</td></tr><tr><td class="left">Request for Comments: 4331</td><td class="right">Network Resonance</td></tr><tr><td class="left">Category: Standards Track</td><td class="right">L. Dusseault</td></tr><tr><td class="left"></td><td class="right">OSAF</td></tr><tr><td class="left"></td><td class="right">February 2006</td></tr></tbody></table><div id="rfc.title"><h1>Quota and Size Properties for&nbsp;Distributed&nbsp;Authoring&nbsp;and&nbsp;Versioning&nbsp;(DAV)&nbsp;Collections</h1></div></header><div id="rfc.meta" class="docstatus" style="display: block;"><b>PROPOSED STANDARD</b></div><section id="rfc.status"><h2><a href="#rfc.status">Status of this Memo</a></h2><p>This
+ document specifies an Internet standards track protocol for the 
+Internet community, and requests discussion and suggestions for 
+improvements. Please refer to the current edition of the “Internet 
+Official Protocol Standards” (STD 1) for the standardization state and 
+status of this protocol. Distribution of this memo is unlimited.</p></section><section id="rfc.copyrightnotice"><h2><a href="#rfc.copyrightnotice">Copyright Notice</a></h2><p>Copyright © The Internet Society (2006). All Rights Reserved.</p></section><section id="rfc.abstract"><h2><a href="#rfc.abstract">Abstract</a></h2><p>Web
+ Distributed Authoring and Versioning (WebDAV) servers are frequently 
+deployed with quota (size) limitations. This document discusses the 
+properties and minor behaviors needed for clients to interoperate with 
+quota (size) implementations on WebDAV repositories.</p></section><hr class="noprint"><nav id="rfc.toc"><h2 class="np"><a href="#rfc.toc">Table of Contents</a></h2><ul class="toc"><li><a href="#rfc.section.1">1.</a>&nbsp;&nbsp;&nbsp;<a href="#intro">Introduction</a><ul><li><a href="#rfc.section.1.1">1.1</a>&nbsp;&nbsp;&nbsp;<a href="#notation">Notational Conventions</a></li><li><a href="#rfc.section.1.2">1.2</a>&nbsp;&nbsp;&nbsp;<a href="#requirement">Requirement for Quotas</a></li></ul></li><li><a href="#rfc.section.2">2.</a>&nbsp;&nbsp;&nbsp;<a href="#overview">Solution Overview</a></li><li><a href="#rfc.section.3">3.</a>&nbsp;&nbsp;&nbsp;<a href="#quota-available-bytes">DAV:quota-available-bytes</a></li><li><a href="#rfc.section.4">4.</a>&nbsp;&nbsp;&nbsp;<a href="#quota-used-bytes">DAV:quota-used-bytes</a></li><li><a href="#rfc.section.5">5.</a>&nbsp;&nbsp;&nbsp;<a href="#example-propfind">Example PROPFIND Request and Response</a></li><li><a href="#rfc.section.6">6.</a>&nbsp;&nbsp;&nbsp;<a href="#errors">Error Reporting</a></li><li><a href="#rfc.section.7">7.</a>&nbsp;&nbsp;&nbsp;<a href="#Notes">Notes</a></li><li><a href="#rfc.section.8">8.</a>&nbsp;&nbsp;&nbsp;<a href="#Security">Security Considerations</a></li><li><a href="#rfc.section.9">9.</a>&nbsp;&nbsp;&nbsp;<a href="#Internationalization">Internationalization Considerations</a></li><li><a href="#rfc.section.10">10.</a>&nbsp;&nbsp;&nbsp;<a href="#Acknowledgements">Acknowledgements</a></li><li><a href="#rfc.section.11">11.</a>&nbsp;&nbsp;&nbsp;<a href="#rfc.references">References</a><ul><li><a href="#rfc.section.11.1">11.1</a>&nbsp;&nbsp;&nbsp;<a href="#rfc.references.1">Normative References</a></li><li><a href="#rfc.section.11.2">11.2</a>&nbsp;&nbsp;&nbsp;<a href="#rfc.references.2">Informative References</a></li></ul></li><li><a href="#rfc.index">Index</a></li><li><a href="#rfc.authors">Authors' Addresses</a></li><li><a href="#rfc.ipr">Intellectual Property and Copyright Statements</a></li></ul></nav><section id="intro"><h2 id="rfc.section.1" class="np"><a href="#rfc.section.1">1.</a>&nbsp;<a href="#intro">Introduction</a></h2><section id="notation"><h3 id="rfc.section.1.1"><a href="#rfc.section.1.1">1.1</a>&nbsp;<a href="#notation">Notational Conventions</a></h3><div id="rfc.section.1.1.p.1"><p>The
+ key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", 
+"SHOULD", "SHOULD NOT", "RECOMMENDED", "MAY", and "OPTIONAL" in this 
+document are to be interpreted as described in <a href="#RFC2119"><cite title="Key words for use in RFCs to Indicate Requirement Levels">[RFC2119]</cite></a>.<a class="self" href="#rfc.section.1.1.p.1">¶</a></p></div><div id="rfc.section.1.1.p.2"><p>The definition of live property is provided in <a href="#RFC2518"><cite title="HTTP Extensions for Distributed Authoring -- WebDAV">[RFC2518]</cite></a>. The definition of protected and computed properties is provided in <a href="#RFC3253"><cite title="Versioning Extensions to WebDAV (Web Distributed Authoring and Versioning)">[RFC3253]</cite></a>, <a href="https://tools.ietf.org/html/rfc3253#section-1.4">Section 1.4</a>.<a class="self" href="#rfc.section.1.1.p.2">¶</a></p></div></section><section id="requirement"><h3 id="rfc.section.1.2"><a href="#rfc.section.1.2">1.2</a>&nbsp;<a href="#requirement">Requirement for Quotas</a></h3><div id="rfc.section.1.2.p.1"><p>WebDAV servers based on <a href="#RFC2518"><cite title="HTTP Extensions for Distributed Authoring -- WebDAV">[RFC2518]</cite></a>
+ have been implemented and deployed with quota restrictions on 
+collections and users, so it makes sense to standardize this 
+functionality to improve user experience and client interoperability.<a class="self" href="#rfc.section.1.2.p.1">¶</a></p></div><div id="rfc.section.1.2.p.2"><p>The reasons why WebDAV servers frequently have quotas enforced are the same reasons why any storage system comes with quotas. <br> <a class="self" href="#rfc.section.1.2.p.2">¶</a></p><ul><li>Sometimes the storage service charges according to quota.</li><li>Sometimes
+ the storage service is provided free, but the storage service provider 
+has limited storage space (e.g., university-provided student accounts).</li><li>Even
+ in cases where the storage can be upgraded, the storage managers may 
+choose to limit quota in order to encourage users to limit the files 
+they store on the system and to clean up obsolete files (e.g., IT 
+departments within corporations).</li></ul></div><div id="rfc.section.1.2.p.3"><p>In
+ order to work best with repositories that support quotas, client 
+software should be able to determine and display the 
+DAV:quota-available-bytes (defined below) on collections. Further, 
+client software should have some way of fairly reliably determining how 
+much storage space is already counted towards that quota.<a class="self" href="#rfc.section.1.2.p.3">¶</a></p></div><div id="rfc.section.1.2.p.4"><p>Support
+ for the properties defined in this document enhances the client 
+experience, because the client has a chance of managing its files to 
+avoid running out of allocated storage space. Clients may not be able to
+ calculate the value as accurately on their own, depending on how total 
+space used is calculated by the server.<a class="self" href="#rfc.section.1.2.p.4">¶</a></p></div></section></section><section id="overview"><h2 id="rfc.section.2"><a href="#rfc.section.2">2.</a>&nbsp;<a href="#overview">Solution Overview</a></h2><div id="rfc.section.2.p.1"><p>The
+ approach to meeting the requirements and scenarios outlined above is to
+ define two live properties. This specification can be met on a server 
+by implementing both DAV:quota-available-bytes and DAV:quota-used-bytes 
+on collections only.<a class="self" href="#rfc.section.2.p.1">¶</a></p></div><div id="rfc.section.2.p.2"><p>A &lt;DAV:allprop&gt; PROPFIND request <em class="bcp14">SHOULD NOT</em> return any of the properties defined by this document. However, these property names <em class="bcp14">MUST</em>
+ be returned in a &lt;DAV:propname&gt; request for a resource that 
+supports the properties, except in the case of infinite limits, which 
+are explained below.<a class="self" href="#rfc.section.2.p.2">¶</a></p></div><div id="rfc.section.2.p.3"><p>The
+ DAV:quota-available-bytes and DAV:quota-used-bytes definitions below 
+borrow heavily from the quota definitions in the Network File System 
+(NFS) <a href="#RFC3530"><cite title="Network File System (NFS) version 4 Protocol">[RFC3530]</cite></a> specification.<a class="self" href="#rfc.section.2.p.3">¶</a></p></div></section><section id="quota-available-bytes"><h2 id="rfc.section.3"><a href="#rfc.section.3">3.</a>&nbsp;<a href="#quota-available-bytes">DAV:quota-available-bytes</a></h2><div id="rfc.section.3.p.1"><dl><dt>Name:</dt><dd>quota-available-bytes</dd><dt>Namespace:</dt><dd>DAV:</dd><dt>Purpose:</dt><dd>Indicates the maximum amount of additional storage available to be allocated to a resource.</dd><dt>DTD:</dt><dd>&lt;!ELEMENT quota-available-bytes (#PCDATA) &gt;</dd></dl></div><div id="rfc.section.3.p.2"><p>The
+ DAV:quota-available-bytes property value is the value in octets 
+representing the amount of additional disk space beyond the current 
+allocation that can be allocated to this resource before further 
+allocations will be refused. It is understood that this space may be 
+consumed by allocations to other resources.<a class="self" href="#rfc.section.3.p.2">¶</a></p></div><div id="rfc.section.3.p.3"><p>Support for this property is <em class="bcp14">REQUIRED</em> on collections, and <em class="bcp14">OPTIONAL</em> on other resources. A server <em class="bcp14">SHOULD</em> implement this property for each resource that has the DAV:quota-used-bytes property.<a class="self" href="#rfc.section.3.p.3">¶</a></p></div><div id="rfc.section.3.p.4"><p>Clients <em class="bcp14">SHOULD</em>
+ expect that as the DAV:quota-available-bytes on a resource approaches 
+0, further allocations to that resource may be refused. A value of 0 
+indicates that users will probably not be able to perform operations 
+that write additional information (e.g., a PUT inside a collection), but
+ may be able to replace through overwrite an existing resource of equal 
+size.<a class="self" href="#rfc.section.3.p.4">¶</a></p></div><div id="rfc.section.3.p.5"><p>Note
+ that there may be a number of distinct but overlapping limits, which 
+may even include physical media limits. When reporting 
+DAV:quota-available-bytes, the server is at liberty to choose any of 
+those limits but <em class="bcp14">SHOULD</em> do so in a repeatable way. The rule may be configured per repository, or may be "choose the smallest number".<a class="self" href="#rfc.section.3.p.5">¶</a></p></div><div id="rfc.section.3.p.6"><p>If a resource has no quota enforced or unlimited storage ("infinite limits"), the server <em class="bcp14">MAY</em>
+ choose not to return this property (404 Not Found response in 
+Multi-Status), although this specification RECOMMENDS that servers 
+return some appropriate value (e.g., the amount of free disk space). A 
+client cannot entirely assume that there is no quota enforced on a 
+resource that does not have this property, but might as well act as if 
+there is no quota.<a class="self" href="#rfc.section.3.p.6">¶</a></p></div><div id="rfc.section.3.p.7"><p>The value of this property is protected (see <a href="https://tools.ietf.org/html/rfc3253#section-1.4.2">Section 1.4.2</a> of <a href="#RFC3253"><cite title="Versioning Extensions to WebDAV (Web Distributed Authoring and Versioning)">[RFC3253]</cite></a> for the definition of protected properties). A 403 Forbidden response is <em class="bcp14">RECOMMENDED</em> for attempts to write a protected property, and the server <em class="bcp14">SHOULD</em> include an XML error body as defined by DeltaV <a href="#RFC3253"><cite title="Versioning Extensions to WebDAV (Web Distributed Authoring and Versioning)">[RFC3253]</cite></a> with the &lt;DAV:cannot-modify-protected-property/&gt; precondition tag.<a class="self" href="#rfc.section.3.p.7">¶</a></p></div></section><section id="quota-used-bytes"><h2 id="rfc.section.4"><a href="#rfc.section.4">4.</a>&nbsp;<a href="#quota-used-bytes">DAV:quota-used-bytes</a></h2><div id="rfc.section.4.p.1"><dl><dt>Name:</dt><dd>quota-used-bytes</dd><dt>Namespace:</dt><dd>DAV:</dd><dt>Purpose:</dt><dd>Contains the amount of storage counted against the quota on a resource.</dd><dt>DTD:</dt><dd>&lt;!ELEMENT quota-used-bytes (#PCDATA) &gt;</dd></dl></div><div id="rfc.section.4.p.2"><p>The
+ DAV:quota-used-bytes value is the value in octets representing the 
+amount of space used by this resource and possibly a number of other 
+similar resources, where the set of "similar" meets at least the 
+criterion that allocating space to any resource in the set will count 
+against the DAV:quota-available-bytes. It <em class="bcp14">MUST</em> include the total count including usage derived from sub-resources if appropriate. It <em class="bcp14">SHOULD</em> include metadata storage size if metadata storage is counted against the DAV:quota-available-bytes.<a class="self" href="#rfc.section.4.p.2">¶</a></p></div><div id="rfc.section.4.p.3"><p>Note
+ that there may be a number of distinct but overlapping sets of 
+resources for which a DAV:quota-used-bytes is maintained (e.g., "all 
+files with a given owner", "all files with a given group owner", etc.). 
+The server is at liberty to choose any of those sets but <em class="bcp14">SHOULD</em> do so in a repeatable way. The rule may be configured per repository.<a class="self" href="#rfc.section.4.p.3">¶</a></p></div><div id="rfc.section.4.p.4"><p>Support for this property is <em class="bcp14">REQUIRED</em> on collections, and <em class="bcp14">OPTIONAL</em> on other resources. A server <em class="bcp14">SHOULD</em> implement this property for each resource that has the DAV:quota-available-bytes property.<a class="self" href="#rfc.section.4.p.4">¶</a></p></div><div id="rfc.section.4.p.5"><p>This value of this property is computed (see <a href="https://tools.ietf.org/html/rfc3253#section-1.4.3">Section 1.4.3</a> of <a href="#RFC3253"><cite title="Versioning Extensions to WebDAV (Web Distributed Authoring and Versioning)">[RFC3253]</cite></a> for the definition of computed property). A 403 Forbidden response is <em class="bcp14">RECOMMENDED</em> for attempts to write a protected property, and the server <em class="bcp14">SHOULD</em> include an XML error body as defined by DeltaV <a href="#RFC3253"><cite title="Versioning Extensions to WebDAV (Web Distributed Authoring and Versioning)">[RFC3253]</cite></a> with the &lt;DAV:cannot-modify-protected-property/&gt; precondition tag.<a class="self" href="#rfc.section.4.p.5">¶</a></p></div></section><section id="example-propfind"><h2 id="rfc.section.5"><a href="#rfc.section.5">5.</a>&nbsp;<a href="#example-propfind">Example PROPFIND Request and Response</a></h2><div id="rfc.figure.u.1"><p>Request:</p><pre class="text2">      PROPFIND /~milele/public/ HTTP/1.1
+      Depth: 0
+      Host: www.example.com
+      Content-Type: text/xml
+      Content-Length: xxx
+
+      &lt;?xml version="1.0" ?&gt;
+      &lt;D:propfind xmlns:D="DAV:"&gt;
+        &lt;D:prop&gt;
+          &lt;D:quota-available-bytes/&gt;
+          &lt;D:quota-used-bytes/&gt;
+        &lt;/D:prop&gt;
+      &lt;/D:propfind&gt;</pre></div><div id="rfc.figure.u.2"><p>Response:</p><pre class="text">      HTTP/1.1 207 Multi-Status
+      Date: Tue, 16 Oct 2001 22:13:39 GMT
+      Content-Length: xxx
+      Content-Type: text/xml; charset=UTF-8
+
+      &lt;?xml version="1.0" encoding="utf-8" ?&gt;
+      &lt;D:multistatus xmlns:D="DAV:"&gt;
+      &lt;D:response&gt;
+        &lt;D:href&gt;http://www.example.com/~milele/public/&lt;/D:href&gt;
+        &lt;D:propstat&gt;
+          &lt;D:prop&gt;
+            &lt;D:quota-available-bytes&gt;596650&lt;/D:quota-available-bytes&gt;
+            &lt;D:quota-used-bytes&gt;403350&lt;/D:quota-used-bytes&gt;
+          &lt;/D:prop&gt;
+          &lt;D:status&gt;HTTP/1.1 200 OK&lt;/D:status&gt;
+        &lt;/D:propstat&gt;
+      &lt;/D:response&gt;
+      &lt;/D:multistatus&gt;</pre></div></section><section id="errors"><h2 id="rfc.section.6"><a href="#rfc.section.6">6.</a>&nbsp;<a href="#errors">Error Reporting</a></h2><div id="rfc.section.6.p.1"><p>WebDAV <a href="#RFC2518"><cite title="HTTP Extensions for Distributed Authoring -- WebDAV">[RFC2518]</cite></a> defines the status code 507 (Insufficient Storage). This status code <em class="bcp14">SHOULD</em>
+ be used when a client request (e.g., a PUT, PROPFIND, MKCOL, MOVE, or 
+COPY) fails because it would exceed their quota or physical storage 
+limits. In order to differentiate the response from other storage 
+problems, the server <em class="bcp14">SHOULD</em> include an XML error body as defined by DeltaV <a href="#RFC3253"><cite title="Versioning Extensions to WebDAV (Web Distributed Authoring and Versioning)">[RFC3253]</cite></a> with the appropriate precondition tag.<a class="self" href="#rfc.section.6.p.1">¶</a></p></div><div id="rfc.section.6.p.2" class="avoidbreakafter"><p>Preconditions:<a class="self" href="#rfc.section.6.p.2">¶</a></p></div><div id="rfc.section.6.p.3"><p><span id="rfc.iref.c.1"></span> <span id="rfc.iref.d.1"></span> (DAV:quota-not-exceeded): the request <em class="bcp14">MUST NOT</em> cause the allocated quota to be exceeded.<a class="self" href="#rfc.section.6.p.3">¶</a></p></div><div id="rfc.section.6.p.4"><p><span id="rfc.iref.c.2"></span> <span id="rfc.iref.d.2"></span> (DAV:sufficient-disk-space): there is sufficient physical space to execute the request.<a class="self" href="#rfc.section.6.p.4">¶</a></p></div><div id="rfc.figure.u.3"><p>Example error response:</p><pre class="text">   HTTP/1.1 507 Insufficient Storage
+   Content-Length: xxx
+   Content-Type: text/xml
+
+   &lt;?xml version="1.0"&gt;
+   &lt;error xmlns="DAV:"&gt;
+     &lt;quota-not-exceeded/&gt;
+   &lt;/error&gt;
+</pre></div><div id="rfc.section.6.p.5"><p>Implementation note: some 
+clients may be able to take advantage of the different precondition 
+codes when mapping to operating system status codes, such as E_NOSPC and
+ E_DQUOT in NFS (see <a href="#RFC3530"><cite title="Network File System (NFS) version 4 Protocol">[RFC3530]</cite></a>, <a href="https://tools.ietf.org/html/rfc3530#section-12">Section 12</a>).<a class="self" href="#rfc.section.6.p.5">¶</a></p></div></section><section id="Notes"><h2 id="rfc.section.7"><a href="#rfc.section.7">7.</a>&nbsp;<a href="#Notes">Notes</a></h2><div id="rfc.section.7.p.1"><p>Server implementations store and account for their data in many different ways. Some of the challenges: <br> <a class="self" href="#rfc.section.7.p.1">¶</a></p><ul><li>Some
+ server implementations find it prohibitive to count storage used for 
+metadata; others may choose to do so for better accounting.</li><li>Older versions of resources may be stored as well.</li><li>Variants of one resource may exist with different content lengths.</li><li>Content may be dynamically generated.</li><li>Resource bodies can be compressed.</li><li>Some resources may be stored for "free", not counting against quota.</li></ul></div><div id="rfc.section.7.p.2"><p>Since server storage accounting can vary so much, clients should expect the following: <br> <a class="self" href="#rfc.section.7.p.2">¶</a></p><ul><li>The
+ size of a file on the client's file system, or in a PUT message, may 
+not correspond to the amount of storage required by the server to store 
+the resource. Thus, the client cannot predict with 100% accuracy whether
+ a given file will be allowed given the storage quota.</li><li>Deleting 
+or overwriting a resource may not free up the same amount of storage as 
+indicated by the DAV:getcontentlength property defined in <a href="#RFC2518"><cite title="HTTP Extensions for Distributed Authoring -- WebDAV">[RFC2518]</cite></a>
+ for the resource. If deleting a resource does not free up any space, 
+the file may have been moved to a "trash" folder or "recycle bin", or 
+retained as in versioning systems (<a href="#RFC3253"><cite title="Versioning Extensions to WebDAV (Web Distributed Authoring and Versioning)">[RFC3253]</cite></a>).</li><li>Since
+ there are many factors that affect the storage used by a set of 
+resources, including automatic compression, the size of associated 
+metadata, and server-inserted content (such as that created by PHP code)
+ in the on-the-wire representation of resources, clients are advised not
+ to depend on the value of DAV:quota-used-bytes being the sum of the 
+DAV:getcontentlength properties for resources contained by a collection.</li><li>Additionally,
+ because there may be a number of distinct but overlapping sets of 
+resources for which a DAV:quota-used-bytes is maintained (<a href="#quota-used-bytes" title="DAV:quota-used-bytes">Section&nbsp;4</a>),
+ there may be no correlation between the size of the resources in a 
+collection and DAV:quota-used-bytes. For example, for a server that 
+implements user-based quotas, DAV:quota-used-bytes usually will be the 
+same for a collection and it's members.</li><li>On some systems where 
+quota is counted by collection and not by user, a quota on a 
+sub-collection may be larger than the quota on the parent collection 
+that contains it. For example, the quota on /~milele/ may be 100 MB, but
+ the quota on /~milele/public/ may be unlimited. This allows the space 
+used by /~milele/public/ to be as large as the quota on /~milele/ allows
+ (depending on the other contents of /~milele/) even if the quota on 
+/~milele/ is changed. Thus, even when the quota on a parent collection 
+is changed, it is not necessarily required to change the quota on every 
+child or descendant collection.</li></ul></div></section><section id="Security"><h2 id="rfc.section.8"><a href="#rfc.section.8">8.</a>&nbsp;<a href="#Security">Security Considerations</a></h2><div id="rfc.section.8.p.1"><p>A
+ hacker may prefer to store files in collections with a large quota. 
+This isn't strictly a security concern because it doesn't make it any 
+easier to store files. On the other hand, the DAV:quota-used-bytes 
+property may make it easier to detect tampering or misuse.<a class="self" href="#rfc.section.8.p.1">¶</a></p></div></section><section id="Internationalization"><h2 id="rfc.section.9"><a href="#rfc.section.9">9.</a>&nbsp;<a href="#Internationalization">Internationalization Considerations</a></h2><div id="rfc.section.9.p.1"><p>Quota is counted in Arabic numerals expressed in strings. There are no internationalization considerations.<a class="self" href="#rfc.section.9.p.1">¶</a></p></div></section><section id="Acknowledgements"><h2 id="rfc.section.10"><a href="#rfc.section.10">10.</a>&nbsp;<a href="#Acknowledgements">Acknowledgements</a></h2><div id="rfc.section.10.p.1"><p>Stefan
+ Eissing, Geoff Clemm, Jim Luther, Julian Reschke, and Jim Whitehead, 
+among others, have provided valuable comments on this document.<a class="self" href="#rfc.section.10.p.1">¶</a></p></div></section><section id="rfc.references"><h2 id="rfc.section.11"><a href="#rfc.section.11">11.</a> References</h2><section id="rfc.references.1"><h3 id="rfc.section.11.1"><a href="#rfc.section.11.1">11.1</a> Normative References</h3><dl class="reference"><dt id="RFC2119">[RFC2119]</dt><dd>Bradner, S., “<a href="https://tools.ietf.org/html/rfc2119">Key words for use in RFCs to Indicate Requirement Levels</a>”, BCP&nbsp;14, RFC&nbsp;2119, March&nbsp;1997.</dd><dt id="RFC2518">[RFC2518]</dt><dd>Goland, Y., Whitehead, E., Faizi, A., Carter, S., and D. Jensen, “<a href="https://tools.ietf.org/html/rfc2518">HTTP Extensions for Distributed Authoring -- WebDAV</a>”, RFC&nbsp;2518, February&nbsp;1999.</dd><dt id="RFC3253">[RFC3253]</dt><dd>Clemm, G., Amsden, J., Ellison, T., Kaler, C., and J. Whitehead, “<a href="https://tools.ietf.org/html/rfc3253">Versioning Extensions to WebDAV (Web Distributed Authoring and Versioning)</a>”, RFC&nbsp;3253, March&nbsp;2002.</dd></dl></section><section id="rfc.references.2"><h3 id="rfc.section.11.2"><a href="#rfc.section.11.2">11.2</a> Informative References</h3><dl class="reference"><dt id="RFC3530">[RFC3530]</dt><dd>Shepler, S., Callaghan, B., Robinson, D., Thurlow, R., Beame, C., Eisler, M., and D. Noveck, “<a href="https://tools.ietf.org/html/rfc3530">Network File System (NFS) version 4 Protocol</a>”, RFC&nbsp;3530, April&nbsp;2003.</dd></dl></section></section><section id="rfc.index"><h2><a href="#rfc.index">Index</a></h2><p class="noprint"><a href="#rfc.index.C">C</a> <a href="#rfc.index.D">D</a> <a href="#rfc.index.P">P</a> </p><div class="print2col"><ul class="ind"><li><a id="rfc.index.C" href="#rfc.index.C"><b>C</b></a><ul><li>Condition Names&nbsp;&nbsp;<ul><li>DAV:quota-not-exceeded (pre)&nbsp;&nbsp;<a href="#rfc.iref.c.1"><b>6</b></a></li><li>DAV:sufficient-disk-space (pre)&nbsp;&nbsp;<a href="#rfc.iref.c.2"><b>6</b></a></li></ul></li></ul></li><li><a id="rfc.index.D" href="#rfc.index.D"><b>D</b></a><ul><li>DAV:quota-available-bytes property&nbsp;&nbsp;<a href="#rfc.section.3"><b>3</b></a></li><li>DAV:quota-not-exceeded precondition&nbsp;&nbsp;<a href="#rfc.iref.d.1"><b>6</b></a></li><li>DAV:quota-used-bytes property&nbsp;&nbsp;<a href="#rfc.section.4"><b>4</b></a></li><li>DAV:sufficient-disk-space precondition&nbsp;&nbsp;<a href="#rfc.iref.d.2"><b>6</b></a></li></ul></li><li><a id="rfc.index.P" href="#rfc.index.P"><b>P</b></a><ul><li>Properties&nbsp;&nbsp;<ul><li>DAV:quota-available-bytes&nbsp;&nbsp;<a href="#rfc.section.3"><b>3</b></a></li><li>DAV:quota-used-bytes&nbsp;&nbsp;<a href="#rfc.section.4"><b>4</b></a></li></ul></li></ul></li></ul></div></section><section id="rfc.authors" class="avoidbreakinside"><h2><a href="#rfc.authors">Authors' Addresses</a></h2><address><b>Brian Korver</b><br>Network Resonance, Inc.<br>2483 E. Bayshore Road<br>Suite 212<br>Palo Alto, CA&nbsp;94303<br>US<br>Phone: <a href="tel:+1650812-7705">+1 650 812-7705</a><br>EMail: <a href="mailto:briank@networkresonance.com">briank@networkresonance.com</a></address><address><b>Lisa Dusseault</b><br>Open Source Applications Foundation<br>543 Howard Street<br>5th Floor<br>San Francisco, CA&nbsp;94105<br>US<br>Phone: <a href="tel:+1415946-3040">+1 415 946-3040</a><br>EMail: <a href="mailto:lisa@osafoundation.org">lisa@osafoundation.org</a></address></section><section id="rfc.copyright"><h2><a href="#rfc.copyright">Full Copyright Statement</a></h2><p>Copyright © The Internet Society (2006).</p><p>This
+ document is subject to the rights, licenses and restrictions contained 
+in BCP 78, and except as set forth therein, the authors retain all their
+ rights.</p><p>This document and the information contained herein are 
+provided on an “AS IS” basis and THE CONTRIBUTOR, THE ORGANIZATION 
+HE/SHE REPRESENTS OR IS SPONSORED BY (IF ANY), THE INTERNET SOCIETY AND 
+THE INTERNET ENGINEERING TASK FORCE DISCLAIM ALL WARRANTIES, EXPRESS OR 
+IMPLIED, INCLUDING BUT NOT LIMITED TO ANY WARRANTY THAT THE USE OF THE 
+INFORMATION HEREIN WILL NOT INFRINGE ANY RIGHTS OR ANY IMPLIED 
+WARRANTIES OF MERCHANTABILITY OR FITNESS FOR A PARTICULAR PURPOSE.</p></section><section id="rfc.ipr"><h2><a href="#rfc.ipr">Intellectual Property</a></h2><p>The
+ IETF takes no position regarding the validity or scope of any 
+Intellectual Property Rights or other rights that might be claimed to 
+pertain to the implementation or use of the technology described in this
+ document or the extent to which any license under such rights might or 
+might not be available; nor does it represent that it has made any 
+independent effort to identify any such rights. Information on the 
+procedures with respect to rights in RFC documents can be found in BCP 
+78 and BCP 79.</p><p>Copies of IPR disclosures made to the IETF 
+Secretariat and any assurances of licenses to be made available, or the 
+result of an attempt made to obtain a general license or permission for 
+the use of such proprietary rights by implementers or users of this 
+specification can be obtained from the IETF on-line IPR repository at <a href="http://www.ietf.org/ipr">http://www.ietf.org/ipr</a>.</p><p>The
+ IETF invites any interested party to bring to its attention any 
+copyrights, patents or patent applications, or other proprietary rights 
+that may cover technology that may be required to implement this 
+standard. Please address the information to the IETF at <a href="mailto:ietf-ipr@ietf.org">ietf-ipr@ietf.org</a>.</p></section><section id="n-acknowledgment"><h2><a href="#n-acknowledgment">Acknowledgment</a></h2><p>Funding for the RFC Editor function is provided by the IETF Administrative Support Activity (IASA).</p></section>
+</body></html>

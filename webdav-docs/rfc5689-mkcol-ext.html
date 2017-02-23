@@ -1,0 +1,732 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+      <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+   <title>Extended MKCOL for Web Distributed Authoring and Versioning
+(WebDAV)</title><script type="application/javascript">
+function getMeta(rfcno, container) {
+
+  var xhr = new XMLHttpRequest();
+  xhr.open("GET", "https://tools.ietf.org/draft/rfc" + rfcno + "/state.xml", true);
+  xhr.onload = function (e) {
+    if (xhr.readyState === 4) {
+      if (xhr.status === 200) {
+        var doc = xhr.responseXML;
+        var info = getChildByName(doc.documentElement, "info");
+  
+        var cont = document.getElementById(container);
+        // empty the container
+        while (cont.firstChild) {
+          cont.removeChild(myNode.firstChild);
+        }      
+  
+        var c = getChildByName(info, "stdstatus");
+        if (c !== null) {
+          var bld = newElementWithText("b", c.textContent);
+          cont.appendChild(bld);
+        }
+  
+        c = getChildByName(info, "updatedby");
+        if (c !== null) {
+          cont.appendChild(newElement("br"));
+          cont.appendChild(newText("Updated by: "));
+          appendRfcLinks(cont, c.textContent);
+        }
+  
+        c = getChildByName(info, "obsoletedby");
+        if (c !== null) {
+          cont.appendChild(newElement("br"));
+          cont.appendChild(newText("Obsoleted by: "));
+          appendRfcLinks(cont, c.textContent);
+        }
+        
+        c = getChildByName(info, "errata");
+        if (c !== null) {
+          cont.appendChild(newElement("br"));
+          var link = newElementWithText("a", "errata");
+          link.setAttribute("href", "http://www.rfc-editor.org/errata_search.php?rfc=" + rfcno);
+          var errata = newElementWithText("i", "This document has ");
+          errata.appendChild(link);
+          errata.appendChild(newText("."));
+          cont.appendChild(errata);
+        }
+
+        cont.style.display = "block";
+      } else {
+        console.error(xhr.statusText);
+      }
+    }
+  };
+  xhr.onerror = function (e) {
+    console.error(xhr.status + " " + xhr.statusText);
+  };
+  xhr.send(null);
+}
+
+// DOM helpers
+function newElement(name) {
+  return document.createElement(name);
+}
+function newElementWithText(name, txt) {
+  var e = document.createElement(name);
+  e.appendChild(newText(txt));
+  return e;
+}
+function newText(text) {
+  return document.createTextNode(text);
+}
+
+function getChildByName(parent, name) {
+  if (parent === null) {
+    return null;
+  }
+  else {
+    for (var c = parent.firstChild; c !== null; c = c.nextSibling) {
+      if (name == c.nodeName) {
+        return c;
+      }
+    }
+    return null;
+  }
+}
+
+function appendRfcLinks(parent, text) {
+  var updates = text.split(",");
+  for (var i = 0; i < updates.length; i++) {
+    var rfc = updates[i].trim();
+    if (rfc.substring(0, 3) == "rfc") {
+      var link = newElement("a");
+      link.setAttribute("href", "http://tools.ietf.org/html/" + rfc);
+      link.appendChild(newText(rfc.substring(3)));
+      parent.appendChild(link);
+    } else {
+      parent.appendChild(newText(rfc));
+    }
+    if (i != updates.length - 1) {
+      parent.appendChild(newText(", "));
+    }
+  }
+}
+</script><script type="application/javascript">
+function anchorRewrite() {
+  map = { };
+  if (window.location.hash.length >= 1) {
+    var fragid = window.location.hash.substr(1);
+    if (fragid) {
+      if (! document.getElementById(fragid)) {
+        var prefix = "rfc.";
+        var mapped = map[fragid];
+        if (mapped) {
+          window.location.hash = mapped;
+        } else if (fragid.indexOf("section-") == 0) {
+          window.location.hash = prefix + "section." + fragid.substring(8);
+        } else if (fragid.indexOf("appendix-") == 0) {
+          window.location.hash = prefix + "section." + fragid.substring(9);
+        } else if (fragid.indexOf("s-") == 0) {
+          window.location.hash = prefix + "section." + fragid.substring(2);
+        } else if (fragid.indexOf("p-") == 0) {
+          var r = fragid.substring(2);
+          var p = r.indexOf("-");
+          if (p >= 0) {
+            window.location.hash = prefix + "section." + r.substring(0, p) + ".p." + r.substring(p + 1);
+          }
+        }
+      }
+    }  
+  }
+}
+window.addEventListener('hashchange', anchorRewrite);
+window.addEventListener('DOMContentLoaded', anchorRewrite);
+</script><style type="text/css" title="Xml2Rfc (sans serif)">
+a {
+  text-decoration: none;
+}
+a.smpl {
+  color: black;
+}
+a:hover {
+  text-decoration: underline;
+}
+a:active {
+  text-decoration: underline;
+}
+address {
+  margin-top: 1em;
+  margin-left: 2em;
+  font-style: normal;
+}
+body {
+  color: black;
+  font-family: cambria, georgia, serif;
+  font-size: 12pt;
+  margin: 2em auto;
+  max-width: 1000px;
+}
+samp, span.tt, code, pre {
+  font-family: consolas, monaco, monospace;
+}
+cite {
+  font-style: normal;
+}
+dl {
+  margin-left: 2em;
+}
+dl > dt {
+  float: left;
+  margin-right: 1em;
+}
+dl.nohang > dt {
+  float: none;
+}
+dl > dd {
+  margin-bottom: .5em;
+}
+dl.compact > dd {
+  margin-bottom: .0em;
+}
+dl > dd > dl {
+  margin-top: 0.5em;
+}
+ul.empty {
+  list-style-type: none;
+}
+ul.empty li {
+  margin-top: .5em;
+}
+dl p {
+  margin-left: 0em;
+}
+dl.reference > dt {
+  font-weight: bold;
+}
+dl.reference > dd {
+  margin-left: 6em;
+}
+h1 {
+  color: green;
+  font-size: 150%;
+  line-height: 18pt;
+  font-weight: bold;
+  text-align: center;
+  margin-top: 36pt;
+  margin-bottom: 0pt;
+}
+h2 {
+  font-size: 130%;
+  line-height: 21pt;
+  page-break-after: avoid;
+}
+h2.np {
+  page-break-before: always;
+}
+h3 {
+  font-size: 120%;
+  line-height: 15pt;
+  page-break-after: avoid;
+}
+h4 {
+  font-size: 110%;
+  page-break-after: avoid;
+}
+h5, h6 {
+  page-break-after: avoid;
+}
+h1 a, h2 a, h3 a, h4 a, h5 a, h6 a {
+  color: black;
+}
+img {
+  margin-left: 3em;
+}
+li {
+  margin-left: 2em;
+}
+ol {
+  margin-left: 2em;
+}
+ol.la {
+  list-style-type: lower-alpha;
+}
+ol.ua {
+  list-style-type: upper-alpha;
+}
+ol p {
+  margin-left: 0em;
+}
+p {
+  margin-left: 2em;
+}
+pre {
+  font-size: 11pt;
+  margin-left: 3em;
+  background-color: lightyellow;
+  padding: .25em;
+  page-break-inside: avoid;
+}
+pre.text2 {
+  border-style: dotted;
+  border-width: 1px;
+  background-color: #f0f0f0;
+}
+pre.inline {
+  background-color: white;
+  padding: 0em;
+  page-break-inside: auto;
+}
+pre.text {
+  border-style: dotted;
+  border-width: 1px;
+  background-color: #f8f8f8;
+}
+pre.drawing {
+  border-style: solid;
+  border-width: 1px;
+  background-color: #f8f8f8;
+  padding: 2em;
+}
+table {
+  margin-left: 2em;
+}
+table.header {
+  border-spacing: 1px;
+  width: 95%;
+  font-size: 11pt;
+  color: white;
+}
+td.top {
+  vertical-align: top;
+}
+td.topnowrap {
+  vertical-align: top;
+  white-space: nowrap;
+}
+table.header td {
+  background-color: gray;
+  width: 50%;
+}
+table.header a {
+  color: white;
+}
+ul.toc, ul.toc ul {
+  list-style: none;
+  margin-left: 1.5em;
+  padding-left: 0em;
+}
+ul.toc li {
+  line-height: 150%;
+  font-weight: bold;
+  margin-left: 0em;
+}
+ul.toc li li {
+  line-height: normal;
+  font-weight: normal;
+  font-size: 11pt;
+  margin-left: 0em;
+}
+li.excluded {
+  font-size: 0pt;
+}
+ul p {
+  margin-left: 0em;
+}
+.filename, h1, h2, h3, h4 {
+  font-family: candara, calibri, segoe, optima, arial, sans-serif;
+}
+
+.comment {
+  background-color: yellow;
+}
+.center {
+  text-align: center;
+}
+.error {
+  color: red;
+  font-style: italic;
+  font-weight: bold;
+}
+.figure {
+  font-weight: bold;
+  text-align: center;
+  font-size: 10pt;
+}
+.filename {
+  color: #333333;
+  font-size: 112%;
+  font-weight: bold;
+  line-height: 21pt;
+  text-align: center;
+  margin-top: 0pt;
+}
+.fn {
+  font-weight: bold;
+}
+.left {
+  text-align: left;
+}
+.right {
+  text-align: right;
+}
+.warning {
+  font-size: 130%;
+  background-color: yellow;
+}
+.self {
+    color: #999999;
+    margin-left: .3em;
+    text-decoration: none;
+    visibility: hidden;
+    -webkit-user-select: none; 
+    -moz-user-select: none;
+    -ms-user-select: none;
+}
+.self:hover {
+    text-decoration: none;
+}
+p:hover .self {
+    visibility: visible;
+}
+.docstatus {
+  border: 1px solid black;
+  display: none;
+  float: right;
+  margin: 2em;
+  padding: 1em;
+}
+
+@media screen {
+  pre.text, pre.text2 {
+    width: 69em;
+  }
+}
+
+@media print {
+  .noprint {
+    display: none;
+  }
+
+  a {
+    color: black;
+    text-decoration: none;
+  }
+
+  table.header {
+    width: 90%;
+  }
+
+  td.header {
+    width: 50%;
+    color: black;
+    background-color: white;
+    vertical-align: top;
+    font-size: 110%;
+  }
+
+  ul.toc a:last-child::after {
+    content: leader('.') target-counter(attr(href), page);
+  }
+
+  ul.ind li li a {
+    content: target-counter(attr(href), page);
+  }
+
+  pre {
+    font-size: 10pt;
+  }
+
+  .print2col {
+    column-count: 2;
+    -moz-column-count: 2;
+    column-fill: auto;
+  }
+}
+@page {
+  @top-left {
+       content: "RFC 5689";
+  }
+  @top-right {
+       content: "September 2009";
+  }
+  @top-center {
+       content: "Extended MKCOL for WebDAV";
+  }
+  @bottom-left {
+       content: "Daboo";
+  }
+  @bottom-center {
+       content: "Standards Track";
+  }
+  @bottom-right {
+       content: "[Page " counter(page) "]";
+  }
+}
+@page:first {
+    @top-left {
+      content: normal;
+    }
+    @top-right {
+      content: normal;
+    }
+    @top-center {
+      content: normal;
+    }
+}
+</style><link rel="Contents" href="#rfc.toc"><link rel="Author" href="#rfc.authors"><link rel="Copyright" href="#rfc.copyrightnotice"><link rel="Chapter" title="1 Introduction" href="#rfc.section.1"><link rel="Chapter" title="2 Conventions Used in This Document" href="#rfc.section.2"><link rel="Chapter" title="3 WebDAV Extended MKCOL" href="#rfc.section.3"><link rel="Chapter" title="4 Using Extended MKCOL as an Alternative for MKxxx Methods" href="#rfc.section.4"><link rel="Chapter" title="5 XML Element Definitions" href="#rfc.section.5"><link rel="Chapter" title="6 Security Considerations" href="#rfc.section.6"><link rel="Chapter" title="7 Acknowledgments" href="#rfc.section.7"><link rel="Chapter" href="#rfc.section.8" title="8 Normative References"><link rel="Alternate" title="Authoritative ASCII Version" href="http://www.ietf.org/rfc/rfc5689.txt"><link rel="Help" title="RFC-Editor's Status Page" href="http://www.rfc-editor.org/info/rfc5689"><link rel="Help" title="Additional Information on tools.ietf.org" href="http://tools.ietf.org/html/rfc5689"><meta name="generator" content="http://greenbytes.de/tech/webdav/rfc2629.xslt, Revision 1.840, 2016/11/16 05:32:10, XSLT vendor: SAXON 6.5.5 from Michael Kay http://saxon.sf.net/"><meta name="keywords" content="webdav, HTTP"><link rel="schema.dcterms" href="http://purl.org/dc/terms/"><meta name="dcterms.creator" content="Daboo, C."><meta name="dcterms.identifier" content="urn:ietf:rfc:5689"><meta name="dcterms.issued" content="2009-09"><meta name="dcterms.abstract" content="This specification extends the Web Distributed Authoring and Versioning (WebDAV) MKCOL (Make Collection) method to allow collections of arbitrary resourcetype to be created and to allow properties to be set at the same time."><meta name="dcterms.isPartOf" content="urn:issn:2070-1721"><meta name="description" content="This specification extends the Web Distributed Authoring and Versioning (WebDAV) MKCOL (Make Collection) method to allow collections of arbitrary resourcetype to be created and to allow properties to be set at the same time."></head><body onload='getMeta(5689,"rfc.meta");'><header><table class="header" id="rfc.headerblock"><tbody><tr><td class="left">Network Working Group</td><td class="right">C. Daboo</td></tr><tr><td class="left">Request for Comments: 5689</td><td class="right">Apple Inc.</td></tr><tr><td class="left">Updates: <a href="https://tools.ietf.org/html/rfc4791">4791</a>, <a href="https://tools.ietf.org/html/rfc4918">4918</a></td><td class="right">September 2009</td></tr><tr><td class="left">Category: Standards Track</td><td class="right"></td></tr></tbody></table><div id="rfc.title"><h1>Extended MKCOL for Web Distributed Authoring and Versioning (WebDAV)</h1></div></header><section id="rfc.abstract"><h2><a href="#rfc.abstract">Abstract</a></h2><p>This
+ specification extends the Web Distributed Authoring and Versioning 
+(WebDAV) MKCOL (Make Collection) method to allow collections of 
+arbitrary resourcetype to be created and to allow properties to be set 
+at the same time.</p></section><div id="rfc.meta" class="docstatus" style="display: block;"><b>PROPOSED STANDARD</b></div><section id="rfc.status"><h2><a href="#rfc.status">Status of This Memo</a></h2><p>This
+ document specifies an Internet standards track protocol for the 
+Internet community, and requests discussion and suggestions for 
+improvements. Please refer to the current edition of the “Internet 
+Official Protocol Standards” (STD 1) for the standardization state and 
+status of this protocol. Distribution of this memo is unlimited.</p></section><section id="rfc.copyrightnotice"><h2><a href="#rfc.copyrightnotice">Copyright Notice</a></h2><p>Copyright © 2009 IETF Trust and the persons identified as the document authors. All rights reserved.</p><p>This document is subject to BCP 78 and the IETF Trust's Legal Provisions Relating to IETF Documents (<a href="http://trustee.ietf.org/license-info">http://trustee.ietf.org/license-info</a>)
+ in effect on the date of publication of this document. Please review 
+these documents carefully, as they describe your rights and restrictions
+ with respect to this document. Code Components extracted from this 
+document must include Simplified BSD License text as described in 
+Section 4.e of the Trust Legal Provisions and are provided without 
+warranty as described in the BSD License.</p><p>This document may 
+contain material from IETF Documents or IETF Contributions published or 
+made publicly available before November 10, 2008. The person(s) 
+controlling the copyright in some of this material may not have granted 
+the IETF Trust the right to allow modifications of such material outside
+ the IETF Standards Process. Without obtaining an adequate license from 
+the person(s) controlling the copyright in such materials, this document
+ may not be modified outside the IETF Standards Process, and derivative 
+works of it may not be created outside the IETF Standards Process, 
+except to format it for publication as an RFC or to translate it into 
+languages other than English.</p></section><hr class="noprint"><nav id="rfc.toc"><h2 class="np"><a href="#rfc.toc">Table of Contents</a></h2><ul class="toc"><li><a href="#rfc.section.1">1.</a>&nbsp;&nbsp;&nbsp;<a href="#rfc.section.1">Introduction</a></li><li><a href="#rfc.section.2">2.</a>&nbsp;&nbsp;&nbsp;<a href="#rfc.section.2">Conventions Used in This Document</a></li><li><a href="#rfc.section.3">3.</a>&nbsp;&nbsp;&nbsp;<a href="#rfc.section.3">WebDAV Extended MKCOL</a><ul><li><a href="#rfc.section.3.1">3.1</a>&nbsp;&nbsp;&nbsp;<a href="#capability">Extended MKCOL Support</a><ul><li><a href="#rfc.section.3.1.1">3.1.1</a>&nbsp;&nbsp;&nbsp;<a href="#rfc.section.3.1.1">Example: Using OPTIONS for the Discovery of Support for Extended MKCOL</a></li></ul></li><li><a href="#rfc.section.3.2">3.2</a>&nbsp;&nbsp;&nbsp;<a href="#rfc.section.3.2">Status Codes</a></li><li><a href="#rfc.section.3.3">3.3</a>&nbsp;&nbsp;&nbsp;<a href="#rfc.section.3.3">Additional Precondition for Extended MKCOL</a></li><li><a href="#rfc.section.3.4">3.4</a>&nbsp;&nbsp;&nbsp;<a href="#rfc.section.3.4">Example: Successful Extended MKCOL Request</a></li><li><a href="#rfc.section.3.5">3.5</a>&nbsp;&nbsp;&nbsp;<a href="#rfc.section.3.5">Example: Unsuccessful Extended MKCOL Request</a></li></ul></li><li><a href="#rfc.section.4">4.</a>&nbsp;&nbsp;&nbsp;<a href="#rfc.section.4">Using Extended MKCOL as an Alternative for MKxxx Methods</a><ul><li><a href="#rfc.section.4.1">4.1</a>&nbsp;&nbsp;&nbsp;<a href="#rfc.section.4.1">MKCALENDAR Alternative</a><ul><li><a href="#rfc.section.4.1.1">4.1.1</a>&nbsp;&nbsp;&nbsp;<a href="#rfc.section.4.1.1">Example: Using MKCOL Instead of MKCALENDAR</a></li></ul></li></ul></li><li><a href="#rfc.section.5">5.</a>&nbsp;&nbsp;&nbsp;<a href="#rfc.section.5">XML Element Definitions</a><ul><li><a href="#rfc.section.5.1">5.1</a>&nbsp;&nbsp;&nbsp;<a href="#rfc.section.5.1">mkcol XML Element</a></li><li><a href="#rfc.section.5.2">5.2</a>&nbsp;&nbsp;&nbsp;<a href="#rfc.section.5.2">mkcol-response XML Element</a></li></ul></li><li><a href="#rfc.section.6">6.</a>&nbsp;&nbsp;&nbsp;<a href="#rfc.section.6">Security Considerations</a></li><li><a href="#rfc.section.7">7.</a>&nbsp;&nbsp;&nbsp;<a href="#rfc.section.7">Acknowledgments</a></li><li><a href="#rfc.section.8">8.</a>&nbsp;&nbsp;&nbsp;<a href="#rfc.references">Normative References</a></li><li><a href="#rfc.authors">Author's Address</a></li></ul></nav><section id="n-introduction"><h2 id="rfc.section.1" class="np"><a href="#rfc.section.1">1.</a>&nbsp;<a href="#n-introduction">Introduction</a></h2><div id="rfc.section.1.p.1"><p>WebDAV <a href="#RFC4918"><cite title="HTTP Extensions for Web Distributed Authoring and Versioning (WebDAV)">[RFC4918]</cite></a> defines the HTTP <a href="#RFC2616"><cite title="Hypertext Transfer Protocol -- HTTP/1.1">[RFC2616]</cite></a>
+ method MKCOL. This method is used to create WebDAV collections on the 
+server. However, several WebDAV-based specifications (e.g., CalDAV <a href="#RFC4791"><cite title="Calendaring Extensions to WebDAV (CalDAV)">[RFC4791]</cite></a>)
+ define "special" collections -- ones that are identified by additional 
+values in the DAV:resourcetype property assigned to the collection 
+resource or by other means. These "special" collections are created by 
+new methods (e.g., MKCALENDAR). The addition of a new MKxxx method for 
+each new "special" collection adds to server complexity and is 
+detrimental to overall reliability due to the need to make sure 
+intermediaries are aware of these methods.<a class="self" href="#rfc.section.1.p.1">¶</a></p></div><div id="rfc.section.1.p.2"><p>This
+ specification defines an extension to the WebDAV MKCOL method that adds
+ a request body allowing a client to specify WebDAV properties to be set
+ on the newly created collection or resource. In particular, the 
+DAV:resourcetype property can be used to create a "special" collection; 
+alternatively, other properties can be used to create a "special" 
+resource. This avoids the need to invent new MKxxx methods.<a class="self" href="#rfc.section.1.p.2">¶</a></p></div></section><section id="n-conventions-used-in-this-document"><h2 id="rfc.section.2"><a href="#rfc.section.2">2.</a>&nbsp;<a href="#n-conventions-used-in-this-document">Conventions Used in This Document</a></h2><div id="rfc.section.2.p.1"><p>The
+ key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", 
+"SHOULD", "SHOULD NOT", "RECOMMENDED", "MAY", and "OPTIONAL" in this 
+document are to be interpreted as described in <a href="#RFC2119"><cite title="Key words for use in RFCs to Indicate Requirement Levels">[RFC2119]</cite></a>.<a class="self" href="#rfc.section.2.p.1">¶</a></p></div><div id="rfc.section.2.p.2"><p>This document uses XML DTD fragments (Section 3.2 of <a href="#W3C.REC-xml-20081126"><cite title="Extensible Markup Language (XML) 1.0 (Fifth Edition)">[W3C.REC-xml-20081126]</cite></a>)
+ as a purely notational convention. WebDAV request and response bodies 
+cannot be validated by a DTD due to the specific extensibility rules 
+defined in Section 17 of [RFC4918] and due to the fact that all XML 
+elements defined by this specification use the XML namespace name 
+"DAV:". In particular: <a class="self" href="#rfc.section.2.p.2">¶</a></p><ol><li>Element names use the "DAV:" namespace.</li><li>Element ordering is irrelevant unless explicitly stated.</li><li>Extension
+ elements (elements not already defined as valid child elements) may be 
+added anywhere, except when explicitly stated otherwise.</li><li>Extension
+ attributes (attributes not already defined as valid for this element) 
+may be added anywhere, except when explicitly stated otherwise.</li></ol></div><div id="rfc.section.2.p.3"><p>When
+ an XML element type in the "DAV:" namespace is referenced in this 
+document outside of the context of an XML fragment, the string "DAV:" 
+will be prefixed to the element type.<a class="self" href="#rfc.section.2.p.3">¶</a></p></div><div id="rfc.section.2.p.4"><p>This document inherits, and sometimes extends, DTD productions from Section 14 of <a href="#RFC4918"><cite title="HTTP Extensions for Web Distributed Authoring and Versioning (WebDAV)">[RFC4918]</cite></a>.<a class="self" href="#rfc.section.2.p.4">¶</a></p></div></section><section id="n-webdav-extended-mkcol"><h2 id="rfc.section.3"><a href="#rfc.section.3">3.</a>&nbsp;<a href="#n-webdav-extended-mkcol">WebDAV Extended MKCOL</a></h2><div id="rfc.section.3.p.1"><p>The
+ WebDAV MKCOL request is extended to allow the inclusion of a request 
+body. The request body is an XML document containing a single DAV:mkcol 
+XML element as the root element. The Content-Type request header MUST be
+ set appropriately for an XML body (e.g., set to "text/xml" or 
+"application/xml"). XML-typed bodies for an MKCOL request that do not 
+have DAV:mkcol as the root element are reserved for future usage.<a class="self" href="#rfc.section.3.p.1">¶</a></p></div><div id="rfc.section.3.p.2"><p>One
+ or more DAV:set XML elements may be included in the DAV:mkcol XML 
+element to allow setting properties on the collection as it is created. 
+In particular, to create a collection of a particular type, the 
+DAV:resourcetype XML element MUST be included in a DAV:set XML element 
+and MUST specify the expected resource type elements for the new 
+resource, which MUST include the DAV:collection element that needs to be
+ present for any WebDAV collection.<a class="self" href="#rfc.section.3.p.2">¶</a></p></div><div id="rfc.section.3.p.3"><p>As per the PROPPATCH method (Section 9.2 of <a href="#RFC4918"><cite title="HTTP Extensions for Web Distributed Authoring and Versioning (WebDAV)">[RFC4918]</cite></a>),
+ servers MUST process any DAV:set instructions in document order (an 
+exception to the normal rule that ordering is irrelevant). If any one 
+instruction fails to execute successfully, all instructions MUST fail 
+(i.e., either all succeed or all fail). Thus, if any error occurs during
+ processing, all executed instructions MUST be undone and a proper error
+ result returned. Failure to set a property value on the collection MUST
+ result in a failure of the overall MKCOL request -- i.e., the 
+collection is not created.<a class="self" href="#rfc.section.3.p.3">¶</a></p></div><div id="rfc.section.3.p.4"><p>The
+ response to an extended MKCOL request MUST be an XML document 
+containing a single DAV:mkcol-response XML element, which MUST contain 
+DAV:propstat XML elements with the status of each property when the 
+request fails due to a failure to set one or more of the properties 
+specified in the request body. The server MAY return a response body in 
+the case where the request is successful, indicating success for setting
+ each property specified in the request body. When an empty response 
+body is returned with a success request status code, the client can 
+assume that all properties were set.<a class="self" href="#rfc.section.3.p.4">¶</a></p></div><div id="rfc.section.3.p.5"><p>In all other respects, the behavior of the extended MKCOL request follows that of the standard MKCOL request.<a class="self" href="#rfc.section.3.p.5">¶</a></p></div><section id="capability"><h3 id="rfc.section.3.1"><a href="#rfc.section.3.1">3.1</a>&nbsp;<a href="#capability">Extended MKCOL Support</a></h3><div id="rfc.section.3.1.p.1"><p>A
+ server supporting the features described in this document MUST include 
+"extended-mkcol" as a field in the DAV response header from an OPTIONS 
+request on any URI that supports use of the extended MKCOL method.<a class="self" href="#rfc.section.3.1.p.1">¶</a></p></div><section id="n-example--using-options-for-the-discovery-of-support-for-extended-mkcol"><h4 id="rfc.section.3.1.1"><a href="#rfc.section.3.1.1">3.1.1</a>&nbsp;<a href="#n-example--using-options-for-the-discovery-of-support-for-extended-mkcol">Example: Using OPTIONS for the Discovery of Support for Extended MKCOL</a></h4><div id="rfc.figure.u.1"><p>&gt;&gt; Request &lt;&lt;</p><pre class="text2">OPTIONS /addressbooks/users/ HTTP/1.1
+Host: addressbook.example.com
+				</pre></div><div id="rfc.figure.u.2"><p>&gt;&gt; Response &lt;&lt;</p><pre class="text">HTTP/1.1 200 OK
+Allow: OPTIONS, GET, HEAD, POST, PUT, DELETE, TRACE, COPY, MOVE
+Allow: MKCOL, PROPFIND, PROPPATCH, LOCK, UNLOCK, REPORT, ACL
+DAV: 1, 2, 3, access-control, extended-mkcol
+Date: Sat, 11 Nov 2006 09:32:12 GMT
+Content-Length: 0
+				</pre></div></section></section><section id="n-status-codes"><h3 id="rfc.section.3.2"><a href="#rfc.section.3.2">3.2</a>&nbsp;<a href="#n-status-codes">Status Codes</a></h3><div id="rfc.section.3.2.p.1"><p>As per Section 9.3.1 of <a href="#RFC4918"><cite title="HTTP Extensions for Web Distributed Authoring and Versioning (WebDAV)">[RFC4918]</cite></a>.<a class="self" href="#rfc.section.3.2.p.1">¶</a></p></div></section><section id="n-additional-precondition-for-extended-mkcol"><h3 id="rfc.section.3.3"><a href="#rfc.section.3.3">3.3</a>&nbsp;<a href="#n-additional-precondition-for-extended-mkcol">Additional Precondition for Extended MKCOL</a></h3><div id="rfc.section.3.3.p.1"><p>WebDAV (<a href="#RFC4918"><cite title="HTTP Extensions for Web Distributed Authoring and Versioning (WebDAV)">[RFC4918]</cite></a>,
+ Section 16) defines preconditions and postconditions for request 
+behavior. This specification adds the following precondition for the 
+extended MKCOL request.<a class="self" href="#rfc.section.3.3.p.1">¶</a></p></div><div id="rfc.section.3.3.p.2"><dl><dt>Name:</dt><dd>valid-resourcetype</dd><dt>Namespace:</dt><dd>DAV:</dd><dt>Use with:</dt><dd>Typically 403 (Forbidden)</dd><dt>Purpose:</dt><dd>(precondition) -- The server MUST support the specified resourcetype value for the specified collection.</dd></dl></div></section><section id="n-example--successful-extended-mkcol-request"><h3 id="rfc.section.3.4"><a href="#rfc.section.3.4">3.4</a>&nbsp;<a href="#n-example--successful-extended-mkcol-request">Example: Successful Extended MKCOL Request</a></h3><div id="rfc.section.3.4.p.1"><p>This
+ example shows how the extended MKCOL request is used to create a 
+collection of a fictitious type "special-resource". The response body is
+ empty as the request completed successfully.<a class="self" href="#rfc.section.3.4.p.1">¶</a></p></div><div id="rfc.figure.u.3"><p>&gt;&gt; Request &lt;&lt;</p><pre class="text2">MKCOL /home/special/ HTTP/1.1
+Host: special.example.com
+Content-Type: application/xml; charset="utf-8"
+Content-Length: xxxx
+
+&lt;?xml version="1.0" encoding="utf-8" ?&gt;
+&lt;D:mkcol xmlns:D="DAV:"
+              xmlns:E="http://example.com/ns/"&gt;
+  &lt;D:set&gt;
+    &lt;D:prop&gt;
+      &lt;D:resourcetype&gt;
+        &lt;D:collection/&gt;
+        &lt;E:special-resource/&gt;
+      &lt;/D:resourcetype&gt;
+      &lt;D:displayname&gt;Special Resource&lt;/D:displayname&gt;
+    &lt;/D:prop&gt;
+  &lt;/D:set&gt;
+&lt;/D:mkcol&gt; 
+          </pre></div><div id="rfc.figure.u.4"><p>&gt;&gt; Response &lt;&lt;</p><pre class="text">HTTP/1.1 201 Created
+Cache-Control: no-cache
+Date: Sat, 11 Nov 2006 09:32:12 GMT
+          </pre></div></section><section id="n-example--unsuccessful-extended-mkcol-request"><h3 id="rfc.section.3.5"><a href="#rfc.section.3.5">3.5</a>&nbsp;<a href="#n-example--unsuccessful-extended-mkcol-request">Example: Unsuccessful Extended MKCOL Request</a></h3><div id="rfc.section.3.5.p.1"><p>This
+ example shows an attempt to use the extended MKCOL request to create a 
+collection of a fictitious type "special-resource", which is not 
+actually supported by the server. The response body shows that an error 
+occurred specifically with the DAV:resourcetype property.<a class="self" href="#rfc.section.3.5.p.1">¶</a></p></div><div id="rfc.figure.u.5"><p>&gt;&gt; Request &lt;&lt;</p><pre class="text2">MKCOL /home/special/ HTTP/1.1
+Host: special.example.com
+Content-Type: application/xml; charset="utf-8"
+Content-Length: xxxx
+
+&lt;?xml version="1.0" encoding="utf-8" ?&gt;
+&lt;D:mkcol xmlns:D="DAV:"
+              xmlns:E="http://example.com/ns/"&gt;
+  &lt;D:set&gt;
+    &lt;D:prop&gt;
+      &lt;D:resourcetype&gt;
+        &lt;D:collection/&gt;
+        &lt;E:special-resource/&gt;
+      &lt;/D:resourcetype&gt;
+      &lt;D:displayname&gt;Special Resource&lt;/D:displayname&gt;
+    &lt;/D:prop&gt;
+  &lt;/D:set&gt;
+&lt;/D:mkcol&gt; 
+          </pre></div><div id="rfc.figure.u.6"><p>&gt;&gt; Response &lt;&lt;</p><pre class="text">HTTP/1.1 403 Forbidden
+Cache-Control: no-cache
+Date: Sat, 11 Nov 2006 09:32:12 GMT
+Content-Type: application/xml; charset="utf-8"
+Content-Length: xxxx
+
+&lt;?xml version="1.0" encoding="utf-8" ?&gt;
+&lt;D:mkcol-response xmlns:D="DAV:"&gt;
+  &lt;D:propstat&gt;
+    &lt;D:prop&gt;
+      &lt;D:resourcetype/&gt;
+    &lt;/D:prop&gt;
+    &lt;D:status&gt;HTTP/1.1 403 Forbidden&lt;/D:status&gt;
+    &lt;D:error&gt;&lt;D:valid-resourcetype /&gt;&lt;/D:error&gt;
+    &lt;D:responsedescription&gt;Resource type is not
+    supported by this server&lt;/D:responsedescription&gt;
+  &lt;/D:propstat&gt;
+  &lt;D:propstat&gt;
+    &lt;D:prop&gt;
+      &lt;D:displayname/&gt;
+    &lt;/D:prop&gt;
+    &lt;D:status&gt;HTTP/1.1 424 Failed Dependency&lt;/D:status&gt;
+  &lt;/D:propstat&gt;
+&lt;/D:mkcol-response&gt; 
+          </pre></div></section></section><section id="n-using-extended-mkcol-as-an-alternative-for-mkxxx-methods"><h2 id="rfc.section.4"><a href="#rfc.section.4">4.</a>&nbsp;<a href="#n-using-extended-mkcol-as-an-alternative-for-mkxxx-methods">Using Extended MKCOL as an Alternative for MKxxx Methods</a></h2><div id="rfc.section.4.p.1"><p>One
+ of the goals of this extension is to eliminate the need for other 
+extensions to define their own variant of MKCOL to create the special 
+collections they need. This extension can be used as an alternative to 
+existing MKxxx methods in other extensions as detailed below. If a 
+server supports this extension and the other extension listed, then the 
+server MUST support use of the extended MKCOL method to achieve the same
+ result as the MKxxx method of the other extension.<a class="self" href="#rfc.section.4.p.1">¶</a></p></div><section id="n-mkcalendar-alternative"><h3 id="rfc.section.4.1"><a href="#rfc.section.4.1">4.1</a>&nbsp;<a href="#n-mkcalendar-alternative">MKCALENDAR Alternative</a></h3><div id="rfc.section.4.1.p.1"><p>CalDAV
+ defines the MKCALENDAR method to create a calendar collection as well 
+as to set properties during creation (Section 5.3.1 of <a href="#RFC4791"><cite title="Calendaring Extensions to WebDAV (CalDAV)">[RFC4791]</cite></a>).<a class="self" href="#rfc.section.4.1.p.1">¶</a></p></div><div id="rfc.section.4.1.p.2"><p>The
+ extended MKCOL method can be used instead by specifying both 
+DAV:collection and CALDAV:calendar-collection XML elements in the 
+DAV:resourcetype property, set during the extended MKCOL request.<a class="self" href="#rfc.section.4.1.p.2">¶</a></p></div><section id="n-example--using-mkcol-instead-of-mkcalendar"><h4 id="rfc.section.4.1.1"><a href="#rfc.section.4.1.1">4.1.1</a>&nbsp;<a href="#n-example--using-mkcol-instead-of-mkcalendar">Example: Using MKCOL Instead of MKCALENDAR</a></h4><div id="rfc.section.4.1.1.p.1"><p>The
+ first example below shows an MKCALENDAR request containing a 
+CALDAV:mkcalendar XML element in the request body and returning a 
+CALDAV:mkcalendar-response XML element in the response body.<a class="self" href="#rfc.section.4.1.1.p.1">¶</a></p></div><div id="rfc.figure.u.7"><p>&gt;&gt; MKCALENDAR Request &lt;&lt;</p><pre class="text2">MKCALENDAR /home/lisa/calendars/events/ HTTP/1.1
+Host: calendar.example.com
+Content-Type: application/xml; charset="utf-8"
+Content-Length: xxxx
+
+&lt;?xml version="1.0" encoding="utf-8" ?&gt;
+&lt;C:mkcalendar xmlns:D="DAV:"
+              xmlns:C="urn:ietf:params:xml:ns:caldav"&gt;
+  &lt;D:set&gt;
+    &lt;D:prop&gt;
+      &lt;D:displayname&gt;Lisa's Events&lt;/D:displayname&gt;
+    &lt;/D:prop&gt;
+  &lt;/D:set&gt;
+&lt;/C:mkcalendar&gt; 
+          </pre></div><div id="rfc.figure.u.8"><p>&gt;&gt; MKCALENDAR Response &lt;&lt;</p><pre class="text">HTTP/1.1 201 Created
+Cache-Control: no-cache
+Date: Sat, 11 Nov 2006 09:32:12 GMT
+Content-Type: application/xml; charset="utf-8"
+Content-Length: xxxx
+
+&lt;?xml version="1.0" encoding="utf-8" ?&gt;
+&lt;C:mkcalendar-response xmlns:D="DAV:"
+              xmlns:C="urn:ietf:params:xml:ns:caldav"&gt;
+  &lt;D:propstat&gt;
+    &lt;D:prop&gt;
+      &lt;D:displayname/&gt;
+    &lt;/D:prop&gt;
+    &lt;D:status&gt;HTTP/1.1 200 OK&lt;/D:status&gt;
+  &lt;/D:propstat&gt;
+&lt;/C:mkcalendar-response&gt; 
+          </pre></div><div id="rfc.section.4.1.1.p.2"><p>The second example shows the equivalent extended MKCOL request with the same request and response XML elements.<a class="self" href="#rfc.section.4.1.1.p.2">¶</a></p></div><div id="rfc.figure.u.9"><p>&gt;&gt; MKCOL Request &lt;&lt;</p><pre class="text2">MKCOL /home/lisa/calendars/events/ HTTP/1.1
+Host: calendar.example.com
+Content-Type: application/xml; charset="utf-8"
+Content-Length: xxxx
+
+&lt;?xml version="1.0" encoding="utf-8" ?&gt;
+&lt;D:mkcol xmlns:D="DAV:"
+              xmlns:C="urn:ietf:params:xml:ns:caldav"&gt;
+  &lt;D:set&gt;
+    &lt;D:prop&gt;
+      &lt;D:resourcetype&gt;
+        &lt;D:collection/&gt;
+        &lt;C:calendar/&gt;
+      &lt;/D:resourcetype&gt;
+      &lt;D:displayname&gt;Lisa's Events&lt;/D:displayname&gt;
+    &lt;/D:prop&gt;
+  &lt;/D:set&gt;
+&lt;/D:mkcol&gt; 
+          </pre></div><div id="rfc.figure.u.10"><p>&gt;&gt; MKCOL Response &lt;&lt;</p><pre class="text">HTTP/1.1 201 Created
+Cache-Control: no-cache
+Date: Sat, 11 Nov 2006 09:32:12 GMT
+Content-Type: application/xml; charset="utf-8"
+Content-Length: xxxx
+
+&lt;?xml version="1.0" encoding="utf-8" ?&gt;
+&lt;D:mkcol-response xmlns:D="DAV:"
+              xmlns:C="urn:ietf:params:xml:ns:caldav"&gt;
+  &lt;D:propstat&gt;
+    &lt;D:prop&gt;
+      &lt;D:resourcetype/&gt;
+      &lt;D:displayname/&gt;
+    &lt;/D:prop&gt;
+    &lt;D:status&gt;HTTP/1.1 200 OK&lt;/D:status&gt;
+  &lt;/D:propstat&gt;
+&lt;/D:mkcol-response&gt; 
+          </pre></div></section></section></section><section id="n-xml-element-definitions"><h2 id="rfc.section.5"><a href="#rfc.section.5">5.</a>&nbsp;<a href="#n-xml-element-definitions">XML Element Definitions</a></h2><section id="n-mkcol-xml-element"><h3 id="rfc.section.5.1"><a href="#rfc.section.5.1">5.1</a>&nbsp;<a href="#n-mkcol-xml-element">mkcol XML Element</a></h3><div id="rfc.section.5.1.p.1"><dl><dt>Name:</dt><dd>mkcol</dd><dt>Namespace:</dt><dd>DAV:</dd><dt>Purpose:</dt><dd>Used
+ in a request to specify properties to be set in an extended MKCOL 
+request, as well as any additional information needed when creating the 
+resource.</dd><dt>Description:</dt><dd>This XML element is a container 
+for the information required to modify the properties on a collection 
+resource as it is created in an extended MKCOL request.</dd><dt>Definition:</dt><dd><span id="rfc.figure.u.11"><pre class="inline">    &lt;!ELEMENT mkcol (set+)&gt;
+                        </pre></span> </dd></dl></div></section><section id="n-mkcol-response-xml-element"><h3 id="rfc.section.5.2"><a href="#rfc.section.5.2">5.2</a>&nbsp;<a href="#n-mkcol-response-xml-element">mkcol-response XML Element</a></h3><div id="rfc.section.5.2.p.1"><dl><dt>Name:</dt><dd>mkcol-response</dd><dt>Namespace:</dt><dd>DAV:</dd><dt>Purpose:</dt><dd>Used in a response to indicate the status of properties that were set or failed to be set during an extended MKCOL request.</dd><dt>Description:</dt><dd>This
+ XML element is a container for the information returned about a 
+resource that has been created in an extended MKCOL request.</dd><dt>Definition:</dt><dd><span id="rfc.figure.u.12"><pre class="inline">    &lt;!ELEMENT mkcol-response (propstat+)&gt;
+                        </pre></span> </dd></dl></div></section></section><section id="n-security-considerations"><h2 id="rfc.section.6"><a href="#rfc.section.6">6.</a>&nbsp;<a href="#n-security-considerations">Security Considerations</a></h2><div id="rfc.section.6.p.1"><p>This extension does not introduce any new security concerns beyond those already described in HTTP <a href="#RFC2616"><cite title="Hypertext Transfer Protocol -- HTTP/1.1">[RFC2616]</cite></a> and WebDAV <a href="#RFC4918"><cite title="HTTP Extensions for Web Distributed Authoring and Versioning (WebDAV)">[RFC4918]</cite></a>.<a class="self" href="#rfc.section.6.p.1">¶</a></p></div></section><section id="n-acknowledgments"><h2 id="rfc.section.7"><a href="#rfc.section.7">7.</a>&nbsp;<a href="#n-acknowledgments">Acknowledgments</a></h2><div id="rfc.section.7.p.1"><p>Thanks to Bernard Desruisseaux, Mike Douglass, Alexey Melnikov, Julian Reschke, and Simon Vaillancourt.<a class="self" href="#rfc.section.7.p.1">¶</a></p></div></section><section id="rfc.references"><h2 id="rfc.section.8"><a href="#rfc.section.8">8.</a> Normative References</h2><dl class="reference"><dt id="RFC2119">[RFC2119]</dt><dd><a href="mailto:sob@harvard.edu">Bradner, S.</a>, “<a href="https://tools.ietf.org/html/rfc2119">Key words for use in RFCs to Indicate Requirement Levels</a>”, BCP&nbsp;14, RFC&nbsp;2119, March&nbsp;1997.</dd><dt id="RFC2616">[RFC2616]</dt><dd><a href="mailto:fielding@ics.uci.edu">Fielding, R.</a>, <a href="mailto:jg@w3.org">Gettys, J.</a>, <a href="mailto:mogul@wrl.dec.com">Mogul, J.</a>, <a href="mailto:frystyk@w3.org">Frystyk, H.</a>, <a href="mailto:masinter@parc.xerox.com">Masinter, L.</a>, <a href="mailto:paulle@microsoft.com">Leach, P.</a>, and <a href="mailto:timbl@w3.org">T. Berners-Lee</a>, “<a href="https://tools.ietf.org/html/rfc2616">Hypertext Transfer Protocol -- HTTP/1.1</a>”, RFC&nbsp;2616, June&nbsp;1999.</dd><dt id="RFC4791">[RFC4791]</dt><dd><a href="mailto:cyrus@daboo.name">Daboo, C.</a>, <a href="mailto:bernard.desruisseaux@oracle.com">Desruisseaux, B.</a>, and <a href="mailto:ldusseault@commerce.net">L. Dusseault</a>, “<a href="https://tools.ietf.org/html/rfc4791">Calendaring Extensions to WebDAV (CalDAV)</a>”, RFC&nbsp;4791, March&nbsp;2007.</dd><dt id="RFC4918">[RFC4918]</dt><dd>Dusseault, L., “<a href="https://tools.ietf.org/html/rfc4918">HTTP Extensions for Web Distributed Authoring and Versioning (WebDAV)</a>”, RFC&nbsp;4918, June&nbsp;2007.</dd><dt id="W3C.REC-xml-20081126">[W3C.REC-xml-20081126]</dt><dd>Maler, E., Yergeau, F., Paoli, J., Bray, T., and C. Sperberg-McQueen, “<a href="http://www.w3.org/TR/2008/REC-xml-20081126">Extensible Markup Language (XML) 1.0 (Fifth Edition)</a>”, World Wide Web Consortium Recommendation&nbsp;REC-xml-20081126, November&nbsp;2008, &lt;<a href="http://www.w3.org/TR/2008/REC-xml-20081126">http://www.w3.org/TR/2008/REC-xml-20081126</a>&gt;.</dd></dl></section><section id="rfc.authors" class="avoidbreakinside"><h2><a href="#rfc.authors">Author's Address</a></h2><address><b>Cyrus Daboo</b><br>
+        Apple Inc. 
+      <br>1 Infinite Loop<br>Cupertino, CA&nbsp;95014<br>USA<br>Email: <a href="mailto:cyrus@daboo.name">cyrus@daboo.name</a><br>URI: <a href="http://www.apple.com/">http://www.apple.com/</a></address></section>
+</body></html>

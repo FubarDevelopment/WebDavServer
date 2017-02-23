@@ -1,0 +1,1554 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+      <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+   <title>Binding Extensions to Web Distributed Authoring and Versioning (WebDAV)</title><script type="application/javascript">
+function getMeta(rfcno, container) {
+
+  var xhr = new XMLHttpRequest();
+  xhr.open("GET", "https://tools.ietf.org/draft/rfc" + rfcno + "/state.xml", true);
+  xhr.onload = function (e) {
+    if (xhr.readyState === 4) {
+      if (xhr.status === 200) {
+        var doc = xhr.responseXML;
+        var info = getChildByName(doc.documentElement, "info");
+  
+        var cont = document.getElementById(container);
+        // empty the container
+        while (cont.firstChild) {
+          cont.removeChild(myNode.firstChild);
+        }      
+  
+        var c = getChildByName(info, "stdstatus");
+        if (c !== null) {
+          var bld = newElementWithText("b", c.textContent);
+          cont.appendChild(bld);
+        }
+  
+        c = getChildByName(info, "updatedby");
+        if (c !== null) {
+          cont.appendChild(newElement("br"));
+          cont.appendChild(newText("Updated by: "));
+          appendRfcLinks(cont, c.textContent);
+        }
+  
+        c = getChildByName(info, "obsoletedby");
+        if (c !== null) {
+          cont.appendChild(newElement("br"));
+          cont.appendChild(newText("Obsoleted by: "));
+          appendRfcLinks(cont, c.textContent);
+        }
+        
+        c = getChildByName(info, "errata");
+        if (c !== null) {
+          cont.appendChild(newElement("br"));
+          var link = newElementWithText("a", "errata");
+          link.setAttribute("href", "http://www.rfc-editor.org/errata_search.php?rfc=" + rfcno);
+          var errata = newElementWithText("i", "This document has ");
+          errata.appendChild(link);
+          errata.appendChild(newText("."));
+          cont.appendChild(errata);
+        }
+
+        cont.style.display = "block";
+      } else {
+        console.error(xhr.statusText);
+      }
+    }
+  };
+  xhr.onerror = function (e) {
+    console.error(xhr.status + " " + xhr.statusText);
+  };
+  xhr.send(null);
+}
+
+// DOM helpers
+function newElement(name) {
+  return document.createElement(name);
+}
+function newElementWithText(name, txt) {
+  var e = document.createElement(name);
+  e.appendChild(newText(txt));
+  return e;
+}
+function newText(text) {
+  return document.createTextNode(text);
+}
+
+function getChildByName(parent, name) {
+  if (parent === null) {
+    return null;
+  }
+  else {
+    for (var c = parent.firstChild; c !== null; c = c.nextSibling) {
+      if (name == c.nodeName) {
+        return c;
+      }
+    }
+    return null;
+  }
+}
+
+function appendRfcLinks(parent, text) {
+  var updates = text.split(",");
+  for (var i = 0; i < updates.length; i++) {
+    var rfc = updates[i].trim();
+    if (rfc.substring(0, 3) == "rfc") {
+      var link = newElement("a");
+      link.setAttribute("href", "http://tools.ietf.org/html/" + rfc);
+      link.appendChild(newText(rfc.substring(3)));
+      parent.appendChild(link);
+    } else {
+      parent.appendChild(newText(rfc));
+    }
+    if (i != updates.length - 1) {
+      parent.appendChild(newText(", "));
+    }
+  }
+}
+</script><script type="application/javascript">
+function anchorRewrite() {
+  map = { };
+  if (window.location.hash.length >= 1) {
+    var fragid = window.location.hash.substr(1);
+    if (fragid) {
+      if (! document.getElementById(fragid)) {
+        var prefix = "rfc.";
+        var mapped = map[fragid];
+        if (mapped) {
+          window.location.hash = mapped;
+        } else if (fragid.indexOf("section-") == 0) {
+          window.location.hash = prefix + "section." + fragid.substring(8);
+        } else if (fragid.indexOf("appendix-") == 0) {
+          window.location.hash = prefix + "section." + fragid.substring(9);
+        } else if (fragid.indexOf("s-") == 0) {
+          window.location.hash = prefix + "section." + fragid.substring(2);
+        } else if (fragid.indexOf("p-") == 0) {
+          var r = fragid.substring(2);
+          var p = r.indexOf("-");
+          if (p >= 0) {
+            window.location.hash = prefix + "section." + r.substring(0, p) + ".p." + r.substring(p + 1);
+          }
+        }
+      }
+    }  
+  }
+}
+window.addEventListener('hashchange', anchorRewrite);
+window.addEventListener('DOMContentLoaded', anchorRewrite);
+</script><style type="text/css" title="Xml2Rfc (sans serif)">
+a {
+  text-decoration: none;
+}
+a.smpl {
+  color: black;
+}
+a:hover {
+  text-decoration: underline;
+}
+a:active {
+  text-decoration: underline;
+}
+address {
+  margin-top: 1em;
+  margin-left: 2em;
+  font-style: normal;
+}
+blockquote {
+  border-style: solid;
+  border-color: gray;
+  border-width: 0 0 0 .25em;
+  font-style: italic;
+  padding-left: 0.5em;
+}
+body {
+  color: black;
+  font-family: cambria, georgia, serif;
+  font-size: 12pt;
+  margin: 2em auto;
+  max-width: 1000px;
+}
+samp, span.tt, code, pre {
+  font-family: consolas, monaco, monospace;
+}
+cite {
+  font-style: normal;
+}
+aside {
+  margin-left: 2em;
+}
+dl {
+  margin-left: 2em;
+}
+dl > dt {
+  float: left;
+  margin-right: 1em;
+}
+dl.nohang > dt {
+  float: none;
+}
+dl > dd {
+  margin-bottom: .5em;
+}
+dl.compact > dd {
+  margin-bottom: .0em;
+}
+dl > dd > dl {
+  margin-top: 0.5em;
+}
+ul.empty {
+  list-style-type: none;
+}
+ul.empty li {
+  margin-top: .5em;
+}
+dl p {
+  margin-left: 0em;
+}
+dl.reference > dt {
+  font-weight: bold;
+}
+dl.reference > dd {
+  margin-left: 6em;
+}
+h1 {
+  color: green;
+  font-size: 150%;
+  line-height: 18pt;
+  font-weight: bold;
+  text-align: center;
+  margin-top: 36pt;
+  margin-bottom: 0pt;
+}
+h2 {
+  font-size: 130%;
+  line-height: 21pt;
+  page-break-after: avoid;
+}
+h2.np {
+  page-break-before: always;
+}
+h3 {
+  font-size: 120%;
+  line-height: 15pt;
+  page-break-after: avoid;
+}
+h4 {
+  font-size: 110%;
+  page-break-after: avoid;
+}
+h5, h6 {
+  page-break-after: avoid;
+}
+h1 a, h2 a, h3 a, h4 a, h5 a, h6 a {
+  color: black;
+}
+img {
+  margin-left: 3em;
+}
+li {
+  margin-left: 2em;
+}
+ol {
+  margin-left: 2em;
+}
+ol.la {
+  list-style-type: lower-alpha;
+}
+ol.ua {
+  list-style-type: upper-alpha;
+}
+ol p {
+  margin-left: 0em;
+}
+p {
+  margin-left: 2em;
+}
+pre {
+  font-size: 11pt;
+  margin-left: 3em;
+  background-color: lightyellow;
+  padding: .25em;
+  page-break-inside: avoid;
+}
+pre.text2 {
+  border-style: dotted;
+  border-width: 1px;
+  background-color: #f0f0f0;
+}
+pre.inline {
+  background-color: white;
+  padding: 0em;
+  page-break-inside: auto;
+}
+pre.text {
+  border-style: dotted;
+  border-width: 1px;
+  background-color: #f8f8f8;
+}
+pre.drawing {
+  border-style: solid;
+  border-width: 1px;
+  background-color: #f8f8f8;
+  padding: 2em;
+}
+table {
+  margin-left: 2em;
+}
+table.header {
+  border-spacing: 1px;
+  width: 95%;
+  font-size: 11pt;
+  color: white;
+}
+td.top {
+  vertical-align: top;
+}
+td.topnowrap {
+  vertical-align: top;
+  white-space: nowrap;
+}
+table.header td {
+  background-color: gray;
+  width: 50%;
+}
+ul.toc, ul.toc ul {
+  list-style: none;
+  margin-left: 1.5em;
+  padding-left: 0em;
+}
+ul.toc li {
+  line-height: 150%;
+  font-weight: bold;
+  margin-left: 0em;
+}
+ul.toc li li {
+  line-height: normal;
+  font-weight: normal;
+  font-size: 11pt;
+  margin-left: 0em;
+}
+li.excluded {
+  font-size: 0pt;
+}
+ul p {
+  margin-left: 0em;
+}
+.filename, h1, h2, h3, h4 {
+  font-family: candara, calibri, segoe, optima, arial, sans-serif;
+}
+ul.ind, ul.ind ul {
+  list-style: none;
+  margin-left: 1.5em;
+  padding-left: 0em;
+  page-break-before: avoid;
+}
+ul.ind li {
+  font-weight: bold;
+  line-height: 200%;
+  margin-left: 0em;
+}
+ul.ind li li {
+  font-weight: normal;
+  line-height: 150%;
+  margin-left: 0em;
+}
+.avoidbreakinside {
+  page-break-inside: avoid;
+}
+.avoidbreakafter {
+  page-break-after: avoid;
+}
+.bcp14 {
+  font-style: normal;
+  text-transform: lowercase;
+  font-variant: small-caps;
+}
+blockquote > * .bcp14 {
+  font-style: italic;
+}
+.comment {
+  background-color: yellow;
+}
+.center {
+  text-align: center;
+}
+.error {
+  color: red;
+  font-style: italic;
+  font-weight: bold;
+}
+.figure {
+  font-weight: bold;
+  text-align: center;
+  font-size: 10pt;
+}
+.filename {
+  color: #333333;
+  font-size: 112%;
+  font-weight: bold;
+  line-height: 21pt;
+  text-align: center;
+  margin-top: 0pt;
+}
+.fn {
+  font-weight: bold;
+}
+.left {
+  text-align: left;
+}
+.right {
+  text-align: right;
+}
+.warning {
+  font-size: 130%;
+  background-color: yellow;
+}
+.self {
+    color: #999999;
+    margin-left: .3em;
+    text-decoration: none;
+    visibility: hidden;
+    -webkit-user-select: none; 
+    -moz-user-select: none;
+    -ms-user-select: none;
+}
+.self:hover {
+    text-decoration: none;
+}
+p:hover .self {
+    visibility: visible;
+}
+.docstatus {
+  border: 1px solid black;
+  display: none;
+  float: right;
+  margin: 2em;
+  padding: 1em;
+}
+
+@media screen {
+  pre.text, pre.text2 {
+    width: 69em;
+  }
+}
+
+@media print {
+  .noprint {
+    display: none;
+  }
+
+  a {
+    color: black;
+    text-decoration: none;
+  }
+
+  table.header {
+    width: 90%;
+  }
+
+  td.header {
+    width: 50%;
+    color: black;
+    background-color: white;
+    vertical-align: top;
+    font-size: 110%;
+  }
+
+  ul.toc a:last-child::after {
+    content: leader('.') target-counter(attr(href), page);
+  }
+
+  ul.ind li li a {
+    content: target-counter(attr(href), page);
+  }
+
+  pre {
+    font-size: 10pt;
+  }
+
+  .print2col {
+    column-count: 2;
+    -moz-column-count: 2;
+    column-fill: auto;
+  }
+}
+@page {
+  @top-left {
+       content: "RFC 5842";
+  }
+  @top-right {
+       content: "April 2010";
+  }
+  @top-center {
+       content: "Binding Extensions to WebDAV";
+  }
+  @bottom-left {
+       content: "Clemm, et al.";
+  }
+  @bottom-center {
+       content: "Experimental";
+  }
+  @bottom-right {
+       content: "[Page " counter(page) "]";
+  }
+}
+@page:first {
+    @top-left {
+      content: normal;
+    }
+    @top-right {
+      content: normal;
+    }
+    @top-center {
+      content: normal;
+    }
+}
+</style><link rel="Contents" href="#rfc.toc"><link rel="Author" href="#rfc.authors"><link rel="Copyright" href="#rfc.copyrightnotice"><link rel="Index" href="#rfc.index"><link rel="Chapter" title="1 Introduction" href="#rfc.section.1"><link rel="Chapter" title="2 Overview of Bindings" href="#rfc.section.2"><link rel="Chapter" title="3 Properties" href="#rfc.section.3"><link rel="Chapter" title="4 BIND Method" href="#rfc.section.4"><link rel="Chapter" title="5 UNBIND Method" href="#rfc.section.5"><link rel="Chapter" title="6 REBIND Method" href="#rfc.section.6"><link rel="Chapter" title="7 Additional Status Codes" href="#rfc.section.7"><link rel="Chapter" title="8 Capability Discovery" href="#rfc.section.8"><link rel="Chapter" title="9 Relationship to Locking in WebDAV" href="#rfc.section.9"><link rel="Chapter" title="10 Relationship to WebDAV Access Control Protocol" href="#rfc.section.10"><link rel="Chapter" title="11 Relationship to Versioning Extensions to WebDAV" href="#rfc.section.11"><link rel="Chapter" title="12 Security Considerations" href="#rfc.section.12"><link rel="Chapter" title="13 Internationalization Considerations" href="#rfc.section.13"><link rel="Chapter" title="14 IANA Considerations" href="#rfc.section.14"><link rel="Chapter" title="15 Acknowledgements" href="#rfc.section.15"><link rel="Chapter" href="#rfc.section.16" title="16 References"><link rel="Alternate" title="Authoritative ASCII Version" href="http://www.ietf.org/rfc/rfc5842.txt"><link rel="Help" title="RFC-Editor's Status Page" href="http://www.rfc-editor.org/info/rfc5842"><link rel="Help" title="Additional Information on tools.ietf.org" href="http://tools.ietf.org/html/rfc5842"><meta name="generator" content="http://greenbytes.de/tech/webdav/rfc2629.xslt, Revision 1.840, 2016/11/16 05:32:10, XSLT vendor: SAXON 6.5.5 from Michael Kay http://saxon.sf.net/"><link rel="schema.dcterms" href="http://purl.org/dc/terms/"><meta name="dcterms.creator" content="Clemm, G."><meta name="dcterms.creator" content="Crawford, J."><meta name="dcterms.creator" content="Reschke, J. F."><meta name="dcterms.creator" content="Whitehead, J."><meta name="dcterms.identifier" content="urn:ietf:rfc:5842"><meta name="dcterms.issued" content="2010-04"><meta name="dcterms.abstract" content="This specification defines bindings, and the BIND method for creating multiple bindings to the same resource. Creating a new binding to a resource causes at least one new URI to be mapped to that resource. Servers are required to ensure the integrity of any bindings that they allow to be created."><meta name="dcterms.isPartOf" content="urn:issn:2070-1721"><meta name="description" content="This specification defines bindings, and the BIND method for creating multiple bindings to the same resource. Creating a new binding to a resource causes at least one new URI to be mapped to that resource. Servers are required to ensure the integrity of any bindings that they allow to be created."></head><body onload='getMeta(5842,"rfc.meta");'><header><table class="header" id="rfc.headerblock"><tbody><tr><td class="left">Internet Engineering Task Force (IETF)</td><td class="right">G. Clemm</td></tr><tr><td class="left">Request for Comments: 5842</td><td class="right">IBM</td></tr><tr><td class="left">Category: Experimental</td><td class="right">J. Crawford</td></tr><tr><td class="left">ISSN: 2070-1721</td><td class="right">IBM Research</td></tr><tr><td class="left"></td><td class="right">J. Reschke, Editor</td></tr><tr><td class="left"></td><td class="right">greenbytes</td></tr><tr><td class="left"></td><td class="right">J. Whitehead</td></tr><tr><td class="left"></td><td class="right">U.C. Santa Cruz</td></tr><tr><td class="left"></td><td class="right">April 2010</td></tr></tbody></table><div id="rfc.title"><h1>Binding Extensions to Web Distributed Authoring and Versioning (WebDAV)</h1></div></header><section id="rfc.abstract"><h2><a href="#rfc.abstract">Abstract</a></h2><p>This
+ specification defines bindings, and the BIND method for creating 
+multiple bindings to the same resource. Creating a new binding to a 
+resource causes at least one new URI to be mapped to that resource. 
+Servers are required to ensure the integrity of any bindings that they 
+allow to be created.</p></section><div id="rfc.meta" class="docstatus" style="display: block;"><b>EXPERIMENTAL</b></div><section id="rfc.status"><h2><a href="#rfc.status">Status of This Memo</a></h2><p>This
+ document is not an Internet Standards Track specification; it is 
+published for examination, experimental implementation, and evaluation.</p><p>This
+ document defines an Experimental Protocol for the Internet community. 
+This document is a product of the Internet Engineering Task Force 
+(IETF). It represents the consensus of the IETF community. It has 
+received public review and has been approved for publication by the 
+Internet Engineering Steering Group (IESG). Not all documents approved 
+by the IESG are a candidate for any level of Internet Standard; see 
+Section 2 of RFC 5741.</p><p>Information about the current status of this document, any errata, and how to provide feedback on it may be obtained at <a href="http://www.rfc-editor.org/info/rfc5842">http://www.rfc-editor.org/info/rfc5842</a>.</p></section><section id="rfc.copyrightnotice"><h2><a href="#rfc.copyrightnotice">Copyright Notice</a></h2><p>Copyright © 2010 IETF Trust and the persons identified as the document authors. All rights reserved.</p><p>This document is subject to BCP 78 and the IETF Trust's Legal Provisions Relating to IETF Documents (<a href="http://trustee.ietf.org/license-info">http://trustee.ietf.org/license-info</a>)
+ in effect on the date of publication of this document. Please review 
+these documents carefully, as they describe your rights and restrictions
+ with respect to this document. Code Components extracted from this 
+document must include Simplified BSD License text as described in 
+Section 4.e of the Trust Legal Provisions and are provided without 
+warranty as described in the Simplified BSD License.</p><p>This document
+ may contain material from IETF Documents or IETF Contributions 
+published or made publicly available before November 10, 2008. The 
+person(s) controlling the copyright in some of this material may not 
+have granted the IETF Trust the right to allow modifications of such 
+material outside the IETF Standards Process. Without obtaining an 
+adequate license from the person(s) controlling the copyright in such 
+materials, this document may not be modified outside the IETF Standards 
+Process, and derivative works of it may not be created outside the IETF 
+Standards Process, except to format it for publication as an RFC or to 
+translate it into languages other than English.</p></section><hr class="noprint"><nav id="rfc.toc"><h2 class="np"><a href="#rfc.toc">Table of Contents</a></h2><ul class="toc"><li><a href="#rfc.section.1">1.</a>&nbsp;&nbsp;&nbsp;<a href="#introduction">Introduction</a><ul><li><a href="#rfc.section.1.1">1.1.</a>&nbsp;&nbsp;&nbsp;<a href="#terminology">Terminology</a></li><li><a href="#rfc.section.1.2">1.2.</a>&nbsp;&nbsp;&nbsp;<a href="#method.preconditions.and.postconditions">Method Preconditions and Postconditions</a></li></ul></li><li><a href="#rfc.section.2">2.</a>&nbsp;&nbsp;&nbsp;<a href="#overview.of.bindings">Overview of Bindings</a><ul><li><a href="#rfc.section.2.1">2.1.</a>&nbsp;&nbsp;&nbsp;<a href="#bindings.to.collections">Bindings to Collections</a><ul><li><a href="#rfc.section.2.1.1">2.1.1.</a>&nbsp;&nbsp;&nbsp;<a href="#bind.loops">Bind Loops</a></li></ul></li><li><a href="#rfc.section.2.2">2.2.</a>&nbsp;&nbsp;&nbsp;<a href="#uri.mappings.created.by.a.new.binding">URI Mappings Created by a New Binding</a></li><li><a href="#rfc.section.2.3">2.3.</a>&nbsp;&nbsp;&nbsp;<a href="#copy.and.bindings">COPY and Bindings</a><ul><li><a href="#rfc.section.2.3.1">2.3.1.</a>&nbsp;&nbsp;&nbsp;<a href="#rfc.section.2.3.1">Example: COPY with "Depth: infinity" in Presence of Bind Loops</a></li><li><a href="#rfc.section.2.3.2">2.3.2.</a>&nbsp;&nbsp;&nbsp;<a href="#example.copy.multiple.update">Example: COPY Updating Multiple Bindings</a></li><li><a href="#rfc.section.2.3.3">2.3.3.</a>&nbsp;&nbsp;&nbsp;<a href="#example.copy.graph">Example: COPY with "Depth: infinity" with Multiple Bindings to a Leaf Resource</a></li></ul></li><li><a href="#rfc.section.2.4">2.4.</a>&nbsp;&nbsp;&nbsp;<a href="#delete.and.bindings">DELETE and Bindings</a></li><li><a href="#rfc.section.2.5">2.5.</a>&nbsp;&nbsp;&nbsp;<a href="#move.and.bindings">MOVE and Bindings</a><ul><li><a href="#rfc.section.2.5.1">2.5.1.</a>&nbsp;&nbsp;&nbsp;<a href="#rfc.section.2.5.1">Example: Simple MOVE</a></li><li><a href="#rfc.section.2.5.2">2.5.2.</a>&nbsp;&nbsp;&nbsp;<a href="#rfc.section.2.5.2">Example: MOVE Request Causing a Bind Loop</a></li></ul></li><li><a href="#rfc.section.2.6">2.6.</a>&nbsp;&nbsp;&nbsp;<a href="#rfc.section.2.6">PROPFIND and Bindings</a></li><li><a href="#rfc.section.2.7">2.7.</a>&nbsp;&nbsp;&nbsp;<a href="#determining.whether.two.bindings.are.to.the.same.resource">Determining Whether Two Bindings Are to the Same Resource</a></li><li><a href="#rfc.section.2.8">2.8.</a>&nbsp;&nbsp;&nbsp;<a href="#discovering.the.bindings.to.a.resource">Discovering the Bindings to a Resource</a></li></ul></li><li><a href="#rfc.section.3">3.</a>&nbsp;&nbsp;&nbsp;<a href="#properties">Properties</a><ul><li><a href="#rfc.section.3.1">3.1.</a>&nbsp;&nbsp;&nbsp;<a href="#PROPERTY_resource-id">DAV:resource-id Property</a></li><li><a href="#rfc.section.3.2">3.2.</a>&nbsp;&nbsp;&nbsp;<a href="#PROPERTY_parent-set">DAV:parent-set Property</a><ul><li><a href="#rfc.section.3.2.1">3.2.1.</a>&nbsp;&nbsp;&nbsp;<a href="#rfc.section.3.2.1">Example for DAV:parent-set Property</a></li></ul></li></ul></li><li><a href="#rfc.section.4">4.</a>&nbsp;&nbsp;&nbsp;<a href="#METHOD_BIND">BIND Method</a><ul><li><a href="#rfc.section.4.1">4.1.</a>&nbsp;&nbsp;&nbsp;<a href="#rfc.section.4.1">Example: BIND</a></li></ul></li><li><a href="#rfc.section.5">5.</a>&nbsp;&nbsp;&nbsp;<a href="#METHOD_UNBIND">UNBIND Method</a><ul><li><a href="#rfc.section.5.1">5.1.</a>&nbsp;&nbsp;&nbsp;<a href="#rfc.section.5.1">Example: UNBIND</a></li></ul></li><li><a href="#rfc.section.6">6.</a>&nbsp;&nbsp;&nbsp;<a href="#METHOD_REBIND">REBIND Method</a><ul><li><a href="#rfc.section.6.1">6.1.</a>&nbsp;&nbsp;&nbsp;<a href="#rfc.section.6.1">Example: REBIND</a></li><li><a href="#rfc.section.6.2">6.2.</a>&nbsp;&nbsp;&nbsp;<a href="#rfc.section.6.2">Example: REBIND in Presence of Locks and Bind Loops</a></li></ul></li><li><a href="#rfc.section.7">7.</a>&nbsp;&nbsp;&nbsp;<a href="#additional.status.codes">Additional Status Codes</a><ul><li><a href="#rfc.section.7.1">7.1.</a>&nbsp;&nbsp;&nbsp;<a href="#status.208.already.reported">208 Already Reported</a><ul><li><a href="#rfc.section.7.1.1">7.1.1.</a>&nbsp;&nbsp;&nbsp;<a href="#rfc.section.7.1.1">Example: PROPFIND by Bind-Aware Client</a></li><li><a href="#rfc.section.7.1.2">7.1.2.</a>&nbsp;&nbsp;&nbsp;<a href="#rfc.section.7.1.2">Example: PROPFIND by Non-Bind-Aware Client</a></li></ul></li><li><a href="#rfc.section.7.2">7.2.</a>&nbsp;&nbsp;&nbsp;<a href="#status.508.loop.detected">508 Loop Detected</a></li></ul></li><li><a href="#rfc.section.8">8.</a>&nbsp;&nbsp;&nbsp;<a href="#rfc.section.8">Capability Discovery</a><ul><li><a href="#rfc.section.8.1">8.1.</a>&nbsp;&nbsp;&nbsp;<a href="#rfc.section.8.1">OPTIONS Method</a></li><li><a href="#rfc.section.8.2">8.2.</a>&nbsp;&nbsp;&nbsp;<a href="#dav.request.header">'DAV' Request Header</a></li></ul></li><li><a href="#rfc.section.9">9.</a>&nbsp;&nbsp;&nbsp;<a href="#locking">Relationship to Locking in WebDAV</a><ul><li><a href="#rfc.section.9.1">9.1.</a>&nbsp;&nbsp;&nbsp;<a href="#rfc.section.9.1">Example: Locking and Multiple Bindings</a></li></ul></li><li><a href="#rfc.section.10">10.</a>&nbsp;&nbsp;&nbsp;<a href="#rfc.section.10">Relationship to WebDAV Access Control Protocol</a></li><li><a href="#rfc.section.11">11.</a>&nbsp;&nbsp;&nbsp;<a href="#rfc.section.11">Relationship to Versioning Extensions to WebDAV</a></li><li><a href="#rfc.section.12">12.</a>&nbsp;&nbsp;&nbsp;<a href="#security.considerations">Security Considerations</a><ul><li><a href="#rfc.section.12.1">12.1.</a>&nbsp;&nbsp;&nbsp;<a href="#privacy.concerns">Privacy Concerns</a></li><li><a href="#rfc.section.12.2">12.2.</a>&nbsp;&nbsp;&nbsp;<a href="#bind.loops.privacy.concerns">Bind Loops</a></li><li><a href="#rfc.section.12.3">12.3.</a>&nbsp;&nbsp;&nbsp;<a href="#bindings.and.denial.of.service">Bindings and Denial of Service</a></li><li><a href="#rfc.section.12.4">12.4.</a>&nbsp;&nbsp;&nbsp;<a href="#private.locations.may.be.revealed">Private Locations May Be Revealed</a></li><li><a href="#rfc.section.12.5">12.5.</a>&nbsp;&nbsp;&nbsp;<a href="#parent-set.and.denial.of.service">DAV:parent-set and Denial of Service</a></li></ul></li><li><a href="#rfc.section.13">13.</a>&nbsp;&nbsp;&nbsp;<a href="#internationalization.considerations">Internationalization Considerations</a></li><li><a href="#rfc.section.14">14.</a>&nbsp;&nbsp;&nbsp;<a href="#iana.considerations">IANA Considerations</a></li><li><a href="#rfc.section.15">15.</a>&nbsp;&nbsp;&nbsp;<a href="#acknowledgments">Acknowledgements</a></li><li><a href="#rfc.section.16">16.</a>&nbsp;&nbsp;&nbsp;<a href="#rfc.references">References</a><ul><li><a href="#rfc.section.16.1">16.1.</a>&nbsp;&nbsp;&nbsp;<a href="#rfc.references.1">Normative References</a></li><li><a href="#rfc.section.16.2">16.2.</a>&nbsp;&nbsp;&nbsp;<a href="#rfc.references.2">Informative References</a></li></ul></li><li><a href="#rfc.index">Index</a></li><li><a href="#rfc.authors">Authors' Addresses</a></li></ul></nav><section id="introduction"><h2 id="rfc.section.1" class="np"><a href="#rfc.section.1">1.</a>&nbsp;<a href="#introduction">Introduction</a></h2><div id="rfc.section.1.p.1" class="avoidbreakafter"><p>This specification extends the WebDAV Distributed Authoring Protocol (<a href="#RFC4918" id="rfc.xref.RFC4918.1"><cite title="HTTP Extensions for Web Distributed Authoring and Versioning (WebDAV)">[RFC4918]</cite></a>) to enable clients to create new access paths to existing resources. This capability is useful for several reasons:<a class="self" href="#rfc.section.1.p.1">¶</a></p></div><div id="rfc.section.1.p.2"><p>URIs
+ of WebDAV-compliant resources are hierarchical and correspond to a 
+hierarchy of collections in resource space. The WebDAV Distributed 
+Authoring Protocol makes it possible to organize these resources into 
+hierarchies, placing them into groupings, known as collections, which 
+are more easily browsed and manipulated than a single flat collection. 
+However, hierarchies require categorization decisions that locate 
+resources at a single location in the hierarchy, a drawback when a 
+resource has multiple valid categories. For example, in a hierarchy of 
+vehicle descriptions containing collections for cars and boats, a 
+description of a combination car/boat vehicle could belong in either 
+collection. Ideally, the description should be accessible from both. 
+Allowing clients to create new URIs that access the existing resource 
+lets them put that resource into multiple collections.<a class="self" href="#rfc.section.1.p.2">¶</a></p></div><div id="rfc.section.1.p.3"><p>Hierarchies
+ also make resource sharing more difficult, since resources that have 
+utility across many collections are still forced into a single 
+collection. For example, the mathematics department at one university 
+might create a collection of information on fractals that contains 
+bindings to some local resources but also provides access to some 
+resources at other universities. For many reasons, it may be undesirable
+ to make physical copies of the shared resources on the local server, 
+for example, to conserve disk space, to respect copyright constraints, 
+or to make any changes in the shared resources visible automatically. 
+Being able to create new access paths to existing resources in other 
+collections or even on other servers is useful for this sort of case.<a class="self" href="#rfc.section.1.p.3">¶</a></p></div><div id="rfc.section.1.p.4"><p>The
+ BIND method, defined here, provides a mechanism for allowing clients to
+ create alternative access paths to existing WebDAV resources. HTTP <a href="#RFC2616" id="rfc.xref.RFC2616.1"><cite title="Hypertext Transfer Protocol -- HTTP/1.1">[RFC2616]</cite></a> and WebDAV <a href="#RFC4918" id="rfc.xref.RFC4918.2"><cite title="HTTP Extensions for Web Distributed Authoring and Versioning (WebDAV)">[RFC4918]</cite></a>
+ methods are able to work because there are mappings between URIs and 
+resources. A method is addressed to a URI, and the server follows the 
+mapping from that URI to a resource, applying the method to that 
+resource. Multiple URIs may be mapped to the same resource, but until 
+now, there has been no way for clients to create additional URIs mapped 
+to existing resources.<a class="self" href="#rfc.section.1.p.4">¶</a></p></div><div id="rfc.section.1.p.5"><p>BIND
+ lets clients associate a new URI with an existing WebDAV resource, and 
+this URI can then be used to submit requests to the resource. Since URIs
+ of WebDAV resources are hierarchical, and correspond to a hierarchy of 
+collections in resource space, the BIND method also has the effect of 
+adding the resource to a collection. As new URIs are associated with the
+ resource, it appears in additional collections.<a class="self" href="#rfc.section.1.p.5">¶</a></p></div><div id="rfc.section.1.p.6"><p>A
+ BIND request does not create a new resource, but simply makes a new URI
+ for submitting requests to an existing resource available. The new URI 
+is indistinguishable from any other URI when submitting a request to a 
+resource. Only one round trip is needed to submit a request to the 
+intended target. Servers are required to enforce the integrity of the 
+relationships between the new URIs and the resources associated with 
+them. Consequently, it may be very costly for servers to support BIND 
+requests that cross server boundaries.<a class="self" href="#rfc.section.1.p.6">¶</a></p></div><div id="rfc.section.1.p.7"><p>This specification is organized as follows. <a href="#terminology" title="Terminology">Section&nbsp;1.1</a> defines terminology used in the rest of the specification, while <a href="#overview.of.bindings" title="Overview of Bindings">Section&nbsp;2</a> overviews bindings. <a href="#properties" title="Properties">Section&nbsp;3</a> defines the new properties needed to support multiple bindings to the same resource. <a href="#METHOD_BIND" title="BIND Method">Section&nbsp;4</a> specifies the BIND method, used to create multiple bindings to the same resource. <a href="#METHOD_UNBIND" title="UNBIND Method">Section&nbsp;5</a> specifies the UNBIND method, used to remove a binding to a resource. <a href="#METHOD_REBIND" title="REBIND Method">Section&nbsp;6</a> specifies the REBIND method, used to move a binding to another collection.<a class="self" href="#rfc.section.1.p.7">¶</a></p></div><section id="terminology"><h3 id="rfc.section.1.1"><a href="#rfc.section.1.1">1.1.</a>&nbsp;<a href="#terminology">Terminology</a></h3><div id="rfc.section.1.1.p.1"><p>The terminology used here follows and extends that in the WebDAV Distributed Authoring Protocol specification <a href="#RFC4918" id="rfc.xref.RFC4918.3"><cite title="HTTP Extensions for Web Distributed Authoring and Versioning (WebDAV)">[RFC4918]</cite></a>.<a class="self" href="#rfc.section.1.1.p.1">¶</a></p></div><div id="rfc.section.1.1.p.2"><p>The
+ key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", 
+"SHOULD", "SHOULD NOT", "RECOMMENDED", "MAY", and "OPTIONAL" in this 
+document are to be interpreted as described in <a href="#RFC2119" id="rfc.xref.RFC2119.1"><cite title="Key words for use in RFCs to Indicate Requirement Levels">[RFC2119]</cite></a>.<a class="self" href="#rfc.section.1.1.p.2">¶</a></p></div><div id="rfc.section.1.1.p.3"><p>This document uses XML DTD fragments (<a href="#XML" id="rfc.xref.XML.1"><cite title="Extensible Markup Language (XML) 1.0 (Fifth Edition)">[XML]</cite></a>) as a notational convention, using the rules defined in <a href="https://tools.ietf.org/html/rfc4918#section-17">Section 17</a> of <a href="#RFC4918" id="rfc.xref.RFC4918.4"><cite title="HTTP Extensions for Web Distributed Authoring and Versioning (WebDAV)">[RFC4918]</cite></a>.<a class="self" href="#rfc.section.1.1.p.3">¶</a></p></div><div id="rfc.section.1.1.p.4"><p><span id="rfc.iref.u.1"></span> <dfn>URI Mapping</dfn> <a class="self" href="#rfc.section.1.1.p.4">¶</a></p><ul class="empty"><li>A
+ relation between an absolute URI and a resource. For an absolute URI U 
+and the resource it identifies R, the URI mapping can be thought of as 
+(U =&gt; R). Since a resource can represent items that are not network 
+retrievable as well as those that are, it is possible for a resource to 
+have zero, one, or many URI mappings. Mapping a resource to an 
+"http"-scheme URI makes it possible to submit HTTP requests to the 
+resource using the URI.</li></ul></div><div id="rfc.section.1.1.p.5"><p><span id="rfc.iref.p.1"></span> <dfn>Path Segment</dfn> <a class="self" href="#rfc.section.1.1.p.5">¶</a></p><ul class="empty"><li>Informally, the characters found between slashes ("/") in a URI. Formally, as defined in <a href="https://tools.ietf.org/html/rfc3986#section-3.3">Section 3.3</a> of <a href="#RFC3986" id="rfc.xref.RFC3986.1"><cite title="Uniform Resource Identifier (URI): Generic Syntax">[RFC3986]</cite></a>.</li></ul></div><div id="rfc.section.1.1.p.6"><p><span id="rfc.iref.b.1"></span> <dfn>Binding</dfn> <a class="self" href="#rfc.section.1.1.p.6">¶</a></p><ul class="empty"><li>A
+ relation between a single path segment (in a collection) and a 
+resource. A binding is part of the state of a collection. If two 
+different collections contain a binding between the same path segment 
+and the same resource, these are two distinct bindings. So for a 
+collection C, a path segment S, and a resource R, the binding can be 
+thought of as C:(S -&gt; R). Bindings create URI mappings, and hence 
+allow requests to be sent to a single resource from multiple locations 
+in a URI namespace. For example, given a collection C (accessible 
+through the URI http://www.example.com/CollX), a path segment S (equal 
+to "foo.html"), and a resource R, then creating the binding C: (S -&gt; 
+R) makes it possible to use the URI 
+http://www.example.com/CollX/foo.html to access R.</li></ul></div><div id="rfc.section.1.1.p.7"><p><span id="rfc.iref.c.1"></span> <dfn>Collection</dfn> <a class="self" href="#rfc.section.1.1.p.7">¶</a></p><ul class="empty"><li>A resource that contains, as part of its state, a set of bindings that identify internal member resources.</li></ul></div><div id="rfc.section.1.1.p.8"><p><span id="rfc.iref.i.1"></span> <dfn>Internal Member URI</dfn> <a class="self" href="#rfc.section.1.1.p.8">¶</a></p><ul class="empty"><li>The
+ URI that identifies an internal member of a collection and that 
+consists of the URI for the collection, followed by a slash character 
+('/'), followed by the path segment of the binding for that internal 
+member.</li></ul></div><div id="rfc.section.1.1.p.9"><p><span id="rfc.iref.b.2"></span> <dfn>Binding Integrity</dfn> <a class="self" href="#rfc.section.1.1.p.9">¶</a></p><ul class="empty"><li>The property of a binding that says that: <ul><li>the binding continues to exist, and</li><li>the identity of the resource identified by that binding does not change,</li></ul></li><li>unless
+ an explicit request is executed that is defined to delete that binding 
+(examples of requests that delete a binding are DELETE, MOVE, and -- 
+defined later on -- UNBIND and REBIND).</li></ul></div></section><section id="method.preconditions.and.postconditions"><h3 id="rfc.section.1.2"><a href="#rfc.section.1.2">1.2.</a>&nbsp;<a href="#method.preconditions.and.postconditions">Method Preconditions and Postconditions</a></h3><div id="rfc.section.1.2.p.1"><p>See <a href="https://tools.ietf.org/html/rfc4918#section-16">Section 16</a> of <a href="#RFC4918" id="rfc.xref.RFC4918.5"><cite title="HTTP Extensions for Web Distributed Authoring and Versioning (WebDAV)">[RFC4918]</cite></a> for the definitions of "precondition" and "postcondition".<a class="self" href="#rfc.section.1.2.p.1">¶</a></p></div></section></section><section id="overview.of.bindings"><h2 id="rfc.section.2"><a href="#rfc.section.2">2.</a>&nbsp;<a href="#overview.of.bindings">Overview of Bindings</a></h2><div id="rfc.section.2.p.1"><p>Bindings
+ are part of the state of a collection. They define the internal members
+ of the collection and the names of those internal members.<a class="self" href="#rfc.section.2.p.1">¶</a></p></div><div id="rfc.section.2.p.2"><p>Bindings
+ are added and removed by a variety of existing HTTP methods. A method 
+that creates a new resource, such as PUT, COPY, and MKCOL, adds a 
+binding. A method that deletes a resource, such as DELETE, removes a 
+binding. A method that moves a resource (e.g., MOVE) both adds a binding
+ (in the destination collection) and removes a binding (in the source 
+collection). The BIND method introduced here provides a mechanism for 
+adding a second binding to an existing resource. There is no difference 
+between an initial binding added by PUT, COPY, or MKCOL and additional 
+bindings added with BIND.<a class="self" href="#rfc.section.2.p.2">¶</a></p></div><div id="rfc.section.2.p.3"><p>It
+ would be very undesirable if one binding could be destroyed as a side 
+effect of operating on the resource through a different binding. In 
+particular, the removal of one binding to a resource (e.g., with a 
+DELETE or a MOVE) <em class="bcp14">MUST NOT</em> disrupt another binding to that resource, e.g., by turning that binding into a dangling path segment. The server <em class="bcp14">MUST NOT</em> reclaim system resources after removing one binding, while other bindings to the resource remain. In other words, the server <em class="bcp14">MUST</em> maintain the integrity<span id="rfc.iref.b.3"></span>
+ of a binding. It is permissible, however, for future method definitions
+ (e.g., a DESTROY method) to have semantics that explicitly remove all 
+bindings and/or immediately reclaim system resources.<a class="self" href="#rfc.section.2.p.3">¶</a></p></div><aside><div id="rfc.section.2.p.4"><p><b>Note:</b>
+ the collection model described herein is not compatible with systems in
+ which resources inherit properties based solely on the access path, as 
+the ability to create additional bindings will cause a single resource 
+to appear as member of several different collections at the same time.<a class="self" href="#rfc.section.2.p.4">¶</a></p></div></aside><section id="bindings.to.collections"><h3 id="rfc.section.2.1"><a href="#rfc.section.2.1">2.1.</a>&nbsp;<a href="#bindings.to.collections">Bindings to Collections</a></h3><div id="rfc.section.2.1.p.1"><p>Creating
+ a new binding to a collection makes each resource associated with a 
+binding in that collection accessible via a new URI, and thus creates 
+new URI mappings to those resources but no new bindings.<a class="self" href="#rfc.section.2.1.p.1">¶</a></p></div><div id="rfc.section.2.1.p.2"><p>For
+ example, suppose a new binding CollY is created for collection C1 in 
+the figure below. It immediately becomes possible to access resource R1 
+using the URI /CollY/x.gif and to access resource R2 using the URI 
+/CollY/y.jpg, but no new bindings for these child resources were 
+created. This is because bindings are part of the state of a collection,
+ and they associate a URI that is relative to that collection with its 
+target resource. No change to the bindings in Collection C1 is needed to
+ make its children accessible using /CollY/x.gif and /CollY/y.jpg.<a class="self" href="#rfc.section.2.1.p.2">¶</a></p></div><div id="rfc.figure.u.1"><div style="display:table; margin-left: auto; margin-right: auto;"><pre style="margin-left: 0em;" class="drawing">┌─────────────────────────┐
+│ <strong>Root Collection</strong>         │
+│  bindings:              │
+│  <em>CollX</em>          <em>CollY</em>   │
+└─────────────────────────┘
+    |            /          
+    |           /
+    |          /
+┌──────────────────┐
+│ <strong>Collection C1</strong>    │
+│ bindings:        │
+│ <em>x.gif</em>     <em>y.jpg</em>  │
+└──────────────────┘
+    |          \               
+    |           \               
+    |            \              
+┌─────────────┐   ┌─────────────┐
+│ <strong>Resource R1</strong> │   │ <strong>Resource R2</strong> │
+└─────────────┘   └─────────────┘
+</pre></div></div><section id="bind.loops"><h4 id="rfc.section.2.1.1"><a href="#rfc.section.2.1.1">2.1.1.</a>&nbsp;<a href="#bind.loops">Bind Loops</a></h4><div id="rfc.section.2.1.1.p.1"><p>Bindings to collections can result in loops ("cycles"), which servers <em class="bcp14">MUST</em>
+ detect when processing "Depth: infinity" requests. It is sometimes 
+possible to complete an operation in spite of the presence of a loop. 
+For instance, a PROPFIND can still succeed if the server uses the new 
+status code 208 (Already Reported) defined in <a href="#status.208.already.reported" id="rfc.xref.status.208.already.reported.1" title="208 Already Reported">Section&nbsp;7.1</a>.<a class="self" href="#rfc.section.2.1.1.p.1">¶</a></p></div><div id="rfc.section.2.1.1.p.2"><p>However, the 508 (Loop Detected) status code is defined in <a href="#status.508.loop.detected" id="rfc.xref.status.508.loop.detected.1" title="508 Loop Detected">Section&nbsp;7.2</a> for use in contexts where an operation is terminated because a loop was encountered.<a class="self" href="#rfc.section.2.1.1.p.2">¶</a></p></div><div id="rfc.section.2.1.1.p.3"><p>Support for loops is <em class="bcp14">OPTIONAL</em>: servers <em class="bcp14">MAY</em> reject requests that would lead to the creation of a bind loop (see DAV:cycle-allowed precondition defined in <a href="#METHOD_BIND" title="BIND Method">Section&nbsp;4</a>).<a class="self" href="#rfc.section.2.1.1.p.3">¶</a></p></div></section></section><section id="uri.mappings.created.by.a.new.binding"><h3 id="rfc.section.2.2"><a href="#rfc.section.2.2">2.2.</a>&nbsp;<a href="#uri.mappings.created.by.a.new.binding">URI Mappings Created by a New Binding</a></h3><div id="rfc.section.2.2.p.1"><p>Suppose
+ a binding from "Binding-Name" to resource R is to be added to a 
+collection, C. &nbsp;Then if C-MAP is the set of URIs that were mapped 
+to C before the BIND request, then for each URI "C-URI" in C-MAP, the 
+URI "C-URI/Binding-Name" is mapped to resource R following the BIND 
+request.<a class="self" href="#rfc.section.2.2.p.1">¶</a></p></div><div id="rfc.figure.u.2"><p>For example, if a binding from "foo.html" to R is added to a collection C, and if the following URIs are mapped to C:</p><pre class="text">http://www.example.com/A/1/
+http://example.com/A/one/
+</pre></div><div id="rfc.figure.u.3"><p>then the following new mappings to R are introduced:</p><pre class="text">http://www.example.com/A/1/foo.html
+http://example.com/A/one/foo.html
+</pre></div><div id="rfc.section.2.2.p.2"><p>Note that if R is a 
+collection, additional URI mappings are created to the descendents of R.
+ &nbsp;Also, note that if a binding is made in collection C to C itself 
+(or to a parent of C), an infinite number of mappings are introduced.<a class="self" href="#rfc.section.2.2.p.2">¶</a></p></div><div id="rfc.figure.u.4"><p>For
+ example, if a binding from "myself" to C is then added to C, the 
+following infinite number of additional mappings to C are introduced:</p><pre class="text">http://www.example.com/A/1/myself
+http://www.example.com/A/1/myself/myself
+   ...
+</pre></div><div id="rfc.figure.u.5"><p>and the following infinite number of additional mappings to R are introduced:</p><pre class="text">http://www.example.com/A/1/myself/foo.html
+http://www.example.com/A/1/myself/myself/foo.html
+   ...
+</pre></div></section><section id="copy.and.bindings"><h3 id="rfc.section.2.3"><a href="#rfc.section.2.3">2.3.</a>&nbsp;<a href="#copy.and.bindings">COPY and Bindings</a></h3><div id="rfc.section.2.3.p.1"><p>As defined in <a href="https://tools.ietf.org/html/rfc4918#section-9.8">Section 9.8</a> of <a href="#RFC4918" id="rfc.xref.RFC4918.6"><cite title="HTTP Extensions for Web Distributed Authoring and Versioning (WebDAV)">[RFC4918]</cite></a>,
+ COPY causes the resource identified by the Request-URI to be duplicated
+ and makes the new resource accessible using the URI specified in the 
+Destination header. Upon successful completion of a COPY, a new binding 
+is created between the last path segment of the Destination header and 
+the destination resource. The new binding is added to its parent 
+collection, identified by the Destination header minus its final 
+segment.<a class="self" href="#rfc.section.2.3.p.1">¶</a></p></div><div id="rfc.figure.u.6"><p>The
+ following figure shows an example: suppose that a COPY is issued to 
+URI-3 for resource R (which is also mapped to URI-1 and URI-2), with the
+ Destination header set to URI-X. After successful completion of the 
+COPY operation, resource R is duplicated to create resource R', and a 
+new binding has been created that creates at least the URI mapping 
+between URI-X and the new resource (although other URI mappings may also
+ have been created).</p><div style="display:table; margin-left: auto; margin-right: auto;"><pre style="margin-left: 0em;" class="drawing">URI-1   URI-2    URI-3                           URI-X
+   |       |        |                              |
+   |       |        |   &lt;---- URI Mappings ----&gt;   |
+   |       |        |                              |
+┌─────────────────────┐                 ┌────────────────────────┐
+│     <strong>Resource R</strong>      │                 │     <strong>Resource R'</strong>        │
+└─────────────────────┘                 └────────────────────────┘
+</pre></div></div><div id="rfc.section.2.3.p.2"><p>It might be thought 
+that a COPY request with "Depth: 0" on a collection would duplicate its 
+bindings, since bindings are part of the collection's state. This is not
+ the case, however. The definition of Depth in <a href="#RFC4918" id="rfc.xref.RFC4918.7"><cite title="HTTP Extensions for Web Distributed Authoring and Versioning (WebDAV)">[RFC4918]</cite></a>
+ makes it clear that a "Depth: 0" request does not apply to a 
+collection's members. Consequently, a COPY with "Depth: 0" does not 
+duplicate the bindings contained by the collection.<a class="self" href="#rfc.section.2.3.p.2">¶</a></p></div><div id="rfc.section.2.3.p.3"><p>If a COPY request causes an existing resource to be updated, the bindings to that resource <em class="bcp14">MUST</em>
+ be unaffected by the COPY request. Using the preceding example, suppose
+ that a COPY request is issued to URI-X for resource R', with the 
+Destination header set to URI-2. The content and dead properties of 
+resource R would be updated to be a copy of those of resource R', but 
+the mappings from URI-1, URI-2, and URI-3 to resource R remain 
+unaffected. If, because of multiple bindings to a resource, more than 
+one source resource updates a single destination resource, the order of 
+the updates is server defined (see <a href="#example.copy.multiple.update" title="Example: COPY Updating Multiple Bindings">Section&nbsp;2.3.2</a> for an example).<a class="self" href="#rfc.section.2.3.p.3">¶</a></p></div><div id="rfc.section.2.3.p.4"><p>If
+ a COPY request would cause a new resource to be created as a copy of an
+ existing resource, and that COPY request has already created a copy of 
+that existing resource, the COPY request instead creates another binding
+ to the previous copy, instead of creating a new resource (see <a href="#example.copy.graph" title="Example: COPY with &quot;Depth: infinity&quot; with Multiple Bindings to a Leaf Resource">Section&nbsp;2.3.3</a> for an example).<a class="self" href="#rfc.section.2.3.p.4">¶</a></p></div><section><h4 id="rfc.section.2.3.1"><a href="#rfc.section.2.3.1">2.3.1.</a>&nbsp;Example: COPY with "Depth: infinity" in Presence of Bind Loops</h4><div id="rfc.figure.u.7"><p>As an example of how COPY with "Depth: infinity" would work in the presence of bindings, consider the following collection:</p><div style="display:table; margin-left: auto; margin-right: auto;"><pre style="margin-left: 0em;" class="drawing">┌──────────────────┐
+│ <strong>Root Collection</strong>  │
+│  bindings:       │
+│  <em>CollX</em>           │
+└──────────────────┘
+    |
+    |
+┌───────────────────────────────┐
+│ <strong>Collection C1</strong>                 │&lt;-------+
+│ bindings:                     │        |
+│ <em>x.gif</em>      <em>CollY</em>              │        |
+└───────────────────────────────┘        |
+    |            \        (creates loop) |
+    |             \                      |
+┌─────────────┐   ┌──────────────────┐   |
+│ <strong>Resource R1</strong> │   │ <strong>Collection C2</strong>    │   |
+└─────────────┘   │ bindings:        │   |
+                  │ <em>y.gif</em>     <em>CollZ</em>  │   |
+                  └──────────────────┘   |
+                      |         |        |
+                      |         +--------+
+                      |
+                  ┌─────────────┐
+                  │ <strong>Resource R2</strong> │
+                  └─────────────┘
+</pre></div></div><div id="rfc.figure.u.8"><p>If a COPY request with 
+"Depth: infinity" is submitted to /CollX, with a destination of /CollA, 
+the outcome of the copy operation is that a copy of the tree is 
+replicated to the target /CollA:</p><div style="display:table; margin-left: auto; margin-right: auto;"><pre style="margin-left: 0em;" class="drawing">┌──────────────────┐
+│ <strong>Root Collection</strong>  │
+│  bindings:       │
+│  <em>CollX</em>     <em>CollA</em> │
+└──────────────────┘
+   |           |
+   |           +---------------------------+
+   |                                       |
+┌───────────────────┐                      |
+│ <strong>Collection C1</strong>     │&lt;------------------+  |
+│ bindings:         │                   |  |
+│ <em>x.gif</em>      <em>CollY</em>  │                   |  |
+└───────────────────┘                   |  |
+   |            \        (creates loop) |  |
+   |             \                      |  |
+┌─────────────┐   ┌─────────────────┐   |  |
+│ <strong>Resource R1</strong> │   │ <strong>Collection C2</strong>   │   |  |
+└─────────────┘   │ bindings:       │   |  |
+                  │ <em>y.gif</em>     <em>CollZ</em> │   |  |
+                  └─────────────────┘   |  |
+                      |         |       |  |
+                      |         +-------+  |
+                      |                    |
+                  ┌─────────────┐          |
+                  │ <strong>Resource R2</strong> │          |
+                  └─────────────┘          |
+                                           |
+           +-------------------------------+
+           |
+┌───────────────────┐
+│ <strong>Collection C3</strong>     │&lt;------------------+
+│ bindings:         │                   |
+│ <em>x.gif</em>      <em>CollY</em>  │                   |
+└───────────────────┘                   |
+   |            \        (creates loop) |
+   |             \                      |
+┌─────────────┐   ┌─────────────────┐   |
+│ <strong>Resource R3</strong> │   │ <strong>Collection C4</strong>   │   |
+└─────────────┘   │ bindings:       │   |
+                  │ <em>y.gif</em>     <em>CollZ</em> │   |
+                  └─────────────────┘   |
+                      |         |       |
+                      |         +-------+
+                      |
+                  ┌─────────────┐
+                  │ <strong>Resource R4</strong> │
+                  └─────────────┘
+</pre></div></div><div id="rfc.section.2.3.1.p.1"><p>Note that the same would apply for more complex loops.<a class="self" href="#rfc.section.2.3.1.p.1">¶</a></p></div></section><section id="example.copy.multiple.update"><h4 id="rfc.section.2.3.2"><a href="#rfc.section.2.3.2">2.3.2.</a>&nbsp;<a href="#example.copy.multiple.update">Example: COPY Updating Multiple Bindings</a></h4><div id="rfc.figure.u.9"><p>Given the following collection hierarchy:</p><div style="display:table; margin-left: auto; margin-right: auto;"><pre style="margin-left: 0em;" class="drawing">                    ┌──────────────────┐
+                    │ <strong>Root Collection</strong>  │
+                    │  bindings:       │
+                    │  <em>CollX</em>     <em>CollY</em> │
+                    └──────────────────┘
+                       /              \
+                      /                \
+                     /                  \           
+  ┌──────────────────────────┐   ┌─────────────────┐
+  │      <strong>Collection C1</strong>       │   │ <strong>Collection C2</strong>   │
+  │      bindings:           │   │ bindings:       │
+  │     <em>x.gif</em>     <em>y.gif</em>      │   │ <em>x.gif</em>     <em>y.gif</em> │
+  └──────────────────────────┘   └─────────────────┘
+          |         |                |         |
+          |         |                |         |
+┌─────────────┐  ┌─────────────┐   ┌─────────────┐
+│ <strong>Resource R1</strong> │  │ <strong>Resource R2</strong> │   │ <strong>Resource R3</strong> │
+└─────────────┘  └─────────────┘   └─────────────┘
+</pre></div><p>A COPY of /CollX with "Depth: infinity" to /CollY will 
+not result in a changed hierarchy, and Resource R3 will be updated with 
+the content of either Resource R1 or Resource R2.</p></div></section><section id="example.copy.graph"><h4 id="rfc.section.2.3.3"><a href="#rfc.section.2.3.3">2.3.3.</a>&nbsp;<a href="#example.copy.graph">Example: COPY with "Depth: infinity" with Multiple Bindings to a Leaf Resource</a></h4><div id="rfc.figure.u.10"><p>Given the following collection hierarchy:</p><div style="display:table; margin-left: auto; margin-right: auto;"><pre style="margin-left: 0em;" class="drawing">┌──────────────────┐
+│ <strong>Root Collection</strong>  │
+│  bindings:       │
+│  <em>CollX</em>           │
+└──────────────────┘
+   |            
+   |  
+   |               
+┌────────────────┐ 
+│ <strong>Collection C1</strong>  │
+│ bindings:      │
+│ <em>x.gif</em>    <em>y.gif</em> │ 
+└────────────────┘
+   |         |     
+   |         |    
+ ┌─────────────┐   
+ │ <strong>Resource R1</strong> │
+ └─────────────┘
+</pre></div></div><div id="rfc.figure.u.11"><p>A COPY of /CollX with "Depth: infinity" to /CollY results in the following collection hierarchy:</p><div style="display:table; margin-left: auto; margin-right: auto;"><pre style="margin-left: 0em;" class="drawing">┌──────────────────┐
+│ <strong>Root Collection</strong>  │
+│  bindings:       │
+│  <em>CollX</em>     <em>CollY</em> │
+└──────────────────┘
+   |              \
+   |               \
+   |                \           
+┌────────────────┐  ┌─────────────────┐
+│ <strong>Collection C1</strong>  │  │ <strong>Collection C2</strong>   │
+│ bindings:      │  │ bindings:       │
+│ <em>x.gif</em>    <em>y.gif</em> │  │ <em>x.gif</em>     <em>y.gif</em> │
+└────────────────┘  └─────────────────┘
+   |         |          |         |
+   |         |          |         |
+ ┌─────────────┐      ┌─────────────┐
+ │ <strong>Resource R1</strong> │      │ <strong>Resource R2</strong> │
+ └─────────────┘      └─────────────┘
+</pre></div></div></section></section><section id="delete.and.bindings"><h3 id="rfc.section.2.4"><a href="#rfc.section.2.4">2.4.</a>&nbsp;<a href="#delete.and.bindings">DELETE and Bindings</a></h3><div id="rfc.section.2.4.p.1"><p>When there are multiple bindings to a resource, a DELETE applied to that resource <em class="bcp14">MUST NOT</em>
+ remove any bindings to that resource other than the one identified by 
+the Request-URI. For example, suppose the collection identified by the 
+URI "/a" has a binding named "x" to a resource R, and another collection
+ identified by "/b" has a binding named "y" to the same resource R. 
+&nbsp;Then, a DELETE applied to "/a/x" removes the binding named "x" 
+from "/a" but <em class="bcp14">MUST NOT</em> remove the binding named "y" from "/b" (i.e., after the DELETE, "/y/b" continues to identify the resource R).<a class="self" href="#rfc.section.2.4.p.1">¶</a></p></div><div id="rfc.section.2.4.p.2"><p>When DELETE is applied to a collection, it <em class="bcp14">MUST NOT</em>
+ modify the membership of any other collection that is not itself a 
+member of the collection being deleted. For example, if both "/a/.../x" 
+and "/b/.../y" identify the same collection, C, then applying DELETE to 
+"/a" must not delete an internal member from C or from any other 
+collection that is a member of C, because that would modify the 
+membership of "/b".<a class="self" href="#rfc.section.2.4.p.2">¶</a></p></div><div id="rfc.section.2.4.p.3"><p>If a collection supports the UNBIND method (see <a href="#METHOD_UNBIND" title="UNBIND Method">Section&nbsp;5</a>), a DELETE of an internal member of a collection <em class="bcp14">MAY</em>
+ be implemented as an UNBIND request. In this case, applying DELETE to a
+ Request-URI has the effect of removing the binding identified by the 
+final segment of the Request-URI from the collection identified by the 
+Request-URI minus its final segment. Although <a href="#RFC4918" id="rfc.xref.RFC4918.8"><cite title="HTTP Extensions for Web Distributed Authoring and Versioning (WebDAV)">[RFC4918]</cite></a>
+ allows a DELETE to be a non-atomic operation, when the DELETE operation
+ is implemented as an UNBIND, the operation is atomic. In particular, a 
+DELETE on a hierarchy of resources is simply the removal of a binding to
+ the collection identified by the Request-URI.<a class="self" href="#rfc.section.2.4.p.3">¶</a></p></div></section><section id="move.and.bindings"><h3 id="rfc.section.2.5"><a href="#rfc.section.2.5">2.5.</a>&nbsp;<a href="#move.and.bindings">MOVE and Bindings</a></h3><div id="rfc.section.2.5.p.1"><p>When MOVE is applied to a resource, the other bindings to that resource <em class="bcp14">MUST</em> be unaffected; and if the resource being moved is a collection, the bindings to any members of that collection <em class="bcp14">MUST</em>
+ be unaffected. Also, if MOVE is used with Overwrite:T to delete an 
+existing resource, the constraints specified for DELETE apply.<a class="self" href="#rfc.section.2.5.p.1">¶</a></p></div><div id="rfc.section.2.5.p.2"><p>If the destination collection of a MOVE request supports the REBIND method (see <a href="#METHOD_REBIND" title="REBIND Method">Section&nbsp;6</a>), a MOVE of a resource into that collection <em class="bcp14">MAY</em> be implemented as a REBIND request. Although <a href="#RFC4918" id="rfc.xref.RFC4918.9"><cite title="HTTP Extensions for Web Distributed Authoring and Versioning (WebDAV)">[RFC4918]</cite></a>
+ allows a MOVE to be a non-atomic operation, when the MOVE operation is 
+implemented as a REBIND, the operation is atomic. In particular, 
+applying a MOVE to a Request-URI and a Destination URI has the effect of
+ removing a binding to a resource (at the Request-URI) and creating a 
+new binding to that resource (at the Destination URI). Even when the 
+Request-URI identifies a collection, the MOVE operation involves only 
+removing one binding to that collection and adding another.<a class="self" href="#rfc.section.2.5.p.2">¶</a></p></div><section id="n-example--simple-move"><h4 id="rfc.section.2.5.1"><a href="#rfc.section.2.5.1">2.5.1.</a>&nbsp;<a href="#n-example--simple-move">Example: Simple MOVE</a></h4><div id="rfc.section.2.5.1.p.1"><p>As
+ an example, suppose that a MOVE is issued to URI-3 for resource R below
+ (which is also mapped to URI-1 and URI-2), with the Destination header 
+set to URI-X. After successful completion of the MOVE operation, a new 
+binding has been created that creates the URI mapping between URI-X and 
+resource R. &nbsp;The binding corresponding to the final segment of 
+URI-3 has been removed, which also causes the URI mapping between URI-3 
+and R to be removed. If resource R were a collection, old URI-3-based 
+mappings to members of R would have been removed, and new URI-X-based 
+mappings to members of R would have been created.<a class="self" href="#rfc.section.2.5.1.p.1">¶</a></p></div><div id="rfc.figure.u.12"><p>&gt;&gt; Before Request:</p><div style="display:table; margin-left: auto; margin-right: auto;"><pre style="margin-left: 0em;" class="drawing"> URI-1   URI-2    URI-3
+   |       |        |          
+   |       |        |      &lt;---- URI Mappings
+   |       |        |
+┌─────────────────────┐
+│     <strong>Resource R</strong>      │
+└─────────────────────┘
+</pre></div></div><div id="rfc.figure.u.13"><p>&gt;&gt; After Request:</p><div style="display:table; margin-left: auto; margin-right: auto;"><pre style="margin-left: 0em;" class="drawing"> URI-1   URI-2    URI-X
+   |       |        |          
+   |       |        |      &lt;---- URI Mappings
+   |       |        |
+┌─────────────────────┐
+│     <strong>Resource R</strong>      │
+└─────────────────────┘
+</pre></div></div></section><section id="n-example--move-request-causing-a-bind-loop"><h4 id="rfc.section.2.5.2"><a href="#rfc.section.2.5.2">2.5.2.</a>&nbsp;<a href="#n-example--move-request-causing-a-bind-loop">Example: MOVE Request Causing a Bind Loop</a></h4><div id="rfc.section.2.5.2.p.1"><p>Note that in the presence of collection bindings, a MOVE request can cause the creation of a bind loop.<a class="self" href="#rfc.section.2.5.2.p.1">¶</a></p></div><div id="rfc.figure.u.14"><p>Consider
+ the top-level collections C1 and C2 with URIs "/CollW/" and "/CollX/". 
+C1 also contains an additional binding named "CollY" to C2:</p><div style="display:table; margin-left: auto; margin-right: auto;"><pre style="margin-left: 0em;" class="drawing">                  ┌──────────────────┐
+                  │ <strong>Root Collection</strong>  │
+                  │  bindings:       │
+                  │  <em>CollW</em>    <em>CollX</em>  │
+                  └──────────────────┘
+                      |          |
+                      |          |
+         ┌──────────────────┐    |
+         │ <strong>Collection C1</strong>    │    |
+         │  bindings:       │    |
+         │           <em>CollY</em>  │    |
+         └──────────────────┘    |
+                      |          |
+                      |          |
+                  ┌──────────────────┐
+                  │ <strong>Collection C2</strong>    │
+                  │                  │
+                  │                  │
+                  └──────────────────┘
+</pre></div></div><div id="rfc.section.2.5.2.p.2" class="avoidbreakafter"><p>In this case, the MOVE request below would cause a bind loop:<a class="self" href="#rfc.section.2.5.2.p.2">¶</a></p></div><div id="rfc.figure.u.15"><p>&gt;&gt; Request:</p><pre class="text2">MOVE /CollW HTTP/1.1
+Host: example.com
+Destination: /CollX/CollZ
+</pre></div><div id="rfc.figure.u.16"><p>If the request succeeded, the resulting state would be:</p><div style="display:table; margin-left: auto; margin-right: auto;"><pre style="margin-left: 0em;" class="drawing">                  ┌──────────────────┐
+                  │ <strong>Root Collection</strong>  │
+                  │  bindings:       │
+                  │           <em>CollX</em>  │
+                  └──────────────────┘
+                                 |
+                                 |
+         ┌──────────────────┐    |
+         │ <strong>Collection C1</strong>    │    |
+  +----&gt; │  bindings:       │    |
+  |      │           <em>CollY</em>  │    |
+  |      └──────────────────┘    |
+  |                   |          |
+  |                   |          |
+  |               ┌──────────────────┐
+  |               │ <strong>Collection C2</strong>    │
+  |               │  bindings:       │
+  |               │ <em>CollZ</em>            │
+  |               └──────────────────┘
+  |                   |
+  |                   |
+  +-------------------+
+</pre></div></div></section></section><section id="n-propfind-and-bindings"><h3 id="rfc.section.2.6"><a href="#rfc.section.2.6">2.6.</a>&nbsp;<a href="#n-propfind-and-bindings">PROPFIND and Bindings</a></h3><div id="rfc.section.2.6.p.1"><p>Consistent with <a href="#RFC4918" id="rfc.xref.RFC4918.10"><cite title="HTTP Extensions for Web Distributed Authoring and Versioning (WebDAV)">[RFC4918]</cite></a>, the value of a dead property <em class="bcp14">MUST</em>
+ be independent of the number of bindings to its host resource or of the
+ path submitted to PROPFIND. On the other hand, the behavior for each 
+live property depends on its individual definition (for example, see <a href="#RFC3744" id="rfc.xref.RFC3744.1"><cite title="Web Distributed Authoring and Versioning (WebDAV) Access Control Protocol">[RFC3744]</cite></a>, <a href="https://tools.ietf.org/html/rfc3744#section-5">Section 5</a>, Paragraph 2 for a case where the value is independent of its path and bindings, and <a href="#RFC4918" id="rfc.xref.RFC4918.11"><cite title="HTTP Extensions for Web Distributed Authoring and Versioning (WebDAV)">[RFC4918]</cite></a>, <a href="https://tools.ietf.org/html/rfc4918#section-8.8">Section 8.8</a> for a discussion about the live properties DAV:getetag and DAV:getlastmodified, which may behave differently).<a class="self" href="#rfc.section.2.6.p.1">¶</a></p></div></section><section id="determining.whether.two.bindings.are.to.the.same.resource"><h3 id="rfc.section.2.7"><a href="#rfc.section.2.7">2.7.</a>&nbsp;<a href="#determining.whether.two.bindings.are.to.the.same.resource">Determining Whether Two Bindings Are to the Same Resource</a></h3><div id="rfc.section.2.7.p.1"><p>It
+ is useful to have some way of determining whether two bindings are to 
+the same resource. Two resources might have identical contents and 
+properties, but not be the same resource (e.g., an update to one 
+resource does not affect the other resource).<a class="self" href="#rfc.section.2.7.p.1">¶</a></p></div><div id="rfc.section.2.7.p.2"><p>The <em class="bcp14">REQUIRED</em> DAV:resource-id property defined in <a href="#PROPERTY_resource-id" title="DAV:resource-id Property">Section&nbsp;3.1</a> is a resource identifier, which <em class="bcp14">MUST</em>
+ be unique across all resources for all time. If the values of 
+DAV:resource-id returned by PROPFIND requests through two bindings are 
+identical character by character, the client can be assured that the two
+ bindings are to the same resource.<a class="self" href="#rfc.section.2.7.p.2">¶</a></p></div><div id="rfc.section.2.7.p.3"><p>The DAV:resource-id property is created, and its value assigned, when the resource is created. The value of DAV:resource-id <em class="bcp14">MUST NOT</em> be changed. Even after the resource is no longer accessible through any URI, that value <em class="bcp14">MUST NOT</em> be reassigned to another resource's DAV:resource-id property.<a class="self" href="#rfc.section.2.7.p.3">¶</a></p></div><div id="rfc.section.2.7.p.4"><p>Any method that creates a new resource <em class="bcp14">MUST</em>
+ assign a new, unique value to its DAV:resource-id property. For 
+example, a PUT applied to a null resource, COPY (when not overwriting an
+ existing target) and CHECKIN (see <a href="#RFC3253" id="rfc.xref.RFC3253.1"><cite title="Versioning Extensions to WebDAV (Web Distributed Authoring and Versioning)">[RFC3253]</cite></a>, <a href="https://tools.ietf.org/html/rfc3253#section-4.4">Section 4.4</a>) must assign a new, unique value to the DAV:resource-id property of the new resource they create.<a class="self" href="#rfc.section.2.7.p.4">¶</a></p></div><div id="rfc.section.2.7.p.5"><p>On
+ the other hand, any method that affects an existing resource must not 
+change the value of its DAV:resource-id property. Specifically, a PUT or
+ a COPY that updates an existing resource must not change the value of 
+its DAV:resource-id property. A REBIND, since it does not create a new 
+resource, but only changes the location of an existing resource, must 
+not change the value of the DAV:resource-id property.<a class="self" href="#rfc.section.2.7.p.5">¶</a></p></div></section><section id="discovering.the.bindings.to.a.resource"><h3 id="rfc.section.2.8"><a href="#rfc.section.2.8">2.8.</a>&nbsp;<a href="#discovering.the.bindings.to.a.resource">Discovering the Bindings to a Resource</a></h3><div id="rfc.section.2.8.p.1"><p>An <em class="bcp14">OPTIONAL</em>
+ DAV:parent-set property on a resource provides a list of the bindings 
+that associate a collection and a URI segment with that resource. If the
+ DAV:parent-set property exists on a given resource, it <em class="bcp14">MUST</em>
+ contain a complete list of all bindings to that resource that the 
+client is authorized to see. When deciding whether to support the 
+DAV:parent-set property, server implementers / administrators should 
+balance the benefits it provides against the cost of maintaining the 
+property and the security risks enumerated in Sections <a href="#private.locations.may.be.revealed" title="Private Locations May Be Revealed">12.4</a> and <a href="#parent-set.and.denial.of.service" title="DAV:parent-set and Denial of Service">12.5</a>.<a class="self" href="#rfc.section.2.8.p.1">¶</a></p></div></section></section><section id="properties"><h2 id="rfc.section.3"><a href="#rfc.section.3">3.</a>&nbsp;<a href="#properties">Properties</a></h2><div id="rfc.section.3.p.1"><p>The bind feature introduces the properties defined below.<a class="self" href="#rfc.section.3.p.1">¶</a></p></div><div id="rfc.section.3.p.2"><p>A DAV:allprop PROPFIND request <em class="bcp14">SHOULD NOT</em>
+ return any of the properties defined by this document. This allows a 
+binding server to perform efficiently when a naive client, which does 
+not understand the cost of asking a server to compute all possible live 
+properties, issues a DAV:allprop PROPFIND request.<a class="self" href="#rfc.section.3.p.2">¶</a></p></div><section id="PROPERTY_resource-id"><h3 id="rfc.section.3.1"><a href="#rfc.section.3.1">3.1.</a>&nbsp;<a href="#PROPERTY_resource-id">DAV:resource-id Property</a></h3><div id="rfc.section.3.1.p.1"><p>The DAV:resource-id property is a <em class="bcp14">REQUIRED</em>
+ property that enables clients to determine whether two bindings are to 
+the same resource. The value of DAV:resource-id is a URI, and may use 
+any registered URI scheme that guarantees the uniqueness of the value 
+across all resources for all time (e.g., the urn:uuid: URN namespace 
+defined in <a href="#RFC4122" id="rfc.xref.RFC4122.1"><cite title="A Universally Unique IDentifier (UUID) URN Namespace">[RFC4122]</cite></a> or the opaquelocktoken: URI scheme defined in <a href="#RFC4918" id="rfc.xref.RFC4918.12"><cite title="HTTP Extensions for Web Distributed Authoring and Versioning (WebDAV)">[RFC4918]</cite></a>).<a class="self" href="#rfc.section.3.1.p.1">¶</a></p></div><div id="rfc.figure.u.17"><pre class="inline">&lt;!ELEMENT resource-id (href)&gt;
+</pre></div></section><section id="PROPERTY_parent-set"><h3 id="rfc.section.3.2"><a href="#rfc.section.3.2">3.2.</a>&nbsp;<a href="#PROPERTY_parent-set">DAV:parent-set Property</a></h3><div id="rfc.section.3.2.p.1"><p>The DAV:parent-set property is an <em class="bcp14">OPTIONAL</em>
+ property that enables clients to discover what collections contain a 
+binding to this resource (i.e., what collections have that resource as 
+an internal member). It contains an href/segment pair for each 
+collection that has a binding to the resource. The href identifies the 
+collection, and the segment identifies the binding name of that resource
+ in that collection.<a class="self" href="#rfc.section.3.2.p.1">¶</a></p></div><div id="rfc.section.3.2.p.2"><p>A given collection <em class="bcp14">MUST</em> appear only once in the DAV:parent-set for any given binding, even if there are multiple URI mappings to that collection.<a class="self" href="#rfc.section.3.2.p.2">¶</a></p></div><div id="rfc.figure.u.18"><pre class="inline">&lt;!ELEMENT parent-set (parent)*&gt;
+&lt;!ELEMENT parent (href, segment)&gt;
+&lt;!ELEMENT segment (#PCDATA)&gt;
+&lt;!-- PCDATA value: segment, as defined in <a href="https://tools.ietf.org/html/rfc3986#section-3.3" id="rfc.xref.RFC3986.2">Section 3.3</a> of
+     <a href="#RFC3986" id="rfc.xref.RFC3986.3"><cite title="Uniform Resource Identifier (URI): Generic Syntax">[RFC3986]</cite></a> --&gt;
+
+</pre></div><section id="n-example-for-dav-parent-set-property"><h4 id="rfc.section.3.2.1"><a href="#rfc.section.3.2.1">3.2.1.</a>&nbsp;<a href="#n-example-for-dav-parent-set-property">Example for DAV:parent-set Property</a></h4><div id="rfc.section.3.2.1.p.1"><p>For
+ example, if collection C1 is mapped to both /CollX and /CollY, and C1 
+contains a binding named "x.gif" to a resource R1, then either [/CollX, 
+x.gif] or [/CollY, x.gif] can appear in the DAV:parent-set of R1, but 
+not both. But if C1 also had a binding named "y.gif" to R1, then there 
+would be two entries for C1 in the DAV:parent-set of R1 (i.e., both 
+[/CollX, x.gif] and [/CollX, y.gif] or, alternatively, both [/CollY, 
+x.gif] and [/CollY, y.gif]).<a class="self" href="#rfc.section.3.2.1.p.1">¶</a></p></div><div id="rfc.figure.u.19"><div style="display:table; margin-left: auto; margin-right: auto;"><pre style="margin-left: 0em;" class="drawing">┌─────────────────────────┐
+│ <strong>Root Collection</strong>         │
+│  bindings:              │
+│  <em>CollX</em>          <em>CollY</em>   │
+└─────────────────────────┘
+    |            /          
+    |           /
+    |          /
+┌─────────────────┐
+│ <strong>Collection C1</strong>   │
+│ bindings:       │
+│ <em>x.gif</em>    <em>y.gif</em>  │
+└─────────────────┘
+     |      |               
+     |      |               
+     |      |              
+ ┌─────────────┐
+ │ <strong>Resource R1</strong> │
+ └─────────────┘
+</pre></div></div><div id="rfc.section.3.2.1.p.2" class="avoidbreakafter"><p>In this case, one possible value for the DAV:parent-set property on "/CollX/x.gif" would be:<a class="self" href="#rfc.section.3.2.1.p.2">¶</a></p></div><div id="rfc.figure.u.20"><pre class="text">  &lt;parent-set xmlns="DAV:"&gt;
+    &lt;parent&gt;
+      &lt;href&gt;/CollX&lt;/href&gt;
+      &lt;segment&gt;x.gif&lt;/segment&gt;
+    &lt;/parent&gt;
+    &lt;parent&gt;
+      &lt;href&gt;/CollX&lt;/href&gt;
+      &lt;segment&gt;y.gif&lt;/segment&gt;
+    &lt;/parent&gt;
+  &lt;/parent-set&gt;
+</pre></div></section></section></section><section id="METHOD_BIND"><h2 id="rfc.section.4"><a href="#rfc.section.4">4.</a>&nbsp;<a href="#METHOD_BIND">BIND Method</a></h2><div id="rfc.section.4.p.1"><p>The
+ BIND method modifies the collection identified by the Request-URI, by 
+adding a new binding from the segment specified in the BIND body to the 
+resource identified in the BIND body.<a class="self" href="#rfc.section.4.p.1">¶</a></p></div><div id="rfc.section.4.p.2"><p>If a server cannot guarantee the integrity<span id="rfc.iref.b.4"></span> of the binding, the BIND request <em class="bcp14">MUST</em>
+ fail. Note that it is especially difficult to maintain the integrity of
+ cross-server bindings. Unless the server where the resource resides 
+knows about all bindings on all servers to that resource, it may 
+unwittingly destroy the resource or make it inaccessible without 
+notifying another server that manages a binding to the resource. For 
+example, if server A permits the creation of a binding to a resource on 
+server B, server A must notify server B about its binding and must have 
+an agreement with B that B will not destroy the resource while A's 
+binding exists. Otherwise, server B may receive a DELETE request that it
+ thinks removes the last binding to the resource and destroy the 
+resource while A's binding still exists. The precondition 
+DAV:cross-server-binding is defined below for cases where servers fail 
+cross-server BIND requests because they cannot guarantee the integrity 
+of cross-server bindings.<a class="self" href="#rfc.section.4.p.2">¶</a></p></div><div id="rfc.section.4.p.3"><p>By
+ default, if there already is a binding for the specified segment in the
+ collection, the new binding replaces the existing binding. This default
+ binding replacement behavior can be overridden using the Overwrite 
+header defined in <a href="https://tools.ietf.org/html/rfc4918#section-10.6">Section 10.6</a> of <a href="#RFC4918" id="rfc.xref.RFC4918.13"><cite title="HTTP Extensions for Web Distributed Authoring and Versioning (WebDAV)">[RFC4918]</cite></a>.<a class="self" href="#rfc.section.4.p.3">¶</a></p></div><div id="rfc.section.4.p.4"><p>If a BIND request fails, the server state preceding the request <em class="bcp14">MUST</em> be restored. This method is unsafe and idempotent (see <a href="#RFC2616" id="rfc.xref.RFC2616.2"><cite title="Hypertext Transfer Protocol -- HTTP/1.1">[RFC2616]</cite></a>, <a href="https://tools.ietf.org/html/rfc2616#section-9.1">Section 9.1</a>).<a class="self" href="#rfc.section.4.p.4">¶</a></p></div><div id="rfc.section.4.p.5"><p><span id="rfc.iref.b.5"></span> <b>Marshalling:</b> <a class="self" href="#rfc.section.4.p.5">¶</a></p><ul class="empty"><li>The request <em class="bcp14">MAY</em> include an Overwrite header.</li><li>The request body <em class="bcp14">MUST</em> be a DAV:bind XML element. <span id="rfc.figure.u.21"><pre class="inline">&lt;!ELEMENT bind (segment, href)&gt;
+      </pre></span> </li><li>If the request succeeds, the server <em class="bcp14">MUST</em> return 201 (Created) when a new binding was created and 200 (OK) or 204 (No Content) when an existing binding was replaced.</li><li>If a response body for a successful request is included, it <em class="bcp14">MUST</em>
+ be a DAV:bind-response XML element. Note that this document does not 
+define any elements for the BIND response body, but the 
+DAV:bind-response element is defined to ensure interoperability between 
+future extensions that do define elements for the BIND response body. <span id="rfc.figure.u.22"><pre class="inline">&lt;!ELEMENT bind-response ANY&gt;
+      </pre></span> </li></ul></div><div id="rfc.section.4.p.6"><p><span id="rfc.iref.b.6"></span> <b>Preconditions:</b> <a class="self" href="#rfc.section.4.p.6">¶</a></p><ul class="empty"><li><span id="rfc.iref.c.2"></span> <span id="rfc.iref.d.1"></span> (DAV:bind-into-collection): The Request-URI <em class="bcp14">MUST</em> identify a collection.</li><li><span id="rfc.iref.c.3"></span> <span id="rfc.iref.d.2"></span> (DAV:bind-source-exists): The DAV:href element <em class="bcp14">MUST</em> identify a resource.</li><li><span id="rfc.iref.c.4"></span> <span id="rfc.iref.d.3"></span> (DAV:binding-allowed): The resource identified by the DAV:href supports multiple bindings to it.</li><li><span id="rfc.iref.c.5"></span> <span id="rfc.iref.d.4"></span>
+ (DAV:cross-server-binding): If the resource identified by the DAV:href 
+element in the request body is on another server from the collection 
+identified by the Request-URI, the server <em class="bcp14">MUST</em> 
+support cross-server bindings (servers that do not support cross-server 
+bindings can use this condition code to signal the client exactly why 
+the request failed).</li><li><span id="rfc.iref.c.6"></span> <span id="rfc.iref.d.5"></span> (DAV:name-allowed): The name specified by the DAV:segment is available for use as a new binding name.</li><li><span id="rfc.iref.c.7"></span> <span id="rfc.iref.d.6"></span>
+ (DAV:can-overwrite): If the collection already contains a binding with 
+the specified path segment, and if an Overwrite header is included, the 
+value of the Overwrite header <em class="bcp14">MUST</em> be "T".</li><li><span id="rfc.iref.c.8"></span> <span id="rfc.iref.d.7"></span>
+ (DAV:cycle-allowed): If the DAV:href element identifies a collection, 
+and if the Request-URI identifies a collection that is a member of that 
+collection, the server <em class="bcp14">MUST</em> support cycles in the
+ URI namespace (servers that do not support cycles can use this 
+condition code to signal the client exactly why the request failed).</li><li><span id="rfc.iref.c.9"></span> <span id="rfc.iref.d.8"></span> (DAV:locked-update-allowed): If the collection identified by the Request-URI is write-locked, then the appropriate token <em class="bcp14">MUST</em> be specified in an If request header.</li><li><span id="rfc.iref.c.10"></span> <span id="rfc.iref.d.9"></span>
+ (DAV:locked-overwrite-allowed): If the collection already contains a 
+binding with the specified path segment, and if that binding is 
+protected by a write lock, then the appropriate token <em class="bcp14">MUST</em> be specified in an If request header.</li></ul></div><div id="rfc.section.4.p.7"><p><span id="rfc.iref.b.7"></span> <b>Postconditions:</b> <a class="self" href="#rfc.section.4.p.7">¶</a></p><ul class="empty"><li><span id="rfc.iref.c.11"></span> <span id="rfc.iref.d.10"></span> (DAV:new-binding): The collection <em class="bcp14">MUST</em>
+ have a binding that maps the segment specified in the DAV:segment 
+element in the request body to the resource identified by the DAV:href 
+element in the request body.</li></ul></div><section id="n-example--bind"><h3 id="rfc.section.4.1"><a href="#rfc.section.4.1">4.1.</a>&nbsp;<a href="#n-example--bind">Example: BIND</a></h3><div id="rfc.figure.u.23"><p>&gt;&gt; Request:</p><pre class="text2">BIND /CollY HTTP/1.1
+Host: www.example.com
+Content-Type: application/xml; charset="utf-8"
+Content-Length: 172
+
+<span id="eb1">&lt;?xml version="1.0" encoding="utf-8" ?&gt;
+&lt;D:bind xmlns:D="DAV:"&gt;
+   &lt;D:segment&gt;bar.html&lt;/D:segment&gt;
+   &lt;D:href&gt;http://www.example.com/CollX/foo.html&lt;/D:href&gt;
+&lt;/D:bind&gt;
+</span></pre></div><div id="rfc.figure.u.24"><p>&gt;&gt; Response:</p><pre class="text">HTTP/1.1 201 Created
+Location: http://www.example.com/CollY/bar.html
+</pre></div><div id="rfc.section.4.1.p.1"><p>The server added a new 
+binding to the collection, "http://www.example.com/CollY", associating 
+"bar.html" with the resource identified by the URI 
+"http://www.example.com/CollX/foo.html". Clients can now use the URI 
+"http://www.example.com/CollY/bar.html" to submit requests to that 
+resource.<a class="self" href="#rfc.section.4.1.p.1">¶</a></p></div></section></section><section id="METHOD_UNBIND"><h2 id="rfc.section.5"><a href="#rfc.section.5">5.</a>&nbsp;<a href="#METHOD_UNBIND">UNBIND Method</a></h2><div id="rfc.section.5.p.1"><p>The
+ UNBIND method modifies the collection identified by the Request-URI by 
+removing the binding identified by the segment specified in the UNBIND 
+body.<a class="self" href="#rfc.section.5.p.1">¶</a></p></div><div id="rfc.section.5.p.2"><p>Once a resource is unreachable by any URI mapping, the server <em class="bcp14">MAY</em>
+ reclaim system resources associated with that resource. If UNBIND 
+removes a binding to a resource, but there remain URI mappings to that 
+resource, the server <em class="bcp14">MUST NOT</em> reclaim system resources associated with the resource.<a class="self" href="#rfc.section.5.p.2">¶</a></p></div><div id="rfc.section.5.p.3"><p>If an UNBIND request fails, the server state preceding the request <em class="bcp14">MUST</em> be restored. This method is unsafe and idempotent (see <a href="#RFC2616" id="rfc.xref.RFC2616.3"><cite title="Hypertext Transfer Protocol -- HTTP/1.1">[RFC2616]</cite></a>, <a href="https://tools.ietf.org/html/rfc2616#section-9.1">Section 9.1</a>).<a class="self" href="#rfc.section.5.p.3">¶</a></p></div><div id="rfc.section.5.p.4"><p><span id="rfc.iref.u.2"></span> <b>Marshalling:</b> <a class="self" href="#rfc.section.5.p.4">¶</a></p><ul class="empty"><li>The request body <em class="bcp14">MUST</em> be a DAV:unbind XML element. <span id="rfc.figure.u.25"><pre class="inline">&lt;!ELEMENT unbind (segment)&gt;
+</pre></span></li><li>If the request succeeds, the server <em class="bcp14">MUST</em> return 200 (OK) or 204 (No Content) when the binding was successfully deleted.</li><li>If a response body for a successful request is included, it <em class="bcp14">MUST</em>
+ be a DAV:unbind-response XML element. Note that this document does not 
+define any elements for the UNBIND response body, but the 
+DAV:unbind-response element is defined to ensure interoperability 
+between future extensions that do define elements for the UNBIND 
+response body. <span id="rfc.figure.u.26"><pre class="inline">&lt;!ELEMENT unbind-response ANY&gt;
+</pre></span></li></ul></div><div id="rfc.section.5.p.5"><p><span id="rfc.iref.u.3"></span> <b>Preconditions:</b> <a class="self" href="#rfc.section.5.p.5">¶</a></p><ul class="empty"><li><span id="rfc.iref.c.12"></span> <span id="rfc.iref.d.11"></span> (DAV:unbind-from-collection): The Request-URI <em class="bcp14">MUST</em> identify a collection.</li><li><span id="rfc.iref.c.13"></span> <span id="rfc.iref.d.12"></span> (DAV:unbind-source-exists): The DAV:segment element <em class="bcp14">MUST</em> identify a binding in the collection identified by the Request-URI.</li><li><span id="rfc.iref.c.14"></span> <span id="rfc.iref.d.13"></span> (DAV:locked-update-allowed): If the collection identified by the Request-URI is write-locked, then the appropriate token <em class="bcp14">MUST</em> be specified in the request.</li><li><span id="rfc.iref.c.15"></span> <span id="rfc.iref.d.14"></span>
+ (DAV:protected-url-deletion-allowed): If the binding identified by the 
+segment is protected by a write lock, then the appropriate token <em class="bcp14">MUST</em> be specified in the request.</li></ul></div><div id="rfc.section.5.p.6"><p><span id="rfc.iref.u.4"></span> <b>Postconditions:</b> <a class="self" href="#rfc.section.5.p.6">¶</a></p><ul class="empty"><li><span id="rfc.iref.c.16"></span> <span id="rfc.iref.d.15"></span> (DAV:binding-deleted): The collection <em class="bcp14">MUST NOT</em> have a binding for the segment specified in the DAV:segment element in the request body.</li><li><span id="rfc.iref.c.17"></span> <span id="rfc.iref.d.16"></span>
+ (DAV:lock-deleted): If the internal member URI of the binding specified
+ by the Request-URI and the DAV:segment element in the request body was 
+protected by a write lock at the time of the request, that write lock 
+must have been deleted by the request.</li></ul></div><section id="n-example--unbind"><h3 id="rfc.section.5.1"><a href="#rfc.section.5.1">5.1.</a>&nbsp;<a href="#n-example--unbind">Example: UNBIND</a></h3><div id="rfc.figure.u.27"><p>&gt;&gt; Request:</p><pre class="text2">UNBIND /CollX HTTP/1.1
+Host: www.example.com
+Content-Type: application/xml; charset="utf-8"
+Content-Length: 117
+
+<span id="eb2">&lt;?xml version="1.0" encoding="utf-8" ?&gt;
+&lt;D:unbind xmlns:D="DAV:"&gt;
+   &lt;D:segment&gt;foo.html&lt;/D:segment&gt;
+&lt;/D:unbind&gt;
+</span></pre></div><div id="rfc.figure.u.28"><p>&gt;&gt; Response:</p><pre class="text">HTTP/1.1 200 OK
+</pre></div><div id="rfc.section.5.1.p.1"><p>The server removed the 
+binding named "foo.html" from the collection, 
+"http://www.example.com/CollX". A request to the resource named 
+"http://www.example.com/CollX/foo.html" will return a 404 (Not Found) 
+response.<a class="self" href="#rfc.section.5.1.p.1">¶</a></p></div></section></section><section id="METHOD_REBIND"><h2 id="rfc.section.6"><a href="#rfc.section.6">6.</a>&nbsp;<a href="#METHOD_REBIND">REBIND Method</a></h2><div id="rfc.section.6.p.1"><p>The
+ REBIND method removes a binding to a resource from a collection, and 
+adds a binding to that resource into the collection identified by the 
+Request-URI. The request body specifies the binding to be added 
+(segment) and the old binding to be removed (href). It is effectively an
+ atomic form of a MOVE request, and <em class="bcp14">MUST</em> be treated the same way as MOVE for the purpose of determining access permissions.<a class="self" href="#rfc.section.6.p.1">¶</a></p></div><div id="rfc.section.6.p.2"><p>If a REBIND request fails, the server state preceding the request <em class="bcp14">MUST</em> be restored. This method is unsafe and idempotent (see <a href="#RFC2616" id="rfc.xref.RFC2616.4"><cite title="Hypertext Transfer Protocol -- HTTP/1.1">[RFC2616]</cite></a>, <a href="https://tools.ietf.org/html/rfc2616#section-9.1">Section 9.1</a>).<a class="self" href="#rfc.section.6.p.2">¶</a></p></div><div id="rfc.section.6.p.3"><p><span id="rfc.iref.r.1"></span> <b>Marshalling:</b> <a class="self" href="#rfc.section.6.p.3">¶</a></p><ul class="empty"><li>The request <em class="bcp14">MAY</em> include an Overwrite header.</li><li>The request body <em class="bcp14">MUST</em> be a DAV:rebind XML element. <span id="rfc.figure.u.29"><pre class="inline">&lt;!ELEMENT rebind (segment, href)&gt;
+</pre></span></li><li>If the request succeeds, the server <em class="bcp14">MUST</em> return 201 (Created) when a new binding was created and 200 (OK) or 204 (No Content) when an existing binding was replaced.</li><li>If a response body for a successful request is included, it <em class="bcp14">MUST</em>
+ be a DAV:rebind-response XML element. Note that this document does not 
+define any elements for the REBIND response body, but the 
+DAV:rebind-response element is defined to ensure interoperability 
+between future extensions that do define elements for the REBIND 
+response body. <span id="rfc.figure.u.30"><pre class="inline">&lt;!ELEMENT rebind-response ANY&gt;
+</pre></span></li></ul></div><div id="rfc.section.6.p.4"><p><span id="rfc.iref.r.2"></span> <b>Preconditions:</b> <a class="self" href="#rfc.section.6.p.4">¶</a></p><ul class="empty"><li><span id="rfc.iref.c.18"></span> <span id="rfc.iref.d.17"></span> (DAV:rebind-into-collection): The Request-URI <em class="bcp14">MUST</em> identify a collection.</li><li><span id="rfc.iref.c.19"></span> <span id="rfc.iref.d.18"></span> (DAV:rebind-source-exists): The DAV:href element <em class="bcp14">MUST</em> identify a resource.</li><li><span id="rfc.iref.c.20"></span> <span id="rfc.iref.d.19"></span>
+ (DAV:cross-server-binding): If the resource identified by the DAV:href 
+element in the request body is on another server from the collection 
+identified by the Request-URI, the server <em class="bcp14">MUST</em> 
+support cross-server bindings (servers that do not support cross-server 
+bindings can use this condition code to signal the client exactly why 
+the request failed).</li><li><span id="rfc.iref.c.21"></span> <span id="rfc.iref.d.20"></span> (DAV:name-allowed): The name specified by the DAV:segment is available for use as a new binding name.</li><li><span id="rfc.iref.c.22"></span> <span id="rfc.iref.d.21"></span>
+ (DAV:can-overwrite): If the collection already contains a binding with 
+the specified path segment, and if an Overwrite header is included, the 
+value of the Overwrite header <em class="bcp14">MUST</em> be "T".</li><li><span id="rfc.iref.c.23"></span> <span id="rfc.iref.d.22"></span>
+ (DAV:cycle-allowed): If the DAV:href element identifies a collection, 
+and if the Request-URI identifies a collection that is a member of that 
+collection, the server <em class="bcp14">MUST</em> support cycles in the
+ URI namespace (servers that do not support cycles can use this 
+condition code to signal the client exactly why the request failed).</li><li><span id="rfc.iref.c.24"></span> <span id="rfc.iref.d.23"></span> (DAV:locked-update-allowed): If the collection identified by the Request-URI is write-locked, then the appropriate token <em class="bcp14">MUST</em> be specified in the request.</li><li><span id="rfc.iref.c.25"></span> <span id="rfc.iref.d.24"></span>
+ (DAV:protected-url-modification-allowed): If the collection identified 
+by the Request-URI already contains a binding with the specified path 
+segment, and if that binding is protected by a write lock, then the 
+appropriate token <em class="bcp14">MUST</em> be specified in the request.</li><li><span id="rfc.iref.c.26"></span> <span id="rfc.iref.d.25"></span>
+ (DAV:locked-source-collection-update-allowed): If the collection 
+identified by the parent collection prefix of the DAV:href URI is 
+write-locked, then the appropriate token <em class="bcp14">MUST</em> be specified in the request.</li><li><span id="rfc.iref.c.27"></span> <span id="rfc.iref.d.26"></span> (DAV:protected-source-url-deletion-allowed): If the DAV:href URI is protected by a write lock, then the appropriate token <em class="bcp14">MUST</em> be specified in the request.</li></ul></div><div id="rfc.section.6.p.5"><p><span id="rfc.iref.r.3"></span> <b>Postconditions:</b> <a class="self" href="#rfc.section.6.p.5">¶</a></p><ul class="empty"><li><span id="rfc.iref.c.28"></span> <span id="rfc.iref.d.27"></span> (DAV:new-binding): The collection <em class="bcp14">MUST</em>
+ have a binding that maps the segment specified in the DAV:segment 
+element in the request body, to the resource that was identified by the 
+DAV:href element in the request body.</li><li><span id="rfc.iref.c.29"></span> <span id="rfc.iref.d.28"></span> (DAV:binding-deleted): The URL specified in the DAV:href element in the request body <em class="bcp14">MUST NOT</em> be mapped to a resource.</li><li><span id="rfc.iref.c.30"></span> <span id="rfc.iref.d.29"></span>
+ (DAV:lock-deleted): If the URL specified in the DAV:href element in the
+ request body was protected by a write lock at the time of the request, 
+that write lock must have been deleted by the request.</li></ul></div><section id="n-example--rebind"><h3 id="rfc.section.6.1"><a href="#rfc.section.6.1">6.1.</a>&nbsp;<a href="#n-example--rebind">Example: REBIND</a></h3><div id="rfc.figure.u.31"><p>&gt;&gt; Request:</p><pre class="text2">REBIND /CollX HTTP/1.1
+Host: www.example.com
+Content-Type: application/xml; charset="utf-8"
+Content-Length: 176
+
+<span id="eb3">&lt;?xml version="1.0" encoding="utf-8" ?&gt;
+&lt;D:rebind xmlns:D="DAV:"&gt;
+   &lt;D:segment&gt;foo.html&lt;/D:segment&gt;
+   &lt;D:href&gt;http://www.example.com/CollY/bar.html&lt;/D:href&gt;
+&lt;/D:rebind&gt;
+</span></pre></div><div id="rfc.figure.u.32"><p>&gt;&gt; Response:</p><pre class="text">HTTP/1.1 200 OK
+</pre></div><div id="rfc.section.6.1.p.1"><p>The server added a new 
+binding to the collection, "http://www.example.com/CollX", associating 
+"foo.html" with the resource identified by the URI 
+"http://www.example.com/CollY/bar.html" and removes the binding named 
+"bar.html" from the collection identified by the URI 
+"http://www.example.com/CollY". Clients can now use the URI 
+"http://www.example.com/CollX/foo.html" to submit requests to that 
+resource, and requests on the URI 
+"http://www.example.com/CollY/bar.html" will fail with a 404 (Not Found)
+ response.<a class="self" href="#rfc.section.6.1.p.1">¶</a></p></div></section><section id="n-example--rebind-in-presence-of-locks-and-bind-loops"><h3 id="rfc.section.6.2"><a href="#rfc.section.6.2">6.2.</a>&nbsp;<a href="#n-example--rebind-in-presence-of-locks-and-bind-loops">Example: REBIND in Presence of Locks and Bind Loops</a></h3><div id="rfc.figure.u.33"><p>To illustrate the effects of locks and bind loops on a REBIND operation, consider the following collection:</p><div style="display:table; margin-left: auto; margin-right: auto;"><pre style="margin-left: 0em;" class="drawing">┌──────────────────┐
+│ <strong>Root Collection</strong>  │
+│  bindings:       │
+│  <em>CollW</em>           │
+└──────────────────┘
+     |
+     |
+     |
+┌───────────────────────────────┐
+│ <strong>Collection C1</strong>                 │&lt;--------+
+│ LOCKED infinity               │         |
+│ (lock token L1)               │         |
+│ bindings:                     │         |
+│ <em>CollX</em>               <em>CollY</em>     │         |
+└───────────────────────────────┘         |
+     |                  |                 |
+     |                  |  (creates loop) |
+     |                  |                 |
+┌─────────────────┐  ┌──────────────────┐ |
+│ <strong>Collection C2</strong>   │  │ <strong>Collection C3</strong>    │ |
+│ (inherit lock)  │  │ (inherit lock)   │ | 
+│ (lock token L1) │  │ (lock token L1)  │ |
+│ bindings:       │  │ bindings:        │ |
+│  {none}         │  │ <em>y.gif</em>     <em>CollZ</em>  │ |
+└─────────────────┘  └──────────────────┘ |
+                       |            |     |
+                       |            +-----+
+                       |
+                   ┌───────────────────────────┐
+                   │ <strong>Resource R2</strong>               │
+                   │ (lock inherited from C1)  │
+                   │ (lock token L1)           │
+                   └───────────────────────────┘
+</pre></div><p>(where L1 is "urn:uuid:f92d4fae-7012-11ab-a765-00c0ca1f6bf9").</p></div><div id="rfc.section.6.2.p.1"><p>Note
+ that the binding between CollZ and C1 creates a loop in the containment
+ hierarchy. Servers are not required to support such loops, though the 
+server in this example does.<a class="self" href="#rfc.section.6.2.p.1">¶</a></p></div><div id="rfc.figure.u.34"><p>The REBIND request below will remove the segment "CollZ" from C3 and add a new binding from "CollA" to the collection C2.</p><pre class="text2">REBIND /CollW/CollX HTTP/1.1
+Host: www.example.com
+If: (&lt;urn:uuid:f92d4fae-7012-11ab-a765-00c0ca1f6bf9&gt;)
+Content-Type: application/xml; charset="utf-8"
+Content-Length: 152
+
+<span id="eb4">&lt;?xml version="1.0" encoding="utf-8" ?&gt;
+&lt;D:rebind xmlns:D="DAV:"&gt;
+  &lt;D:segment&gt;CollA&lt;/D:segment&gt;
+  &lt;D:href&gt;/CollW/CollY/CollZ&lt;/D:href&gt;
+&lt;/D:rebind&gt;
+</span></pre></div><div id="rfc.figure.u.35"><p>The outcome of the REBIND operation is:</p><div style="display:table; margin-left: auto; margin-right: auto;"><pre style="margin-left: 0em;" class="drawing">┌──────────────────┐
+│ <strong>Root Collection</strong>  │
+│  bindings:       │
+│  <em>CollW</em>           │
+└──────────────────┘
+     |
+     |
+     |
+┌───────────────────────────────┐
+│ <strong>Collection C1</strong>                 │
+│ LOCKED infinity               │
+│ (lock token L1)               │
+│ bindings:                     │  
+│ <em>CollX</em>                  <em>CollY</em>  │
+└───────────────────────────────┘
+     |              ^      |             
+     |              |      |              
+┌─────────────────┐ | ┌──────────────────┐ 
+│ <strong>Collection C2</strong>   │ | │ <strong>Collection C3</strong>    │
+│(inherited lock) │ | │ (inherited lock) │
+│(lock token L1)  │ | │ (lock token L1)  │
+│ bindings:       │ | │ bindings:        │
+│ <em>CollA</em>           │ | │ <em>y.gif</em>            │
+└─────────────────┘ | └──────────────────┘
+    |               |    |           
+    +---------------+    |          
+     (creates loop)      |
+                   ┌───────────────────────────┐
+                   │ <strong>Resource R2</strong>               │
+                   │ (inherited lock from C1)  │
+                   │ (lock token L1)           │
+                   └───────────────────────────┘
+</pre></div></div></section></section><section id="additional.status.codes"><h2 id="rfc.section.7"><a href="#rfc.section.7">7.</a>&nbsp;<a href="#additional.status.codes">Additional Status Codes</a></h2><section id="status.208.already.reported"><h3 id="rfc.section.7.1"><a href="#rfc.section.7.1">7.1.</a>&nbsp;<a href="#status.208.already.reported">208 Already Reported</a></h3><div id="rfc.section.7.1.p.1"><p>The
+ 208 (Already Reported) status code can be used inside a DAV:propstat 
+response element to avoid enumerating the internal members of multiple 
+bindings to the same collection repeatedly. For each binding to a 
+collection inside the request's scope, only one will be reported with a 
+200 status, while subsequent DAV:response elements for all other 
+bindings will use the 208 status, and no DAV:response elements for their
+ descendants are included.<a class="self" href="#rfc.section.7.1.p.1">¶</a></p></div><div id="rfc.section.7.1.p.2"><p>Note
+ that the 208 status will only occur for "Depth: infinity" requests, and
+ that it is of particular importance when the multiple collection 
+bindings cause a bind loop as discussed in <a href="#uri.mappings.created.by.a.new.binding" title="URI Mappings Created by a New Binding">Section&nbsp;2.2</a>.<a class="self" href="#rfc.section.7.1.p.2">¶</a></p></div><div id="rfc.section.7.1.p.3"><p>A
+ client can request the DAV:resource-id property in a PROPFIND request 
+to guarantee that they can accurately reconstruct the binding structure 
+of a collection with multiple bindings to a single resource.<a class="self" href="#rfc.section.7.1.p.3">¶</a></p></div><div id="rfc.section.7.1.p.4"><p>For backward compatibility with clients not aware of the 208 status code appearing in multistatus response bodies, it <em class="bcp14">SHOULD NOT</em> be used unless the client has signaled support for this specification using the "DAV" request header (see <a href="#dav.request.header" title="'DAV' Request Header">Section&nbsp;8.2</a>).
+ Instead, a 508 status should be returned when a binding loop is 
+discovered. This allows the server to return the 508 as the top-level 
+return status, if it discovers it before it started the response, or in 
+the middle of a multistatus, if it discovers it in the middle of 
+streaming out a multistatus response.<a class="self" href="#rfc.section.7.1.p.4">¶</a></p></div><section id="n-example--propfind-by-bind-aware-client"><h4 id="rfc.section.7.1.1"><a href="#rfc.section.7.1.1">7.1.1.</a>&nbsp;<a href="#n-example--propfind-by-bind-aware-client">Example: PROPFIND by Bind-Aware Client</a></h4><div id="rfc.section.7.1.1.p.1"><p>For
+ example, consider a PROPFIND request on /Coll (bound to collection C), 
+where the members of /Coll are /Coll/Foo (bound to resource R) and 
+/Coll/Bar (bound to collection C).<a class="self" href="#rfc.section.7.1.1.p.1">¶</a></p></div><div id="rfc.figure.u.36"><p>&gt;&gt; Request:</p><pre class="text2">PROPFIND /Coll/ HTTP/1.1
+Host: www.example.com
+Depth: infinity
+DAV: bind
+Content-Type: application/xml; charset="utf-8"
+Content-Length: 152
+
+<span id="eb5">&lt;?xml version="1.0" encoding="utf-8" ?&gt;
+&lt;D:propfind xmlns:D="DAV:"&gt;
+  &lt;D:prop&gt;
+   &lt;D:displayname/&gt;
+   &lt;D:resource-id/&gt;
+  &lt;/D:prop&gt;
+&lt;/D:propfind&gt;
+</span></pre></div><div id="rfc.figure.u.37"><p>&gt;&gt; Response:</p><pre class="text">HTTP/1.1 207 Multi-Status
+Content-Type: application/xml; charset="utf-8"
+Content-Length: 1241
+
+<span id="eb6">&lt;?xml version="1.0" encoding="utf-8" ?&gt;
+&lt;D:multistatus xmlns:D="DAV:"&gt;
+  &lt;D:response&gt;
+    &lt;D:href&gt;http://www.example.com/Coll/&lt;/D:href&gt;
+    &lt;D:propstat&gt;
+      &lt;D:prop&gt;
+        &lt;D:displayname&gt;Loop Demo&lt;/D:displayname&gt;
+        &lt;D:resource-id&gt;
+          &lt;D:href
+&gt;urn:uuid:f81d4fae-7dec-11d0-a765-00a0c91e6bf8&lt;/D:href&gt;
+        &lt;/D:resource-id&gt;
+      &lt;/D:prop&gt;
+      &lt;D:status&gt;HTTP/1.1 200 OK&lt;/D:status&gt;
+    &lt;/D:propstat&gt;
+  &lt;/D:response&gt;
+  &lt;D:response&gt;
+    &lt;D:href&gt;http://www.example.com/Coll/Foo&lt;/D:href&gt;
+    &lt;D:propstat&gt;
+      &lt;D:prop&gt;
+        &lt;D:displayname&gt;Bird Inventory&lt;/D:displayname&gt;
+        &lt;D:resource-id&gt;
+          &lt;D:href
+&gt;urn:uuid:f81d4fae-7dec-11d0-a765-00a0c91e6bf9&lt;/D:href&gt;
+        &lt;/D:resource-id&gt;
+      &lt;/D:prop&gt;
+      &lt;D:status&gt;HTTP/1.1 200 OK&lt;/D:status&gt;
+    &lt;/D:propstat&gt;
+  &lt;/D:response&gt;
+  &lt;D:response&gt;
+    &lt;D:href&gt;http://www.example.com/Coll/Bar&lt;/D:href&gt;
+    &lt;D:propstat&gt;
+      &lt;D:prop&gt;
+        &lt;D:displayname&gt;Loop Demo&lt;/D:displayname&gt;
+        &lt;D:resource-id&gt;
+          &lt;D:href
+&gt;urn:uuid:f81d4fae-7dec-11d0-a765-00a0c91e6bf8&lt;/D:href&gt;
+        &lt;/D:resource-id&gt;
+      &lt;/D:prop&gt;
+      &lt;D:status&gt;HTTP/1.1 208 Already Reported&lt;/D:status&gt;
+    &lt;/D:propstat&gt;
+  &lt;/D:response&gt;
+&lt;/D:multistatus&gt;
+</span></pre></div></section><section id="n-example--propfind-by-non-bind-aware-client"><h4 id="rfc.section.7.1.2"><a href="#rfc.section.7.1.2">7.1.2.</a>&nbsp;<a href="#n-example--propfind-by-non-bind-aware-client">Example: PROPFIND by Non-Bind-Aware Client</a></h4><div id="rfc.section.7.1.2.p.1"><p>In
+ this example, the client isn't aware of the 208 status code introduced 
+by this specification. As the "Depth: infinity" PROPFIND request would 
+cause a loop condition, the whole request is rejected with a 508 status.<a class="self" href="#rfc.section.7.1.2.p.1">¶</a></p></div><div id="rfc.figure.u.38"><p>&gt;&gt; Request:</p><pre class="text2">PROPFIND /Coll/ HTTP/1.1
+Host: www.example.com
+Depth: infinity
+Content-Type: application/xml; charset="utf-8"
+Content-Length: 125
+
+<span id="eb7">&lt;?xml version="1.0" encoding="utf-8" ?&gt;
+&lt;D:propfind xmlns:D="DAV:"&gt;
+   &lt;D:prop&gt; &lt;D:displayname/&gt; &lt;/D:prop&gt;
+&lt;/D:propfind&gt;
+</span></pre></div><div id="rfc.figure.u.39"><p>&gt;&gt; Response:</p><pre class="text">HTTP/1.1 508 Loop Detected
+</pre></div></section></section><section id="status.508.loop.detected"><h3 id="rfc.section.7.2"><a href="#rfc.section.7.2">7.2.</a>&nbsp;<a href="#status.508.loop.detected">508 Loop Detected</a></h3><div id="rfc.section.7.2.p.1"><p>The
+ 508 (Loop Detected) status code indicates that the server terminated an
+ operation because it encountered an infinite loop while processing a 
+request with "Depth: infinity". This status indicates that the entire 
+operation failed.<a class="self" href="#rfc.section.7.2.p.1">¶</a></p></div></section></section><section id="n-capability-discovery"><h2 id="rfc.section.8"><a href="#rfc.section.8">8.</a>&nbsp;<a href="#n-capability-discovery">Capability Discovery</a></h2><section id="n-options-method"><h3 id="rfc.section.8.1"><a href="#rfc.section.8.1">8.1.</a>&nbsp;<a href="#n-options-method">OPTIONS Method</a></h3><div id="rfc.section.8.1.p.1"><p><span id="rfc.iref.d.30"></span> If the server supports bindings, it <em class="bcp14">MUST</em> return the compliance class name "bind" as a field in the "DAV" response header (see <a href="#RFC4918" id="rfc.xref.RFC4918.14"><cite title="HTTP Extensions for Web Distributed Authoring and Versioning (WebDAV)">[RFC4918]</cite></a>, <a href="https://tools.ietf.org/html/rfc4918#section-10.1">Section 10.1</a>) from an OPTIONS request on any resource implemented by that server. A value of "bind" in the "DAV" header <em class="bcp14">MUST</em> indicate that the server supports all <em class="bcp14">MUST</em>-level requirements and <em class="bcp14">REQUIRED</em> features specified in this document.<a class="self" href="#rfc.section.8.1.p.1">¶</a></p></div></section><section id="dav.request.header"><h3 id="rfc.section.8.2"><a href="#rfc.section.8.2">8.2.</a>&nbsp;<a href="#dav.request.header">'DAV' Request Header</a></h3><div id="rfc.section.8.2.p.1"><p>Clients <em class="bcp14">SHOULD</em> signal support for all <em class="bcp14">MUST</em>-level requirements and <em class="bcp14">REQUIRED</em> features by submitting a "DAV" request header containing the compliance class name "bind". In particular, the client <em class="bcp14">MUST</em> understand the 208 status code defined in <a href="#status.208.already.reported" id="rfc.xref.status.208.already.reported.2" title="208 Already Reported">Section&nbsp;7.1</a>.<a class="self" href="#rfc.section.8.2.p.1">¶</a></p></div></section></section><section id="locking"><h2 id="rfc.section.9"><a href="#rfc.section.9">9.</a>&nbsp;<a href="#locking">Relationship to Locking in WebDAV</a></h2><div id="rfc.section.9.p.1"><p>Locking is an optional feature of WebDAV (<a href="#RFC4918" id="rfc.xref.RFC4918.15"><cite title="HTTP Extensions for Web Distributed Authoring and Versioning (WebDAV)">[RFC4918]</cite></a>).
+ The base WebDAV specification and this protocol extension have been 
+designed in parallel, making sure that all features of WebDAV can be 
+implemented on a server that implements this protocol as well.<a class="self" href="#rfc.section.9.p.1">¶</a></p></div><div id="rfc.section.9.p.2" class="avoidbreakafter"><p>Unfortunately, WebDAV uses the term "lock-root" inconsistently. It is introduced in <a href="https://tools.ietf.org/html/rfc4918#section-6.1">Section 6.1</a> of <a href="#RFC4918" id="rfc.xref.RFC4918.16"><cite title="HTTP Extensions for Web Distributed Authoring and Versioning (WebDAV)">[RFC4918]</cite></a>, point 2, as:<a class="self" href="#rfc.section.9.p.2">¶</a></p></div><blockquote id="rfc.section.9.p.3" cite="http://tools.ietf.org/html/rfc4918#section-6.1"><p>2.
+ A resource becomes directly locked when a LOCK request to a URL of that
+ resource creates a new lock. The "lock-root" of the new lock is that 
+URL. If at the time of the request, the URL is not mapped to a resource,
+ a new empty resource is created and directly locked.</p> </blockquote><div id="rfc.section.9.p.4" class="avoidbreakafter"><p>On the other hand, <a href="#RFC4918" id="rfc.xref.RFC4918.17"><cite title="HTTP Extensions for Web Distributed Authoring and Versioning (WebDAV)">[RFC4918]</cite></a>, <a href="https://tools.ietf.org/html/rfc4918#section-9.10.1">Section 9.10.1</a> states:<a class="self" href="#rfc.section.9.p.4">¶</a></p></div><blockquote id="rfc.section.9.p.5" cite="http://tools.ietf.org/html/rfc4918#section-9.10.1"><p>A
+ LOCK request to an existing resource will create a lock on the resource
+ identified by the Request-URI, provided the resource is not already 
+locked with a conflicting lock. The resource identified in the 
+Request-URI becomes the root of the lock.</p> </blockquote><div id="rfc.section.9.p.6"><p>Servers that implement both WebDAV locking and support for multiple bindings <em class="bcp14">MUST</em>
+ use the first interpretation: the lock-root is the URI through which 
+the lock was created, not a resource. This URI, and potential aliases of
+ this URI (<a href="#RFC4918" id="rfc.xref.RFC4918.18"><cite title="HTTP Extensions for Web Distributed Authoring and Versioning (WebDAV)">[RFC4918]</cite></a>, <a href="https://tools.ietf.org/html/rfc4918#section-5">Section 5</a>), are said to be "protected" by the lock.<a class="self" href="#rfc.section.9.p.6">¶</a></p></div><div id="rfc.section.9.p.7"><p>As defined in the introduction to <a href="https://tools.ietf.org/html/rfc4918#section-7">Section 7</a> of <a href="#RFC4918" id="rfc.xref.RFC4918.19"><cite title="HTTP Extensions for Web Distributed Authoring and Versioning (WebDAV)">[RFC4918]</cite></a>,
+ write operations that modify the state of a locked resource require 
+that the lock token is submitted with the request. Consistent with 
+WebDAV, the state of the resource consists of the content ("any 
+variant"), dead properties, lockable live properties (item 1), plus, for
+ a collection, all its bindings (item 2). Note that this, by definition,
+ does not depend on the Request-URI to which the write operation is 
+applied (the locked state is a property of the resource, not its URI).<a class="self" href="#rfc.section.9.p.7">¶</a></p></div><div id="rfc.section.9.p.8"><p>However,
+ the lock-root is the URI through which the lock was requested. Thus, 
+the protection defined in item 3 of the list does not apply to 
+additional URIs that may be mapped to the same resource due to the 
+existence of multiple bindings.<a class="self" href="#rfc.section.9.p.8">¶</a></p></div><section id="n-example--locking-and-multiple-bindings"><h3 id="rfc.section.9.1"><a href="#rfc.section.9.1">9.1.</a>&nbsp;<a href="#n-example--locking-and-multiple-bindings">Example: Locking and Multiple Bindings</a></h3><div id="rfc.section.9.1.p.1" class="avoidbreakafter"><p>Consider
+ a root collection "/", containing the two collections C1 and C2, named 
+"/CollX" and "/CollY", and a child resource R, bound to C1 as 
+"/CollX/test" and bound to C2 as "/CollY/test":<a class="self" href="#rfc.section.9.1.p.1">¶</a></p></div><div id="rfc.figure.u.40"><div style="display:table; margin-left: auto; margin-right: auto;"><pre style="margin-left: 0em;" class="drawing">     ┌─────────────────────────┐
+     │ <strong>Root Collection</strong>         │
+     │  bindings:              │
+     │  <em>CollX</em>          <em>CollY</em>   │
+     └─────────────────────────┘
+         |                |          
+         |                |
+         |                |
+┌───────────────┐  ┌───────────────┐
+│ <strong>Collection C1</strong> │  │ <strong>Collection C2</strong> │
+│ bindings:     │  │ bindings:     │
+│     <em>test</em>      │  │     <em>test</em>      │
+└───────────────┘  └───────────────┘
+         |               |
+         |               |  
+         |               |  
+        ┌──────────────────┐
+        │    <strong>Resource R</strong>    │
+        └──────────────────┘
+</pre></div></div><div id="rfc.section.9.1.p.2"><p>Given a host name of 
+"www.example.com", applying a depth-zero write lock to "/CollX/test" 
+will lock the resource R, and the lock-root of this lock will be 
+"http://www.example.com/CollX/test".<a class="self" href="#rfc.section.9.1.p.2">¶</a></p></div><div id="rfc.section.9.1.p.3"><p>Thus, the following operations will require that the associated lock token is submitted with the "If" request header (<a href="#RFC4918" id="rfc.xref.RFC4918.20"><cite title="HTTP Extensions for Web Distributed Authoring and Versioning (WebDAV)">[RFC4918]</cite></a>, <a href="https://tools.ietf.org/html/rfc4918#section-10.4">Section 10.4</a>): <a class="self" href="#rfc.section.9.1.p.3">¶</a></p><ul><li>a
+ PUT or PROPPATCH request modifying the content or lockable properties 
+of resource R (as R is locked) -- no matter which URI is used as request
+ target, and</li><li>a MOVE, REBIND, UNBIND, or DELETE request causing 
+"/CollX/test" not to be mapped to resource R anymore (be it addressed to
+ "/CollX" or "/CollX/test").</li></ul></div><div id="rfc.section.9.1.p.4"><p>The following operations will not require submission of the lock token: <a class="self" href="#rfc.section.9.1.p.4">¶</a></p><ul><li>a DELETE request addressed to "/CollY" or "/CollY/test", as it does not affect the resource R, nor the lock-root,</li><li>for
+ the same reason, an UNBIND request removing the binding "test" from 
+collection C2, or the binding "CollY" from the root collection, and</li><li>similarly, a MOVE or REBIND request causing "/CollY/test" not being mapped to resource R anymore.</li></ul></div><div id="rfc.section.9.1.p.5"><p>Note
+ that despite the lock-root being "http://www.example.com/CollX/test", 
+an UNLOCK request can be addressed through any URI mapped to resource R,
+ as UNLOCK operates on the resource identified by the Request-URI, not 
+that URI (see <a href="#RFC4918" id="rfc.xref.RFC4918.21"><cite title="HTTP Extensions for Web Distributed Authoring and Versioning (WebDAV)">[RFC4918]</cite></a>, <a href="https://tools.ietf.org/html/rfc4918#section-9.11">Section 9.11</a>).<a class="self" href="#rfc.section.9.1.p.5">¶</a></p></div></section></section><section id="n-relationship-to-webdav-access-control-protocol"><h2 id="rfc.section.10"><a href="#rfc.section.10">10.</a>&nbsp;<a href="#n-relationship-to-webdav-access-control-protocol">Relationship to WebDAV Access Control Protocol</a></h2><div id="rfc.section.10.p.1" class="avoidbreakafter"><p>Note
+ that the WebDAV Access Control Protocol has been designed for 
+compatibility with systems that allow multiple URIs to map to the same 
+resource (see <a href="#RFC3744" id="rfc.xref.RFC3744.2"><cite title="Web Distributed Authoring and Versioning (WebDAV) Access Control Protocol">[RFC3744]</cite></a>, <a href="https://tools.ietf.org/html/rfc3744#section-5">Section 5</a>):<a class="self" href="#rfc.section.10.p.1">¶</a></p></div><blockquote id="rfc.section.10.p.2" cite="http://tools.ietf.org/html/rfc3744#section-5"><p>Access
+ control properties (especially DAV:acl and DAV:inherited-acl-set) are 
+defined on the resource identified by the Request-URI of a PROPFIND 
+request. A direct consequence is that if the resource is accessible via 
+multiple URI, the value of access control properties is the same across 
+these URI.</p> </blockquote><div id="rfc.section.10.p.3"><p>Furthermore, note that BIND and REBIND behave the same as MOVE with respect to the DAV:acl property (see <a href="#RFC3744" id="rfc.xref.RFC3744.3"><cite title="Web Distributed Authoring and Versioning (WebDAV) Access Control Protocol">[RFC3744]</cite></a>, <a href="https://tools.ietf.org/html/rfc3744#section-7.3">Section 7.3</a>).<a class="self" href="#rfc.section.10.p.3">¶</a></p></div></section><section id="n-relationship-to-versioning-extensions-to-webdav"><h2 id="rfc.section.11"><a href="#rfc.section.11">11.</a>&nbsp;<a href="#n-relationship-to-versioning-extensions-to-webdav">Relationship to Versioning Extensions to WebDAV</a></h2><div id="rfc.section.11.p.1"><p>Servers that implement Workspaces (<a href="#RFC3253" id="rfc.xref.RFC3253.2"><cite title="Versioning Extensions to WebDAV (Web Distributed Authoring and Versioning)">[RFC3253]</cite></a>, <a href="https://tools.ietf.org/html/rfc3253#section-6">Section 6</a>) and Version-Controlled Collections (<a href="#RFC3253" id="rfc.xref.RFC3253.3"><cite title="Versioning Extensions to WebDAV (Web Distributed Authoring and Versioning)">[RFC3253]</cite></a>, <a href="https://tools.ietf.org/html/rfc3253#section-14">Section 14</a>) already need to implement BIND-like behavior in order to handle UPDATE and UNCHECKOUT semantics.<a class="self" href="#rfc.section.11.p.1">¶</a></p></div><div id="rfc.section.11.p.2" class="avoidbreakafter"><p>Consider
+ a workspace "/ws1/", containing the version-controlled, checked-out 
+collections C1 and C2, named "/ws1/CollX" and "/ws1/CollY", and a 
+version-controlled resource R, bound to C1 as "/ws1/CollX/test":<a class="self" href="#rfc.section.11.p.2">¶</a></p></div><div id="rfc.figure.u.41"><div style="display:table; margin-left: auto; margin-right: auto;"><pre style="margin-left: 0em;" class="drawing">     ┌─────────────────────────┐
+     │ <strong>Workspace</strong>               │
+     │  bindings:              │
+     │  <em>CollX</em>          <em>CollY</em>   │
+     └─────────────────────────┘
+         |                |          
+         |                |
+         |                |
+┌───────────────┐  ┌───────────────┐
+│ <strong>Collection C1</strong> │  │ <strong>Collection C2</strong> │
+│ bindings:     │  │               │
+│     <em>test</em>      │  │               │
+└───────────────┘  └───────────────┘
+         |                       
+         |                         
+         |                         
+        ┌──────────────────┐
+        │    <strong>Resource R</strong>    │
+        └──────────────────┘
+</pre></div></div><div id="rfc.section.11.p.3" class="avoidbreakafter"><p>Moving
+ "/ws1/CollX/test" into "/ws1/CollY", checking in C2, but undoing the 
+checkout on C1 will undo part of the MOVE request, thus restoring the 
+binding from C1 to R, but keeping the new binding from C2 to R:<a class="self" href="#rfc.section.11.p.3">¶</a></p></div><div id="rfc.figure.u.42"><p>&gt;&gt; Request:</p><pre class="text2">MOVE /ws1/CollX/test HTTP/1.1
+Host: www.example.com
+Destination: /ws1/CollY/test
+</pre></div><div id="rfc.figure.u.43"><p>&gt;&gt; Response:</p><pre class="text">HTTP/1.1 204 No Content
+</pre></div><div id="rfc.figure.u.44"><p>&gt;&gt; Request:</p><pre class="text2">CHECKIN /ws1/CollY/ HTTP/1.1
+Host: www.example.com
+</pre></div><div id="rfc.figure.u.45"><p>&gt;&gt; Response:</p><pre class="text">HTTP/1.1 201 Created
+Cache-Control: no-cache
+Location: http://repo.example.com/his/17/ver/42
+</pre></div><div id="rfc.figure.u.46"><p>&gt;&gt; Request:</p><pre class="text2">UNCHECKOUT /ws1/CollX/ HTTP/1.1
+Host: www.example.com
+</pre></div><div id="rfc.figure.u.47"><p>&gt;&gt; Response:</p><pre class="text">HTTP/1.1 200 OK
+Cache-Control: no-cache
+</pre></div><div id="rfc.section.11.p.4" class="avoidbreakafter"><p>As a result, both C1 and C2 would have a binding to R:<a class="self" href="#rfc.section.11.p.4">¶</a></p></div><div id="rfc.figure.u.48"><div style="display:table; margin-left: auto; margin-right: auto;"><pre style="margin-left: 0em;" class="drawing">     ┌─────────────────────────┐
+     │ <strong>Workspace</strong>               │
+     │  bindings:              │
+     │  <em>CollX</em>          <em>CollY</em>   │
+     └─────────────────────────┘
+         |                |          
+         |                |
+         |                |
+┌───────────────┐  ┌───────────────┐
+│ <strong>Collection C1</strong> │  │ <strong>Collection C2</strong> │
+│ bindings:     │  │ bindings:     │
+│     <em>test</em>      │  │     <em>test</em>      │
+└───────────────┘  └───────────────┘
+         |                |
+         |                |  
+         |                |
+        ┌──────────────────┐
+        │    <strong>Resource R</strong>    │
+        └──────────────────┘
+</pre></div></div><div id="rfc.section.11.p.5" class="avoidbreakafter"><p>The MOVE semantics defined in <a href="https://tools.ietf.org/html/rfc3253#section-3.15">Section 3.15</a> of <a href="#RFC3253" id="rfc.xref.RFC3253.4"><cite title="Versioning Extensions to WebDAV (Web Distributed Authoring and Versioning)">[RFC3253]</cite></a>
+ already require that "/ws1/CollX/test" and "/ws1/CollY/test" will have 
+the same version history (as exposed in the DAV:version-history 
+property). Furthermore, the UNCHECKOUT semantics (which in this case is 
+similar to UPDATE, see <a href="https://tools.ietf.org/html/rfc3253#section-14.11">Section 14.11</a> of <a href="#RFC3253" id="rfc.xref.RFC3253.5"><cite title="Versioning Extensions to WebDAV (Web Distributed Authoring and Versioning)">[RFC3253]</cite></a>) require:<a class="self" href="#rfc.section.11.p.5">¶</a></p></div><blockquote id="rfc.section.11.p.6" cite="http://tools.ietf.org/html/rfc3253#section-14.11"><p>If
+ a new version-controlled member is in a workspace that already has a 
+version-controlled resource for that version history, then the new 
+version-controlled member MUST be just a binding (i.e., another name 
+for) that existing version-controlled resource.</p> </blockquote><div id="rfc.section.11.p.7"><p>Thus,
+ "/ws1/CollX/test" and "/ws1/CollY/test" will be bindings to the same 
+resource R, and have identical DAV:resource-id properties.<a class="self" href="#rfc.section.11.p.7">¶</a></p></div></section><section id="security.considerations"><h2 id="rfc.section.12"><a href="#rfc.section.12">12.</a>&nbsp;<a href="#security.considerations">Security Considerations</a></h2><div id="rfc.section.12.p.1"><p>This section is provided to make WebDAV implementers aware of the security implications of this protocol.<a class="self" href="#rfc.section.12.p.1">¶</a></p></div><div id="rfc.section.12.p.2"><p>All of the security considerations of HTTP/1.1 (<a href="#RFC2616" id="rfc.xref.RFC2616.5"><cite title="Hypertext Transfer Protocol -- HTTP/1.1">[RFC2616]</cite></a>, <a href="https://tools.ietf.org/html/rfc2616#section-15">Section 15</a>) and the WebDAV Distributed Authoring Protocol specification (<a href="#RFC4918" id="rfc.xref.RFC4918.22"><cite title="HTTP Extensions for Web Distributed Authoring and Versioning (WebDAV)">[RFC4918]</cite></a>, <a href="https://tools.ietf.org/html/rfc4918#section-20">Section 20</a>)
+ also apply to this protocol specification. In addition, bindings 
+introduce several new security concerns and increase the risk of some 
+existing threats. These issues are detailed below.<a class="self" href="#rfc.section.12.p.2">¶</a></p></div><section id="privacy.concerns"><h3 id="rfc.section.12.1"><a href="#rfc.section.12.1">12.1.</a>&nbsp;<a href="#privacy.concerns">Privacy Concerns</a></h3><div id="rfc.section.12.1.p.1"><p>In
+ a context where cross-server bindings are supported, creating bindings 
+on a trusted server may make it possible for a hostile agent to induce 
+users to send private information to a target on a different server.<a class="self" href="#rfc.section.12.1.p.1">¶</a></p></div></section><section id="bind.loops.privacy.concerns"><h3 id="rfc.section.12.2"><a href="#rfc.section.12.2">12.2.</a>&nbsp;<a href="#bind.loops.privacy.concerns">Bind Loops</a></h3><div id="rfc.section.12.2.p.1"><p>Although
+ bind loops were already possible in HTTP 1.1, the introduction of the 
+BIND method creates a new avenue for clients to create loops 
+accidentally or maliciously. If the binding and its target are on the 
+same server, the server may be able to detect BIND requests that would 
+create loops. Servers are required to detect loops that are caused by 
+bindings to collections during the processing of any requests with 
+"Depth: infinity".<a class="self" href="#rfc.section.12.2.p.1">¶</a></p></div></section><section id="bindings.and.denial.of.service"><h3 id="rfc.section.12.3"><a href="#rfc.section.12.3">12.3.</a>&nbsp;<a href="#bindings.and.denial.of.service">Bindings and Denial of Service</a></h3><div id="rfc.section.12.3.p.1"><p>Denial-of-service
+ attacks were already possible by posting URIs that were intended for 
+limited use at heavily used Web sites. The introduction of BIND creates a
+ new avenue for similar denial-of-service attacks. If cross-server 
+bindings are supported, clients can now create bindings at heavily used 
+sites to target locations that were not designed for heavy usage.<a class="self" href="#rfc.section.12.3.p.1">¶</a></p></div></section><section id="private.locations.may.be.revealed"><h3 id="rfc.section.12.4"><a href="#rfc.section.12.4">12.4.</a>&nbsp;<a href="#private.locations.may.be.revealed">Private Locations May Be Revealed</a></h3><div id="rfc.section.12.4.p.1"><p>If
+ the DAV:parent-set property is maintained on a resource, the owners of 
+the bindings risk revealing private locations. The directory structures 
+where bindings are located are available to anyone who has access to the
+ DAV:parent-set property on the resource. Moving a binding may reveal 
+its new location to anyone with access to DAV:parent-set on its 
+resource.<a class="self" href="#rfc.section.12.4.p.1">¶</a></p></div></section><section id="parent-set.and.denial.of.service"><h3 id="rfc.section.12.5"><a href="#rfc.section.12.5">12.5.</a>&nbsp;<a href="#parent-set.and.denial.of.service">DAV:parent-set and Denial of Service</a></h3><div id="rfc.section.12.5.p.1"><p>If
+ the server maintains the DAV:parent-set property in response to 
+bindings created in other administrative domains, it is exposed to 
+hostile attempts to make it devote resources to adding bindings to the 
+list.<a class="self" href="#rfc.section.12.5.p.1">¶</a></p></div></section></section><section id="internationalization.considerations"><h2 id="rfc.section.13"><a href="#rfc.section.13">13.</a>&nbsp;<a href="#internationalization.considerations">Internationalization Considerations</a></h2><div id="rfc.section.13.p.1"><p>All internationalization considerations mentioned in <a href="https://tools.ietf.org/html/rfc4918#section-19">Section 19</a> of <a href="#RFC4918" id="rfc.xref.RFC4918.23"><cite title="HTTP Extensions for Web Distributed Authoring and Versioning (WebDAV)">[RFC4918]</cite></a> also apply to this document.<a class="self" href="#rfc.section.13.p.1">¶</a></p></div></section><section id="iana.considerations"><h2 id="rfc.section.14"><a href="#rfc.section.14">14.</a>&nbsp;<a href="#iana.considerations">IANA Considerations</a></h2><div id="rfc.section.14.p.1"><p><a href="#additional.status.codes" title="Additional Status Codes">Section&nbsp;7</a> defines the HTTP status codes <span id="rfc.iref.s.1"></span> <span id="rfc.iref.2.1"></span> 208 (Already Reported) and <span id="rfc.iref.s.2"></span> <span id="rfc.iref.5.1"></span> 508 (Loop Detected), which have been added to the HTTP Status Code Registry.<a class="self" href="#rfc.section.14.p.1">¶</a></p></div></section><section id="acknowledgments"><h2 id="rfc.section.15"><a href="#rfc.section.15">15.</a>&nbsp;<a href="#acknowledgments">Acknowledgements</a></h2><div id="rfc.section.15.p.1"><p>This
+ document is the collaborative product of the authors and Tyson Chihaya,
+ Jim Davis, Chuck Fay and Judith Slein. It has benefited from thoughtful
+ discussion by Jim Amsden, Peter Carlson, Steve Carter, Ken Coar, Ellis 
+Cohen, Dan Connolly, Bruce Cragun, Cyrus Daboo, Spencer Dawkins, Mark 
+Day, Werner Donne, Rajiv Dulepet, David Durand, Lisa Dusseault, Stefan 
+Eissing, Roy Fielding, Yaron Goland, Joe Hildebrand, Fred Hitt, Alex 
+Hopmann, James Hunt, Marcus Jager, Chris Kaler, Manoj Kasichainula, 
+Rohit Khare, Brian Korver, Daniel LaLiberte, Steve Martin, Larry 
+Masinter, Jeff McAffer, Alexey Melnikov, Surendra Koduru Reddy, Max 
+Rible, Sam Ruby, Bradley Sergeant, Nick Shelness, John Stracke, John 
+Tigue, John Turner, Kevin Wiggen, and other members of the concluded 
+WebDAV working group.<a class="self" href="#rfc.section.15.p.1">¶</a></p></div></section><section id="rfc.references"><h2 id="rfc.section.16"><a href="#rfc.section.16">16.</a> References</h2><section id="rfc.references.1"><h3 id="rfc.section.16.1"><a href="#rfc.section.16.1">16.1.</a> Normative References</h3><dl class="reference"><dt id="RFC2119">[RFC2119]</dt><dd><a href="mailto:sob@harvard.edu">Bradner, S.</a>, “<a href="https://tools.ietf.org/html/rfc2119">Key words for use in RFCs to Indicate Requirement Levels</a>”, BCP&nbsp;14, RFC&nbsp;2119, March&nbsp;1997.</dd><dt id="RFC2616">[RFC2616]</dt><dd><a href="mailto:fielding@ics.uci.edu">Fielding, R.</a>, <a href="mailto:jg@w3.org">Gettys, J.</a>, <a href="mailto:mogul@wrl.dec.com">Mogul, J.</a>, <a href="mailto:frystyk@w3.org">Frystyk, H.</a>, <a href="mailto:masinter@parc.xerox.com">Masinter, L.</a>, <a href="mailto:paulle@microsoft.com">Leach, P.</a>, and <a href="mailto:timbl@w3.org">T. Berners-Lee</a>, “<a href="https://tools.ietf.org/html/rfc2616">Hypertext Transfer Protocol -- HTTP/1.1</a>”, RFC&nbsp;2616, June&nbsp;1999.</dd><dt id="RFC3986">[RFC3986]</dt><dd><a href="mailto:timbl@w3.org">Berners-Lee, T.</a>, <a href="mailto:fielding@gbiv.com">Fielding, R.</a>, and <a href="mailto:LMM@acm.org">L. Masinter</a>, “<a href="https://tools.ietf.org/html/rfc3986">Uniform Resource Identifier (URI): Generic Syntax</a>”, STD&nbsp;66, RFC&nbsp;3986, January&nbsp;2005.</dd><dt id="RFC4918">[RFC4918]</dt><dd><a href="mailto:ldusseault@commerce.net">Dusseault, L., Ed.</a>, “<a href="https://tools.ietf.org/html/rfc4918">HTTP Extensions for Web Distributed Authoring and Versioning (WebDAV)</a>”, RFC&nbsp;4918, June&nbsp;2007.</dd><dt id="XML">[XML]</dt><dd><a href="mailto:tbray@textuality.com">Bray, T.</a>, <a href="mailto:jeanpa@microsoft.com">Paoli, J.</a>, <a href="mailto:cmsmcq@w3.org">Sperberg-McQueen, C.</a>, <a href="mailto:eve.maler@east.sun.com">Maler, E.</a>, and F. Yergeau, “<a href="http://www.w3.org/TR/2008/REC-xml-20081126/">Extensible Markup Language (XML) 1.0 (Fifth Edition)</a>”, W3C&nbsp;REC-xml-20081126, November&nbsp;2008, &lt;<a href="http://www.w3.org/TR/2008/REC-xml-20081126/">http://www.w3.org/TR/2008/REC-xml-20081126/</a>&gt;.</dd></dl></section><section id="rfc.references.2"><h3 id="rfc.section.16.2"><a href="#rfc.section.16.2">16.2.</a> Informative References</h3><dl class="reference"><dt id="RFC3253">[RFC3253]</dt><dd><a href="mailto:geoffrey.clemm@rational.com">Clemm, G.</a>, <a href="mailto:jamsden@us.ibm.com">Amsden, J.</a>, <a href="mailto:tim_ellison@uk.ibm.com">Ellison, T.</a>, <a href="mailto:ckaler@microsoft.com">Kaler, C.</a>, and <a href="mailto:ejw@cse.ucsc.edu">J. Whitehead</a>, “<a href="https://tools.ietf.org/html/rfc3253">Versioning Extensions to WebDAV (Web Distributed Authoring and Versioning)</a>”, RFC&nbsp;3253, March&nbsp;2002.</dd><dt id="RFC3744">[RFC3744]</dt><dd><a href="mailto:geoffrey.clemm@us.ibm.com">Clemm, G.</a>, <a href="mailto:julian.reschke@greenbytes.de">Reschke, J.</a>, <a href="mailto:eric.sedlar@oracle.com">Sedlar, E.</a>, and <a href="mailto:ejw@cse.ucsc.edu">J. Whitehead</a>, “<a href="https://tools.ietf.org/html/rfc3744">Web Distributed Authoring and Versioning (WebDAV) Access Control Protocol</a>”, RFC&nbsp;3744, May&nbsp;2004.</dd><dt id="RFC4122">[RFC4122]</dt><dd><a href="mailto:paulle@microsoft.com">Leach, P.</a>, <a href="mailto:michael@refactored-networks.com">Mealling, M.</a>, and <a href="mailto:rsalz@datapower.com">R. Salz</a>, “<a href="https://tools.ietf.org/html/rfc4122">A Universally Unique IDentifier (UUID) URN Namespace</a>”, RFC&nbsp;4122, July&nbsp;2005.</dd></dl></section></section><section id="rfc.index"><h2><a href="#rfc.index">Index</a></h2><p class="noprint"><a href="#rfc.index.2">2</a> <a href="#rfc.index.5">5</a> <a href="#rfc.index.B">B</a> <a href="#rfc.index.C">C</a> <a href="#rfc.index.D">D</a> <a href="#rfc.index.I">I</a> <a href="#rfc.index.L">L</a> <a href="#rfc.index.M">M</a> <a href="#rfc.index.P">P</a> <a href="#rfc.index.R">R</a> <a href="#rfc.index.S">S</a> <a href="#rfc.index.U">U</a> <a href="#rfc.index.X">X</a> </p><div class="print2col"><ul class="ind"><li><a id="rfc.index.2" href="#rfc.index.2"><b>2</b></a><ul><li>208 Already Reported (status code)&nbsp;&nbsp;<a href="#rfc.xref.status.208.already.reported.1">2.1.1</a>, <a href="#rfc.section.7.1"><b>7.1</b></a>, <a href="#rfc.xref.status.208.already.reported.2">8.2</a>, <a href="#rfc.iref.2.1">14</a></li></ul></li><li><a id="rfc.index.5" href="#rfc.index.5"><b>5</b></a><ul><li>508 Loop Detected (status code)&nbsp;&nbsp;<a href="#rfc.xref.status.508.loop.detected.1">2.1.1</a>, <a href="#rfc.section.7.2"><b>7.2</b></a>, <a href="#rfc.iref.5.1">14</a></li></ul></li><li><a id="rfc.index.B" href="#rfc.index.B"><b>B</b></a><ul><li>BIND method&nbsp;&nbsp;<a href="#rfc.section.4"><b>4</b></a><ul><li>Marshalling&nbsp;&nbsp;<a href="#rfc.iref.b.5">4</a></li><li>Postconditions&nbsp;&nbsp;<a href="#rfc.iref.b.7">4</a></li><li>Preconditions&nbsp;&nbsp;<a href="#rfc.iref.b.6">4</a></li></ul></li><li>Binding&nbsp;&nbsp;<a href="#rfc.iref.b.1"><b>1.1</b></a></li><li>Binding Integrity&nbsp;&nbsp;<a href="#rfc.iref.b.2"><b>1.1</b></a>, <a href="#rfc.iref.b.3">2</a>, <a href="#rfc.iref.b.4">4</a></li></ul></li><li><a id="rfc.index.C" href="#rfc.index.C"><b>C</b></a><ul><li>Collection&nbsp;&nbsp;<a href="#rfc.iref.c.1"><b>1.1</b></a></li><li>Condition Names&nbsp;&nbsp;<ul><li>DAV:bind-into-collection (pre)&nbsp;&nbsp;<a href="#rfc.iref.c.2"><b>4</b></a></li><li>DAV:bind-source-exists (pre)&nbsp;&nbsp;<a href="#rfc.iref.c.3"><b>4</b></a></li><li>DAV:binding-allowed (pre)&nbsp;&nbsp;<a href="#rfc.iref.c.4"><b>4</b></a></li><li>DAV:binding-deleted (post)&nbsp;&nbsp;<a href="#rfc.iref.c.16"><b>5</b></a>, <a href="#rfc.iref.c.29"><b>6</b></a></li><li>DAV:can-overwrite (pre)&nbsp;&nbsp;<a href="#rfc.iref.c.7"><b>4</b></a>, <a href="#rfc.iref.c.22"><b>6</b></a></li><li>DAV:cross-server-binding (pre)&nbsp;&nbsp;<a href="#rfc.iref.c.5"><b>4</b></a>, <a href="#rfc.iref.c.20"><b>6</b></a></li><li>DAV:cycle-allowed (pre)&nbsp;&nbsp;<a href="#rfc.iref.c.8"><b>4</b></a>, <a href="#rfc.iref.c.23"><b>6</b></a></li><li>DAV:lock-deleted (post)&nbsp;&nbsp;<a href="#rfc.iref.c.17"><b>5</b></a>, <a href="#rfc.iref.c.30"><b>6</b></a></li><li>DAV:locked-overwrite-allowed (pre)&nbsp;&nbsp;<a href="#rfc.iref.c.10"><b>4</b></a></li><li>DAV:locked-source-collection-update-allowed (pre)&nbsp;&nbsp;<a href="#rfc.iref.c.26"><b>6</b></a></li><li>DAV:locked-update-allowed (pre)&nbsp;&nbsp;<a href="#rfc.iref.c.9"><b>4</b></a>, <a href="#rfc.iref.c.14"><b>5</b></a>, <a href="#rfc.iref.c.24"><b>6</b></a></li><li>DAV:name-allowed (pre)&nbsp;&nbsp;<a href="#rfc.iref.c.6"><b>4</b></a>, <a href="#rfc.iref.c.21"><b>6</b></a></li><li>DAV:new-binding (post)&nbsp;&nbsp;<a href="#rfc.iref.c.11"><b>4</b></a>, <a href="#rfc.iref.c.28"><b>6</b></a></li><li>DAV:protected-source-url-deletion-allowed (pre)&nbsp;&nbsp;<a href="#rfc.iref.c.27"><b>6</b></a></li><li>DAV:protected-url-deletion-allowed (pre)&nbsp;&nbsp;<a href="#rfc.iref.c.15"><b>5</b></a></li><li>DAV:protected-url-modification-allowed (pre)&nbsp;&nbsp;<a href="#rfc.iref.c.25"><b>6</b></a></li><li>DAV:rebind-into-collection (pre)&nbsp;&nbsp;<a href="#rfc.iref.c.18"><b>6</b></a></li><li>DAV:rebind-source-exists (pre)&nbsp;&nbsp;<a href="#rfc.iref.c.19"><b>6</b></a></li><li>DAV:unbind-from-collection (pre)&nbsp;&nbsp;<a href="#rfc.iref.c.12"><b>5</b></a></li><li>DAV:unbind-source-exists (pre)&nbsp;&nbsp;<a href="#rfc.iref.c.13"><b>5</b></a></li></ul></li></ul></li><li><a id="rfc.index.D" href="#rfc.index.D"><b>D</b></a><ul><li>DAV header&nbsp;&nbsp;<ul><li>compliance class 'bind'&nbsp;&nbsp;<a href="#rfc.iref.d.30"><b>8.1</b></a></li></ul></li><li>DAV:bind-into-collection precondition&nbsp;&nbsp;<a href="#rfc.iref.d.1"><b>4</b></a></li><li>DAV:bind-source-exists precondition&nbsp;&nbsp;<a href="#rfc.iref.d.2"><b>4</b></a></li><li>DAV:binding-allowed precondition&nbsp;&nbsp;<a href="#rfc.iref.d.3"><b>4</b></a></li><li>DAV:binding-deleted postcondition&nbsp;&nbsp;<a href="#rfc.iref.d.15"><b>5</b></a>, <a href="#rfc.iref.d.28"><b>6</b></a></li><li>DAV:can-overwrite precondition&nbsp;&nbsp;<a href="#rfc.iref.d.6"><b>4</b></a>, <a href="#rfc.iref.d.21"><b>6</b></a></li><li>DAV:cross-server-binding precondition&nbsp;&nbsp;<a href="#rfc.iref.d.4"><b>4</b></a>, <a href="#rfc.iref.d.19"><b>6</b></a></li><li>DAV:cycle-allowed precondition&nbsp;&nbsp;<a href="#rfc.iref.d.7"><b>4</b></a>, <a href="#rfc.iref.d.22"><b>6</b></a></li><li>DAV:lock-deleted postcondition&nbsp;&nbsp;<a href="#rfc.iref.d.16"><b>5</b></a>, <a href="#rfc.iref.d.29"><b>6</b></a></li><li>DAV:locked-overwrite-allowed precondition&nbsp;&nbsp;<a href="#rfc.iref.d.9"><b>4</b></a></li><li>DAV:locked-source-collection-update-allowed precondition&nbsp;&nbsp;<a href="#rfc.iref.d.25"><b>6</b></a></li><li>DAV:locked-update-allowed precondition&nbsp;&nbsp;<a href="#rfc.iref.d.8"><b>4</b></a>, <a href="#rfc.iref.d.13"><b>5</b></a>, <a href="#rfc.iref.d.23"><b>6</b></a></li><li>DAV:name-allowed precondition&nbsp;&nbsp;<a href="#rfc.iref.d.5"><b>4</b></a>, <a href="#rfc.iref.d.20"><b>6</b></a></li><li>DAV:new-binding postcondition&nbsp;&nbsp;<a href="#rfc.iref.d.10"><b>4</b></a>, <a href="#rfc.iref.d.27"><b>6</b></a></li><li>DAV:parent-set property&nbsp;&nbsp;<a href="#rfc.section.3.2"><b>3.2</b></a></li><li>DAV:protected-source-url-deletion-allowed precondition&nbsp;&nbsp;<a href="#rfc.iref.d.26"><b>6</b></a></li><li>DAV:protected-url-deletion-allowed precondition&nbsp;&nbsp;<a href="#rfc.iref.d.14"><b>5</b></a></li><li>DAV:protected-url-modification-allowed precondition&nbsp;&nbsp;<a href="#rfc.iref.d.24"><b>6</b></a></li><li>DAV:rebind-into-collection precondition&nbsp;&nbsp;<a href="#rfc.iref.d.17"><b>6</b></a></li><li>DAV:rebind-source-exists precondition&nbsp;&nbsp;<a href="#rfc.iref.d.18"><b>6</b></a></li><li>DAV:resource-id property&nbsp;&nbsp;<a href="#rfc.section.3.1"><b>3.1</b></a></li><li>DAV:unbind-from-collection precondition&nbsp;&nbsp;<a href="#rfc.iref.d.11"><b>5</b></a></li><li>DAV:unbind-source-exists precondition&nbsp;&nbsp;<a href="#rfc.iref.d.12"><b>5</b></a></li></ul></li><li><a id="rfc.index.I" href="#rfc.index.I"><b>I</b></a><ul><li>Internal Member URI&nbsp;&nbsp;<a href="#rfc.iref.i.1"><b>1.1</b></a></li></ul></li><li><a id="rfc.index.L" href="#rfc.index.L"><b>L</b></a><ul><li>Locking&nbsp;&nbsp;<a href="#rfc.section.9">9</a></li></ul></li><li><a id="rfc.index.M" href="#rfc.index.M"><b>M</b></a><ul><li>Methods&nbsp;&nbsp;<ul><li>BIND&nbsp;&nbsp;<a href="#rfc.section.4"><b>4</b></a></li><li>REBIND&nbsp;&nbsp;<a href="#rfc.section.6"><b>6</b></a></li><li>UNBIND&nbsp;&nbsp;<a href="#rfc.section.5"><b>5</b></a></li></ul></li></ul></li><li><a id="rfc.index.P" href="#rfc.index.P"><b>P</b></a><ul><li>Path Segment&nbsp;&nbsp;<a href="#rfc.iref.p.1"><b>1.1</b></a></li><li>Properties&nbsp;&nbsp;<ul><li>DAV:parent-set&nbsp;&nbsp;<a href="#rfc.section.3.2"><b>3.2</b></a></li><li>DAV:resource-id&nbsp;&nbsp;<a href="#rfc.section.3.1"><b>3.1</b></a></li></ul></li></ul></li><li><a id="rfc.index.R" href="#rfc.index.R"><b>R</b></a><ul><li>REBIND method&nbsp;&nbsp;<a href="#rfc.section.6"><b>6</b></a><ul><li>Marshalling&nbsp;&nbsp;<a href="#rfc.iref.r.1">6</a></li><li>Postconditions&nbsp;&nbsp;<a href="#rfc.iref.r.3">6</a></li><li>Preconditions&nbsp;&nbsp;<a href="#rfc.iref.r.2">6</a></li></ul></li><li><em>RFC2119</em>&nbsp;&nbsp;<a href="#rfc.xref.RFC2119.1">1.1</a>, <a href="#RFC2119"><b>16.1</b></a></li><li><em>RFC2616</em>&nbsp;&nbsp;<a href="#rfc.xref.RFC2616.1">1</a>, <a href="#rfc.xref.RFC2616.2">4</a>, <a href="#rfc.xref.RFC2616.3">5</a>, <a href="#rfc.xref.RFC2616.4">6</a>, <a href="#rfc.xref.RFC2616.5">12</a>, <a href="#RFC2616"><b>16.1</b></a><ul><li><em>Section 9.1</em>&nbsp;&nbsp;<a href="#rfc.xref.RFC2616.2">4</a>, <a href="#rfc.xref.RFC2616.3">5</a>, <a href="#rfc.xref.RFC2616.4">6</a></li><li><em>Section 15</em>&nbsp;&nbsp;<a href="#rfc.xref.RFC2616.5">12</a></li></ul></li><li><em>RFC3253</em>&nbsp;&nbsp;<a href="#rfc.xref.RFC3253.1">2.7</a>, <a href="#rfc.xref.RFC3253.2">11</a>, <a href="#rfc.xref.RFC3253.3">11</a>, <a href="#rfc.xref.RFC3253.4">11</a>, <a href="#rfc.xref.RFC3253.5">11</a>, <a href="#RFC3253"><b>16.2</b></a><ul><li><em>Section 3.15</em>&nbsp;&nbsp;<a href="#rfc.xref.RFC3253.4">11</a></li><li><em>Section 4.4</em>&nbsp;&nbsp;<a href="#rfc.xref.RFC3253.1">2.7</a></li><li><em>Section 6</em>&nbsp;&nbsp;<a href="#rfc.xref.RFC3253.2">11</a></li><li><em>Section 14</em>&nbsp;&nbsp;<a href="#rfc.xref.RFC3253.3">11</a></li><li><em>Section 14.11</em>&nbsp;&nbsp;<a href="#rfc.xref.RFC3253.5">11</a></li></ul></li><li><em>RFC3744</em>&nbsp;&nbsp;<a href="#rfc.xref.RFC3744.1">2.6</a>, <a href="#rfc.xref.RFC3744.2">10</a>, <a href="#rfc.xref.RFC3744.3">10</a>, <a href="#RFC3744"><b>16.2</b></a><ul><li><em>Section 5</em>&nbsp;&nbsp;<a href="#rfc.xref.RFC3744.1">2.6</a>, <a href="#rfc.xref.RFC3744.2">10</a></li><li><em>Section 7.3</em>&nbsp;&nbsp;<a href="#rfc.xref.RFC3744.3">10</a></li></ul></li><li><em>RFC3986</em>&nbsp;&nbsp;<a href="#rfc.xref.RFC3986.1">1.1</a>, <a href="#rfc.xref.RFC3986.2">3.2</a>, <a href="#rfc.xref.RFC3986.3">3.2</a>, <a href="#RFC3986"><b>16.1</b></a><ul><li><em>Section 3.3</em>&nbsp;&nbsp;<a href="#rfc.xref.RFC3986.1">1.1</a>, <a href="#rfc.xref.RFC3986.2">3.2</a></li></ul></li><li><em>RFC4122</em>&nbsp;&nbsp;<a href="#rfc.xref.RFC4122.1">3.1</a>, <a href="#RFC4122"><b>16.2</b></a></li><li><em>RFC4918</em>&nbsp;&nbsp;<a href="#rfc.xref.RFC4918.1">1</a>, <a href="#rfc.xref.RFC4918.2">1</a>, <a href="#rfc.xref.RFC4918.3">1.1</a>, <a href="#rfc.xref.RFC4918.4">1.1</a>, <a href="#rfc.xref.RFC4918.5">1.2</a>, <a href="#rfc.xref.RFC4918.6">2.3</a>, <a href="#rfc.xref.RFC4918.7">2.3</a>, <a href="#rfc.xref.RFC4918.8">2.4</a>, <a href="#rfc.xref.RFC4918.9">2.5</a>, <a href="#rfc.xref.RFC4918.10">2.6</a>, <a href="#rfc.xref.RFC4918.11">2.6</a>, <a href="#rfc.xref.RFC4918.12">3.1</a>, <a href="#rfc.xref.RFC4918.13">4</a>, <a href="#rfc.xref.RFC4918.14">8.1</a>, <a href="#rfc.xref.RFC4918.15">9</a>, <a href="#rfc.xref.RFC4918.16">9</a>, <a href="#rfc.xref.RFC4918.17">9</a>, <a href="#rfc.xref.RFC4918.18">9</a>, <a href="#rfc.xref.RFC4918.19">9</a>, <a href="#rfc.xref.RFC4918.20">9.1</a>, <a href="#rfc.xref.RFC4918.21">9.1</a>, <a href="#rfc.xref.RFC4918.22">12</a>, <a href="#rfc.xref.RFC4918.23">13</a>, <a href="#RFC4918"><b>16.1</b></a><ul><li><em>Section 5</em>&nbsp;&nbsp;<a href="#rfc.xref.RFC4918.18">9</a></li><li><em>Section 6.1</em>&nbsp;&nbsp;<a href="#rfc.xref.RFC4918.16">9</a></li><li><em>Section 7</em>&nbsp;&nbsp;<a href="#rfc.xref.RFC4918.19">9</a></li><li><em>Section 8.8</em>&nbsp;&nbsp;<a href="#rfc.xref.RFC4918.11">2.6</a></li><li><em>Section 9.8</em>&nbsp;&nbsp;<a href="#rfc.xref.RFC4918.6">2.3</a></li><li><em>Section 9.10.1</em>&nbsp;&nbsp;<a href="#rfc.xref.RFC4918.17">9</a></li><li><em>Section 9.11</em>&nbsp;&nbsp;<a href="#rfc.xref.RFC4918.21">9.1</a></li><li><em>Section 10.1</em>&nbsp;&nbsp;<a href="#rfc.xref.RFC4918.14">8.1</a></li><li><em>Section 10.4</em>&nbsp;&nbsp;<a href="#rfc.xref.RFC4918.20">9.1</a></li><li><em>Section 10.6</em>&nbsp;&nbsp;<a href="#rfc.xref.RFC4918.13">4</a></li><li><em>Section 16</em>&nbsp;&nbsp;<a href="#rfc.xref.RFC4918.5">1.2</a></li><li><em>Section 17</em>&nbsp;&nbsp;<a href="#rfc.xref.RFC4918.4">1.1</a></li><li><em>Section 19</em>&nbsp;&nbsp;<a href="#rfc.xref.RFC4918.23">13</a></li><li><em>Section 20</em>&nbsp;&nbsp;<a href="#rfc.xref.RFC4918.22">12</a></li></ul></li></ul></li><li><a id="rfc.index.S" href="#rfc.index.S"><b>S</b></a><ul><li>Status Codes&nbsp;&nbsp;<ul><li>208 Already Reported&nbsp;&nbsp;<a href="#rfc.xref.status.208.already.reported.1">2.1.1</a>, <a href="#rfc.section.7.1"><b>7.1</b></a>, <a href="#rfc.xref.status.208.already.reported.2">8.2</a>, <a href="#rfc.iref.s.1">14</a></li><li>508 Loop Detected&nbsp;&nbsp;<a href="#rfc.xref.status.508.loop.detected.1">2.1.1</a>, <a href="#rfc.section.7.2"><b>7.2</b></a>, <a href="#rfc.iref.s.2">14</a></li></ul></li></ul></li><li><a id="rfc.index.U" href="#rfc.index.U"><b>U</b></a><ul><li>UNBIND method&nbsp;&nbsp;<a href="#rfc.section.5"><b>5</b></a><ul><li>Marshalling&nbsp;&nbsp;<a href="#rfc.iref.u.2">5</a></li><li>Postconditions&nbsp;&nbsp;<a href="#rfc.iref.u.4">5</a></li><li>Preconditions&nbsp;&nbsp;<a href="#rfc.iref.u.3">5</a></li></ul></li><li>URI Mapping&nbsp;&nbsp;<a href="#rfc.iref.u.1"><b>1.1</b></a></li></ul></li><li><a id="rfc.index.X" href="#rfc.index.X"><b>X</b></a><ul><li><em>XML</em>&nbsp;&nbsp;<a href="#rfc.xref.XML.1">1.1</a>, <a href="#XML"><b>16.1</b></a></li></ul></li></ul></div></section><section id="rfc.authors" class="avoidbreakinside"><h2><a href="#rfc.authors">Authors' Addresses</a></h2><address><b>Geoffrey Clemm</b><br>IBM<br>550 King Street<br>Littleton, MA&nbsp;01460<br>Email: <a href="mailto:geoffrey.clemm@us.ibm.com">geoffrey.clemm@us.ibm.com</a></address><address><b>Jason Crawford</b><br>IBM Research<br>P.O. Box 704<br>Yorktown Heights, NY&nbsp;10598<br>Email: <a href="mailto:ccjason@us.ibm.com">ccjason@us.ibm.com</a></address><address><b>Julian F. Reschke</b>
+      (editor)
+    <br>greenbytes GmbH<br>Hafenweg 16<br>Muenster, NW&nbsp;48155<br>Germany<br>Email: <a href="mailto:julian.reschke@greenbytes.de">julian.reschke@greenbytes.de</a></address><address><b>Jim Whitehead</b><br>UC Santa Cruz, Dept. of Computer Science<br>1156 High Street<br>Santa Cruz, CA&nbsp;95064<br>Email: <a href="mailto:ejw@cse.ucsc.edu">ejw@cse.ucsc.edu</a></address></section>
+</body></html>

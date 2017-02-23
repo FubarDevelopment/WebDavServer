@@ -1,0 +1,557 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+      <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+   <title>WebDAV Current Principal Extension</title><script type="application/javascript">
+function getMeta(rfcno, container) {
+
+  var xhr = new XMLHttpRequest();
+  xhr.open("GET", "https://tools.ietf.org/draft/rfc" + rfcno + "/state.xml", true);
+  xhr.onload = function (e) {
+    if (xhr.readyState === 4) {
+      if (xhr.status === 200) {
+        var doc = xhr.responseXML;
+        var info = getChildByName(doc.documentElement, "info");
+  
+        var cont = document.getElementById(container);
+        // empty the container
+        while (cont.firstChild) {
+          cont.removeChild(myNode.firstChild);
+        }      
+  
+        var c = getChildByName(info, "stdstatus");
+        if (c !== null) {
+          var bld = newElementWithText("b", c.textContent);
+          cont.appendChild(bld);
+        }
+  
+        c = getChildByName(info, "updatedby");
+        if (c !== null) {
+          cont.appendChild(newElement("br"));
+          cont.appendChild(newText("Updated by: "));
+          appendRfcLinks(cont, c.textContent);
+        }
+  
+        c = getChildByName(info, "obsoletedby");
+        if (c !== null) {
+          cont.appendChild(newElement("br"));
+          cont.appendChild(newText("Obsoleted by: "));
+          appendRfcLinks(cont, c.textContent);
+        }
+        
+        c = getChildByName(info, "errata");
+        if (c !== null) {
+          cont.appendChild(newElement("br"));
+          var link = newElementWithText("a", "errata");
+          link.setAttribute("href", "http://www.rfc-editor.org/errata_search.php?rfc=" + rfcno);
+          var errata = newElementWithText("i", "This document has ");
+          errata.appendChild(link);
+          errata.appendChild(newText("."));
+          cont.appendChild(errata);
+        }
+
+        cont.style.display = "block";
+      } else {
+        console.error(xhr.statusText);
+      }
+    }
+  };
+  xhr.onerror = function (e) {
+    console.error(xhr.status + " " + xhr.statusText);
+  };
+  xhr.send(null);
+}
+
+// DOM helpers
+function newElement(name) {
+  return document.createElement(name);
+}
+function newElementWithText(name, txt) {
+  var e = document.createElement(name);
+  e.appendChild(newText(txt));
+  return e;
+}
+function newText(text) {
+  return document.createTextNode(text);
+}
+
+function getChildByName(parent, name) {
+  if (parent === null) {
+    return null;
+  }
+  else {
+    for (var c = parent.firstChild; c !== null; c = c.nextSibling) {
+      if (name == c.nodeName) {
+        return c;
+      }
+    }
+    return null;
+  }
+}
+
+function appendRfcLinks(parent, text) {
+  var updates = text.split(",");
+  for (var i = 0; i < updates.length; i++) {
+    var rfc = updates[i].trim();
+    if (rfc.substring(0, 3) == "rfc") {
+      var link = newElement("a");
+      link.setAttribute("href", "http://tools.ietf.org/html/" + rfc);
+      link.appendChild(newText(rfc.substring(3)));
+      parent.appendChild(link);
+    } else {
+      parent.appendChild(newText(rfc));
+    }
+    if (i != updates.length - 1) {
+      parent.appendChild(newText(", "));
+    }
+  }
+}
+</script><script type="application/javascript">
+function anchorRewrite() {
+  map = { };
+  if (window.location.hash.length >= 1) {
+    var fragid = window.location.hash.substr(1);
+    if (fragid) {
+      if (! document.getElementById(fragid)) {
+        var prefix = "rfc.";
+        var mapped = map[fragid];
+        if (mapped) {
+          window.location.hash = mapped;
+        } else if (fragid.indexOf("section-") == 0) {
+          window.location.hash = prefix + "section." + fragid.substring(8);
+        } else if (fragid.indexOf("appendix-") == 0) {
+          window.location.hash = prefix + "section." + fragid.substring(9);
+        } else if (fragid.indexOf("s-") == 0) {
+          window.location.hash = prefix + "section." + fragid.substring(2);
+        } else if (fragid.indexOf("p-") == 0) {
+          var r = fragid.substring(2);
+          var p = r.indexOf("-");
+          if (p >= 0) {
+            window.location.hash = prefix + "section." + r.substring(0, p) + ".p." + r.substring(p + 1);
+          }
+        }
+      }
+    }  
+  }
+}
+window.addEventListener('hashchange', anchorRewrite);
+window.addEventListener('DOMContentLoaded', anchorRewrite);
+</script><style type="text/css" title="Xml2Rfc (sans serif)">
+a {
+  text-decoration: none;
+}
+a.smpl {
+  color: black;
+}
+a:hover {
+  text-decoration: underline;
+}
+a:active {
+  text-decoration: underline;
+}
+address {
+  margin-top: 1em;
+  margin-left: 2em;
+  font-style: normal;
+}
+body {
+  color: black;
+  font-family: cambria, georgia, serif;
+  font-size: 12pt;
+  margin: 2em auto;
+  max-width: 1000px;
+}
+samp, span.tt, code, pre {
+  font-family: consolas, monaco, monospace;
+}
+cite {
+  font-style: normal;
+}
+dl {
+  margin-left: 2em;
+}
+dl > dt {
+  float: left;
+  margin-right: 1em;
+}
+dl.nohang > dt {
+  float: none;
+}
+dl > dd {
+  margin-bottom: .5em;
+}
+dl.compact > dd {
+  margin-bottom: .0em;
+}
+dl > dd > dl {
+  margin-top: 0.5em;
+}
+ul.empty {
+  list-style-type: none;
+}
+ul.empty li {
+  margin-top: .5em;
+}
+dl p {
+  margin-left: 0em;
+}
+dl.reference > dt {
+  font-weight: bold;
+}
+dl.reference > dd {
+  margin-left: 6em;
+}
+h1 {
+  color: green;
+  font-size: 150%;
+  line-height: 18pt;
+  font-weight: bold;
+  text-align: center;
+  margin-top: 36pt;
+  margin-bottom: 0pt;
+}
+h2 {
+  font-size: 130%;
+  line-height: 21pt;
+  page-break-after: avoid;
+}
+h2.np {
+  page-break-before: always;
+}
+h3 {
+  font-size: 120%;
+  line-height: 15pt;
+  page-break-after: avoid;
+}
+h4 {
+  font-size: 110%;
+  page-break-after: avoid;
+}
+h5, h6 {
+  page-break-after: avoid;
+}
+h1 a, h2 a, h3 a, h4 a, h5 a, h6 a {
+  color: black;
+}
+img {
+  margin-left: 3em;
+}
+li {
+  margin-left: 2em;
+}
+ol {
+  margin-left: 2em;
+}
+ol.la {
+  list-style-type: lower-alpha;
+}
+ol.ua {
+  list-style-type: upper-alpha;
+}
+ol p {
+  margin-left: 0em;
+}
+p {
+  margin-left: 2em;
+}
+pre {
+  font-size: 11pt;
+  margin-left: 3em;
+  background-color: lightyellow;
+  padding: .25em;
+  page-break-inside: avoid;
+}
+pre.text2 {
+  border-style: dotted;
+  border-width: 1px;
+  background-color: #f0f0f0;
+}
+pre.inline {
+  background-color: white;
+  padding: 0em;
+  page-break-inside: auto;
+}
+pre.text {
+  border-style: dotted;
+  border-width: 1px;
+  background-color: #f8f8f8;
+}
+pre.drawing {
+  border-style: solid;
+  border-width: 1px;
+  background-color: #f8f8f8;
+  padding: 2em;
+}
+table {
+  margin-left: 2em;
+}
+table.header {
+  border-spacing: 1px;
+  width: 95%;
+  font-size: 11pt;
+  color: white;
+}
+td.top {
+  vertical-align: top;
+}
+td.topnowrap {
+  vertical-align: top;
+  white-space: nowrap;
+}
+table.header td {
+  background-color: gray;
+  width: 50%;
+}
+ul.toc, ul.toc ul {
+  list-style: none;
+  margin-left: 1.5em;
+  padding-left: 0em;
+}
+ul.toc li {
+  line-height: 150%;
+  font-weight: bold;
+  margin-left: 0em;
+}
+ul.toc li li {
+  line-height: normal;
+  font-weight: normal;
+  font-size: 11pt;
+  margin-left: 0em;
+}
+li.excluded {
+  font-size: 0pt;
+}
+ul p {
+  margin-left: 0em;
+}
+.filename, h1, h2, h3, h4 {
+  font-family: candara, calibri, segoe, optima, arial, sans-serif;
+}
+ul.ind, ul.ind ul {
+  list-style: none;
+  margin-left: 1.5em;
+  padding-left: 0em;
+  page-break-before: avoid;
+}
+ul.ind li {
+  font-weight: bold;
+  line-height: 200%;
+  margin-left: 0em;
+}
+ul.ind li li {
+  font-weight: normal;
+  line-height: 150%;
+  margin-left: 0em;
+}
+.avoidbreakinside {
+  page-break-inside: avoid;
+}
+.avoidbreakafter {
+  page-break-after: avoid;
+}
+
+.comment {
+  background-color: yellow;
+}
+.center {
+  text-align: center;
+}
+.error {
+  color: red;
+  font-style: italic;
+  font-weight: bold;
+}
+.figure {
+  font-weight: bold;
+  text-align: center;
+  font-size: 10pt;
+}
+.filename {
+  color: #333333;
+  font-size: 112%;
+  font-weight: bold;
+  line-height: 21pt;
+  text-align: center;
+  margin-top: 0pt;
+}
+.fn {
+  font-weight: bold;
+}
+.left {
+  text-align: left;
+}
+.right {
+  text-align: right;
+}
+.warning {
+  font-size: 130%;
+  background-color: yellow;
+}
+.self {
+    color: #999999;
+    margin-left: .3em;
+    text-decoration: none;
+    visibility: hidden;
+    -webkit-user-select: none; 
+    -moz-user-select: none;
+    -ms-user-select: none;
+}
+.self:hover {
+    text-decoration: none;
+}
+p:hover .self {
+    visibility: visible;
+}
+.docstatus {
+  border: 1px solid black;
+  display: none;
+  float: right;
+  margin: 2em;
+  padding: 1em;
+}
+
+@media screen {
+  pre.text, pre.text2 {
+    width: 69em;
+  }
+}
+
+@media print {
+  .noprint {
+    display: none;
+  }
+
+  a {
+    color: black;
+    text-decoration: none;
+  }
+
+  table.header {
+    width: 90%;
+  }
+
+  td.header {
+    width: 50%;
+    color: black;
+    background-color: white;
+    vertical-align: top;
+    font-size: 110%;
+  }
+
+  ul.toc a:last-child::after {
+    content: leader('.') target-counter(attr(href), page);
+  }
+
+  ul.ind li li a {
+    content: target-counter(attr(href), page);
+  }
+
+  pre {
+    font-size: 10pt;
+  }
+
+  .print2col {
+    column-count: 2;
+    -moz-column-count: 2;
+    column-fill: auto;
+  }
+}
+@page {
+  @top-left {
+       content: "RFC 5397";
+  }
+  @top-right {
+       content: "December 2008";
+  }
+  @top-center {
+       content: "WebDAV Current Principal";
+  }
+  @bottom-left {
+       content: "Sanchez & Daboo";
+  }
+  @bottom-center {
+       content: "Standards Track";
+  }
+  @bottom-right {
+       content: "[Page " counter(page) "]";
+  }
+}
+@page:first {
+    @top-left {
+      content: normal;
+    }
+    @top-right {
+      content: normal;
+    }
+    @top-center {
+      content: normal;
+    }
+}
+</style><link rel="Contents" href="#rfc.toc"><link rel="Author" href="#rfc.authors"><link rel="Copyright" href="#rfc.copyrightnotice"><link rel="Index" href="#rfc.index"><link rel="Chapter" title="1 Introduction" href="#rfc.section.1"><link rel="Chapter" title="2 Conventions Used in This Document" href="#rfc.section.2"><link rel="Chapter" title="3 DAV:current-user-principal" href="#rfc.section.3"><link rel="Chapter" title="4 Security Considerations" href="#rfc.section.4"><link rel="Chapter" title="5 Acknowledgments" href="#rfc.section.5"><link rel="Chapter" href="#rfc.section.6" title="6 Normative References"><link rel="Alternate" title="Authoritative ASCII Version" href="http://www.ietf.org/rfc/rfc5397.txt"><link rel="Help" title="RFC-Editor's Status Page" href="http://www.rfc-editor.org/info/rfc5397"><link rel="Help" title="Additional Information on tools.ietf.org" href="http://tools.ietf.org/html/rfc5397"><meta name="generator" content="http://greenbytes.de/tech/webdav/rfc2629.xslt, Revision 1.840, 2016/11/16 05:32:10, XSLT vendor: SAXON 6.5.5 from Michael Kay http://saxon.sf.net/"><link rel="schema.dcterms" href="http://purl.org/dc/terms/"><meta name="dcterms.creator" content="Sanchez, W."><meta name="dcterms.creator" content="Daboo, C."><meta name="dcterms.identifier" content="urn:ietf:rfc:5397"><meta name="dcterms.issued" content="2008-12"><meta name="dcterms.abstract" content="This specification defines a new WebDAV property that allows clients to quickly determine the principal corresponding to the current authenticated user."><meta name="dcterms.isPartOf" content="urn:issn:2070-1721"><meta name="description" content="This specification defines a new WebDAV property that allows clients to quickly determine the principal corresponding to the current authenticated user."></head><body onload='getMeta(5397,"rfc.meta");'><header><table class="header" id="rfc.headerblock"><tbody><tr><td class="left">Network Working Group</td><td class="right">W. Sanchez</td></tr><tr><td class="left">Request for Comments: 5397</td><td class="right">C. Daboo</td></tr><tr><td class="left">Category: Standards Track</td><td class="right">Apple Inc.</td></tr><tr><td class="left"></td><td class="right">December 2008</td></tr></tbody></table><div id="rfc.title"><h1>WebDAV Current Principal Extension</h1></div></header><div id="rfc.meta" class="docstatus" style="display: block;"><b>PROPOSED STANDARD</b></div><section id="rfc.status"><h2><a href="#rfc.status">Status of This Memo</a></h2><p>This
+ document specifies an Internet standards track protocol for the 
+Internet community, and requests discussion and suggestions for 
+improvements. Please refer to the current edition of the “Internet 
+Official Protocol Standards” (STD 1) for the standardization state and 
+status of this protocol. Distribution of this memo is unlimited.</p></section><section id="rfc.copyrightnotice"><h2><a href="#rfc.copyrightnotice">Copyright Notice</a></h2><p>Copyright © 2008 IETF Trust and the persons identified as the document authors. All rights reserved.</p><p>This document is subject to BCP 78 and the IETF Trust's Legal Provisions Relating to IETF Documents (<a href="http://trustee.ietf.org/license-info">http://trustee.ietf.org/license-info</a>)
+ in effect on the date of publication of this document. Please review 
+these documents carefully, as they describe your rights and restrictions
+ with respect to this document.</p></section><section id="rfc.abstract"><h2><a href="#rfc.abstract">Abstract</a></h2><p>This
+ specification defines a new WebDAV property that allows clients to 
+quickly determine the principal corresponding to the current 
+authenticated user.</p></section><hr class="noprint"><nav id="rfc.toc"><h2 class="np"><a href="#rfc.toc">Table of Contents</a></h2><ul class="toc"><li><a href="#rfc.section.1">1.</a>&nbsp;&nbsp;&nbsp;<a href="#rfc.section.1">Introduction</a></li><li><a href="#rfc.section.2">2.</a>&nbsp;&nbsp;&nbsp;<a href="#rfc.section.2">Conventions Used in This Document</a></li><li><a href="#rfc.section.3">3.</a>&nbsp;&nbsp;&nbsp;<a href="#rfc.section.3">DAV:current-user-principal</a></li><li><a href="#rfc.section.4">4.</a>&nbsp;&nbsp;&nbsp;<a href="#rfc.section.4">Security Considerations</a></li><li><a href="#rfc.section.5">5.</a>&nbsp;&nbsp;&nbsp;<a href="#rfc.section.5">Acknowledgments</a></li><li><a href="#rfc.section.6">6.</a>&nbsp;&nbsp;&nbsp;<a href="#rfc.references">Normative References</a></li><li><a href="#rfc.index">Index</a></li><li><a href="#rfc.authors">Authors' Addresses</a></li></ul></nav><section id="n-introduction"><h2 id="rfc.section.1" class="np"><a href="#rfc.section.1">1.</a>&nbsp;<a href="#n-introduction">Introduction</a></h2><div id="rfc.section.1.p.1"><p>WebDAV <a href="#RFC4918"><cite title="HTTP Extensions for Web Distributed Authoring and Versioning (WebDAV)">[RFC4918]</cite></a> is an extension to HTTP <a href="#RFC2616"><cite title="Hypertext Transfer Protocol -- HTTP/1.1">[RFC2616]</cite></a> to support improved document authoring capabilities. The WebDAV Access Control Protocol ("WebDAV ACL") <a href="#RFC3744"><cite title="Web Distributed Authoring and Versioning (WebDAV) Access&nbsp;Control&nbsp;Protocol">[RFC3744]</cite></a>
+ extension adds access control capabilities to WebDAV. It introduces the
+ concept of a "principal" resource, which is used to represent 
+information about authenticated entities on the system.<a class="self" href="#rfc.section.1.p.1">¶</a></p></div><div id="rfc.section.1.p.2"><p>Some clients have a need to determine which <a href="#RFC3744"><cite title="Web Distributed Authoring and Versioning (WebDAV) Access&nbsp;Control&nbsp;Protocol">[RFC3744]</cite></a> principal a server is associating with the currently authenticated HTTP user. While <a href="#RFC3744"><cite title="Web Distributed Authoring and Versioning (WebDAV) Access&nbsp;Control&nbsp;Protocol">[RFC3744]</cite></a>
+ defines a DAV:current-user-privilege-set property for retrieving the 
+privileges granted to that principal, there is no recommended way to 
+identify the principal in question, which is necessary to perform other 
+useful operations. For example, a client may wish to determine which 
+groups the current user is a member of, or modify a property of the 
+principal resource associated with the current user.<a class="self" href="#rfc.section.1.p.2">¶</a></p></div><div id="rfc.section.1.p.3"><p>The
+ DAV:principal-match REPORT provides some useful functionality, but 
+there are common situations where the results from that query can be 
+ambiguous. For example, not only is an individual user principal 
+returned, but also every group principal that the user is a member of, 
+and there is no clear way to distinguish which is which.<a class="self" href="#rfc.section.1.p.3">¶</a></p></div><div id="rfc.section.1.p.4"><p>This
+ specification proposes an extension to WebDAV ACL that adds a 
+DAV:current-user-principal property to resources under access control on
+ the server. This property provides a URL to a principal resource 
+corresponding to the currently authenticated user. This allows a client 
+to "bootstrap" itself by performing additional queries on the principal 
+resource to obtain additional information from that resource, which is 
+the purpose of this extension. Note that while it is possible for 
+multiple URLs to refer to the same principal resource, or for multiple 
+principal resources to correspond to a single principal, this 
+specification only allows for a single http(s) URL in the 
+DAV:current-user-principal property. If a client wishes to obtain 
+alternate URLs for the principal, it can query the principal resource 
+for this information; it is not the purpose of this extension to provide
+ a complete list of such URLs, but simply to provide a means to locate a
+ resource which contains that (and other) information.<a class="self" href="#rfc.section.1.p.4">¶</a></p></div></section><section id="n-conventions-used-in-this-document"><h2 id="rfc.section.2"><a href="#rfc.section.2">2.</a>&nbsp;<a href="#n-conventions-used-in-this-document">Conventions Used in This Document</a></h2><div id="rfc.section.2.p.1"><p>The
+ key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", 
+"SHOULD", "SHOULD NOT", "RECOMMENDED", "MAY", and "OPTIONAL" in this 
+document are to be interpreted as described in <a href="#RFC2119"><cite title="Key words for use in RFCs to Indicate Requirement Levels">[RFC2119]</cite></a>.<a class="self" href="#rfc.section.2.p.1">¶</a></p></div><div id="rfc.section.2.p.2"><p>When
+ XML element types in the namespace "DAV:" are referenced in this 
+document outside of the context of an XML fragment, the string "DAV:" 
+will be prefixed to the element type names.<a class="self" href="#rfc.section.2.p.2">¶</a></p></div><div id="rfc.section.2.p.3"><p>Processing of XML by clients and servers MUST follow the rules defined in <a href="https://tools.ietf.org/html/rfc4918#section-17">Section 17</a> of WebDAV <a href="#RFC4918"><cite title="HTTP Extensions for Web Distributed Authoring and Versioning (WebDAV)">[RFC4918]</cite></a>.<a class="self" href="#rfc.section.2.p.3">¶</a></p></div><div id="rfc.section.2.p.4"><p>Some of the declarations refer to XML elements defined by WebDAV <a href="#RFC4918"><cite title="HTTP Extensions for Web Distributed Authoring and Versioning (WebDAV)">[RFC4918]</cite></a>.<a class="self" href="#rfc.section.2.p.4">¶</a></p></div></section><section id="n-dav-current-user-principal"><h2 id="rfc.section.3"><a href="#rfc.section.3">3.</a>&nbsp;<a href="#n-dav-current-user-principal">DAV:current-user-principal</a></h2><div id="rfc.section.3.p.1"><dl><dt>Name:</dt><dd>current-user-principal</dd><dt>Namespace:</dt><dd>DAV:</dd><dt>Purpose:</dt><dd>Indicates a URL for the currently authenticated user's principal resource on the server.</dd><dt>Value:</dt><dd>A single DAV:href or DAV:unauthenticated element.</dd><dt>Protected:</dt><dd>This property is computed on a per-request basis, and therefore is protected.</dd><dt>Description:</dt><dd>The
+ DAV:current-user-principal property contains either a DAV:href or 
+DAV:unauthenticated XML element. The DAV:href element contains a URL to a
+ principal resource corresponding to the currently authenticated user. 
+That URL MUST be one of the URLs in the DAV:principal-URL or 
+DAV:alternate-URI-set properties defined on the principal resource and 
+MUST be an http(s) scheme URL. When authentication has not been done or 
+has failed, this property MUST contain the DAV:unauthenticated 
+pseudo-principal.</dd><dd>In some cases, there may be multiple principal
+ resources corresponding to the same authenticated principal. In that 
+case, the server is free to choose any one of the principal resource 
+URIs for the value of the DAV:current-user-principal property. However, 
+servers SHOULD be consistent and use the same principal resource URI for
+ each authenticated principal.</dd><dt>COPY/MOVE behavior:</dt><dd>This property is computed on a per-request basis, and is thus never copied or moved.</dd><dt>Definition:</dt><dd><span id="rfc.figure.u.1"><pre class="inline">   &lt;!ELEMENT current-user-principal (unauthenticated | href)&gt;
+   &lt;!-- href value: a URL to a principal resource --&gt;
+</pre></span> </dd><dt>Example:</dt><dd><span id="rfc.figure.u.2"><pre class="text">   &lt;D:current-user-principal xmlns:D="DAV:"&gt;
+     &lt;D:href&gt;/principals/users/cdaboo&lt;/D:href&gt;
+   &lt;/D:current-user-principal&gt;
+</pre></span> </dd></dl></div></section><section id="n-security-considerations"><h2 id="rfc.section.4"><a href="#rfc.section.4">4.</a>&nbsp;<a href="#n-security-considerations">Security Considerations</a></h2><div id="rfc.section.4.p.1"><p>This specification does not introduce any additional security issues beyond those defined for HTTP <a href="#RFC2616"><cite title="Hypertext Transfer Protocol -- HTTP/1.1">[RFC2616]</cite></a>, WebDAV <a href="#RFC4918"><cite title="HTTP Extensions for Web Distributed Authoring and Versioning (WebDAV)">[RFC4918]</cite></a>, and WebDAV ACL <a href="#RFC3744"><cite title="Web Distributed Authoring and Versioning (WebDAV) Access&nbsp;Control&nbsp;Protocol">[RFC3744]</cite></a>.<a class="self" href="#rfc.section.4.p.1">¶</a></p></div></section><section id="n-acknowledgments"><h2 id="rfc.section.5"><a href="#rfc.section.5">5.</a>&nbsp;<a href="#n-acknowledgments">Acknowledgments</a></h2><div id="rfc.section.5.p.1"><p>This
+ specification is based on discussions that took place within the 
+Calendaring and Scheduling Consortium's CalDAV Technical Committee. The 
+authors thank the participants of that group for their input.<a class="self" href="#rfc.section.5.p.1">¶</a></p></div><div id="rfc.section.5.p.2"><p>The authors thank Julian Reschke for his valuable input via the WebDAV working group mailing list.<a class="self" href="#rfc.section.5.p.2">¶</a></p></div></section><section id="rfc.references"><h2 id="rfc.section.6"><a href="#rfc.section.6">6.</a> Normative References</h2><dl class="reference"><dt id="RFC2119">[RFC2119]</dt><dd><a href="mailto:sob@harvard.edu">Bradner, S.</a>, “<a href="https://tools.ietf.org/html/rfc2119">Key words for use in RFCs to Indicate Requirement Levels</a>”, BCP&nbsp;14, RFC&nbsp;2119, March&nbsp;1997.</dd><dt id="RFC2616">[RFC2616]</dt><dd><a href="mailto:fielding@ics.uci.edu">Fielding, R.</a>, <a href="mailto:jg@w3.org">Gettys, J.</a>, <a href="mailto:mogul@wrl.dec.com">Mogul, J.</a>, <a href="mailto:frystyk@w3.org">Frystyk, H.</a>, <a href="mailto:masinter@parc.xerox.com">Masinter, L.</a>, <a href="mailto:paulle@microsoft.com">Leach, P.</a>, and <a href="mailto:timbl@w3.org">T. Berners-Lee</a>, “<a href="https://tools.ietf.org/html/rfc2616">Hypertext Transfer Protocol -- HTTP/1.1</a>”, RFC&nbsp;2616, June&nbsp;1999.</dd><dt id="RFC3744">[RFC3744]</dt><dd><a href="mailto:geoffrey.clemm@us.ibm.com">Clemm, G.</a>, <a href="mailto:julian.reschke@greenbytes.de">Reschke, J.</a>, <a href="mailto:eric.sedlar@oracle.com">Sedlar, E.</a>, and <a href="mailto:ejw@cse.ucsc.edu">J. Whitehead</a>, “<a href="https://tools.ietf.org/html/rfc3744">Web Distributed Authoring and Versioning (WebDAV) Access&nbsp;Control&nbsp;Protocol</a>”, RFC&nbsp;3744, May&nbsp;2004.</dd><dt id="RFC4918">[RFC4918]</dt><dd>Dusseault, L., “<a href="https://tools.ietf.org/html/rfc4918">HTTP Extensions for Web Distributed Authoring and Versioning (WebDAV)</a>”, RFC&nbsp;4918, June&nbsp;2007.</dd></dl></section><section id="rfc.index"><h2><a href="#rfc.index">Index</a></h2><p class="noprint"><a href="#rfc.index.D">D</a> <a href="#rfc.index.P">P</a> </p><div class="print2col"><ul class="ind"><li><a id="rfc.index.D" href="#rfc.index.D"><b>D</b></a><ul><li>DAV:current-user-principal property&nbsp;&nbsp;<a href="#rfc.section.3"><b>3</b></a></li></ul></li><li><a id="rfc.index.P" href="#rfc.index.P"><b>P</b></a><ul><li>Properties&nbsp;&nbsp;<ul><li>DAV:current-user-principal&nbsp;&nbsp;<a href="#rfc.section.3"><b>3</b></a></li></ul></li></ul></li></ul></div></section><section id="rfc.authors" class="avoidbreakinside"><h2><a href="#rfc.authors">Authors' Addresses</a></h2><address><b>Wilfredo Sanchez</b><br>Apple Inc.<br>1 Infinite Loop<br>Cupertino, CA&nbsp;95014<br>USA<br>Email: <a href="mailto:wsanchez@wsanchez.net">wsanchez@wsanchez.net</a><br>URI: <a href="http://www.apple.com/">http://www.apple.com/</a></address><address><b>Cyrus Daboo</b><br>Apple Inc.<br>1 Infinite Loop<br>Cupertino, CA&nbsp;95014<br>USA<br>Email: <a href="mailto:cyrus@daboo.name">cyrus@daboo.name</a><br>URI: <a href="http://www.apple.com/">http://www.apple.com/</a></address></section>
+</body></html>
