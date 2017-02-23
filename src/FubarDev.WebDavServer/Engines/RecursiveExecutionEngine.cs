@@ -314,6 +314,9 @@ namespace FubarDev.WebDavServer.Engines
 
             try
             {
+                if (_logger.IsEnabled(LogLevel.Trace))
+                    _logger.LogTrace($"Set properties on collection {target.DestinationUrl}.");
+
                 var failedPropertyNames = await target.SetPropertiesAsync(properties, cancellationToken).ConfigureAwait(false);
                 if (failedPropertyNames.Count != 0)
                 {
@@ -330,7 +333,7 @@ namespace FubarDev.WebDavServer.Engines
             }
             catch (Exception ex)
             {
-                _logger.LogDebug($"{target.DestinationUrl}: Cleanup failed with exception {ex.Message}");
+                _logger.LogDebug($"{sourceNode.Collection.Path}: Cleanup failed with exception {ex.Message}");
                 return new CollectionActionResult(ActionStatus.CleanupFailed, target)
                 {
                     Exception = ex,

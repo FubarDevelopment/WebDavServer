@@ -31,9 +31,6 @@ namespace FubarDev.WebDavServer.Handlers.Impl
         [NotNull]
         private readonly IFileSystem _rootFileSystem;
 
-        [NotNull]
-        private readonly ILogger _logger;
-
         /// <summary>
         /// Initializes a new instance of the <see cref="CopyMoveHandlerBase"/> class.
         /// </summary>
@@ -44,7 +41,7 @@ namespace FubarDev.WebDavServer.Handlers.Impl
         {
             _rootFileSystem = rootFileSystem;
             WebDavContext = context;
-            _logger = logger;
+            Logger = logger;
         }
 
         /// <summary>
@@ -52,6 +49,12 @@ namespace FubarDev.WebDavServer.Handlers.Impl
         /// </summary>
         [NotNull]
         protected IWebDavContext WebDavContext { get; }
+
+        /// <summary>
+        /// Gets the logger
+        /// </summary>
+        [NotNull]
+        protected ILogger Logger { get; }
 
         /// <summary>
         /// Executes the COPY or MOVE recursively
@@ -123,11 +126,11 @@ namespace FubarDev.WebDavServer.Handlers.Impl
                 // Ignore different schemes
                 if (!WebDavContext.BaseUrl.IsBaseOf(destinationUrl) || mode == RecursiveProcessingMode.PreferCrossServer)
                 {
-                    if (_logger.IsEnabled(LogLevel.Trace))
-                        _logger.LogTrace("Using cross-server mode");
+                    if (Logger.IsEnabled(LogLevel.Trace))
+                        Logger.LogTrace("Using cross-server mode");
 
-                    if (_logger.IsEnabled(LogLevel.Debug))
-                        _logger.LogDebug($"{WebDavContext.BaseUrl} is not a base of {destinationUrl}");
+                    if (Logger.IsEnabled(LogLevel.Debug))
+                        Logger.LogDebug($"{WebDavContext.BaseUrl} is not a base of {destinationUrl}");
 
                     using (var remoteHandler = await CreateRemoteTargetActionsAsync(
                             destinationUrl,
@@ -166,7 +169,7 @@ namespace FubarDev.WebDavServer.Handlers.Impl
                         await _rootFileSystem.SelectAsync(destinationPath, cancellationToken).ConfigureAwait(false);
                     if (destinationSelectionResult.IsMissing && destinationSelectionResult.MissingNames.Count != 1)
                     {
-                        _logger.LogDebug(
+                        Logger.LogDebug(
                             $"{destinationUrl}: The target is missing with the following path parts: {string.Join(", ", destinationSelectionResult.MissingNames)}");
                         throw new WebDavException(WebDavStatusCode.Conflict);
                     }
@@ -289,8 +292,8 @@ namespace FubarDev.WebDavServer.Handlers.Impl
         {
             Debug.Assert(sourceSelectionResult.Collection != null, "sourceSelectionResult.Collection != null");
 
-            if (_logger.IsEnabled(LogLevel.Trace))
-                _logger.LogTrace($"Copy or move from {sourceUrl} to {targetItem.DestinationUrl}");
+            if (Logger.IsEnabled(LogLevel.Trace))
+                Logger.LogTrace($"Copy or move from {sourceUrl} to {targetItem.DestinationUrl}");
 
             if (sourceSelectionResult.ResultType == SelectionResultType.FoundDocument)
             {
@@ -373,7 +376,7 @@ namespace FubarDev.WebDavServer.Handlers.Impl
             var engine = new RecursiveExecutionEngine<RemoteCollectionTarget, RemoteDocumentTarget, RemoteMissingTarget>(
                 handler,
                 overwrite,
-                _logger);
+                Logger);
 
             var targetName = targetUrl.GetName();
             var parentName = parentCollectionUrl.GetName();
@@ -405,7 +408,7 @@ namespace FubarDev.WebDavServer.Handlers.Impl
             var engine = new RecursiveExecutionEngine<CollectionTarget, DocumentTarget, MissingTarget>(
                 handler,
                 overwrite,
-                _logger);
+                Logger);
 
             CollectionTarget parentCollection;
             ITarget targetItem;

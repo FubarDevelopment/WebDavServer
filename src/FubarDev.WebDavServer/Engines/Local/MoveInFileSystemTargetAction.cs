@@ -9,10 +9,22 @@ using System.Threading.Tasks;
 
 using FubarDev.WebDavServer.FileSystem;
 
+using JetBrains.Annotations;
+
+using Microsoft.Extensions.Logging;
+
 namespace FubarDev.WebDavServer.Engines.Local
 {
     public class MoveInFileSystemTargetAction : ITargetActions<CollectionTarget, DocumentTarget, MissingTarget>
     {
+        [NotNull]
+        private readonly ILogger _logger;
+
+        public MoveInFileSystemTargetAction([NotNull] ILogger logger)
+        {
+            _logger = logger;
+        }
+
         public RecursiveTargetBehaviour ExistingTargetBehaviour { get; } = RecursiveTargetBehaviour.Overwrite;
 
         public async Task<DocumentTarget> ExecuteAsync(IDocument source, MissingTarget destination, CancellationToken cancellationToken)
@@ -41,13 +53,20 @@ namespace FubarDev.WebDavServer.Engines.Local
         public async Task ExecuteAsync(ICollection source, CollectionTarget destination, CancellationToken cancellationToken)
         {
             await CopyETagAsync(source, destination.Collection, cancellationToken).ConfigureAwait(false);
+
+            if (_logger.IsEnabled(LogLevel.Trace))
+                _logger.LogTrace($"Try to delete {source.Path}");
+
             await source.DeleteAsync(cancellationToken).ConfigureAwait(false);
         }
 
-        private static async Task CopyETagAsync(IEntry source, IEntry dest, CancellationToken cancellationToken)
+        private async Task CopyETagAsync(IEntry source, IEntry dest, CancellationToken cancellationToken)
         {
             if (dest is IEntityTagEntry)
                 return;
+
+            if (_logger.IsEnabled(LogLevel.Trace))
+                _logger.LogTrace($"Try to copy ETag from {source.Path} to {dest.Path}");
 
             var sourcePropStore = source.FileSystem.PropertyStore;
             var destPropStore = dest.FileSystem.PropertyStore;
