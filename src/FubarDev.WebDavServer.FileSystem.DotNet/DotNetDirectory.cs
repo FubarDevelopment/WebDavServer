@@ -36,20 +36,10 @@ namespace FubarDev.WebDavServer.FileSystem.DotNet
 
             FileSystemInfo item = new FileInfo(newPath);
             if (!item.Exists)
-            {
                 item = new DirectoryInfo(newPath);
-                if (!item.Exists)
-                {
-                    Console.WriteLine($"{newPath} doesn't exist");
-                    return Task.FromResult<IEntry>(null);
-                }
 
-                Console.WriteLine($"{newPath} is a directory");
-            }
-            else
-            {
-                Console.WriteLine($"{newPath} is a file");
-            }
+            if (!item.Exists)
+                return Task.FromResult<IEntry>(null);
 
             return Task.FromResult(CreateEntry(item));
         }
