@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 using System.Xml.Linq;
 
 using FubarDev.WebDavServer.FileSystem;
+using FubarDev.WebDavServer.Locking;
 using FubarDev.WebDavServer.Model;
 using FubarDev.WebDavServer.Props.Converters;
 
@@ -23,12 +24,12 @@ namespace FubarDev.WebDavServer.Props.Live
         [NotNull]
         private static readonly XmlConverter<supportedlock> _converter = new XmlConverter<supportedlock>();
 
-        [NotNull]
-        private readonly IEntry _entry;
+        [CanBeNull]
+        private readonly ILockManager _lockManager;
 
         public SupportedLockProperty([NotNull] IEntry entry)
         {
-            _entry = entry;
+            _lockManager = entry.FileSystem.LockManager;
             Cost = 0;
             Name = PropertyName;
         }
@@ -48,7 +49,7 @@ namespace FubarDev.WebDavServer.Props.Live
         {
             var result = new supportedlock();
 
-            if (_entry.FileSystem.LockManager != null)
+            if (_lockManager != null)
             {
                 result.lockentry = new[]
                 {

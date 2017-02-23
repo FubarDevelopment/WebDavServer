@@ -24,12 +24,12 @@ namespace FubarDev.WebDavServer.Props.Live
         private readonly ILockManager _lockManager;
 
         [NotNull]
-        private readonly IEntry _entry;
+        private readonly string _entryPath;
 
-        public LockDiscoveryProperty([CanBeNull] ILockManager lockManager, [NotNull] IEntry entry)
+        public LockDiscoveryProperty([NotNull] IEntry entry)
         {
-            _lockManager = lockManager;
-            _entry = entry;
+            _lockManager = entry.FileSystem.LockManager;
+            _entryPath = entry.Path.OriginalString;
         }
 
         public XName Name { get; } = PropertyName;
@@ -47,7 +47,7 @@ namespace FubarDev.WebDavServer.Props.Live
         {
             if (_lockManager == null)
                 return new XElement(Name);
-            var affectedLocks = await _lockManager.GetAffectedLocksAsync(_entry.Path.OriginalString, false, true, ct).ConfigureAwait(false);
+            var affectedLocks = await _lockManager.GetAffectedLocksAsync(_entryPath, false, true, ct).ConfigureAwait(false);
             var lockElements = affectedLocks.Select(x => x.ToXElement(omitOwner: omitOwner, omitToken: omitToken)).Cast<object>().ToArray();
             return new XElement(Name, lockElements);
         }

@@ -118,7 +118,7 @@ namespace FubarDev.WebDavServer.FileSystem.DotNet
             return base.GetLiveProperties()
                 .Concat(new ILiveProperty[]
                 {
-                    new ContentLengthProperty(ct => Task.FromResult(Length)),
+                    new ContentLengthProperty(Length),
                 });
         }
 

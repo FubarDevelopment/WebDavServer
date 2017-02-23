@@ -3,6 +3,7 @@
 // </copyright>
 
 using System;
+using System.Threading.Tasks;
 using System.Xml.Linq;
 
 using FubarDev.WebDavServer.Model;
@@ -14,8 +15,8 @@ namespace FubarDev.WebDavServer.Props.Live
     {
         public static readonly XName PropertyName = WebDavXml.Dav + "getlastmodified";
 
-        public LastModifiedProperty(GetPropertyValueAsyncDelegate<DateTime> getPropertyValueAsync, SetPropertyValueAsyncDelegate<DateTime> setValueAsyncFunc)
-            : base(PropertyName, 0, getPropertyValueAsync, setValueAsyncFunc, WebDavXml.Dav + "lastmodified")
+        public LastModifiedProperty(DateTime propValue, SetPropertyValueAsyncDelegate<DateTime> setValueAsyncFunc)
+            : base(PropertyName, 0, ct => Task.FromResult(propValue), setValueAsyncFunc, WebDavXml.Dav + "lastmodified")
         {
         }
     }

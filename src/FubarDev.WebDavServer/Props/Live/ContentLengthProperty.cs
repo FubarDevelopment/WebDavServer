@@ -18,13 +18,13 @@ namespace FubarDev.WebDavServer.Props.Live
 
         private static readonly LongConverter _converter = new LongConverter();
 
-        private readonly GetPropertyValueAsyncDelegate<long> _getPropertyValueAsync;
+        private readonly long _propValue;
 
-        public ContentLengthProperty(GetPropertyValueAsyncDelegate<long> getPropertyValueAsync)
+        public ContentLengthProperty(long propValue)
         {
+            _propValue = propValue;
             Cost = 0;
             Name = PropertyName;
-            _getPropertyValueAsync = getPropertyValueAsync;
         }
 
         public XName Name { get; }
@@ -40,7 +40,7 @@ namespace FubarDev.WebDavServer.Props.Live
 
         public Task<long> GetValueAsync(CancellationToken ct)
         {
-            return _getPropertyValueAsync(ct);
+            return Task.FromResult(_propValue);
         }
     }
 }
