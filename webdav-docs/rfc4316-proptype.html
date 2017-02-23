@@ -1,0 +1,720 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+      <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+   <title>Datatypes for Web Distributed Authoring and Versioning (WebDAV) Properties</title><script type="application/javascript">
+function getMeta(rfcno, container) {
+
+  var xhr = new XMLHttpRequest();
+  xhr.open("GET", "https://tools.ietf.org/draft/rfc" + rfcno + "/state.xml", true);
+  xhr.onload = function (e) {
+    if (xhr.readyState === 4) {
+      if (xhr.status === 200) {
+        var doc = xhr.responseXML;
+        var info = getChildByName(doc.documentElement, "info");
+  
+        var cont = document.getElementById(container);
+        // empty the container
+        while (cont.firstChild) {
+          cont.removeChild(myNode.firstChild);
+        }      
+  
+        var c = getChildByName(info, "stdstatus");
+        if (c !== null) {
+          var bld = newElementWithText("b", c.textContent);
+          cont.appendChild(bld);
+        }
+  
+        c = getChildByName(info, "updatedby");
+        if (c !== null) {
+          cont.appendChild(newElement("br"));
+          cont.appendChild(newText("Updated by: "));
+          appendRfcLinks(cont, c.textContent);
+        }
+  
+        c = getChildByName(info, "obsoletedby");
+        if (c !== null) {
+          cont.appendChild(newElement("br"));
+          cont.appendChild(newText("Obsoleted by: "));
+          appendRfcLinks(cont, c.textContent);
+        }
+        
+        c = getChildByName(info, "errata");
+        if (c !== null) {
+          cont.appendChild(newElement("br"));
+          var link = newElementWithText("a", "errata");
+          link.setAttribute("href", "http://www.rfc-editor.org/errata_search.php?rfc=" + rfcno);
+          var errata = newElementWithText("i", "This document has ");
+          errata.appendChild(link);
+          errata.appendChild(newText("."));
+          cont.appendChild(errata);
+        }
+
+        cont.style.display = "block";
+      } else {
+        console.error(xhr.statusText);
+      }
+    }
+  };
+  xhr.onerror = function (e) {
+    console.error(xhr.status + " " + xhr.statusText);
+  };
+  xhr.send(null);
+}
+
+// DOM helpers
+function newElement(name) {
+  return document.createElement(name);
+}
+function newElementWithText(name, txt) {
+  var e = document.createElement(name);
+  e.appendChild(newText(txt));
+  return e;
+}
+function newText(text) {
+  return document.createTextNode(text);
+}
+
+function getChildByName(parent, name) {
+  if (parent === null) {
+    return null;
+  }
+  else {
+    for (var c = parent.firstChild; c !== null; c = c.nextSibling) {
+      if (name == c.nodeName) {
+        return c;
+      }
+    }
+    return null;
+  }
+}
+
+function appendRfcLinks(parent, text) {
+  var updates = text.split(",");
+  for (var i = 0; i < updates.length; i++) {
+    var rfc = updates[i].trim();
+    if (rfc.substring(0, 3) == "rfc") {
+      var link = newElement("a");
+      link.setAttribute("href", "http://tools.ietf.org/html/" + rfc);
+      link.appendChild(newText(rfc.substring(3)));
+      parent.appendChild(link);
+    } else {
+      parent.appendChild(newText(rfc));
+    }
+    if (i != updates.length - 1) {
+      parent.appendChild(newText(", "));
+    }
+  }
+}
+</script><script type="application/javascript">
+function anchorRewrite() {
+  map = { };
+  if (window.location.hash.length >= 1) {
+    var fragid = window.location.hash.substr(1);
+    if (fragid) {
+      if (! document.getElementById(fragid)) {
+        var prefix = "rfc.";
+        var mapped = map[fragid];
+        if (mapped) {
+          window.location.hash = mapped;
+        } else if (fragid.indexOf("section-") == 0) {
+          window.location.hash = prefix + "section." + fragid.substring(8);
+        } else if (fragid.indexOf("appendix-") == 0) {
+          window.location.hash = prefix + "section." + fragid.substring(9);
+        } else if (fragid.indexOf("s-") == 0) {
+          window.location.hash = prefix + "section." + fragid.substring(2);
+        } else if (fragid.indexOf("p-") == 0) {
+          var r = fragid.substring(2);
+          var p = r.indexOf("-");
+          if (p >= 0) {
+            window.location.hash = prefix + "section." + r.substring(0, p) + ".p." + r.substring(p + 1);
+          }
+        }
+      }
+    }  
+  }
+}
+window.addEventListener('hashchange', anchorRewrite);
+window.addEventListener('DOMContentLoaded', anchorRewrite);
+</script><style type="text/css" title="Xml2Rfc (sans serif)">
+a {
+  text-decoration: none;
+}
+a.smpl {
+  color: black;
+}
+a:hover {
+  text-decoration: underline;
+}
+a:active {
+  text-decoration: underline;
+}
+address {
+  margin-top: 1em;
+  margin-left: 2em;
+  font-style: normal;
+}
+body {
+  color: black;
+  font-family: cambria, georgia, serif;
+  font-size: 12pt;
+  margin: 2em auto;
+  max-width: 1000px;
+}
+samp, span.tt, code, pre {
+  font-family: consolas, monaco, monospace;
+}
+cite {
+  font-style: normal;
+}
+dl {
+  margin-left: 2em;
+}
+dl > dt {
+  float: left;
+  margin-right: 1em;
+}
+dl.nohang > dt {
+  float: none;
+}
+dl > dd {
+  margin-bottom: .5em;
+}
+dl.compact > dd {
+  margin-bottom: .0em;
+}
+dl > dd > dl {
+  margin-top: 0.5em;
+}
+ul.empty {
+  list-style-type: none;
+}
+ul.empty li {
+  margin-top: .5em;
+}
+dl p {
+  margin-left: 0em;
+}
+dl.reference > dt {
+  font-weight: bold;
+}
+dl.reference > dd {
+  margin-left: 6em;
+}
+h1 {
+  color: green;
+  font-size: 150%;
+  line-height: 18pt;
+  font-weight: bold;
+  text-align: center;
+  margin-top: 36pt;
+  margin-bottom: 0pt;
+}
+h2 {
+  font-size: 130%;
+  line-height: 21pt;
+  page-break-after: avoid;
+}
+h2.np {
+  page-break-before: always;
+}
+h3 {
+  font-size: 120%;
+  line-height: 15pt;
+  page-break-after: avoid;
+}
+h4 {
+  font-size: 110%;
+  page-break-after: avoid;
+}
+h5, h6 {
+  page-break-after: avoid;
+}
+h1 a, h2 a, h3 a, h4 a, h5 a, h6 a {
+  color: black;
+}
+img {
+  margin-left: 3em;
+}
+li {
+  margin-left: 2em;
+}
+ol {
+  margin-left: 2em;
+}
+ol.la {
+  list-style-type: lower-alpha;
+}
+ol.ua {
+  list-style-type: upper-alpha;
+}
+ol p {
+  margin-left: 0em;
+}
+p {
+  margin-left: 2em;
+}
+pre {
+  font-size: 11pt;
+  margin-left: 3em;
+  background-color: lightyellow;
+  padding: .25em;
+  page-break-inside: avoid;
+}
+pre.text2 {
+  border-style: dotted;
+  border-width: 1px;
+  background-color: #f0f0f0;
+}
+pre.inline {
+  background-color: white;
+  padding: 0em;
+  page-break-inside: auto;
+}
+pre.text {
+  border-style: dotted;
+  border-width: 1px;
+  background-color: #f8f8f8;
+}
+pre.drawing {
+  border-style: solid;
+  border-width: 1px;
+  background-color: #f8f8f8;
+  padding: 2em;
+}
+table {
+  margin-left: 2em;
+}
+table.header {
+  border-spacing: 1px;
+  width: 95%;
+  font-size: 11pt;
+  color: white;
+}
+td.top {
+  vertical-align: top;
+}
+td.topnowrap {
+  vertical-align: top;
+  white-space: nowrap;
+}
+table.header td {
+  background-color: gray;
+  width: 50%;
+}
+ul.toc, ul.toc ul {
+  list-style: none;
+  margin-left: 1.5em;
+  padding-left: 0em;
+}
+ul.toc li {
+  line-height: 150%;
+  font-weight: bold;
+  margin-left: 0em;
+}
+ul.toc li li {
+  line-height: normal;
+  font-weight: normal;
+  font-size: 11pt;
+  margin-left: 0em;
+}
+li.excluded {
+  font-size: 0pt;
+}
+ul p {
+  margin-left: 0em;
+}
+.filename, h1, h2, h3, h4 {
+  font-family: candara, calibri, segoe, optima, arial, sans-serif;
+}
+.bcp14 {
+  font-style: normal;
+  text-transform: lowercase;
+  font-variant: small-caps;
+}
+.comment {
+  background-color: yellow;
+}
+.center {
+  text-align: center;
+}
+.error {
+  color: red;
+  font-style: italic;
+  font-weight: bold;
+}
+.figure {
+  font-weight: bold;
+  text-align: center;
+  font-size: 10pt;
+}
+.filename {
+  color: #333333;
+  font-size: 112%;
+  font-weight: bold;
+  line-height: 21pt;
+  text-align: center;
+  margin-top: 0pt;
+}
+.fn {
+  font-weight: bold;
+}
+.left {
+  text-align: left;
+}
+.right {
+  text-align: right;
+}
+.warning {
+  font-size: 130%;
+  background-color: yellow;
+}
+.self {
+    color: #999999;
+    margin-left: .3em;
+    text-decoration: none;
+    visibility: hidden;
+    -webkit-user-select: none; 
+    -moz-user-select: none;
+    -ms-user-select: none;
+}
+.self:hover {
+    text-decoration: none;
+}
+p:hover .self {
+    visibility: visible;
+}
+.docstatus {
+  border: 1px solid black;
+  display: none;
+  float: right;
+  margin: 2em;
+  padding: 1em;
+}
+
+@media screen {
+  pre.text, pre.text2 {
+    width: 69em;
+  }
+}
+
+@media print {
+  .noprint {
+    display: none;
+  }
+
+  a {
+    color: black;
+    text-decoration: none;
+  }
+
+  table.header {
+    width: 90%;
+  }
+
+  td.header {
+    width: 50%;
+    color: black;
+    background-color: white;
+    vertical-align: top;
+    font-size: 110%;
+  }
+
+  ul.toc a:last-child::after {
+    content: leader('.') target-counter(attr(href), page);
+  }
+
+  ul.ind li li a {
+    content: target-counter(attr(href), page);
+  }
+
+  pre {
+    font-size: 10pt;
+  }
+
+  .print2col {
+    column-count: 2;
+    -moz-column-count: 2;
+    column-fill: auto;
+  }
+}
+@page {
+  @top-left {
+       content: "RFC 4316";
+  }
+  @top-right {
+       content: "December 2005";
+  }
+  @top-center {
+       content: "Datatypes for WebDAV Properties";
+  }
+  @bottom-left {
+       content: "Reschke";
+  }
+  @bottom-center {
+       content: "Experimental";
+  }
+  @bottom-right {
+       content: "[Page " counter(page) "]";
+  }
+}
+@page:first {
+    @top-left {
+      content: normal;
+    }
+    @top-right {
+      content: normal;
+    }
+    @top-center {
+      content: normal;
+    }
+}
+</style><link rel="Contents" href="#rfc.toc"><link rel="Author" href="#rfc.authors"><link rel="Copyright" href="#rfc.copyright"><link rel="Chapter" title="1 Introduction" href="#rfc.section.1"><link rel="Chapter" title="2 Notational Conventions" href="#rfc.section.2"><link rel="Chapter" title="3 Overview" href="#rfc.section.3"><link rel="Chapter" title="4 Changes for PROPPATCH Method" href="#rfc.section.4"><link rel="Chapter" title="5 Changes for PROPFIND Method" href="#rfc.section.5"><link rel="Chapter" title="6 Changes for Other Methods" href="#rfc.section.6"><link rel="Chapter" title="7 Compatibility Considerations" href="#rfc.section.7"><link rel="Chapter" title="8 Internationalization Considerations" href="#rfc.section.8"><link rel="Chapter" title="9 Security Considerations" href="#rfc.section.9"><link rel="Chapter" title="10 Acknowledgements" href="#rfc.section.10"><link rel="Chapter" href="#rfc.section.11" title="11 References"><link rel="Alternate" title="Authoritative ASCII Version" href="http://www.ietf.org/rfc/rfc4316.txt"><link rel="Help" title="RFC-Editor's Status Page" href="http://www.rfc-editor.org/info/rfc4316"><link rel="Help" title="Additional Information on tools.ietf.org" href="http://tools.ietf.org/html/rfc4316"><meta name="generator" content="http://greenbytes.de/tech/webdav/rfc2629.xslt, Revision 1.840, 2016/11/16 05:32:10, XSLT vendor: SAXON 6.5.5 from Michael Kay http://saxon.sf.net/"><link rel="schema.dcterms" href="http://purl.org/dc/terms/"><meta name="dcterms.creator" content="Reschke, J. F."><meta name="dcterms.identifier" content="urn:ietf:rfc:4316"><meta name="dcterms.issued" content="2005-12"><meta name="dcterms.abstract" content="This specification extends the Web Distributed Authoring and Versioning Protocol (WebDAV) to support datatyping. Protocol elements are defined to let clients and servers specify the datatype, and to instruct the WebDAV method PROPFIND to return datatype information."><meta name="dcterms.isPartOf" content="urn:issn:2070-1721"><meta name="description" content="This specification extends the Web Distributed Authoring and Versioning Protocol (WebDAV) to support datatyping. Protocol elements are defined to let clients and servers specify the datatype, and to instruct the WebDAV method PROPFIND to return datatype information."></head><body onload='getMeta(4316,"rfc.meta");'><header><table class="header" id="rfc.headerblock"><tbody><tr><td class="left">Network Working Group</td><td class="right">J. Reschke</td></tr><tr><td class="left">Request for Comments: 4316</td><td class="right">greenbytes</td></tr><tr><td class="left">Category: Experimental</td><td class="right">December 2005</td></tr></tbody></table><div id="rfc.title"><h1>Datatypes for Web Distributed Authoring and Versioning (WebDAV) Properties</h1></div></header><div id="rfc.meta" class="docstatus" style="display: block;"><b>EXPERIMENTAL</b></div><section id="rfc.status"><h2><a href="#rfc.status">Status of this Memo</a></h2><p>This
+ memo defines an Experimental Protocol for the Internet community. It 
+does not specify an Internet standard of any kind. Discussion and 
+suggestions for improvement are requested. Distribution of this memo is 
+unlimited.</p></section><section id="rfc.copyrightnotice"><h2><a href="#rfc.copyrightnotice">Copyright Notice</a></h2><p>Copyright © The Internet Society (2005). All Rights Reserved.</p></section><section id="rfc.abstract"><h2><a href="#rfc.abstract">Abstract</a></h2><p>This
+ specification extends the Web Distributed Authoring and Versioning 
+Protocol (WebDAV) to support datatyping. Protocol elements are defined 
+to let clients and servers specify the datatype, and to instruct the 
+WebDAV method PROPFIND to return datatype information.</p></section><hr class="noprint"><nav id="rfc.toc"><h2 class="np"><a href="#rfc.toc">Table of Contents</a></h2><ul class="toc"><li><a href="#rfc.section.1">1.</a>&nbsp;&nbsp;&nbsp;<a href="#rfc.section.1">Introduction</a></li><li><a href="#rfc.section.2">2.</a>&nbsp;&nbsp;&nbsp;<a href="#rfc.section.2">Notational Conventions</a></li><li><a href="#rfc.section.3">3.</a>&nbsp;&nbsp;&nbsp;<a href="#rfc.section.3">Overview</a></li><li><a href="#rfc.section.4">4.</a>&nbsp;&nbsp;&nbsp;<a href="#METHOD_PROPPATCH">Changes for PROPPATCH Method</a><ul><li><a href="#rfc.section.4.1">4.1.</a>&nbsp;&nbsp;&nbsp;<a href="#rfc.section.4.1">Example of Successful PROPPATCH</a></li><li><a href="#rfc.section.4.2">4.2.</a>&nbsp;&nbsp;&nbsp;<a href="#rfc.section.4.2">Example of Failed PROPPATCH</a></li><li><a href="#rfc.section.4.3">4.3.</a>&nbsp;&nbsp;&nbsp;<a href="#rfc.section.4.3">Example of Successful PROPPATCH Where Type Information Was Not Preserved</a></li></ul></li><li><a href="#rfc.section.5">5.</a>&nbsp;&nbsp;&nbsp;<a href="#changes.for.propfind.method">Changes for PROPFIND Method</a><ul><li><a href="#rfc.section.5.1">5.1.</a>&nbsp;&nbsp;&nbsp;<a href="#rfc.section.5.1">Example of PROPFIND/prop</a></li></ul></li><li><a href="#rfc.section.6">6.</a>&nbsp;&nbsp;&nbsp;<a href="#rfc.section.6">Changes for Other Methods</a></li><li><a href="#rfc.section.7">7.</a>&nbsp;&nbsp;&nbsp;<a href="#rfc.section.7">Compatibility Considerations</a></li><li><a href="#rfc.section.8">8.</a>&nbsp;&nbsp;&nbsp;<a href="#rfc.section.8">Internationalization Considerations</a></li><li><a href="#rfc.section.9">9.</a>&nbsp;&nbsp;&nbsp;<a href="#rfc.section.9">Security Considerations</a></li><li><a href="#rfc.section.10">10.</a>&nbsp;&nbsp;&nbsp;<a href="#rfc.section.10">Acknowledgements</a></li><li><a href="#rfc.section.11">11.</a>&nbsp;&nbsp;&nbsp;<a href="#rfc.references">References</a><ul><li><a href="#rfc.section.11.1">11.1.</a>&nbsp;&nbsp;&nbsp;<a href="#rfc.references.1">Normative References</a></li><li><a href="#rfc.section.11.2">11.2.</a>&nbsp;&nbsp;&nbsp;<a href="#rfc.references.2">Informative References</a></li></ul></li><li><a href="#rfc.authors">Author's Address</a></li><li><a href="#rfc.ipr">Intellectual Property and Copyright Statements</a></li></ul></nav><section id="n-introduction"><h2 id="rfc.section.1" class="np"><a href="#rfc.section.1">1.</a>&nbsp;<a href="#n-introduction">Introduction</a></h2><div id="rfc.section.1.p.1"><p>This
+ specification builds on the infrastructure provided by the Web 
+Distributed Authoring and Versioning (WebDAV) Protocol, adding support 
+for data-typed properties.<a class="self" href="#rfc.section.1.p.1">¶</a></p></div><div id="rfc.section.1.p.2"><p>Although
+ servers must support XML content in property values, it may be 
+desirable to persist values as scalar values when possible and to expose
+ the data's type when the property value is returned to the client. The 
+client is free to ignore this information, but it may be able to take 
+advantage of it when modifying a property.<a class="self" href="#rfc.section.1.p.2">¶</a></p></div><div id="rfc.section.1.p.3"><p>On
+ the other hand, when setting new properties, it can be desirable to 
+pass datatype information along with the value. A server can take 
+advantage of this information to optimize storage and to perform 
+additional parsing (for instance, of dates). Servers that support 
+searching can also take advantage of known datatypes when doing 
+comparisons and sorting.<a class="self" href="#rfc.section.1.p.3">¶</a></p></div><div id="rfc.section.1.p.4"><p>The following potential datatyping-related features were deliberately considered out of scope: <a class="self" href="#rfc.section.1.p.4">¶</a></p><ul><li>getting "schema" information for classes of resources (set of "required" properties, their types, display information),</li><li>definition of a set of mandatory property types,</li><li>discovery of supported property types,</li><li>extensions to PROPPATCH that would allow updates to parts of a (structured) property.</li></ul></div></section><section id="n-notational-conventions"><h2 id="rfc.section.2"><a href="#rfc.section.2">2.</a>&nbsp;<a href="#n-notational-conventions">Notational Conventions</a></h2><div id="rfc.section.2.p.1"><p>The
+ key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", 
+"SHOULD", "SHOULD NOT", "RECOMMENDED", "MAY", and "OPTIONAL" in this 
+document are to be interpreted as described in <a href="#RFC2119"><cite title="Key words for use in RFCs to Indicate Requirement Levels">[RFC2119]</cite></a>.<a class="self" href="#rfc.section.2.p.1">¶</a></p></div><div id="rfc.section.2.p.2"><p>The term "<dfn>property element</dfn>" refers to the XML element that identifies a particular property, for instance,<a class="self" href="#rfc.section.2.p.2">¶</a></p></div><div id="rfc.figure.u.1"><pre class="text">     &lt;getcontentlength xmlns="DAV:" /&gt;</pre></div><div id="rfc.section.2.p.3"><p>The term "<dfn>prop element</dfn>" is used for the WebDAV "prop" element as defined in <a href="https://tools.ietf.org/html/rfc2518#section-12.11">Section 12.11</a> of <a href="#RFC2518"><cite title="HTTP Extensions for Distributed Authoring -- WEBDAV">[RFC2518]</cite></a>.<a class="self" href="#rfc.section.2.p.3">¶</a></p></div><div id="rfc.section.2.p.4"><p>The
+ XML representation of schema components uses a vocabulary identified by
+ the namespace name "http://www.w3.org/2001/XMLSchema". For brevity, the
+ text and examples in this specification use the prefix "xs:" to stand 
+for this namespace; in practice, any prefix can be used. "XML Schema 
+Part 1: Structures" (<a href="#XS1"><cite title="XML Schema Part 1: Structures Second Edition">[XS1]</cite></a>)
+ also defines several attributes for direct use in any XML documents. 
+These attributes are in a different namespace named 
+"http://www.w3.org/2001/XMLSchema-instance". For brevity, the text and 
+examples in this specification use the prefix "xsi:" to stand for this 
+latter namespace; in practice, any prefix can be used.<a class="self" href="#rfc.section.2.p.4">¶</a></p></div></section><section id="n-overview"><h2 id="rfc.section.3"><a href="#rfc.section.3">3.</a>&nbsp;<a href="#n-overview">Overview</a></h2><div id="rfc.section.3.p.1"><p>Although
+ WebDAV property types can be anything that can be marshaled as content 
+of an XML element, in many cases they actually are simple types like 
+integers, booleans, or dates. "XML Schema Part 2: Datatypes" <a href="#XS2"><cite title="XML Schema Part 2: Datatypes Second Edition">[XS2]</cite></a> defines a set of simple types that can be used as a basis for supplying type information to attributes.<a class="self" href="#rfc.section.3.p.1">¶</a></p></div><div id="rfc.section.3.p.2"><p>Datatype
+ information is represented using the attribute "type" from the XML 
+Schema namespace "http://www.w3.org/2001/XMLSchema-instance". In XML 
+Schema, datatypes are qualified names, and the XML Schema recommendation
+ defines a set of built-in datatypes (<a href="http://www.w3.org/TR/2004/REC-xmlschema-2-20041028/#built-in-datatypes">Section 3</a> of <a href="#XS2"><cite title="XML Schema Part 2: Datatypes Second Edition">[XS2]</cite></a>), defined in the namespace "http://www.w3.org/2001/XMLSchema".<a class="self" href="#rfc.section.3.p.2">¶</a></p></div><div id="rfc.section.3.p.3"><p>To
+ avoid unnecessary verbosity, datatype information should only be 
+supplied if it adds usable information to the protocol. In particular, 
+type information is not required for live properties defined in WebDAV <a href="#RFC2518"><cite title="HTTP Extensions for Distributed Authoring -- WEBDAV">[RFC2518]</cite></a> and for properties of type "xs:string".<a class="self" href="#rfc.section.3.p.3">¶</a></p></div><div id="rfc.section.3.p.4"><p>A server may implement any combination of datatypes, both from the XML Schema recommendation and possibly from other namespaces.<a class="self" href="#rfc.section.3.p.4">¶</a></p></div><div id="rfc.section.3.p.5"><p>Note that a particular property can be typed for a number of reasons: <a class="self" href="#rfc.section.3.p.5">¶</a></p><ul><li>The property is a live property with server-defined semantics and value space.</li><li>The property may have been set using a non-WebDAV protocol that the server understands in addition to WebDAV.</li><li>The type may have been specified in an extended PROPPATCH method as defined in <a href="#METHOD_PROPPATCH" title="Changes for PROPPATCH Method">Section&nbsp;4</a>.</li></ul></div></section><section id="METHOD_PROPPATCH"><h2 id="rfc.section.4"><a href="#rfc.section.4">4.</a>&nbsp;<a href="#METHOD_PROPPATCH">Changes for PROPPATCH Method</a></h2><div id="rfc.section.4.p.1"><p>If
+ the property element has an XML attribute named "xsi:type", the server 
+may use this information to select an optimized representation for 
+storing the property value. For instance, by specifying a type as 
+"xs:boolean", the client declares the property value to be of type 
+boolean (as defined in <a href="#XS2"><cite title="XML Schema Part 2: Datatypes Second Edition">[XS2]</cite></a>).
+ The server may choose any suitable internal format for persisting this 
+property, and in particular is allowed to fail the request if the format
+ given does not fit the format defined for this type.<a class="self" href="#rfc.section.4.p.1">¶</a></p></div><div id="rfc.section.4.p.2"><p>The
+ server should indicate successful detection and parsing of the typed 
+value by setting the xsi:type attribute on the property element in the 
+response body (this implies that it should return a MULTISTATUS status 
+code and a &lt;multistatus&gt; response body).<a class="self" href="#rfc.section.4.p.2">¶</a></p></div><section id="n-example-of-successful-proppatch"><h3 id="rfc.section.4.1"><a href="#rfc.section.4.1">4.1.</a>&nbsp;<a href="#n-example-of-successful-proppatch">Example of Successful PROPPATCH</a></h3><div id="rfc.figure.u.2"><p>&gt;&gt;Request</p><pre class="text2">PROPPATCH /bar.html HTTP/1.1
+Host: example.org
+Content-Type: text/xml; charset="utf-8"
+Content-Length: xxxx
+
+&lt;?xml version="1.0" encoding="utf-8" ?&gt;
+&lt;D:propertyupdate xmlns:D="DAV:"
+   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+   xmlns:xs="http://www.w3.org/2001/XMLSchema"
+   xmlns:Z="http://ns.example.org/standards/z39.50"&gt;
+  &lt;D:set&gt;
+    &lt;D:prop&gt;
+      &lt;Z:released xsi:type="xs:boolean"&gt;false&lt;/Z:released&gt;
+    &lt;/D:prop&gt;
+  &lt;/D:set&gt;
+&lt;/D:propertyupdate&gt;
+</pre></div><div id="rfc.figure.u.3"><p>&gt;&gt;Response</p><pre class="text">HTTP/1.1 207 Multi-Status
+Content-Type: text/xml; charset="utf-8"
+Content-Length: xxxx
+
+&lt;?xml version="1.0" encoding="utf-8" ?&gt;
+&lt;D:multistatus xmlns:D="DAV:"
+   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+   xmlns:xs="http://www.w3.org/2001/XMLSchema"
+   xmlns:Z="http://ns.example.org/standards/z39.50"&gt;
+  &lt;D:response&gt;
+    &lt;D:href&gt;http://example.org/bar.html&lt;/D:href&gt;
+    &lt;D:propstat&gt;
+      &lt;D:prop&gt;&lt;Z:released xsi:type="xs:boolean" /&gt;&lt;/D:prop&gt;
+      &lt;D:status&gt;HTTP/1.1 200 OK&lt;/D:status&gt;
+    &lt;/D:propstat&gt;
+  &lt;/D:response&gt;
+&lt;/D:multistatus&gt;
+</pre></div><div id="rfc.section.4.1.p.1"><p>In this case, the xsi:type 
+attribute on the element "Z:released" indicates that the server indeed 
+has understood the submitted data type information.<a class="self" href="#rfc.section.4.1.p.1">¶</a></p></div></section><section id="n-example-of-failed-proppatch"><h3 id="rfc.section.4.2"><a href="#rfc.section.4.2">4.2.</a>&nbsp;<a href="#n-example-of-failed-proppatch">Example of Failed PROPPATCH</a></h3><div id="rfc.figure.u.4"><p>&gt;&gt;Request</p><pre class="text2">PROPPATCH /bar.html HTTP/1.1
+Host: example.org
+Content-Type: text/xml; charset="utf-8"
+Content-Length: xxxx
+
+&lt;?xml version="1.0" encoding="utf-8" ?&gt;
+&lt;D:propertyupdate xmlns:D="DAV:"
+   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+   xmlns:xs="http://www.w3.org/2001/XMLSchema"
+   xmlns:Z="http://ns.example.org/standards/z39.50"&gt;
+  &lt;D:set&gt;
+    &lt;D:prop&gt;
+      &lt;Z:released xsi:type="xs:boolean"&gt;t&lt;/Z:released&gt;
+    &lt;/D:prop&gt;
+  &lt;/D:set&gt;
+&lt;/D:propertyupdate&gt;
+</pre></div><div id="rfc.figure.u.5"><p>&gt;&gt;Response</p><pre class="text">HTTP/1.1 207 Multi-Status
+Content-Type: text/xml; charset="utf-8"
+Content-Length: xxxx
+
+&lt;?xml version="1.0" encoding="utf-8" ?&gt;
+&lt;D:multistatus xmlns:D="DAV:"
+   xmlns:Z="http://ns.example.org/standards/z39.50"&gt;
+  &lt;D:response&gt;
+    &lt;D:href&gt;http://example.org/bar.html&lt;/D:href&gt;
+    &lt;D:propstat&gt;
+      &lt;D:prop&gt;&lt;Z:released/&gt;&lt;/D:prop&gt;
+      &lt;D:status&gt;HTTP/1.1 422 Unprocessable Entity&lt;/D:status&gt;
+      &lt;D:responsedescription&gt;
+        Does not parse as xs:boolean
+      &lt;/D:responsedescription&gt;
+    &lt;/D:propstat&gt;
+  &lt;/D:response&gt;
+&lt;/D:multistatus&gt;
+</pre></div><div id="rfc.section.4.2.p.1"><p>In this case, the request failed because the supplied value "t" is not a valid representation for a boolean value.<a class="self" href="#rfc.section.4.2.p.1">¶</a></p></div><div id="rfc.section.4.2.p.2"><p>Note
+ that similar error conditions can occur in the standard WebDAV protocol
+ even though no datatype was specified: for instance, when a client 
+tries to set a live property for which only a certain value space is 
+allowed.<a class="self" href="#rfc.section.4.2.p.2">¶</a></p></div></section><section id="n-example-of-successful-proppatch-where-type-information-was-not-preserved"><h3 id="rfc.section.4.3"><a href="#rfc.section.4.3">4.3.</a>&nbsp;<a href="#n-example-of-successful-proppatch-where-type-information-was-not-preserved">Example of Successful PROPPATCH Where Type Information Was Not Preserved</a></h3><div id="rfc.figure.u.6"><p>&gt;&gt;Request</p><pre class="text2">PROPPATCH /bar.html HTTP/1.1
+Host: example.org
+Content-Type: text/xml; charset="utf-8"
+Content-Length: xxxx
+
+&lt;?xml version="1.0" encoding="utf-8" ?&gt;
+&lt;D:propertyupdate xmlns:D="DAV:"
+   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+   xmlns:Z="http://ns.example.org/standards/z39.50"&gt;
+  &lt;D:set&gt;
+    &lt;D:prop&gt;
+      &lt;Z:released xsi:type="Z:custom"&gt;t&lt;/Z:released&gt;
+    &lt;/D:prop&gt;
+  &lt;/D:set&gt;
+&lt;/D:propertyupdate&gt;
+</pre></div><div id="rfc.figure.u.7"><p>&gt;&gt;Response</p><pre class="text">HTTP/1.1 207 Multi-Status
+Content-Type: text/xml; charset="utf-8"
+Content-Length: xxxx
+
+&lt;?xml version="1.0" encoding="utf-8" ?&gt;
+&lt;D:multistatus xmlns:D="DAV:"
+   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+   xmlns:Z="http://ns.example.org/standards/z39.50"&gt;
+  &lt;D:response&gt;
+    &lt;D:href&gt;http://example.org/bar.html&lt;/D:href&gt;
+    &lt;D:propstat&gt;
+      &lt;D:prop&gt;&lt;Z:released/&gt;&lt;/D:prop&gt;
+      &lt;D:status&gt;HTTP/1.1 200 OK&lt;/D:status&gt;
+    &lt;/D:propstat&gt;
+  &lt;/D:response&gt;
+&lt;/D:multistatus&gt;
+</pre></div><div id="rfc.section.4.3.p.1"><p>In this case, the request 
+succeeded, but the server did not know how to handle the datatype 
+"Z:custom". Therefore, no datatype information was returned in the 
+response body.<a class="self" href="#rfc.section.4.3.p.1">¶</a></p></div></section></section><section id="changes.for.propfind.method"><h2 id="rfc.section.5"><a href="#rfc.section.5">5.</a>&nbsp;<a href="#changes.for.propfind.method">Changes for PROPFIND Method</a></h2><div id="rfc.section.5.p.1"><p>PROPFIND
+ is extended to return the datatype information for properties by adding
+ "xsi:type" attributes to the property elements unless one of the 
+following conditions is met: <a class="self" href="#rfc.section.5.p.1">¶</a></p><ul><li>The datatype <em class="bcp14">MUST</em> be different from "xs:string" (because this can be considered the default datatype).</li><li>The property's datatype <em class="bcp14">MUST NOT</em> be defined in <a href="#RFC2518"><cite title="HTTP Extensions for Distributed Authoring -- WEBDAV">[RFC2518]</cite></a> (because these types are already well-defined).</li></ul></div><section id="n-example-of-propfind-prop"><h3 id="rfc.section.5.1"><a href="#rfc.section.5.1">5.1.</a>&nbsp;<a href="#n-example-of-propfind-prop">Example of PROPFIND/prop</a></h3><div id="rfc.figure.u.8"><p>&gt;&gt;Request</p><pre class="text2">PROPFIND /bar.html HTTP/1.1
+Host: example.org
+Content-Type: text/xml; charset="utf-8"
+Content-Length: xxxx
+
+&lt;?xml version="1.0" encoding="utf-8" ?&gt;
+&lt;D:propfind xmlns:D="DAV:"
+  xmlns:Z="http://ns.example.org/standards/z39.50"&gt;
+  &lt;D:prop&gt;
+    &lt;D:getcontenttype/&gt;
+    &lt;Z:released/&gt;
+  &lt;/D:prop&gt;
+&lt;/D:propfind&gt;
+</pre></div><div id="rfc.figure.u.9"><p>&gt;&gt;Response</p><pre class="text">HTTP/1.1 207 Multi-Status
+Content-Type: text/xml; charset="utf-8"
+Content-Length: xxxx
+
+&lt;?xml version="1.0" encoding="utf-8" ?&gt;
+&lt;D:multistatus xmlns:D="DAV:"
+   xmlns:Z="http://ns.example.org/standards/z39.50"
+   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+   xmlns:xs="http://www.w3.org/2001/XMLSchema"&gt;
+  &lt;D:response&gt;
+    &lt;D:href&gt;http://example.org/bar.html&lt;/D:href&gt;
+    &lt;D:propstat&gt;
+      &lt;D:prop&gt;
+        &lt;D:getcontenttype&gt;text/html&lt;/D:getcontenttype&gt; 
+        &lt;Z:released xsi:type="xs:boolean"&gt;1&lt;/Z:released&gt;
+      &lt;/D:prop&gt;
+      &lt;D:status&gt;HTTP/1.1 200 OK&lt;/D:status&gt;
+    &lt;/D:propstat&gt;
+  &lt;/D:response&gt;
+&lt;/D:multistatus&gt;
+</pre></div><div id="rfc.section.5.1.p.1"><p>This example shows that the
+ property value "true" is returned with the correct datatype information
+ and that the server chose one of the two possible representations 
+defined in XML Schema. It also shows that datatype information is not 
+returned for "D:getcontenttype", as this property's datatype is already 
+defined in <a href="#RFC2518"><cite title="HTTP Extensions for Distributed Authoring -- WEBDAV">[RFC2518]</cite></a>.<a class="self" href="#rfc.section.5.1.p.1">¶</a></p></div></section></section><section id="n-changes-for-other-methods"><h2 id="rfc.section.6"><a href="#rfc.section.6">6.</a>&nbsp;<a href="#n-changes-for-other-methods">Changes for Other Methods</a></h2><div id="rfc.section.6.p.1"><p>Servers that support other methods using the DAV:multistatus response format (such as the REPORT method defined in <a href="#RFC3253"><cite title="Versioning Extensions to WebDAV">[RFC3253]</cite></a>, <a href="https://tools.ietf.org/html/rfc3253#section-3.6">Section 3.6</a>) <em class="bcp14">SHOULD</em> apply the same extensions as defined in <a href="#changes.for.propfind.method" title="Changes for PROPFIND Method">Section&nbsp;5</a>.<a class="self" href="#rfc.section.6.p.1">¶</a></p></div></section><section id="n-compatibility-considerations"><h2 id="rfc.section.7"><a href="#rfc.section.7">7.</a>&nbsp;<a href="#n-compatibility-considerations">Compatibility Considerations</a></h2><div id="rfc.section.7.p.1"><p>This
+ part of this specification does not introduce any new protocol 
+elements, nor does it change the informal WebDAV DTD. It merely 
+specifies additional server semantics for the case where clients submit 
+additional datatype information in an attribute on the property element 
+(previously undefined), and adds an additional attribute on property 
+elements upon PROPFIND.<a class="self" href="#rfc.section.7.p.1">¶</a></p></div><div id="rfc.section.7.p.2"><p>Clients
+ not aware of datatype handling should not supply the "xsi:type" 
+attribute on property elements (after all, this attribute belongs to the
+ XML Schema-Instance namespace, which has been defined for exactly this 
+purpose; see <a href="#XS1"><cite title="XML Schema Part 1: Structures Second Edition">[XS1]</cite></a>, <a href="http://www.w3.org/TR/2004/REC-xmlschema-1-20041028/#xsi_type">Section 2.6.1</a>).
+ Old clients should also ignore additional attributes on property 
+elements returned by PROPFIND (and similar methods), although the WebDAV
+ specification only defines this behaviour for unknown elements and is 
+silent about unknown attributes (see <a href="#RFC2518"><cite title="HTTP Extensions for Distributed Authoring -- WEBDAV">[RFC2518]</cite></a>, <a href="https://tools.ietf.org/html/rfc2518#section-23.3.2.2">Section 23.3.2.2</a>).<a class="self" href="#rfc.section.7.p.2">¶</a></p></div><div id="rfc.section.7.p.3"><p>Servers
+ not aware of datatype handling either drop the "xsi:type" attribute or 
+have it persist along with the property value (see <a href="#RFC2518"><cite title="HTTP Extensions for Distributed Authoring -- WEBDAV">[RFC2518]</cite></a>, <a href="https://tools.ietf.org/html/rfc2518#section-4.4">Section 4.4</a>).
+ However, they will never indicate successful parsing of the datatype by
+ returning back the type in the response to PROPPATCH. Thus, clients can
+ supply type information without having to poll for server support in 
+advance.<a class="self" href="#rfc.section.7.p.3">¶</a></p></div></section><section id="n-internationalization-considerations"><h2 id="rfc.section.8"><a href="#rfc.section.8">8.</a>&nbsp;<a href="#n-internationalization-considerations">Internationalization Considerations</a></h2><div id="rfc.section.8.p.1"><p>This proposal builds on <a href="#RFC2518"><cite title="HTTP Extensions for Distributed Authoring -- WEBDAV">[RFC2518]</cite></a> and inherits its internationalizability.<a class="self" href="#rfc.section.8.p.1">¶</a></p></div></section><section id="n-security-considerations"><h2 id="rfc.section.9"><a href="#rfc.section.9">9.</a>&nbsp;<a href="#n-security-considerations">Security Considerations</a></h2><div id="rfc.section.9.p.1"><p>This protocol extension does not introduce any new security implications beyond those documented for the base protocol (see <a href="#RFC2518"><cite title="HTTP Extensions for Distributed Authoring -- WEBDAV">[RFC2518]</cite></a>, <a href="https://tools.ietf.org/html/rfc2518#section-17">Section 17</a>).<a class="self" href="#rfc.section.9.p.1">¶</a></p></div></section><section id="n-acknowledgements"><h2 id="rfc.section.10"><a href="#rfc.section.10">10.</a>&nbsp;<a href="#n-acknowledgements">Acknowledgements</a></h2><div id="rfc.section.10.p.1"><p>This document has benefited from thoughtful discussion by Lisa Dusseault, Stefan Eissing, Eric Sedlar, and Kevin Wiggen.<a class="self" href="#rfc.section.10.p.1">¶</a></p></div></section><section id="rfc.references"><h2 id="rfc.section.11"><a href="#rfc.section.11">11.</a> References</h2><section id="rfc.references.1"><h3 id="rfc.section.11.1"><a href="#rfc.section.11.1">11.1.</a> Normative References</h3><dl class="reference"><dt id="RFC2119">[RFC2119]</dt><dd><a href="mailto:sob@harvard.edu">Bradner, S.</a>, “<a href="https://tools.ietf.org/html/rfc2119">Key words for use in RFCs to Indicate Requirement Levels</a>”, BCP&nbsp;14, RFC&nbsp;2119, March&nbsp;1997.</dd><dt id="RFC2518">[RFC2518]</dt><dd><a href="mailto:yarong@microsoft.com">Goland, Y.</a>, <a href="mailto:ejw@ics.uci.edu">Whitehead, E.</a>, <a href="mailto:asad@netscape.com">Faizi, A.</a>, <a href="mailto:srcarter@novell.com">Carter, S.</a>, and <a href="mailto:dcjensen@novell.com">D. Jensen</a>, “<a href="https://tools.ietf.org/html/rfc2518">HTTP Extensions for Distributed Authoring -- WEBDAV</a>”, RFC&nbsp;2518, February&nbsp;1999.</dd><dt id="XS1">[XS1]</dt><dd><a href="mailto:ht@cogsci.ed.ac.uk">Thompson, H.</a>, <a href="mailto:David.Beech@oracle.com">Beech, D.</a>, <a href="mailto:murray@muzmo.com">Maloney, M.</a>, <a href="mailto:Noah_Mendelsohn@lotus.com">Mendelsohn, N.</a>, and <a href="http://www.w3c.org/">World Wide Web Consortium</a>, “<a href="http://www.w3.org/TR/2004/REC-xmlschema-1-20041028/">XML Schema Part 1: Structures Second Edition</a>”, W3C&nbsp;REC-xmlschema-1-20041028, October&nbsp;2004, &lt;<a href="http://www.w3.org/TR/2004/REC-xmlschema-1-20041028/">http://www.w3.org/TR/2004/REC-xmlschema-1-20041028/</a>&gt;.</dd><dt id="XS2">[XS2]</dt><dd><a href="mailto:Paul.V.Biron@kp.org">Biron, P.</a>, <a href="mailto:ashokma@microsoft.com">Malhotra, A.</a>, and <a href="http://www.w3c.org/">World Wide Web Consortium</a>, “<a href="http://www.w3.org/TR/2004/REC-xmlschema-2-20041028/">XML Schema Part 2: Datatypes Second Edition</a>”, W3C&nbsp;REC-xmlschema-2-20041028, October&nbsp;2004, &lt;<a href="http://www.w3.org/TR/2004/REC-xmlschema-2-20041028/">http://www.w3.org/TR/2004/REC-xmlschema-2-20041028/</a>&gt;.</dd></dl></section><section id="rfc.references.2"><h3 id="rfc.section.11.2"><a href="#rfc.section.11.2">11.2.</a> Informative References</h3><dl class="reference"><dt id="RFC3253">[RFC3253]</dt><dd><a href="mailto:geoffrey.clemm@rational.com">Clemm, G.</a>, <a href="mailto:jamsden@us.ibm.com">Amsden, J.</a>, <a href="mailto:tim_ellison@uk.ibm.com">Ellison, T.</a>, <a href="mailto:ckaler@microsoft.com">Kaler, C.</a>, and <a href="mailto:ejw@cse.ucsc.edu">J. Whitehead</a>, “<a href="https://tools.ietf.org/html/rfc3253">Versioning Extensions to WebDAV</a>”, RFC&nbsp;3253, March&nbsp;2002.</dd></dl></section></section><section id="rfc.authors" class="avoidbreakinside"><h2><a href="#rfc.authors">Author's Address</a></h2><address><b>Julian F. Reschke</b><br>greenbytes GmbH<br>Hafenweg 16<br>Muenster, NW&nbsp;48155<br>Germany<br>Phone: <a href="tel:+492512807760">+49 251 2807760</a><br>Fax: <a href="fax:+492512807761">+49 251 2807761</a><br>EMail: <a href="mailto:julian.reschke@greenbytes.de">julian.reschke@greenbytes.de</a><br>URI: <a href="http://greenbytes.de/tech/webdav/">http://greenbytes.de/tech/webdav/</a></address></section><section id="rfc.copyright"><h2><a href="#rfc.copyright">Full Copyright Statement</a></h2><p>Copyright © The Internet Society (2005).</p><p>This document is subject to the rights, licenses and restrictions contained in BCP 78 and at <a href="http://www.rfc-editor.org/copyright.html">http://www.rfc-editor.org/copyright.html</a>, and except as set forth therein, the authors retain all their rights.</p><p>This
+ document and the information contained herein are provided on an “AS 
+IS” basis and THE CONTRIBUTOR, THE ORGANIZATION HE/SHE REPRESENTS OR IS 
+SPONSORED BY (IF ANY), THE INTERNET SOCIETY AND THE INTERNET ENGINEERING
+ TASK FORCE DISCLAIM ALL WARRANTIES, EXPRESS OR IMPLIED, INCLUDING BUT 
+NOT LIMITED TO ANY WARRANTY THAT THE USE OF THE INFORMATION HEREIN WILL 
+NOT INFRINGE ANY RIGHTS OR ANY IMPLIED WARRANTIES OF MERCHANTABILITY OR 
+FITNESS FOR A PARTICULAR PURPOSE.</p></section><section id="rfc.ipr"><h2><a href="#rfc.ipr">Intellectual Property</a></h2><p>The
+ IETF takes no position regarding the validity or scope of any 
+Intellectual Property Rights or other rights that might be claimed to 
+pertain to the implementation or use of the technology described in this
+ document or the extent to which any license under such rights might or 
+might not be available; nor does it represent that it has made any 
+independent effort to identify any such rights. Information on the 
+procedures with respect to rights in RFC documents can be found in BCP 
+78 and BCP 79.</p><p>Copies of IPR disclosures made to the IETF 
+Secretariat and any assurances of licenses to be made available, or the 
+result of an attempt made to obtain a general license or permission for 
+the use of such proprietary rights by implementers or users of this 
+specification can be obtained from the IETF on-line IPR repository at <a href="http://www.ietf.org/ipr">http://www.ietf.org/ipr</a>.</p><p>The
+ IETF invites any interested party to bring to its attention any 
+copyrights, patents or patent applications, or other proprietary rights 
+that may cover technology that may be required to implement this 
+standard. Please address the information to the IETF at <a href="mailto:ietf-ipr@ietf.org">ietf-ipr@ietf.org</a>.</p></section><section id="n-acknowledgment"><h2><a href="#n-acknowledgment">Acknowledgment</a></h2><p>Funding for the RFC Editor function is currently provided by the Internet Society.</p></section>
+</body></html>
