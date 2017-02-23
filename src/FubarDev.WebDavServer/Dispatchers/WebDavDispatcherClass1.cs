@@ -16,6 +16,9 @@ using JetBrains.Annotations;
 
 namespace FubarDev.WebDavServer.Dispatchers
 {
+    /// <summary>
+    /// The default WebDAV class 1 implementation
+    /// </summary>
     public class WebDavDispatcherClass1 : IWebDavClass1
     {
         [CanBeNull]
@@ -48,6 +51,11 @@ namespace FubarDev.WebDavServer.Dispatchers
         [CanBeNull]
         private readonly IMoveHandler _moveHandler;
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="WebDavDispatcherClass1"/> class.
+        /// </summary>
+        /// <param name="class1Handlers">The WebDAV class 1 handlers</param>
+        /// <param name="context">The WebDAV context</param>
         public WebDavDispatcherClass1([NotNull] [ItemNotNull] IEnumerable<IClass1Handler> class1Handlers, [NotNull] IWebDavContext context)
         {
             var httpMethods = new HashSet<string>();
