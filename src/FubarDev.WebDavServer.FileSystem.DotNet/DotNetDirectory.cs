@@ -81,11 +81,11 @@ namespace FubarDev.WebDavServer.FileSystem.DotNet
 
         public override async Task<DeleteResult> DeleteAsync(CancellationToken cancellationToken)
         {
-            DirectoryInfo.Delete(true);
-
             var propStore = FileSystem.PropertyStore;
             if (propStore != null)
                 await propStore.RemoveAsync(this, cancellationToken).ConfigureAwait(false);
+
+            DirectoryInfo.Delete(true);
 
             return new DeleteResult(WebDavStatusCode.OK, null);
         }

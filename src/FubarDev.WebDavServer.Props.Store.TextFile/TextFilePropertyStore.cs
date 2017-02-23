@@ -76,6 +76,9 @@ namespace FubarDev.WebDavServer.Props.Store.TextFile
 
         public override async Task<IReadOnlyCollection<XElement>> GetAsync(IEntry entry, CancellationToken cancellationToken)
         {
+            if (_logger.IsEnabled(LogLevel.Trace))
+                _logger.LogTrace($"Get properties for {entry.Path}");
+
             var storeData = Load(entry, false, cancellationToken);
             EntryInfo info;
             IReadOnlyCollection<XElement> result;
@@ -102,6 +105,9 @@ namespace FubarDev.WebDavServer.Props.Store.TextFile
 
         public override Task SetAsync(IEntry entry, IEnumerable<XElement> elements, CancellationToken cancellationToken)
         {
+            if (_logger.IsEnabled(LogLevel.Trace))
+                _logger.LogTrace($"Set properties for {entry.Path}");
+
             var isETagProperty = entry is IEntityTagEntry;
             var info = GetInfo(entry, cancellationToken) ?? new EntryInfo();
             foreach (var element in elements)
@@ -121,6 +127,9 @@ namespace FubarDev.WebDavServer.Props.Store.TextFile
 
         public override Task<IReadOnlyCollection<bool>> RemoveAsync(IEntry entry, IEnumerable<XName> names, CancellationToken cancellationToken)
         {
+            if (_logger.IsEnabled(LogLevel.Trace))
+                _logger.LogTrace($"Remove properties for {entry.Path}");
+
             var info = GetInfo(entry, cancellationToken) ?? new EntryInfo();
             var result = new List<bool>();
             foreach (var name in names)
@@ -212,12 +221,22 @@ namespace FubarDev.WebDavServer.Props.Store.TextFile
         {
             var isCollection = entry is ICollection;
             var path = GetFileSystemPath(entry);
+            string result;
             if (isCollection)
-                return Path.Combine(path, _storeEntryName);
+            {
+                result = Path.Combine(path, _storeEntryName);
+            }
+            else
+            {
+                var directoryName = Path.GetDirectoryName(path);
+                Debug.Assert(directoryName != null, "directoryName != null");
+                result = Path.Combine(directoryName, _storeEntryName);
+            }
 
-            var directoryName = Path.GetDirectoryName(path);
-            Debug.Assert(directoryName != null, "directoryName != null");
-            return Path.Combine(directoryName, _storeEntryName);
+            if (_logger.IsEnabled(LogLevel.Trace))
+                _logger.LogTrace($"Property store file name for {entry.Path} is {result}");
+
+            return result;
         }
 
         private string GetFileSystemPath(IEntry entry)
@@ -232,7 +251,12 @@ namespace FubarDev.WebDavServer.Props.Store.TextFile
             }
 
             names.Reverse();
-            return Path.Combine(RootPath, Path.Combine(names.ToArray()));
+            var result = Path.Combine(RootPath, Path.Combine(names.ToArray()));
+
+            if (_logger.IsEnabled(LogLevel.Trace))
+                _logger.LogTrace($"File system path for {entry.Path} is {result}");
+
+            return result;
         }
 
         // ReSharper disable once ClassNeverInstantiated.Local
