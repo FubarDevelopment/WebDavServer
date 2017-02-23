@@ -95,7 +95,7 @@ namespace FubarDev.WebDavServer.Handlers.Impl
             try
             {
                 var baseUrl = WebDavContext.BaseUrl;
-                var sourceUrl = new Uri(baseUrl, sourcePath);
+                var sourceUrl = new Uri(WebDavContext.RootUrl, sourcePath);
                 var destinationUrl = new Uri(sourceUrl, destination);
 
                 // Ignore different schemes
@@ -132,9 +132,20 @@ namespace FubarDev.WebDavServer.Handlers.Impl
                 }
                 else
                 {
+                    // Copy or move from one known file system to another
+                    var destinationPath = baseUrl.MakeRelativeUri(destinationUrl).ToString();
+                    var destinationSelectionResult =
+                        await _rootFileSystem.SelectAsync(destinationPath, cancellationToken).ConfigureAwait(false);
+                    if (destinationSelectionResult.IsMissing && destinationSelectionResult.MissingNames.Count != 1)
+                    {
+                        _logger.LogDebug(
+                            $"{destinationUrl}: The target is missing with the following path parts: {string.Join(", ", destinationSelectionResult.MissingNames)}");
+                        throw new WebDavException(WebDavStatusCode.Conflict);
+                    }
+
                     var destLockRequirements = new Lock(
-                        sourceSelectionResult.TargetEntry.Path,
-                        WebDavContext.RelativeRequestUrl,
+                        new Uri(destinationPath, UriKind.Relative), 
+                        WebDavContext.RootUrl.MakeRelativeUri(destinationUrl),
                         isMove || depth != DepthHeader.Zero,
                         new XElement(WebDavXml.Dav + "owner", WebDavContext.User.Identity.Name),
                         LockAccessType.Write,
@@ -153,17 +164,6 @@ namespace FubarDev.WebDavServer.Handlers.Impl
 
                     try
                     {
-                        // Copy or move from one known file system to another
-                        var destinationPath = baseUrl.MakeRelativeUri(destinationUrl).ToString();
-                        var destinationSelectionResult =
-                            await _rootFileSystem.SelectAsync(destinationPath, cancellationToken).ConfigureAwait(false);
-                        if (destinationSelectionResult.IsMissing && destinationSelectionResult.MissingNames.Count != 1)
-                        {
-                            _logger.LogDebug(
-                                $"{destinationUrl}: The target is missing with the following path parts: {string.Join(", ", destinationSelectionResult.MissingNames)}");
-                            throw new WebDavException(WebDavStatusCode.Conflict);
-                        }
-
                         var isSameFileSystem = ReferenceEquals(
                             sourceSelectionResult.TargetFileSystem,
                             destinationSelectionResult.TargetFileSystem);
