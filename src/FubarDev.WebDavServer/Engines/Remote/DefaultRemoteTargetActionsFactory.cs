@@ -11,15 +11,23 @@ using FubarDev.WebDavServer.Model;
 
 namespace FubarDev.WebDavServer.Engines.Remote
 {
+    /// <summary>
+    /// The factory class for remote target actions
+    /// </summary>
     public class DefaultRemoteTargetActionsFactory : IRemoteCopyTargetActionsFactory, IRemoteMoveTargetActionsFactory
     {
         private readonly IHttpMessageHandlerFactory _httpMessageHandlerFactory;
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="DefaultRemoteTargetActionsFactory"/> class.
+        /// </summary>
+        /// <param name="httpMessageHandlerFactory">The factory for <see cref="HttpClient"/> instances</param>
         public DefaultRemoteTargetActionsFactory(IHttpMessageHandlerFactory httpMessageHandlerFactory)
         {
             _httpMessageHandlerFactory = httpMessageHandlerFactory;
         }
 
+        /// <inheritdoc />
         public async Task<IRemoteCopyTargetActions> CreateCopyTargetActionsAsync(Uri destinationUrl, CancellationToken cancellationToken)
         {
             // Copy or move from server to server (slow)
@@ -39,6 +47,7 @@ namespace FubarDev.WebDavServer.Engines.Remote
             return new CopyRemoteHttpClientTargetActions(httpClient);
         }
 
+        /// <inheritdoc />
         public async Task<IRemoteMoveTargetActions> CreateMoveTargetActionsAsync(Uri destinationUrl, CancellationToken cancellationToken)
         {
             // Copy or move from server to server (slow)

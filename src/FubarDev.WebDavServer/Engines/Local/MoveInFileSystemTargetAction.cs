@@ -15,24 +15,34 @@ using Microsoft.Extensions.Logging;
 
 namespace FubarDev.WebDavServer.Engines.Local
 {
+    /// <summary>
+    /// The <see cref="ITargetActions{TCollection,TDocument,TMissing}"/> implementation that moves only entries within the same file system
+    /// </summary>
     public class MoveInFileSystemTargetAction : ITargetActions<CollectionTarget, DocumentTarget, MissingTarget>
     {
         [NotNull]
         private readonly ILogger _logger;
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="MoveInFileSystemTargetAction"/> class.
+        /// </summary>
+        /// <param name="logger">The logger</param>
         public MoveInFileSystemTargetAction([NotNull] ILogger logger)
         {
             _logger = logger;
         }
 
+        /// <inheritdoc />
         public RecursiveTargetBehaviour ExistingTargetBehaviour { get; } = RecursiveTargetBehaviour.Overwrite;
 
+        /// <inheritdoc />
         public async Task<DocumentTarget> ExecuteAsync(IDocument source, MissingTarget destination, CancellationToken cancellationToken)
         {
             var doc = await source.MoveToAsync(destination.Parent.Collection, destination.Name, cancellationToken).ConfigureAwait(false);
             return new DocumentTarget(destination.Parent, destination.DestinationUrl, doc, this);
         }
 
+        /// <inheritdoc />
         public async Task<ActionResult> ExecuteAsync(IDocument source, DocumentTarget destination, CancellationToken cancellationToken)
         {
             try
@@ -50,6 +60,7 @@ namespace FubarDev.WebDavServer.Engines.Local
             }
         }
 
+        /// <inheritdoc />
         public async Task ExecuteAsync(ICollection source, CollectionTarget destination, CancellationToken cancellationToken)
         {
             await CopyETagAsync(source, destination.Collection, cancellationToken).ConfigureAwait(false);

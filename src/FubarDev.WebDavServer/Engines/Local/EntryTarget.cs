@@ -18,11 +18,20 @@ using JetBrains.Annotations;
 
 namespace FubarDev.WebDavServer.Engines.Local
 {
+    /// <summary>
+    /// The base class of all existing targets
+    /// </summary>
     public abstract class EntryTarget : IExistingTarget
     {
         [NotNull]
         private readonly IEntry _entry;
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="EntryTarget"/> class.
+        /// </summary>
+        /// <param name="parent">The parent collection</param>
+        /// <param name="destinationUrl">The destination URL for this entry</param>
+        /// <param name="entry">The underlying entry</param>
         protected EntryTarget([CanBeNull] CollectionTarget parent, [NotNull] Uri destinationUrl, [NotNull] IEntry entry)
         {
             _entry = entry;
@@ -34,6 +43,9 @@ namespace FubarDev.WebDavServer.Engines.Local
         /// <inheritdoc />
         public string Name { get; }
 
+        /// <summary>
+        /// Gets the parent collection target
+        /// </summary>
         [CanBeNull]
         public CollectionTarget Parent { get; }
 

@@ -11,13 +11,21 @@ using FubarDev.WebDavServer.FileSystem;
 
 namespace FubarDev.WebDavServer.Engines.Remote
 {
+    /// <summary>
+    /// The <see cref="ITargetActions{TCollection,TDocument,TMissing}"/> implementation that moves entries between servers
+    /// </summary>
     public class MoveRemoteHttpClientTargetActions : RemoteHttpClientTargetActions, IRemoteMoveTargetActions
     {
+        /// <summary>
+        /// Initializes a new instance of the <see cref="MoveRemoteHttpClientTargetActions"/> class.
+        /// </summary>
+        /// <param name="httpClient">The <see cref="HttpClient"/> to use</param>
         public MoveRemoteHttpClientTargetActions(HttpClient httpClient)
             : base(httpClient)
         {
         }
 
+        /// <inheritdoc />
         public override async Task<RemoteDocumentTarget> ExecuteAsync(IDocument source, RemoteMissingTarget destination, CancellationToken cancellationToken)
         {
             using (var stream = await source.OpenReadAsync(cancellationToken).ConfigureAwait(false))
@@ -36,6 +44,7 @@ namespace FubarDev.WebDavServer.Engines.Remote
             return new RemoteDocumentTarget(destination.Parent, destination.Name, destination.DestinationUrl, this);
         }
 
+        /// <inheritdoc />
         public override async Task<ActionResult> ExecuteAsync(IDocument source, RemoteDocumentTarget destination, CancellationToken cancellationToken)
         {
             try
@@ -83,6 +92,7 @@ namespace FubarDev.WebDavServer.Engines.Remote
             return new ActionResult(ActionStatus.Overwritten, destination);
         }
 
+        /// <inheritdoc />
         public override Task ExecuteAsync(ICollection source, RemoteCollectionTarget destination, CancellationToken cancellationToken)
         {
             return source.DeleteAsync(cancellationToken);

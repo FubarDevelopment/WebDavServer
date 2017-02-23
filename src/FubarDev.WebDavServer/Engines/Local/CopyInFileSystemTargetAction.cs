@@ -11,16 +11,22 @@ using FubarDev.WebDavServer.FileSystem;
 
 namespace FubarDev.WebDavServer.Engines.Local
 {
+    /// <summary>
+    /// The <see cref="ITargetActions{TCollection,TDocument,TMissing}"/> implementation that copies only entries within the same file system
+    /// </summary>
     public class CopyInFileSystemTargetAction : ITargetActions<CollectionTarget, DocumentTarget, MissingTarget>
     {
+        /// <inheritdoc />
         public RecursiveTargetBehaviour ExistingTargetBehaviour { get; } = RecursiveTargetBehaviour.Overwrite;
 
+        /// <inheritdoc />
         public async Task<DocumentTarget> ExecuteAsync(IDocument source, MissingTarget destination, CancellationToken cancellationToken)
         {
             var doc = await source.CopyToAsync(destination.Parent.Collection, destination.Name, cancellationToken).ConfigureAwait(false);
             return new DocumentTarget(destination.Parent, destination.DestinationUrl, doc, this);
         }
 
+        /// <inheritdoc />
         public async Task<ActionResult> ExecuteAsync(IDocument source, DocumentTarget destination, CancellationToken cancellationToken)
         {
             try
@@ -38,6 +44,7 @@ namespace FubarDev.WebDavServer.Engines.Local
             }
         }
 
+        /// <inheritdoc />
         public Task ExecuteAsync(ICollection source, CollectionTarget destination, CancellationToken cancellationToken)
         {
             return CopyETagAsync(source, destination.Collection, cancellationToken);

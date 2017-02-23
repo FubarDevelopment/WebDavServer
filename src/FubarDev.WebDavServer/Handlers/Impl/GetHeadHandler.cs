@@ -18,11 +18,19 @@ using JetBrains.Annotations;
 
 namespace FubarDev.WebDavServer.Handlers.Impl
 {
+    /// <summary>
+    /// The implementation of the <see cref="IGetHandler"/> and <see cref="IHeadHandler"/> interfaces
+    /// </summary>
     public class GetHeadHandler : IGetHandler, IHeadHandler
     {
         [NotNull]
         private readonly IWebDavContext _context;
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="GetHeadHandler"/> class.
+        /// </summary>
+        /// <param name="fileSystem">The root file system</param>
+        /// <param name="context">The WebDAV context</param>
         public GetHeadHandler([NotNull] IFileSystem fileSystem, [NotNull] IWebDavContext context)
         {
             _context = context;
@@ -32,6 +40,9 @@ namespace FubarDev.WebDavServer.Handlers.Impl
         /// <inheritdoc />
         public IEnumerable<string> HttpMethods { get; } = new[] { "GET", "HEAD" };
 
+        /// <summary>
+        /// Gets the root file system
+        /// </summary>
         [NotNull]
         public IFileSystem FileSystem { get; }
 

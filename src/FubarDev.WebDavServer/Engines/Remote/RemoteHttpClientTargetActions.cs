@@ -25,6 +25,9 @@ using JetBrains.Annotations;
 
 namespace FubarDev.WebDavServer.Engines.Remote
 {
+    /// <summary>
+    /// Base class for remote target actions
+    /// </summary>
     public abstract class RemoteHttpClientTargetActions : IRemoteTargetActions
     {
         [NotNull]
@@ -51,32 +54,46 @@ namespace FubarDev.WebDavServer.Engines.Remote
         [NotNull]
         private static readonly XmlSerializer _propertyUpdateSerializer = new XmlSerializer(typeof(propertyupdate));
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="RemoteHttpClientTargetActions"/> class.
+        /// </summary>
+        /// <param name="httpClient">The <see cref="HttpClient"/> to use for the communication with the remote server</param>
         protected RemoteHttpClientTargetActions([NotNull] HttpClient httpClient)
         {
             Client = httpClient;
         }
 
+        /// <inheritdoc />
         public RecursiveTargetBehaviour ExistingTargetBehaviour { get; } = RecursiveTargetBehaviour.DeleteTarget;
 
+        /// <summary>
+        /// Gets the <see cref="HttpClient"/> to communicate with the remote server
+        /// </summary>
         [NotNull]
         protected HttpClient Client { get; }
 
+        /// <inheritdoc />
         public abstract Task<RemoteDocumentTarget> ExecuteAsync(IDocument source, RemoteMissingTarget destination, CancellationToken cancellationToken);
 
+        /// <inheritdoc />
         public abstract Task<ActionResult> ExecuteAsync(IDocument source, RemoteDocumentTarget destination, CancellationToken cancellationToken);
 
+        /// <inheritdoc />
         public abstract Task ExecuteAsync(ICollection source, RemoteCollectionTarget destination, CancellationToken cancellationToken);
 
+        /// <inheritdoc />
         public Task<IReadOnlyCollection<XName>> SetPropertiesAsync(RemoteCollectionTarget target, IEnumerable<IUntypedWriteableProperty> properties, CancellationToken cancellationToken)
         {
             return SetPropertiesAsync(target.DestinationUrl, properties, cancellationToken);
         }
 
+        /// <inheritdoc />
         public Task<IReadOnlyCollection<XName>> SetPropertiesAsync(RemoteDocumentTarget target, IEnumerable<IUntypedWriteableProperty> properties, CancellationToken cancellationToken)
         {
             return SetPropertiesAsync(target.DestinationUrl, properties, cancellationToken);
         }
 
+        /// <inheritdoc />
         public async Task<RemoteCollectionTarget> CreateCollectionAsync(
             RemoteCollectionTarget collection,
             string name,
@@ -126,6 +143,7 @@ namespace FubarDev.WebDavServer.Engines.Remote
             }
         }
 
+        /// <inheritdoc />
         public async Task<ITarget> GetAsync(RemoteCollectionTarget collection, string name, CancellationToken cancellationToken)
         {
             var requestData = new propfind()
@@ -208,6 +226,7 @@ namespace FubarDev.WebDavServer.Engines.Remote
             return new RemoteCollectionTarget(collection, name, collection.DestinationUrl.AppendDirectory(name), false, this);
         }
 
+        /// <inheritdoc />
         public async Task DeleteAsync(RemoteCollectionTarget target, CancellationToken cancellationToken)
         {
             using (var response = await Client.DeleteAsync(target.DestinationUrl, cancellationToken).ConfigureAwait(false))
@@ -216,6 +235,7 @@ namespace FubarDev.WebDavServer.Engines.Remote
             }
         }
 
+        /// <inheritdoc />
         public async Task DeleteAsync(RemoteDocumentTarget target, CancellationToken cancellationToken)
         {
             using (var response = await Client.DeleteAsync(target.DestinationUrl, cancellationToken).ConfigureAwait(false))
@@ -224,11 +244,18 @@ namespace FubarDev.WebDavServer.Engines.Remote
             }
         }
 
+        /// <inheritdoc />
         public void Dispose()
         {
             Client.Dispose();
         }
 
+        /// <summary>
+        /// Creates an exception for a failed remote operation
+        /// </summary>
+        /// <param name="requestUrl">The request URL</param>
+        /// <param name="error">The error object</param>
+        /// <returns>The new remote target exception</returns>
         [NotNull]
         protected static RemoteTargetException CreateException([NotNull] Uri requestUrl, [NotNull] error error)
         {
@@ -278,6 +305,13 @@ namespace FubarDev.WebDavServer.Engines.Remote
             return new RemoteTargetException(message, hrefs);
         }
 
+        /// <summary>
+        /// Parse the response for a request
+        /// </summary>
+        /// <param name="requrestUrl">The request URL</param>
+        /// <param name="responseMessage">The response message</param>
+        /// <param name="document">The response document</param>
+        /// <returns>The multistatus created from the <paramref name="document"/></returns>
         protected multistatus Parse([NotNull] Uri requrestUrl, [NotNull] HttpResponseMessage responseMessage, [CanBeNull] XDocument document)
         {
             if (document == null)
@@ -322,6 +356,11 @@ namespace FubarDev.WebDavServer.Engines.Remote
             return result;
         }
 
+        /// <summary>
+        /// Read the response from the <paramref name="responseMessage"/>
+        /// </summary>
+        /// <param name="responseMessage">The response to read the <see cref="XDocument"/> from</param>
+        /// <returns>The <see cref="XDocument"/></returns>
         [NotNull]
         [ItemCanBeNull]
         protected async Task<XDocument> ReadResponseAsync([NotNull] HttpResponseMessage responseMessage)

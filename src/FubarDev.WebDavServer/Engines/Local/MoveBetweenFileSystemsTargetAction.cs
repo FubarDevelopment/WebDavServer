@@ -10,10 +10,15 @@ using FubarDev.WebDavServer.FileSystem;
 
 namespace FubarDev.WebDavServer.Engines.Local
 {
+    /// <summary>
+    /// The <see cref="ITargetActions{TCollection,TDocument,TMissing}"/> implementation that moves between two file systems
+    /// </summary>
     public class MoveBetweenFileSystemsTargetAction : ITargetActions<CollectionTarget, DocumentTarget, MissingTarget>
     {
+        /// <inheritdoc />
         public RecursiveTargetBehaviour ExistingTargetBehaviour { get; } = RecursiveTargetBehaviour.Overwrite;
 
+        /// <inheritdoc />
         public async Task<DocumentTarget> ExecuteAsync(IDocument source, MissingTarget destination, CancellationToken cancellationToken)
         {
             var doc = await destination.Parent.Collection.CreateDocumentAsync(destination.Name, cancellationToken).ConfigureAwait(false);
@@ -25,6 +30,7 @@ namespace FubarDev.WebDavServer.Engines.Local
             return docTarget;
         }
 
+        /// <inheritdoc />
         public async Task<ActionResult> ExecuteAsync(IDocument source, DocumentTarget destination, CancellationToken cancellationToken)
         {
             try
@@ -44,6 +50,7 @@ namespace FubarDev.WebDavServer.Engines.Local
             }
         }
 
+        /// <inheritdoc />
         public async Task ExecuteAsync(ICollection source, CollectionTarget destination, CancellationToken cancellationToken)
         {
             await CopyETagAsync(source, destination.Collection, cancellationToken).ConfigureAwait(false);

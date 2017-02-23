@@ -17,6 +17,12 @@ using Microsoft.Extensions.Logging;
 
 namespace FubarDev.WebDavServer.Engines
 {
+    /// <summary>
+    /// The engine that operates recursively on its targets
+    /// </summary>
+    /// <typeparam name="TCollection">The interface type for a collection target</typeparam>
+    /// <typeparam name="TDocument">The interface type for a document target</typeparam>
+    /// <typeparam name="TMissing">The interface type for a missing target</typeparam>
     public class RecursiveExecutionEngine<TCollection, TDocument, TMissing>
         where TCollection : class, ICollectionTarget<TCollection, TDocument, TMissing>
         where TDocument : class, IDocumentTarget<TCollection, TDocument, TMissing>
@@ -28,6 +34,12 @@ namespace FubarDev.WebDavServer.Engines
 
         private readonly ILogger _logger;
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="RecursiveExecutionEngine{TCollection,TDocument,TMissing}"/> class.
+        /// </summary>
+        /// <param name="handler">The handler that performs the operation on the targets</param>
+        /// <param name="allowOverwrite">Is overwriting the destination allowed?</param>
+        /// <param name="logger">The logger</param>
         public RecursiveExecutionEngine(ITargetActions<TCollection, TDocument, TMissing> handler, bool allowOverwrite, ILogger logger)
         {
             _handler = handler;
@@ -35,6 +47,15 @@ namespace FubarDev.WebDavServer.Engines
             _logger = logger;
         }
 
+        /// <summary>
+        /// Operates on a collection and the given missing target
+        /// </summary>
+        /// <param name="sourceUrl">The root-relative source URL</param>
+        /// <param name="source">The source collection</param>
+        /// <param name="depth">The recursion depth</param>
+        /// <param name="target">The target of the operation</param>
+        /// <param name="cancellationToken">The cancellation token</param>
+        /// <returns>The result information of the current operation</returns>
         public async Task<CollectionActionResult> ExecuteAsync(Uri sourceUrl, ICollection source, DepthHeader depth, TMissing target, CancellationToken cancellationToken)
         {
             if (_logger.IsEnabled(LogLevel.Trace))
@@ -43,6 +64,15 @@ namespace FubarDev.WebDavServer.Engines
             return await ExecuteAsync(sourceUrl, nodes, target, cancellationToken).ConfigureAwait(false);
         }
 
+        /// <summary>
+        /// Operates on a collection and the given target collection
+        /// </summary>
+        /// <param name="sourceUrl">The root-relative source URL</param>
+        /// <param name="source">The source collection</param>
+        /// <param name="depth">The recursion depth</param>
+        /// <param name="target">The target collection</param>
+        /// <param name="cancellationToken">The cancellation token</param>
+        /// <returns>The result information of the current operation</returns>
         public async Task<CollectionActionResult> ExecuteAsync(Uri sourceUrl, ICollection source, DepthHeader depth, TCollection target, CancellationToken cancellationToken)
         {
             if (_logger.IsEnabled(LogLevel.Trace))
@@ -51,6 +81,14 @@ namespace FubarDev.WebDavServer.Engines
             return await ExecuteAsync(sourceUrl, nodes, target, cancellationToken).ConfigureAwait(false);
         }
 
+        /// <summary>
+        /// Operates on a documentation and the given missing target
+        /// </summary>
+        /// <param name="sourceUrl">The root-relative source URL</param>
+        /// <param name="source">The source documentation</param>
+        /// <param name="target">The target of the operation</param>
+        /// <param name="cancellationToken">The cancellation token</param>
+        /// <returns>The result information of the current operation</returns>
         public async Task<ActionResult> ExecuteAsync(Uri sourceUrl, IDocument source, TMissing target, CancellationToken cancellationToken)
         {
             if (_logger.IsEnabled(LogLevel.Trace))
@@ -86,6 +124,14 @@ namespace FubarDev.WebDavServer.Engines
             }
         }
 
+        /// <summary>
+        /// Operates on a documentation and the given document target
+        /// </summary>
+        /// <param name="sourceUrl">The root-relative source URL</param>
+        /// <param name="source">The source documentation</param>
+        /// <param name="target">The target document of the operation</param>
+        /// <param name="cancellationToken">The cancellation token</param>
+        /// <returns>The result information of the current operation</returns>
         public async Task<ActionResult> ExecuteAsync(Uri sourceUrl, IDocument source, TDocument target, CancellationToken cancellationToken)
         {
             if (_logger.IsEnabled(LogLevel.Trace))
@@ -141,7 +187,7 @@ namespace FubarDev.WebDavServer.Engines
             return new ActionResult(ActionStatus.Overwritten, target);
         }
 
-        public async Task<CollectionActionResult> ExecuteAsync(
+        private async Task<CollectionActionResult> ExecuteAsync(
             Uri sourceUrl,
             ICollectionNode sourceNode,
             TMissing target,
@@ -169,7 +215,7 @@ namespace FubarDev.WebDavServer.Engines
             return await ExecuteAsync(sourceUrl, sourceNode, newColl, properties, cancellationToken).ConfigureAwait(false);
         }
 
-        public async Task<CollectionActionResult> ExecuteAsync(
+        private async Task<CollectionActionResult> ExecuteAsync(
             Uri sourceUrl,
             ICollectionNode sourceNode,
             TCollection target,
@@ -205,7 +251,7 @@ namespace FubarDev.WebDavServer.Engines
             return await ExecuteAsync(sourceUrl, sourceNode, target, properties, cancellationToken).ConfigureAwait(false);
         }
 
-        public async Task<CollectionActionResult> ExecuteAsync(
+        private async Task<CollectionActionResult> ExecuteAsync(
             Uri sourceUrl,
             ICollectionNode sourceNode,
             TCollection target,

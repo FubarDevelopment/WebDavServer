@@ -14,17 +14,27 @@ using JetBrains.Annotations;
 
 namespace FubarDev.WebDavServer.Locking
 {
+    /// <summary>
+    /// Implementation of the <see cref="IImplicitLock"/> interface
+    /// </summary>
     public class ImplicitLock : IImplicitLock
     {
         private readonly ILockManager _lockManager;
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="ImplicitLock"/> class.
+        /// </summary>
+        /// <param name="isSuccess"><see langref="false"/> = All <code>If</code> header conditions failed,
+        /// <see langref="true"/> = No lock manager, but still OK</param>
         public ImplicitLock(bool isSuccess = false)
         {
-            // false = All "If" header conditions failed
-            // true = No lock manager, proceed
             IsSuccessful = isSuccess;
         }
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="ImplicitLock"/> class.
+        /// </summary>
+        /// <param name="ownedLocks">The locks matched by the <code>If</code> header</param>
         public ImplicitLock([NotNull] [ItemNotNull] IReadOnlyCollection<IActiveLock> ownedLocks)
         {
             OwnedLocks = ownedLocks;
@@ -32,6 +42,11 @@ namespace FubarDev.WebDavServer.Locking
             IsTemporaryLock = false;
         }
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="ImplicitLock"/> class.
+        /// </summary>
+        /// <param name="lockManager">The lock manager</param>
+        /// <param name="lockResult">Either the implicit lock or the conflicting locks</param>
         public ImplicitLock([NotNull] ILockManager lockManager, [NotNull] LockResult lockResult)
         {
             _lockManager = lockManager;
@@ -42,14 +57,19 @@ namespace FubarDev.WebDavServer.Locking
             IsTemporaryLock = true;
         }
 
+        /// <inheritdoc />
         public IReadOnlyCollection<IActiveLock> OwnedLocks { get; }
 
+        /// <inheritdoc />
         public IReadOnlyCollection<IActiveLock> ConflictingLocks { get; }
 
+        /// <inheritdoc />
         public bool IsTemporaryLock { get; }
 
+        /// <inheritdoc />
         public bool IsSuccessful { get; }
 
+        /// <inheritdoc />
         public IWebDavResult CreateErrorResponse()
         {
             if (IsSuccessful)
@@ -78,6 +98,7 @@ namespace FubarDev.WebDavServer.Locking
             return new WebDavResult<error>(WebDavStatusCode.Locked, error);
         }
 
+        /// <inheritdoc />
         public Task DisposeAsync(CancellationToken cancellationToken)
         {
             if (!IsTemporaryLock)

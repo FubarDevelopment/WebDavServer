@@ -17,12 +17,20 @@ using FubarDev.WebDavServer.Utils;
 
 namespace FubarDev.WebDavServer.Handlers.Impl
 {
+    /// <summary>
+    /// The implementation of the <see cref="IDeleteHandler"/> interface
+    /// </summary>
     public class DeleteHandler : IDeleteHandler
     {
         private readonly IFileSystem _rootFileSystem;
 
         private readonly IWebDavContext _context;
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="DeleteHandler"/> class.
+        /// </summary>
+        /// <param name="rootFileSystem">The root file system</param>
+        /// <param name="context">The current WebDAV context</param>
         public DeleteHandler(IFileSystem rootFileSystem, IWebDavContext context)
         {
             _rootFileSystem = rootFileSystem;

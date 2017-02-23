@@ -12,11 +12,22 @@ using JetBrains.Annotations;
 
 namespace FubarDev.WebDavServer.Engines.Local
 {
+    /// <summary>
+    /// The local file system collection target
+    /// </summary>
     public class CollectionTarget : EntryTarget, ICollectionTarget<CollectionTarget, DocumentTarget, MissingTarget>
     {
         [NotNull]
         private readonly ITargetActions<CollectionTarget, DocumentTarget, MissingTarget> _targetActions;
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="CollectionTarget"/> class.
+        /// </summary>
+        /// <param name="destinationUrl">The destination URL for this collection</param>
+        /// <param name="parent">The parent collection</param>
+        /// <param name="collection">The underlying collection</param>
+        /// <param name="created">Was this collection created by the <see cref="RecursiveExecutionEngine{TCollection,TDocument,TMissing}"/></param>
+        /// <param name="targetActions">The target actions implementation to use</param>
         public CollectionTarget(
             [NotNull] Uri destinationUrl,
             [CanBeNull] CollectionTarget parent,
@@ -30,11 +41,22 @@ namespace FubarDev.WebDavServer.Engines.Local
             Created = created;
         }
 
+        /// <summary>
+        /// Gets the underlying collection
+        /// </summary>
         [NotNull]
         public ICollection Collection { get; }
 
+        /// <inheritdoc />
         public bool Created { get; }
 
+        /// <summary>
+        /// Creates a new instance of the <see cref="CollectionTarget"/> class.
+        /// </summary>
+        /// <param name="destinationUrl">The destination URL for this collection</param>
+        /// <param name="collection">The underlying collection</param>
+        /// <param name="targetActions">The target actions implementation to use</param>
+        /// <returns>The created collection target object</returns>
         [NotNull]
         public static CollectionTarget NewInstance(
             [NotNull] Uri destinationUrl,
@@ -56,6 +78,7 @@ namespace FubarDev.WebDavServer.Engines.Local
             return target;
         }
 
+        /// <inheritdoc />
         public async Task<MissingTarget> DeleteAsync(CancellationToken cancellationToken)
         {
             var name = Collection.Name;
@@ -63,6 +86,7 @@ namespace FubarDev.WebDavServer.Engines.Local
             return new MissingTarget(DestinationUrl, name, Parent, _targetActions);
         }
 
+        /// <inheritdoc />
         public async Task<ITarget> GetAsync(string name, CancellationToken cancellationToken)
         {
             var result = await Collection.GetChildAsync(name, cancellationToken).ConfigureAwait(false);
@@ -77,6 +101,7 @@ namespace FubarDev.WebDavServer.Engines.Local
             return new CollectionTarget(DestinationUrl.Append(coll), this, coll, false, _targetActions);
         }
 
+        /// <inheritdoc />
         public MissingTarget NewMissing(string name)
         {
             return new MissingTarget(DestinationUrl.Append(name, false), name, this, _targetActions);

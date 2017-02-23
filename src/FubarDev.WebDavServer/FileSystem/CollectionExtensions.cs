@@ -11,6 +11,9 @@ using JetBrains.Annotations;
 
 namespace FubarDev.WebDavServer.FileSystem
 {
+    /// <summary>
+    /// Extension methods for the collections
+    /// </summary>
     public static class CollectionExtensions
     {
         /// <summary>
@@ -36,6 +39,13 @@ namespace FubarDev.WebDavServer.FileSystem
             return new FileSystemEntries(collection, null, 0, maxDepth);
         }
 
+        /// <summary>
+        /// Gets the collection as node
+        /// </summary>
+        /// <param name="collection">The collection to get the node for</param>
+        /// <param name="maxDepth">The maximum depth to be used to get the child nodes</param>
+        /// <param name="cancellationToken">The cancellation token</param>
+        /// <returns>The collection node</returns>
         public static async Task<ICollectionNode> GetNodeAsync(this ICollection collection, int maxDepth, CancellationToken cancellationToken)
         {
             var subNodeQueue = new Queue<NodeInfo>();
