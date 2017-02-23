@@ -1,0 +1,17 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>FubarDev.WebDavServer.FileSystem.DotNet</name>
+    </assembly>
+    <members>
+        <member name="P:FubarDev.WebDavServer.FileSystem.DotNet.DotNetFileSystem.Root">
+            <inheritdoc />
+        </member>
+        <member name="P:FubarDev.WebDavServer.FileSystem.DotNet.DotNetFileSystem.PropertyStore">
+            <inheritdoc />
+        </member>
+        <member name="P:FubarDev.WebDavServer.FileSystem.DotNet.DotNetFileSystem.LockManager">
+            <inheritdoc />
+        </member>
+    </members>
+</doc>

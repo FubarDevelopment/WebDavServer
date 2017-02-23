@@ -1,0 +1,35 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>FubarDev.WebDavServer.Locking.InMemory</name>
+    </assembly>
+    <members>
+        <member name="E:FubarDev.WebDavServer.Locking.InMemory.InMemoryLockManager.LockAdded">
+            <inheritdoc />
+        </member>
+        <member name="E:FubarDev.WebDavServer.Locking.InMemory.InMemoryLockManager.LockReleased">
+            <inheritdoc />
+        </member>
+        <member name="P:FubarDev.WebDavServer.Locking.InMemory.InMemoryLockManager.Cost">
+            <inheritdoc />
+        </member>
+        <member name="M:FubarDev.WebDavServer.Locking.InMemory.InMemoryLockManager.LockAsync(FubarDev.WebDavServer.Locking.ILock,System.Threading.CancellationToken)">
+            <inheritdoc />
+        </member>
+        <member name="M:FubarDev.WebDavServer.Locking.InMemory.InMemoryLockManager.LockImplicitAsync(FubarDev.WebDavServer.FileSystem.IFileSystem,System.Collections.Generic.IReadOnlyCollection{FubarDev.WebDavServer.Model.Headers.IfHeaderList},FubarDev.WebDavServer.Locking.ILock,System.Threading.CancellationToken)">
+            <inheritdoc />
+        </member>
+        <member name="M:FubarDev.WebDavServer.Locking.InMemory.InMemoryLockManager.RefreshLockAsync(FubarDev.WebDavServer.FileSystem.IFileSystem,FubarDev.WebDavServer.Model.Headers.IfHeader,System.TimeSpan,System.Threading.CancellationToken)">
+            <inheritdoc />
+        </member>
+        <member name="M:FubarDev.WebDavServer.Locking.InMemory.InMemoryLockManager.ReleaseAsync(System.String,System.Uri,System.Threading.CancellationToken)">
+            <inheritdoc />
+        </member>
+        <member name="M:FubarDev.WebDavServer.Locking.InMemory.InMemoryLockManager.GetLocksAsync(System.Threading.CancellationToken)">
+            <inheritdoc />
+        </member>
+        <member name="M:FubarDev.WebDavServer.Locking.InMemory.InMemoryLockManager.GetAffectedLocksAsync(System.String,System.Boolean,System.Boolean,System.Threading.CancellationToken)">
+            <inheritdoc />
+        </member>
+    </members>
+</doc>

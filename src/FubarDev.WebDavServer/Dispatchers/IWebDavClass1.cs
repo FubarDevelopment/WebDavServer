@@ -14,6 +14,9 @@ using JetBrains.Annotations;
 
 namespace FubarDev.WebDavServer.Dispatchers
 {
+    /// <summary>
+    /// Interface for WebDAV class 1 support
+    /// </summary>
     public interface IWebDavClass1 : IWebDavClass
     {
         [NotNull]

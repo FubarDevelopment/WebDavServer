@@ -13,9 +13,18 @@ using JetBrains.Annotations;
 
 namespace FubarDev.WebDavServer
 {
+    /// <summary>
+    /// Extension methods for the <see cref="CollectionActionResult"/>
+    /// </summary>
     public static class CollectionActionResultExtensions
     {
-        public static IWebDavResult Evaluate([NotNull] this CollectionActionResult collectionResult, [NotNull] IWebDavContext host)
+        /// <summary>
+        /// Evaluate the result of a <see cref="CollectionActionResult"/> and return a <see cref="IWebDavResult"/> implementation object.
+        /// </summary>
+        /// <param name="collectionResult">The <see cref="CollectionActionResult"/> to evaluate</param>
+        /// <param name="context">The <see cref="IWebDavContext"/> to create the response for</param>
+        /// <returns>The created response</returns>
+        public static IWebDavResult Evaluate([NotNull] this CollectionActionResult collectionResult, [NotNull] IWebDavContext context)
         {
             if (collectionResult.Status == ActionStatus.Ignored)
             {
@@ -33,7 +42,7 @@ namespace FubarDev.WebDavServer
                 var statusCode = GetWebDavStatusCode(resultItem.Key);
                 if (resultItem.Value.Count == 1)
                 {
-                    var response = CreateResponse(resultItem.Key, resultItem.Value, host);
+                    var response = CreateResponse(resultItem.Key, resultItem.Value, context);
                     if (response.error != null)
                     {
                         return new WebDavResult<error>(statusCode, response.error);
@@ -45,7 +54,7 @@ namespace FubarDev.WebDavServer
 
             var result = new multistatus()
             {
-                response = resultsByStatus.Select(x => CreateResponse(x.Key, x.Value, host)).ToArray(),
+                response = resultsByStatus.Select(x => CreateResponse(x.Key, x.Value, context)).ToArray(),
             };
 
             return new WebDavResult<multistatus>(WebDavStatusCode.MultiStatus, result);

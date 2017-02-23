@@ -144,7 +144,7 @@ namespace FubarDev.WebDavServer.Handlers.Impl
                     }
 
                     var destLockRequirements = new Lock(
-                        new Uri(destinationPath, UriKind.Relative), 
+                        new Uri(destinationPath, UriKind.Relative),
                         WebDavContext.RootUrl.MakeRelativeUri(destinationUrl),
                         isMove || depth != DepthHeader.Zero,
                         new XElement(WebDavXml.Dav + "owner", WebDavContext.User.Identity.Name),
