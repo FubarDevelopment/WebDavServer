@@ -12,9 +12,34 @@ namespace FubarDev.WebDavServer
     {
         public static Uri GetParent(this Uri url)
         {
-            if (url.OriginalString.EndsWith("/"))
-                return new Uri(url, "..");
-            return new Uri(url, ".");
+            if (url.IsAbsoluteUri)
+            {
+                if (url.OriginalString.EndsWith("/"))
+                    return new Uri(url, "..");
+                return new Uri(url, ".");
+            }
+
+            var temp = url.OriginalString;
+            if (temp.EndsWith("/"))
+                temp = temp.Substring(0, temp.Length - 1);
+            var p = temp.LastIndexOf("/", StringComparison.Ordinal);
+            if (p == -1)
+                return new Uri(string.Empty, UriKind.Relative);
+            return new Uri(temp.Substring(0, p + 1), UriKind.Relative);
+        }
+
+        public static Uri GetCollectionUri(this Uri url)
+        {
+            if (url.IsAbsoluteUri)
+                return new Uri(url, ".");
+
+            var temp = url.OriginalString;
+            if (temp.EndsWith("/"))
+                return url;
+            var p = temp.LastIndexOf("/", StringComparison.Ordinal);
+            if (p == -1)
+                return new Uri(string.Empty, UriKind.Relative);
+            return new Uri(temp.Substring(0, p + 1), UriKind.Relative);
         }
 
         public static string GetName(this Uri url)

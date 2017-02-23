@@ -39,7 +39,7 @@ namespace FubarDev.WebDavServer.Engines.Local
             [NotNull] string name,
             [NotNull] ITargetActions<CollectionTarget, DocumentTarget, MissingTarget> targetActions)
         {
-            var collUrl = new Uri(destinationUrl, new Uri(".", UriKind.Relative));
+            var collUrl = destinationUrl.GetCollectionUri();
             var collTarget = new CollectionTarget(collUrl, null, parent, false, targetActions);
             var target = new MissingTarget(destinationUrl, name, collTarget, targetActions);
             return target;

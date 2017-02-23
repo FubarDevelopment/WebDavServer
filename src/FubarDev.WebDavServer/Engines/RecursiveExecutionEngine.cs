@@ -10,7 +10,6 @@ using System.Threading;
 using System.Threading.Tasks;
 
 using FubarDev.WebDavServer.FileSystem;
-using FubarDev.WebDavServer.Model;
 using FubarDev.WebDavServer.Model.Headers;
 using FubarDev.WebDavServer.Props;
 
@@ -38,18 +37,24 @@ namespace FubarDev.WebDavServer.Engines
 
         public async Task<CollectionActionResult> ExecuteAsync(Uri sourceUrl, ICollection source, DepthHeader depth, TMissing target, CancellationToken cancellationToken)
         {
+            if (_logger.IsEnabled(LogLevel.Trace))
+                _logger.LogTrace($"Collecting nodes for operation on collection {sourceUrl} with missing target {target.DestinationUrl}.");
             var nodes = await source.GetNodeAsync(depth.OrderValue, cancellationToken).ConfigureAwait(false);
             return await ExecuteAsync(sourceUrl, nodes, target, cancellationToken).ConfigureAwait(false);
         }
 
         public async Task<CollectionActionResult> ExecuteAsync(Uri sourceUrl, ICollection source, DepthHeader depth, TCollection target, CancellationToken cancellationToken)
         {
+            if (_logger.IsEnabled(LogLevel.Trace))
+                _logger.LogTrace($"Collecting nodes for operation on collection {sourceUrl} with existing target {target.DestinationUrl}.");
             var nodes = await source.GetNodeAsync(depth.OrderValue, cancellationToken).ConfigureAwait(false);
             return await ExecuteAsync(sourceUrl, nodes, target, cancellationToken).ConfigureAwait(false);
         }
 
         public async Task<ActionResult> ExecuteAsync(Uri sourceUrl, IDocument source, TMissing target, CancellationToken cancellationToken)
         {
+            if (_logger.IsEnabled(LogLevel.Trace))
+                _logger.LogTrace($"Perform operation on document {sourceUrl} with missing target {target.DestinationUrl}.");
             try
             {
                 var properties = await source.GetProperties()
@@ -83,6 +88,9 @@ namespace FubarDev.WebDavServer.Engines
 
         public async Task<ActionResult> ExecuteAsync(Uri sourceUrl, IDocument source, TDocument target, CancellationToken cancellationToken)
         {
+            if (_logger.IsEnabled(LogLevel.Trace))
+                _logger.LogTrace($"Try to perform operation on document {sourceUrl} with existing target {target.DestinationUrl}.");
+
             if (!_allowOverwrite)
             {
                 _logger.LogDebug($"{target.DestinationUrl}: Cannot overwrite because destination exists");
@@ -91,6 +99,9 @@ namespace FubarDev.WebDavServer.Engines
 
             if (_handler.ExistingTargetBehaviour == RecursiveTargetBehaviour.DeleteTarget)
             {
+                if (_logger.IsEnabled(LogLevel.Trace))
+                    _logger.LogTrace($"Delete {target.DestinationUrl} before performing operation on document {sourceUrl}.");
+
                 TMissing missingTarget;
                 try
                 {
@@ -107,6 +118,9 @@ namespace FubarDev.WebDavServer.Engines
 
                 return await ExecuteAsync(sourceUrl, source, missingTarget, cancellationToken).ConfigureAwait(false);
             }
+
+            if (_logger.IsEnabled(LogLevel.Trace))
+                _logger.LogTrace($"Perform operation on document {sourceUrl} with existing target {target.DestinationUrl}.");
 
             var properties = await source.GetProperties().OfType<IUntypedWriteableProperty>().ToList(cancellationToken).ConfigureAwait(false);
 
@@ -133,6 +147,9 @@ namespace FubarDev.WebDavServer.Engines
             TMissing target,
             CancellationToken cancellationToken)
         {
+            if (_logger.IsEnabled(LogLevel.Trace))
+                _logger.LogTrace($"Collect properties for operation on collection {sourceUrl} and create target {target.DestinationUrl}.");
+
             var properties = await sourceNode.Collection.GetProperties().OfType<IUntypedWriteableProperty>().ToList(cancellationToken).ConfigureAwait(false);
 
             TCollection newColl;
@@ -160,6 +177,9 @@ namespace FubarDev.WebDavServer.Engines
         {
             if (_allowOverwrite && _handler.ExistingTargetBehaviour == RecursiveTargetBehaviour.DeleteTarget)
             {
+                if (_logger.IsEnabled(LogLevel.Trace))
+                    _logger.LogTrace($"Delete existing target {target.DestinationUrl} for operation on collection {sourceUrl}.");
+
                 // Only delete an existing collection when the client allows an overwrite
                 TMissing missing;
                 try
@@ -178,6 +198,9 @@ namespace FubarDev.WebDavServer.Engines
                 return await ExecuteAsync(sourceUrl, sourceNode, missing, cancellationToken).ConfigureAwait(false);
             }
 
+            if (_logger.IsEnabled(LogLevel.Trace))
+                _logger.LogTrace($"Collect properties for operation on collection {sourceUrl} with existing target {target.DestinationUrl}.");
+
             var properties = await sourceNode.Collection.GetProperties().OfType<IUntypedWriteableProperty>().ToList(cancellationToken).ConfigureAwait(false);
             return await ExecuteAsync(sourceUrl, sourceNode, target, properties, cancellationToken).ConfigureAwait(false);
         }
@@ -189,6 +212,9 @@ namespace FubarDev.WebDavServer.Engines
             IReadOnlyCollection<IUntypedWriteableProperty> properties,
             CancellationToken cancellationToken)
         {
+            if (_logger.IsEnabled(LogLevel.Trace))
+                _logger.LogTrace($"Perform operation on collection {sourceUrl} with existing target {target.DestinationUrl}.");
+
             var documentActionResults = ImmutableList<ActionResult>.Empty;
             var collectionActionResults = ImmutableList<CollectionActionResult>.Empty;
 

@@ -44,7 +44,7 @@ namespace FubarDev.WebDavServer.Engines.Local
             CollectionTarget parentTarget;
             if (collection.Parent != null)
             {
-                var collUrl = new Uri(destinationUrl, new Uri("..", UriKind.Relative));
+                var collUrl = destinationUrl.GetParent();
                 parentTarget = new CollectionTarget(collUrl, null, collection.Parent, false, targetActions);
             }
             else

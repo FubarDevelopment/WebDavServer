@@ -117,18 +117,17 @@ namespace FubarDev.WebDavServer.Handlers.Impl
 
             try
             {
-                var baseUrl = WebDavContext.BaseUrl;
                 var sourceUrl = new Uri(WebDavContext.RootUrl, sourcePath);
                 var destinationUrl = new Uri(sourceUrl, destination);
 
                 // Ignore different schemes
-                if (!baseUrl.IsBaseOf(destinationUrl) || mode == RecursiveProcessingMode.PreferCrossServer)
+                if (!WebDavContext.BaseUrl.IsBaseOf(destinationUrl) || mode == RecursiveProcessingMode.PreferCrossServer)
                 {
                     if (_logger.IsEnabled(LogLevel.Trace))
                         _logger.LogTrace("Using cross-server mode");
 
                     if (_logger.IsEnabled(LogLevel.Debug))
-                        _logger.LogDebug($"{baseUrl} is not a base of {destinationUrl}");
+                        _logger.LogDebug($"{WebDavContext.BaseUrl} is not a base of {destinationUrl}");
 
                     using (var remoteHandler = await CreateRemoteTargetActionsAsync(
                             destinationUrl,
@@ -141,6 +140,8 @@ namespace FubarDev.WebDavServer.Handlers.Impl
                                 WebDavStatusCode.BadGateway,
                                 "No remote handler for given client");
                         }
+
+                        sourceUrl = WebDavContext.RootUrl.MakeRelativeUri(sourceUrl);
 
                         var remoteTargetResult = await RemoteExecuteAsync(
                             remoteHandler,
@@ -156,7 +157,11 @@ namespace FubarDev.WebDavServer.Handlers.Impl
                 else
                 {
                     // Copy or move from one known file system to another
-                    var destinationPath = baseUrl.MakeRelativeUri(destinationUrl).ToString();
+                    var destinationPath = WebDavContext.BaseUrl.MakeRelativeUri(destinationUrl).ToString();
+
+                    sourceUrl = WebDavContext.RootUrl.MakeRelativeUri(sourceUrl);
+                    destinationUrl = WebDavContext.RootUrl.MakeRelativeUri(destinationUrl);
+
                     var destinationSelectionResult =
                         await _rootFileSystem.SelectAsync(destinationPath, cancellationToken).ConfigureAwait(false);
                     if (destinationSelectionResult.IsMissing && destinationSelectionResult.MissingNames.Count != 1)
@@ -168,7 +173,7 @@ namespace FubarDev.WebDavServer.Handlers.Impl
 
                     var destLockRequirements = new Lock(
                         new Uri(destinationPath, UriKind.Relative),
-                        WebDavContext.RootUrl.MakeRelativeUri(destinationUrl),
+                        destinationUrl,
                         isMove || depth != DepthHeader.Zero,
                         new XElement(WebDavXml.Dav + "owner", WebDavContext.User.Identity.Name),
                         LockAccessType.Write,
