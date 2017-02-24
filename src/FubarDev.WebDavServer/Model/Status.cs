@@ -9,15 +9,30 @@ using JetBrains.Annotations;
 
 namespace FubarDev.WebDavServer.Model
 {
+    /// <summary>
+    /// The WebDAV status line
+    /// </summary>
     public struct Status
     {
         private static readonly char[] _splitChars = { ' ', '\t' };
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="Status"/> struct.
+        /// </summary>
+        /// <param name="protocol">The HTTP protocol (usually <code>HTTP/1.1</code>)</param>
+        /// <param name="statusCode">The WebDAV status code</param>
+        /// <param name="reasonPhrase">The status reason phrase</param>
         public Status([NotNull] string protocol, HttpStatusCode statusCode, [CanBeNull] string reasonPhrase = null)
             : this(protocol, (int)statusCode, string.IsNullOrEmpty(reasonPhrase) ? GetReasonPhrase((int)statusCode) : reasonPhrase)
         {
         }
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="Status"/> struct.
+        /// </summary>
+        /// <param name="protocol">The HTTP protocol (usually <code>HTTP/1.1</code>)</param>
+        /// <param name="statusCode">The WebDAV status code</param>
+        /// <param name="reasonPhrase">The status reason phrase</param>
         public Status([NotNull] string protocol, int statusCode, [NotNull] string reasonPhrase)
         {
             if (string.IsNullOrEmpty(protocol))
@@ -30,6 +45,12 @@ namespace FubarDev.WebDavServer.Model
             ReasonPhrase = reasonPhrase;
         }
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="Status"/> struct.
+        /// </summary>
+        /// <param name="protocol">The HTTP protocol (usually <code>HTTP/1.1</code>)</param>
+        /// <param name="statusCode">The WebDAV status code</param>
+        /// <param name="additionalReasonPhrase">The additional text to the reason phrase</param>
         public Status([NotNull] string protocol, WebDavStatusCode statusCode, [CanBeNull] string additionalReasonPhrase = null)
         {
             if (string.IsNullOrEmpty(protocol))
@@ -40,16 +61,33 @@ namespace FubarDev.WebDavServer.Model
             ReasonPhrase = statusCode.GetReasonPhrase(additionalReasonPhrase);
         }
 
+        /// <summary>
+        /// Gets the HTTP protocol (usually <code>HTTP/1.1</code>)
+        /// </summary>
         [NotNull]
         public string Protocol { get; }
 
+        /// <summary>
+        /// Gets the status code
+        /// </summary>
         public int StatusCode { get; }
 
+        /// <summary>
+        /// Gets the <see cref="StatusCode"/>s reason phrase
+        /// </summary>
         [NotNull]
         public string ReasonPhrase { get; }
 
+        /// <summary>
+        /// Gets a value indicating whether the status code indicates success
+        /// </summary>
         public bool IsSuccessStatusCode => StatusCode >= 200 && StatusCode < 300;
 
+        /// <summary>
+        /// Parses the header value to get a new instance of the <see cref="Status"/> class
+        /// </summary>
+        /// <param name="status">The header value to parse</param>
+        /// <returns>The new instance of the <see cref="Status"/> class</returns>
         public static Status Parse([NotNull] string status)
         {
             var parts = status.Split(_splitChars, 3, StringSplitOptions.RemoveEmptyEntries);
@@ -63,6 +101,7 @@ namespace FubarDev.WebDavServer.Model
             return new Status(protocol, statusCode, reasonPhrase);
         }
 
+        /// <inheritdoc />
         public override string ToString()
         {
             return $"{Protocol} {StatusCode} {ReasonPhrase}";

@@ -8,29 +8,37 @@ using System.Linq;
 
 namespace FubarDev.WebDavServer.Model.Headers
 {
+    /// <summary>
+    /// The HTTP <code>Timeout</code> header
+    /// </summary>
     public class TimeoutHeader
     {
         private static readonly char[] _unitValueSplitChar = { '-' };
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="TimeoutHeader"/> class.
+        /// </summary>
+        /// <param name="values">The timeout values</param>
         public TimeoutHeader(IReadOnlyCollection<TimeSpan> values)
         {
             Values = values;
         }
 
-        public TimeoutHeader(params TimeSpan[] values)
-        {
-            Values = values;
-        }
-
+        /// <summary>
+        /// Gets the timeout value for an infinite timeout
+        /// </summary>
         public static TimeSpan Infinite { get; } = TimeSpan.MaxValue;
 
+        /// <summary>
+        /// Gets the timeout values of the <code>Timeout</code> header
+        /// </summary>
         public IReadOnlyCollection<TimeSpan> Values { get; }
 
-        public static TimeoutHeader Parse(string s)
-        {
-            return Parse(s.Split(',').Where(x => !string.IsNullOrEmpty(x)));
-        }
-
+        /// <summary>
+        /// Parses the header values to get a new instance of the <see cref="TimeoutHeader"/> class
+        /// </summary>
+        /// <param name="args">The header values to parse</param>
+        /// <returns>The new instance of the <see cref="TimeoutHeader"/> class</returns>
         public static TimeoutHeader Parse(IEnumerable<string> args)
         {
             var timespans = new List<TimeSpan>();
@@ -60,6 +68,7 @@ namespace FubarDev.WebDavServer.Model.Headers
             return new TimeoutHeader(timespans);
         }
 
+        /// <inheritdoc />
         public override string ToString()
         {
             var output = Values.Select(timeSpan => timeSpan == Infinite ? "Infinite" : $"Second-{timeSpan.TotalSeconds:F0}");

@@ -10,6 +10,9 @@ using JetBrains.Annotations;
 
 namespace FubarDev.WebDavServer.Model
 {
+    /// <summary>
+    /// Extension methods for the <see cref="WebDavStatusCode"/>
+    /// </summary>
     public static class WebDavStatusCodeExtensions
     {
         [NotNull]
@@ -19,6 +22,12 @@ namespace FubarDev.WebDavServer.Model
             [WebDavStatusCode.OK] = "OK",
         };
 
+        /// <summary>
+        /// Builds the reason phrase for a status code and an additional message
+        /// </summary>
+        /// <param name="statusCode">The status code to build the reason phrase for</param>
+        /// <param name="additionalMessage">The additional message for the reason phrase</param>
+        /// <returns>The built reason phrase</returns>
         [NotNull]
         public static string GetReasonPhrase(this WebDavStatusCode statusCode, [CanBeNull] string additionalMessage = null)
         {

@@ -8,11 +8,13 @@ namespace FubarDev.WebDavServer.Props.Converters
 {
     public class StringConverter : IPropertyConverter<string>
     {
+        /// <inheritdoc />
         public string FromElement(XElement element)
         {
             return element.Value;
         }
 
+        /// <inheritdoc />
         public XElement ToElement(XName name, string value)
         {
             return new XElement(name, value);

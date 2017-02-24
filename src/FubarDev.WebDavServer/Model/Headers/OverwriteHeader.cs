@@ -6,18 +6,26 @@ using System;
 
 namespace FubarDev.WebDavServer.Model.Headers
 {
-    public class OverwriteHeader
+    /// <summary>
+    /// The <code>Overwrite</code> header specific parsing functions
+    /// </summary>
+    public static class OverwriteHeader
     {
-        public static bool? Parse(string overwrite)
+        /// <summary>
+        /// Parses the header string to get the value of the <code>Overwrite</code> header
+        /// </summary>
+        /// <param name="s">The header string to parse</param>
+        /// <returns>The value of the <code>Overwrite</code> header</returns>
+        public static bool? Parse(string s)
         {
-            if (string.IsNullOrWhiteSpace(overwrite))
+            if (string.IsNullOrWhiteSpace(s))
                 return null;
-            overwrite = overwrite.Trim();
-            if (overwrite == "T")
+            s = s.Trim();
+            if (s == "T")
                 return true;
-            if (overwrite == "F")
+            if (s == "F")
                 return false;
-            throw new NotSupportedException($"Overwrite value '{overwrite}' isn't supported");
+            throw new NotSupportedException($"Overwrite value '{s}' isn't supported");
         }
     }
 }

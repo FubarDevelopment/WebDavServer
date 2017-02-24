@@ -12,11 +12,13 @@ namespace FubarDev.WebDavServer.Props.Converters
     {
         private static readonly XmlSerializer _serializer = new XmlSerializer(typeof(T));
 
+        /// <inheritdoc />
         public T FromElement(XElement element)
         {
             return (T)_serializer.Deserialize(element.CreateReader());
         }
 
+        /// <inheritdoc />
         public XElement ToElement(XName name, T value)
         {
             var doc = new XDocument();

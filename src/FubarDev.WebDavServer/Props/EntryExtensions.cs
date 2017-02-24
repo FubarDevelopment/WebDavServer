@@ -9,8 +9,16 @@ using FubarDev.WebDavServer.Props.Live;
 
 namespace FubarDev.WebDavServer.Props
 {
+    /// <summary>
+    /// Extension methods for an <see cref="IEntry"/>
+    /// </summary>
     public static class EntryExtensions
     {
+        /// <summary>
+        /// Gets the default resource type for the given <paramref name="entry"/>
+        /// </summary>
+        /// <param name="entry">The entry to get the resource type property for</param>
+        /// <returns>The resource type property</returns>
         public static ILiveProperty GetResourceTypeProperty(this IEntry entry)
         {
             var coll = entry as ICollection;

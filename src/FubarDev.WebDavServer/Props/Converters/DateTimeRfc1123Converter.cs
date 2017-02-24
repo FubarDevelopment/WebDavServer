@@ -19,11 +19,13 @@ namespace FubarDev.WebDavServer.Props.Converters
             return DateTime.ParseExact(s, "R", CultureInfo.InvariantCulture);
         }
 
+        /// <inheritdoc />
         public DateTime FromElement(XElement element)
         {
             return Parse(element.Value);
         }
 
+        /// <inheritdoc />
         public XElement ToElement(XName name, DateTime value)
         {
             return new XElement(name, value.ToString("R"));

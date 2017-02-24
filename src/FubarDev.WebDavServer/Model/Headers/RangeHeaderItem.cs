@@ -1,4 +1,4 @@
-﻿// <copyright file="RangeHeaderItem.cs" company="Fubar Development Junker">
+﻿    // <copyright file="RangeHeaderItem.cs" company="Fubar Development Junker">
 // Copyright (c) Fubar Development Junker. All rights reserved.
 // </copyright>
 
@@ -87,6 +87,11 @@ namespace FubarDev.WebDavServer.Model.Headers
             return "*";
         }
 
+        /// <summary>
+        /// Normalize this range header item
+        /// </summary>
+        /// <param name="totalLength">The total length to normalize this item with</param>
+        /// <returns>The normalized range item</returns>
         public NormalizedRangeItem Normalize(long totalLength)
         {
             if (!From.HasValue && !To.HasValue)

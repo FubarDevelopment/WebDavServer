@@ -4,18 +4,19 @@
 
 using System.Xml.Linq;
 
-using FubarDev.WebDavServer.Model;
 using FubarDev.WebDavServer.Model.Headers;
 
 namespace FubarDev.WebDavServer.Props.Converters
 {
     public class EntityTagConverter : IPropertyConverter<EntityTag>
     {
+        /// <inheritdoc />
         public EntityTag FromElement(XElement element)
         {
             return EntityTag.FromXml(element);
         }
 
+        /// <inheritdoc />
         public XElement ToElement(XName name, EntityTag value)
         {
             return value.ToXml();
