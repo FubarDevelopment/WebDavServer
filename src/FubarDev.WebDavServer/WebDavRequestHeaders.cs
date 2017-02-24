@@ -20,7 +20,7 @@ namespace FubarDev.WebDavServer
 
         public WebDavRequestHeaders([NotNull] IEnumerable<KeyValuePair<string, IEnumerable<string>>> headers, [NotNull] IWebDavContext context)
         {
-            Headers = headers.ToDictionary(x => x.Key, x => x.Value.ToList(), StringComparer.OrdinalIgnoreCase);
+            Headers = headers.ToDictionary(x => x.Key, x => (IReadOnlyCollection<string>)x.Value.ToList(), StringComparer.OrdinalIgnoreCase);
             Depth = ParseHeader("Depth", args => DepthHeader.Parse(args.Single()));
             Overwrite = ParseHeader("Overwrite", args => OverwriteHeader.Parse(args.Single()));
             Range = ParseHeader("Range", RangeHeader.Parse);
@@ -32,40 +32,40 @@ namespace FubarDev.WebDavServer
             Timeout = ParseHeader("Timeout", TimeoutHeader.Parse);
         }
 
-        public DepthHeader? Depth { get; set; }
+        public DepthHeader? Depth { get; }
 
-        public bool? Overwrite { get; set; }
+        public bool? Overwrite { get; }
 
-        public IfHeader If { get; set; }
+        public IfHeader If { get; }
 
-        public IfMatchHeader IfMatch { get; set; }
+        public IfMatchHeader IfMatch { get; }
 
-        public IfNoneMatchHeader IfNoneMatch { get; set; }
+        public IfNoneMatchHeader IfNoneMatch { get; }
 
-        public IfModifiedSinceHeader IfModifiedSince { get; set; }
+        public IfModifiedSinceHeader IfModifiedSince { get; }
 
-        public IfUnmodifiedSinceHeader IfUnmodifiedSince { get; set; }
+        public IfUnmodifiedSinceHeader IfUnmodifiedSince { get; }
 
-        public RangeHeader Range { get; set; }
+        public RangeHeader Range { get; }
 
-        public TimeoutHeader Timeout { get; set; }
+        public TimeoutHeader Timeout { get; }
 
-        public IDictionary<string, List<string>> Headers { get; }
+        public IReadOnlyDictionary<string, IReadOnlyCollection<string>> Headers { get; }
 
         public IReadOnlyCollection<string> this[string name]
         {
             get
             {
-                List<string> v;
+                IReadOnlyCollection<string> v;
                 if (Headers.TryGetValue(name, out v))
                     return v;
                 return _empty;
             }
         }
 
-        private T ParseHeader<T>(string name, [NotNull] Func<List<string>, T> createFunc, T defaultValue = default(T))
+        private T ParseHeader<T>(string name, [NotNull] Func<IReadOnlyCollection<string>, T> createFunc, T defaultValue = default(T))
         {
-            List<string> v;
+            IReadOnlyCollection<string> v;
             if (Headers.TryGetValue(name, out v))
             {
                 if (v.Count != 0)
