@@ -10,6 +10,9 @@ using JetBrains.Annotations;
 
 namespace FubarDev.WebDavServer.Locking
 {
+    /// <summary>
+    /// The result of a LOCK refresh operation
+    /// </summary>
     public class LockRefreshResult
     {
         /// <summary>

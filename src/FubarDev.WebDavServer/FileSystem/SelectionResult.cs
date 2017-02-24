@@ -12,6 +12,9 @@ using JetBrains.Annotations;
 
 namespace FubarDev.WebDavServer.FileSystem
 {
+    /// <summary>
+    /// The result of a <see cref="IFileSystem.SelectAsync"/> operation
+    /// </summary>
     public class SelectionResult
     {
         private static readonly IReadOnlyCollection<string> _emptyCollection = new string[0];
@@ -26,15 +29,35 @@ namespace FubarDev.WebDavServer.FileSystem
             _pathEntries = pathEntries ?? _emptyCollection;
         }
 
+        /// <summary>
+        /// Gets the type of the result
+        /// </summary>
         public SelectionResultType ResultType { get; }
 
+        /// <summary>
+        /// Gets a value indicating whether there was a missing path part?
+        /// </summary>
         public bool IsMissing =>
             ResultType == SelectionResultType.MissingCollection ||
             ResultType == SelectionResultType.MissingDocumentOrCollection;
 
+        /// <summary>
+        /// Gets the collection of the search result.
+        /// </summary>
+        /// <remarks>
+        /// When <see cref="ResultType"/> is <see cref="SelectionResultType.FoundCollection"/>, this is the found collection.
+        /// When <see cref="ResultType"/> is <see cref="SelectionResultType.FoundDocument"/>, this is the parent collection.
+        /// Otherwise, this is the last found collection.
+        /// </remarks>
         [NotNull]
         public ICollection Collection { get; }
 
+        /// <summary>
+        /// Gets the found document
+        /// </summary>
+        /// <remarks>
+        /// This property is only valid when <see cref="ResultType"/> is <see cref="SelectionResultType.FoundDocument"/>.
+        /// </remarks>
         [CanBeNull]
         public IDocument Document
         {
@@ -46,6 +69,12 @@ namespace FubarDev.WebDavServer.FileSystem
             }
         }
 
+        /// <summary>
+        /// Gets the collection of missing child elements
+        /// </summary>
+        /// <remarks>
+        /// This is only valid, when <see cref="IsMissing"/> is <see langref="true"/>.
+        /// </remarks>
         [NotNull]
         [ItemNotNull]
         public IReadOnlyCollection<string> MissingNames
@@ -58,6 +87,9 @@ namespace FubarDev.WebDavServer.FileSystem
             }
         }
 
+        /// <summary>
+        /// Gets the full root-relative path of the element that was searched
+        /// </summary>
         [NotNull]
         public Uri FullPath
         {
@@ -84,6 +116,12 @@ namespace FubarDev.WebDavServer.FileSystem
             }
         }
 
+        /// <summary>
+        /// Gets the found target entry
+        /// </summary>
+        /// <remarks>
+        /// This is only valid when <see cref="IsMissing"/> is <see langref="false"/>.
+        /// </remarks>
         [NotNull]
         public IEntry TargetEntry
         {
@@ -101,9 +139,18 @@ namespace FubarDev.WebDavServer.FileSystem
             }
         }
 
+        /// <summary>
+        /// Gets the file system of the found element or the last found collection
+        /// </summary>
         [NotNull]
         public IFileSystem TargetFileSystem => ((IEntry)_document ?? Collection).FileSystem;
 
+        /// <summary>
+        /// Creates a selection result for a found document
+        /// </summary>
+        /// <param name="collection">The parent collection</param>
+        /// <param name="document">The found document</param>
+        /// <returns>The created selection result</returns>
         [NotNull]
         public static SelectionResult Create([NotNull] ICollection collection, [NotNull] IDocument document)
         {
@@ -114,6 +161,11 @@ namespace FubarDev.WebDavServer.FileSystem
             return new SelectionResult(SelectionResultType.FoundDocument, collection, document, null);
         }
 
+        /// <summary>
+        /// Creates a selection result for a found collection
+        /// </summary>
+        /// <param name="collection">The found collection</param>
+        /// <returns>The created selection result</returns>
         [NotNull]
         public static SelectionResult Create([NotNull] ICollection collection)
         {
@@ -122,6 +174,12 @@ namespace FubarDev.WebDavServer.FileSystem
             return new SelectionResult(SelectionResultType.FoundCollection, collection, null, null);
         }
 
+        /// <summary>
+        /// Creates a selection for a missing document or collection
+        /// </summary>
+        /// <param name="collection">The last found collection</param>
+        /// <param name="pathEntries">The missing path elements</param>
+        /// <returns>The created selection result</returns>
         [NotNull]
         public static SelectionResult CreateMissingDocumentOrCollection([NotNull] ICollection collection, [NotNull] [ItemNotNull] IReadOnlyCollection<string> pathEntries)
         {
@@ -132,6 +190,12 @@ namespace FubarDev.WebDavServer.FileSystem
             return new SelectionResult(SelectionResultType.MissingDocumentOrCollection, collection, null, pathEntries);
         }
 
+        /// <summary>
+        /// Creates a selection for a missing collection
+        /// </summary>
+        /// <param name="collection">The last found collection</param>
+        /// <param name="pathEntries">The missing path elements</param>
+        /// <returns>The created selection result</returns>
         [NotNull]
         public static SelectionResult CreateMissingCollection([NotNull] ICollection collection, [NotNull] [ItemNotNull] IReadOnlyCollection<string> pathEntries)
         {

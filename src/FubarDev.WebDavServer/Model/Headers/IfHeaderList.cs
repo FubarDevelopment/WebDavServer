@@ -14,6 +14,9 @@ using JetBrains.Annotations;
 
 namespace FubarDev.WebDavServer.Model.Headers
 {
+    /// <summary>
+    /// Represents a list of <see cref="IfHeaderCondition"/>s.
+    /// </summary>
     public class IfHeaderList
     {
         private IfHeaderList(
@@ -74,6 +77,12 @@ namespace FubarDev.WebDavServer.Model.Headers
         /// </summary>
         public bool RequiresStateToken => Conditions.Any(x => x.StateToken != null && !x.Not);
 
+        /// <summary>
+        /// Validates if all conditions match the passed entity tag and/or state tokens
+        /// </summary>
+        /// <param name="etag">The entity tag</param>
+        /// <param name="stateTokens">The state tokens</param>
+        /// <returns><see langref="true"/> when this condition matches</returns>
         public bool IsMatch(EntityTag? etag, IReadOnlyCollection<Uri> stateTokens)
         {
             return Conditions.All(x => x.IsMatch(etag, stateTokens));

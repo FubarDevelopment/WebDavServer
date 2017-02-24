@@ -17,11 +17,19 @@ using FubarDev.WebDavServer.Model.Headers;
 
 namespace FubarDev.WebDavServer.Handlers.Impl
 {
+    /// <summary>
+    /// Implementation of the <see cref="IMkColHandler"/> interface.
+    /// </summary>
     public class MkColHandler : IMkColHandler
     {
         private readonly IFileSystem _rootFileSystem;
         private readonly IWebDavContext _context;
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="MkColHandler"/> class.
+        /// </summary>
+        /// <param name="rootFileSystem">The root file system</param>
+        /// <param name="context">The WebDAV request context</param>
         public MkColHandler(IFileSystem rootFileSystem, IWebDavContext context)
         {
             _rootFileSystem = rootFileSystem;

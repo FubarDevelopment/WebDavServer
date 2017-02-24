@@ -8,8 +8,16 @@ using JetBrains.Annotations;
 
 namespace FubarDev.WebDavServer.Model
 {
+    /// <summary>
+    /// Extensions for a <see cref="response"/>
+    /// </summary>
     public static class ReponseExtensions
     {
+        /// <summary>
+        /// Gets all <code>href</code> entries from a <see cref="response"/>
+        /// </summary>
+        /// <param name="response">The response to get the <code>href</code> values from</param>
+        /// <returns>The list of found <code>href</code> values</returns>
         [NotNull]
         [ItemNotNull]
         public static IEnumerable<string> GetHrefs([NotNull] this response response)

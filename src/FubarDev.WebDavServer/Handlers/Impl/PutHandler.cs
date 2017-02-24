@@ -19,11 +19,19 @@ using FubarDev.WebDavServer.Utils;
 
 namespace FubarDev.WebDavServer.Handlers.Impl
 {
+    /// <summary>
+    /// Implementation of the <see cref="IPutHandler"/> interface
+    /// </summary>
     public class PutHandler : IPutHandler
     {
         private readonly IFileSystem _fileSystem;
         private readonly IWebDavContext _context;
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="PutHandler"/> class.
+        /// </summary>
+        /// <param name="fileSystem">The root file system</param>
+        /// <param name="context">The WebDAV request context</param>
         public PutHandler(IFileSystem fileSystem, IWebDavContext context)
         {
             _fileSystem = fileSystem;

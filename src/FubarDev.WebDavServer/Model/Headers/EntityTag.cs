@@ -15,10 +15,20 @@ using JetBrains.Annotations;
 
 namespace FubarDev.WebDavServer.Model.Headers
 {
-    public struct EntityTag
+    /// <summary>
+    /// Structure for the HTTP entity tag
+    /// </summary>
+    public struct EntityTag : IEquatable<EntityTag>
     {
+        /// <summary>
+        /// The default property name for the <code>getetag</code> WebDAV property
+        /// </summary>
         public static readonly XName PropertyName = WebDavXml.Dav + "getetag";
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="EntityTag"/> struct.
+        /// </summary>
+        /// <param name="isWeak">Is the entity tag weak?</param>
         public EntityTag(bool isWeak)
             : this(isWeak, Guid.NewGuid().ToString("D"))
         {
@@ -30,23 +40,52 @@ namespace FubarDev.WebDavServer.Model.Headers
             Value = value;
         }
 
+        /// <summary>
+        /// Gets a value indicating whether the entity tag is weak
+        /// </summary>
         public bool IsWeak { get; }
 
+        /// <summary>
+        /// Gets the entity tag
+        /// </summary>
         [NotNull]
         public string Value { get; }
 
+        /// <summary>
+        /// Gets a value indicating whether the entity tag structure is empty
+        /// </summary>
         public bool IsEmpty => string.IsNullOrEmpty(Value);
 
+        /// <summary>
+        /// Compares two entity tags for their equality
+        /// </summary>
+        /// <param name="x">The first entity tag to compare</param>
+        /// <param name="y">The second entity tag to compare</param>
+        /// <returns><see langref="true"/> when both entity tags are of equal value</returns>
         public static bool operator ==(EntityTag x, EntityTag y)
         {
             return EntityTagComparer.Strong.Equals(x, y);
         }
 
+        /// <summary>
+        /// Compares two entity tags for their inequality
+        /// </summary>
+        /// <param name="x">The first entity tag to compare</param>
+        /// <param name="y">The second entity tag to compare</param>
+        /// <returns><see langref="true"/> when both entity tags are not of equal value</returns>
         public static bool operator !=(EntityTag x, EntityTag y)
         {
             return !EntityTagComparer.Strong.Equals(x, y);
         }
 
+        /// <summary>
+        /// Extracts an entity tag from the XML of a <see cref="GetETagProperty"/>
+        /// </summary>
+        /// <param name="element">The XML of a <see cref="GetETagProperty"/></param>
+        /// <returns>The found entity tag</returns>
+        /// <remarks>
+        /// Returns a new strong entity tag when <paramref name="element"/> is <see langref="null"/>.
+        /// </remarks>
         public static EntityTag FromXml([CanBeNull] XElement element)
         {
             if (element == null)
@@ -55,6 +94,11 @@ namespace FubarDev.WebDavServer.Model.Headers
             return Parse(element.Value).Single();
         }
 
+        /// <summary>
+        /// Parses the entity tags as passed in the HTTP header
+        /// </summary>
+        /// <param name="s">The textual entity tag representation</param>
+        /// <returns>The found entity tags</returns>
         public static IEnumerable<EntityTag> Parse([NotNull] string s)
         {
             var source = new StringSource(s);
@@ -64,27 +108,44 @@ namespace FubarDev.WebDavServer.Model.Headers
             return result;
         }
 
+        /// <summary>
+        /// Returns this entity tag as a new strong entity tag
+        /// </summary>
+        /// <returns>The new strong entity tag</returns>
         public EntityTag AsStrong()
         {
             return new EntityTag(false, Value);
         }
 
+        /// <summary>
+        /// Returns this entity tag as a new weak entity tag
+        /// </summary>
+        /// <returns>The new weak entity tag</returns>
         public EntityTag AsWeak()
         {
             return new EntityTag(true, Value);
         }
 
+        /// <summary>
+        /// Returns an updated entity tag with a new <see cref="Value"/>
+        /// </summary>
+        /// <returns>The updated entity tag</returns>
         public EntityTag Update()
         {
             return new EntityTag(IsWeak, Guid.NewGuid().ToString("D"));
         }
 
+        /// <summary>
+        /// Creates a <see cref="GetETagProperty"/> XML from this entity tag
+        /// </summary>
+        /// <returns>The new <see cref="XElement"/></returns>
         [NotNull]
         public XElement ToXml()
         {
             return new XElement(GetETagProperty.PropertyName, ToString());
         }
 
+        /// <inheritdoc />
         public override string ToString()
         {
             var result = new StringBuilder();
@@ -94,16 +155,19 @@ namespace FubarDev.WebDavServer.Model.Headers
             return result.ToString();
         }
 
+        /// <inheritdoc />
         public bool Equals(EntityTag other)
         {
             return EntityTagComparer.Strong.Equals(this, other);
         }
 
+        /// <inheritdoc />
         public override bool Equals(object obj)
         {
             return obj is EntityTag && Equals((EntityTag)obj);
         }
 
+        /// <inheritdoc />
         public override int GetHashCode()
         {
             return Value.GetHashCode()

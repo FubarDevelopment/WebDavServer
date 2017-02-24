@@ -15,6 +15,9 @@ using JetBrains.Annotations;
 
 namespace FubarDev.WebDavServer.Handlers.Impl
 {
+    /// <summary>
+    /// The implementation of the <see cref="IUnlockHandler"/> interface
+    /// </summary>
     public class UnlockHandler : IUnlockHandler
     {
         [NotNull]
@@ -23,6 +26,11 @@ namespace FubarDev.WebDavServer.Handlers.Impl
         [CanBeNull]
         private readonly ILockManager _lockManager;
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="UnlockHandler"/> class.
+        /// </summary>
+        /// <param name="context">The WebDAV request context</param>
+        /// <param name="lockManager">The global lock manager</param>
         public UnlockHandler([NotNull] IWebDavContext context, [CanBeNull] ILockManager lockManager = null)
         {
             _context = context;
@@ -30,8 +38,10 @@ namespace FubarDev.WebDavServer.Handlers.Impl
             HttpMethods = _lockManager == null ? new string[0] : new[] { "UNLOCK" };
         }
 
+        /// <inheritdoc />
         public IEnumerable<string> HttpMethods { get; }
 
+        /// <inheritdoc />
         public async Task<IWebDavResult> UnlockAsync(string path, LockTokenHeader stateToken, CancellationToken cancellationToken)
         {
             if (_lockManager == null)

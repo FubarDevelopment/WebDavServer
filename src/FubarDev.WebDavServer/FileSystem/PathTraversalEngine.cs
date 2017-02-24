@@ -14,16 +14,30 @@ using Microsoft.Extensions.Logging;
 
 namespace FubarDev.WebDavServer.FileSystem
 {
+    /// <summary>
+    /// Helper class to find an entry for a given path
+    /// </summary>
     public class PathTraversalEngine
     {
         [CanBeNull]
         private readonly ILogger<PathTraversalEngine> _logger;
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="PathTraversalEngine"/> class.
+        /// </summary>
+        /// <param name="logger">The logger</param>
         public PathTraversalEngine(ILogger<PathTraversalEngine> logger = null)
         {
             _logger = logger;
         }
 
+        /// <summary>
+        /// Find the entry for a given path
+        /// </summary>
+        /// <param name="fileSystem">The root file system</param>
+        /// <param name="path">The path to traverse</param>
+        /// <param name="ct">The cancellation token</param>
+        /// <returns>The result for the path search</returns>
         [NotNull]
         [ItemNotNull]
         public Task<SelectionResult> TraverseAsync([NotNull] IFileSystem fileSystem, [CanBeNull] string path, CancellationToken ct)
@@ -31,26 +45,18 @@ namespace FubarDev.WebDavServer.FileSystem
             return TraverseAsync(fileSystem, SplitPath(path ?? string.Empty), ct);
         }
 
-        [NotNull]
-        [ItemNotNull]
-        public async Task<SelectionResult> TraverseAsync([NotNull] IFileSystem fileSystem, [NotNull][ItemNotNull] IEnumerable<string> pathParts, CancellationToken ct)
-        {
-            var current = await fileSystem.Root.ConfigureAwait(false);
-            return await TraverseAsync(current, pathParts, ct).ConfigureAwait(false);
-        }
-
+        /// <summary>
+        /// Find the entry for a given path
+        /// </summary>
+        /// <param name="currentCollection">The root collection</param>
+        /// <param name="path">The path to traverse</param>
+        /// <param name="ct">The cancellation token</param>
+        /// <returns>The result for the path search</returns>
         [NotNull]
         [ItemNotNull]
         public Task<SelectionResult> TraverseAsync([NotNull] ICollection currentCollection, [CanBeNull] string path, CancellationToken ct)
         {
             return TraverseAsync(currentCollection, SplitPath(path ?? string.Empty), ct);
-        }
-
-        [NotNull]
-        [ItemNotNull]
-        public Task<SelectionResult> TraverseAsync([NotNull] ICollection currentCollection, [NotNull][ItemNotNull] IEnumerable<string> pathParts, CancellationToken ct)
-        {
-            return TraverseAsync(currentCollection, ToPathElements(pathParts), ct);
         }
 
         [NotNull]
@@ -80,6 +86,21 @@ namespace FubarDev.WebDavServer.FileSystem
                 var name = isDirectory ? pathPart.Substring(0, pathPart.Length - 1) : pathPart;
                 yield return new PathElement(pathPart, Uri.UnescapeDataString(name), isDirectory);
             }
+        }
+
+        [NotNull]
+        [ItemNotNull]
+        private Task<SelectionResult> TraverseAsync([NotNull] ICollection currentCollection, [NotNull][ItemNotNull] IEnumerable<string> pathParts, CancellationToken ct)
+        {
+            return TraverseAsync(currentCollection, ToPathElements(pathParts), ct);
+        }
+
+        [NotNull]
+        [ItemNotNull]
+        private async Task<SelectionResult> TraverseAsync([NotNull] IFileSystem fileSystem, [NotNull][ItemNotNull] IEnumerable<string> pathParts, CancellationToken ct)
+        {
+            var current = await fileSystem.Root.ConfigureAwait(false);
+            return await TraverseAsync(current, pathParts, ct).ConfigureAwait(false);
         }
 
         [NotNull]

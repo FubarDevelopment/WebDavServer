@@ -9,8 +9,18 @@ using FubarDev.WebDavServer.Model.Headers;
 
 namespace FubarDev.WebDavServer.Locking
 {
+    /// <summary>
+    /// Extension methods for the <see cref="IActiveLock"/> interface
+    /// </summary>
     public static class ActiveLockExtensions
     {
+        /// <summary>
+        /// Creates an <see cref="XElement"/> for a <see cref="IActiveLock"/>
+        /// </summary>
+        /// <param name="l">The active lock to create the <see cref="XElement"/> for</param>
+        /// <param name="omitOwner">Should the owner be omitted?</param>
+        /// <param name="omitToken">Should the lock state token be omitted?</param>
+        /// <returns>The newly created <see cref="XElement"/> for the active lock</returns>
         public static XElement ToXElement(this IActiveLock l, bool omitOwner = false, bool omitToken = false)
         {
             var timeout = l.Timeout == TimeoutHeader.Infinite ? "Infinite" : $"Second-{l.Timeout.TotalSeconds:F0}";

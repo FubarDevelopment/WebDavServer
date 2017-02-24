@@ -12,12 +12,20 @@ using JetBrains.Annotations;
 
 namespace FubarDev.WebDavServer
 {
+    /// <summary>
+    /// Implementation of the <see cref="IWebDavRequestHeaders"/> interface
+    /// </summary>
     public class WebDavRequestHeaders : IWebDavRequestHeaders
     {
         [NotNull]
         [ItemNotNull]
         private static readonly string[] _empty = new string[0];
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="WebDavRequestHeaders"/> class.
+        /// </summary>
+        /// <param name="headers">The headers to parse</param>
+        /// <param name="context">The WebDAV request context</param>
         public WebDavRequestHeaders([NotNull] IEnumerable<KeyValuePair<string, IEnumerable<string>>> headers, [NotNull] IWebDavContext context)
         {
             Headers = headers.ToDictionary(x => x.Key, x => (IReadOnlyCollection<string>)x.Value.ToList(), StringComparer.OrdinalIgnoreCase);
@@ -32,26 +40,37 @@ namespace FubarDev.WebDavServer
             Timeout = ParseHeader("Timeout", TimeoutHeader.Parse);
         }
 
+        /// <inheritdoc />
         public DepthHeader? Depth { get; }
 
+        /// <inheritdoc />
         public bool? Overwrite { get; }
 
+        /// <inheritdoc />
         public IfHeader If { get; }
 
+        /// <inheritdoc />
         public IfMatchHeader IfMatch { get; }
 
+        /// <inheritdoc />
         public IfNoneMatchHeader IfNoneMatch { get; }
 
+        /// <inheritdoc />
         public IfModifiedSinceHeader IfModifiedSince { get; }
 
+        /// <inheritdoc />
         public IfUnmodifiedSinceHeader IfUnmodifiedSince { get; }
 
+        /// <inheritdoc />
         public RangeHeader Range { get; }
 
+        /// <inheritdoc />
         public TimeoutHeader Timeout { get; }
 
+        /// <inheritdoc />
         public IReadOnlyDictionary<string, IReadOnlyCollection<string>> Headers { get; }
 
+        /// <inheritdoc />
         public IReadOnlyCollection<string> this[string name]
         {
             get

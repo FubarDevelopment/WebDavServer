@@ -13,6 +13,9 @@ using JetBrains.Annotations;
 
 namespace FubarDev.WebDavServer.Model.Headers
 {
+    /// <summary>
+    /// Represents a single condition for an HTTP <code>If</code> header
+    /// </summary>
     public class IfHeaderCondition
     {
         [NotNull]
@@ -26,13 +29,28 @@ namespace FubarDev.WebDavServer.Model.Headers
             ETag = etag;
         }
 
+        /// <summary>
+        /// Gets a value indicating whether the result should be negated
+        /// </summary>
         public bool Not { get; }
 
+        /// <summary>
+        /// Gets the state token to validate with
+        /// </summary>
         [CanBeNull]
         public Uri StateToken { get; }
 
+        /// <summary>
+        /// Gets the entity tag to validate with
+        /// </summary>
         public EntityTag? ETag { get; }
 
+        /// <summary>
+        /// Validates if this condition matches the passed entity tag and/or state tokens
+        /// </summary>
+        /// <param name="etag">The entity tag</param>
+        /// <param name="stateTokens">The state tokens</param>
+        /// <returns><see langref="true"/> when this condition matches</returns>
         public bool IsMatch(EntityTag? etag, IReadOnlyCollection<Uri> stateTokens)
         {
             bool result;

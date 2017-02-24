@@ -23,6 +23,9 @@ using Microsoft.Extensions.Options;
 
 namespace FubarDev.WebDavServer.Handlers.Impl
 {
+    /// <summary>
+    /// The implementation of the <see cref="IPropFindHandler"/> interface
+    /// </summary>
     public class PropFindHandler : IPropFindHandler
     {
         [NotNull]
@@ -31,6 +34,12 @@ namespace FubarDev.WebDavServer.Handlers.Impl
         [NotNull]
         private readonly PropFindHandlerOptions _options;
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="PropFindHandler"/> class.
+        /// </summary>
+        /// <param name="fileSystem">The root file system</param>
+        /// <param name="context">The WebDAV request context</param>
+        /// <param name="options">The options for this handler</param>
         public PropFindHandler([NotNull]IFileSystem fileSystem, [NotNull]IWebDavContext context, [CanBeNull] IOptions<PropFindHandlerOptions> options)
         {
             _options = options?.Value ?? new PropFindHandlerOptions();
@@ -41,6 +50,9 @@ namespace FubarDev.WebDavServer.Handlers.Impl
         /// <inheritdoc />
         public IEnumerable<string> HttpMethods { get; } = new[] { "PROPFIND" };
 
+        /// <summary>
+        /// Gets the root file system
+        /// </summary>
         [NotNull]
         public IFileSystem FileSystem { get; }
 

@@ -20,6 +20,9 @@ using JetBrains.Annotations;
 
 namespace FubarDev.WebDavServer.Handlers.Impl
 {
+    /// <summary>
+    /// Implements the <see cref="ILockManager"/> interface.
+    /// </summary>
     public class LockHandler : ILockHandler
     {
         [NotNull]
@@ -36,6 +39,13 @@ namespace FubarDev.WebDavServer.Handlers.Impl
 
         private readonly bool _useAbsoluteHref = false;
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="LockHandler"/> class.
+        /// </summary>
+        /// <param name="context">The WebDAV request context</param>
+        /// <param name="rootFileSystem">The root file system</param>
+        /// <param name="lockManager">The lock manager</param>
+        /// <param name="timeoutPolicy">The timeout policy for the selection of the <see cref="TimeoutHeader"/> value</param>
         public LockHandler([NotNull] IWebDavContext context, [NotNull] IFileSystem rootFileSystem, ILockManager lockManager = null, ITimeoutPolicy timeoutPolicy = null)
         {
             _context = context;
@@ -167,6 +177,7 @@ namespace FubarDev.WebDavServer.Handlers.Impl
             }
         }
 
+        /// <inheritdoc />
         public async Task<IWebDavResult> RefreshLockAsync(string path, IfHeader ifHeader, TimeoutHeader timeoutHeader, CancellationToken cancellationToken)
         {
             if (_lockManager == null)

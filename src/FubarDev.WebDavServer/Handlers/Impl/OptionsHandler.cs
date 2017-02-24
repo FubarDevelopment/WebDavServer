@@ -11,6 +11,9 @@ using FubarDev.WebDavServer.Model;
 
 namespace FubarDev.WebDavServer.Handlers.Impl
 {
+    /// <summary>
+    /// Implementation of the <see cref="IOptionsHandler"/> interface.
+    /// </summary>
     public class OptionsHandler : IOptionsHandler
     {
         /// <inheritdoc />

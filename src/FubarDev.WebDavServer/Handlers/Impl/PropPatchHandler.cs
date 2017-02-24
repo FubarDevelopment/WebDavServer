@@ -24,6 +24,9 @@ using JetBrains.Annotations;
 
 namespace FubarDev.WebDavServer.Handlers.Impl
 {
+    /// <summary>
+    /// Implementation of the <see cref="IPropPatchHandler"/> interface
+    /// </summary>
     public class PropPatchHandler : IPropPatchHandler
     {
         [NotNull]
@@ -32,6 +35,11 @@ namespace FubarDev.WebDavServer.Handlers.Impl
         [NotNull]
         private readonly IWebDavContext _context;
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="PropPatchHandler"/> class.
+        /// </summary>
+        /// <param name="fileSystem">The root file system</param>
+        /// <param name="context">The WebDAV request context</param>
         public PropPatchHandler([NotNull] IFileSystem fileSystem, [NotNull] IWebDavContext context)
         {
             _fileSystem = fileSystem;

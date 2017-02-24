@@ -5,16 +5,16 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading;
-using System.Threading.Tasks;
 
-using FubarDev.WebDavServer.FileSystem;
 using FubarDev.WebDavServer.Utils;
 
 using JetBrains.Annotations;
 
 namespace FubarDev.WebDavServer.Model.Headers
 {
+    /// <summary>
+    /// Class that represents the HTTP <code>If</code> header
+    /// </summary>
     public class IfHeader
     {
         private IfHeader([NotNull] [ItemNotNull] IReadOnlyCollection<IfHeaderList> lists)
@@ -22,10 +22,20 @@ namespace FubarDev.WebDavServer.Model.Headers
             Lists = lists;
         }
 
+        /// <summary>
+        /// Gets all condition lists
+        /// </summary>
         [NotNull]
         [ItemNotNull]
         public IReadOnlyCollection<IfHeaderList> Lists { get; }
 
+        /// <summary>
+        /// Parses the text into a <see cref="IfHeader"/>
+        /// </summary>
+        /// <param name="s">The text to parse</param>
+        /// <param name="etagComparer">The comparer to use for entity tag comparison</param>
+        /// <param name="context">The WebDAV request context</param>
+        /// <returns>The new <see cref="IfHeader"/></returns>
         [NotNull]
         public static IfHeader Parse([NotNull] string s, [NotNull] EntityTagComparer etagComparer, [NotNull] IWebDavContext context)
         {
@@ -34,17 +44,6 @@ namespace FubarDev.WebDavServer.Model.Headers
             if (!source.Empty)
                 throw new ArgumentException("Not an accepted list of conditions", nameof(s));
             return new IfHeader(lists);
-        }
-
-        public bool IsMatch(EntityTag? etag, IReadOnlyCollection<Uri> stateTokens)
-        {
-            return Lists.Any(x => x.IsMatch(etag, stateTokens));
-        }
-
-        public async Task<bool> IsMatchAsync(IEntry entry, IReadOnlyCollection<Uri> stateTokens, CancellationToken cancellationToken)
-        {
-            var etag = await entry.GetEntityTagAsync(cancellationToken).ConfigureAwait(false);
-            return IsMatch(etag, stateTokens);
         }
     }
 }

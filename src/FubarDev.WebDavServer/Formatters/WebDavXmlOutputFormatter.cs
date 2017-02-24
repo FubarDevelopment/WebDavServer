@@ -17,6 +17,9 @@ using Microsoft.Extensions.Options;
 
 namespace FubarDev.WebDavServer.Formatters
 {
+    /// <summary>
+    /// The default implementation of the <see cref="IWebDavOutputFormatter"/> interface
+    /// </summary>
     public class WebDavXmlOutputFormatter : IWebDavOutputFormatter
     {
         [NotNull]
@@ -28,6 +31,11 @@ namespace FubarDev.WebDavServer.Formatters
         [NotNull]
         private readonly string _namespacePrefix;
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="WebDavXmlOutputFormatter"/> class.
+        /// </summary>
+        /// <param name="options">The formatter options</param>
+        /// <param name="logger">The logger</param>
         public WebDavXmlOutputFormatter([NotNull] IOptions<WebDavFormatterOptions> options, [NotNull] ILogger<WebDavXmlOutputFormatter> logger)
         {
             _logger = logger;
@@ -39,12 +47,15 @@ namespace FubarDev.WebDavServer.Formatters
             _namespacePrefix = options.Value.NamespacePrefix;
         }
 
+        /// <inheritdoc />
         [NotNull]
         public string ContentType { get; }
 
+        /// <inheritdoc />
         [NotNull]
         public Encoding Encoding { get; }
 
+        /// <inheritdoc />
         public void Serialize<T>(Stream output, T data)
         {
             var writerSettings = new XmlWriterSettings { Encoding = Encoding };
