@@ -16,8 +16,14 @@ using JetBrains.Annotations;
 
 namespace FubarDev.WebDavServer.Props.Live
 {
+    /// <summary>
+    /// The <code>lockdiscovery</code> property
+    /// </summary>
     public class LockDiscoveryProperty : ILiveProperty
     {
+        /// <summary>
+        /// The XML property name
+        /// </summary>
         public static readonly XName PropertyName = WebDavXml.Dav + "lockdiscovery";
 
         [CanBeNull]
@@ -26,23 +32,38 @@ namespace FubarDev.WebDavServer.Props.Live
         [NotNull]
         private readonly string _entryPath;
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="LockDiscoveryProperty"/> class.
+        /// </summary>
+        /// <param name="entry">The file system entry</param>
         public LockDiscoveryProperty([NotNull] IEntry entry)
         {
             _lockManager = entry.FileSystem.LockManager;
             _entryPath = entry.Path.OriginalString;
         }
 
+        /// <inheritdoc />
         public XName Name { get; } = PropertyName;
 
+        /// <inheritdoc />
         public IReadOnlyCollection<XName> AlternativeNames { get; } = new XName[0];
 
+        /// <inheritdoc />
         public int Cost => _lockManager?.Cost ?? 0;
 
+        /// <inheritdoc />
         public Task<XElement> GetXmlValueAsync(CancellationToken ct)
         {
             return GetXmlValueAsync(false, false, ct);
         }
 
+        /// <summary>
+        /// Get the XML value asynchronously
+        /// </summary>
+        /// <param name="omitOwner">Do we want to omit the owner?</param>
+        /// <param name="omitToken">Do we want to omit the lock token?</param>
+        /// <param name="ct">The cancellation token</param>
+        /// <returns>The XML value</returns>
         public async Task<XElement> GetXmlValueAsync(bool omitOwner, bool omitToken, CancellationToken ct)
         {
             if (_lockManager == null)
