@@ -16,8 +16,14 @@ using JetBrains.Annotations;
 
 namespace FubarDev.WebDavServer.Props.Live
 {
+    /// <summary>
+    /// The <code>supportedlock</code> property
+    /// </summary>
     public class SupportedLockProperty : ITypedReadableProperty<supportedlock>, ILiveProperty
     {
+        /// <summary>
+        /// The XML name of the property
+        /// </summary>
         [NotNull]
         public static readonly XName PropertyName = WebDavXml.Dav + "supportedlock";
 
@@ -27,6 +33,10 @@ namespace FubarDev.WebDavServer.Props.Live
         [CanBeNull]
         private readonly ILockManager _lockManager;
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="SupportedLockProperty"/> class.
+        /// </summary>
+        /// <param name="entry">The file system entry this property is for</param>
         public SupportedLockProperty([NotNull] IEntry entry)
         {
             _lockManager = entry.FileSystem.LockManager;
@@ -34,17 +44,22 @@ namespace FubarDev.WebDavServer.Props.Live
             Name = PropertyName;
         }
 
+        /// <inheritdoc />
         public XName Name { get; }
 
+        /// <inheritdoc />
         public IReadOnlyCollection<XName> AlternativeNames { get; } = new[] { WebDavXml.Dav + "contentlength" };
 
+        /// <inheritdoc />
         public int Cost { get; }
 
+        /// <inheritdoc />
         public async Task<XElement> GetXmlValueAsync(CancellationToken ct)
         {
             return _converter.ToElement(Name, await GetValueAsync(ct).ConfigureAwait(false));
         }
 
+        /// <inheritdoc />
         public Task<supportedlock> GetValueAsync(CancellationToken ct)
         {
             var result = new supportedlock();

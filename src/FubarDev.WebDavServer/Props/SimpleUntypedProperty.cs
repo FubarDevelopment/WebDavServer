@@ -11,8 +11,17 @@ using JetBrains.Annotations;
 
 namespace FubarDev.WebDavServer.Props
 {
+    /// <summary>
+    /// A simple writeable untyped property
+    /// </summary>
     public abstract class SimpleUntypedProperty : IUntypedWriteableProperty
     {
+        /// <summary>
+        /// Initializes a new instance of the <see cref="SimpleUntypedProperty"/> class.
+        /// </summary>
+        /// <param name="name">The property name</param>
+        /// <param name="cost">The cost to get the properties value</param>
+        /// <param name="alternativeNames">The alternative names</param>
         protected SimpleUntypedProperty([NotNull] XName name, int cost, [NotNull][ItemNotNull] params XName[] alternativeNames)
         {
             Name = name;
@@ -20,14 +29,19 @@ namespace FubarDev.WebDavServer.Props
             AlternativeNames = alternativeNames;
         }
 
+        /// <inheritdoc />
         public XName Name { get; }
 
+        /// <inheritdoc />
         public IReadOnlyCollection<XName> AlternativeNames { get; }
 
+        /// <inheritdoc />
         public int Cost { get; }
 
+        /// <inheritdoc />
         public abstract Task SetXmlValueAsync(XElement element, CancellationToken ct);
 
+        /// <inheritdoc />
         public abstract Task<XElement> GetXmlValueAsync(CancellationToken ct);
     }
 }
