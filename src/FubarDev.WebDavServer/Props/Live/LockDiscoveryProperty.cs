@@ -54,7 +54,7 @@ namespace FubarDev.WebDavServer.Props.Live
         /// <inheritdoc />
         public Task<XElement> GetXmlValueAsync(CancellationToken ct)
         {
-            return GetXmlValueAsync(false, false, ct);
+            return GetXmlValueAsync(false, true, ct);
         }
 
         /// <summary>
