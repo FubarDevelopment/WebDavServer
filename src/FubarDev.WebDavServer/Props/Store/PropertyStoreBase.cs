@@ -9,7 +9,6 @@ using System.Threading.Tasks;
 using System.Xml.Linq;
 
 using FubarDev.WebDavServer.FileSystem;
-using FubarDev.WebDavServer.Model;
 using FubarDev.WebDavServer.Model.Headers;
 using FubarDev.WebDavServer.Props.Dead;
 
@@ -54,7 +53,14 @@ namespace FubarDev.WebDavServer.Props.Store
         public virtual async Task RemoveAsync(IEntry entry, CancellationToken cancellationToken)
         {
             var elements = await GetAsync(entry, cancellationToken).ConfigureAwait(false);
-            await RemoveAsync(entry, elements.Select(x => x.Name), cancellationToken).ConfigureAwait(false);
+            var names = elements.Where(x => x.Name != GetETagProperty.PropertyName).Select(x => x.Name).ToList();
+            if (elements.Count != names.Count)
+            {
+                // Has ETag, so force the update of an ETag
+                await UpdateETagAsync(entry, cancellationToken).ConfigureAwait(false);
+            }
+
+            await RemoveAsync(entry, names, cancellationToken).ConfigureAwait(false);
         }
 
         public IDeadProperty Create(IEntry entry, XName name)
@@ -76,33 +82,27 @@ namespace FubarDev.WebDavServer.Props.Store
             return elements.Select(x => CreateProperty(entry, x)).ToList();
         }
 
-        public virtual async Task<EntityTag> GetETagAsync(IEntry entry, CancellationToken cancellationToken)
+        public Task<EntityTag> GetETagAsync(IEntry entry, CancellationToken cancellationToken)
         {
             var etagEntry = entry as IEntityTagEntry;
             if (etagEntry != null)
-                return etagEntry.ETag;
+                return Task.FromResult(etagEntry.ETag);
 
-            var etag = await GetAsync(entry, EntityTag.PropertyName, cancellationToken).ConfigureAwait(false);
-            if (etag == null)
-            {
-                etag = new EntityTag(false).ToXml();
-                await SetAsync(entry, etag, cancellationToken).ConfigureAwait(false);
-            }
-
-            return EntityTag.FromXml(etag);
+            return GetDeadETagAsync(entry, cancellationToken);
         }
 
-        public virtual async Task<EntityTag> UpdateETagAsync(IEntry entry, CancellationToken cancellationToken)
+        public Task<EntityTag> UpdateETagAsync(IEntry entry, CancellationToken cancellationToken)
         {
             var etagEntry = entry as IEntityTagEntry;
             if (etagEntry != null)
-                return await etagEntry.UpdateETagAsync(cancellationToken).ConfigureAwait(false);
+                return etagEntry.UpdateETagAsync(cancellationToken);
 
-            var etag = EntityTag.FromXml(null);
-            var etagElement = etag.ToXml();
-            await SetAsync(entry, etagElement, cancellationToken).ConfigureAwait(false);
-            return etag;
+            return UpdateETagAsync(entry, cancellationToken);
         }
+
+        protected abstract Task<EntityTag> GetDeadETagAsync(IEntry entry, CancellationToken cancellationToken);
+
+        protected abstract Task<EntityTag> UpdateDeadETagAsync(IEntry entry, CancellationToken cancellationToken);
 
         private IDeadProperty CreateProperty(IEntry entry, XElement element)
         {

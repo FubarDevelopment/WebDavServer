@@ -74,7 +74,7 @@ namespace FubarDev.WebDavServer.Props.Store.TextFile
             return entry is IDocument && entry.Name == _storeEntryName;
         }
 
-        public override async Task<IReadOnlyCollection<XElement>> GetAsync(IEntry entry, CancellationToken cancellationToken)
+        public override Task<IReadOnlyCollection<XElement>> GetAsync(IEntry entry, CancellationToken cancellationToken)
         {
             if (_logger.IsEnabled(LogLevel.Trace))
                 _logger.LogTrace($"Get properties for {entry.Path}");
@@ -84,23 +84,17 @@ namespace FubarDev.WebDavServer.Props.Store.TextFile
             IReadOnlyCollection<XElement> result;
             if (storeData.Entries.TryGetValue(GetEntryKey(entry), out info))
             {
-                result = info.Attributes.Values.ToList();
+                result = info.Attributes
+                    .Where(x => x.Key != GetETagProperty.PropertyName)
+                    .Select(x => x.Value)
+                    .ToList();
             }
             else
             {
-                if (!(entry is IEntityTagEntry))
-                {
-                    var etagXml = new EntityTag(false).ToXml();
-                    await SetAsync(entry, etagXml, cancellationToken).ConfigureAwait(false);
-                    result = new[] { etagXml };
-                }
-                else
-                {
-                    result = new XElement[0];
-                }
+                result = new XElement[0];
             }
 
-            return result;
+            return Task.FromResult(result);
         }
 
         public override Task SetAsync(IEntry entry, IEnumerable<XElement> elements, CancellationToken cancellationToken)
@@ -108,11 +102,10 @@ namespace FubarDev.WebDavServer.Props.Store.TextFile
             if (_logger.IsEnabled(LogLevel.Trace))
                 _logger.LogTrace($"Set properties for {entry.Path}");
 
-            var isETagProperty = entry is IEntityTagEntry;
             var info = GetInfo(entry, cancellationToken) ?? new EntryInfo();
             foreach (var element in elements)
             {
-                if (isETagProperty && element.Name == GetETagProperty.PropertyName)
+                if (element.Name == GetETagProperty.PropertyName)
                 {
                     _logger.LogWarning("The ETag property must not be set using the property store.");
                     continue;
@@ -134,7 +127,15 @@ namespace FubarDev.WebDavServer.Props.Store.TextFile
             var result = new List<bool>();
             foreach (var name in names)
             {
-                result.Add(info.Attributes.Remove(name));
+                if (name == GetETagProperty.PropertyName)
+                {
+                    _logger.LogWarning("The ETag property must not be set using the property store.");
+                    result.Add(false);
+                }
+                else
+                {
+                    result.Add(info.Attributes.Remove(name));
+                }
             }
 
             UpdateInfo(entry, info, cancellationToken);
@@ -146,7 +147,61 @@ namespace FubarDev.WebDavServer.Props.Store.TextFile
             var fileName = GetFileNameFor(entry);
             if (!File.Exists(fileName))
                 return Task.FromResult(0);
-            return base.RemoveAsync(entry, cancellationToken);
+
+            var storeData = Load(entry, false, cancellationToken);
+            var entryKey = GetEntryKey(entry);
+            if (storeData.Entries.Remove(entryKey))
+            {
+                Save(entry, storeData, cancellationToken);
+            }
+
+            return Task.FromResult(0);
+        }
+
+        protected override Task<EntityTag> GetDeadETagAsync(IEntry entry, CancellationToken cancellationToken)
+        {
+            var storeData = Load(entry, false, cancellationToken);
+            var entryKey = GetEntryKey(entry);
+            EntryInfo info;
+            if (!storeData.Entries.TryGetValue(entryKey, out info))
+            {
+                info = new EntryInfo();
+                storeData.Entries.Add(entryKey, info);
+            }
+
+            XElement etagElement;
+            if (!info.Attributes.TryGetValue(GetETagProperty.PropertyName, out etagElement))
+            {
+                var etag = new EntityTag(false);
+                etagElement = etag.ToXml();
+                info.Attributes[etagElement.Name] = etagElement;
+
+                Save(entry, storeData, cancellationToken);
+
+                return Task.FromResult(etag);
+            }
+
+            return Task.FromResult(EntityTag.FromXml(etagElement));
+        }
+
+        protected override Task<EntityTag> UpdateDeadETagAsync(IEntry entry, CancellationToken cancellationToken)
+        {
+            var storeData = Load(entry, false, cancellationToken);
+            var entryKey = GetEntryKey(entry);
+            EntryInfo info;
+            if (!storeData.Entries.TryGetValue(entryKey, out info))
+            {
+                info = new EntryInfo();
+                storeData.Entries.Add(entryKey, info);
+            }
+
+            var etag = new EntityTag(false);
+            var etagElement = etag.ToXml();
+            info.Attributes[etagElement.Name] = etagElement;
+
+            Save(entry, storeData, cancellationToken);
+
+            return Task.FromResult(etag);
         }
 
         private static string GetEntryKey(IEntry entry)
