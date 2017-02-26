@@ -4,6 +4,9 @@
 
 namespace FubarDev.WebDavServer.Props.Dead
 {
+    /// <summary>
+    /// The interface for a dead (read-only) property
+    /// </summary>
     public interface IDeadProperty : IUntypedReadableProperty, IInitializableProperty
     {
     }

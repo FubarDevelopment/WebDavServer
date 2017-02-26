@@ -17,8 +17,14 @@ using JetBrains.Annotations;
 
 namespace FubarDev.WebDavServer.Props.Dead
 {
+    /// <summary>
+    /// The implementation of the <code>getetag</code> property
+    /// </summary>
     public class GetETagProperty : ITypedReadableProperty<EntityTag>, IDeadProperty
     {
+        /// <summary>
+        /// The XML name of the property
+        /// </summary>
         public static readonly XName PropertyName = WebDavXml.Dav + "getetag";
 
         [CanBeNull]
@@ -30,6 +36,12 @@ namespace FubarDev.WebDavServer.Props.Dead
 
         private XElement _element;
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="GetETagProperty"/> class.
+        /// </summary>
+        /// <param name="propertyStore">The property store to store this property</param>
+        /// <param name="entry">The entry to instantiate this property for</param>
+        /// <param name="cost">The cost of querying the display names property</param>
         public GetETagProperty([CanBeNull] IPropertyStore propertyStore, IEntry entry, int? cost = null)
         {
             _propertyStore = propertyStore;
@@ -39,14 +51,21 @@ namespace FubarDev.WebDavServer.Props.Dead
             Cost = cost ?? (_etagEntry != null ? 0 : (int?)null) ?? _propertyStore?.Cost ?? 0;
         }
 
+        /// <inheritdoc />
         public XName Name { get; }
 
+        /// <inheritdoc />
         public IReadOnlyCollection<XName> AlternativeNames { get; } = new[] { WebDavXml.Dav + "etag" };
 
+        /// <inheritdoc />
         public int Cost { get; }
 
+        /// <summary>
+        /// Gets the entity tag converter
+        /// </summary>
         public IPropertyConverter<EntityTag> Converter { get; } = new EntityTagConverter();
 
+        /// <inheritdoc />
         public async Task<XElement> GetXmlValueAsync(CancellationToken ct)
         {
             if (_etagEntry != null)
@@ -70,11 +89,13 @@ namespace FubarDev.WebDavServer.Props.Dead
             return _element;
         }
 
+        /// <inheritdoc />
         public void Init(XElement initialValue)
         {
             _element = initialValue;
         }
 
+        /// <inheritdoc />
         public async Task<EntityTag> GetValueAsync(CancellationToken ct)
         {
             return Converter.FromElement(await GetXmlValueAsync(ct).ConfigureAwait(false));

@@ -2,6 +2,7 @@
 // Copyright (c) Fubar Development Junker. All rights reserved.
 // </copyright>
 
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
@@ -18,6 +19,9 @@ using JetBrains.Annotations;
 
 namespace FubarDev.WebDavServer.Props
 {
+    /// <summary>
+    /// The asynchronously enumerable properties for a <see cref="IEntry"/>
+    /// </summary>
     public class EntryProperties : IAsyncEnumerable<IUntypedReadableProperty>
     {
         [NotNull]
@@ -36,6 +40,14 @@ namespace FubarDev.WebDavServer.Props
 
         private readonly int? _maxCost;
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="EntryProperties"/> class.
+        /// </summary>
+        /// <param name="entry">The entry whose properties are to enumerate</param>
+        /// <param name="liveProperties">The entries live properties</param>
+        /// <param name="predefinedDeadProperties">The entries predefined properties</param>
+        /// <param name="propertyStore">The property store to get the remaining dead properties for</param>
+        /// <param name="maxCost">The maximum cost of the properties to return</param>
         public EntryProperties(
             [NotNull] IEntry entry,
             [NotNull] [ItemNotNull] IEnumerable<ILiveProperty> liveProperties,
@@ -50,6 +62,7 @@ namespace FubarDev.WebDavServer.Props
             _maxCost = maxCost;
         }
 
+        /// <inheritdoc />
         public IAsyncEnumerator<IUntypedReadableProperty> GetEnumerator()
         {
             return new PropertiesEnumerator(_entry, _liveProperties, _predefinedDeadProperties, _propertyStore, _maxCost);
@@ -145,6 +158,8 @@ namespace FubarDev.WebDavServer.Props
                     return null;
 
                 Debug.Assert(_deadPropertiesEnumerator != null, "_deadPropertiesEnumerator != null");
+                if (_deadPropertiesEnumerator == null)
+                    throw new InvalidOperationException("Internal error: The dead properties enumerator was not initialized");
                 if (!_deadPropertiesEnumerator.MoveNext())
                     return null;
 

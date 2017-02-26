@@ -14,8 +14,14 @@ using FubarDev.WebDavServer.Props.Store;
 
 namespace FubarDev.WebDavServer.Props.Dead
 {
+    /// <summary>
+    /// The <code>displayname</code> property
+    /// </summary>
     public class DisplayNameProperty : GenericStringProperty, IDeadProperty
     {
+        /// <summary>
+        /// The XML name of the property
+        /// </summary>
         public static readonly XName PropertyName = WebDavXml.Dav + "displayname";
 
         private readonly IEntry _entry;
@@ -26,6 +32,13 @@ namespace FubarDev.WebDavServer.Props.Dead
 
         private string _value;
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="DisplayNameProperty"/> class.
+        /// </summary>
+        /// <param name="entry">The entry to instantiate this property for</param>
+        /// <param name="store">The property store to store this property</param>
+        /// <param name="hideExtension">Hide the extension from the display name</param>
+        /// <param name="cost">The cost of querying the display names property</param>
         public DisplayNameProperty(IEntry entry, IPropertyStore store, bool hideExtension, int? cost = null)
             : base(PropertyName, cost ?? store.Cost, null, null)
         {
@@ -34,6 +47,7 @@ namespace FubarDev.WebDavServer.Props.Dead
             _hideExtension = hideExtension;
         }
 
+        /// <inheritdoc />
         public override async Task<string> GetValueAsync(CancellationToken ct)
         {
             if (_value != null)
@@ -52,12 +66,14 @@ namespace FubarDev.WebDavServer.Props.Dead
             return newName;
         }
 
+        /// <inheritdoc />
         public override Task SetValueAsync(string value, CancellationToken ct)
         {
             _value = value;
             return _store.SetAsync(_entry, Converter.ToElement(Name, value), ct);
         }
 
+        /// <inheritdoc />
         public void Init(XElement initialValue)
         {
             _value = Converter.FromElement(initialValue);

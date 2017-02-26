@@ -14,8 +14,14 @@ using FubarDev.WebDavServer.Props.Store;
 
 namespace FubarDev.WebDavServer.Props.Dead
 {
+    /// <summary>
+    /// The implementation of the <code>getcontenttype</code> property
+    /// </summary>
     public class GetContentTypeProperty : GenericStringProperty, IDeadProperty
     {
+        /// <summary>
+        /// The XML name of the property
+        /// </summary>
         public static readonly XName PropertyName = WebDavXml.Dav + "getcontenttype";
 
         private readonly IEntry _entry;
@@ -24,6 +30,12 @@ namespace FubarDev.WebDavServer.Props.Dead
 
         private string _value;
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="GetContentTypeProperty"/> class.
+        /// </summary>
+        /// <param name="entry">The entry to instantiate this property for</param>
+        /// <param name="store">The property store to store this property</param>
+        /// <param name="cost">The cost of querying the display names property</param>
         public GetContentTypeProperty(IEntry entry, IPropertyStore store, int? cost = null)
             : base(PropertyName, cost ?? store.Cost, null, null, WebDavXml.Dav + "contenttype")
         {
@@ -31,6 +43,7 @@ namespace FubarDev.WebDavServer.Props.Dead
             _store = store;
         }
 
+        /// <inheritdoc />
         public override async Task<string> GetValueAsync(CancellationToken ct)
         {
             if (_value != null)
@@ -50,12 +63,14 @@ namespace FubarDev.WebDavServer.Props.Dead
             return newName;
         }
 
+        /// <inheritdoc />
         public override Task SetValueAsync(string value, CancellationToken ct)
         {
             _value = value;
             return _store.SetAsync(_entry, Converter.ToElement(Name, value), ct);
         }
 
+        /// <inheritdoc />
         public void Init(XElement initialValue)
         {
             _value = Converter.FromElement(initialValue);
