@@ -5,7 +5,6 @@
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
-using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Xml.Linq;
@@ -98,7 +97,22 @@ namespace FubarDev.WebDavServer.Props
                 _entry = entry;
                 _propertyStore = propertyStore;
                 _maxCost = maxCost;
-                _predefinedPropertiesEnumerator = liveProperties.Cast<IUntypedReadableProperty>().Concat(predefinedDeadProperties).GetEnumerator();
+
+                var emittedProperties = new HashSet<XName>();
+                var predefinedProperties = new List<IUntypedReadableProperty>();
+                foreach (var property in liveProperties)
+                {
+                    if (emittedProperties.Add(property.Name))
+                        predefinedProperties.Add(property);
+                }
+
+                foreach (var property in predefinedDeadProperties)
+                {
+                    if (emittedProperties.Add(property.Name))
+                        predefinedProperties.Add(property);
+                }
+
+                _predefinedPropertiesEnumerator = predefinedProperties.GetEnumerator();
             }
 
             public IUntypedReadableProperty Current { get; private set; }
@@ -119,8 +133,9 @@ namespace FubarDev.WebDavServer.Props
                     IUntypedReadableProperty oldProperty;
                     if (_emittedProperties.TryGetValue(result.Name, out oldProperty))
                     {
-                        var deadProp = oldProperty as IDeadProperty;
-                        deadProp?.Init(await result.GetXmlValueAsync(cancellationToken).ConfigureAwait(false));
+                        // Property was already emitted - don't return it again.
+                        // The predefined dead properties are reading their values from the property store
+                        // themself and don't need to be intialized again.
                         continue;
                     }
 
