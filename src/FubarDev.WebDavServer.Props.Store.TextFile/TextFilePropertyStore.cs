@@ -47,18 +47,6 @@ namespace FubarDev.WebDavServer.Props.Store.TextFile
         /// <param name="options">The options for the text file property store</param>
         /// <param name="cache">The in-memory cache for the properties file</param>
         /// <param name="deadPropertyFactory">The factory for the dead properties</param>
-        /// <param name="logger">The logger for the property store</param>
-        public TextFilePropertyStore(TextFilePropertyStoreOptions options, IMemoryCache cache, IDeadPropertyFactory deadPropertyFactory, ILogger<TextFilePropertyStore> logger)
-            : this(options, cache, deadPropertyFactory, options.RootFolder, logger)
-        {
-        }
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="TextFilePropertyStore"/> class.
-        /// </summary>
-        /// <param name="options">The options for the text file property store</param>
-        /// <param name="cache">The in-memory cache for the properties file</param>
-        /// <param name="deadPropertyFactory">The factory for the dead properties</param>
         /// <param name="rootFolder">The root folder where the properties will be stored</param>
         /// <param name="logger">The logger for the property store</param>
         public TextFilePropertyStore(TextFilePropertyStoreOptions options, IMemoryCache cache, IDeadPropertyFactory deadPropertyFactory, string rootFolder, ILogger<TextFilePropertyStore> logger)

@@ -23,6 +23,6 @@ namespace FubarDev.WebDavServer.Props.Store.TextFile
         /// Gets or sets a value indicating whether the properties are stored in the same place as the
         /// file system that's accessible to the user.
         /// </summary>
-        public bool StoreInTargetFileSystem { get; set; }
+        public bool StoreInTargetFileSystem { get; set; } = true;
     }
 }

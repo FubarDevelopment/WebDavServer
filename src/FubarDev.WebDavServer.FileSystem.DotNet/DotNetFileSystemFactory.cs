@@ -55,7 +55,7 @@ namespace FubarDev.WebDavServer.FileSystem.DotNet
         /// <inheritdoc />
         public IFileSystem CreateFileSystem(IIdentity identity)
         {
-            var userHomeDirectory = Path.Combine(_options.RootPath, identity.IsAuthenticated ? identity.Name : _options.AnonymousUserName);
+            var userHomeDirectory = Utils.SystemInfo.GetUserHomePath(identity, _options.AnonymousUserName);
             Directory.CreateDirectory(userHomeDirectory);
             return new DotNetFileSystem(_options, userHomeDirectory, _pathTraversalEngine, _deadPropertyFactory, _lockManager, _propertyStoreFactory);
         }

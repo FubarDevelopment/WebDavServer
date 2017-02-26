@@ -2,6 +2,8 @@
 // Copyright (c) Fubar Development Junker. All rights reserved.
 // </copyright>
 
+using System.IO;
+
 using FubarDev.WebDavServer.FileSystem;
 using FubarDev.WebDavServer.Props.Dead;
 
@@ -17,6 +19,7 @@ namespace FubarDev.WebDavServer.Props.Store.TextFile
     public class TextFilePropertyStoreFactory : IPropertyStoreFactory
     {
         private readonly IDeadPropertyFactory _deadPropertyFactory;
+        private readonly IWebDavContext _webDavContext;
         private readonly TextFilePropertyStoreOptions _options;
         private readonly IMemoryCache _cache;
         private readonly ILogger<TextFilePropertyStore> _logger;
@@ -27,13 +30,15 @@ namespace FubarDev.WebDavServer.Props.Store.TextFile
         /// <param name="options">The options for the text file property store</param>
         /// <param name="cache">The in-memory cache for the properties file</param>
         /// <param name="deadPropertyFactory">The factory for the dead properties</param>
+        /// <param name="webDavContext">The WebDAV request context</param>
         /// <param name="logger">The logger for the property store factory</param>
-        public TextFilePropertyStoreFactory(IOptions<TextFilePropertyStoreOptions> options, IMemoryCache cache, IDeadPropertyFactory deadPropertyFactory, ILogger<TextFilePropertyStore> logger)
+        public TextFilePropertyStoreFactory(IOptions<TextFilePropertyStoreOptions> options, IMemoryCache cache, IDeadPropertyFactory deadPropertyFactory, IWebDavContext webDavContext, ILogger<TextFilePropertyStore> logger)
         {
             _options = options?.Value ?? new TextFilePropertyStoreOptions();
             _cache = cache;
             _logger = logger;
             _deadPropertyFactory = deadPropertyFactory;
+            _webDavContext = webDavContext;
         }
 
         /// <inheritdoc />
@@ -48,7 +53,11 @@ namespace FubarDev.WebDavServer.Props.Store.TextFile
                 }
             }
 
-            return new TextFilePropertyStore(_options, _cache, _deadPropertyFactory, _logger);
+            var userHomePath = Utils.SystemInfo.GetUserHomePath(_webDavContext.User.Identity);
+            var rootPath = Path.Combine(userHomePath, ".webdav");
+            Directory.CreateDirectory(rootPath);
+
+            return new TextFilePropertyStore(_options, _cache, _deadPropertyFactory, rootPath, _logger);
         }
     }
 }
