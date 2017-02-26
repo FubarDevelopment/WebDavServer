@@ -6,6 +6,10 @@ using System.Collections.Generic;
 using System.IO;
 using System.Xml.Linq;
 
+using FubarDev.WebDavServer.AspNetCore.Logging;
+
+using JetBrains.Annotations;
+
 namespace FubarDev.WebDavServer.AspNetCore
 {
     /// <summary>
@@ -39,10 +43,24 @@ namespace FubarDev.WebDavServer.AspNetCore
         /// Loads the <see cref="Body"/> into a <see cref="XDocument"/>
         /// </summary>
         /// <returns>The <see cref="XDocument"/> from the <see cref="Body"/></returns>
+        [CanBeNull]
         public XDocument Load()
         {
             Body.Position = 0;
-            return XDocument.Load(Body);
+            if (Body.Length == 0)
+                return null;
+
+            if (!RequestLogMiddleware.IsXml(ContentType))
+                return null;
+
+            try
+            {
+                return XDocument.Load(Body);
+            }
+            catch
+            {
+                return null;
+            }
         }
     }
 }

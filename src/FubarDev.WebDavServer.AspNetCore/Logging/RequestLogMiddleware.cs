@@ -22,14 +22,14 @@ namespace FubarDev.WebDavServer.AspNetCore.Logging
     /// </summary>
     public class RequestLogMiddleware
     {
-        private static readonly Encoding _defaultEncoding = new UTF8Encoding(false);
-        private readonly IEnumerable<MediaType> _supportedMediaTypes = new[]
+        internal static readonly IEnumerable<MediaType> XmlMediaTypes = new[]
         {
             "text/xml",
             "application/xml",
             "text/plain",
         }.Select(x => new MediaType(x)).ToList();
 
+        private static readonly Encoding _defaultEncoding = new UTF8Encoding(false);
         private readonly RequestDelegate _next;
         private readonly ILogger<RequestLogMiddleware> _logger;
 
@@ -42,6 +42,29 @@ namespace FubarDev.WebDavServer.AspNetCore.Logging
         {
             _next = next;
             _logger = logger;
+        }
+
+        /// <summary>
+        /// Tests if the media type qualifies for XML deserialization
+        /// </summary>
+        /// <param name="mediaType">The media type to test</param>
+        /// <returns><see langref="true"/> when the media type might be an XML type</returns>
+        public static bool IsXml(string mediaType)
+        {
+            var contentType = new MediaType(mediaType);
+            var isXml = XmlMediaTypes.Any(x => contentType.IsSubsetOf(x));
+            return isXml;
+        }
+
+        /// <summary>
+        /// Tests if the media type qualifies for XML deserialization
+        /// </summary>
+        /// <param name="mediaType">The media type to test</param>
+        /// <returns><see langref="true"/> when the media type might be an XML type</returns>
+        public static bool IsXml(MediaType mediaType)
+        {
+            var isXml = XmlMediaTypes.Any(mediaType.IsSubsetOf);
+            return isXml;
         }
 
         /// <summary>
@@ -71,8 +94,7 @@ namespace FubarDev.WebDavServer.AspNetCore.Logging
                 if (context.Request.Body != null && !string.IsNullOrEmpty(context.Request.ContentType))
                 {
                     var contentType = new MediaType(context.Request.ContentType);
-                    var isXml = _supportedMediaTypes.Any(x => contentType.IsSubsetOf(x));
-                    if (isXml)
+                    if (IsXml(contentType))
                     {
                         var encoding = _defaultEncoding;
                         if (contentType.Charset.HasValue)

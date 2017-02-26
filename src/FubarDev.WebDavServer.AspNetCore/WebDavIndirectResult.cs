@@ -70,7 +70,8 @@ namespace FubarDev.WebDavServer.AspNetCore
                     if (_supportedMediaTypes.Any(x => mediaType.IsSubsetOf(x)))
                     {
                         var doc = loggingResponse.Load();
-                        _logger.LogDebug(doc.ToString(SaveOptions.OmitDuplicateNamespaces));
+                        if (doc != null)
+                            _logger.LogDebug(doc.ToString(SaveOptions.OmitDuplicateNamespaces));
                     }
                 }
             }
