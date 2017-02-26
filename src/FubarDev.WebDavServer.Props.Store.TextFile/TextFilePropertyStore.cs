@@ -15,7 +15,6 @@ using FubarDev.WebDavServer.FileSystem;
 using FubarDev.WebDavServer.Model.Headers;
 using FubarDev.WebDavServer.Props.Dead;
 
-using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Extensions.Logging;
 
 using Newtonsoft.Json;
@@ -33,8 +32,6 @@ namespace FubarDev.WebDavServer.Props.Store.TextFile
 
         private readonly Policy _fileWritePolicy;
 
-        private readonly IMemoryCache _cache;
-
         private readonly ILogger<TextFilePropertyStore> _logger;
 
         private readonly TextFilePropertyStoreOptions _options;
@@ -45,14 +42,12 @@ namespace FubarDev.WebDavServer.Props.Store.TextFile
         /// Initializes a new instance of the <see cref="TextFilePropertyStore"/> class.
         /// </summary>
         /// <param name="options">The options for the text file property store</param>
-        /// <param name="cache">The in-memory cache for the properties file</param>
         /// <param name="deadPropertyFactory">The factory for the dead properties</param>
         /// <param name="rootFolder">The root folder where the properties will be stored</param>
         /// <param name="logger">The logger for the property store</param>
-        public TextFilePropertyStore(TextFilePropertyStoreOptions options, IMemoryCache cache, IDeadPropertyFactory deadPropertyFactory, string rootFolder, ILogger<TextFilePropertyStore> logger)
+        public TextFilePropertyStore(TextFilePropertyStoreOptions options, IDeadPropertyFactory deadPropertyFactory, string rootFolder, ILogger<TextFilePropertyStore> logger)
             : base(deadPropertyFactory)
         {
-            _cache = cache;
             _logger = logger;
             _options = options;
             RootPath = rootFolder;
@@ -253,9 +248,7 @@ namespace FubarDev.WebDavServer.Props.Store.TextFile
         {
             try
             {
-                var key = fileName.ToLower();
                 _fileWritePolicy.Execute(ct => File.WriteAllText(fileName, JsonConvert.SerializeObject(data)), cancellationToken);
-                _cache.Set(key, data);
             }
             catch (Exception)
             {
@@ -268,17 +261,15 @@ namespace FubarDev.WebDavServer.Props.Store.TextFile
             if (!File.Exists(fileName))
                 return new StoreData();
 
-            var key = fileName.ToLower();
             if (!useCache)
             {
                 var result = JsonConvert.DeserializeObject<StoreData>(
                     _fileReadPolicy.Execute(ct => File.ReadAllText(fileName), cancellationToken));
-                _cache.Set(key, result);
                 return result;
             }
 
-            return _cache.GetOrCreate(key, ce => JsonConvert.DeserializeObject<StoreData>(
-                _fileReadPolicy.Execute(ct => File.ReadAllText(fileName), cancellationToken)));
+            return JsonConvert.DeserializeObject<StoreData>(
+                _fileReadPolicy.Execute(ct => File.ReadAllText(fileName), cancellationToken));
         }
 
         private string GetFileNameFor(IEntry entry)

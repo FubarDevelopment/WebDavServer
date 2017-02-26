@@ -51,14 +51,7 @@ namespace FubarDev.WebDavServer.Sample.AspNetCore
                     {
                         opt.RootPath = Path.Combine(Path.GetTempPath(), "webdav");
                         opt.AnonymousUserName = "anonymous";
-                        opt.AllowInfiniteDepth = true;
                     })
-                .Configure<TextFilePropertyStoreOptions>(
-                    opt =>
-                    {
-                        opt.StoreInTargetFileSystem = true;
-                    })
-                .AddMemoryCache()
                 .AddTransient<IPropertyStoreFactory, TextFilePropertyStoreFactory>()
                 .AddSingleton<IFileSystemFactory, DotNetFileSystemFactory>()
                 .AddSingleton<ILockManager, InMemoryLockManager>()
