@@ -3,6 +3,7 @@
 // </copyright>
 
 using System.Collections.Generic;
+using System.Collections.Immutable;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
@@ -31,27 +32,45 @@ namespace FubarDev.WebDavServer
         /// <summary>
         /// Gets the header values to be set for the response
         /// </summary>
-        public IDictionary<string, string[]> Headers { get; } = new Dictionary<string, string[]>();
+        public Dictionary<string, IEnumerable<string>> Headers { get; } = new Dictionary<string, IEnumerable<string>>();
 
         /// <inheritdoc />
         public virtual Task ExecuteResultAsync(IWebDavResponse response, CancellationToken ct)
         {
-            var headers = new Dictionary<string, string[]>()
-            {
-                ["DAV"] = response.Dispatcher.SupportedClasses.ToArray(),
-            };
+            IImmutableDictionary<string, IEnumerable<string>> headers = ImmutableDictionary<string, IEnumerable<string>>.Empty;
 
-            foreach (var header in Headers)
-            {
-                headers[header.Key] = header.Value;
-            }
+            foreach (var webDavClass in response.Dispatcher.SupportedClasses)
+                headers = AddHeaderValues(headers, webDavClass.DefaultResponseHeaders);
+
+            headers = AddHeaderValues(headers, Headers);
 
             foreach (var header in headers)
             {
-                response.Headers[header.Key] = header.Value;
+                response.Headers[header.Key] = header.Value.ToArray();
             }
 
             return Task.FromResult(0);
+        }
+
+        /// <summary>
+        /// Adds header values to the current header dictionary
+        /// </summary>
+        /// <param name="currentHeaders">The current header dictionary</param>
+        /// <param name="headersToAdd">The headers to add</param>
+        /// <returns>The updated header dictionary</returns>
+        protected IImmutableDictionary<string, IEnumerable<string>> AddHeaderValues(
+            IImmutableDictionary<string, IEnumerable<string>> currentHeaders,
+            IReadOnlyDictionary<string, IEnumerable<string>> headersToAdd)
+        {
+            foreach (var header in headersToAdd)
+            {
+                IEnumerable<string> oldValues;
+                currentHeaders = currentHeaders.SetItem(
+                    header.Key,
+                    currentHeaders.TryGetValue(header.Key, out oldValues) ? oldValues.Union(header.Value) : header.Value);
+            }
+
+            return currentHeaders;
         }
     }
 }

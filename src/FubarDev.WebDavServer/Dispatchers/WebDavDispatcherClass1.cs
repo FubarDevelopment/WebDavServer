@@ -9,8 +9,10 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 
+using FubarDev.WebDavServer.FileSystem;
 using FubarDev.WebDavServer.Handlers;
 using FubarDev.WebDavServer.Model;
+using FubarDev.WebDavServer.Props;
 
 using JetBrains.Annotations;
 
@@ -137,16 +139,30 @@ namespace FubarDev.WebDavServer.Dispatchers
 
             HttpMethods = httpMethods.ToList();
             WebDavContext = context;
-        }
 
-        /// <inheritdoc />
-        public string Version { get; } = "1";
+            OptionsResponseHeaders = new Dictionary<string, IEnumerable<string>>()
+            {
+                ["Allow"] = HttpMethods,
+                ["Accept-Ranges"] = new[] { "bytes" },
+            };
+
+            DefaultResponseHeaders = new Dictionary<string, IEnumerable<string>>()
+            {
+                ["DAV"] = new[] { "1" },
+            };
+        }
 
         /// <inheritdoc />
         public IEnumerable<string> HttpMethods { get; }
 
         /// <inheritdoc />
         public IWebDavContext WebDavContext { get; }
+
+        /// <inheritdoc />
+        public IReadOnlyDictionary<string, IEnumerable<string>> OptionsResponseHeaders { get; }
+
+        /// <inheritdoc />
+        public IReadOnlyDictionary<string, IEnumerable<string>> DefaultResponseHeaders { get; }
 
         /// <inheritdoc />
         public Task<IWebDavResult> GetAsync(string path, CancellationToken cancellationToken)
@@ -226,6 +242,12 @@ namespace FubarDev.WebDavServer.Dispatchers
             if (_moveHandler == null)
                 throw new NotSupportedException();
             return _moveHandler.MoveAsync(path, destination, cancellationToken);
+        }
+
+        /// <inheritdoc />
+        public IEnumerable<IUntypedReadableProperty> GetProperties(IEntry entry)
+        {
+            throw new NotImplementedException();
         }
     }
 }

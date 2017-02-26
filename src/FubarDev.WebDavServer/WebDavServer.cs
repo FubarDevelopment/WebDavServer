@@ -28,16 +28,11 @@ namespace FubarDev.WebDavServer
             Formatter = formatter;
             Class1 = webDavClass1;
             Class2 = webDavClass2;
-            var classes = new IWebDavClass[] { webDavClass1, webDavClass2 }.Where(x => x != null).ToList();
-            SupportedClasses = classes.Select(x => x.Version).ToList();
-            SupportedHttpMethods = classes.SelectMany(x => x.HttpMethods).ToList();
+            SupportedClasses = new IWebDavClass[] { webDavClass1, webDavClass2 }.Where(x => x != null).ToList();
         }
 
         /// <inheritdoc />
-        public IReadOnlyCollection<string> SupportedHttpMethods { get; }
-
-        /// <inheritdoc />
-        public IReadOnlyCollection<string> SupportedClasses { get; }
+        public IReadOnlyCollection<IWebDavClass> SupportedClasses { get; }
 
         /// <inheritdoc />
         public IWebDavOutputFormatter Formatter { get; }

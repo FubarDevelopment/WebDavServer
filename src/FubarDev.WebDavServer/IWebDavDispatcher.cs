@@ -20,14 +20,8 @@ namespace FubarDev.WebDavServer
         /// Gets the list of supported WebDAV classes
         /// </summary>
         [NotNull]
-        IReadOnlyCollection<string> SupportedClasses { get; }
-
-        /// <summary>
-        /// Gets the list of supported HTTP methods
-        /// </summary>
-        [NotNull]
         [ItemNotNull]
-        IReadOnlyCollection<string> SupportedHttpMethods { get; }
+        IReadOnlyCollection<IWebDavClass> SupportedClasses { get; }
 
         /// <summary>
         /// Gets the formatter for the WebDAV XML responses

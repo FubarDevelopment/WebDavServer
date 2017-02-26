@@ -3,7 +3,7 @@
 // </copyright>
 
 using System.Collections.Generic;
-using System.Linq;
+using System.Collections.Immutable;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -32,11 +32,17 @@ namespace FubarDev.WebDavServer.Handlers.Impl
             {
             }
 
-            public override async Task ExecuteResultAsync(IWebDavResponse response, CancellationToken ct)
+            public override Task ExecuteResultAsync(IWebDavResponse response, CancellationToken ct)
             {
-                await base.ExecuteResultAsync(response, ct).ConfigureAwait(false);
-                response.Headers["Allow"] = response.Dispatcher.SupportedHttpMethods.ToArray();
-                response.Headers["Accept-Ranges"] = new[] { "bytes" };
+                IImmutableDictionary<string, IEnumerable<string>> headers = ImmutableDictionary<string, IEnumerable<string>>.Empty;
+
+                foreach (var webDavClass in response.Dispatcher.SupportedClasses)
+                    headers = AddHeaderValues(headers, webDavClass.OptionsResponseHeaders);
+
+                foreach (var header in headers)
+                    Headers[header.Key] = header.Value;
+
+                return base.ExecuteResultAsync(response, ct);
             }
         }
     }

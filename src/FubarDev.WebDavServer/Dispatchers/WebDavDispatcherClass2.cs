@@ -8,9 +8,11 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 
+using FubarDev.WebDavServer.FileSystem;
 using FubarDev.WebDavServer.Handlers;
 using FubarDev.WebDavServer.Model;
 using FubarDev.WebDavServer.Model.Headers;
+using FubarDev.WebDavServer.Props;
 
 using JetBrains.Annotations;
 
@@ -65,16 +67,29 @@ namespace FubarDev.WebDavServer.Dispatchers
 
             HttpMethods = httpMethods.ToList();
             WebDavContext = context;
-        }
 
-        /// <inheritdoc />
-        public string Version { get; } = "2";
+            OptionsResponseHeaders = new Dictionary<string, IEnumerable<string>>()
+            {
+                ["Allow"] = HttpMethods,
+            };
+
+            DefaultResponseHeaders = new Dictionary<string, IEnumerable<string>>()
+            {
+                ["DAV"] = new[] { "2" },
+            };
+        }
 
         /// <inheritdoc />
         public IEnumerable<string> HttpMethods { get; }
 
         /// <inheritdoc />
         public IWebDavContext WebDavContext { get; }
+
+        /// <inheritdoc />
+        public IReadOnlyDictionary<string, IEnumerable<string>> OptionsResponseHeaders { get; }
+
+        /// <inheritdoc />
+        public IReadOnlyDictionary<string, IEnumerable<string>> DefaultResponseHeaders { get; }
 
         /// <inheritdoc />
         public Task<IWebDavResult> LockAsync(string path, lockinfo info, CancellationToken cancellationToken)
@@ -98,6 +113,12 @@ namespace FubarDev.WebDavServer.Dispatchers
             if (_unlockHandler == null)
                 throw new NotSupportedException();
             return _unlockHandler.UnlockAsync(path, stateToken, cancellationToken);
+        }
+
+        /// <inheritdoc />
+        public IEnumerable<IUntypedReadableProperty> GetProperties(IEntry entry)
+        {
+            throw new NotImplementedException();
         }
     }
 }
