@@ -11,9 +11,6 @@ using System.Threading.Tasks;
 
 using FubarDev.WebDavServer.Model;
 using FubarDev.WebDavServer.Model.Headers;
-using FubarDev.WebDavServer.Props.Converters;
-using FubarDev.WebDavServer.Props.Dead;
-using FubarDev.WebDavServer.Props.Live;
 
 namespace FubarDev.WebDavServer.FileSystem.InMemory
 {
@@ -95,29 +92,6 @@ namespace FubarDev.WebDavServer.FileSystem.InMemory
         internal bool Remove(string name)
         {
             return _children.Remove(name);
-        }
-
-        /// <inheritdoc />
-        protected override IEnumerable<ILiveProperty> GetLiveProperties()
-        {
-            return base.GetLiveProperties()
-                .Concat(new ILiveProperty[]
-                {
-                    new ContentLengthProperty(0L),
-                });
-        }
-
-        /// <inheritdoc />
-        protected override IEnumerable<IDeadProperty> GetPredefinedDeadProperties()
-        {
-            var contentType = InMemoryFileSystem.DeadPropertyFactory
-                .Create(FileSystem.PropertyStore, this, GetContentTypeProperty.PropertyName);
-            contentType.Init(new StringConverter().ToElement(GetContentTypeProperty.PropertyName, Utils.MimeTypesMap.FolderContentType));
-            return base.GetPredefinedDeadProperties()
-                .Concat(new[]
-                {
-                    contentType,
-                });
         }
     }
 }

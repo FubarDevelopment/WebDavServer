@@ -8,6 +8,8 @@ using System.Threading.Tasks;
 
 using FubarDev.WebDavServer.FileSystem;
 
+using JetBrains.Annotations;
+
 namespace FubarDev.WebDavServer.Engines.Local
 {
     /// <summary>
@@ -15,6 +17,18 @@ namespace FubarDev.WebDavServer.Engines.Local
     /// </summary>
     public class CopyBetweenFileSystemsTargetAction : ITargetActions<CollectionTarget, DocumentTarget, MissingTarget>
     {
+        /// <summary>
+        /// Initializes a new instance of the <see cref="CopyBetweenFileSystemsTargetAction"/> class.
+        /// </summary>
+        /// <param name="dispatcher">The WebDAV dispatcher</param>
+        public CopyBetweenFileSystemsTargetAction([NotNull] IWebDavDispatcher dispatcher)
+        {
+            Dispatcher = dispatcher;
+        }
+
+        /// <inheritdoc />
+        public IWebDavDispatcher Dispatcher { get; }
+
         /// <inheritdoc />
         public RecursiveTargetBehaviour ExistingTargetBehaviour { get; } = RecursiveTargetBehaviour.Overwrite;
 

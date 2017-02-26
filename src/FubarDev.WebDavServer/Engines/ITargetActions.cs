@@ -23,6 +23,14 @@ namespace FubarDev.WebDavServer.Engines
         where TMissing : class, IMissingTarget<TCollection, TDocument, TMissing>
     {
         /// <summary>
+        /// Gets the WebDAV dispatcher
+        /// </summary>
+        /// <remarks>
+        /// This is required to get all the predefined (and live) properties.
+        /// </remarks>
+        IWebDavDispatcher Dispatcher { get; }
+
+        /// <summary>
         /// Gets the behaviour of this implementation when a target already exists
         /// </summary>
         RecursiveTargetBehaviour ExistingTargetBehaviour { get; }

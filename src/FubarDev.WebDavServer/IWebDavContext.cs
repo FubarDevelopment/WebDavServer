@@ -66,5 +66,11 @@ namespace FubarDev.WebDavServer
         /// </summary>
         [NotNull]
         IPrincipal User { get; }
+
+        /// <summary>
+        /// Gets the WebDAV dispatcher
+        /// </summary>
+        [NotNull]
+        IWebDavDispatcher Dispatcher { get; }
     }
 }

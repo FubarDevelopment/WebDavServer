@@ -95,7 +95,7 @@ namespace FubarDev.WebDavServer.Engines
                 _logger.LogTrace($"Perform operation on document {sourceUrl} with missing target {target.DestinationUrl}.");
             try
             {
-                var properties = await source.GetProperties()
+                var properties = await source.GetProperties(_handler.Dispatcher)
                     .OfType<IUntypedWriteableProperty>()
                     .ToList(cancellationToken)
                     .ConfigureAwait(false);
@@ -168,7 +168,7 @@ namespace FubarDev.WebDavServer.Engines
             if (_logger.IsEnabled(LogLevel.Trace))
                 _logger.LogTrace($"Perform operation on document {sourceUrl} with existing target {target.DestinationUrl}.");
 
-            var properties = await source.GetProperties().OfType<IUntypedWriteableProperty>().ToList(cancellationToken).ConfigureAwait(false);
+            var properties = await source.GetProperties(_handler.Dispatcher).OfType<IUntypedWriteableProperty>().ToList(cancellationToken).ConfigureAwait(false);
 
             var docActionResult = await _handler.ExecuteAsync(source, target, cancellationToken).ConfigureAwait(false);
             if (docActionResult.IsFailure)
@@ -196,7 +196,7 @@ namespace FubarDev.WebDavServer.Engines
             if (_logger.IsEnabled(LogLevel.Trace))
                 _logger.LogTrace($"Collect properties for operation on collection {sourceUrl} and create target {target.DestinationUrl}.");
 
-            var properties = await sourceNode.Collection.GetProperties().OfType<IUntypedWriteableProperty>().ToList(cancellationToken).ConfigureAwait(false);
+            var properties = await sourceNode.Collection.GetProperties(_handler.Dispatcher).OfType<IUntypedWriteableProperty>().ToList(cancellationToken).ConfigureAwait(false);
 
             TCollection newColl;
             try
@@ -247,7 +247,7 @@ namespace FubarDev.WebDavServer.Engines
             if (_logger.IsEnabled(LogLevel.Trace))
                 _logger.LogTrace($"Collect properties for operation on collection {sourceUrl} with existing target {target.DestinationUrl}.");
 
-            var properties = await sourceNode.Collection.GetProperties().OfType<IUntypedWriteableProperty>().ToList(cancellationToken).ConfigureAwait(false);
+            var properties = await sourceNode.Collection.GetProperties(_handler.Dispatcher).OfType<IUntypedWriteableProperty>().ToList(cancellationToken).ConfigureAwait(false);
             return await ExecuteAsync(sourceUrl, sourceNode, target, properties, cancellationToken).ConfigureAwait(false);
         }
 
@@ -267,7 +267,7 @@ namespace FubarDev.WebDavServer.Engines
             var subNodeProperties = new Dictionary<string, IReadOnlyCollection<IUntypedWriteableProperty>>();
             foreach (var childNode in sourceNode.Nodes)
             {
-                var subProperties = await childNode.Collection.GetProperties().OfType<IUntypedWriteableProperty>().ToList(cancellationToken).ConfigureAwait(false);
+                var subProperties = await childNode.Collection.GetProperties(_handler.Dispatcher).OfType<IUntypedWriteableProperty>().ToList(cancellationToken).ConfigureAwait(false);
                 subNodeProperties.Add(childNode.Name, subProperties);
             }
 

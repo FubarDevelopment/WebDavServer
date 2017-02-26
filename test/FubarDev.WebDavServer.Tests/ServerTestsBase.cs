@@ -85,7 +85,7 @@ namespace FubarDev.WebDavServer.Tests
                     {
                         opt.Mode = processingMode;
                     })
-                .AddScoped<IWebDavContext>(sp => new TestHost(container.Server.BaseAddress, sp.GetRequiredService<IHttpContextAccessor>()))
+                .AddScoped<IWebDavContext>(sp => new TestHost(sp, container.Server.BaseAddress, sp.GetRequiredService<IHttpContextAccessor>()))
                 .AddScoped<IHttpMessageHandlerFactory>(sp => new TestHttpMessageHandlerFactory(container.Server))
                 .AddSingleton<IFileSystemFactory, InMemoryFileSystemFactory>()
                 .AddSingleton<IPropertyStoreFactory, InMemoryPropertyStoreFactory>()

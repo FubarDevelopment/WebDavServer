@@ -29,11 +29,17 @@ namespace FubarDev.WebDavServer.Engines.Local
         /// <summary>
         /// Initializes a new instance of the <see cref="EntryTarget"/> class.
         /// </summary>
+        /// <param name="targetActions">The target actions implementation to use</param>
         /// <param name="parent">The parent collection</param>
         /// <param name="destinationUrl">The destination URL for this entry</param>
         /// <param name="entry">The underlying entry</param>
-        protected EntryTarget([CanBeNull] CollectionTarget parent, [NotNull] Uri destinationUrl, [NotNull] IEntry entry)
+        protected EntryTarget(
+            ITargetActions<CollectionTarget, DocumentTarget, MissingTarget> targetActions,
+            [CanBeNull] CollectionTarget parent,
+            [NotNull] Uri destinationUrl,
+            [NotNull] IEntry entry)
         {
+            TargetActions = targetActions;
             _entry = entry;
             Name = entry.Name;
             Parent = parent;
@@ -51,6 +57,12 @@ namespace FubarDev.WebDavServer.Engines.Local
 
         /// <inheritdoc />
         public Uri DestinationUrl { get; }
+
+        /// <summary>
+        /// Gets the target actions implementation to use
+        /// </summary>
+        [NotNull]
+        protected ITargetActions<CollectionTarget, DocumentTarget, MissingTarget> TargetActions { get; }
 
         /// <inheritdoc />
         [ItemNotNull]
@@ -113,7 +125,7 @@ namespace FubarDev.WebDavServer.Engines.Local
                 return new XName[0];
             }
 
-            using (var propEnum = _entry.GetProperties(int.MaxValue).GetEnumerator())
+            using (var propEnum = _entry.GetProperties(TargetActions.Dispatcher).GetEnumerator())
             {
                 while (await propEnum.MoveNext(cancellationToken).ConfigureAwait(false))
                 {

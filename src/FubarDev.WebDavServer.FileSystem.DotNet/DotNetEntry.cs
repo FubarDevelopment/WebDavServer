@@ -3,14 +3,9 @@
 // </copyright>
 
 using System;
-using System.Collections.Generic;
 using System.IO;
 using System.Threading;
 using System.Threading.Tasks;
-
-using FubarDev.WebDavServer.Props;
-using FubarDev.WebDavServer.Props.Dead;
-using FubarDev.WebDavServer.Props.Live;
 
 namespace FubarDev.WebDavServer.FileSystem.DotNet
 {
@@ -68,51 +63,19 @@ namespace FubarDev.WebDavServer.FileSystem.DotNet
         public DateTime CreationTimeUtc => Info.CreationTimeUtc;
 
         /// <inheritdoc />
-        public IAsyncEnumerable<IUntypedReadableProperty> GetProperties(int? maxCost)
-        {
-            return new EntryProperties(this, GetLiveProperties(), GetPredefinedDeadProperties(), FileSystem.PropertyStore, maxCost);
-        }
-
-        /// <inheritdoc />
         public abstract Task<DeleteResult> DeleteAsync(CancellationToken cancellationToken);
 
-        /// <summary>
-        /// Gets the default live properties of this entry
-        /// </summary>
-        /// <returns>The enumeration of live properties belonging to this entry</returns>
-        protected virtual IEnumerable<ILiveProperty> GetLiveProperties()
+        /// <inheritdoc />
+        public Task SetLastWriteTimeUtcAsync(DateTime lastWriteTime, CancellationToken cancellationToken)
         {
-            var properties = new List<ILiveProperty>()
-            {
-                this.GetResourceTypeProperty(),
-                new LockDiscoveryProperty(this),
-                new SupportedLockProperty(this),
-                new LastModifiedProperty(LastWriteTimeUtc, SetLastWriteTimeUtcAsync),
-                new CreationDateProperty(CreationTimeUtc, SetCreateTimeUtcAsync),
-            };
-            return properties;
-        }
-
-        /// <summary>
-        /// Gets the default dead properties of this entry
-        /// </summary>
-        /// <returns>The enumeration of dead properties belonging to this entry</returns>
-        protected virtual IEnumerable<IDeadProperty> GetPredefinedDeadProperties()
-        {
-            yield return DotNetFileSystem
-                .DeadPropertyFactory.Create(FileSystem.PropertyStore, this, DisplayNameProperty.PropertyName);
-            yield return new GetETagProperty(FileSystem.PropertyStore, this);
-        }
-
-        private Task SetCreateTimeUtcAsync(DateTime value, CancellationToken cancellationToken)
-        {
-            Info.CreationTimeUtc = value;
+            Info.LastWriteTimeUtc = lastWriteTime;
             return Task.FromResult(0);
         }
 
-        private Task SetLastWriteTimeUtcAsync(DateTime timestamp, CancellationToken ct)
+        /// <inheritdoc />
+        public Task SetCreationTimeUtcAsync(DateTime creationTime, CancellationToken cancellationToken)
         {
-            Info.LastWriteTimeUtc = timestamp;
+            Info.CreationTimeUtc = creationTime;
             return Task.FromResult(0);
         }
     }

@@ -9,6 +9,8 @@ using System.Threading.Tasks;
 
 using FubarDev.WebDavServer.FileSystem;
 
+using JetBrains.Annotations;
+
 namespace FubarDev.WebDavServer.Engines.Remote
 {
     /// <summary>
@@ -19,9 +21,10 @@ namespace FubarDev.WebDavServer.Engines.Remote
         /// <summary>
         /// Initializes a new instance of the <see cref="CopyRemoteHttpClientTargetActions"/> class.
         /// </summary>
+        /// <param name="dispatcher">The WebDAV dispatcher</param>
         /// <param name="httpClient">The <see cref="HttpClient"/> to use</param>
-        public CopyRemoteHttpClientTargetActions(HttpClient httpClient)
-            : base(httpClient)
+        public CopyRemoteHttpClientTargetActions([NotNull] IWebDavDispatcher dispatcher, [NotNull] HttpClient httpClient)
+            : base(dispatcher, httpClient)
         {
         }
 

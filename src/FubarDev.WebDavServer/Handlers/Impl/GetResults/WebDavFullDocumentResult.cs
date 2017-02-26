@@ -41,7 +41,7 @@ namespace FubarDev.WebDavServer.Handlers.Impl.GetResults
 
             response.Headers["Accept-Ranges"] = new[] { "bytes" };
 
-            var properties = await _document.GetProperties(int.MaxValue).ToList(ct).ConfigureAwait(false);
+            var properties = await _document.GetProperties(response.Dispatcher).ToList(ct).ConfigureAwait(false);
             var etagProperty = properties.OfType<GetETagProperty>().FirstOrDefault();
             if (etagProperty != null)
             {

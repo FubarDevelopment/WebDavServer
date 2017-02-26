@@ -29,7 +29,10 @@ namespace FubarDev.WebDavServer.Tests.PropertyStore
             var serviceScopeFactory = fsServices.ServiceProvider.GetRequiredService<IServiceScopeFactory>();
             _serviceScope = serviceScopeFactory.CreateScope();
             FileSystem = _serviceScope.ServiceProvider.GetRequiredService<IFileSystem>();
+            Dispatcher = _serviceScope.ServiceProvider.GetRequiredService<IWebDavDispatcher>();
         }
+
+        public IWebDavDispatcher Dispatcher { get; }
 
         public IFileSystem FileSystem { get; }
 
@@ -99,9 +102,9 @@ namespace FubarDev.WebDavServer.Tests.PropertyStore
             _serviceScope.Dispose();
         }
 
-        private static async Task<DisplayNameProperty> GetDisplayNamePropertyAsync(IEntry entry, CancellationToken ct)
+        private async Task<DisplayNameProperty> GetDisplayNamePropertyAsync(IEntry entry, CancellationToken ct)
         {
-            var untypedDisplayNameProperty = await entry.GetProperties().Single(x => x.Name == DisplayNameProperty.PropertyName, ct).ConfigureAwait(false);
+            var untypedDisplayNameProperty = await entry.GetProperties(Dispatcher).Single(x => x.Name == DisplayNameProperty.PropertyName, ct).ConfigureAwait(false);
             Assert.NotNull(untypedDisplayNameProperty);
             var displayNameProperty = Assert.IsType<DisplayNameProperty>(untypedDisplayNameProperty);
             return displayNameProperty;

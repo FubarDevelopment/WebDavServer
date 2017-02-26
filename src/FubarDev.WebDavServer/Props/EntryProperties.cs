@@ -11,7 +11,6 @@ using System.Xml.Linq;
 
 using FubarDev.WebDavServer.FileSystem;
 using FubarDev.WebDavServer.Props.Dead;
-using FubarDev.WebDavServer.Props.Live;
 using FubarDev.WebDavServer.Props.Store;
 
 using JetBrains.Annotations;
@@ -28,11 +27,7 @@ namespace FubarDev.WebDavServer.Props
 
         [NotNull]
         [ItemNotNull]
-        private readonly IEnumerable<ILiveProperty> _liveProperties;
-
-        [NotNull]
-        [ItemNotNull]
-        private readonly IEnumerable<IDeadProperty> _predefinedDeadProperties;
+        private readonly IEnumerable<IUntypedReadableProperty> _predefinedProperties;
 
         [CanBeNull]
         private readonly IPropertyStore _propertyStore;
@@ -43,20 +38,17 @@ namespace FubarDev.WebDavServer.Props
         /// Initializes a new instance of the <see cref="EntryProperties"/> class.
         /// </summary>
         /// <param name="entry">The entry whose properties are to enumerate</param>
-        /// <param name="liveProperties">The entries live properties</param>
-        /// <param name="predefinedDeadProperties">The entries predefined properties</param>
+        /// <param name="predefinedProperties">The predefined properties for the entry</param>
         /// <param name="propertyStore">The property store to get the remaining dead properties for</param>
         /// <param name="maxCost">The maximum cost of the properties to return</param>
         public EntryProperties(
             [NotNull] IEntry entry,
-            [NotNull] [ItemNotNull] IEnumerable<ILiveProperty> liveProperties,
-            [NotNull] [ItemNotNull] IEnumerable<IDeadProperty> predefinedDeadProperties,
+            [NotNull] [ItemNotNull] IEnumerable<IUntypedReadableProperty> predefinedProperties,
             [CanBeNull] IPropertyStore propertyStore,
             int? maxCost)
         {
             _entry = entry;
-            _liveProperties = liveProperties;
-            _predefinedDeadProperties = predefinedDeadProperties;
+            _predefinedProperties = predefinedProperties;
             _propertyStore = propertyStore;
             _maxCost = maxCost;
         }
@@ -64,7 +56,7 @@ namespace FubarDev.WebDavServer.Props
         /// <inheritdoc />
         public IAsyncEnumerator<IUntypedReadableProperty> GetEnumerator()
         {
-            return new PropertiesEnumerator(_entry, _liveProperties, _predefinedDeadProperties, _propertyStore, _maxCost);
+            return new PropertiesEnumerator(_entry, _predefinedProperties, _propertyStore, _maxCost);
         }
 
         private class PropertiesEnumerator : IAsyncEnumerator<IUntypedReadableProperty>
@@ -89,8 +81,7 @@ namespace FubarDev.WebDavServer.Props
 
             public PropertiesEnumerator(
                 [NotNull] IEntry entry,
-                [NotNull] [ItemNotNull] IEnumerable<ILiveProperty> liveProperties,
-                [NotNull] [ItemNotNull] IEnumerable<IDeadProperty> predefinedDeadProperties,
+                [NotNull] [ItemNotNull] IEnumerable<IUntypedReadableProperty> predefinedProperties,
                 [CanBeNull] IPropertyStore propertyStore,
                 int? maxCost)
             {
@@ -99,20 +90,14 @@ namespace FubarDev.WebDavServer.Props
                 _maxCost = maxCost;
 
                 var emittedProperties = new HashSet<XName>();
-                var predefinedProperties = new List<IUntypedReadableProperty>();
-                foreach (var property in liveProperties)
+                var predefinedPropertiesList = new List<IUntypedReadableProperty>();
+                foreach (var property in predefinedProperties)
                 {
                     if (emittedProperties.Add(property.Name))
-                        predefinedProperties.Add(property);
+                        predefinedPropertiesList.Add(property);
                 }
 
-                foreach (var property in predefinedDeadProperties)
-                {
-                    if (emittedProperties.Add(property.Name))
-                        predefinedProperties.Add(property);
-                }
-
-                _predefinedPropertiesEnumerator = predefinedProperties.GetEnumerator();
+                _predefinedPropertiesEnumerator = predefinedPropertiesList.GetEnumerator();
             }
 
             public IUntypedReadableProperty Current { get; private set; }

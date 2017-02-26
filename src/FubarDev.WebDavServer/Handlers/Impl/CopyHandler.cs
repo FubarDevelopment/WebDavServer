@@ -72,8 +72,8 @@ namespace FubarDev.WebDavServer.Handlers.Impl
         protected override ITargetActions<CollectionTarget, DocumentTarget, MissingTarget> CreateLocalTargetActions(RecursiveProcessingMode mode)
         {
             if (mode == RecursiveProcessingMode.PreferFastest)
-                return new CopyInFileSystemTargetAction();
-            return new CopyBetweenFileSystemsTargetAction();
+                return new CopyInFileSystemTargetAction(WebDavContext.Dispatcher);
+            return new CopyBetweenFileSystemsTargetAction(WebDavContext.Dispatcher);
         }
     }
 }

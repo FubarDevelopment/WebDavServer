@@ -3,11 +3,8 @@
 // </copyright>
 
 using System;
-using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
-
-using FubarDev.WebDavServer.Props;
 
 using JetBrains.Annotations;
 
@@ -62,14 +59,6 @@ namespace FubarDev.WebDavServer.FileSystem
         DateTime CreationTimeUtc { get; }
 
         /// <summary>
-        /// Gets the properties assigned to this entry
-        /// </summary>
-        /// <param name="maxCost">The maximum cost the caller is allowed to pay to get the properties</param>
-        /// <returns>The properties assigned to this entry</returns>
-        [NotNull]
-        IAsyncEnumerable<IUntypedReadableProperty> GetProperties(int? maxCost = null);
-
-        /// <summary>
         /// Deletes this entry
         /// </summary>
         /// <param name="cancellationToken">The cancellation token</param>
@@ -77,5 +66,23 @@ namespace FubarDev.WebDavServer.FileSystem
         [NotNull]
         [ItemNotNull]
         Task<DeleteResult> DeleteAsync(CancellationToken cancellationToken);
+
+        /// <summary>
+        /// Sets the last write time
+        /// </summary>
+        /// <param name="lastWriteTime">The new last write time</param>
+        /// <param name="cancellationToken">The cancellation token</param>
+        /// <returns>The async task</returns>
+        [NotNull]
+        Task SetLastWriteTimeUtcAsync(DateTime lastWriteTime, CancellationToken cancellationToken);
+
+        /// <summary>
+        /// Sets the creation time
+        /// </summary>
+        /// <param name="creationTime">The new creation time</param>
+        /// <param name="cancellationToken">The cancellation token</param>
+        /// <returns>The async task</returns>
+        [NotNull]
+        Task SetCreationTimeUtcAsync(DateTime creationTime, CancellationToken cancellationToken);
     }
 }

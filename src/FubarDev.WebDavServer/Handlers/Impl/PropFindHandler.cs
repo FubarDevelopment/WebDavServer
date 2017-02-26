@@ -271,7 +271,7 @@ namespace FubarDev.WebDavServer.Handlers.Impl
                 }
 
                 var propElements = new List<XElement>();
-                using (var propsEnumerator = entry.GetProperties(maxCost).GetEnumerator())
+                using (var propsEnumerator = entry.GetProperties(_host.Dispatcher, maxCost).GetEnumerator())
                 {
                     while (await propsEnumerator.MoveNext(cancellationToken).ConfigureAwait(false))
                     {
@@ -347,7 +347,7 @@ namespace FubarDev.WebDavServer.Handlers.Impl
                 }
 
                 var propElements = new List<XElement>();
-                using (var propsEnumerator = entry.GetProperties(int.MaxValue).GetEnumerator())
+                using (var propsEnumerator = entry.GetProperties(_host.Dispatcher).GetEnumerator())
                 {
                     while (await propsEnumerator.MoveNext(cancellationToken).ConfigureAwait(false))
                     {

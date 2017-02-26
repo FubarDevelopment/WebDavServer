@@ -4,6 +4,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Threading;
@@ -13,6 +14,9 @@ using FubarDev.WebDavServer.FileSystem;
 using FubarDev.WebDavServer.Handlers;
 using FubarDev.WebDavServer.Model;
 using FubarDev.WebDavServer.Props;
+using FubarDev.WebDavServer.Props.Converters;
+using FubarDev.WebDavServer.Props.Dead;
+using FubarDev.WebDavServer.Props.Live;
 
 using JetBrains.Annotations;
 
@@ -23,6 +27,9 @@ namespace FubarDev.WebDavServer.Dispatchers
     /// </summary>
     public class WebDavDispatcherClass1 : IWebDavClass1
     {
+        [NotNull]
+        private readonly IDeadPropertyFactory _deadPropertyFactory;
+
         [CanBeNull]
         private readonly IPropFindHandler _propFindHandler;
 
@@ -58,8 +65,10 @@ namespace FubarDev.WebDavServer.Dispatchers
         /// </summary>
         /// <param name="class1Handlers">The WebDAV class 1 handlers</param>
         /// <param name="context">The WebDAV context</param>
-        public WebDavDispatcherClass1([NotNull] [ItemNotNull] IEnumerable<IClass1Handler> class1Handlers, [NotNull] IWebDavContext context)
+        /// <param name="deadPropertyFactory">The factory to create dead properties</param>
+        public WebDavDispatcherClass1([NotNull] [ItemNotNull] IEnumerable<IClass1Handler> class1Handlers, [NotNull] IWebDavContext context, [NotNull] IDeadPropertyFactory deadPropertyFactory)
         {
+            _deadPropertyFactory = deadPropertyFactory;
             var httpMethods = new HashSet<string>();
 
             foreach (var class1Handler in class1Handlers)
@@ -247,7 +256,32 @@ namespace FubarDev.WebDavServer.Dispatchers
         /// <inheritdoc />
         public IEnumerable<IUntypedReadableProperty> GetProperties(IEntry entry)
         {
-            throw new NotImplementedException();
+            var propStore = entry.FileSystem.PropertyStore;
+
+            yield return entry.GetResourceTypeProperty();
+            yield return new LastModifiedProperty(entry.LastWriteTimeUtc, entry.SetLastWriteTimeUtcAsync);
+            yield return new CreationDateProperty(entry.CreationTimeUtc, entry.SetCreationTimeUtcAsync);
+            yield return _deadPropertyFactory.Create(propStore, entry, DisplayNameProperty.PropertyName);
+            yield return new GetETagProperty(entry.FileSystem.PropertyStore, entry);
+
+            var doc = entry as IDocument;
+            if (doc != null)
+            {
+                yield return new ContentLengthProperty(doc.Length);
+                yield return _deadPropertyFactory
+                    .Create(propStore, entry, GetContentLanguageProperty.PropertyName);
+                yield return _deadPropertyFactory
+                    .Create(propStore, entry, GetContentTypeProperty.PropertyName);
+            }
+            else
+            {
+                Debug.Assert(entry is ICollection, "entry is ICollection");
+                yield return new ContentLengthProperty(0L);
+                var contentType = _deadPropertyFactory
+                    .Create(propStore, entry, GetContentTypeProperty.PropertyName);
+                contentType.Init(new StringConverter().ToElement(GetContentTypeProperty.PropertyName, Utils.MimeTypesMap.FolderContentType));
+                yield return contentType;
+            }
         }
     }
 }

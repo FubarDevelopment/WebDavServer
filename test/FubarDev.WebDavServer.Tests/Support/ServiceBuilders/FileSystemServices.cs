@@ -24,16 +24,13 @@ namespace FubarDev.WebDavServer.Tests.Support.ServiceBuilders
             var serviceCollection = new ServiceCollection()
                 .AddOptions()
                 .AddLogging()
-                .AddScoped<ISystemClock, TestSystemClock>()
                 .Configure<LockManagerOptions>(opt =>
                 {
                     opt.Rounding = new DefaultLockTimeRounding(DefaultLockTimeRoundingMode.OneHundredMilliseconds);
                 })
-                .AddScoped<LockCleanupTask>()
                 .AddScoped<ILockManager, InMemoryLockManager>()
                 .AddScoped<IDeadPropertyFactory, DeadPropertyFactory>()
-                .AddTransient<PathTraversalEngine>()
-                .AddScoped<IWebDavContext>(sp => new TestHost(new Uri("http://localhost/")))
+                .AddScoped<IWebDavContext>(sp => new TestHost(sp, new Uri("http://localhost/")))
                 .AddScoped<IFileSystemFactory, InMemoryFileSystemFactory>()
                 .AddSingleton<IPropertyStoreFactory, InMemoryPropertyStoreFactory>()
                 .AddScoped(ctx =>
@@ -47,7 +44,8 @@ namespace FubarDev.WebDavServer.Tests.Support.ServiceBuilders
                     var factory = ctx.GetRequiredService<IPropertyStoreFactory>();
                     var fs = ctx.GetRequiredService<IFileSystem>();
                     return factory.Create(fs);
-                });
+                })
+                .AddWebDav();
             ServiceProvider = serviceCollection.BuildServiceProvider();
 
             var loggerFactory = ServiceProvider.GetRequiredService<ILoggerFactory>();

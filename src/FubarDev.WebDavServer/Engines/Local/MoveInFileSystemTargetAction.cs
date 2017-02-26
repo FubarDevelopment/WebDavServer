@@ -26,11 +26,17 @@ namespace FubarDev.WebDavServer.Engines.Local
         /// <summary>
         /// Initializes a new instance of the <see cref="MoveInFileSystemTargetAction"/> class.
         /// </summary>
+        /// <param name="dispatcher">The WebDAV dispatcher</param>
         /// <param name="logger">The logger</param>
-        public MoveInFileSystemTargetAction([NotNull] ILogger logger)
+        public MoveInFileSystemTargetAction([NotNull] IWebDavDispatcher dispatcher, [NotNull] ILogger logger)
         {
+            Dispatcher = dispatcher;
             _logger = logger;
         }
+
+        /// <inheritdoc />
+        [NotNull]
+        public IWebDavDispatcher Dispatcher { get; }
 
         /// <inheritdoc />
         public RecursiveTargetBehaviour ExistingTargetBehaviour { get; } = RecursiveTargetBehaviour.Overwrite;
@@ -48,6 +54,8 @@ namespace FubarDev.WebDavServer.Engines.Local
             try
             {
                 Debug.Assert(destination.Parent != null, "destination.Parent != null");
+                if (destination.Parent == null)
+                    throw new InvalidOperationException("The destination document must have a parent collection");
                 await source.MoveToAsync(destination.Parent.Collection, destination.Name, cancellationToken).ConfigureAwait(false);
                 return new ActionResult(ActionStatus.Overwritten, destination);
             }

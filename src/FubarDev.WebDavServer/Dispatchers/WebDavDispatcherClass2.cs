@@ -13,6 +13,7 @@ using FubarDev.WebDavServer.Handlers;
 using FubarDev.WebDavServer.Model;
 using FubarDev.WebDavServer.Model.Headers;
 using FubarDev.WebDavServer.Props;
+using FubarDev.WebDavServer.Props.Live;
 
 using JetBrains.Annotations;
 
@@ -118,7 +119,8 @@ namespace FubarDev.WebDavServer.Dispatchers
         /// <inheritdoc />
         public IEnumerable<IUntypedReadableProperty> GetProperties(IEntry entry)
         {
-            throw new NotImplementedException();
+            yield return new LockDiscoveryProperty(entry);
+            yield return new SupportedLockProperty(entry);
         }
     }
 }

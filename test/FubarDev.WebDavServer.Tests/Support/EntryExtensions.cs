@@ -10,24 +10,28 @@ using System.Xml.Linq;
 using FubarDev.WebDavServer.FileSystem;
 using FubarDev.WebDavServer.Props.Dead;
 
+using JetBrains.Annotations;
+
 namespace FubarDev.WebDavServer.Tests.Support
 {
     public static class EntryExtensions
     {
         public static Task<IReadOnlyCollection<XElement>> GetPropertyElementsAsync(
-            this IEntry entry,
+            [NotNull] this IEntry entry,
+            [NotNull] IWebDavDispatcher dispatcher,
             CancellationToken ct)
         {
-            return GetPropertyElementsAsync(entry, false, ct);
+            return GetPropertyElementsAsync(entry, dispatcher, false, ct);
         }
 
         public static async Task<IReadOnlyCollection<XElement>> GetPropertyElementsAsync(
-            this IEntry entry,
+            [NotNull] this IEntry entry,
+            [NotNull] IWebDavDispatcher dispatcher,
             bool skipEtag,
             CancellationToken ct)
         {
             var result = new List<XElement>();
-            using (var propEnum = entry.GetProperties().GetEnumerator())
+            using (var propEnum = entry.GetProperties(dispatcher).GetEnumerator())
             {
                 while (await propEnum.MoveNext(ct).ConfigureAwait(false))
                 {

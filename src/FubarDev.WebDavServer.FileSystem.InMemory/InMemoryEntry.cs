@@ -3,14 +3,10 @@
 // </copyright>
 
 using System;
-using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
 
 using FubarDev.WebDavServer.Model.Headers;
-using FubarDev.WebDavServer.Props;
-using FubarDev.WebDavServer.Props.Dead;
-using FubarDev.WebDavServer.Props.Live;
 
 using JetBrains.Annotations;
 
@@ -76,12 +72,6 @@ namespace FubarDev.WebDavServer.FileSystem.InMemory
         protected InMemoryDirectory InMemoryParent => _parent;
 
         /// <inheritdoc />
-        public IAsyncEnumerable<IUntypedReadableProperty> GetProperties(int? maxCost)
-        {
-            return new EntryProperties(this, GetLiveProperties(), GetPredefinedDeadProperties(), FileSystem.PropertyStore, maxCost);
-        }
-
-        /// <inheritdoc />
         public Task<EntityTag> UpdateETagAsync(CancellationToken cancellationToken)
         {
             return Task.FromResult(ETag = new EntityTag(false));
@@ -90,32 +80,18 @@ namespace FubarDev.WebDavServer.FileSystem.InMemory
         /// <inheritdoc />
         public abstract Task<DeleteResult> DeleteAsync(CancellationToken cancellationToken);
 
-        /// <summary>
-        /// Gets the default live properties of this entry
-        /// </summary>
-        /// <returns>The enumeration of live properties belonging to this entry</returns>
-        protected virtual IEnumerable<ILiveProperty> GetLiveProperties()
+        /// <inheritdoc />
+        public Task SetLastWriteTimeUtcAsync(DateTime lastWriteTime, CancellationToken cancellationToken)
         {
-            var properties = new List<ILiveProperty>()
-            {
-                this.GetResourceTypeProperty(),
-                new LockDiscoveryProperty(this),
-                new SupportedLockProperty(this),
-                new LastModifiedProperty(LastWriteTimeUtc, (v, ct) => Task.FromResult(LastWriteTimeUtc = v)),
-                new CreationDateProperty(CreationTimeUtc, (v, ct) => Task.FromResult(CreationTimeUtc = v)),
-            };
-            return properties;
+            LastWriteTimeUtc = lastWriteTime;
+            return Task.FromResult(0);
         }
 
-        /// <summary>
-        /// Gets the default dead properties of this entry
-        /// </summary>
-        /// <returns>The enumeration of dead properties belonging to this entry</returns>
-        protected virtual IEnumerable<IDeadProperty> GetPredefinedDeadProperties()
+        /// <inheritdoc />
+        public Task SetCreationTimeUtcAsync(DateTime creationTime, CancellationToken cancellationToken)
         {
-            yield return InMemoryFileSystem
-                .DeadPropertyFactory.Create(FileSystem.PropertyStore, this, DisplayNameProperty.PropertyName);
-            yield return new GetETagProperty(FileSystem.PropertyStore, this, 0);
+            CreationTimeUtc = creationTime;
+            return Task.FromResult(0);
         }
     }
 }

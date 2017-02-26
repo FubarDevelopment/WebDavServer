@@ -10,6 +10,7 @@ using System.Security.Principal;
 using FubarDev.WebDavServer.Utils.UAParser;
 
 using Microsoft.AspNetCore.Http;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace FubarDev.WebDavServer.Tests.Support
 {
@@ -21,7 +22,9 @@ namespace FubarDev.WebDavServer.Tests.Support
 
         private readonly Lazy<WebDavRequestHeaders> _requestHeaders;
 
-        public TestHost(Uri baseUrl)
+        private readonly Lazy<IWebDavDispatcher> _dispatcher;
+
+        public TestHost(IServiceProvider serviceProvider, Uri baseUrl)
         {
             BaseUrl = baseUrl;
             RootUrl = new Uri(baseUrl, "/");
@@ -35,9 +38,10 @@ namespace FubarDev.WebDavServer.Tests.Support
                 return requestUrl;
             });
             _requestHeaders = new Lazy<WebDavRequestHeaders>(() => new WebDavRequestHeaders(new List<KeyValuePair<string, IEnumerable<string>>>(), this));
+            _dispatcher = new Lazy<IWebDavDispatcher>(serviceProvider.GetRequiredService<IWebDavDispatcher>);
         }
 
-        public TestHost(Uri baseUrl, IHttpContextAccessor httpContextAccessor)
+        public TestHost(IServiceProvider serviceProvider, Uri baseUrl, IHttpContextAccessor httpContextAccessor)
         {
             BaseUrl = baseUrl;
             RootUrl = new Uri(baseUrl, "/");
@@ -56,6 +60,7 @@ namespace FubarDev.WebDavServer.Tests.Support
                 var headerItems = request.Headers.Select(x => new KeyValuePair<string, IEnumerable<string>>(x.Key, x.Value));
                 return new WebDavRequestHeaders(headerItems, this);
             });
+            _dispatcher = new Lazy<IWebDavDispatcher>(serviceProvider.GetRequiredService<IWebDavDispatcher>);
         }
 
         public string RequestProtocol { get; }
@@ -73,5 +78,7 @@ namespace FubarDev.WebDavServer.Tests.Support
         public IWebDavRequestHeaders RequestHeaders => _requestHeaders.Value;
 
         public IPrincipal User { get; } = new GenericPrincipal(new GenericIdentity("anonymous"), new string[0]);
+
+        public IWebDavDispatcher Dispatcher => _dispatcher.Value;
     }
 }

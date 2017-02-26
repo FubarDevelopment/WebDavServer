@@ -17,9 +17,6 @@ namespace FubarDev.WebDavServer.Engines.Local
     /// </summary>
     public class CollectionTarget : EntryTarget, ICollectionTarget<CollectionTarget, DocumentTarget, MissingTarget>
     {
-        [NotNull]
-        private readonly ITargetActions<CollectionTarget, DocumentTarget, MissingTarget> _targetActions;
-
         /// <summary>
         /// Initializes a new instance of the <see cref="CollectionTarget"/> class.
         /// </summary>
@@ -34,10 +31,9 @@ namespace FubarDev.WebDavServer.Engines.Local
             [NotNull] ICollection collection,
             bool created,
             [NotNull] ITargetActions<CollectionTarget, DocumentTarget, MissingTarget> targetActions)
-            : base(parent, destinationUrl, collection)
+            : base(targetActions, parent, destinationUrl, collection)
         {
             Collection = collection;
-            _targetActions = targetActions;
             Created = created;
         }
 
@@ -83,7 +79,7 @@ namespace FubarDev.WebDavServer.Engines.Local
         {
             var name = Collection.Name;
             await Collection.DeleteAsync(cancellationToken).ConfigureAwait(false);
-            return new MissingTarget(DestinationUrl, name, Parent, _targetActions);
+            return new MissingTarget(DestinationUrl, name, Parent, TargetActions);
         }
 
         /// <inheritdoc />
@@ -91,20 +87,20 @@ namespace FubarDev.WebDavServer.Engines.Local
         {
             var result = await Collection.GetChildAsync(name, cancellationToken).ConfigureAwait(false);
             if (result == null)
-                return new MissingTarget(DestinationUrl.Append(name, false), name, this, _targetActions);
+                return new MissingTarget(DestinationUrl.Append(name, false), name, this, TargetActions);
 
             var doc = result as IDocument;
             if (doc != null)
-                return new DocumentTarget(this, DestinationUrl.Append(doc), doc, _targetActions);
+                return new DocumentTarget(this, DestinationUrl.Append(doc), doc, TargetActions);
 
             var coll = (ICollection)result;
-            return new CollectionTarget(DestinationUrl.Append(coll), this, coll, false, _targetActions);
+            return new CollectionTarget(DestinationUrl.Append(coll), this, coll, false, TargetActions);
         }
 
         /// <inheritdoc />
         public MissingTarget NewMissing(string name)
         {
-            return new MissingTarget(DestinationUrl.Append(name, false), name, this, _targetActions);
+            return new MissingTarget(DestinationUrl.Append(name, false), name, this, TargetActions);
         }
     }
 }

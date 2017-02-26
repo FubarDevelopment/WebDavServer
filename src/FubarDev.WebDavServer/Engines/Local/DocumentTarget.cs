@@ -18,8 +18,6 @@ namespace FubarDev.WebDavServer.Engines.Local
     /// </summary>
     public class DocumentTarget : EntryTarget, IDocumentTarget<CollectionTarget, DocumentTarget, MissingTarget>
     {
-        private readonly ITargetActions<CollectionTarget, DocumentTarget, MissingTarget> _targetActions;
-
         /// <summary>
         /// Initializes a new instance of the <see cref="DocumentTarget"/> class.
         /// </summary>
@@ -32,9 +30,8 @@ namespace FubarDev.WebDavServer.Engines.Local
             [NotNull] Uri destinationUrl,
             [NotNull] IDocument document,
             [NotNull] ITargetActions<CollectionTarget, DocumentTarget, MissingTarget> targetActions)
-            : base(parent, destinationUrl, document)
+            : base(targetActions, parent, destinationUrl, document)
         {
-            _targetActions = targetActions;
             Document = document;
         }
 
@@ -59,6 +56,8 @@ namespace FubarDev.WebDavServer.Engines.Local
         {
             var collUrl = destinationUrl.GetCollectionUri();
             Debug.Assert(document.Parent != null, "document.Parent != null");
+            if (document.Parent == null)
+                throw new InvalidOperationException("A document must always have a parent collection.");
             var collTarget = new CollectionTarget(collUrl, null, document.Parent, false, targetActions);
             var docTarget = new DocumentTarget(collTarget, destinationUrl, document, targetActions);
             return docTarget;
@@ -68,7 +67,7 @@ namespace FubarDev.WebDavServer.Engines.Local
         public async Task<MissingTarget> DeleteAsync(CancellationToken cancellationToken)
         {
             await Document.DeleteAsync(cancellationToken).ConfigureAwait(false);
-            return new MissingTarget(DestinationUrl, Name, Parent, _targetActions);
+            return new MissingTarget(DestinationUrl, Name, Parent, TargetActions);
         }
     }
 }

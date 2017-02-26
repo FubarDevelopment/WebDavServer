@@ -2,10 +2,12 @@
 // Copyright (c) Fubar Development Junker. All rights reserved.
 // </copyright>
 
+using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
 
 using FubarDev.WebDavServer.Model.Headers;
+using FubarDev.WebDavServer.Props;
 
 namespace FubarDev.WebDavServer.FileSystem
 {
@@ -32,6 +34,24 @@ namespace FubarDev.WebDavServer.FileSystem
             if (propStore == null)
                 return null;
             return await propStore.GetETagAsync(entry, cancellationToken).ConfigureAwait(false);
+        }
+
+        /// <summary>
+        /// Gets all predefined properties for the given <paramref name="entry"/>, provided by the given <paramref name="dispatcher"/>.
+        /// </summary>
+        /// <param name="entry">The entry to get the properties for</param>
+        /// <param name="dispatcher">The dispatcher that provides the predefined properties</param>
+        /// <param name="maxCost">The maximum cost for querying a properties value</param>
+        /// <returns>The async enumerable of all property (including the property store when the <paramref name="maxCost"/> allows it)</returns>
+        public static IAsyncEnumerable<IUntypedReadableProperty> GetProperties(this IEntry entry, IWebDavDispatcher dispatcher, int? maxCost = null)
+        {
+            var properties = new List<IUntypedReadableProperty>();
+            foreach (var webDavClass in dispatcher.SupportedClasses)
+            {
+                properties.AddRange(webDavClass.GetProperties(entry));
+            }
+
+            return new EntryProperties(entry, properties, entry.FileSystem.PropertyStore, maxCost);
         }
     }
 }

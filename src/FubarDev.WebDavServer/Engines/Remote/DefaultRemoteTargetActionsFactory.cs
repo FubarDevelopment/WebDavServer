@@ -9,6 +9,8 @@ using System.Threading.Tasks;
 
 using FubarDev.WebDavServer.Model;
 
+using JetBrains.Annotations;
+
 namespace FubarDev.WebDavServer.Engines.Remote
 {
     /// <summary>
@@ -16,14 +18,20 @@ namespace FubarDev.WebDavServer.Engines.Remote
     /// </summary>
     public class DefaultRemoteTargetActionsFactory : IRemoteCopyTargetActionsFactory, IRemoteMoveTargetActionsFactory
     {
+        [NotNull]
+        private readonly IWebDavContext _context;
+
+        [NotNull]
         private readonly IHttpMessageHandlerFactory _httpMessageHandlerFactory;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="DefaultRemoteTargetActionsFactory"/> class.
         /// </summary>
+        /// <param name="context">The WebDAV request context</param>
         /// <param name="httpMessageHandlerFactory">The factory for <see cref="HttpClient"/> instances</param>
-        public DefaultRemoteTargetActionsFactory(IHttpMessageHandlerFactory httpMessageHandlerFactory)
+        public DefaultRemoteTargetActionsFactory([NotNull] IWebDavContext context, [NotNull] IHttpMessageHandlerFactory httpMessageHandlerFactory)
         {
+            _context = context;
             _httpMessageHandlerFactory = httpMessageHandlerFactory;
         }
 
@@ -44,7 +52,7 @@ namespace FubarDev.WebDavServer.Engines.Remote
                 BaseAddress = destinationUrl,
             };
 
-            return new CopyRemoteHttpClientTargetActions(httpClient);
+            return new CopyRemoteHttpClientTargetActions(_context.Dispatcher, httpClient);
         }
 
         /// <inheritdoc />
@@ -64,7 +72,7 @@ namespace FubarDev.WebDavServer.Engines.Remote
                 BaseAddress = destinationUrl,
             };
 
-            return new MoveRemoteHttpClientTargetActions(httpClient);
+            return new MoveRemoteHttpClientTargetActions(_context.Dispatcher, httpClient);
         }
     }
 }

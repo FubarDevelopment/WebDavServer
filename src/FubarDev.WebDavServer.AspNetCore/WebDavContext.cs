@@ -11,6 +11,7 @@ using System.Text;
 using FubarDev.WebDavServer.Utils.UAParser;
 
 using Microsoft.AspNetCore.Http;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Options;
 
 namespace FubarDev.WebDavServer.AspNetCore
@@ -36,12 +37,15 @@ namespace FubarDev.WebDavServer.AspNetCore
 
         private readonly Lazy<IPrincipal> _principal;
 
+        private readonly Lazy<IWebDavDispatcher> _dispatcher;
+
         /// <summary>
         /// Initializes a new instance of the <see cref="WebDavContext"/> class.
         /// </summary>
+        /// <param name="serviceProvider">The service provider used to get the <see cref="IWebDavDispatcher"/> with</param>
         /// <param name="httpContextAccessor">The <see cref="HttpContext"/> accessor</param>
         /// <param name="options">The options for the <see cref="WebDavContext"/></param>
-        public WebDavContext(IHttpContextAccessor httpContextAccessor, IOptions<WebDavHostOptions> options)
+        public WebDavContext(IServiceProvider serviceProvider, IHttpContextAccessor httpContextAccessor, IOptions<WebDavHostOptions> options)
         {
             var opt = options?.Value ?? new WebDavHostOptions();
             _httpContextAccessor = httpContextAccessor;
@@ -63,6 +67,7 @@ namespace FubarDev.WebDavServer.AspNetCore
             });
             _detectedClient = new Lazy<IUAParserOutput>(() => DetectClient(httpContextAccessor.HttpContext));
             _principal = new Lazy<IPrincipal>(() => httpContextAccessor.HttpContext.User);
+            _dispatcher = new Lazy<IWebDavDispatcher>(serviceProvider.GetRequiredService<IWebDavDispatcher>);
         }
 
         /// <inheritdoc />
@@ -88,6 +93,9 @@ namespace FubarDev.WebDavServer.AspNetCore
 
         /// <inheritdoc />
         public IUAParserOutput DetectedClient => _detectedClient.Value;
+
+        /// <inheritdoc />
+        public IWebDavDispatcher Dispatcher => _dispatcher.Value;
 
         private static Uri BuildBaseUrl(HttpContext httpContext, WebDavHostOptions options)
         {
