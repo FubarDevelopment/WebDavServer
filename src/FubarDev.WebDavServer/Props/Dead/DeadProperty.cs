@@ -48,20 +48,26 @@ namespace FubarDev.WebDavServer.Props.Dead
             _store = store;
             _entry = entry;
             Name = element.Name;
+            _cachedValue = element;
         }
 
+        /// <inheritdoc />
         public XName Name { get; }
 
+        /// <inheritdoc />
         public IReadOnlyCollection<XName> AlternativeNames { get; } = new XName[0];
 
+        /// <inheritdoc />
         public int Cost => _store.Cost;
 
+        /// <inheritdoc />
         public Task SetXmlValueAsync(XElement element, CancellationToken ct)
         {
             _cachedValue = element;
             return _store.SetAsync(_entry, element, ct);
         }
 
+        /// <inheritdoc />
         public async Task<XElement> GetXmlValueAsync(CancellationToken ct)
         {
             var result = _cachedValue ?? (_cachedValue = await _store.GetAsync(_entry, Name, ct).ConfigureAwait(false));
@@ -70,6 +76,7 @@ namespace FubarDev.WebDavServer.Props.Dead
             return result;
         }
 
+        /// <inheritdoc />
         public void Init(XElement initialValue)
         {
             _cachedValue = initialValue;
