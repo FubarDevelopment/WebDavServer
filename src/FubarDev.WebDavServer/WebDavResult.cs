@@ -11,17 +11,29 @@ using FubarDev.WebDavServer.Model;
 
 namespace FubarDev.WebDavServer
 {
+    /// <summary>
+    /// The result of a WebDAV operation
+    /// </summary>
     public class WebDavResult : IWebDavResult
     {
+        /// <summary>
+        /// Initializes a new instance of the <see cref="WebDavResult"/> class.
+        /// </summary>
+        /// <param name="statusCode">The WebDAV status code</param>
         public WebDavResult(WebDavStatusCode statusCode)
         {
             StatusCode = statusCode;
         }
 
+        /// <inheritdoc />
         public WebDavStatusCode StatusCode { get; }
 
+        /// <summary>
+        /// Gets the header values to be set for the response
+        /// </summary>
         public IDictionary<string, string[]> Headers { get; } = new Dictionary<string, string[]>();
 
+        /// <inheritdoc />
         public virtual Task ExecuteResultAsync(IWebDavResponse response, CancellationToken ct)
         {
             var headers = new Dictionary<string, string[]>()

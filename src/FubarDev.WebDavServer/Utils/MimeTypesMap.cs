@@ -15,8 +15,14 @@ namespace FubarDev.WebDavServer.Utils
     /// </remarks>
     public static class MimeTypesMap
     {
+        /// <summary>
+        /// The default mime type
+        /// </summary>
         public const string DefaultMimeType = "application/octet-stream";
 
+        /// <summary>
+        /// The mime type for a collection
+        /// </summary>
         public const string FolderContentType = "httpd/unix-directory";
 
         // http://svn.apache.org/repos/asf/httpd/httpd/trunk/docs/conf/mime.types
@@ -790,6 +796,11 @@ namespace FubarDev.WebDavServer.Utils
             ["ice"] = "x-conference/x-cooltalk",
         });
 
+        /// <summary>
+        /// Gets the mime type of a document name
+        /// </summary>
+        /// <param name="fileName">The document name to get the mime type for</param>
+        /// <returns>The mime type of the <paramref name="fileName"/></returns>
         public static string GetMimeType(string fileName)
         {
             string ext = fileName;

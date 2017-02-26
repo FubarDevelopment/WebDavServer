@@ -10,8 +10,19 @@ using System.Xml.Linq;
 
 namespace FubarDev.WebDavServer
 {
+    /// <summary>
+    /// Extension methods to handle XML document fragments
+    /// </summary>
     public static class XmlFragmentExtensions
     {
+        /// <summary>
+        /// Reads the XML document fragment from a <see cref="string"/>
+        /// </summary>
+        /// <param name="xmlStr">XML string to read the document fragment from</param>
+        /// <returns>The object collection</returns>
+        /// <remarks>
+        /// The returned collection may contain either an <see cref="XElement"/> or a <see cref="string"/>.
+        /// </remarks>
         public static IReadOnlyCollection<object> ReadXmlDocumentFragment(this string xmlStr)
         {
             var settings = new XmlReaderSettings
@@ -25,6 +36,14 @@ namespace FubarDev.WebDavServer
             }
         }
 
+        /// <summary>
+        /// Reads the XML document fragment from a <see cref="Stream"/>
+        /// </summary>
+        /// <param name="xmlStream">The <see cref="Stream"/> to read the XML document fragment from</param>
+        /// <returns>The object collection</returns>
+        /// <remarks>
+        /// The returned collection may contain either an <see cref="XElement"/> or a <see cref="string"/>.
+        /// </remarks>
         public static IReadOnlyCollection<object> ReadXmlDocumentFragment(this Stream xmlStream)
         {
             var settings = new XmlReaderSettings
@@ -38,6 +57,14 @@ namespace FubarDev.WebDavServer
             }
         }
 
+        /// <summary>
+        /// Reads the XML document fragment from a <see cref="TextReader"/>
+        /// </summary>
+        /// <param name="xml">The <see cref="TextReader"/> to read the document fragment from</param>
+        /// <returns>The object collection</returns>
+        /// <remarks>
+        /// The returned collection may contain either an <see cref="XElement"/> or a <see cref="string"/>.
+        /// </remarks>
         public static IReadOnlyCollection<object> ReadXmlDocumentFragment(this TextReader xml)
         {
             var settings = new XmlReaderSettings
@@ -51,6 +78,14 @@ namespace FubarDev.WebDavServer
             }
         }
 
+        /// <summary>
+        /// Reads data from a XML <paramref name="reader"/> and puts all found elements into a collection of <see cref="object"/>
+        /// </summary>
+        /// <param name="reader">The reader to read from</param>
+        /// <returns>The object collection</returns>
+        /// <remarks>
+        /// The returned collection may contain either an <see cref="XElement"/> or a <see cref="string"/>.
+        /// </remarks>
         private static IReadOnlyCollection<object> ReadXmlDocumentFragment(this XmlReader reader)
         {
             var result = new List<object>();
