@@ -137,8 +137,7 @@ namespace FubarDev.WebDavServer.Handlers.Impl
                         var parentPropStore = parent.FileSystem.PropertyStore;
                         if (parentPropStore != null)
                         {
-                            Debug.Assert(targetEntry.Parent != null, "entry.Parent != null");
-                            await parentPropStore.UpdateETagAsync(targetEntry.Parent, cancellationToken)
+                            await parentPropStore.UpdateETagAsync(parent, cancellationToken)
                                 .ConfigureAwait(false);
                         }
 
@@ -233,6 +232,9 @@ namespace FubarDev.WebDavServer.Handlers.Impl
         [ItemNotNull]
         private async Task<IReadOnlyCollection<ChangeItem>> RevertChangesAsync([NotNull] IEntry entry, [NotNull][ItemNotNull] IReadOnlyCollection<ChangeItem> changes, [NotNull] Dictionary<XName, IUntypedReadableProperty> properties, CancellationToken cancellationToken)
         {
+            if (entry.FileSystem.PropertyStore == null || _fileSystem.PropertyStore == null)
+                throw new InvalidOperationException("The property store must be configured");
+
             var newChangeItems = new List<ChangeItem>();
 
             foreach (var changeItem in changes.Reverse())
@@ -249,6 +251,8 @@ namespace FubarDev.WebDavServer.Handlers.Impl
                     case ChangeStatus.Modified:
                         Debug.Assert(entry.FileSystem.PropertyStore != null, "entry.FileSystem.PropertyStore != null");
                         Debug.Assert(changeItem.OldValue != null, "changeItem.OldValue != null");
+                        if (changeItem.OldValue == null)
+                            throw new InvalidOperationException("There must be a old value for the item to change");
                         await entry.FileSystem.PropertyStore.SetAsync(entry, changeItem.OldValue, cancellationToken).ConfigureAwait(false);
                         newChangeItem = ChangeItem.FailedDependency(changeItem.Name);
                         break;
@@ -258,6 +262,8 @@ namespace FubarDev.WebDavServer.Handlers.Impl
                             properties.Add(changeItem.Name, changeItem.Property);
                             Debug.Assert(_fileSystem.PropertyStore != null, "_fileSystem.PropertyStore != null");
                             Debug.Assert(changeItem.OldValue != null, "changeItem.OldValue != null");
+                            if (changeItem.OldValue == null)
+                                throw new InvalidOperationException("There must be a old value for the item to change");
                             await _fileSystem.PropertyStore.SetAsync(entry, changeItem.OldValue, cancellationToken).ConfigureAwait(false);
                         }
 
