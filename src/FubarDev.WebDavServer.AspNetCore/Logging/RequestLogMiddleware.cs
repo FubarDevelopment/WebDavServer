@@ -17,6 +17,9 @@ using Microsoft.Extensions.Logging;
 
 namespace FubarDev.WebDavServer.AspNetCore.Logging
 {
+    /// <summary>
+    /// The request log middleware
+    /// </summary>
     public class RequestLogMiddleware
     {
         private static readonly Encoding _defaultEncoding = new UTF8Encoding(false);
@@ -30,12 +33,22 @@ namespace FubarDev.WebDavServer.AspNetCore.Logging
         private readonly RequestDelegate _next;
         private readonly ILogger<RequestLogMiddleware> _logger;
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="RequestLogMiddleware"/> class.
+        /// </summary>
+        /// <param name="next">The next middleware</param>
+        /// <param name="logger">The logger for this middleware</param>
         public RequestLogMiddleware(RequestDelegate next, ILogger<RequestLogMiddleware> logger)
         {
             _next = next;
             _logger = logger;
         }
 
+        /// <summary>
+        /// Invoked by ASP.NET core
+        /// </summary>
+        /// <param name="context">The HTTP context</param>
+        /// <returns>The async task</returns>
         // ReSharper disable once ConsiderUsingAsyncSuffix
         public async Task Invoke(HttpContext context)
         {

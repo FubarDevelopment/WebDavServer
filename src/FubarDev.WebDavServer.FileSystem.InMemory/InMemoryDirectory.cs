@@ -17,17 +17,31 @@ using FubarDev.WebDavServer.Props.Live;
 
 namespace FubarDev.WebDavServer.FileSystem.InMemory
 {
+    /// <summary>
+    /// An in-memory implementation of a WebDAV collection
+    /// </summary>
     public class InMemoryDirectory : InMemoryEntry, ICollection
     {
         private readonly Dictionary<string, InMemoryEntry> _children = new Dictionary<string, InMemoryEntry>(StringComparer.OrdinalIgnoreCase);
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="InMemoryDirectory"/> class.
+        /// </summary>
+        /// <param name="fileSystem">The file system this collection belongs to</param>
+        /// <param name="parent">The parent collection</param>
+        /// <param name="path">The root-relative path of this collection</param>
+        /// <param name="name">The name of the collection</param>
         public InMemoryDirectory(InMemoryFileSystem fileSystem, InMemoryDirectory parent, Uri path, string name)
             : base(fileSystem, parent, path, name)
         {
         }
 
+        /// <inheritdoc />
         public override async Task<DeleteResult> DeleteAsync(CancellationToken cancellationToken)
         {
+            if (InMemoryParent == null)
+                throw new InvalidOperationException("The collection must belong to a collection");
+
             if (InMemoryParent.Remove(Name))
             {
                 var propStore = FileSystem.PropertyStore;
@@ -42,6 +56,7 @@ namespace FubarDev.WebDavServer.FileSystem.InMemory
             return new DeleteResult(WebDavStatusCode.NotFound, this);
         }
 
+        /// <inheritdoc />
         public Task<IEntry> GetChildAsync(string name, CancellationToken ct)
         {
             InMemoryEntry entry;
@@ -49,11 +64,13 @@ namespace FubarDev.WebDavServer.FileSystem.InMemory
             return Task.FromResult<IEntry>(entry);
         }
 
+        /// <inheritdoc />
         public Task<IReadOnlyCollection<IEntry>> GetChildrenAsync(CancellationToken ct)
         {
             return Task.FromResult<IReadOnlyCollection<IEntry>>(_children.Values.ToList());
         }
 
+        /// <inheritdoc />
         public Task<IDocument> CreateDocumentAsync(string name, CancellationToken ct)
         {
             if (_children.ContainsKey(name))
@@ -64,6 +81,7 @@ namespace FubarDev.WebDavServer.FileSystem.InMemory
             return Task.FromResult<IDocument>(newItem);
         }
 
+        /// <inheritdoc />
         public Task<ICollection> CreateCollectionAsync(string name, CancellationToken ct)
         {
             if (_children.ContainsKey(name))
@@ -79,6 +97,7 @@ namespace FubarDev.WebDavServer.FileSystem.InMemory
             return _children.Remove(name);
         }
 
+        /// <inheritdoc />
         protected override IEnumerable<ILiveProperty> GetLiveProperties()
         {
             return base.GetLiveProperties()
@@ -88,6 +107,7 @@ namespace FubarDev.WebDavServer.FileSystem.InMemory
                 });
         }
 
+        /// <inheritdoc />
         protected override IEnumerable<IDeadProperty> GetPredefinedDeadProperties()
         {
             var contentType = InMemoryFileSystem.DeadPropertyFactory

@@ -22,6 +22,9 @@ using Microsoft.Extensions.Options;
 
 namespace FubarDev.WebDavServer.Locking.InMemory
 {
+    /// <summary>
+    /// An in-memory implementation of a lock manager
+    /// </summary>
     public class InMemoryLockManager : ILockManager
     {
         private static readonly Uri _baseUrl = new Uri("http://localhost/");
@@ -38,6 +41,13 @@ namespace FubarDev.WebDavServer.Locking.InMemory
 
         private IImmutableDictionary<Uri, ActiveLock> _locks = ImmutableDictionary<Uri, ActiveLock>.Empty;
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="InMemoryLockManager"/> class.
+        /// </summary>
+        /// <param name="options">The options of the lock manager</param>
+        /// <param name="cleanupTask">The clean-up task for expired locks</param>
+        /// <param name="systemClock">The system clock interface</param>
+        /// <param name="logger">The logger</param>
         public InMemoryLockManager(IOptions<LockManagerOptions> options, LockCleanupTask cleanupTask, ISystemClock systemClock, ILogger<InMemoryLockManager> logger)
         {
             var opt = options?.Value ?? new LockManagerOptions();
@@ -299,11 +309,19 @@ namespace FubarDev.WebDavServer.Locking.InMemory
             return Task.FromResult(status.ParentLocks.Concat(status.ReferenceLocks).Concat(status.ChildLocks));
         }
 
+        /// <summary>
+        /// Gets called when a lock was added
+        /// </summary>
+        /// <param name="activeLock">The lock that was added</param>
         protected virtual void OnLockAdded(IActiveLock activeLock)
         {
             LockAdded?.Invoke(this, new LockEventArgs(activeLock));
         }
 
+        /// <summary>
+        /// Gets called when a lock was released
+        /// </summary>
+        /// <param name="activeLock">The lock that was released</param>
         protected virtual void OnLockReleased(IActiveLock activeLock)
         {
             LockReleased?.Invoke(this, new LockEventArgs(activeLock));

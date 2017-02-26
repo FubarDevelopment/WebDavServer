@@ -17,7 +17,6 @@ using FubarDev.WebDavServer.Props.Dead;
 
 using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Extensions.Logging;
-using Microsoft.Extensions.Options;
 
 using Newtonsoft.Json;
 
@@ -25,6 +24,9 @@ using Polly;
 
 namespace FubarDev.WebDavServer.Props.Store.TextFile
 {
+    /// <summary>
+    /// A property store that stores the properties in a JSON file
+    /// </summary>
     public class TextFilePropertyStore : PropertyStoreBase, IFileSystemPropertyStore
     {
         private readonly Policy<string> _fileReadPolicy;
@@ -39,16 +41,26 @@ namespace FubarDev.WebDavServer.Props.Store.TextFile
 
         private readonly string _storeEntryName = ".properties";
 
-        public TextFilePropertyStore(IOptions<TextFilePropertyStoreOptions> options, IMemoryCache cache, ILogger<TextFilePropertyStore> logger, IDeadPropertyFactory deadPropertyFactory = null)
-            : this(options.Value, cache, deadPropertyFactory ?? new DeadPropertyFactory(), logger)
-        {
-        }
-
+        /// <summary>
+        /// Initializes a new instance of the <see cref="TextFilePropertyStore"/> class.
+        /// </summary>
+        /// <param name="options">The options for the text file property store</param>
+        /// <param name="cache">The in-memory cache for the properties file</param>
+        /// <param name="deadPropertyFactory">The factory for the dead properties</param>
+        /// <param name="logger">The logger for the property store</param>
         public TextFilePropertyStore(TextFilePropertyStoreOptions options, IMemoryCache cache, IDeadPropertyFactory deadPropertyFactory, ILogger<TextFilePropertyStore> logger)
             : this(options, cache, deadPropertyFactory, options.RootFolder, logger)
         {
         }
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="TextFilePropertyStore"/> class.
+        /// </summary>
+        /// <param name="options">The options for the text file property store</param>
+        /// <param name="cache">The in-memory cache for the properties file</param>
+        /// <param name="deadPropertyFactory">The factory for the dead properties</param>
+        /// <param name="rootFolder">The root folder where the properties will be stored</param>
+        /// <param name="logger">The logger for the property store</param>
         public TextFilePropertyStore(TextFilePropertyStoreOptions options, IMemoryCache cache, IDeadPropertyFactory deadPropertyFactory, string rootFolder, ILogger<TextFilePropertyStore> logger)
             : base(deadPropertyFactory)
         {
@@ -65,15 +77,19 @@ namespace FubarDev.WebDavServer.Props.Store.TextFile
                 .WaitAndRetry(100, n => TimeSpan.FromMilliseconds(100 + rnd.Next(-10, 10)));
         }
 
+        /// <inheritdoc />
         public override int Cost => _options.EstimatedCost;
 
+        /// <inheritdoc />
         public string RootPath { get; set; }
 
+        /// <inheritdoc />
         public bool IgnoreEntry(IEntry entry)
         {
             return entry is IDocument && entry.Name == _storeEntryName;
         }
 
+        /// <inheritdoc />
         public override Task<IReadOnlyCollection<XElement>> GetAsync(IEntry entry, CancellationToken cancellationToken)
         {
             if (_logger.IsEnabled(LogLevel.Trace))
@@ -97,6 +113,7 @@ namespace FubarDev.WebDavServer.Props.Store.TextFile
             return Task.FromResult(result);
         }
 
+        /// <inheritdoc />
         public override Task SetAsync(IEntry entry, IEnumerable<XElement> elements, CancellationToken cancellationToken)
         {
             if (_logger.IsEnabled(LogLevel.Trace))
@@ -118,6 +135,7 @@ namespace FubarDev.WebDavServer.Props.Store.TextFile
             return Task.FromResult(0);
         }
 
+        /// <inheritdoc />
         public override Task<IReadOnlyCollection<bool>> RemoveAsync(IEntry entry, IEnumerable<XName> names, CancellationToken cancellationToken)
         {
             if (_logger.IsEnabled(LogLevel.Trace))
@@ -142,6 +160,7 @@ namespace FubarDev.WebDavServer.Props.Store.TextFile
             return Task.FromResult<IReadOnlyCollection<bool>>(result);
         }
 
+        /// <inheritdoc />
         public override Task RemoveAsync(IEntry entry, CancellationToken cancellationToken)
         {
             var fileName = GetFileNameFor(entry);
@@ -158,6 +177,7 @@ namespace FubarDev.WebDavServer.Props.Store.TextFile
             return Task.FromResult(0);
         }
 
+        /// <inheritdoc />
         protected override Task<EntityTag> GetDeadETagAsync(IEntry entry, CancellationToken cancellationToken)
         {
             var storeData = Load(entry, false, cancellationToken);
@@ -184,6 +204,7 @@ namespace FubarDev.WebDavServer.Props.Store.TextFile
             return Task.FromResult(EntityTag.FromXml(etagElement));
         }
 
+        /// <inheritdoc />
         protected override Task<EntityTag> UpdateDeadETagAsync(IEntry entry, CancellationToken cancellationToken)
         {
             var storeData = Load(entry, false, cancellationToken);

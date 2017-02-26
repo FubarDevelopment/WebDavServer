@@ -15,12 +15,21 @@ using Microsoft.Extensions.Logging;
 
 namespace FubarDev.WebDavServer.AspNetCore
 {
+    /// <summary>
+    /// The default WebDAV controller
+    /// </summary>
     public class WebDavControllerBase : ControllerBase
     {
         private readonly IWebDavContext _context;
         private readonly IWebDavDispatcher _dispatcher;
         private readonly ILogger<WebDavIndirectResult> _responseLogger;
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="WebDavControllerBase"/> class.
+        /// </summary>
+        /// <param name="context">The WebDAV request context</param>
+        /// <param name="dispatcher">The WebDAV HTTP method dispatcher</param>
+        /// <param name="responseLogger">The logger for the <see cref="WebDavIndirectResult"/></param>
         public WebDavControllerBase(IWebDavContext context, IWebDavDispatcher dispatcher, ILogger<WebDavIndirectResult> responseLogger = null)
         {
             _context = context;
@@ -28,6 +37,12 @@ namespace FubarDev.WebDavServer.AspNetCore
             _responseLogger = responseLogger;
         }
 
+        /// <summary>
+        /// Handler for the <code>QUERY</code> method
+        /// </summary>
+        /// <param name="path">The root-relative path to the target of this method</param>
+        /// <param name="cancellationToken">The cancellation token</param>
+        /// <returns>The action result</returns>
         [HttpOptions]
         public async Task<IActionResult> QueryOptionsAsync(string path, CancellationToken cancellationToken)
         {
@@ -35,6 +50,12 @@ namespace FubarDev.WebDavServer.AspNetCore
             return new WebDavIndirectResult(_dispatcher, result, _responseLogger);
         }
 
+        /// <summary>
+        /// Handler for the <code>MKCOL</code> method
+        /// </summary>
+        /// <param name="path">The root-relative path to the target of this method</param>
+        /// <param name="cancellationToken">The cancellation token</param>
+        /// <returns>The action result</returns>
         [HttpMkCol]
         public async Task<IActionResult> MkColAsync(string path, CancellationToken cancellationToken)
         {
@@ -42,6 +63,12 @@ namespace FubarDev.WebDavServer.AspNetCore
             return new WebDavIndirectResult(_dispatcher, result, _responseLogger);
         }
 
+        /// <summary>
+        /// Handler for the <code>GET</code> method
+        /// </summary>
+        /// <param name="path">The root-relative path to the source of this method</param>
+        /// <param name="cancellationToken">The cancellation token</param>
+        /// <returns>The action result</returns>
         [HttpGet]
         public async Task<IActionResult> GetAsync(string path, CancellationToken cancellationToken)
         {
@@ -49,14 +76,12 @@ namespace FubarDev.WebDavServer.AspNetCore
             return new WebDavIndirectResult(_dispatcher, result, _responseLogger);
         }
 
-        // POST api/values
-        [HttpPost]
-        public Task PostAsync(string path, [FromBody] string value, CancellationToken cancellationToken)
-        {
-            throw new NotImplementedException();
-        }
-
-        // PUT api/values/5
+        /// <summary>
+        /// Handler for the <code>PUT</code> method
+        /// </summary>
+        /// <param name="path">The root-relative path to the target of this method</param>
+        /// <param name="cancellationToken">The cancellation token</param>
+        /// <returns>The action result</returns>
         [HttpPut]
         public async Task<IActionResult> PutAsync(string path, CancellationToken cancellationToken)
         {
@@ -64,7 +89,12 @@ namespace FubarDev.WebDavServer.AspNetCore
             return new WebDavIndirectResult(_dispatcher, result, _responseLogger);
         }
 
-        // DELETE api/values/5
+        /// <summary>
+        /// Handler for the <code>DELETE</code> method
+        /// </summary>
+        /// <param name="path">The root-relative path to the target of this method</param>
+        /// <param name="cancellationToken">The cancellation token</param>
+        /// <returns>The action result</returns>
         [HttpDelete]
         public async Task<IActionResult> DeleteAsync(string path, CancellationToken cancellationToken)
         {
@@ -72,6 +102,13 @@ namespace FubarDev.WebDavServer.AspNetCore
             return new WebDavIndirectResult(_dispatcher, result, _responseLogger);
         }
 
+        /// <summary>
+        /// Handler for the <code>PROPFIND</code> method
+        /// </summary>
+        /// <param name="path">The root-relative path to the target of this method</param>
+        /// <param name="request">The <see cref="propfind"/> request element (may be null)</param>
+        /// <param name="cancellationToken">The cancellation token</param>
+        /// <returns>The action result</returns>
         [HttpPropFind]
         public async Task<IActionResult> PropFindAsync(
             string path,
@@ -82,6 +119,13 @@ namespace FubarDev.WebDavServer.AspNetCore
             return new WebDavIndirectResult(_dispatcher, result, _responseLogger);
         }
 
+        /// <summary>
+        /// Handler for the <code>PROPPATCH</code> method
+        /// </summary>
+        /// <param name="path">The root-relative path to the target of this method</param>
+        /// <param name="request">The <see cref="propertyupdate"/> request element</param>
+        /// <param name="cancellationToken">The cancellation token</param>
+        /// <returns>The action result</returns>
         [HttpPropPatch]
         public async Task<IActionResult> PropPatchAsync(string path, [FromBody] propertyupdate request, CancellationToken cancellationToken)
         {
@@ -89,6 +133,12 @@ namespace FubarDev.WebDavServer.AspNetCore
             return new WebDavIndirectResult(_dispatcher, result, _responseLogger);
         }
 
+        /// <summary>
+        /// Handler for the <code>HEAD</code> method
+        /// </summary>
+        /// <param name="path">The root-relative path to the target of this method</param>
+        /// <param name="cancellationToken">The cancellation token</param>
+        /// <returns>The action result</returns>
         [HttpHead]
         public async Task<IActionResult> HeadAsync(string path, CancellationToken cancellationToken)
         {
@@ -96,6 +146,13 @@ namespace FubarDev.WebDavServer.AspNetCore
             return new WebDavIndirectResult(_dispatcher, result, _responseLogger);
         }
 
+        /// <summary>
+        /// Handler for the <code>COPY</code> method
+        /// </summary>
+        /// <param name="path">The root-relative path to the source of this method</param>
+        /// <param name="destination">The destination of the COPY operation</param>
+        /// <param name="cancellationToken">The cancellation token</param>
+        /// <returns>The action result</returns>
         [HttpCopy]
         public async Task<IActionResult> CopyAsync(
             string path,
@@ -106,6 +163,13 @@ namespace FubarDev.WebDavServer.AspNetCore
             return new WebDavIndirectResult(_dispatcher, result, _responseLogger);
         }
 
+        /// <summary>
+        /// Handler for the <code>MOVE</code> method
+        /// </summary>
+        /// <param name="path">The root-relative path to the source of this method</param>
+        /// <param name="destination">The destination of the MOVE operation</param>
+        /// <param name="cancellationToken">The cancellation token</param>
+        /// <returns>The action result</returns>
         [HttpMove]
         public async Task<IActionResult> MoveAsync(
             string path,
@@ -116,6 +180,13 @@ namespace FubarDev.WebDavServer.AspNetCore
             return new WebDavIndirectResult(_dispatcher, result, _responseLogger);
         }
 
+        /// <summary>
+        /// Handler for the <code>LOCK</code> method
+        /// </summary>
+        /// <param name="path">The root-relative path to the target of this method</param>
+        /// <param name="lockinfo">The information about the requested lock</param>
+        /// <param name="cancellationToken">The cancellation token</param>
+        /// <returns>The action result</returns>
         [HttpLock]
         public async Task<IActionResult> LockAsync(
             string path,
@@ -144,6 +215,13 @@ namespace FubarDev.WebDavServer.AspNetCore
             return new WebDavIndirectResult(_dispatcher, result, _responseLogger);
         }
 
+        /// <summary>
+        /// Handler for the <code>UNLOCK</code> method
+        /// </summary>
+        /// <param name="path">The root-relative path to the target of this method</param>
+        /// <param name="lockToken">The token of the lock to remove</param>
+        /// <param name="cancellationToken">The cancellation token</param>
+        /// <returns>The action result</returns>
         [HttpUnlock]
         public async Task<IActionResult> UnlockAsync(
             string path,

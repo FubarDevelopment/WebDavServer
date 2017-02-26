@@ -15,6 +15,9 @@ using Microsoft.Extensions.Options;
 
 namespace FubarDev.WebDavServer.AspNetCore
 {
+    /// <summary>
+    /// The ASP.NET core specific implementation of the <see cref="IWebDavContext"/> interface
+    /// </summary>
     public class WebDavContext : IWebDavContext
     {
         private readonly IHttpContextAccessor _httpContextAccessor;
@@ -33,6 +36,11 @@ namespace FubarDev.WebDavServer.AspNetCore
 
         private readonly Lazy<IPrincipal> _principal;
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="WebDavContext"/> class.
+        /// </summary>
+        /// <param name="httpContextAccessor">The <see cref="HttpContext"/> accessor</param>
+        /// <param name="options">The options for the <see cref="WebDavContext"/></param>
         public WebDavContext(IHttpContextAccessor httpContextAccessor, IOptions<WebDavHostOptions> options)
         {
             var opt = options?.Value ?? new WebDavHostOptions();
@@ -57,20 +65,28 @@ namespace FubarDev.WebDavServer.AspNetCore
             _principal = new Lazy<IPrincipal>(() => httpContextAccessor.HttpContext.User);
         }
 
+        /// <inheritdoc />
         public Uri RelativeRequestUrl => _relativeRequestUrl.Value;
 
+        /// <inheritdoc />
         public Uri AbsoluteRequestUrl => _absoluteRequestUrl.Value;
 
+        /// <inheritdoc />
         public Uri BaseUrl => _baseUrl.Value;
 
+        /// <inheritdoc />
         public Uri RootUrl => _rootUrl.Value;
 
+        /// <inheritdoc />
         public IPrincipal User => _principal.Value;
 
+        /// <inheritdoc />
         public string RequestProtocol => _httpContextAccessor.HttpContext.Request.Protocol;
 
+        /// <inheritdoc />
         public IWebDavRequestHeaders RequestHeaders => _requestHeaders.Value;
 
+        /// <inheritdoc />
         public IUAParserOutput DetectedClient => _detectedClient.Value;
 
         private static Uri BuildBaseUrl(HttpContext httpContext, WebDavHostOptions options)

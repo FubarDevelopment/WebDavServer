@@ -16,23 +16,39 @@ using FubarDev.WebDavServer.Props.Live;
 
 namespace FubarDev.WebDavServer.FileSystem.DotNet
 {
+    /// <summary>
+    /// A .NET <see cref="System.IO"/> based implementation of a WebDAV document
+    /// </summary>
     public class DotNetFile : DotNetEntry, IDocument
     {
+        /// <summary>
+        /// Initializes a new instance of the <see cref="DotNetFile"/> class.
+        /// </summary>
+        /// <param name="fileSystem">The file system this document belongs to</param>
+        /// <param name="parent">The parent collection</param>
+        /// <param name="info">The file information</param>
+        /// <param name="path">The root-relative path of this document</param>
         public DotNetFile(DotNetFileSystem fileSystem, DotNetDirectory parent, FileInfo info, Uri path)
             : base(fileSystem, parent, info, path)
         {
             FileInfo = info;
         }
 
+        /// <summary>
+        /// Gets the file information
+        /// </summary>
         public FileInfo FileInfo { get; }
 
+        /// <inheritdoc />
         public long Length => FileInfo.Length;
 
+        /// <inheritdoc />
         public Task<Stream> OpenReadAsync(CancellationToken cancellationToken)
         {
             return Task.FromResult<Stream>(FileInfo.OpenRead());
         }
 
+        /// <inheritdoc />
         public async Task<Stream> CreateAsync(CancellationToken cancellationToken)
         {
             if (FileSystem.PropertyStore != null)
@@ -40,6 +56,7 @@ namespace FubarDev.WebDavServer.FileSystem.DotNet
             return FileInfo.Open(FileMode.Create, FileAccess.Write);
         }
 
+        /// <inheritdoc />
         public override async Task<DeleteResult> DeleteAsync(CancellationToken cancellationToken)
         {
             FileInfo.Delete();
@@ -53,6 +70,7 @@ namespace FubarDev.WebDavServer.FileSystem.DotNet
             return new DeleteResult(WebDavStatusCode.OK, null);
         }
 
+        /// <inheritdoc />
         public async Task<IDocument> CopyToAsync(ICollection collection, string name, CancellationToken cancellationToken)
         {
             var dir = (DotNetDirectory)collection;
@@ -77,6 +95,7 @@ namespace FubarDev.WebDavServer.FileSystem.DotNet
             return doc;
         }
 
+        /// <inheritdoc />
         public async Task<IDocument> MoveToAsync(ICollection collection, string name, CancellationToken cancellationToken)
         {
             var sourcePropStore = FileSystem.PropertyStore;
@@ -113,6 +132,7 @@ namespace FubarDev.WebDavServer.FileSystem.DotNet
             return doc;
         }
 
+        /// <inheritdoc />
         protected override IEnumerable<ILiveProperty> GetLiveProperties()
         {
             return base.GetLiveProperties()
@@ -122,6 +142,7 @@ namespace FubarDev.WebDavServer.FileSystem.DotNet
                 });
         }
 
+        /// <inheritdoc />
         protected override IEnumerable<IDeadProperty> GetPredefinedDeadProperties()
         {
             return base.GetPredefinedDeadProperties()

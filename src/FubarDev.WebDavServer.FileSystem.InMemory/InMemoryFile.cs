@@ -4,6 +4,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Threading;
@@ -17,25 +18,48 @@ using FubarDev.WebDavServer.Props.Live;
 
 namespace FubarDev.WebDavServer.FileSystem.InMemory
 {
+    /// <summary>
+    /// An in-memory implementation of a WebDAV document
+    /// </summary>
     public class InMemoryFile : InMemoryEntry, IDocument
     {
         private MemoryStream _data;
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="InMemoryFile"/> class.
+        /// </summary>
+        /// <param name="fileSystem">The file system this document belongs to</param>
+        /// <param name="parent">The parent collection</param>
+        /// <param name="path">The root-relative path of this document</param>
+        /// <param name="name">The name of this document</param>
         public InMemoryFile(InMemoryFileSystem fileSystem, InMemoryDirectory parent, Uri path, string name)
             : this(fileSystem, parent, path, name, new byte[0])
         {
         }
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="InMemoryFile"/> class.
+        /// </summary>
+        /// <param name="fileSystem">The file system this document belongs to</param>
+        /// <param name="parent">The parent collection</param>
+        /// <param name="path">The root-relative path of this document</param>
+        /// <param name="name">The name of this document</param>
+        /// <param name="data">The initial data of this document</param>
         public InMemoryFile(InMemoryFileSystem fileSystem, InMemoryDirectory parent, Uri path, string name, byte[] data)
             : base(fileSystem, parent, path, name)
         {
             _data = new MemoryStream(data);
         }
 
+        /// <inheritdoc />
         public long Length => _data.Length;
 
+        /// <inheritdoc />
         public override async Task<DeleteResult> DeleteAsync(CancellationToken cancellationToken)
         {
+            if (InMemoryParent == null)
+                throw new InvalidOperationException("The document must belong to a collection");
+
             if (InMemoryParent.Remove(Name))
             {
                 var propStore = FileSystem.PropertyStore;
@@ -50,16 +74,19 @@ namespace FubarDev.WebDavServer.FileSystem.InMemory
             return new DeleteResult(WebDavStatusCode.NotFound, this);
         }
 
+        /// <inheritdoc />
         public Task<Stream> OpenReadAsync(CancellationToken cancellationToken)
         {
             return Task.FromResult<Stream>(new MemoryStream(_data.ToArray()));
         }
 
+        /// <inheritdoc />
         public Task<Stream> CreateAsync(CancellationToken cancellationToken)
         {
             return Task.FromResult<Stream>(_data = new MyMemoryStream(this));
         }
 
+        /// <inheritdoc />
         public async Task<IDocument> CopyToAsync(ICollection collection, string name, CancellationToken cancellationToken)
         {
             var coll = (InMemoryDirectory)collection;
@@ -87,6 +114,7 @@ namespace FubarDev.WebDavServer.FileSystem.InMemory
             return doc;
         }
 
+        /// <inheritdoc />
         public async Task<IDocument> MoveToAsync(ICollection collection, string name, CancellationToken cancellationToken)
         {
             var sourcePropStore = FileSystem.PropertyStore;
@@ -108,6 +136,9 @@ namespace FubarDev.WebDavServer.FileSystem.InMemory
             doc.CreationTimeUtc = CreationTimeUtc;
             doc.LastWriteTimeUtc = LastWriteTimeUtc;
             doc.ETag = ETag;
+            Debug.Assert(InMemoryParent != null, "InMemoryParent != null");
+            if (InMemoryParent == null)
+                throw new InvalidOperationException("The document must belong to a collection");
             if (!InMemoryParent.Remove(Name))
                 throw new InvalidOperationException("Failed to remove the document from the source collection.");
 
@@ -124,6 +155,7 @@ namespace FubarDev.WebDavServer.FileSystem.InMemory
             return doc;
         }
 
+        /// <inheritdoc />
         protected override IEnumerable<ILiveProperty> GetLiveProperties()
         {
             return base.GetLiveProperties()
@@ -133,6 +165,7 @@ namespace FubarDev.WebDavServer.FileSystem.InMemory
                        });
         }
 
+        /// <inheritdoc />
         protected override IEnumerable<IDeadProperty> GetPredefinedDeadProperties()
         {
             return base.GetPredefinedDeadProperties()

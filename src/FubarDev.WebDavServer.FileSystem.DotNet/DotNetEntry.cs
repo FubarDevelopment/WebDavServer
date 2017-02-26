@@ -14,10 +14,20 @@ using FubarDev.WebDavServer.Props.Live;
 
 namespace FubarDev.WebDavServer.FileSystem.DotNet
 {
+    /// <summary>
+    /// A .NET <see cref="System.IO"/> based implementation of a WebDAV entry (collection or document)
+    /// </summary>
     public abstract class DotNetEntry : IEntry
     {
         private readonly DotNetDirectory _parent;
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="DotNetEntry"/> class.
+        /// </summary>
+        /// <param name="fileSystem">The file system this entry belongs to</param>
+        /// <param name="parent">The parent collection</param>
+        /// <param name="info">The file system information</param>
+        /// <param name="path">The root-relative path of this entry</param>
         protected DotNetEntry(DotNetFileSystem fileSystem, DotNetDirectory parent, FileSystemInfo info, Uri path)
         {
             _parent = parent;
@@ -26,31 +36,50 @@ namespace FubarDev.WebDavServer.FileSystem.DotNet
             Path = path;
         }
 
+        /// <summary>
+        /// Gets the file system information of this entry
+        /// </summary>
         public FileSystemInfo Info { get; }
 
+        /// <summary>
+        /// Gets the file system this entry belongs to
+        /// </summary>
         public DotNetFileSystem DotNetFileSystem { get; }
 
+        /// <inheritdoc />
         public string Name => Info.Name;
 
+        /// <inheritdoc />
         public IFileSystem RootFileSystem => DotNetFileSystem;
 
+        /// <inheritdoc />
         public IFileSystem FileSystem => DotNetFileSystem;
 
+        /// <inheritdoc />
         public ICollection Parent => _parent;
 
+        /// <inheritdoc />
         public Uri Path { get; }
 
+        /// <inheritdoc />
         public DateTime LastWriteTimeUtc => Info.LastWriteTimeUtc;
 
+        /// <inheritdoc />
         public DateTime CreationTimeUtc => Info.CreationTimeUtc;
 
+        /// <inheritdoc />
         public IAsyncEnumerable<IUntypedReadableProperty> GetProperties(int? maxCost)
         {
             return new EntryProperties(this, GetLiveProperties(), GetPredefinedDeadProperties(), FileSystem.PropertyStore, maxCost);
         }
 
+        /// <inheritdoc />
         public abstract Task<DeleteResult> DeleteAsync(CancellationToken cancellationToken);
 
+        /// <summary>
+        /// Gets the default live properties of this entry
+        /// </summary>
+        /// <returns>The enumeration of live properties belonging to this entry</returns>
         protected virtual IEnumerable<ILiveProperty> GetLiveProperties()
         {
             var properties = new List<ILiveProperty>()
@@ -64,6 +93,10 @@ namespace FubarDev.WebDavServer.FileSystem.DotNet
             return properties;
         }
 
+        /// <summary>
+        /// Gets the default dead properties of this entry
+        /// </summary>
+        /// <returns>The enumeration of dead properties belonging to this entry</returns>
         protected virtual IEnumerable<IDeadProperty> GetPredefinedDeadProperties()
         {
             yield return DotNetFileSystem

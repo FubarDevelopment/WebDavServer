@@ -12,10 +12,21 @@ using Microsoft.Extensions.Primitives;
 
 namespace FubarDev.WebDavServer.AspNetCore
 {
+    /// <summary>
+    /// The implementation of the <see cref="IWebDavResponse"/>
+    /// </summary>
+    /// <remarks>
+    /// This class wraps a <see cref="HttpResponse"/> to be accessible by the WebDAV serves <see cref="IWebDavResult"/>.
+    /// </remarks>
     public class WebDavResponse : IWebDavResponse
     {
         private readonly HttpResponse _response;
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="WebDavResponse"/> class.
+        /// </summary>
+        /// <param name="dispatcher">The WebDAV HTTP method dispatcher</param>
+        /// <param name="response">The ASP.NET Core HTTP response</param>
         public WebDavResponse(IWebDavDispatcher dispatcher, HttpResponse response)
         {
             _response = response;
@@ -23,16 +34,20 @@ namespace FubarDev.WebDavServer.AspNetCore
             Headers = new HeadersDictionary(_response.Headers);
         }
 
+        /// <inheritdoc />
         public IWebDavDispatcher Dispatcher { get; }
 
+        /// <inheritdoc />
         public IDictionary<string, string[]> Headers { get; }
 
+        /// <inheritdoc />
         public string ContentType
         {
             get { return _response.ContentType; }
             set { _response.ContentType = value; }
         }
 
+        /// <inheritdoc />
         public Stream Body => _response.Body;
 
         private class HeadersDictionary : IDictionary<string, string[]>

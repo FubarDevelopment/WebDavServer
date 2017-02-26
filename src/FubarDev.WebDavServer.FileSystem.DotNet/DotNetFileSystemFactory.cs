@@ -15,6 +15,9 @@ using Microsoft.Extensions.Options;
 
 namespace FubarDev.WebDavServer.FileSystem.DotNet
 {
+    /// <summary>
+    /// The factory creating/getting the file systems that use <see cref="System.IO"/> for its implementation
+    /// </summary>
     public class DotNetFileSystemFactory : IFileSystemFactory
     {
         [NotNull]
@@ -32,6 +35,14 @@ namespace FubarDev.WebDavServer.FileSystem.DotNet
         [NotNull]
         private readonly DotNetFileSystemOptions _options;
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="DotNetFileSystemFactory"/> class.
+        /// </summary>
+        /// <param name="options">The options for this file system</param>
+        /// <param name="pathTraversalEngine">The engine to traverse paths</param>
+        /// <param name="deadPropertyFactory">A factory for dead properties</param>
+        /// <param name="propertyStoreFactory">The store for dead properties</param>
+        /// <param name="lockManager">The global lock manager</param>
         public DotNetFileSystemFactory(IOptions<DotNetFileSystemOptions> options, PathTraversalEngine pathTraversalEngine, IDeadPropertyFactory deadPropertyFactory, IPropertyStoreFactory propertyStoreFactory = null, ILockManager lockManager = null)
         {
             _pathTraversalEngine = pathTraversalEngine;
@@ -41,6 +52,7 @@ namespace FubarDev.WebDavServer.FileSystem.DotNet
             _options = options.Value;
         }
 
+        /// <inheritdoc />
         public IFileSystem CreateFileSystem(IIdentity identity)
         {
             var userHomeDirectory = Path.Combine(_options.RootPath, identity.IsAuthenticated ? identity.Name : _options.AnonymousUserName);

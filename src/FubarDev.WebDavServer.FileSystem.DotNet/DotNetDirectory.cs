@@ -17,10 +17,20 @@ using FubarDev.WebDavServer.Props.Store;
 
 namespace FubarDev.WebDavServer.FileSystem.DotNet
 {
+    /// <summary>
+    /// A .NET <see cref="System.IO"/> based implementation of a WebDAV collection
+    /// </summary>
     public class DotNetDirectory : DotNetEntry, ICollection, IRecusiveChildrenCollector
     {
         private readonly IFileSystemPropertyStore _fileSystemPropertyStore;
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="DotNetDirectory"/> class.
+        /// </summary>
+        /// <param name="fileSystem">The file system this collection belongs to</param>
+        /// <param name="parent">The parent collection</param>
+        /// <param name="info">The directory information</param>
+        /// <param name="path">The root-relative path of this collection</param>
         public DotNetDirectory(DotNetFileSystem fileSystem, DotNetDirectory parent, DirectoryInfo info, Uri path)
             : base(fileSystem, parent, info, path)
         {
@@ -28,8 +38,12 @@ namespace FubarDev.WebDavServer.FileSystem.DotNet
             DirectoryInfo = info;
         }
 
+        /// <summary>
+        /// Gets the collections directory information
+        /// </summary>
         public DirectoryInfo DirectoryInfo { get; }
 
+        /// <inheritdoc />
         public Task<IEntry> GetChildAsync(string name, CancellationToken ct)
         {
             var newPath = System.IO.Path.Combine(DirectoryInfo.FullName, name);
@@ -44,6 +58,7 @@ namespace FubarDev.WebDavServer.FileSystem.DotNet
             return Task.FromResult(CreateEntry(item));
         }
 
+        /// <inheritdoc />
         public Task<IReadOnlyCollection<IEntry>> GetChildrenAsync(CancellationToken ct)
         {
             var result = new List<IEntry>();
@@ -59,6 +74,7 @@ namespace FubarDev.WebDavServer.FileSystem.DotNet
             return Task.FromResult<IReadOnlyCollection<IEntry>>(result);
         }
 
+        /// <inheritdoc />
         public async Task<IDocument> CreateDocumentAsync(string name, CancellationToken cancellationToken)
         {
             var fullFileName = System.IO.Path.Combine(DirectoryInfo.FullName, name);
@@ -69,6 +85,7 @@ namespace FubarDev.WebDavServer.FileSystem.DotNet
             return (IDocument)CreateEntry(new FileInfo(fullFileName));
         }
 
+        /// <inheritdoc />
         public async Task<ICollection> CreateCollectionAsync(string name, CancellationToken cancellationToken)
         {
             var fullDirPath = System.IO.Path.Combine(DirectoryInfo.FullName, name);
@@ -85,6 +102,7 @@ namespace FubarDev.WebDavServer.FileSystem.DotNet
             return (ICollection)CreateEntry(new DirectoryInfo(fullDirPath));
         }
 
+        /// <inheritdoc />
         public override async Task<DeleteResult> DeleteAsync(CancellationToken cancellationToken)
         {
             var propStore = FileSystem.PropertyStore;
@@ -96,11 +114,13 @@ namespace FubarDev.WebDavServer.FileSystem.DotNet
             return new DeleteResult(WebDavStatusCode.OK, null);
         }
 
+        /// <inheritdoc />
         public IAsyncEnumerable<IEntry> GetEntries(int maxDepth)
         {
             return this.EnumerateEntries(maxDepth);
         }
 
+        /// <inheritdoc />
         protected override IEnumerable<ILiveProperty> GetLiveProperties()
         {
             return base.GetLiveProperties()
@@ -110,6 +130,7 @@ namespace FubarDev.WebDavServer.FileSystem.DotNet
                 });
         }
 
+        /// <inheritdoc />
         protected override IEnumerable<IDeadProperty> GetPredefinedDeadProperties()
         {
             var contentType = DotNetFileSystem.DeadPropertyFactory
