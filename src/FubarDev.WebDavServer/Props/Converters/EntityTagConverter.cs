@@ -8,6 +8,9 @@ using FubarDev.WebDavServer.Model.Headers;
 
 namespace FubarDev.WebDavServer.Props.Converters
 {
+    /// <summary>
+    /// Property converter for an <see cref="EntityTag"/>
+    /// </summary>
     public class EntityTagConverter : IPropertyConverter<EntityTag>
     {
         /// <inheritdoc />

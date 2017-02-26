@@ -10,8 +10,16 @@ using JetBrains.Annotations;
 
 namespace FubarDev.WebDavServer.Props.Converters
 {
+    /// <summary>
+    /// A property converter for RFC 1123 dates
+    /// </summary>
     public class DateTimeRfc1123Converter : IPropertyConverter<DateTime>
     {
+        /// <summary>
+        /// Parses a string with a RFC 1123 date
+        /// </summary>
+        /// <param name="s">The string to parse</param>
+        /// <returns>The parsed date</returns>
         public static DateTime Parse([NotNull] string s)
         {
             if (s.EndsWith("UTC"))

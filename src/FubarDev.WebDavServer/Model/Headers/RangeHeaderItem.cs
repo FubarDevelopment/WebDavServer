@@ -1,4 +1,4 @@
-﻿    // <copyright file="RangeHeaderItem.cs" company="Fubar Development Junker">
+﻿// <copyright file="RangeHeaderItem.cs" company="Fubar Development Junker">
 // Copyright (c) Fubar Development Junker. All rights reserved.
 // </copyright>
 

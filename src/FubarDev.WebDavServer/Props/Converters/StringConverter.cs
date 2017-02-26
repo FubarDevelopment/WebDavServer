@@ -6,6 +6,9 @@ using System.Xml.Linq;
 
 namespace FubarDev.WebDavServer.Props.Converters
 {
+    /// <summary>
+    /// Property converter for a <see langref="string"/>
+    /// </summary>
     public class StringConverter : IPropertyConverter<string>
     {
         /// <inheritdoc />

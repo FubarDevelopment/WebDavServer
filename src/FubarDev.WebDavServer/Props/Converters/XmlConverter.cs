@@ -8,6 +8,10 @@ using System.Xml.Serialization;
 
 namespace FubarDev.WebDavServer.Props.Converters
 {
+    /// <summary>
+    /// Property converter for an object to be de-/serialized by a <see cref="XmlSerializer"/>
+    /// </summary>
+    /// <typeparam name="T">The type of the object to be de-/serialized</typeparam>
     public class XmlConverter<T> : IPropertyConverter<T>
     {
         private static readonly XmlSerializer _serializer = new XmlSerializer(typeof(T));

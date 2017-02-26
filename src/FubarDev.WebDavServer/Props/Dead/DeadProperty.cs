@@ -13,6 +13,9 @@ using FubarDev.WebDavServer.Props.Store;
 
 namespace FubarDev.WebDavServer.Props.Dead
 {
+    /// <summary>
+    /// The generic dead property
+    /// </summary>
     public class DeadProperty : IUntypedWriteableProperty, IDeadProperty
     {
         private readonly IPropertyStore _store;
@@ -21,6 +24,12 @@ namespace FubarDev.WebDavServer.Props.Dead
 
         private XElement _cachedValue;
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="DeadProperty"/> class.
+        /// </summary>
+        /// <param name="store">The property store for the dead properties</param>
+        /// <param name="entry">The file system entry</param>
+        /// <param name="name">The XML name of the dead property</param>
         public DeadProperty(IPropertyStore store, IEntry entry, XName name)
         {
             Name = name;
@@ -28,6 +37,12 @@ namespace FubarDev.WebDavServer.Props.Dead
             _entry = entry;
         }
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="DeadProperty"/> class.
+        /// </summary>
+        /// <param name="store">The property store for the dead properties</param>
+        /// <param name="entry">The file system entry</param>
+        /// <param name="element">The element to intialize this property with</param>
         public DeadProperty(IPropertyStore store, IEntry entry, XElement element)
         {
             _store = store;
