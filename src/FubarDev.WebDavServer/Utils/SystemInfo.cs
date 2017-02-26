@@ -20,16 +20,17 @@ namespace FubarDev.WebDavServer.Utils
         /// Gets the home path of the user
         /// </summary>
         /// <param name="identity">The user to get the home path for</param>
+        /// <param name="homePath">The home path to use</param>
         /// <param name="anonymousUserName">The user name for the unauthenticated user</param>
         /// <returns>The home path of the user</returns>
         [NotNull]
-        public static string GetUserHomePath([NotNull] IIdentity identity, string anonymousUserName = null)
+        public static string GetUserHomePath([NotNull] IIdentity identity, string homePath = null, string anonymousUserName = null)
         {
             var rootPathInfo = GetHomePath();
             var userName = identity.IsAuthenticated
                 ? identity.Name
                 : (rootPathInfo.IsProbablyUnix ? (anonymousUserName ?? "anonymous") : (anonymousUserName ?? "Public"));
-            var rootPath = Path.Combine(rootPathInfo.RootPath, userName);
+            var rootPath = Path.Combine(homePath ?? rootPathInfo.RootPath, userName);
             return rootPath;
         }
 
