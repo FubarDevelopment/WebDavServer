@@ -3,6 +3,16 @@
     <TargetFrameworks>netstandard1.6;net451</TargetFrameworks>
     <CodeAnalysisRuleSet>$(SolutionDir)WebDavServer.ruleset</CodeAnalysisRuleSet>
     <DocumentationFile Condition=" '$(Configuration)' == 'Release' ">bin\$(Configuration)\$(TargetFramework)\$(AssemblyName).xml</DocumentationFile>
+    <Version>0.1.0</Version>
+    <Authors>Mark Junker</Authors>
+    <Company>Fubar Development Junker</Company>
+    <Product>WebDAV Server</Product>
+    <Description>ASP.NET Core integration for the .NET WebDAV server</Description>
+    <Copyright>2016 © Fubar Development Junker</Copyright>
+    <PackageLicenseUrl>https://github.com/FubarDevelopment/WebDavServer/blob/master/LICENSE</PackageLicenseUrl>
+    <PackageProjectUrl>https://github.com/FubarDevelopment/WebDavServer</PackageProjectUrl>
+    <RepositoryUrl>https://github.com/FubarDevelopment/WebDavServer.git</RepositoryUrl>
+    <RepositoryType>git</RepositoryType>
   </PropertyGroup>
   <ItemGroup>
     <AdditionalFiles Include="$(SolutionDir)stylecop.json" Link="stylecop.json" />
