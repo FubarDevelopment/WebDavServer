@@ -33,11 +33,23 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "third-party", "third-party"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DecaTec.WebDav", "third-party\DecaTec.WebDav\DecaTec.WebDav.csproj", "{7ADD6055-9EE2-44E5-9FEB-AA3A07EF4A8B}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "doc-csproj", "doc-csproj", "{5374846F-A7A5-457B-8231-FC1F959523B6}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src-doc", "src-doc", "{5374846F-A7A5-457B-8231-FC1F959523B6}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FubarDev.WebDavServer.Doc", "src\FubarDev.WebDavServer\FubarDev.WebDavServer.Doc.csproj", "{D1C72F41-22CC-4D68-9AA6-9D852D28551F}"
+Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "FubarDev.WebDavServer", "src\FubarDev.WebDavServer\FubarDev.WebDavServer.shproj", "{373E3CAA-169B-477D-BA8E-6C33395CE8E8}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FubarDev.WebDavServer.Doc", "src-doc\FubarDev.WebDavServer\FubarDev.WebDavServer.Doc.csproj", "{D1C72F41-22CC-4D68-9AA6-9D852D28551F}"
+EndProject
+Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "FubarDev.WebDavServer.AspNetCore", "src\FubarDev.WebDavServer.AspNetCore\FubarDev.WebDavServer.AspNetCore.shproj", "{0D853AF3-DD6E-4BA7-B4B9-7A6D26873352}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FubarDev.WebDavServer.AspNetCore.Doc", "src-doc\FubarDev.WebDavServer.AspNetCore\FubarDev.WebDavServer.AspNetCore.Doc.csproj", "{02E04B3E-170F-471A-9674-FCBD13F824DE}"
 EndProject
 Global
+	GlobalSection(SharedMSBuildProjectFiles) = preSolution
+		src\FubarDev.WebDavServer.AspNetCore\FubarDev.WebDavServer.AspNetCore.projitems*{02e04b3e-170f-471a-9674-fcbd13f824de}*SharedItemsImports = 4
+		src\FubarDev.WebDavServer.AspNetCore\FubarDev.WebDavServer.AspNetCore.projitems*{0d853af3-dd6e-4ba7-b4b9-7a6d26873352}*SharedItemsImports = 13
+		src\FubarDev.WebDavServer\FubarDev.WebDavServer.projitems*{373e3caa-169b-477d-ba8e-6c33395ce8e8}*SharedItemsImports = 13
+		src\FubarDev.WebDavServer\FubarDev.WebDavServer.projitems*{d1c72f41-22cc-4d68-9aa6-9d852d28551f}*SharedItemsImports = 4
+	EndGlobalSection
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
 		Debug|x64 = Debug|x64
@@ -179,6 +191,18 @@ Global
 		{D1C72F41-22CC-4D68-9AA6-9D852D28551F}.Release|x64.Build.0 = Release|Any CPU
 		{D1C72F41-22CC-4D68-9AA6-9D852D28551F}.Release|x86.ActiveCfg = Release|Any CPU
 		{D1C72F41-22CC-4D68-9AA6-9D852D28551F}.Release|x86.Build.0 = Release|Any CPU
+		{02E04B3E-170F-471A-9674-FCBD13F824DE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{02E04B3E-170F-471A-9674-FCBD13F824DE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{02E04B3E-170F-471A-9674-FCBD13F824DE}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{02E04B3E-170F-471A-9674-FCBD13F824DE}.Debug|x64.Build.0 = Debug|Any CPU
+		{02E04B3E-170F-471A-9674-FCBD13F824DE}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{02E04B3E-170F-471A-9674-FCBD13F824DE}.Debug|x86.Build.0 = Debug|Any CPU
+		{02E04B3E-170F-471A-9674-FCBD13F824DE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{02E04B3E-170F-471A-9674-FCBD13F824DE}.Release|Any CPU.Build.0 = Release|Any CPU
+		{02E04B3E-170F-471A-9674-FCBD13F824DE}.Release|x64.ActiveCfg = Release|Any CPU
+		{02E04B3E-170F-471A-9674-FCBD13F824DE}.Release|x64.Build.0 = Release|Any CPU
+		{02E04B3E-170F-471A-9674-FCBD13F824DE}.Release|x86.ActiveCfg = Release|Any CPU
+		{02E04B3E-170F-471A-9674-FCBD13F824DE}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -194,6 +218,9 @@ Global
 		{45B560CF-76B5-4AD9-A22F-66EA6B09C5FE} = {581960B3-7392-4BB5-AD95-D106F89604A1}
 		{3AE417F3-6F3A-4255-B521-5CE4E47F4F52} = {581960B3-7392-4BB5-AD95-D106F89604A1}
 		{7ADD6055-9EE2-44E5-9FEB-AA3A07EF4A8B} = {0AC3DDDF-D5C3-4876-A1D5-EE5C5206AC46}
+		{373E3CAA-169B-477D-BA8E-6C33395CE8E8} = {5374846F-A7A5-457B-8231-FC1F959523B6}
 		{D1C72F41-22CC-4D68-9AA6-9D852D28551F} = {5374846F-A7A5-457B-8231-FC1F959523B6}
+		{0D853AF3-DD6E-4BA7-B4B9-7A6D26873352} = {5374846F-A7A5-457B-8231-FC1F959523B6}
+		{02E04B3E-170F-471A-9674-FCBD13F824DE} = {5374846F-A7A5-457B-8231-FC1F959523B6}
 	EndGlobalSection
 EndGlobal
