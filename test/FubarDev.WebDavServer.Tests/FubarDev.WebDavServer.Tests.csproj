@@ -2,7 +2,7 @@
   <PropertyGroup>
     <OutputType>Exe</OutputType>
     <TargetFramework>netcoreapp1.1</TargetFramework>
-    <CodeAnalysisRuleSet>..\..\WebDavServer.ruleset</CodeAnalysisRuleSet>
+    <CodeAnalysisRuleSet>$(ProjectDir)..\..\WebDavServer.ruleset</CodeAnalysisRuleSet>
     <PackageTargetFallback Condition=" '$(TargetFramework)' == 'netcoreapp1.1' ">$(PackageTargetFallback);portable-net45+win8+wp8</PackageTargetFallback>
   </PropertyGroup>
   <ItemGroup>
