@@ -63,7 +63,7 @@
     "globalMetadataFiles": [],
     "fileMetadataFiles": [],
     "template": [
-      "default"
+      "tools/docfx-templates/default"
     ],
     "postProcessors": [],
     "noLangKeyword": false,
