@@ -15,7 +15,7 @@ using FubarDev.WebDavServer.Props.Store;
 namespace FubarDev.WebDavServer.Props.Dead
 {
     /// <summary>
-    /// The <code>displayname</code> property
+    /// The <c>displayname</c> property
     /// </summary>
     public class DisplayNameProperty : GenericStringProperty, IDeadProperty
     {

@@ -12,7 +12,7 @@ using FubarDev.WebDavServer.Model;
 namespace FubarDev.WebDavServer.Props.Live
 {
     /// <summary>
-    /// The <code>resourcetype</code> property
+    /// The <c>resourcetype</c> property
     /// </summary>
     public abstract class ResourceTypeProperty : ILiveProperty
     {

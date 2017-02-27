@@ -9,7 +9,7 @@ using JetBrains.Annotations;
 namespace FubarDev.WebDavServer.Model.Headers
 {
     /// <summary>
-    /// The <code>Lock-Token</code> header
+    /// The <c>Lock-Token</c> header
     /// </summary>
     public class LockTokenHeader
     {

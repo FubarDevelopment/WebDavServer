@@ -32,7 +32,7 @@ namespace FubarDev.WebDavServer.Handlers.Impl
         /// </summary>
         /// <param name="rootFileSystem">The root file system</param>
         /// <param name="host">The WebDAV server context</param>
-        /// <param name="options">The options for the <code>MOVE</code> handler</param>
+        /// <param name="options">The options for the <c>MOVE</c> handler</param>
         /// <param name="logger">The logger for this handler</param>
         /// <param name="serviceProvider">The service provider used to lazily query the <see cref="IRemoteMoveTargetActionsFactory"/> implementation</param>
         public MoveHandler(IFileSystem rootFileSystem, IWebDavContext host, IOptions<MoveHandlerOptions> options, ILogger<MoveHandler> logger, IServiceProvider serviceProvider)

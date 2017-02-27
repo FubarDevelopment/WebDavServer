@@ -12,7 +12,7 @@ using FubarDev.WebDavServer.Props.Generic;
 namespace FubarDev.WebDavServer.Props.Live
 {
     /// <summary>
-    /// The <code>creationdate</code> property
+    /// The <c>creationdate</c> property
     /// </summary>
     public class CreationDateProperty : GenericDateTimeRfc1123Property, ILiveProperty
     {

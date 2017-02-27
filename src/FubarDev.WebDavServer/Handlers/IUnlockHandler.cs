@@ -12,7 +12,7 @@ using JetBrains.Annotations;
 namespace FubarDev.WebDavServer.Handlers
 {
     /// <summary>
-    /// Interface for the <code>UNLOCK</code> handler
+    /// Interface for the <c>UNLOCK</c> handler
     /// </summary>
     public interface IUnlockHandler : IClass2Handler
     {

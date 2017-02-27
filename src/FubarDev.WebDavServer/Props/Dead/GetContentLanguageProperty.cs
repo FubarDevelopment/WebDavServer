@@ -15,7 +15,7 @@ using FubarDev.WebDavServer.Props.Store;
 namespace FubarDev.WebDavServer.Props.Dead
 {
     /// <summary>
-    /// The implementation of the <code>getcontentlanguage</code> property
+    /// The implementation of the <c>getcontentlanguage</c> property
     /// </summary>
     public class GetContentLanguageProperty : GenericStringProperty, IDeadProperty
     {

@@ -11,7 +11,7 @@ using JetBrains.Annotations;
 namespace FubarDev.WebDavServer.Handlers
 {
     /// <summary>
-    /// Interface for the <code>COPY</code> handler
+    /// Interface for the <c>COPY</c> handler
     /// </summary>
     public interface ICopyHandler : IClass1Handler
     {

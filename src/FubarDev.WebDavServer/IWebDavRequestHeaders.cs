@@ -16,53 +16,53 @@ namespace FubarDev.WebDavServer
     public interface IWebDavRequestHeaders
     {
         /// <summary>
-        /// Gets the <code>Depth</code> header
+        /// Gets the <c>Depth</c> header
         /// </summary>
         DepthHeader? Depth { get; }
 
         /// <summary>
-        /// Gets the value of the <code>Overwrite</code> (<see cref="OverwriteHeader"/>) header
+        /// Gets the value of the <c>Overwrite</c> (<see cref="OverwriteHeader"/>) header
         /// </summary>
         bool? Overwrite { get; }
 
         /// <summary>
-        /// Gets the <code>If</code> header
+        /// Gets the <c>If</c> header
         /// </summary>
         [CanBeNull]
         IfHeader If { get; }
 
         /// <summary>
-        /// Gets the <code>If-Match</code> header
+        /// Gets the <c>If-Match</c> header
         /// </summary>
         [CanBeNull]
         IfMatchHeader IfMatch { get; }
 
         /// <summary>
-        /// Gets the <code>If-None-Match</code> header
+        /// Gets the <c>If-None-Match</c> header
         /// </summary>
         [CanBeNull]
         IfNoneMatchHeader IfNoneMatch { get; }
 
         /// <summary>
-        /// Gets the <code>If-Modified-Since</code> header
+        /// Gets the <c>If-Modified-Since</c> header
         /// </summary>
         [CanBeNull]
         IfModifiedSinceHeader IfModifiedSince { get; }
 
         /// <summary>
-        /// Gets the <code>If-Unmodified-Since</code> header
+        /// Gets the <c>If-Unmodified-Since</c> header
         /// </summary>
         [CanBeNull]
         IfUnmodifiedSinceHeader IfUnmodifiedSince { get; }
 
         /// <summary>
-        /// Gets the <code>Range</code> header
+        /// Gets the <c>Range</c> header
         /// </summary>
         [CanBeNull]
         RangeHeader Range { get; }
 
         /// <summary>
-        /// Gets the <code>Timeout</code> header
+        /// Gets the <c>Timeout</c> header
         /// </summary>
         [CanBeNull]
         TimeoutHeader Timeout { get; }

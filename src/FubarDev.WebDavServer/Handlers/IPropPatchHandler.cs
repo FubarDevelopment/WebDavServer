@@ -12,7 +12,7 @@ using JetBrains.Annotations;
 namespace FubarDev.WebDavServer.Handlers
 {
     /// <summary>
-    /// Interface for the <code>PROPPATCH</code> handler
+    /// Interface for the <c>PROPPATCH</c> handler
     /// </summary>
     public interface IPropPatchHandler : IClass1Handler
     {

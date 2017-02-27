@@ -15,12 +15,12 @@ namespace FubarDev.WebDavServer.Handlers.Impl
         public bool UseAbsoluteHref { get; set; }
 
         /// <summary>
-        /// Gets or sets a value indicating whether the handler should omit the <code>owner</code> element of an <code>activelock</code> element.
+        /// Gets or sets a value indicating whether the handler should omit the <c>owner</c> element of an <c>activelock</c> element.
         /// </summary>
         public bool OmitLockOwner { get; set; }
 
         /// <summary>
-        /// Gets or sets a value indicating whether the handler should omit the <code>locktoken</code> element of an <code>activelock</code> element.
+        /// Gets or sets a value indicating whether the handler should omit the <c>locktoken</c> element of an <c>activelock</c> element.
         /// </summary>
         public bool OmitLockToken { get; set; }
     }

@@ -10,7 +10,7 @@ using JetBrains.Annotations;
 namespace FubarDev.WebDavServer.Handlers
 {
     /// <summary>
-    /// Interface for the <code>HEAD</code> handler
+    /// Interface for the <c>HEAD</c> handler
     /// </summary>
     public interface IHeadHandler : IClass1Handler
     {

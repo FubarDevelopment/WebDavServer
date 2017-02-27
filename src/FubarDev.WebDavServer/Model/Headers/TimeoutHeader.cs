@@ -9,7 +9,7 @@ using System.Linq;
 namespace FubarDev.WebDavServer.Model.Headers
 {
     /// <summary>
-    /// The HTTP <code>Timeout</code> header
+    /// The HTTP <c>Timeout</c> header
     /// </summary>
     public class TimeoutHeader
     {
@@ -30,7 +30,7 @@ namespace FubarDev.WebDavServer.Model.Headers
         public static TimeSpan Infinite { get; } = TimeSpan.MaxValue;
 
         /// <summary>
-        /// Gets the timeout values of the <code>Timeout</code> header
+        /// Gets the timeout values of the <c>Timeout</c> header
         /// </summary>
         public IReadOnlyCollection<TimeSpan> Values { get; }
 

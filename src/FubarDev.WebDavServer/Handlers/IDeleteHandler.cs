@@ -10,7 +10,7 @@ using JetBrains.Annotations;
 namespace FubarDev.WebDavServer.Handlers
 {
     /// <summary>
-    /// Interface for the <code>DELETE</code> handler
+    /// Interface for the <c>DELETE</c> handler
     /// </summary>
     public interface IDeleteHandler : IClass1Handler
     {

@@ -18,7 +18,7 @@ using JetBrains.Annotations;
 namespace FubarDev.WebDavServer.Props.Dead
 {
     /// <summary>
-    /// The implementation of the <code>getetag</code> property
+    /// The implementation of the <c>getetag</c> property
     /// </summary>
     public class GetETagProperty : ITypedReadableProperty<EntityTag>, IDeadProperty
     {

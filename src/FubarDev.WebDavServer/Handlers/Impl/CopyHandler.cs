@@ -32,7 +32,7 @@ namespace FubarDev.WebDavServer.Handlers.Impl
         /// </summary>
         /// <param name="rootFileSystem">The root file system</param>
         /// <param name="host">The WebDAV server context</param>
-        /// <param name="options">The options for the <code>COPY</code> handler</param>
+        /// <param name="options">The options for the <c>COPY</c> handler</param>
         /// <param name="logger">The logger for this handler</param>
         /// <param name="serviceProvider">The service provider used to lazily query the <see cref="IRemoteCopyTargetActionsFactory"/> implementation</param>
         public CopyHandler(IFileSystem rootFileSystem, IWebDavContext host, IOptions<CopyHandlerOptions> options, ILogger<CopyHandler> logger, IServiceProvider serviceProvider)

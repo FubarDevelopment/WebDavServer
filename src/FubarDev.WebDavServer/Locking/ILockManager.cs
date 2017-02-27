@@ -48,7 +48,7 @@ namespace FubarDev.WebDavServer.Locking
         /// Tries to find a lock identified by the <paramref name="ifHeaderLists"/> or creates a new one if none was found.
         /// </summary>
         /// <param name="rootFileSystem">The root file system to identify the lock for</param>
-        /// <param name="ifHeaderLists">The <code>If</code> header lists that tries to identify the lock to use</param>
+        /// <param name="ifHeaderLists">The <c>If</c> header lists that tries to identify the lock to use</param>
         /// <param name="lockRequirements">The requirements the found lock must meet</param>
         /// <param name="cancellationToken">The cancellation token</param>
         /// <returns>Either the list of locks preventing issuing a lock or the active lock created or reused</returns>

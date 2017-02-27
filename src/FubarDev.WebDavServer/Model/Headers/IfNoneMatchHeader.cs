@@ -9,7 +9,7 @@ using JetBrains.Annotations;
 namespace FubarDev.WebDavServer.Model.Headers
 {
     /// <summary>
-    /// Class that represents the HTTP <code>If-None-Match</code> header
+    /// Class that represents the HTTP <c>If-None-Match</c> header
     /// </summary>
     public class IfNoneMatchHeader
     {
@@ -93,10 +93,10 @@ namespace FubarDev.WebDavServer.Model.Headers
         }
 
         /// <summary>
-        /// Returns a value that indicates whether the <paramref name="etag"/> is not specified in the <code>If-None-Match</code> header
+        /// Returns a value that indicates whether the <paramref name="etag"/> is not specified in the <c>If-None-Match</c> header
         /// </summary>
         /// <param name="etag">The entity tag to search for</param>
-        /// <returns><see langref="true"/> when the <paramref name="etag"/> was not found</returns>
+        /// <returns><see langword="true"/> when the <paramref name="etag"/> was not found</returns>
         public bool IsMatch(EntityTag? etag)
         {
             if (_etags == null)

@@ -11,7 +11,7 @@ using JetBrains.Annotations;
 namespace FubarDev.WebDavServer.Handlers
 {
     /// <summary>
-    /// Interface for the <code>MOVE</code> handler
+    /// Interface for the <c>MOVE</c> handler
     /// </summary>
     public interface IMoveHandler : IClass1Handler
     {

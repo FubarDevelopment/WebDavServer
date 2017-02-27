@@ -19,7 +19,7 @@ namespace FubarDev.WebDavServer.Model
         /// <summary>
         /// Initializes a new instance of the <see cref="Status"/> struct.
         /// </summary>
-        /// <param name="protocol">The HTTP protocol (usually <code>HTTP/1.1</code>)</param>
+        /// <param name="protocol">The HTTP protocol (usually <c>HTTP/1.1</c>)</param>
         /// <param name="statusCode">The WebDAV status code</param>
         /// <param name="reasonPhrase">The status reason phrase</param>
         public Status([NotNull] string protocol, HttpStatusCode statusCode, [CanBeNull] string reasonPhrase = null)
@@ -30,7 +30,7 @@ namespace FubarDev.WebDavServer.Model
         /// <summary>
         /// Initializes a new instance of the <see cref="Status"/> struct.
         /// </summary>
-        /// <param name="protocol">The HTTP protocol (usually <code>HTTP/1.1</code>)</param>
+        /// <param name="protocol">The HTTP protocol (usually <c>HTTP/1.1</c>)</param>
         /// <param name="statusCode">The WebDAV status code</param>
         /// <param name="reasonPhrase">The status reason phrase</param>
         public Status([NotNull] string protocol, int statusCode, [NotNull] string reasonPhrase)
@@ -48,7 +48,7 @@ namespace FubarDev.WebDavServer.Model
         /// <summary>
         /// Initializes a new instance of the <see cref="Status"/> struct.
         /// </summary>
-        /// <param name="protocol">The HTTP protocol (usually <code>HTTP/1.1</code>)</param>
+        /// <param name="protocol">The HTTP protocol (usually <c>HTTP/1.1</c>)</param>
         /// <param name="statusCode">The WebDAV status code</param>
         /// <param name="additionalReasonPhrase">The additional text to the reason phrase</param>
         public Status([NotNull] string protocol, WebDavStatusCode statusCode, [CanBeNull] string additionalReasonPhrase = null)
@@ -62,7 +62,7 @@ namespace FubarDev.WebDavServer.Model
         }
 
         /// <summary>
-        /// Gets the HTTP protocol (usually <code>HTTP/1.1</code>)
+        /// Gets the HTTP protocol (usually <c>HTTP/1.1</c>)
         /// </summary>
         [NotNull]
         public string Protocol { get; }

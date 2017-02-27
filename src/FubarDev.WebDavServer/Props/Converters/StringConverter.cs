@@ -7,7 +7,7 @@ using System.Xml.Linq;
 namespace FubarDev.WebDavServer.Props.Converters
 {
     /// <summary>
-    /// Property converter for a <see langref="string"/>
+    /// Property converter for a <see langword="string"/>
     /// </summary>
     public class StringConverter : IPropertyConverter<string>
     {

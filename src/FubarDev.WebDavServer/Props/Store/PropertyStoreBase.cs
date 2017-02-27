@@ -126,7 +126,7 @@ namespace FubarDev.WebDavServer.Props.Store
         /// <summary>
         /// Gets a <see cref="GetETagProperty"/> from the property store
         /// </summary>
-        /// <param name="entry">The entry to get the <code>getetag</code> property from</param>
+        /// <param name="entry">The entry to get the <c>getetag</c> property from</param>
         /// <param name="cancellationToken">The cancellation token</param>
         /// <returns>The entity tag for the <paramref name="entry"/></returns>
         protected abstract Task<EntityTag> GetDeadETagAsync(IEntry entry, CancellationToken cancellationToken);
@@ -134,7 +134,7 @@ namespace FubarDev.WebDavServer.Props.Store
         /// <summary>
         /// Updates a <see cref="GetETagProperty"/> in the property store
         /// </summary>
-        /// <param name="entry">The entry to update the <code>getetag</code> property for</param>
+        /// <param name="entry">The entry to update the <c>getetag</c> property for</param>
         /// <param name="cancellationToken">The cancellation token</param>
         /// <returns>The updated entity tag for the <paramref name="entry"/></returns>
         protected abstract Task<EntityTag> UpdateDeadETagAsync(IEntry entry, CancellationToken cancellationToken);

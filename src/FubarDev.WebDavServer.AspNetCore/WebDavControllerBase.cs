@@ -38,7 +38,7 @@ namespace FubarDev.WebDavServer.AspNetCore
         }
 
         /// <summary>
-        /// Handler for the <code>QUERY</code> method
+        /// Handler for the <c>QUERY</c> method
         /// </summary>
         /// <param name="path">The root-relative path to the target of this method</param>
         /// <param name="cancellationToken">The cancellation token</param>
@@ -51,7 +51,7 @@ namespace FubarDev.WebDavServer.AspNetCore
         }
 
         /// <summary>
-        /// Handler for the <code>MKCOL</code> method
+        /// Handler for the <c>MKCOL</c> method
         /// </summary>
         /// <param name="path">The root-relative path to the target of this method</param>
         /// <param name="cancellationToken">The cancellation token</param>
@@ -64,7 +64,7 @@ namespace FubarDev.WebDavServer.AspNetCore
         }
 
         /// <summary>
-        /// Handler for the <code>GET</code> method
+        /// Handler for the <c>GET</c> method
         /// </summary>
         /// <param name="path">The root-relative path to the source of this method</param>
         /// <param name="cancellationToken">The cancellation token</param>
@@ -77,7 +77,7 @@ namespace FubarDev.WebDavServer.AspNetCore
         }
 
         /// <summary>
-        /// Handler for the <code>PUT</code> method
+        /// Handler for the <c>PUT</c> method
         /// </summary>
         /// <param name="path">The root-relative path to the target of this method</param>
         /// <param name="cancellationToken">The cancellation token</param>
@@ -90,7 +90,7 @@ namespace FubarDev.WebDavServer.AspNetCore
         }
 
         /// <summary>
-        /// Handler for the <code>DELETE</code> method
+        /// Handler for the <c>DELETE</c> method
         /// </summary>
         /// <param name="path">The root-relative path to the target of this method</param>
         /// <param name="cancellationToken">The cancellation token</param>
@@ -103,7 +103,7 @@ namespace FubarDev.WebDavServer.AspNetCore
         }
 
         /// <summary>
-        /// Handler for the <code>PROPFIND</code> method
+        /// Handler for the <c>PROPFIND</c> method
         /// </summary>
         /// <param name="path">The root-relative path to the target of this method</param>
         /// <param name="request">The <see cref="propfind"/> request element (may be null)</param>
@@ -120,7 +120,7 @@ namespace FubarDev.WebDavServer.AspNetCore
         }
 
         /// <summary>
-        /// Handler for the <code>PROPPATCH</code> method
+        /// Handler for the <c>PROPPATCH</c> method
         /// </summary>
         /// <param name="path">The root-relative path to the target of this method</param>
         /// <param name="request">The <see cref="propertyupdate"/> request element</param>
@@ -134,7 +134,7 @@ namespace FubarDev.WebDavServer.AspNetCore
         }
 
         /// <summary>
-        /// Handler for the <code>HEAD</code> method
+        /// Handler for the <c>HEAD</c> method
         /// </summary>
         /// <param name="path">The root-relative path to the target of this method</param>
         /// <param name="cancellationToken">The cancellation token</param>
@@ -147,7 +147,7 @@ namespace FubarDev.WebDavServer.AspNetCore
         }
 
         /// <summary>
-        /// Handler for the <code>COPY</code> method
+        /// Handler for the <c>COPY</c> method
         /// </summary>
         /// <param name="path">The root-relative path to the source of this method</param>
         /// <param name="destination">The destination of the COPY operation</param>
@@ -164,7 +164,7 @@ namespace FubarDev.WebDavServer.AspNetCore
         }
 
         /// <summary>
-        /// Handler for the <code>MOVE</code> method
+        /// Handler for the <c>MOVE</c> method
         /// </summary>
         /// <param name="path">The root-relative path to the source of this method</param>
         /// <param name="destination">The destination of the MOVE operation</param>
@@ -181,7 +181,7 @@ namespace FubarDev.WebDavServer.AspNetCore
         }
 
         /// <summary>
-        /// Handler for the <code>LOCK</code> method
+        /// Handler for the <c>LOCK</c> method
         /// </summary>
         /// <param name="path">The root-relative path to the target of this method</param>
         /// <param name="lockinfo">The information about the requested lock</param>
@@ -216,7 +216,7 @@ namespace FubarDev.WebDavServer.AspNetCore
         }
 
         /// <summary>
-        /// Handler for the <code>UNLOCK</code> method
+        /// Handler for the <c>UNLOCK</c> method
         /// </summary>
         /// <param name="path">The root-relative path to the target of this method</param>
         /// <param name="lockToken">The token of the lock to remove</param>

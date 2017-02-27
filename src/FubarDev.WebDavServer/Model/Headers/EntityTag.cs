@@ -21,7 +21,7 @@ namespace FubarDev.WebDavServer.Model.Headers
     public struct EntityTag : IEquatable<EntityTag>
     {
         /// <summary>
-        /// The default property name for the <code>getetag</code> WebDAV property
+        /// The default property name for the <c>getetag</c> WebDAV property
         /// </summary>
         public static readonly XName PropertyName = WebDavXml.Dav + "getetag";
 
@@ -61,7 +61,7 @@ namespace FubarDev.WebDavServer.Model.Headers
         /// </summary>
         /// <param name="x">The first entity tag to compare</param>
         /// <param name="y">The second entity tag to compare</param>
-        /// <returns><see langref="true"/> when both entity tags are of equal value</returns>
+        /// <returns><see langword="true"/> when both entity tags are of equal value</returns>
         public static bool operator ==(EntityTag x, EntityTag y)
         {
             return EntityTagComparer.Strong.Equals(x, y);
@@ -72,7 +72,7 @@ namespace FubarDev.WebDavServer.Model.Headers
         /// </summary>
         /// <param name="x">The first entity tag to compare</param>
         /// <param name="y">The second entity tag to compare</param>
-        /// <returns><see langref="true"/> when both entity tags are not of equal value</returns>
+        /// <returns><see langword="true"/> when both entity tags are not of equal value</returns>
         public static bool operator !=(EntityTag x, EntityTag y)
         {
             return !EntityTagComparer.Strong.Equals(x, y);
@@ -84,7 +84,7 @@ namespace FubarDev.WebDavServer.Model.Headers
         /// <param name="element">The XML of a <see cref="GetETagProperty"/></param>
         /// <returns>The found entity tag</returns>
         /// <remarks>
-        /// Returns a new strong entity tag when <paramref name="element"/> is <see langref="null"/>.
+        /// Returns a new strong entity tag when <paramref name="element"/> is <see langword="null"/>.
         /// </remarks>
         public static EntityTag FromXml([CanBeNull] XElement element)
         {

@@ -9,7 +9,7 @@ using JetBrains.Annotations;
 namespace FubarDev.WebDavServer.FileSystem
 {
     /// <summary>
-    /// The result of a <code>DELETE</code> file system operation
+    /// The result of a <c>DELETE</c> file system operation
     /// </summary>
     public class DeleteResult
     {

@@ -21,7 +21,7 @@ namespace FubarDev.WebDavServer.Model.Headers
         /// <summary>
         /// Initializes a new instance of the <see cref="RangeHeader"/> class.
         /// </summary>
-        /// <param name="unit">The unit of the range (currently only <code>bytes</code> is allowed)</param>
+        /// <param name="unit">The unit of the range (currently only <c>bytes</c> is allowed)</param>
         /// <param name="rangeItems">The HTTP range items for this range</param>
         public RangeHeader([NotNull] string unit, params RangeHeaderItem[] rangeItems)
             : this(unit, false, rangeItems)
@@ -52,7 +52,7 @@ namespace FubarDev.WebDavServer.Model.Headers
         /// Parses a <paramref name="range"/> into a new <see cref="RangeHeader"/> instance
         /// </summary>
         /// <remarks>
-        /// The range must be in the form <code>unit=(range)+</code>
+        /// The range must be in the form <c>unit=(range)+</c>
         /// </remarks>
         /// <param name="range">The range to parse</param>
         /// <returns>The new <see cref="RangeHeader"/></returns>
@@ -66,7 +66,7 @@ namespace FubarDev.WebDavServer.Model.Headers
         /// Parses the <paramref name="ranges"/> into a new <see cref="RangeHeader"/> instance
         /// </summary>
         /// <remarks>
-        /// The range must be in the form <code>unit=(range)+</code>
+        /// The range must be in the form <c>unit=(range)+</c>
         /// </remarks>
         /// <param name="ranges">The ranges to parse</param>
         /// <returns>The new <see cref="RangeHeader"/></returns>
@@ -126,7 +126,7 @@ namespace FubarDev.WebDavServer.Model.Headers
         /// Returns the textual representation of a single <see cref="RangeHeaderItem"/>
         /// </summary>
         /// <remarks>
-        /// The return value of this function looks like <code>unit range/length</code>
+        /// The return value of this function looks like <c>unit range/length</c>
         /// </remarks>
         /// <param name="rangeItem">The <see cref="RangeHeaderItem"/> to get the textual representation for</param>
         /// <returns>The textual representation of <paramref name="rangeItem"/></returns>
@@ -140,7 +140,7 @@ namespace FubarDev.WebDavServer.Model.Headers
         /// Returns the textual representation of a single <see cref="RangeHeaderItem"/>
         /// </summary>
         /// <remarks>
-        /// The return value of this function looks like <code>unit range/length</code>
+        /// The return value of this function looks like <c>unit range/length</c>
         /// </remarks>
         /// <param name="rangeItem">The <see cref="RangeHeaderItem"/> to get the textual representation for</param>
         /// <param name="length">The length value to be used in the textual representation</param>

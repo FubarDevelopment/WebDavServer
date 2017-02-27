@@ -73,7 +73,7 @@ namespace FubarDev.WebDavServer.FileSystem
         /// Gets the collection of missing child elements
         /// </summary>
         /// <remarks>
-        /// This is only valid, when <see cref="IsMissing"/> is <see langref="true"/>.
+        /// This is only valid, when <see cref="IsMissing"/> is <see langword="true"/>.
         /// </remarks>
         [NotNull]
         [ItemNotNull]
@@ -120,7 +120,7 @@ namespace FubarDev.WebDavServer.FileSystem
         /// Gets the found target entry
         /// </summary>
         /// <remarks>
-        /// This is only valid when <see cref="IsMissing"/> is <see langref="false"/>.
+        /// This is only valid when <see cref="IsMissing"/> is <see langword="false"/>.
         /// </remarks>
         [NotNull]
         public IEntry TargetEntry

@@ -13,7 +13,7 @@ using JetBrains.Annotations;
 namespace FubarDev.WebDavServer.Model.Headers
 {
     /// <summary>
-    /// Class that represents the HTTP <code>If</code> header
+    /// Class that represents the HTTP <c>If</c> header
     /// </summary>
     public class IfHeader
     {

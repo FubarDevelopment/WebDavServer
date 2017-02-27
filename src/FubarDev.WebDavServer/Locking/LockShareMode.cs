@@ -17,7 +17,7 @@ namespace FubarDev.WebDavServer.Locking
     public struct LockShareMode : IEquatable<LockShareMode>
     {
         /// <summary>
-        /// Gets the default <code>shared</code> lock share mode
+        /// Gets the default <c>shared</c> lock share mode
         /// </summary>
         public static readonly LockShareMode Shared = new LockShareMode(SharedId, new lockscope()
         {
@@ -26,7 +26,7 @@ namespace FubarDev.WebDavServer.Locking
         });
 
         /// <summary>
-        /// Gets the default <code>exclusive</code> lock share mode
+        /// Gets the default <c>exclusive</c> lock share mode
         /// </summary>
         public static readonly LockShareMode Exclusive = new LockShareMode(ExclusiveId, new lockscope()
         {
@@ -62,7 +62,7 @@ namespace FubarDev.WebDavServer.Locking
         /// </summary>
         /// <param name="x">The first lock share mode to compare</param>
         /// <param name="y">The second lock share mode to compare</param>
-        /// <returns><see langref="true"/> when both lock share modes are of equal value</returns>
+        /// <returns><see langword="true"/> when both lock share modes are of equal value</returns>
         public static bool operator ==(LockShareMode x, LockShareMode y)
         {
             return x.Name == y.Name;
@@ -73,7 +73,7 @@ namespace FubarDev.WebDavServer.Locking
         /// </summary>
         /// <param name="x">The first lock share mode to compare</param>
         /// <param name="y">The second lock share mode to compare</param>
-        /// <returns><see langref="true"/> when both lock share modes are not of equal value</returns>
+        /// <returns><see langword="true"/> when both lock share modes are not of equal value</returns>
         public static bool operator !=(LockShareMode x, LockShareMode y)
         {
             return x.Name != y.Name;

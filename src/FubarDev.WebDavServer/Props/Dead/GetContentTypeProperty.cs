@@ -15,7 +15,7 @@ using FubarDev.WebDavServer.Props.Store;
 namespace FubarDev.WebDavServer.Props.Dead
 {
     /// <summary>
-    /// The implementation of the <code>getcontenttype</code> property
+    /// The implementation of the <c>getcontenttype</c> property
     /// </summary>
     public class GetContentTypeProperty : GenericStringProperty, IDeadProperty
     {

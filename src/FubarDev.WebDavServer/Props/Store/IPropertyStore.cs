@@ -54,7 +54,7 @@ namespace FubarDev.WebDavServer.Props.Store
         /// <param name="entry">The entry to remove the dead property with the given <paramref name="name"/> from</param>
         /// <param name="name">The name of the parameter to remove from the <paramref name="entry"/></param>
         /// <param name="cancellationToken">The cancellation token</param>
-        /// <returns><see langref="true"/> when there was a dead property with the given <paramref name="name"/> that could be removed</returns>
+        /// <returns><see langword="true"/> when there was a dead property with the given <paramref name="name"/> that could be removed</returns>
         /// <remarks>A <see cref="GetETagProperty"/> cannot be removed by this function.</remarks>
         [NotNull]
         Task<bool> RemoveAsync([NotNull] IEntry entry, [NotNull] XName name, CancellationToken cancellationToken);
@@ -87,7 +87,7 @@ namespace FubarDev.WebDavServer.Props.Store
         /// <param name="entry">The entry to remove the given property <paramref name="names"/> from</param>
         /// <param name="names">The names of the dead properties to remove from the given <paramref name="entry"/></param>
         /// <param name="cancellationToken">The cancellation token</param>
-        /// <returns>A collection of booleans where a <see langref="true"/> value indicates that there was a dead property for a given
+        /// <returns>A collection of booleans where a <see langword="true"/> value indicates that there was a dead property for a given
         /// name that could be removed from the <paramref name="entry"/>. A <see cref="GetETagProperty"/> cannot be removed
         /// by this function.</returns>
         [NotNull]

@@ -13,7 +13,7 @@ using FubarDev.WebDavServer.Props.Converters;
 namespace FubarDev.WebDavServer.Props.Live
 {
     /// <summary>
-    /// The <code>getcontentlength</code> property
+    /// The <c>getcontentlength</c> property
     /// </summary>
     public class ContentLengthProperty : ITypedReadableProperty<long>, ILiveProperty
     {

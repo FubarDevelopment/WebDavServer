@@ -10,7 +10,7 @@ using JetBrains.Annotations;
 namespace FubarDev.WebDavServer.Handlers
 {
     /// <summary>
-    /// Interface for the <code>GET</code> handler
+    /// Interface for the <c>GET</c> handler
     /// </summary>
     public interface IGetHandler : IClass1Handler
     {

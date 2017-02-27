@@ -17,7 +17,7 @@ using JetBrains.Annotations;
 namespace FubarDev.WebDavServer.Props.Live
 {
     /// <summary>
-    /// The <code>supportedlock</code> property
+    /// The <c>supportedlock</c> property
     /// </summary>
     public class SupportedLockProperty : ITypedReadableProperty<supportedlock>, ILiveProperty
     {

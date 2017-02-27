@@ -11,15 +11,15 @@ using JetBrains.Annotations;
 namespace FubarDev.WebDavServer.Model.Headers
 {
     /// <summary>
-    /// The parser for a <code>Coded-URL</code>
+    /// The parser for a <c>Coded-URL</c>
     /// </summary>
     public static class CodedUrlParser
     {
         /// <summary>
-        /// Parse the <code>Coded-URL</code> from a <paramref name="source"/> <see langref="string"/>
+        /// Parse the <c>Coded-URL</c> from a <paramref name="source"/> <see langword="string"/>
         /// </summary>
-        /// <param name="source">The <see langref="string"/> to parse the <code>Coded-URL</code> from</param>
-        /// <returns>The parsed <code>Coded-URL</code></returns>
+        /// <param name="source">The <see langword="string"/> to parse the <c>Coded-URL</c> from</param>
+        /// <returns>The parsed <c>Coded-URL</c></returns>
         public static Uri Parse([NotNull] string source)
         {
             var src = new StringSource(source);
@@ -32,11 +32,11 @@ namespace FubarDev.WebDavServer.Model.Headers
         }
 
         /// <summary>
-        /// Tries to parse the <code>Coded-URL</code> from a <paramref name="source"/> <see langref="string"/>
+        /// Tries to parse the <c>Coded-URL</c> from a <paramref name="source"/> <see langword="string"/>
         /// </summary>
-        /// <param name="source">The <see langref="string"/> to parse the <code>Coded-URL</code> from</param>
-        /// <param name="codedUrl">The parsed <code>Coded-URL</code></param>
-        /// <returns><see langref="true"/> when the <code>Coded-URL</code> could be parsed successfully</returns>
+        /// <param name="source">The <see langword="string"/> to parse the <c>Coded-URL</c> from</param>
+        /// <param name="codedUrl">The parsed <c>Coded-URL</c></param>
+        /// <returns><see langword="true"/> when the <c>Coded-URL</c> could be parsed successfully</returns>
         public static bool TryParse([NotNull] string source, out Uri codedUrl)
         {
             var src = new StringSource(source);
@@ -46,11 +46,11 @@ namespace FubarDev.WebDavServer.Model.Headers
         }
 
         /// <summary>
-        /// Tries to parse the <code>Coded-URL</code> from a <see cref="StringSource"/>
+        /// Tries to parse the <c>Coded-URL</c> from a <see cref="StringSource"/>
         /// </summary>
-        /// <param name="source">The <see cref="StringSource"/> to parse the <code>Coded-URL</code> from</param>
-        /// <param name="codedUrl">The parsed <code>Coded-URL</code></param>
-        /// <returns><see langref="true"/> when the <code>Coded-URL</code> could be parsed successfully</returns>
+        /// <param name="source">The <see cref="StringSource"/> to parse the <c>Coded-URL</c> from</param>
+        /// <param name="codedUrl">The parsed <c>Coded-URL</c></param>
+        /// <returns><see langword="true"/> when the <c>Coded-URL</c> could be parsed successfully</returns>
         internal static bool TryParse([NotNull] StringSource source, out Uri codedUrl)
         {
             if (!source.AdvanceIf("<"))

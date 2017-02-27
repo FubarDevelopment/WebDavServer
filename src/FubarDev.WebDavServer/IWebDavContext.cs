@@ -15,18 +15,18 @@ namespace FubarDev.WebDavServer
     /// The WebDAV request context
     /// </summary>
     /// <remarks>
-    /// This is the equivalent of ASP.NET Cores <code>HttpContext</code>
+    /// This is the equivalent of ASP.NET Cores <c>HttpContext</c>
     /// </remarks>
     public interface IWebDavContext
     {
         /// <summary>
-        /// Gets the request protocol (<code>http</code> or <code>https</code>)
+        /// Gets the request protocol (<c>http</c> or <c>https</c>)
         /// </summary>
         [NotNull]
         string RequestProtocol { get; }
 
         /// <summary>
-        /// Gets the relative request URL (e.g. <code>/webdav/test.txt</code>)
+        /// Gets the relative request URL (e.g. <c>/webdav/test.txt</c>)
         /// </summary>
         [NotNull]
         Uri RelativeRequestUrl { get; }

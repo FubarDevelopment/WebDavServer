@@ -12,7 +12,7 @@ using JetBrains.Annotations;
 namespace FubarDev.WebDavServer.Handlers
 {
     /// <summary>
-    /// Interface for the <code>PROPFIND</code> handler
+    /// Interface for the <c>PROPFIND</c> handler
     /// </summary>
     public interface IPropFindHandler : IClass1Handler
     {

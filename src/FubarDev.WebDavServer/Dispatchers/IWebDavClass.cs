@@ -30,7 +30,7 @@ namespace FubarDev.WebDavServer.Dispatchers
         IWebDavContext WebDavContext { get; }
 
         /// <summary>
-        /// Gets the headers to be sent for a response of an <code>OPTIONS</code> request
+        /// Gets the headers to be sent for a response of an <c>OPTIONS</c> request
         /// </summary>
         [NotNull]
         IReadOnlyDictionary<string, IEnumerable<string>> OptionsResponseHeaders { get; }

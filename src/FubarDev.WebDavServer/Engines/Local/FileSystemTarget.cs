@@ -84,7 +84,7 @@ namespace FubarDev.WebDavServer.Engines.Local
         /// Gets the underlying document
         /// </summary>
         /// <remarks>
-        /// Might be <see langref="null"/>, when the target is a collection instead.
+        /// Might be <see langword="null"/>, when the target is a collection instead.
         /// </remarks>
         [CanBeNull]
         public IDocument Document { get; }
@@ -93,7 +93,7 @@ namespace FubarDev.WebDavServer.Engines.Local
         /// Gets the underlying collection
         /// </summary>
         /// <remarks>
-        /// Might be <see langref="null"/>, when the target is a document instead.
+        /// Might be <see langword="null"/>, when the target is a document instead.
         /// </remarks>
         [CanBeNull]
         public ICollection Collection { get; }

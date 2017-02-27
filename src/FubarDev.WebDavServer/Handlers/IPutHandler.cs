@@ -11,7 +11,7 @@ using JetBrains.Annotations;
 namespace FubarDev.WebDavServer.Handlers
 {
     /// <summary>
-    /// Interface for the <code>PUT</code> handler
+    /// Interface for the <c>PUT</c> handler
     /// </summary>
     public interface IPutHandler : IClass1Handler
     {

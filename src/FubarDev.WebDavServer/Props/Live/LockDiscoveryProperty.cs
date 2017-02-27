@@ -17,7 +17,7 @@ using JetBrains.Annotations;
 namespace FubarDev.WebDavServer.Props.Live
 {
     /// <summary>
-    /// The <code>lockdiscovery</code> property
+    /// The <c>lockdiscovery</c> property
     /// </summary>
     public class LockDiscoveryProperty : ILiveProperty
     {

@@ -9,12 +9,12 @@ using System.Threading.Tasks;
 namespace FubarDev.WebDavServer.Locking
 {
     /// <summary>
-    /// The interface for the result of the <code>If</code> header evaluation
+    /// The interface for the result of the <c>If</c> header evaluation
     /// </summary>
     public interface IImplicitLock
     {
         /// <summary>
-        /// Gets the locks matched by the <code>If</code> header or implicit shared lock
+        /// Gets the locks matched by the <c>If</c> header or implicit shared lock
         /// </summary>
         IReadOnlyCollection<IActiveLock> OwnedLocks { get; }
 
@@ -29,7 +29,7 @@ namespace FubarDev.WebDavServer.Locking
         bool IsTemporaryLock { get; }
 
         /// <summary>
-        /// Gets a value indicating whether the <code>If</code> header was evaluated successfully
+        /// Gets a value indicating whether the <c>If</c> header was evaluated successfully
         /// </summary>
         bool IsSuccessful { get; }
 
@@ -41,7 +41,7 @@ namespace FubarDev.WebDavServer.Locking
         Task DisposeAsync(CancellationToken cancellationToken);
 
         /// <summary>
-        /// Creates an error response when <see cref="IsSuccessful"/> is <see langref="false"/>
+        /// Creates an error response when <see cref="IsSuccessful"/> is <see langword="false"/>
         /// </summary>
         /// <returns>The WebDAV response</returns>
         IWebDavResult CreateErrorResponse();

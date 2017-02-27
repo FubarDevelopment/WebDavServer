@@ -37,7 +37,7 @@ namespace FubarDev.WebDavServer.FileSystem
         /// Gets the collection that contains this entry
         /// </summary>
         /// <remarks>
-        /// This property can be <code>null</code> when this entry is the root collection.
+        /// This property can be <c>null</c> when this entry is the root collection.
         /// </remarks>
         [CanBeNull]
         ICollection Parent { get; }

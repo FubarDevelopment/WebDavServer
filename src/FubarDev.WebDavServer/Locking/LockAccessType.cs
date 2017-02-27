@@ -17,7 +17,7 @@ namespace FubarDev.WebDavServer.Locking
     public struct LockAccessType : IEquatable<LockAccessType>
     {
         /// <summary>
-        /// The default <code>write</code> lock access type
+        /// The default <c>write</c> lock access type
         /// </summary>
         public static LockAccessType Write = new LockAccessType(WriteId, new locktype()
         {
@@ -51,7 +51,7 @@ namespace FubarDev.WebDavServer.Locking
         /// </summary>
         /// <param name="x">The first lock access type to compare</param>
         /// <param name="y">The second lock access type to compare</param>
-        /// <returns><see langref="true"/> when both lock access types are of equal value</returns>
+        /// <returns><see langword="true"/> when both lock access types are of equal value</returns>
         public static bool operator ==(LockAccessType x, LockAccessType y)
         {
             return x.Name == y.Name;
@@ -62,7 +62,7 @@ namespace FubarDev.WebDavServer.Locking
         /// </summary>
         /// <param name="x">The first lock access type to compare</param>
         /// <param name="y">The second lock access type to compare</param>
-        /// <returns><see langref="true"/> when both lock access types are not of equal value</returns>
+        /// <returns><see langword="true"/> when both lock access types are not of equal value</returns>
         public static bool operator !=(LockAccessType x, LockAccessType y)
         {
             return x.Name != y.Name;

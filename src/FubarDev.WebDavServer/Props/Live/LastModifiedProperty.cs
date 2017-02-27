@@ -12,7 +12,7 @@ using FubarDev.WebDavServer.Props.Generic;
 namespace FubarDev.WebDavServer.Props.Live
 {
     /// <summary>
-    /// The <code>getlastmodified</code> property
+    /// The <c>getlastmodified</c> property
     /// </summary>
     public class LastModifiedProperty : GenericDateTimeRfc1123Property, ILiveProperty
     {

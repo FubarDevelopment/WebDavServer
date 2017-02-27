@@ -24,8 +24,8 @@ namespace FubarDev.WebDavServer.Locking
         /// <summary>
         /// Initializes a new instance of the <see cref="ImplicitLock"/> class.
         /// </summary>
-        /// <param name="isSuccess"><see langref="false"/> = All <code>If</code> header conditions failed,
-        /// <see langref="true"/> = No lock manager, but still OK</param>
+        /// <param name="isSuccess"><see langword="false"/> = All <c>If</c> header conditions failed,
+        /// <see langword="true"/> = No lock manager, but still OK</param>
         public ImplicitLock(bool isSuccess = false)
         {
             IsSuccessful = isSuccess;
@@ -34,7 +34,7 @@ namespace FubarDev.WebDavServer.Locking
         /// <summary>
         /// Initializes a new instance of the <see cref="ImplicitLock"/> class.
         /// </summary>
-        /// <param name="ownedLocks">The locks matched by the <code>If</code> header</param>
+        /// <param name="ownedLocks">The locks matched by the <c>If</c> header</param>
         public ImplicitLock([NotNull] [ItemNotNull] IReadOnlyCollection<IActiveLock> ownedLocks)
         {
             OwnedLocks = ownedLocks;

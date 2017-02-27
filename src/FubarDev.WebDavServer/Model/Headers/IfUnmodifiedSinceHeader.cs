@@ -9,7 +9,7 @@ using FubarDev.WebDavServer.Props.Converters;
 namespace FubarDev.WebDavServer.Model.Headers
 {
     /// <summary>
-    /// Class that represents the HTTP <code>If-Unmodified-Since</code> header
+    /// Class that represents the HTTP <c>If-Unmodified-Since</c> header
     /// </summary>
     public class IfUnmodifiedSinceHeader
     {
@@ -38,10 +38,10 @@ namespace FubarDev.WebDavServer.Model.Headers
         }
 
         /// <summary>
-        /// Returns a value that indicates whether the <paramref name="lastWriteTimeUtc"/> is not past the value in the <code>If-Unmodified-Since</code> header
+        /// Returns a value that indicates whether the <paramref name="lastWriteTimeUtc"/> is not past the value in the <c>If-Unmodified-Since</c> header
         /// </summary>
         /// <param name="lastWriteTimeUtc">The last write time of the entry to compare with</param>
-        /// <returns><see langref="true"/> when the <paramref name="lastWriteTimeUtc"/> is not past the value in the <code>If-Modified-Since</code> header</returns>
+        /// <returns><see langword="true"/> when the <paramref name="lastWriteTimeUtc"/> is not past the value in the <c>If-Modified-Since</c> header</returns>
         public bool IsMatch(DateTime lastWriteTimeUtc)
         {
             return lastWriteTimeUtc <= LastWriteTimeUtc;

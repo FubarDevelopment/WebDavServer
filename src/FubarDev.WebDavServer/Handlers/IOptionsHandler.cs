@@ -10,7 +10,7 @@ using JetBrains.Annotations;
 namespace FubarDev.WebDavServer.Handlers
 {
     /// <summary>
-    /// Interface for the <code>OPTIONS</code> handler
+    /// Interface for the <c>OPTIONS</c> handler
     /// </summary>
     public interface IOptionsHandler : IClass1Handler
     {

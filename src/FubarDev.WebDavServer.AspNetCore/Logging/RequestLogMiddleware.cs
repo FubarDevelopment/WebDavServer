@@ -48,7 +48,7 @@ namespace FubarDev.WebDavServer.AspNetCore.Logging
         /// Tests if the media type qualifies for XML deserialization
         /// </summary>
         /// <param name="mediaType">The media type to test</param>
-        /// <returns><see langref="true"/> when the media type might be an XML type</returns>
+        /// <returns><see langword="true"/> when the media type might be an XML type</returns>
         public static bool IsXml(string mediaType)
         {
             var contentType = new MediaType(mediaType);
@@ -60,7 +60,7 @@ namespace FubarDev.WebDavServer.AspNetCore.Logging
         /// Tests if the media type qualifies for XML deserialization
         /// </summary>
         /// <param name="mediaType">The media type to test</param>
-        /// <returns><see langref="true"/> when the media type might be an XML type</returns>
+        /// <returns><see langword="true"/> when the media type might be an XML type</returns>
         public static bool IsXml(MediaType mediaType)
         {
             var isXml = XmlMediaTypes.Any(mediaType.IsSubsetOf);

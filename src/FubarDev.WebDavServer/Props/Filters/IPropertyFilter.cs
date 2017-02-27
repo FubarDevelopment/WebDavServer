@@ -20,7 +20,7 @@ namespace FubarDev.WebDavServer.Props.Filters
         /// Does this property pass the conditions of this filter?
         /// </summary>
         /// <param name="property">The property to test</param>
-        /// <returns><see langref="true"/> when the property passes this filters condition(s)</returns>
+        /// <returns><see langword="true"/> when the property passes this filters condition(s)</returns>
         bool IsAllowed(IProperty property);
 
         /// <summary>

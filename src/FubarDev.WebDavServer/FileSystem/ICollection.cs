@@ -20,7 +20,7 @@ namespace FubarDev.WebDavServer.FileSystem
         /// </summary>
         /// <param name="name">The name of the child entry to get</param>
         /// <param name="ct">The cancellation token</param>
-        /// <returns>The found entry (or <code>null</code>)</returns>
+        /// <returns>The found entry (or <c>null</c>)</returns>
         [NotNull]
         [ItemCanBeNull]
         Task<IEntry> GetChildAsync([NotNull] string name, CancellationToken ct);

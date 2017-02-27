@@ -14,7 +14,7 @@ using JetBrains.Annotations;
 namespace FubarDev.WebDavServer.Model.Headers
 {
     /// <summary>
-    /// Represents a single condition for an HTTP <code>If</code> header
+    /// Represents a single condition for an HTTP <c>If</c> header
     /// </summary>
     public class IfHeaderCondition
     {
@@ -50,7 +50,7 @@ namespace FubarDev.WebDavServer.Model.Headers
         /// </summary>
         /// <param name="etag">The entity tag</param>
         /// <param name="stateTokens">The state tokens</param>
-        /// <returns><see langref="true"/> when this condition matches</returns>
+        /// <returns><see langword="true"/> when this condition matches</returns>
         public bool IsMatch(EntityTag? etag, IReadOnlyCollection<Uri> stateTokens)
         {
             bool result;

@@ -10,7 +10,7 @@ using JetBrains.Annotations;
 namespace FubarDev.WebDavServer.Handlers
 {
     /// <summary>
-    /// Interface for the <code>MKCOL</code> handler
+    /// Interface for the <c>MKCOL</c> handler
     /// </summary>
     public interface IMkColHandler : IClass1Handler
     {
