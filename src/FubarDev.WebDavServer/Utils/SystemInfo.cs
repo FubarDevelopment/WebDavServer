@@ -59,12 +59,12 @@ namespace FubarDev.WebDavServer.Utils
             }
 
             /// <summary>
-            /// Gets the root path for all users
+            /// Gets or sets the root path for all users
             /// </summary>
             public string RootPath { get; set; }
 
             /// <summary>
-            /// Gets a value indicating whether the root path is probably a unix OS
+            /// Gets or sets a value indicating whether the root path is probably a unix OS
             /// </summary>
             public bool IsProbablyUnix { get; set; }
         }
