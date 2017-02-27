@@ -44,10 +44,24 @@ namespace FubarDev.WebDavServer
             _instance = new Lazy<Task<T>>(factoryFunc);
         }
 
+        /// <summary>
+        /// The current status of the <see cref="Task"/> of this <see cref="AsyncLazy{T}"/>
+        /// </summary>
         internal enum LazyState
         {
+            /// <summary>
+            /// The underlying task wasn't started yet
+            /// </summary>
             NotStarted,
+
+            /// <summary>
+            /// The underlying task is still executing
+            /// </summary>
             Executing,
+
+            /// <summary>
+            /// The underlying task is finished
+            /// </summary>
             Completed
         }
 
