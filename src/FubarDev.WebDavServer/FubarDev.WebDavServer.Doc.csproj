@@ -34,60 +34,292 @@
     <DocumentationFile>bin\Release\FubarDev.WebDavServer.xml</DocumentationFile>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="System" />
-    <Reference Include="System.Core" />
-    <Reference Include="System.Xml.Linq" />
-    <Reference Include="System.Data.DataSetExtensions" />
-    <Reference Include="Microsoft.CSharp" />
-    <Reference Include="System.Data" />
-    <Reference Include="System.Net.Http" />
-    <Reference Include="System.Xml" />
-  </ItemGroup>
-  <ItemGroup>
-    <Compile Include="**\*.cs" Exclude="obj\**\*.cs" />
-    <EmbeddedResource Include="**\*.resx" />
-    <Compile Update="Model\webdav.cs">
-      <DependentUpon>webdav.xsd</DependentUpon>
-    </Compile>
-    <Compile Update="Properties\Resources.Designer.cs">
-      <DesignTime>True</DesignTime>
-      <AutoGen>True</AutoGen>
-      <DependentUpon>Resources.resx</DependentUpon>
-    </Compile>
-  </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Update="Properties\Resources.resx">
-      <Generator>ResXFileCodeGenerator</Generator>
-      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
-    </EmbeddedResource>
-  </ItemGroup>
-  <ItemGroup>
     <AdditionalFiles Include="..\..\stylecop.json">
       <Link>stylecop.json</Link>
     </AdditionalFiles>
     <None Include="..\..\WebDavServer.ruleset">
       <Link>WebDavServer.ruleset</Link>
     </None>
+    <None Include="Model\webdav.xsd">
+      <SubType>Designer</SubType>
+    </None>
     <EmbeddedResource Include="Utils\UAParser\UAParser.regexes.yaml" />
-    <None Include="Model\webdav.xsd" />
+    <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="JetBrains.Annotations" Version="10.2.1">
-      <PrivateAssets>All</PrivateAssets>
-    </PackageReference>
-    <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="1.1.0" />
-    <PackageReference Include="Microsoft.Extensions.Options" Version="1.1.0" />
-    <PackageReference Include="StyleCop.Analyzers" Version="1.1.0-beta001">
-      <PrivateAssets>All</PrivateAssets>
-    </PackageReference>
-    <PackageReference Include="System.Collections.Immutable" Version="1.3.1" />
-    <PackageReference Include="System.Interactive.Async" Version="3.1.1" />
-    <PackageReference Include="System.Interactive.Async.Providers" Version="3.1.1" />
-    <PackageReference Include="System.Net.Http" Version="4.3.0" />
-    <PackageReference Include="System.Security.Principal" Version="4.3.0" />
-    <PackageReference Include="System.ValueTuple" Version="4.3.0" />
-    <PackageReference Include="System.ComponentModel.Primitives" Version="4.3.0" />
-    <PackageReference Include="System.Xml.XmlSerializer" Version="4.3.0" />
+    <Compile Include="AsyncLazy.cs" />
+    <Compile Include="CollectionActionResultExtensions.cs" />
+    <Compile Include="Dispatchers\IWebDavClass.cs" />
+    <Compile Include="Dispatchers\IWebDavClass1.cs" />
+    <Compile Include="Dispatchers\IWebDavClass2.cs" />
+    <Compile Include="Dispatchers\WebDavDispatcherClass1.cs" />
+    <Compile Include="Dispatchers\WebDavDispatcherClass2.cs" />
+    <Compile Include="Engines\ActionResult.cs" />
+    <Compile Include="Engines\ActionStatus.cs" />
+    <Compile Include="Engines\CollectionActionResult.cs" />
+    <Compile Include="Engines\ICollectionTarget.cs" />
+    <Compile Include="Engines\IDocumentTarget.cs" />
+    <Compile Include="Engines\IExistingTarget.cs" />
+    <Compile Include="Engines\IMissingTarget.cs" />
+    <Compile Include="Engines\ITarget.cs" />
+    <Compile Include="Engines\ITargetActions.cs" />
+    <Compile Include="Engines\Local\CollectionTarget.cs" />
+    <Compile Include="Engines\Local\CopyBetweenFileSystemsTargetAction.cs" />
+    <Compile Include="Engines\Local\CopyInFileSystemTargetAction.cs" />
+    <Compile Include="Engines\Local\DocumentTarget.cs" />
+    <Compile Include="Engines\Local\EntryTarget.cs" />
+    <Compile Include="Engines\Local\FileSystemTarget.cs" />
+    <Compile Include="Engines\Local\MissingTarget.cs" />
+    <Compile Include="Engines\Local\MoveBetweenFileSystemsTargetAction.cs" />
+    <Compile Include="Engines\Local\MoveInFileSystemTargetAction.cs" />
+    <Compile Include="Engines\RecursiveExecutionEngine.cs" />
+    <Compile Include="Engines\Remote\CopyRemoteHttpClientTargetActions.cs" />
+    <Compile Include="Engines\Remote\DefaultHttpMessageHandlerFactory.cs" />
+    <Compile Include="Engines\Remote\DefaultRemoteTargetActionsFactory.cs" />
+    <Compile Include="Engines\Remote\IHttpMessageHandlerFactory.cs" />
+    <Compile Include="Engines\Remote\IRemoteCopyTargetActions.cs" />
+    <Compile Include="Engines\Remote\IRemoteCopyTargetActionsFactory.cs" />
+    <Compile Include="Engines\Remote\IRemoteMoveTargetActions.cs" />
+    <Compile Include="Engines\Remote\IRemoteMoveTargetActionsFactory.cs" />
+    <Compile Include="Engines\Remote\IRemoteTargetActions.cs" />
+    <Compile Include="Engines\Remote\MoveRemoteHttpClientTargetActions.cs" />
+    <Compile Include="Engines\Remote\RemoteCollectionTarget.cs" />
+    <Compile Include="Engines\Remote\RemoteDocumentTarget.cs" />
+    <Compile Include="Engines\Remote\RemoteHttpClientTargetActions.cs" />
+    <Compile Include="Engines\Remote\RemoteMissingTarget.cs" />
+    <Compile Include="Engines\Remote\RemoteTargetException.cs" />
+    <Compile Include="FileSystem\CollectionActionResult.cs" />
+    <Compile Include="FileSystem\CollectionExtensions.cs" />
+    <Compile Include="FileSystem\DeleteResult.cs" />
+    <Compile Include="FileSystem\EntryExtensions.cs" />
+    <Compile Include="FileSystem\ICollection.cs" />
+    <Compile Include="FileSystem\ICollectionNode.cs" />
+    <Compile Include="FileSystem\IDocument.cs" />
+    <Compile Include="FileSystem\IEntityTagEntry.cs" />
+    <Compile Include="FileSystem\IEntry.cs" />
+    <Compile Include="FileSystem\IFileSystem.cs" />
+    <Compile Include="FileSystem\IFileSystemFactory.cs" />
+    <Compile Include="FileSystem\ILocalFileSystem.cs" />
+    <Compile Include="FileSystem\IRecusiveChildrenCollector.cs" />
+    <Compile Include="FileSystem\PathTraversalEngine.cs" />
+    <Compile Include="FileSystem\SelectionResult.cs" />
+    <Compile Include="FileSystem\SelectionResultType.cs" />
+    <Compile Include="Formatters\IWebDavOutputFormatter.cs" />
+    <Compile Include="Formatters\WebDavFormatterOptions.cs" />
+    <Compile Include="Formatters\WebDavXmlOutputFormatter.cs" />
+    <Compile Include="Handlers\IClass1Handler.cs" />
+    <Compile Include="Handlers\IClass2Handler.cs" />
+    <Compile Include="Handlers\ICopyHandler.cs" />
+    <Compile Include="Handlers\IDeleteHandler.cs" />
+    <Compile Include="Handlers\IGetHandler.cs" />
+    <Compile Include="Handlers\IHandler.cs" />
+    <Compile Include="Handlers\IHeadHandler.cs" />
+    <Compile Include="Handlers\ILockHandler.cs" />
+    <Compile Include="Handlers\IMkColHandler.cs" />
+    <Compile Include="Handlers\IMoveHandler.cs" />
+    <Compile Include="Handlers\Impl\CopyHandler.cs" />
+    <Compile Include="Handlers\Impl\CopyHandlerOptions.cs" />
+    <Compile Include="Handlers\Impl\CopyMoveHandlerBase.cs" />
+    <Compile Include="Handlers\Impl\DeleteHandler.cs" />
+    <Compile Include="Handlers\Impl\GetHeadHandler.cs" />
+    <Compile Include="Handlers\Impl\GetResults\WebDavCollectionResult.cs" />
+    <Compile Include="Handlers\Impl\GetResults\WebDavFullDocumentResult.cs" />
+    <Compile Include="Handlers\Impl\GetResults\WebDavPartialDocumentResult.cs" />
+    <Compile Include="Handlers\Impl\LockHandler.cs" />
+    <Compile Include="Handlers\Impl\MkColHandler.cs" />
+    <Compile Include="Handlers\Impl\MoveHandler.cs" />
+    <Compile Include="Handlers\Impl\MoveHandlerOptions.cs" />
+    <Compile Include="Handlers\Impl\OptionsHandler.cs" />
+    <Compile Include="Handlers\Impl\PropFindHandler.cs" />
+    <Compile Include="Handlers\Impl\PropFindHandlerOptions.cs" />
+    <Compile Include="Handlers\Impl\PropPatchHandler.cs" />
+    <Compile Include="Handlers\Impl\PutHandler.cs" />
+    <Compile Include="Handlers\Impl\UnlockHandler.cs" />
+    <Compile Include="Handlers\IOptionsHandler.cs" />
+    <Compile Include="Handlers\IPropFindHandler.cs" />
+    <Compile Include="Handlers\IPropPatchHandler.cs" />
+    <Compile Include="Handlers\IPutHandler.cs" />
+    <Compile Include="Handlers\IUnlockHandler.cs" />
+    <Compile Include="ISystemClock.cs" />
+    <Compile Include="IWebDavContext.cs" />
+    <Compile Include="IWebDavDispatcher.cs" />
+    <Compile Include="IWebDavRequestHeaders.cs" />
+    <Compile Include="IWebDavResponse.cs" />
+    <Compile Include="IWebDavResult.cs" />
+    <Compile Include="Locking\ActiveLock.cs" />
+    <Compile Include="Locking\ActiveLockExtensions.cs" />
+    <Compile Include="Locking\DefaultLockTimeRounding.cs" />
+    <Compile Include="Locking\DefaultLockTimeRoundingMode.cs" />
+    <Compile Include="Locking\DefaultTimeoutPolicy.cs" />
+    <Compile Include="Locking\DefaultTimeoutPolicyOptions.cs" />
+    <Compile Include="Locking\IActiveLock.cs" />
+    <Compile Include="Locking\IImplicitLock.cs" />
+    <Compile Include="Locking\ILock.cs" />
+    <Compile Include="Locking\ILockManager.cs" />
+    <Compile Include="Locking\ILockTimeRounding.cs" />
+    <Compile Include="Locking\ImplicitLock.cs" />
+    <Compile Include="Locking\ITimeoutPolicy.cs" />
+    <Compile Include="Locking\Lock.cs" />
+    <Compile Include="Locking\LockAccessType.cs" />
+    <Compile Include="Locking\LockCleanupTask.cs" />
+    <Compile Include="Locking\LockEventArgs.cs" />
+    <Compile Include="Locking\LockManagerOptions.cs" />
+    <Compile Include="Locking\LockRefreshResult.cs" />
+    <Compile Include="Locking\LockReleaseStatus.cs" />
+    <Compile Include="Locking\LockResult.cs" />
+    <Compile Include="Locking\LockShareMode.cs" />
+    <Compile Include="Locking\LockStatus.cs" />
+    <Compile Include="Model\Headers\CodedUrlParser.cs" />
+    <Compile Include="Model\Headers\DepthHeader.cs" />
+    <Compile Include="Model\Headers\DepthHeaderComparer.cs" />
+    <Compile Include="Model\Headers\EntityTag.cs" />
+    <Compile Include="Model\Headers\EntityTagComparer.cs" />
+    <Compile Include="Model\Headers\IfHeader.cs" />
+    <Compile Include="Model\Headers\IfHeaderCondition.cs" />
+    <Compile Include="Model\Headers\IfHeaderList.cs" />
+    <Compile Include="Model\Headers\IfMatchHeader.cs" />
+    <Compile Include="Model\Headers\IfModifiedSinceHeader.cs" />
+    <Compile Include="Model\Headers\IfNoneMatchHeader.cs" />
+    <Compile Include="Model\Headers\IfUnmodifiedSinceHeader.cs" />
+    <Compile Include="Model\Headers\LockTokenHeader.cs" />
+    <Compile Include="Model\Headers\NormalizedRangeItem.cs" />
+    <Compile Include="Model\Headers\OverwriteHeader.cs" />
+    <Compile Include="Model\Headers\RangeHeader.cs" />
+    <Compile Include="Model\Headers\RangeHeaderItem.cs" />
+    <Compile Include="Model\Headers\TimeoutHeader.cs" />
+    <Compile Include="Model\ReponseExtensions.cs" />
+    <Compile Include="Model\Status.cs" />
+    <Compile Include="Model\webdav.cs">
+      <DependentUpon>webdav.xsd</DependentUpon>
+    </Compile>
+    <Compile Include="Model\WebDavStatusCode.cs" />
+    <Compile Include="Model\WebDavStatusCodeExtensions.cs" />
+    <Compile Include="Model\WebDavXml.cs" />
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
+    <Compile Include="Props\Converters\DateTimeRfc1123Converter.cs" />
+    <Compile Include="Props\Converters\EntityTagConverter.cs" />
+    <Compile Include="Props\Converters\IPropertyConverter.cs" />
+    <Compile Include="Props\Converters\LongConverter.cs" />
+    <Compile Include="Props\Converters\StringConverter.cs" />
+    <Compile Include="Props\Converters\XmlConverter.cs" />
+    <Compile Include="Props\Dead\DeadProperty.cs" />
+    <Compile Include="Props\Dead\DeadPropertyFactory.cs" />
+    <Compile Include="Props\Dead\DeadPropertyFactoryOptions.cs" />
+    <Compile Include="Props\Dead\DisplayNameProperty.cs" />
+    <Compile Include="Props\Dead\GetContentLanguageProperty.cs" />
+    <Compile Include="Props\Dead\GetContentTypeProperty.cs" />
+    <Compile Include="Props\Dead\GetETagProperty.cs" />
+    <Compile Include="Props\Dead\IDeadProperty.cs" />
+    <Compile Include="Props\Dead\IDeadPropertyFactory.cs" />
+    <Compile Include="Props\EntryExtensions.cs" />
+    <Compile Include="Props\EntryProperties.cs" />
+    <Compile Include="Props\Filters\CostFilter.cs" />
+    <Compile Include="Props\Filters\IPropertyFilter.cs" />
+    <Compile Include="Props\Filters\MissingProperty.cs" />
+    <Compile Include="Props\Filters\PropFilter.cs" />
+    <Compile Include="Props\Filters\ReadableFilter.cs" />
+    <Compile Include="Props\Generic\GenericDateTimeRfc1123Property.cs" />
+    <Compile Include="Props\Generic\GenericProperty.cs" />
+    <Compile Include="Props\Generic\GenericStringProperty.cs" />
+    <Compile Include="Props\GetPropertyValueAsyncDelegate.cs" />
+    <Compile Include="Props\IInitializableProperty.cs" />
+    <Compile Include="Props\IProperty.cs" />
+    <Compile Include="Props\ITypedReadableProperty.cs" />
+    <Compile Include="Props\ITypedWriteableProperty.cs" />
+    <Compile Include="Props\IUntypedReadableProperty.cs" />
+    <Compile Include="Props\IUntypedWriteableProperty.cs" />
+    <Compile Include="Props\Live\ContentLengthProperty.cs" />
+    <Compile Include="Props\Live\CreationDateProperty.cs" />
+    <Compile Include="Props\Live\ILiveProperty.cs" />
+    <Compile Include="Props\Live\LastModifiedProperty.cs" />
+    <Compile Include="Props\Live\LockDiscoveryProperty.cs" />
+    <Compile Include="Props\Live\ResourceTypeProperty.cs" />
+    <Compile Include="Props\Live\SupportedLockProperty.cs" />
+    <Compile Include="Props\SetPropertyValueAsyncDelegate.cs" />
+    <Compile Include="Props\SimpleConvertingProperty.cs" />
+    <Compile Include="Props\SimpleTypedProperty.cs" />
+    <Compile Include="Props\SimpleUntypedProperty.cs" />
+    <Compile Include="Props\Store\IFileSystemPropertyStore.cs" />
+    <Compile Include="Props\Store\IPropertyStore.cs" />
+    <Compile Include="Props\Store\IPropertyStoreFactory.cs" />
+    <Compile Include="Props\Store\PropertyStoreBase.cs" />
+    <Compile Include="RecursiveProcessingMode.cs" />
+    <Compile Include="RecursiveTargetBehaviour.cs" />
+    <Compile Include="SystemClock.cs" />
+    <Compile Include="UriExtensions.cs" />
+    <Compile Include="Utils\MimeTypesMap.cs" />
+    <Compile Include="Utils\MultiValueDictionary.cs" />
+    <Compile Include="Utils\RequestHeaderExtensions.cs" />
+    <Compile Include="Utils\StreamView.cs" />
+    <Compile Include="Utils\StringSource.cs" />
+    <Compile Include="Utils\SystemInfo.cs" />
+    <Compile Include="Utils\TokenParser.cs" />
+    <Compile Include="Utils\UAParser\UAParser.cs" />
+    <Compile Include="WebDavException.cs" />
+    <Compile Include="WebDavRequestHeaders.cs" />
+    <Compile Include="WebDavResult.cs" />
+    <Compile Include="WebDavResult{T}.cs" />
+    <Compile Include="WebDavServer.cs" />
+    <Compile Include="WebDavXmlResult.cs" />
+    <Compile Include="XmlFragmentExtensions.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="FubarDev.WebDavServer.csproj" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Properties\Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <Reference Include="Microsoft.Extensions.DependencyInjection.Abstractions">
+      <HintPath>..\..\packages\Microsoft.Extensions.DependencyInjection.Abstractions.1.1.0\lib\netstandard1.0\Microsoft.Extensions.DependencyInjection.Abstractions.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Microsoft.Extensions.Logging.Abstractions">
+      <HintPath>..\..\packages\Microsoft.Extensions.Logging.Abstractions.1.1.0\lib\netstandard1.1\Microsoft.Extensions.Logging.Abstractions.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Microsoft.Extensions.Options">
+      <HintPath>..\..\packages\Microsoft.Extensions.Options.1.1.0\lib\netstandard1.0\Microsoft.Extensions.Options.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Microsoft.Extensions.Primitives">
+      <HintPath>..\..\packages\Microsoft.Extensions.Primitives.1.1.0\lib\netstandard1.0\Microsoft.Extensions.Primitives.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Collections.Immutable">
+      <HintPath>..\..\packages\System.Collections.Immutable.1.3.1\lib\portable-net45+win8+wp8+wpa81\System.Collections.Immutable.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.ComponentModel.Composition">
+      <HintPath>C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.5\System.ComponentModel.Composition.dll</HintPath>
+    </Reference>
+    <Reference Include="System.IO.Compression" />
+    <Reference Include="System.Net.Http">
+      <HintPath>C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.5\System.Net.Http.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Numerics">
+      <HintPath>C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.5\System.Numerics.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Runtime.CompilerServices.Unsafe">
+      <HintPath>..\..\packages\System.Runtime.CompilerServices.Unsafe.4.3.0\lib\netstandard1.0\System.Runtime.CompilerServices.Unsafe.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Runtime.InteropServices.RuntimeInformation">
+      <HintPath>..\..\packages\System.Runtime.InteropServices.RuntimeInformation.4.3.0\lib\net45\System.Runtime.InteropServices.RuntimeInformation.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Xml" />
+    <Reference Include="System.Xml.Linq">
+      <HintPath>C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.5\System.Xml.Linq.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
