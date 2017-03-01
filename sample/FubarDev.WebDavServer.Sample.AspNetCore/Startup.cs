@@ -113,6 +113,11 @@ namespace FubarDev.WebDavServer.Sample.AspNetCore
             if (Program.IsWindows)
                 return ValidateWindowsTestCredentialsAsync(context);
 
+            return ValidateLinuxTestCredentialsAsync(context);
+        }
+
+        private static Task ValidateLinuxTestCredentialsAsync(ValidateCredentialsContext context)
+        {
             if (!Npam.NpamUser.Authenticate("passwd", context.Username, context.Password))
                 return Task.FromResult(0);
 
