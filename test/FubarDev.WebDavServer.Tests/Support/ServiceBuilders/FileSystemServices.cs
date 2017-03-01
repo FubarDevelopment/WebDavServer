@@ -37,7 +37,7 @@ namespace FubarDev.WebDavServer.Tests.Support.ServiceBuilders
                 {
                     var factory = ctx.GetRequiredService<IFileSystemFactory>();
                     var webDavContext = ctx.GetRequiredService<IWebDavContext>();
-                    return factory.CreateFileSystem(webDavContext.User.Identity);
+                    return factory.CreateFileSystem(webDavContext.User);
                 })
                 .AddScoped(ctx =>
                 {

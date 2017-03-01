@@ -53,10 +53,10 @@ namespace FubarDev.WebDavServer.FileSystem.DotNet
         }
 
         /// <inheritdoc />
-        public IFileSystem CreateFileSystem(IIdentity identity)
+        public IFileSystem CreateFileSystem(IPrincipal principal)
         {
             var rootPath = Utils.SystemInfo.GetUserHomePath(
-                identity,
+                principal,
                 homePath: _options.RootPath,
                 anonymousUserName: _options.AnonymousUserName);
 

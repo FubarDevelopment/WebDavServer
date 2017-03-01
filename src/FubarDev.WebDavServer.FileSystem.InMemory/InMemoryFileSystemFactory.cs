@@ -55,9 +55,9 @@ namespace FubarDev.WebDavServer.FileSystem.InMemory
         }
 
         /// <inheritdoc />
-        public IFileSystem CreateFileSystem(IIdentity identity)
+        public IFileSystem CreateFileSystem(IPrincipal principal)
         {
-            var userName = identity.IsAuthenticated ? identity.Name : string.Empty;
+            var userName = principal.Identity.IsAuthenticated ? principal.Identity.Name : string.Empty;
 
             InMemoryFileSystem fileSystem;
             if (!_fileSystems.TryGetValue(userName, out fileSystem))

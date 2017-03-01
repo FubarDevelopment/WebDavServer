@@ -99,7 +99,7 @@ namespace FubarDev.WebDavServer.Tests
                 {
                     var factory = ctx.GetRequiredService<IFileSystemFactory>();
                     var context = ctx.GetRequiredService<IWebDavContext>();
-                    return factory.CreateFileSystem(context.User.Identity);
+                    return factory.CreateFileSystem(context.User);
                 })
                 .AddSingleton<ILockManager, InMemoryLockManager>()
                 .AddMvcCore()

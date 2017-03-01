@@ -58,7 +58,7 @@ namespace FubarDev.WebDavServer.Props.Store.TextFile
                 }
             }
 
-            var userHomePath = Utils.SystemInfo.GetUserHomePath(_webDavContext.User.Identity);
+            var userHomePath = Utils.SystemInfo.GetUserHomePath(_webDavContext.User);
             var rootPath = Path.Combine(userHomePath, ".webdav");
             Directory.CreateDirectory(rootPath);
 

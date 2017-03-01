@@ -7,6 +7,8 @@ using System.IO;
 using System.Linq;
 using System.Security.Principal;
 
+using FubarDev.WebDavServer.Account;
+
 using JetBrains.Annotations;
 
 namespace FubarDev.WebDavServer.Utils
@@ -19,17 +21,23 @@ namespace FubarDev.WebDavServer.Utils
         /// <summary>
         /// Gets the home path of the user
         /// </summary>
-        /// <param name="identity">The user to get the home path for</param>
+        /// <param name="principal">The principal to get the home path for</param>
         /// <param name="homePath">The home path to use</param>
         /// <param name="anonymousUserName">The user name for the unauthenticated user</param>
         /// <returns>The home path of the user</returns>
         [NotNull]
-        public static string GetUserHomePath([NotNull] IIdentity identity, string homePath = null, string anonymousUserName = null)
+        public static string GetUserHomePath([NotNull] IPrincipal principal, string homePath = null, string anonymousUserName = null)
         {
+            var homePathPrinciple = principal as IUserHome;
+            if (principal.Identity.IsAuthenticated && !string.IsNullOrEmpty(homePathPrinciple?.HomePath))
+                return homePathPrinciple.HomePath;
+
             var rootPathInfo = GetHomePath();
-            var userName = identity.IsAuthenticated
-                ? identity.Name
-                : (rootPathInfo.IsProbablyUnix ? (anonymousUserName ?? "anonymous") : (anonymousUserName ?? "Public"));
+            var userName = principal.Identity.IsAuthenticated
+                ? principal.Identity.Name
+                : (rootPathInfo.IsProbablyUnix
+                    ? (anonymousUserName ?? "anonymous")
+                    : (anonymousUserName ?? "Public"));
             var rootPath = Path.Combine(homePath ?? rootPathInfo.RootPath, userName);
             return rootPath;
         }

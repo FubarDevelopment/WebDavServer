@@ -1,5 +1,9 @@
 ﻿using System.IO;
+using System.Linq;
+using System.Security.Principal;
+using System.Threading.Tasks;
 
+using FubarDev.WebDavServer.Account;
 using FubarDev.WebDavServer.AspNetCore;
 using FubarDev.WebDavServer.AspNetCore.Logging;
 using FubarDev.WebDavServer.FileSystem;
@@ -8,10 +12,13 @@ using FubarDev.WebDavServer.Locking;
 using FubarDev.WebDavServer.Locking.InMemory;
 using FubarDev.WebDavServer.Props.Store;
 using FubarDev.WebDavServer.Props.Store.TextFile;
-using FubarDev.WebDavServer.Sample.AspNetCore.BasicAuth;
 
+using idunno.Authentication;
+
+using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http.Authentication;
 using Microsoft.AspNetCore.HttpOverrides;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -59,7 +66,7 @@ namespace FubarDev.WebDavServer.Sample.AspNetCore
                 {
                     var factory = sp.GetRequiredService<IFileSystemFactory>();
                     var context = sp.GetRequiredService<IWebDavContext>();
-                    return factory.CreateFileSystem(context.User.Identity);
+                    return factory.CreateFileSystem(context.User);
                 })
                 .AddMvcCore()
                 .AddAuthorization()
@@ -79,14 +86,13 @@ namespace FubarDev.WebDavServer.Sample.AspNetCore
 
             if (Program.IsKestrel && !Program.IsWindows)
             {
-                app.UseBasicAuthentication(
-                    confg =>
+                app.UseBasicAuthentication(new BasicAuthenticationOptions()
+                {
+                    Events = new BasicAuthenticationEvents()
                     {
-                        confg.Credentials = new[]
-                        {
-                            new BasicCredential() {Username = "tester", Password = "noGh2eefabohgohc"}
-                        };
-                    });
+                        OnValidateCredentials = ValidateCredentialsAsync,
+                    }
+                });
             }
 
             app.UseMiddleware<RequestLogMiddleware>();
@@ -97,6 +103,22 @@ namespace FubarDev.WebDavServer.Sample.AspNetCore
             });
 
             app.UseMvc();
+        }
+
+        private static Task ValidateCredentialsAsync(ValidateCredentialsContext context)
+        {
+            if (!Npam.NpamUser.Authenticate("passwd", context.Username, context.Password))
+                return Task.FromResult(0);
+
+            var groups = Npam.NpamUser.GetGroups(context.Username).ToList();
+            var accountInfo = Npam.NpamUser.GetAccountInfo(context.Username);
+            var identity = new GenericIdentity(accountInfo.Username, "passwd");
+            var groupNames = groups.Select(x => x.GroupName).ToArray();
+            var principal = new LocalUserPrincipal(identity, accountInfo.HomeDir, groupNames);
+            context.Ticket = new AuthenticationTicket(principal, new AuthenticationProperties(), "Basic");
+            context.State = EventResultState.HandledResponse;
+
+            return Task.FromResult(0);
         }
     }
 }

@@ -12,10 +12,10 @@ namespace FubarDev.WebDavServer.FileSystem
     public interface IFileSystemFactory
     {
         /// <summary>
-        /// Gets the <see cref="IFileSystem"/> instance for the given <paramref name="identity"/>
+        /// Gets the <see cref="IFileSystem"/> instance for the given <paramref name="principal"/>
         /// </summary>
-        /// <param name="identity">The identity to get the <see cref="IFileSystem"/> instance for</param>
-        /// <returns>The <see cref="IFileSystem"/> instance for the <paramref name="identity"/></returns>
-        IFileSystem CreateFileSystem(IIdentity identity);
+        /// <param name="principal">The current principal to get the <see cref="IFileSystem"/> instance for</param>
+        /// <returns>The <see cref="IFileSystem"/> instance for the <paramref name="principal"/></returns>
+        IFileSystem CreateFileSystem(IPrincipal principal);
     }
 }

@@ -9,6 +9,8 @@
     <Import_RootNamespace>FubarDev.WebDavServer</Import_RootNamespace>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="$(MSBuildThisFileDirectory)Account\IUserHome.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Account\LocalUserPrincipal.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)AsyncLazy.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)CollectionActionResultExtensions.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Dispatchers\IWebDavClass.cs" />
