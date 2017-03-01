@@ -120,7 +120,7 @@ namespace FubarDev.WebDavServer.Props.Store
             if (etagEntry != null)
                 return etagEntry.UpdateETagAsync(cancellationToken);
 
-            return UpdateETagAsync(entry, cancellationToken);
+            return UpdateDeadETagAsync(entry, cancellationToken);
         }
 
         /// <summary>
