@@ -7,6 +7,8 @@ using System.IO;
 using FubarDev.WebDavServer.FileSystem;
 using FubarDev.WebDavServer.Props.Dead;
 
+using JetBrains.Annotations;
+
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 
@@ -17,9 +19,16 @@ namespace FubarDev.WebDavServer.Props.Store.TextFile
     /// </summary>
     public class TextFilePropertyStoreFactory : IPropertyStoreFactory
     {
+        [NotNull]
         private readonly IDeadPropertyFactory _deadPropertyFactory;
+
+        [NotNull]
         private readonly IWebDavContext _webDavContext;
+
+        [NotNull]
         private readonly TextFilePropertyStoreOptions _options;
+
+        [NotNull]
         private readonly ILogger<TextFilePropertyStore> _logger;
 
         /// <summary>
@@ -29,7 +38,7 @@ namespace FubarDev.WebDavServer.Props.Store.TextFile
         /// <param name="deadPropertyFactory">The factory for the dead properties</param>
         /// <param name="webDavContext">The WebDAV request context</param>
         /// <param name="logger">The logger for the property store factory</param>
-        public TextFilePropertyStoreFactory(IOptions<TextFilePropertyStoreOptions> options, IDeadPropertyFactory deadPropertyFactory, IWebDavContext webDavContext, ILogger<TextFilePropertyStore> logger)
+        public TextFilePropertyStoreFactory(IOptions<TextFilePropertyStoreOptions> options, [NotNull] IDeadPropertyFactory deadPropertyFactory, [NotNull] IWebDavContext webDavContext, [NotNull] ILogger<TextFilePropertyStore> logger)
         {
             _options = options?.Value ?? new TextFilePropertyStoreOptions();
             _logger = logger;
