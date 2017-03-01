@@ -43,7 +43,7 @@ namespace FubarDev.WebDavServer.Utils
             }
 
             var rootPathInfo = GetHomePath();
-            var userName = principal.Identity.IsAuthenticated
+            var userName = principal.Identity.IsAnonymous()
                 ? principal.Identity.Name
                 : (rootPathInfo.IsProbablyUnix
                     ? (anonymousUserName ?? "anonymous")

@@ -9,6 +9,7 @@ using System.Security.Principal;
 using FubarDev.WebDavServer.Locking;
 using FubarDev.WebDavServer.Props.Dead;
 using FubarDev.WebDavServer.Props.Store;
+using FubarDev.WebDavServer.Utils;
 
 using JetBrains.Annotations;
 
@@ -57,7 +58,9 @@ namespace FubarDev.WebDavServer.FileSystem.InMemory
         /// <inheritdoc />
         public IFileSystem CreateFileSystem(IPrincipal principal)
         {
-            var userName = principal.Identity.IsAuthenticated ? principal.Identity.Name : string.Empty;
+            var userName = !principal.Identity.IsAnonymous()
+                ? principal.Identity.Name
+                : string.Empty;
 
             InMemoryFileSystem fileSystem;
             if (!_fileSystems.TryGetValue(userName, out fileSystem))

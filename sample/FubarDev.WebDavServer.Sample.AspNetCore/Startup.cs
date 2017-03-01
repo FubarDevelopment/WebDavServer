@@ -24,6 +24,7 @@ using Microsoft.AspNetCore.HttpOverrides;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Options;
 
 using Npam.Interop;
 
@@ -108,7 +109,7 @@ namespace FubarDev.WebDavServer.Sample.AspNetCore
             app.UseMvc();
         }
 
-        private static Task ValidateCredentialsAsync(ValidateCredentialsContext context)
+        private Task ValidateCredentialsAsync(ValidateCredentialsContext context)
         {
             if (Program.IsWindows)
                 return ValidateWindowsTestCredentialsAsync(context);
@@ -116,10 +117,10 @@ namespace FubarDev.WebDavServer.Sample.AspNetCore
             return ValidateLinuxTestCredentialsAsync(context);
         }
 
-        private static Task ValidateLinuxTestCredentialsAsync(ValidateCredentialsContext context)
+        private Task ValidateLinuxTestCredentialsAsync(ValidateCredentialsContext context)
         {
             if (!Npam.NpamUser.Authenticate("passwd", context.Username, context.Password))
-                return Task.FromResult(0);
+                return HandleFailedAuthenticationAsync(context);
 
             var groups = Npam.NpamUser.GetGroups(context.Username).ToList();
             var accountInfo = Npam.NpamUser.GetAccountInfo(context.Username);
@@ -130,7 +131,7 @@ namespace FubarDev.WebDavServer.Sample.AspNetCore
             return Task.FromResult(0);
         }
 
-        private static Task ValidateWindowsTestCredentialsAsync(ValidateCredentialsContext context)
+        private Task ValidateWindowsTestCredentialsAsync(ValidateCredentialsContext context)
         {
             var credentials = new List<AccountInfo>()
             {
@@ -139,7 +140,7 @@ namespace FubarDev.WebDavServer.Sample.AspNetCore
 
             AccountInfo accountInfo;
             if (!credentials.TryGetValue(context.Username, out accountInfo))
-                return Task.FromResult(0);
+                return HandleFailedAuthenticationAsync(context);
 
             if (accountInfo.Password != context.Password)
             {
@@ -155,7 +156,29 @@ namespace FubarDev.WebDavServer.Sample.AspNetCore
             return Task.FromResult(0);
         }
 
-        private static AuthenticationTicket CreateAuthenticationTicket(AccountInfo accountInfo, IEnumerable<Group> groups)
+        private Task HandleFailedAuthenticationAsync(ValidateCredentialsContext context)
+        {
+            if (context.Username != "anonymous")
+                return Task.FromResult(0);
+
+            var hostOptions = context.HttpContext.RequestServices.GetRequiredService<IOptions<WebDavHostOptions>>();
+            if (!hostOptions.Value.AllowAnonymousAccess)
+                return Task.FromResult(0);
+
+            var groups = Enumerable.Empty<Group>();
+            var accountInfo = new AccountInfo()
+            {
+                Username = context.Username,
+                HomeDir = hostOptions.Value.AnonymousHomePath,
+            };
+
+            context.Ticket = CreateAuthenticationTicket(accountInfo, groups, "anonymous");
+            context.HandleResponse();
+
+            return Task.FromResult(0);
+        }
+
+        private static AuthenticationTicket CreateAuthenticationTicket(AccountInfo accountInfo, IEnumerable<Group> groups, string authenticationType = "passwd")
         {
             var claims = new List<Claim>();
             if (!string.IsNullOrEmpty(accountInfo.HomeDir))
@@ -163,7 +186,7 @@ namespace FubarDev.WebDavServer.Sample.AspNetCore
             claims.Add(new Claim(ClaimsIdentity.DefaultNameClaimType, accountInfo.Username));
             claims.AddRange(groups.Select(x => new Claim(ClaimsIdentity.DefaultRoleClaimType, x.GroupName)));
 
-            var identity = new ClaimsIdentity(claims, "passwd");
+            var identity = new ClaimsIdentity(claims, authenticationType);
             var principal = new ClaimsPrincipal(identity);
             return new AuthenticationTicket(principal, new AuthenticationProperties(), "Basic");
         }

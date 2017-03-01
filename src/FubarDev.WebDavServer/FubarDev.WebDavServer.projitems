@@ -206,6 +206,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)RecursiveTargetBehaviour.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)SystemClock.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)UriExtensions.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Utils\IdentityExtensions.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Utils\MimeTypesMap.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Utils\MultiValueDictionary.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Utils\RequestHeaderExtensions.cs" />
