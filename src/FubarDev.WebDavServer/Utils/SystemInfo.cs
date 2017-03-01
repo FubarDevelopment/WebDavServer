@@ -5,9 +5,8 @@
 using System;
 using System.IO;
 using System.Linq;
+using System.Security.Claims;
 using System.Security.Principal;
-
-using FubarDev.WebDavServer.Account;
 
 using JetBrains.Annotations;
 
@@ -19,6 +18,11 @@ namespace FubarDev.WebDavServer.Utils
     public static class SystemInfo
     {
         /// <summary>
+        /// The name of the claim for the user home path
+        /// </summary>
+        public const string UserHomePathClaim = "DAV:user-home-path";
+
+        /// <summary>
         /// Gets the home path of the user
         /// </summary>
         /// <param name="principal">The principal to get the home path for</param>
@@ -28,9 +32,15 @@ namespace FubarDev.WebDavServer.Utils
         [NotNull]
         public static string GetUserHomePath([NotNull] IPrincipal principal, string homePath = null, string anonymousUserName = null)
         {
-            var homePathPrinciple = principal as IUserHome;
-            if (principal.Identity.IsAuthenticated && !string.IsNullOrEmpty(homePathPrinciple?.HomePath))
-                return homePathPrinciple.HomePath;
+            var homePathPrinciple = principal as ClaimsPrincipal;
+            if (principal.Identity.IsAuthenticated && homePathPrinciple != null)
+            {
+                var homePathClaim = homePathPrinciple
+                    .Claims
+                    .FirstOrDefault(c => c.Type == UserHomePathClaim && !string.IsNullOrEmpty(c.Value));
+                if (!string.IsNullOrEmpty(homePathClaim?.Value))
+                    return homePathClaim.Value;
+            }
 
             var rootPathInfo = GetHomePath();
             var userName = principal.Identity.IsAuthenticated

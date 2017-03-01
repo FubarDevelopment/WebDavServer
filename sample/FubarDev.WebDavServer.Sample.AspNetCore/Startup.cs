@@ -1,9 +1,10 @@
-﻿using System.IO;
+﻿using System;
+using System.Collections.Generic;
+using System.IO;
 using System.Linq;
-using System.Security.Principal;
+using System.Security.Claims;
 using System.Threading.Tasks;
 
-using FubarDev.WebDavServer.Account;
 using FubarDev.WebDavServer.AspNetCore;
 using FubarDev.WebDavServer.AspNetCore.Logging;
 using FubarDev.WebDavServer.FileSystem;
@@ -23,6 +24,8 @@ using Microsoft.AspNetCore.HttpOverrides;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
+
+using Npam.Interop;
 
 namespace FubarDev.WebDavServer.Sample.AspNetCore
 {
@@ -84,7 +87,7 @@ namespace FubarDev.WebDavServer.Sample.AspNetCore
                 app.UseDeveloperExceptionPage();
             }
 
-            if (Program.IsKestrel && !Program.IsWindows)
+            if (Program.IsKestrel /* && !Program.IsWindows */)
             {
                 app.UseBasicAuthentication(new BasicAuthenticationOptions()
                 {
@@ -107,18 +110,57 @@ namespace FubarDev.WebDavServer.Sample.AspNetCore
 
         private static Task ValidateCredentialsAsync(ValidateCredentialsContext context)
         {
+            if (Program.IsWindows)
+                return ValidateWindowsTestCredentialsAsync(context);
+
             if (!Npam.NpamUser.Authenticate("passwd", context.Username, context.Password))
                 return Task.FromResult(0);
 
             var groups = Npam.NpamUser.GetGroups(context.Username).ToList();
             var accountInfo = Npam.NpamUser.GetAccountInfo(context.Username);
-            var identity = new GenericIdentity(accountInfo.Username, "passwd");
-            var groupNames = groups.Select(x => x.GroupName).ToArray();
-            var principal = new LocalUserPrincipal(identity, accountInfo.HomeDir, groupNames);
-            context.Ticket = new AuthenticationTicket(principal, new AuthenticationProperties(), "Basic");
-            context.State = EventResultState.HandledResponse;
+
+            context.Ticket = CreateAuthenticationTicket(accountInfo, groups);
+            context.HandleResponse();
 
             return Task.FromResult(0);
+        }
+
+        private static Task ValidateWindowsTestCredentialsAsync(ValidateCredentialsContext context)
+        {
+            var credentials = new List<AccountInfo>()
+            {
+                new AccountInfo() { Username = "tester", Password = "noGh2eefabohgohc", HomeDir = "c:\\temp\\tester" },
+            }.ToDictionary(x => x.Username, StringComparer.OrdinalIgnoreCase);
+
+            AccountInfo accountInfo;
+            if (!credentials.TryGetValue(context.Username, out accountInfo))
+                return Task.FromResult(0);
+
+            if (accountInfo.Password != context.Password)
+            {
+                context.HandleResponse();
+                return Task.FromResult(0);
+            }
+
+            var groups = Enumerable.Empty<Group>();
+
+            context.Ticket = CreateAuthenticationTicket(accountInfo, groups);
+            context.HandleResponse();
+
+            return Task.FromResult(0);
+        }
+
+        private static AuthenticationTicket CreateAuthenticationTicket(AccountInfo accountInfo, IEnumerable<Group> groups)
+        {
+            var claims = new List<Claim>();
+            if (!string.IsNullOrEmpty(accountInfo.HomeDir))
+                claims.Add(new Claim(Utils.SystemInfo.UserHomePathClaim, accountInfo.HomeDir));
+            claims.Add(new Claim(ClaimsIdentity.DefaultNameClaimType, accountInfo.Username));
+            claims.AddRange(groups.Select(x => new Claim(ClaimsIdentity.DefaultRoleClaimType, x.GroupName)));
+
+            var identity = new ClaimsIdentity(claims, "passwd");
+            var principal = new ClaimsPrincipal(identity);
+            return new AuthenticationTicket(principal, new AuthenticationProperties(), "Basic");
         }
     }
 }
