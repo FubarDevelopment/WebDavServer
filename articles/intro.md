@@ -7,22 +7,24 @@ your own WebDAV server using ASP.NET Core.
 
 The following extension points must be implemented by every hoster.
 
-- IFileSystemFactory
-- IPropertyStoreFactory
+![Architectural overview](~/images/WebDavServerComponents.png)
+
+- [IFileSystemFactory](xref:FubarDev.WebDavServer.FileSystem.IFileSystemFactory)
+- [IPropertyStoreFactory](xref:FubarDev.WebDavServer.Props.Store.IPropertyStoreFactory)
 
 This project provides default implementation for those extension points.
 
-## Default implementations for IFileSystemFactory
+## Default implementations for [IFileSystemFactory](xref:FubarDev.WebDavServer.FileSystem.IFileSystemFactory)
 
 The following default implementation is available:
 
-- DotNetFileSystemFactory
-- InMemoryFileSystemFactory
+- [DotNetFileSystemFactory](xref:FubarDev.WebDavServer.FileSystem.DotNet.DotNetFileSystemFactory)
+- [InMemoryFileSystemFactory](xref:FubarDev.WebDavServer.FileSystem.InMemory.InMemoryFileSystemFactory)
 
-## Default implementation for IPropertyStoreFactory
+## Default implementation for [IPropertyStoreFactory](xref:FubarDev.WebDavServer.Props.Store.IPropertyStoreFactory)
 
-- TextFilePropertyStoreFactory
-- InMemoryPropertyStoreFactory
+- [TextFilePropertyStoreFactory](xref:FubarDev.WebDavServer.Props.Store.TextFile.TextFilePropertyStoreFactory)
+- [InMemoryPropertyStoreFactory](xref:FubarDev.WebDavServer.Props.Store.InMemory.InMemoryPropertyStoreFactory)
 
 # Getting started
 
