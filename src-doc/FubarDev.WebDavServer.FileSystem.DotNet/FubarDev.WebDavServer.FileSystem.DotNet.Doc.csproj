@@ -43,12 +43,6 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\src\FubarDev.WebDavServer\FubarDev.WebDavServer.csproj">
-      <Project>{ef4ce1c7-d7dc-48ee-b5c3-051078d3f28d}</Project>
-      <Name>FubarDev.WebDavServer</Name>
-    </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
     <Reference Include="JetBrains.Annotations, Version=10.3.0.0, Culture=neutral, PublicKeyToken=1010a0d8d6380325, processorArchitecture=MSIL">
       <HintPath>..\..\packages\JetBrains.Annotations.10.3.0\lib\net\JetBrains.Annotations.dll</HintPath>
     </Reference>
@@ -77,6 +71,12 @@
     </Reference>
     <Reference Include="System.Xml" />
     <Reference Include="System.Xml.Linq" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\FubarDev.WebDavServer\FubarDev.WebDavServer.Doc.csproj">
+      <Project>{d1c72f41-22cc-4d68-9aa6-9d852d28551f}</Project>
+      <Name>FubarDev.WebDavServer.Doc</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="..\..\src\FubarDev.WebDavServer.FileSystem.DotNet\FubarDev.WebDavServer.FileSystem.DotNet.projitems" Label="Shared" />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
