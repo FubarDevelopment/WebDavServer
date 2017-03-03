@@ -1,0 +1,15 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <MSBuildAllProjects>$(MSBuildAllProjects);$(MSBuildThisFileFullPath)</MSBuildAllProjects>
+    <HasSharedItems>true</HasSharedItems>
+    <SharedGUID>c4edee1e-f48c-40ef-ac40-3e47df7b6752</SharedGUID>
+  </PropertyGroup>
+  <PropertyGroup Label="Configuration">
+    <Import_RootNamespace>FubarDev.WebDavServer.Props.Store.InMemory</Import_RootNamespace>
+  </PropertyGroup>
+  <ItemGroup>
+    <Compile Include="$(MSBuildThisFileDirectory)InMemoryPropertyStore.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)InMemoryPropertyStoreFactory.cs" />
+  </ItemGroup>
+</Project>
