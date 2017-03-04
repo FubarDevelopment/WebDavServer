@@ -11,6 +11,8 @@ namespace FubarDev.WebDavServer.Sample.AspNetCore
     {
         public static bool IsKestrel { get; private set; }
 
+        public static bool DisableBasicAuth { get; private set; }
+
         public static void Main(string[] args)
         {
             var config = new ConfigurationBuilder()
@@ -20,6 +22,7 @@ namespace FubarDev.WebDavServer.Sample.AspNetCore
                 .Build();
 
             var forceKestrelUse = config.GetValue<bool>("use-kestrel");
+            DisableBasicAuth = config.GetValue<bool>("disable-basic-auth");
 
             IWebHost host;
             if (!forceKestrelUse && IsWindows)

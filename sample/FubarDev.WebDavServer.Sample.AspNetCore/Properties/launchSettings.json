@@ -16,7 +16,7 @@
     },
     "FubarDev.WebDavServer.Sample.AspNetCore": {
       "commandName": "Project",
-      "commandLineArgs": "--use-kestrel=true",
+      "commandLineArgs": "--use-kestrel=true --disable-basic-auth=true",
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development"
       },

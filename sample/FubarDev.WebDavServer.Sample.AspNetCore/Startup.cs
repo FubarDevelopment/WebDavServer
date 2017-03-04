@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Security.Claims;
+using System.Text.Encodings.Web;
 using System.Threading.Tasks;
 
 using FubarDev.WebDavServer.AspNetCore;
@@ -19,6 +21,7 @@ using idunno.Authentication;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Http.Authentication;
 using Microsoft.AspNetCore.HttpOverrides;
 using Microsoft.Extensions.Configuration;
@@ -82,15 +85,23 @@ namespace FubarDev.WebDavServer.Sample.AspNetCore
                 app.UseDeveloperExceptionPage();
             }
 
-            if (Program.IsKestrel /* && !Program.IsWindows */)
+            if (Program.IsKestrel)
             {
-                app.UseBasicAuthentication(new BasicAuthenticationOptions()
+                if (Program.DisableBasicAuth)
                 {
-                    Events = new BasicAuthenticationEvents()
-                    {
-                        OnValidateCredentials = ValidateCredentialsAsync,
-                    }
-                });
+                    app.UseMiddleware<AnonymousAuthenticationMiddleware>();
+                }
+                else
+                {
+                    app.UseBasicAuthentication(
+                        new BasicAuthenticationOptions()
+                        {
+                            Events = new BasicAuthenticationEvents()
+                            {
+                                OnValidateCredentials = ValidateCredentialsAsync,
+                            }
+                        });
+                }
             }
 
             app.UseMiddleware<RequestLogMiddleware>();
@@ -150,13 +161,14 @@ namespace FubarDev.WebDavServer.Sample.AspNetCore
             return Task.FromResult(0);
         }
 
-        private Task HandleFailedAuthenticationAsync(ValidateCredentialsContext context)
+        private static Task HandleFailedAuthenticationAsync(ValidateCredentialsContext context, bool? allowAnonymousAccess = null, string authenticationScheme = "Basic")
         {
             if (context.Username != "anonymous")
                 return Task.FromResult(0);
 
             var hostOptions = context.HttpContext.RequestServices.GetRequiredService<IOptions<WebDavHostOptions>>();
-            if (!hostOptions.Value.AllowAnonymousAccess)
+            var allowAnonAccess = allowAnonymousAccess ?? hostOptions.Value.AllowAnonymousAccess;
+            if (!allowAnonAccess)
                 return Task.FromResult(0);
 
             var groups = Enumerable.Empty<Group>();
@@ -166,13 +178,13 @@ namespace FubarDev.WebDavServer.Sample.AspNetCore
                 HomeDir = hostOptions.Value.AnonymousHomePath,
             };
 
-            context.Ticket = CreateAuthenticationTicket(accountInfo, groups, "anonymous");
+            context.Ticket = CreateAuthenticationTicket(accountInfo, groups, "anonymous", authenticationScheme);
             context.HandleResponse();
 
             return Task.FromResult(0);
         }
 
-        private static AuthenticationTicket CreateAuthenticationTicket(AccountInfo accountInfo, IEnumerable<Group> groups, string authenticationType = "passwd")
+        private static AuthenticationTicket CreateAuthenticationTicket(AccountInfo accountInfo, IEnumerable<Group> groups, string authenticationType = "passwd", string authenticationScheme = "Basic")
         {
             var claims = new List<Claim>();
             if (!string.IsNullOrEmpty(accountInfo.HomeDir))
@@ -182,7 +194,54 @@ namespace FubarDev.WebDavServer.Sample.AspNetCore
 
             var identity = new ClaimsIdentity(claims, authenticationType);
             var principal = new ClaimsPrincipal(identity);
-            return new AuthenticationTicket(principal, new AuthenticationProperties(), "Basic");
+            return new AuthenticationTicket(principal, new AuthenticationProperties(), authenticationScheme);
+        }
+
+        private class AnonymousAuthenticationOptions : AuthenticationOptions
+        {
+            public AnonymousAuthenticationOptions()
+            {
+                AutomaticChallenge = true;
+                AutomaticAuthenticate = true;
+                AuthenticationScheme = "Anonymous";
+            }
+        }
+
+        // ReSharper disable once ClassNeverInstantiated.Local
+        private class AnonymousAuthenticationMiddleware : AuthenticationMiddleware<AnonymousAuthenticationOptions>
+        {
+            public AnonymousAuthenticationMiddleware(RequestDelegate next, IOptions<AnonymousAuthenticationOptions> options, ILoggerFactory loggerFactory, UrlEncoder encoder) : base(next, options, loggerFactory, encoder)
+            {
+            }
+
+            protected override AuthenticationHandler<AnonymousAuthenticationOptions> CreateHandler()
+            {
+                return new Handler(Options);
+            }
+
+            private class Handler : AuthenticationHandler<AnonymousAuthenticationOptions>
+            {
+                private readonly AnonymousAuthenticationOptions _options;
+
+                public Handler(AnonymousAuthenticationOptions options)
+                {
+                    _options = options ?? new AnonymousAuthenticationOptions();
+                }
+
+                protected override async Task<AuthenticateResult> HandleAuthenticateAsync()
+                {
+                    var context = new ValidateCredentialsContext(Context, new BasicAuthenticationOptions())
+                    {
+                        Username = "anonymous",
+                    };
+
+                    await HandleFailedAuthenticationAsync(context, true, _options.AuthenticationScheme).ConfigureAwait(false);
+                    Debug.Assert(context.Ticket != null);
+
+                    var result = AuthenticateResult.Success(context.Ticket);
+                    return result;
+                }
+            }
         }
     }
 }
