@@ -66,12 +66,6 @@ namespace FubarDev.WebDavServer.Sample.AspNetCore
                 .AddTransient<IPropertyStoreFactory, TextFilePropertyStoreFactory>()
                 .AddSingleton<IFileSystemFactory, DotNetFileSystemFactory>()
                 .AddSingleton<ILockManager, InMemoryLockManager>()
-                .AddTransient(sp =>
-                {
-                    var factory = sp.GetRequiredService<IFileSystemFactory>();
-                    var context = sp.GetRequiredService<IWebDavContext>();
-                    return factory.CreateFileSystem(context.User);
-                })
                 .AddMvcCore()
                 .AddAuthorization()
                 .AddWebDav();

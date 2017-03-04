@@ -68,6 +68,13 @@ namespace Microsoft.Extensions.DependencyInjection
                     .AddClasses(classes => classes.AssignableToAny(typeof(IHandler), typeof(IWebDavClass)))
                     .AsImplementedInterfaces()
                     .WithTransientLifetime());
+            services.AddTransient(
+                sp =>
+                {
+                    var factory = sp.GetRequiredService<IFileSystemFactory>();
+                    var context = sp.GetRequiredService<IWebDavContext>();
+                    return factory.CreateFileSystem(context.User);
+                });
             return services;
         }
     }
