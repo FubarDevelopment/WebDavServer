@@ -9,8 +9,13 @@ The following extension points must be implemented by every hoster.
 
 ![Architectural overview](~/images/WebDavServerComponents.png)
 
-- [IFileSystemFactory](xref:FubarDev.WebDavServer.FileSystem.IFileSystemFactory)
-- [IPropertyStoreFactory](xref:FubarDev.WebDavServer.Props.Store.IPropertyStoreFactory)
+- [IFileSystem](xref:FubarDev.WebDavServer.FileSystem.IFileSystem)
+
+  The root file system is a hierarchical system consisting of [ICollection](xref:FubarDev.WebDavServer.FileSystem.ICollection) and [IDocument](xref:FubarDev.WebDavServer.FileSystem.IDocument). The file system is accessed by using the [IFileSystemFactory](xref:FubarDev.WebDavServer.FileSystem.IFileSystemFactory) to get the file system for the currently authenticated [IPrincipal](xref:System.Security.Principal.IPrincipal).
+
+- [IPropertyStore](xref:FubarDev.WebDavServer.Props.Store.IPropertyStore)
+
+  The property store is used for storing dead properties and (if the file system entries don't implement [IEntityTagEntry](xref:FubarDev.WebDavServer.FileSystem.IEntityTagEntry)) the file system entries [EntityTag](xref:FubarDev.WebDavServer.Model.Headers.EntityTag). A property store is always created for a file system using the [IPropertyStoreFactory](xref:FubarDev.WebDavServer.Props.Store.IPropertyStoreFactory).
 
 This project provides default implementation for those extension points.
 
@@ -29,4 +34,4 @@ The following default implementation is available:
 # Getting started
 
 The easiest way to get started is creating a ASP.NET Core project.
-An walk-through is available.
+A [walk-through](getting-started.md) is available.
