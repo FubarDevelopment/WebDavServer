@@ -1,0 +1,378 @@
+﻿<!DOCTYPE html>
+<!--[if IE]><![endif]-->
+<html>
+  
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <title>Interface ICollection
+   </title>
+    <meta name="viewport" content="width=device-width">
+    <meta name="title" content="Interface ICollection
+   ">
+    <meta name="generator" content="docfx 2.12.1.0">
+    
+    <link rel="shortcut icon" href="../favicon.ico">
+    <link rel="stylesheet" href="../styles/docfx.vendor.css">
+    <link rel="stylesheet" href="../styles/docfx.css">
+    <link rel="stylesheet" href="../styles/main.css">
+    <meta property="docfx:navrel" content="../toc.html">
+    <meta property="docfx:tocrel" content="toc.html">
+    
+  </head>
+  <body data-spy="scroll" data-target="#affix">
+    <div id="wrapper">
+      <header>
+        
+        <nav id="autocollapse" class="navbar navbar-inverse ng-scope" role="navigation">
+          <div class="container">
+            <div class="navbar-header">
+              <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+              </button>
+              
+              <a class="navbar-brand" href="../index.html">
+                <img id="logo" class="svg" src="../logo.svg" alt="">
+              </a>
+            </div>
+            <div class="collapse navbar-collapse" id="navbar">
+              <form class="navbar-form navbar-right" role="search" id="search">
+                <div class="form-group">
+                  <input type="text" class="form-control" id="search-query" placeholder="Search" autocomplete="off">
+                </div>
+              </form>
+            </div>
+          </div>
+        </nav>
+        
+        <div class="subnav navbar navbar-default">
+          <div class="container hide-when-search" id="breadcrumb">
+            <ul class="breadcrumb">
+              <li></li>
+            </ul>
+          </div>
+        </div>
+      </header>
+      <div role="main" class="container body-content hide-when-search">
+        
+        <div class="sidenav hide-when-search">
+          <a class="btn toc-toggle collapse" data-toggle="collapse" href="#sidetoggle" aria-expanded="false" aria-controls="sidetoggle">Show / Hide Table of Contents</a>
+          <div class="sidetoggle collapse" id="sidetoggle">
+            <div id="sidetoc"></div>
+          </div>
+        </div>
+        <div class="article row grid-right">
+          <div class="col-md-10">
+            <article class="content wrap" id="_content">
+              
+              
+              <h1 id="FubarDev_WebDavServer_FileSystem_ICollection" data-uid="FubarDev.WebDavServer.FileSystem.ICollection">Interface ICollection
+              </h1>
+              <div class="markdown level0 summary"><p>Represents a WebDAV collection</p>
+</div>
+              <div class="markdown level0 conceptual"></div>
+              <div class="inheritedMembers">
+                <h5>Inherited Members</h5>
+                <div>
+                  <a class="xref" href="FubarDev.WebDavServer.FileSystem.IEntry.html#FubarDev_WebDavServer_FileSystem_IEntry_Name">IEntry.Name</a>
+                </div>
+                <div>
+                  <a class="xref" href="FubarDev.WebDavServer.FileSystem.IEntry.html#FubarDev_WebDavServer_FileSystem_IEntry_RootFileSystem">IEntry.RootFileSystem</a>
+                </div>
+                <div>
+                  <a class="xref" href="FubarDev.WebDavServer.FileSystem.IEntry.html#FubarDev_WebDavServer_FileSystem_IEntry_FileSystem">IEntry.FileSystem</a>
+                </div>
+                <div>
+                  <a class="xref" href="FubarDev.WebDavServer.FileSystem.IEntry.html#FubarDev_WebDavServer_FileSystem_IEntry_Parent">IEntry.Parent</a>
+                </div>
+                <div>
+                  <a class="xref" href="FubarDev.WebDavServer.FileSystem.IEntry.html#FubarDev_WebDavServer_FileSystem_IEntry_Path">IEntry.Path</a>
+                </div>
+                <div>
+                  <a class="xref" href="FubarDev.WebDavServer.FileSystem.IEntry.html#FubarDev_WebDavServer_FileSystem_IEntry_LastWriteTimeUtc">IEntry.LastWriteTimeUtc</a>
+                </div>
+                <div>
+                  <a class="xref" href="FubarDev.WebDavServer.FileSystem.IEntry.html#FubarDev_WebDavServer_FileSystem_IEntry_CreationTimeUtc">IEntry.CreationTimeUtc</a>
+                </div>
+                <div>
+                  <a class="xref" href="FubarDev.WebDavServer.FileSystem.IEntry.html#FubarDev_WebDavServer_FileSystem_IEntry_DeleteAsync_System_Threading_CancellationToken_">IEntry.DeleteAsync(CancellationToken)</a>
+                </div>
+                <div>
+                  <a class="xref" href="FubarDev.WebDavServer.FileSystem.IEntry.html#FubarDev_WebDavServer_FileSystem_IEntry_SetLastWriteTimeUtcAsync_System_DateTime_System_Threading_CancellationToken_">IEntry.SetLastWriteTimeUtcAsync(DateTime, CancellationToken)</a>
+                </div>
+                <div>
+                  <a class="xref" href="FubarDev.WebDavServer.FileSystem.IEntry.html#FubarDev_WebDavServer_FileSystem_IEntry_SetCreationTimeUtcAsync_System_DateTime_System_Threading_CancellationToken_">IEntry.SetCreationTimeUtcAsync(DateTime, CancellationToken)</a>
+                </div>
+              </div>
+              <h6><strong>Namespace</strong>:FubarDev.WebDavServer.FileSystem</h6>
+              <h6><strong>Assembly</strong>:FubarDev.WebDavServer.dll</h6>
+              <h5 id="FubarDev_WebDavServer_FileSystem_ICollection_syntax">Syntax</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public interface ICollection : IEntry</code></pre>
+              </div>
+              <h3 id="methods">Methods
+              </h3>
+              
+              
+              <a id="FubarDev_WebDavServer_FileSystem_ICollection_CreateCollectionAsync_" data-uid="FubarDev.WebDavServer.FileSystem.ICollection.CreateCollectionAsync*"></a>
+              <h4 id="FubarDev_WebDavServer_FileSystem_ICollection_CreateCollectionAsync_System_String_System_Threading_CancellationToken_" data-uid="FubarDev.WebDavServer.FileSystem.ICollection.CreateCollectionAsync(System.String,System.Threading.CancellationToken)">CreateCollectionAsync(String, CancellationToken)</h4>
+              <div class="markdown level1 summary"><p>Creates a child collection</p>
+</div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">[NotNull]
+[ItemNotNull]
+Task&lt;ICollection&gt; CreateCollectionAsync([NotNull] string name, CancellationToken ct)</code></pre>
+              </div>
+              <h5 class="parameters">Parameters</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Name</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><a class="xref" href="https://msdn.microsoft.com/en-us/library/system.string(v=vs.110).aspx">String</a></td>
+                    <td><span class="parametername">name</span></td>
+                    <td><p>The name of the new collection</p>
+</td>
+                  </tr>
+                  <tr>
+                    <td><a class="xref" href="https://msdn.microsoft.com/en-us/library/system.threading.cancellationtoken(v=vs.110).aspx">CancellationToken</a></td>
+                    <td><span class="parametername">ct</span></td>
+                    <td><p>The cancellation token</p>
+</td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 class="returns">Returns</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><a class="xref" href="https://msdn.microsoft.com/en-us/library/dd321424(v=vs.110).aspx">Task</a>&lt;<a class="xref" href="FubarDev.WebDavServer.FileSystem.ICollection.html">ICollection</a>&gt;</td>
+                    <td><p>The new collection</p>
+</td>
+                  </tr>
+                </tbody>
+              </table>
+              
+              
+              <a id="FubarDev_WebDavServer_FileSystem_ICollection_CreateDocumentAsync_" data-uid="FubarDev.WebDavServer.FileSystem.ICollection.CreateDocumentAsync*"></a>
+              <h4 id="FubarDev_WebDavServer_FileSystem_ICollection_CreateDocumentAsync_System_String_System_Threading_CancellationToken_" data-uid="FubarDev.WebDavServer.FileSystem.ICollection.CreateDocumentAsync(System.String,System.Threading.CancellationToken)">CreateDocumentAsync(String, CancellationToken)</h4>
+              <div class="markdown level1 summary"><p>Creates a document with the given name</p>
+</div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">[NotNull]
+[ItemNotNull]
+Task&lt;IDocument&gt; CreateDocumentAsync([NotNull] string name, CancellationToken ct)</code></pre>
+              </div>
+              <h5 class="parameters">Parameters</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Name</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><a class="xref" href="https://msdn.microsoft.com/en-us/library/system.string(v=vs.110).aspx">String</a></td>
+                    <td><span class="parametername">name</span></td>
+                    <td><p>The name of the new document</p>
+</td>
+                  </tr>
+                  <tr>
+                    <td><a class="xref" href="https://msdn.microsoft.com/en-us/library/system.threading.cancellationtoken(v=vs.110).aspx">CancellationToken</a></td>
+                    <td><span class="parametername">ct</span></td>
+                    <td><p>The cancellation token</p>
+</td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 class="returns">Returns</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><a class="xref" href="https://msdn.microsoft.com/en-us/library/dd321424(v=vs.110).aspx">Task</a>&lt;<a class="xref" href="FubarDev.WebDavServer.FileSystem.IDocument.html">IDocument</a>&gt;</td>
+                    <td><p>The created document</p>
+</td>
+                  </tr>
+                </tbody>
+              </table>
+              
+              
+              <a id="FubarDev_WebDavServer_FileSystem_ICollection_GetChildAsync_" data-uid="FubarDev.WebDavServer.FileSystem.ICollection.GetChildAsync*"></a>
+              <h4 id="FubarDev_WebDavServer_FileSystem_ICollection_GetChildAsync_System_String_System_Threading_CancellationToken_" data-uid="FubarDev.WebDavServer.FileSystem.ICollection.GetChildAsync(System.String,System.Threading.CancellationToken)">GetChildAsync(String, CancellationToken)</h4>
+              <div class="markdown level1 summary"><p>Gets the child entry with the given <span class="paramref">name</span></p>
+</div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">[NotNull]
+[ItemCanBeNull]
+Task&lt;IEntry&gt; GetChildAsync([NotNull] string name, CancellationToken ct)</code></pre>
+              </div>
+              <h5 class="parameters">Parameters</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Name</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><a class="xref" href="https://msdn.microsoft.com/en-us/library/system.string(v=vs.110).aspx">String</a></td>
+                    <td><span class="parametername">name</span></td>
+                    <td><p>The name of the child entry to get</p>
+</td>
+                  </tr>
+                  <tr>
+                    <td><a class="xref" href="https://msdn.microsoft.com/en-us/library/system.threading.cancellationtoken(v=vs.110).aspx">CancellationToken</a></td>
+                    <td><span class="parametername">ct</span></td>
+                    <td><p>The cancellation token</p>
+</td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 class="returns">Returns</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><a class="xref" href="https://msdn.microsoft.com/en-us/library/dd321424(v=vs.110).aspx">Task</a>&lt;<a class="xref" href="FubarDev.WebDavServer.FileSystem.IEntry.html">IEntry</a>&gt;</td>
+                    <td><p>The found entry (or <code>null</code>)</p>
+</td>
+                  </tr>
+                </tbody>
+              </table>
+              
+              
+              <a id="FubarDev_WebDavServer_FileSystem_ICollection_GetChildrenAsync_" data-uid="FubarDev.WebDavServer.FileSystem.ICollection.GetChildrenAsync*"></a>
+              <h4 id="FubarDev_WebDavServer_FileSystem_ICollection_GetChildrenAsync_System_Threading_CancellationToken_" data-uid="FubarDev.WebDavServer.FileSystem.ICollection.GetChildrenAsync(System.Threading.CancellationToken)">GetChildrenAsync(CancellationToken)</h4>
+              <div class="markdown level1 summary"><p>Gets all child entries</p>
+</div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">[NotNull]
+[ItemNotNull]
+Task&lt;IReadOnlyCollection&lt;IEntry&gt;&gt; GetChildrenAsync(CancellationToken ct)</code></pre>
+              </div>
+              <h5 class="parameters">Parameters</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Name</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><a class="xref" href="https://msdn.microsoft.com/en-us/library/system.threading.cancellationtoken(v=vs.110).aspx">CancellationToken</a></td>
+                    <td><span class="parametername">ct</span></td>
+                    <td><p>The cancellation token</p>
+</td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 class="returns">Returns</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><a class="xref" href="https://msdn.microsoft.com/en-us/library/dd321424(v=vs.110).aspx">Task</a>&lt;<a class="xref" href="https://msdn.microsoft.com/en-us/library/hh881542(v=vs.110).aspx">IReadOnlyCollection</a>&lt;<a class="xref" href="FubarDev.WebDavServer.FileSystem.IEntry.html">IEntry</a>&gt;&gt;</td>
+                    <td><p>The found entries</p>
+</td>
+                  </tr>
+                </tbody>
+              </table>
+              <h3 id="extensionmethods">Extension Methods</h3>
+              <div>
+                  <a class="xref" href="FubarDev.WebDavServer.FileSystem.CollectionExtensions.html#FubarDev_WebDavServer_FileSystem_CollectionExtensions_EnumerateEntries_FubarDev_WebDavServer_FileSystem_ICollection_System_Collections_Generic_IReadOnlyCollection_FubarDev_WebDavServer_FileSystem_IEntry__System_Int32_">CollectionExtensions.EnumerateEntries(ICollection, IReadOnlyCollection&lt;IEntry&gt;, Int32)</a>
+              </div>
+              <div>
+                  <a class="xref" href="FubarDev.WebDavServer.FileSystem.CollectionExtensions.html#FubarDev_WebDavServer_FileSystem_CollectionExtensions_EnumerateEntries_FubarDev_WebDavServer_FileSystem_ICollection_System_Int32_">CollectionExtensions.EnumerateEntries(ICollection, Int32)</a>
+              </div>
+              <div>
+                  <a class="xref" href="FubarDev.WebDavServer.FileSystem.CollectionExtensions.html#FubarDev_WebDavServer_FileSystem_CollectionExtensions_GetNodeAsync_FubarDev_WebDavServer_FileSystem_ICollection_System_Int32_System_Threading_CancellationToken_">CollectionExtensions.GetNodeAsync(ICollection, Int32, CancellationToken)</a>
+              </div>
+              <div>
+                  <a class="xref" href="FubarDev.WebDavServer.FileSystem.EntryExtensions.html#FubarDev_WebDavServer_FileSystem_EntryExtensions_GetEntityTagAsync_FubarDev_WebDavServer_FileSystem_IEntry_System_Threading_CancellationToken_">EntryExtensions.GetEntityTagAsync(IEntry, CancellationToken)</a>
+              </div>
+              <div>
+                  <a class="xref" href="FubarDev.WebDavServer.FileSystem.EntryExtensions.html#FubarDev_WebDavServer_FileSystem_EntryExtensions_GetProperties_FubarDev_WebDavServer_FileSystem_IEntry_FubarDev_WebDavServer_IWebDavDispatcher_System_Nullable_System_Int32__">EntryExtensions.GetProperties(IEntry, IWebDavDispatcher, Nullable&lt;Int32&gt;)</a>
+              </div>
+              <div>
+                  <a class="xref" href="FubarDev.WebDavServer.Props.EntryExtensions.html#FubarDev_WebDavServer_Props_EntryExtensions_GetResourceTypeProperty_FubarDev_WebDavServer_FileSystem_IEntry_">EntryExtensions.GetResourceTypeProperty(IEntry)</a>
+              </div>
+                        </article>
+          </div>
+          
+          <div class="hidden-sm col-md-2" role="complementary">
+            <div class="sideaffix">
+              <div class="contribution">
+                <ul class="nav">
+                </ul>
+              </div>
+              <nav class="bs-docs-sidebar hidden-print hidden-xs hidden-sm affix" id="affix">
+              <!-- <p><a class="back-to-top" href="#top">Back to top</a><p> -->
+              </nav>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <footer>
+        <div class="grad-bottom"></div>
+        <div class="footer">
+          <div class="container">
+            <span class="pull-right">
+              <a href="#top">Back to top</a>
+            </span>
+            
+            <span>Copyright © 2015-2016 Microsoft<br>Generated by <strong>DocFX</strong></span>
+          </div>
+        </div>
+      </footer>
+    </div>
+    
+    <script type="text/javascript" src="../styles/docfx.vendor.js"></script>
+    <script type="text/javascript" src="../styles/docfx.js"></script>
+    <script type="text/javascript" src="../styles/main.js"></script>
+  </body>
+</html>

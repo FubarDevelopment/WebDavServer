@@ -1,0 +1,443 @@
+﻿<!DOCTYPE html>
+<!--[if IE]><![endif]-->
+<html>
+  
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <title>Struct Status
+   </title>
+    <meta name="viewport" content="width=device-width">
+    <meta name="title" content="Struct Status
+   ">
+    <meta name="generator" content="docfx 2.12.1.0">
+    
+    <link rel="shortcut icon" href="../favicon.ico">
+    <link rel="stylesheet" href="../styles/docfx.vendor.css">
+    <link rel="stylesheet" href="../styles/docfx.css">
+    <link rel="stylesheet" href="../styles/main.css">
+    <meta property="docfx:navrel" content="../toc.html">
+    <meta property="docfx:tocrel" content="toc.html">
+    
+  </head>
+  <body data-spy="scroll" data-target="#affix">
+    <div id="wrapper">
+      <header>
+        
+        <nav id="autocollapse" class="navbar navbar-inverse ng-scope" role="navigation">
+          <div class="container">
+            <div class="navbar-header">
+              <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+              </button>
+              
+              <a class="navbar-brand" href="../index.html">
+                <img id="logo" class="svg" src="../logo.svg" alt="">
+              </a>
+            </div>
+            <div class="collapse navbar-collapse" id="navbar">
+              <form class="navbar-form navbar-right" role="search" id="search">
+                <div class="form-group">
+                  <input type="text" class="form-control" id="search-query" placeholder="Search" autocomplete="off">
+                </div>
+              </form>
+            </div>
+          </div>
+        </nav>
+        
+        <div class="subnav navbar navbar-default">
+          <div class="container hide-when-search" id="breadcrumb">
+            <ul class="breadcrumb">
+              <li></li>
+            </ul>
+          </div>
+        </div>
+      </header>
+      <div role="main" class="container body-content hide-when-search">
+        
+        <div class="sidenav hide-when-search">
+          <a class="btn toc-toggle collapse" data-toggle="collapse" href="#sidetoggle" aria-expanded="false" aria-controls="sidetoggle">Show / Hide Table of Contents</a>
+          <div class="sidetoggle collapse" id="sidetoggle">
+            <div id="sidetoc"></div>
+          </div>
+        </div>
+        <div class="article row grid-right">
+          <div class="col-md-10">
+            <article class="content wrap" id="_content">
+              
+              
+              <h1 id="FubarDev_WebDavServer_Model_Status" data-uid="FubarDev.WebDavServer.Model.Status">Struct Status
+              </h1>
+              <div class="markdown level0 summary"><p>The WebDAV status line</p>
+</div>
+              <div class="markdown level0 conceptual"></div>
+              <div class="inheritedMembers">
+                <h5>Inherited Members</h5>
+                <div>
+                  <a class="xref" href="https://msdn.microsoft.com/en-us/library/2dts52z7(v=vs.110).aspx">ValueType.Equals(Object)</a>
+                </div>
+                <div>
+                  <a class="xref" href="https://msdn.microsoft.com/en-us/library/y3509fc2(v=vs.110).aspx">ValueType.GetHashCode()</a>
+                </div>
+                <div>
+                  <a class="xref" href="https://msdn.microsoft.com/en-us/library/w4hkze5k(v=vs.110).aspx">Object.Equals(Object, Object)</a>
+                </div>
+                <div>
+                  <a class="xref" href="https://msdn.microsoft.com/en-us/library/hz2a0b8x(v=vs.110).aspx">Object.ReferenceEquals(Object, Object)</a>
+                </div>
+                <div>
+                  <a class="xref" href="https://msdn.microsoft.com/en-us/library/dfwy45w9(v=vs.110).aspx">Object.GetType()</a>
+                </div>
+              </div>
+              <h6><strong>Namespace</strong>:FubarDev.WebDavServer.Model</h6>
+              <h6><strong>Assembly</strong>:FubarDev.WebDavServer.dll</h6>
+              <h5 id="FubarDev_WebDavServer_Model_Status_syntax">Syntax</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public struct Status</code></pre>
+              </div>
+              <h3 id="constructors">Constructors
+              </h3>
+              
+              
+              <a id="FubarDev_WebDavServer_Model_Status__ctor_" data-uid="FubarDev.WebDavServer.Model.Status.#ctor*"></a>
+              <h4 id="FubarDev_WebDavServer_Model_Status__ctor_System_String_FubarDev_WebDavServer_Model_WebDavStatusCode_System_String_" data-uid="FubarDev.WebDavServer.Model.Status.#ctor(System.String,FubarDev.WebDavServer.Model.WebDavStatusCode,System.String)">Status(String, WebDavStatusCode, String)</h4>
+              <div class="markdown level1 summary"><p>Initializes a new instance of the <a class="xref" href="FubarDev.WebDavServer.Model.Status.html">Status</a> struct.</p>
+</div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public Status([NotNull] string protocol, WebDavStatusCode statusCode, [CanBeNull] string additionalReasonPhrase = null)</code></pre>
+              </div>
+              <h5 class="parameters">Parameters</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Name</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><a class="xref" href="https://msdn.microsoft.com/en-us/library/system.string(v=vs.110).aspx">String</a></td>
+                    <td><span class="parametername">protocol</span></td>
+                    <td><p>The HTTP protocol (usually <code>HTTP/1.1</code>)</p>
+</td>
+                  </tr>
+                  <tr>
+                    <td><a class="xref" href="FubarDev.WebDavServer.Model.WebDavStatusCode.html">WebDavStatusCode</a></td>
+                    <td><span class="parametername">statusCode</span></td>
+                    <td><p>The WebDAV status code</p>
+</td>
+                  </tr>
+                  <tr>
+                    <td><a class="xref" href="https://msdn.microsoft.com/en-us/library/system.string(v=vs.110).aspx">String</a></td>
+                    <td><span class="parametername">additionalReasonPhrase</span></td>
+                    <td><p>The additional text to the reason phrase</p>
+</td>
+                  </tr>
+                </tbody>
+              </table>
+              
+              
+              <a id="FubarDev_WebDavServer_Model_Status__ctor_" data-uid="FubarDev.WebDavServer.Model.Status.#ctor*"></a>
+              <h4 id="FubarDev_WebDavServer_Model_Status__ctor_System_String_System_Int32_System_String_" data-uid="FubarDev.WebDavServer.Model.Status.#ctor(System.String,System.Int32,System.String)">Status(String, Int32, String)</h4>
+              <div class="markdown level1 summary"><p>Initializes a new instance of the <a class="xref" href="FubarDev.WebDavServer.Model.Status.html">Status</a> struct.</p>
+</div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public Status([NotNull] string protocol, int statusCode, [NotNull] string reasonPhrase)</code></pre>
+              </div>
+              <h5 class="parameters">Parameters</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Name</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><a class="xref" href="https://msdn.microsoft.com/en-us/library/system.string(v=vs.110).aspx">String</a></td>
+                    <td><span class="parametername">protocol</span></td>
+                    <td><p>The HTTP protocol (usually <code>HTTP/1.1</code>)</p>
+</td>
+                  </tr>
+                  <tr>
+                    <td><a class="xref" href="https://msdn.microsoft.com/en-us/library/system.int32(v=vs.110).aspx">Int32</a></td>
+                    <td><span class="parametername">statusCode</span></td>
+                    <td><p>The WebDAV status code</p>
+</td>
+                  </tr>
+                  <tr>
+                    <td><a class="xref" href="https://msdn.microsoft.com/en-us/library/system.string(v=vs.110).aspx">String</a></td>
+                    <td><span class="parametername">reasonPhrase</span></td>
+                    <td><p>The status reason phrase</p>
+</td>
+                  </tr>
+                </tbody>
+              </table>
+              
+              
+              <a id="FubarDev_WebDavServer_Model_Status__ctor_" data-uid="FubarDev.WebDavServer.Model.Status.#ctor*"></a>
+              <h4 id="FubarDev_WebDavServer_Model_Status__ctor_System_String_System_Net_HttpStatusCode_System_String_" data-uid="FubarDev.WebDavServer.Model.Status.#ctor(System.String,System.Net.HttpStatusCode,System.String)">Status(String, HttpStatusCode, String)</h4>
+              <div class="markdown level1 summary"><p>Initializes a new instance of the <a class="xref" href="FubarDev.WebDavServer.Model.Status.html">Status</a> struct.</p>
+</div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public Status([NotNull] string protocol, HttpStatusCode statusCode, [CanBeNull] string reasonPhrase = null)</code></pre>
+              </div>
+              <h5 class="parameters">Parameters</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Name</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><a class="xref" href="https://msdn.microsoft.com/en-us/library/system.string(v=vs.110).aspx">String</a></td>
+                    <td><span class="parametername">protocol</span></td>
+                    <td><p>The HTTP protocol (usually <code>HTTP/1.1</code>)</p>
+</td>
+                  </tr>
+                  <tr>
+                    <td><a class="xref" href="https://msdn.microsoft.com/en-us/library/system.net.httpstatuscode(v=vs.110).aspx">HttpStatusCode</a></td>
+                    <td><span class="parametername">statusCode</span></td>
+                    <td><p>The WebDAV status code</p>
+</td>
+                  </tr>
+                  <tr>
+                    <td><a class="xref" href="https://msdn.microsoft.com/en-us/library/system.string(v=vs.110).aspx">String</a></td>
+                    <td><span class="parametername">reasonPhrase</span></td>
+                    <td><p>The status reason phrase</p>
+</td>
+                  </tr>
+                </tbody>
+              </table>
+              <h3 id="properties">Properties
+              </h3>
+              
+              
+              <a id="FubarDev_WebDavServer_Model_Status_IsSuccessStatusCode_" data-uid="FubarDev.WebDavServer.Model.Status.IsSuccessStatusCode*"></a>
+              <h4 id="FubarDev_WebDavServer_Model_Status_IsSuccessStatusCode" data-uid="FubarDev.WebDavServer.Model.Status.IsSuccessStatusCode">IsSuccessStatusCode</h4>
+              <div class="markdown level1 summary"><p>Gets a value indicating whether the status code indicates success</p>
+</div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public bool IsSuccessStatusCode { get; }</code></pre>
+              </div>
+              <h5 class="propertyValue">Property Value</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><a class="xref" href="https://msdn.microsoft.com/en-us/library/system.boolean(v=vs.110).aspx">Boolean</a></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              
+              
+              <a id="FubarDev_WebDavServer_Model_Status_Protocol_" data-uid="FubarDev.WebDavServer.Model.Status.Protocol*"></a>
+              <h4 id="FubarDev_WebDavServer_Model_Status_Protocol" data-uid="FubarDev.WebDavServer.Model.Status.Protocol">Protocol</h4>
+              <div class="markdown level1 summary"><p>Gets the HTTP protocol (usually <code>HTTP/1.1</code>)</p>
+</div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">[NotNull]
+public string Protocol { get; }</code></pre>
+              </div>
+              <h5 class="propertyValue">Property Value</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><a class="xref" href="https://msdn.microsoft.com/en-us/library/system.string(v=vs.110).aspx">String</a></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              
+              
+              <a id="FubarDev_WebDavServer_Model_Status_ReasonPhrase_" data-uid="FubarDev.WebDavServer.Model.Status.ReasonPhrase*"></a>
+              <h4 id="FubarDev_WebDavServer_Model_Status_ReasonPhrase" data-uid="FubarDev.WebDavServer.Model.Status.ReasonPhrase">ReasonPhrase</h4>
+              <div class="markdown level1 summary"><p>Gets the <a class="xref" href="FubarDev.WebDavServer.Model.Status.html#FubarDev_WebDavServer_Model_Status_StatusCode">StatusCode</a>s reason phrase</p>
+</div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">[NotNull]
+public string ReasonPhrase { get; }</code></pre>
+              </div>
+              <h5 class="propertyValue">Property Value</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><a class="xref" href="https://msdn.microsoft.com/en-us/library/system.string(v=vs.110).aspx">String</a></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              
+              
+              <a id="FubarDev_WebDavServer_Model_Status_StatusCode_" data-uid="FubarDev.WebDavServer.Model.Status.StatusCode*"></a>
+              <h4 id="FubarDev_WebDavServer_Model_Status_StatusCode" data-uid="FubarDev.WebDavServer.Model.Status.StatusCode">StatusCode</h4>
+              <div class="markdown level1 summary"><p>Gets the status code</p>
+</div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public int StatusCode { get; }</code></pre>
+              </div>
+              <h5 class="propertyValue">Property Value</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><a class="xref" href="https://msdn.microsoft.com/en-us/library/system.int32(v=vs.110).aspx">Int32</a></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              <h3 id="methods">Methods
+              </h3>
+              
+              
+              <a id="FubarDev_WebDavServer_Model_Status_Parse_" data-uid="FubarDev.WebDavServer.Model.Status.Parse*"></a>
+              <h4 id="FubarDev_WebDavServer_Model_Status_Parse_System_String_" data-uid="FubarDev.WebDavServer.Model.Status.Parse(System.String)">Parse(String)</h4>
+              <div class="markdown level1 summary"><p>Parses the header value to get a new instance of the <a class="xref" href="FubarDev.WebDavServer.Model.Status.html">Status</a> class</p>
+</div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public static Status Parse([NotNull] string status)</code></pre>
+              </div>
+              <h5 class="parameters">Parameters</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Name</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><a class="xref" href="https://msdn.microsoft.com/en-us/library/system.string(v=vs.110).aspx">String</a></td>
+                    <td><span class="parametername">status</span></td>
+                    <td><p>The header value to parse</p>
+</td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 class="returns">Returns</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><a class="xref" href="FubarDev.WebDavServer.Model.Status.html">Status</a></td>
+                    <td><p>The new instance of the <a class="xref" href="FubarDev.WebDavServer.Model.Status.html">Status</a> class</p>
+</td>
+                  </tr>
+                </tbody>
+              </table>
+              
+              
+              <a id="FubarDev_WebDavServer_Model_Status_ToString_" data-uid="FubarDev.WebDavServer.Model.Status.ToString*"></a>
+              <h4 id="FubarDev_WebDavServer_Model_Status_ToString" data-uid="FubarDev.WebDavServer.Model.Status.ToString">ToString()</h4>
+              <div class="markdown level1 summary"></div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public override string ToString()</code></pre>
+              </div>
+              <h5 class="returns">Returns</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><a class="xref" href="https://msdn.microsoft.com/en-us/library/system.string(v=vs.110).aspx">String</a></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 class="overrides">Overrides</h5>
+              <div><a class="xref" href="https://msdn.microsoft.com/en-us/library/wb77sz3h(v=vs.110).aspx">ValueType.ToString()</a></div>
+                        </article>
+          </div>
+          
+          <div class="hidden-sm col-md-2" role="complementary">
+            <div class="sideaffix">
+              <div class="contribution">
+                <ul class="nav">
+                </ul>
+              </div>
+              <nav class="bs-docs-sidebar hidden-print hidden-xs hidden-sm affix" id="affix">
+              <!-- <p><a class="back-to-top" href="#top">Back to top</a><p> -->
+              </nav>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <footer>
+        <div class="grad-bottom"></div>
+        <div class="footer">
+          <div class="container">
+            <span class="pull-right">
+              <a href="#top">Back to top</a>
+            </span>
+            
+            <span>Copyright © 2015-2016 Microsoft<br>Generated by <strong>DocFX</strong></span>
+          </div>
+        </div>
+      </footer>
+    </div>
+    
+    <script type="text/javascript" src="../styles/docfx.vendor.js"></script>
+    <script type="text/javascript" src="../styles/docfx.js"></script>
+    <script type="text/javascript" src="../styles/main.js"></script>
+  </body>
+</html>

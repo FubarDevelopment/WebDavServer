@@ -1,0 +1,830 @@
+﻿<!DOCTYPE html>
+<!--[if IE]><![endif]-->
+<html>
+  
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <title>Interface IPropertyStore
+   </title>
+    <meta name="viewport" content="width=device-width">
+    <meta name="title" content="Interface IPropertyStore
+   ">
+    <meta name="generator" content="docfx 2.12.1.0">
+    
+    <link rel="shortcut icon" href="../favicon.ico">
+    <link rel="stylesheet" href="../styles/docfx.vendor.css">
+    <link rel="stylesheet" href="../styles/docfx.css">
+    <link rel="stylesheet" href="../styles/main.css">
+    <meta property="docfx:navrel" content="../toc.html">
+    <meta property="docfx:tocrel" content="toc.html">
+    
+  </head>
+  <body data-spy="scroll" data-target="#affix">
+    <div id="wrapper">
+      <header>
+        
+        <nav id="autocollapse" class="navbar navbar-inverse ng-scope" role="navigation">
+          <div class="container">
+            <div class="navbar-header">
+              <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+              </button>
+              
+              <a class="navbar-brand" href="../index.html">
+                <img id="logo" class="svg" src="../logo.svg" alt="">
+              </a>
+            </div>
+            <div class="collapse navbar-collapse" id="navbar">
+              <form class="navbar-form navbar-right" role="search" id="search">
+                <div class="form-group">
+                  <input type="text" class="form-control" id="search-query" placeholder="Search" autocomplete="off">
+                </div>
+              </form>
+            </div>
+          </div>
+        </nav>
+        
+        <div class="subnav navbar navbar-default">
+          <div class="container hide-when-search" id="breadcrumb">
+            <ul class="breadcrumb">
+              <li></li>
+            </ul>
+          </div>
+        </div>
+      </header>
+      <div role="main" class="container body-content hide-when-search">
+        
+        <div class="sidenav hide-when-search">
+          <a class="btn toc-toggle collapse" data-toggle="collapse" href="#sidetoggle" aria-expanded="false" aria-controls="sidetoggle">Show / Hide Table of Contents</a>
+          <div class="sidetoggle collapse" id="sidetoggle">
+            <div id="sidetoc"></div>
+          </div>
+        </div>
+        <div class="article row grid-right">
+          <div class="col-md-10">
+            <article class="content wrap" id="_content">
+              
+              
+              <h1 id="FubarDev_WebDavServer_Props_Store_IPropertyStore" data-uid="FubarDev.WebDavServer.Props.Store.IPropertyStore">Interface IPropertyStore
+              </h1>
+              <div class="markdown level0 summary"><p>The interface a property store (for dead properties) must implement</p>
+</div>
+              <div class="markdown level0 conceptual"></div>
+              <h6><strong>Namespace</strong>:FubarDev.WebDavServer.Props.Store</h6>
+              <h6><strong>Assembly</strong>:FubarDev.WebDavServer.dll</h6>
+              <h5 id="FubarDev_WebDavServer_Props_Store_IPropertyStore_syntax">Syntax</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public interface IPropertyStore</code></pre>
+              </div>
+              <h3 id="properties">Properties
+              </h3>
+              
+              
+              <a id="FubarDev_WebDavServer_Props_Store_IPropertyStore_Cost_" data-uid="FubarDev.WebDavServer.Props.Store.IPropertyStore.Cost*"></a>
+              <h4 id="FubarDev_WebDavServer_Props_Store_IPropertyStore_Cost" data-uid="FubarDev.WebDavServer.Props.Store.IPropertyStore.Cost">Cost</h4>
+              <div class="markdown level1 summary"><p>Gets the cost to query the properties of a property store</p>
+</div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">int Cost { get; }</code></pre>
+              </div>
+              <h5 class="propertyValue">Property Value</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><a class="xref" href="https://msdn.microsoft.com/en-us/library/system.int32(v=vs.110).aspx">Int32</a></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              <h3 id="methods">Methods
+              </h3>
+              
+              
+              <a id="FubarDev_WebDavServer_Props_Store_IPropertyStore_Create_" data-uid="FubarDev.WebDavServer.Props.Store.IPropertyStore.Create*"></a>
+              <h4 id="FubarDev_WebDavServer_Props_Store_IPropertyStore_Create_FubarDev_WebDavServer_FileSystem_IEntry_System_Xml_Linq_XName_" data-uid="FubarDev.WebDavServer.Props.Store.IPropertyStore.Create(FubarDev.WebDavServer.FileSystem.IEntry,System.Xml.Linq.XName)">Create(IEntry, XName)</h4>
+              <div class="markdown level1 summary"><p>Creates a dead property by its <span class="paramref">name</span> for a given <span class="paramref">entry</span></p>
+</div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">[NotNull]
+IDeadProperty Create([NotNull] IEntry entry, [NotNull] XName name)</code></pre>
+              </div>
+              <h5 class="parameters">Parameters</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Name</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><a class="xref" href="FubarDev.WebDavServer.FileSystem.IEntry.html">IEntry</a></td>
+                    <td><span class="parametername">entry</span></td>
+                    <td><p>The entry to create the dead property with the given <span class="paramref">name</span> for</p>
+</td>
+                  </tr>
+                  <tr>
+                    <td><a class="xref" href="https://msdn.microsoft.com/en-us/library/system.xml.linq.xname(v=vs.110).aspx">XName</a></td>
+                    <td><span class="parametername">name</span></td>
+                    <td><p>The name of the dead property to create for the given <span class="paramref">entry</span> for</p>
+</td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 class="returns">Returns</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><a class="xref" href="FubarDev.WebDavServer.Props.Dead.IDeadProperty.html">IDeadProperty</a></td>
+                    <td><p>The created dead property with the given <span class="paramref">name</span> for the given <span class="paramref">entry</span></p>
+</td>
+                  </tr>
+                </tbody>
+              </table>
+              
+              
+              <a id="FubarDev_WebDavServer_Props_Store_IPropertyStore_GetAsync_" data-uid="FubarDev.WebDavServer.Props.Store.IPropertyStore.GetAsync*"></a>
+              <h4 id="FubarDev_WebDavServer_Props_Store_IPropertyStore_GetAsync_FubarDev_WebDavServer_FileSystem_IEntry_System_Threading_CancellationToken_" data-uid="FubarDev.WebDavServer.Props.Store.IPropertyStore.GetAsync(FubarDev.WebDavServer.FileSystem.IEntry,System.Threading.CancellationToken)">GetAsync(IEntry, CancellationToken)</h4>
+              <div class="markdown level1 summary"><p>Gets all dead properties for a given <span class="paramref">entry</span></p>
+</div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">[NotNull]
+[ItemNotNull]
+Task&lt;IReadOnlyCollection&lt;XElement&gt;&gt; GetAsync([NotNull] IEntry entry, CancellationToken cancellationToken)</code></pre>
+              </div>
+              <h5 class="parameters">Parameters</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Name</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><a class="xref" href="FubarDev.WebDavServer.FileSystem.IEntry.html">IEntry</a></td>
+                    <td><span class="parametername">entry</span></td>
+                    <td><p>The entry to get all the dead properties for</p>
+</td>
+                  </tr>
+                  <tr>
+                    <td><a class="xref" href="https://msdn.microsoft.com/en-us/library/system.threading.cancellationtoken(v=vs.110).aspx">CancellationToken</a></td>
+                    <td><span class="parametername">cancellationToken</span></td>
+                    <td><p>The cancellation token</p>
+</td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 class="returns">Returns</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><a class="xref" href="https://msdn.microsoft.com/en-us/library/dd321424(v=vs.110).aspx">Task</a>&lt;<a class="xref" href="https://msdn.microsoft.com/en-us/library/hh881542(v=vs.110).aspx">IReadOnlyCollection</a>&lt;<a class="xref" href="https://msdn.microsoft.com/en-us/library/system.xml.linq.xelement(v=vs.110).aspx">XElement</a>&gt;&gt;</td>
+                    <td><p>The collection of all dead properties</p>
+</td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 id="FubarDev_WebDavServer_Props_Store_IPropertyStore_GetAsync_FubarDev_WebDavServer_FileSystem_IEntry_System_Threading_CancellationToken__remarks">Remarks</h5>
+              <div class="markdown level1 remarks"><p>A <a class="xref" href="FubarDev.WebDavServer.Props.Dead.GetETagProperty.html">GetETagProperty</a> will not be returned by this function.</p>
+</div>
+              
+              
+              <a id="FubarDev_WebDavServer_Props_Store_IPropertyStore_GetAsync_" data-uid="FubarDev.WebDavServer.Props.Store.IPropertyStore.GetAsync*"></a>
+              <h4 id="FubarDev_WebDavServer_Props_Store_IPropertyStore_GetAsync_FubarDev_WebDavServer_FileSystem_IEntry_System_Xml_Linq_XName_System_Threading_CancellationToken_" data-uid="FubarDev.WebDavServer.Props.Store.IPropertyStore.GetAsync(FubarDev.WebDavServer.FileSystem.IEntry,System.Xml.Linq.XName,System.Threading.CancellationToken)">GetAsync(IEntry, XName, CancellationToken)</h4>
+              <div class="markdown level1 summary"><p>Gets a dead property with the given <span class="paramref">name</span> for the given <span class="paramref">entry</span></p>
+</div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">[NotNull]
+[ItemCanBeNull]
+Task&lt;XElement&gt; GetAsync([NotNull] IEntry entry, [NotNull] XName name, CancellationToken cancellationToken)</code></pre>
+              </div>
+              <h5 class="parameters">Parameters</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Name</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><a class="xref" href="FubarDev.WebDavServer.FileSystem.IEntry.html">IEntry</a></td>
+                    <td><span class="parametername">entry</span></td>
+                    <td><p>The entry to get the property with the given <span class="paramref">name</span> for</p>
+</td>
+                  </tr>
+                  <tr>
+                    <td><a class="xref" href="https://msdn.microsoft.com/en-us/library/system.xml.linq.xname(v=vs.110).aspx">XName</a></td>
+                    <td><span class="parametername">name</span></td>
+                    <td><p>The name of the parameter to get for a given <span class="paramref">entry</span></p>
+</td>
+                  </tr>
+                  <tr>
+                    <td><a class="xref" href="https://msdn.microsoft.com/en-us/library/system.threading.cancellationtoken(v=vs.110).aspx">CancellationToken</a></td>
+                    <td><span class="parametername">cancellationToken</span></td>
+                    <td><p>The cancellation token</p>
+</td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 class="returns">Returns</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><a class="xref" href="https://msdn.microsoft.com/en-us/library/dd321424(v=vs.110).aspx">Task</a>&lt;<a class="xref" href="https://msdn.microsoft.com/en-us/library/system.xml.linq.xelement(v=vs.110).aspx">XElement</a>&gt;</td>
+                    <td><p>The <a class="xref" href="https://msdn.microsoft.com/en-us/library/system.xml.linq.xelement(v=vs.110).aspx">XElement</a> for the given dead property</p>
+</td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 id="FubarDev_WebDavServer_Props_Store_IPropertyStore_GetAsync_FubarDev_WebDavServer_FileSystem_IEntry_System_Xml_Linq_XName_System_Threading_CancellationToken__remarks">Remarks</h5>
+              <div class="markdown level1 remarks"><p>A <a class="xref" href="FubarDev.WebDavServer.Props.Dead.GetETagProperty.html">GetETagProperty</a> will not be returned by this function.</p>
+</div>
+              
+              
+              <a id="FubarDev_WebDavServer_Props_Store_IPropertyStore_GetETagAsync_" data-uid="FubarDev.WebDavServer.Props.Store.IPropertyStore.GetETagAsync*"></a>
+              <h4 id="FubarDev_WebDavServer_Props_Store_IPropertyStore_GetETagAsync_FubarDev_WebDavServer_FileSystem_IEntry_System_Threading_CancellationToken_" data-uid="FubarDev.WebDavServer.Props.Store.IPropertyStore.GetETagAsync(FubarDev.WebDavServer.FileSystem.IEntry,System.Threading.CancellationToken)">GetETagAsync(IEntry, CancellationToken)</h4>
+              <div class="markdown level1 summary"><p>Gets the entity tag for a given <span class="paramref">entry</span></p>
+</div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">[NotNull]
+Task&lt;EntityTag&gt; GetETagAsync([NotNull] IEntry entry, CancellationToken cancellationToken)</code></pre>
+              </div>
+              <h5 class="parameters">Parameters</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Name</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><a class="xref" href="FubarDev.WebDavServer.FileSystem.IEntry.html">IEntry</a></td>
+                    <td><span class="parametername">entry</span></td>
+                    <td><p>The entry to get the entity tag for</p>
+</td>
+                  </tr>
+                  <tr>
+                    <td><a class="xref" href="https://msdn.microsoft.com/en-us/library/system.threading.cancellationtoken(v=vs.110).aspx">CancellationToken</a></td>
+                    <td><span class="parametername">cancellationToken</span></td>
+                    <td><p>The cancellation token</p>
+</td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 class="returns">Returns</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><a class="xref" href="https://msdn.microsoft.com/en-us/library/dd321424(v=vs.110).aspx">Task</a>&lt;<a class="xref" href="FubarDev.WebDavServer.Model.Headers.EntityTag.html">EntityTag</a>&gt;</td>
+                    <td><p>The loaded entity tag</p>
+</td>
+                  </tr>
+                </tbody>
+              </table>
+              
+              
+              <a id="FubarDev_WebDavServer_Props_Store_IPropertyStore_LoadAsync_" data-uid="FubarDev.WebDavServer.Props.Store.IPropertyStore.LoadAsync*"></a>
+              <h4 id="FubarDev_WebDavServer_Props_Store_IPropertyStore_LoadAsync_FubarDev_WebDavServer_FileSystem_IEntry_System_Threading_CancellationToken_" data-uid="FubarDev.WebDavServer.Props.Store.IPropertyStore.LoadAsync(FubarDev.WebDavServer.FileSystem.IEntry,System.Threading.CancellationToken)">LoadAsync(IEntry, CancellationToken)</h4>
+              <div class="markdown level1 summary"><p>Loads all dead properties for a given <span class="paramref">entry</span> into <a class="xref" href="FubarDev.WebDavServer.Props.Dead.IDeadProperty.html">IDeadProperty</a> implementations</p>
+</div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">[NotNull]
+[ItemNotNull]
+Task&lt;IReadOnlyCollection&lt;IDeadProperty&gt;&gt; LoadAsync([NotNull] IEntry entry, CancellationToken cancellationToken)</code></pre>
+              </div>
+              <h5 class="parameters">Parameters</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Name</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><a class="xref" href="FubarDev.WebDavServer.FileSystem.IEntry.html">IEntry</a></td>
+                    <td><span class="parametername">entry</span></td>
+                    <td><p>The entry to load the dead properties for</p>
+</td>
+                  </tr>
+                  <tr>
+                    <td><a class="xref" href="https://msdn.microsoft.com/en-us/library/system.threading.cancellationtoken(v=vs.110).aspx">CancellationToken</a></td>
+                    <td><span class="parametername">cancellationToken</span></td>
+                    <td><p>The cancellation token</p>
+</td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 class="returns">Returns</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><a class="xref" href="https://msdn.microsoft.com/en-us/library/dd321424(v=vs.110).aspx">Task</a>&lt;<a class="xref" href="https://msdn.microsoft.com/en-us/library/hh881542(v=vs.110).aspx">IReadOnlyCollection</a>&lt;<a class="xref" href="FubarDev.WebDavServer.Props.Dead.IDeadProperty.html">IDeadProperty</a>&gt;&gt;</td>
+                    <td><p>The collection of the loaded dead properties</p>
+</td>
+                  </tr>
+                </tbody>
+              </table>
+              
+              
+              <a id="FubarDev_WebDavServer_Props_Store_IPropertyStore_LoadAsync_" data-uid="FubarDev.WebDavServer.Props.Store.IPropertyStore.LoadAsync*"></a>
+              <h4 id="FubarDev_WebDavServer_Props_Store_IPropertyStore_LoadAsync_FubarDev_WebDavServer_FileSystem_IEntry_System_Xml_Linq_XName_System_Threading_CancellationToken_" data-uid="FubarDev.WebDavServer.Props.Store.IPropertyStore.LoadAsync(FubarDev.WebDavServer.FileSystem.IEntry,System.Xml.Linq.XName,System.Threading.CancellationToken)">LoadAsync(IEntry, XName, CancellationToken)</h4>
+              <div class="markdown level1 summary"><p>Loads the dead property with the given <span class="paramref">name</span> into a <a class="xref" href="FubarDev.WebDavServer.Props.Dead.IDeadProperty.html">IDeadProperty</a> implementation</p>
+</div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">[NotNull]
+[ItemNotNull]
+Task&lt;IDeadProperty&gt; LoadAsync([NotNull] IEntry entry, [NotNull] XName name, CancellationToken cancellationToken)</code></pre>
+              </div>
+              <h5 class="parameters">Parameters</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Name</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><a class="xref" href="FubarDev.WebDavServer.FileSystem.IEntry.html">IEntry</a></td>
+                    <td><span class="parametername">entry</span></td>
+                    <td><p>The entry to load the dead property for</p>
+</td>
+                  </tr>
+                  <tr>
+                    <td><a class="xref" href="https://msdn.microsoft.com/en-us/library/system.xml.linq.xname(v=vs.110).aspx">XName</a></td>
+                    <td><span class="parametername">name</span></td>
+                    <td><p>The name of the dead property</p>
+</td>
+                  </tr>
+                  <tr>
+                    <td><a class="xref" href="https://msdn.microsoft.com/en-us/library/system.threading.cancellationtoken(v=vs.110).aspx">CancellationToken</a></td>
+                    <td><span class="parametername">cancellationToken</span></td>
+                    <td><p>The cancellation token</p>
+</td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 class="returns">Returns</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><a class="xref" href="https://msdn.microsoft.com/en-us/library/dd321424(v=vs.110).aspx">Task</a>&lt;<a class="xref" href="FubarDev.WebDavServer.Props.Dead.IDeadProperty.html">IDeadProperty</a>&gt;</td>
+                    <td><p>The implementation of the dead property</p>
+</td>
+                  </tr>
+                </tbody>
+              </table>
+              
+              
+              <a id="FubarDev_WebDavServer_Props_Store_IPropertyStore_RemoveAsync_" data-uid="FubarDev.WebDavServer.Props.Store.IPropertyStore.RemoveAsync*"></a>
+              <h4 id="FubarDev_WebDavServer_Props_Store_IPropertyStore_RemoveAsync_FubarDev_WebDavServer_FileSystem_IEntry_System_Collections_Generic_IEnumerable_System_Xml_Linq_XName__System_Threading_CancellationToken_" data-uid="FubarDev.WebDavServer.Props.Store.IPropertyStore.RemoveAsync(FubarDev.WebDavServer.FileSystem.IEntry,System.Collections.Generic.IEnumerable{System.Xml.Linq.XName},System.Threading.CancellationToken)">RemoveAsync(IEntry, IEnumerable&lt;XName&gt;, CancellationToken)</h4>
+              <div class="markdown level1 summary"><p>Remove multiple dead properties by its name at once from the given <span class="paramref">entry</span></p>
+</div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">[NotNull]
+[ItemNotNull]
+Task&lt;IReadOnlyCollection&lt;bool&gt;&gt; RemoveAsync([NotNull] IEntry entry, [NotNull, ItemNotNull] IEnumerable&lt;XName&gt; names, CancellationToken cancellationToken)</code></pre>
+              </div>
+              <h5 class="parameters">Parameters</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Name</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><a class="xref" href="FubarDev.WebDavServer.FileSystem.IEntry.html">IEntry</a></td>
+                    <td><span class="parametername">entry</span></td>
+                    <td><p>The entry to remove the given property <span class="paramref">names</span> from</p>
+</td>
+                  </tr>
+                  <tr>
+                    <td><a class="xref" href="https://msdn.microsoft.com/en-us/library/9eekhta0(v=vs.110).aspx">IEnumerable</a>&lt;<a class="xref" href="https://msdn.microsoft.com/en-us/library/system.xml.linq.xname(v=vs.110).aspx">XName</a>&gt;</td>
+                    <td><span class="parametername">names</span></td>
+                    <td><p>The names of the dead properties to remove from the given <span class="paramref">entry</span></p>
+</td>
+                  </tr>
+                  <tr>
+                    <td><a class="xref" href="https://msdn.microsoft.com/en-us/library/system.threading.cancellationtoken(v=vs.110).aspx">CancellationToken</a></td>
+                    <td><span class="parametername">cancellationToken</span></td>
+                    <td><p>The cancellation token</p>
+</td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 class="returns">Returns</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><a class="xref" href="https://msdn.microsoft.com/en-us/library/dd321424(v=vs.110).aspx">Task</a>&lt;<a class="xref" href="https://msdn.microsoft.com/en-us/library/hh881542(v=vs.110).aspx">IReadOnlyCollection</a>&lt;<a class="xref" href="https://msdn.microsoft.com/en-us/library/system.boolean(v=vs.110).aspx">Boolean</a>&gt;&gt;</td>
+                    <td><p>A collection of booleans where a <span class="xref">true</span> value indicates that there was a dead property for a given
+name that could be removed from the <span class="paramref">entry</span>. A <a class="xref" href="FubarDev.WebDavServer.Props.Dead.GetETagProperty.html">GetETagProperty</a> cannot be removed
+by this function.</p>
+</td>
+                  </tr>
+                </tbody>
+              </table>
+              
+              
+              <a id="FubarDev_WebDavServer_Props_Store_IPropertyStore_RemoveAsync_" data-uid="FubarDev.WebDavServer.Props.Store.IPropertyStore.RemoveAsync*"></a>
+              <h4 id="FubarDev_WebDavServer_Props_Store_IPropertyStore_RemoveAsync_FubarDev_WebDavServer_FileSystem_IEntry_System_Threading_CancellationToken_" data-uid="FubarDev.WebDavServer.Props.Store.IPropertyStore.RemoveAsync(FubarDev.WebDavServer.FileSystem.IEntry,System.Threading.CancellationToken)">RemoveAsync(IEntry, CancellationToken)</h4>
+              <div class="markdown level1 summary"><p>Remove all dead propertied (including a probably exting <a class="xref" href="FubarDev.WebDavServer.Props.Dead.GetETagProperty.html">GetETagProperty</a>) from a given <span class="paramref">entry</span></p>
+</div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">[NotNull]
+Task RemoveAsync([NotNull] IEntry entry, CancellationToken cancellationToken)</code></pre>
+              </div>
+              <h5 class="parameters">Parameters</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Name</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><a class="xref" href="FubarDev.WebDavServer.FileSystem.IEntry.html">IEntry</a></td>
+                    <td><span class="parametername">entry</span></td>
+                    <td><p>The entry to remove all the dead properties from</p>
+</td>
+                  </tr>
+                  <tr>
+                    <td><a class="xref" href="https://msdn.microsoft.com/en-us/library/system.threading.cancellationtoken(v=vs.110).aspx">CancellationToken</a></td>
+                    <td><span class="parametername">cancellationToken</span></td>
+                    <td><p>The cancellation token</p>
+</td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 class="returns">Returns</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><a class="xref" href="https://msdn.microsoft.com/en-us/library/system.threading.tasks.task(v=vs.110).aspx">Task</a></td>
+                    <td><p>The async task</p>
+</td>
+                  </tr>
+                </tbody>
+              </table>
+              
+              
+              <a id="FubarDev_WebDavServer_Props_Store_IPropertyStore_RemoveAsync_" data-uid="FubarDev.WebDavServer.Props.Store.IPropertyStore.RemoveAsync*"></a>
+              <h4 id="FubarDev_WebDavServer_Props_Store_IPropertyStore_RemoveAsync_FubarDev_WebDavServer_FileSystem_IEntry_System_Xml_Linq_XName_System_Threading_CancellationToken_" data-uid="FubarDev.WebDavServer.Props.Store.IPropertyStore.RemoveAsync(FubarDev.WebDavServer.FileSystem.IEntry,System.Xml.Linq.XName,System.Threading.CancellationToken)">RemoveAsync(IEntry, XName, CancellationToken)</h4>
+              <div class="markdown level1 summary"><p>Removes a dead property with a given <span class="paramref">name</span> from the given <span class="paramref">entry</span></p>
+</div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">[NotNull]
+Task&lt;bool&gt; RemoveAsync([NotNull] IEntry entry, [NotNull] XName name, CancellationToken cancellationToken)</code></pre>
+              </div>
+              <h5 class="parameters">Parameters</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Name</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><a class="xref" href="FubarDev.WebDavServer.FileSystem.IEntry.html">IEntry</a></td>
+                    <td><span class="parametername">entry</span></td>
+                    <td><p>The entry to remove the dead property with the given <span class="paramref">name</span> from</p>
+</td>
+                  </tr>
+                  <tr>
+                    <td><a class="xref" href="https://msdn.microsoft.com/en-us/library/system.xml.linq.xname(v=vs.110).aspx">XName</a></td>
+                    <td><span class="parametername">name</span></td>
+                    <td><p>The name of the parameter to remove from the <span class="paramref">entry</span></p>
+</td>
+                  </tr>
+                  <tr>
+                    <td><a class="xref" href="https://msdn.microsoft.com/en-us/library/system.threading.cancellationtoken(v=vs.110).aspx">CancellationToken</a></td>
+                    <td><span class="parametername">cancellationToken</span></td>
+                    <td><p>The cancellation token</p>
+</td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 class="returns">Returns</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><a class="xref" href="https://msdn.microsoft.com/en-us/library/dd321424(v=vs.110).aspx">Task</a>&lt;<a class="xref" href="https://msdn.microsoft.com/en-us/library/system.boolean(v=vs.110).aspx">Boolean</a>&gt;</td>
+                    <td><p><span class="xref">true</span> when there was a dead property with the given <span class="paramref">name</span> that could be removed</p>
+</td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 id="FubarDev_WebDavServer_Props_Store_IPropertyStore_RemoveAsync_FubarDev_WebDavServer_FileSystem_IEntry_System_Xml_Linq_XName_System_Threading_CancellationToken__remarks">Remarks</h5>
+              <div class="markdown level1 remarks"><p>A <a class="xref" href="FubarDev.WebDavServer.Props.Dead.GetETagProperty.html">GetETagProperty</a> cannot be removed by this function.</p>
+</div>
+              
+              
+              <a id="FubarDev_WebDavServer_Props_Store_IPropertyStore_SetAsync_" data-uid="FubarDev.WebDavServer.Props.Store.IPropertyStore.SetAsync*"></a>
+              <h4 id="FubarDev_WebDavServer_Props_Store_IPropertyStore_SetAsync_FubarDev_WebDavServer_FileSystem_IEntry_System_Collections_Generic_IEnumerable_System_Xml_Linq_XElement__System_Threading_CancellationToken_" data-uid="FubarDev.WebDavServer.Props.Store.IPropertyStore.SetAsync(FubarDev.WebDavServer.FileSystem.IEntry,System.Collections.Generic.IEnumerable{System.Xml.Linq.XElement},System.Threading.CancellationToken)">SetAsync(IEntry, IEnumerable&lt;XElement&gt;, CancellationToken)</h4>
+              <div class="markdown level1 summary"><p>Sets all given dead <span class="paramref">properties</span> for the given <span class="paramref">entry</span></p>
+</div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">[NotNull]
+Task SetAsync([NotNull] IEntry entry, [NotNull, ItemNotNull] IEnumerable&lt;XElement&gt; properties, CancellationToken cancellationToken)</code></pre>
+              </div>
+              <h5 class="parameters">Parameters</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Name</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><a class="xref" href="FubarDev.WebDavServer.FileSystem.IEntry.html">IEntry</a></td>
+                    <td><span class="parametername">entry</span></td>
+                    <td><p>The entry to set all the dead <span class="paramref">properties</span> for</p>
+</td>
+                  </tr>
+                  <tr>
+                    <td><a class="xref" href="https://msdn.microsoft.com/en-us/library/9eekhta0(v=vs.110).aspx">IEnumerable</a>&lt;<a class="xref" href="https://msdn.microsoft.com/en-us/library/system.xml.linq.xelement(v=vs.110).aspx">XElement</a>&gt;</td>
+                    <td><span class="parametername">properties</span></td>
+                    <td><p>The properties to set for the given <span class="paramref">entry</span></p>
+</td>
+                  </tr>
+                  <tr>
+                    <td><a class="xref" href="https://msdn.microsoft.com/en-us/library/system.threading.cancellationtoken(v=vs.110).aspx">CancellationToken</a></td>
+                    <td><span class="parametername">cancellationToken</span></td>
+                    <td><p>The cancellation token</p>
+</td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 class="returns">Returns</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><a class="xref" href="https://msdn.microsoft.com/en-us/library/system.threading.tasks.task(v=vs.110).aspx">Task</a></td>
+                    <td><p>The async task</p>
+</td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 id="FubarDev_WebDavServer_Props_Store_IPropertyStore_SetAsync_FubarDev_WebDavServer_FileSystem_IEntry_System_Collections_Generic_IEnumerable_System_Xml_Linq_XElement__System_Threading_CancellationToken__remarks">Remarks</h5>
+              <div class="markdown level1 remarks"><p>A <a class="xref" href="FubarDev.WebDavServer.Props.Dead.GetETagProperty.html">GetETagProperty</a> cannot be updated using this method</p>
+</div>
+              
+              
+              <a id="FubarDev_WebDavServer_Props_Store_IPropertyStore_SetAsync_" data-uid="FubarDev.WebDavServer.Props.Store.IPropertyStore.SetAsync*"></a>
+              <h4 id="FubarDev_WebDavServer_Props_Store_IPropertyStore_SetAsync_FubarDev_WebDavServer_FileSystem_IEntry_System_Xml_Linq_XElement_System_Threading_CancellationToken_" data-uid="FubarDev.WebDavServer.Props.Store.IPropertyStore.SetAsync(FubarDev.WebDavServer.FileSystem.IEntry,System.Xml.Linq.XElement,System.Threading.CancellationToken)">SetAsync(IEntry, XElement, CancellationToken)</h4>
+              <div class="markdown level1 summary"><p>Sets a dead property for the given <span class="paramref">entry</span> to the given <span class="paramref">element</span></p>
+</div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">[NotNull]
+Task SetAsync([NotNull] IEntry entry, [NotNull] XElement element, CancellationToken cancellationToken)</code></pre>
+              </div>
+              <h5 class="parameters">Parameters</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Name</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><a class="xref" href="FubarDev.WebDavServer.FileSystem.IEntry.html">IEntry</a></td>
+                    <td><span class="parametername">entry</span></td>
+                    <td><p>The entry to set the property <span class="paramref">element</span> for</p>
+</td>
+                  </tr>
+                  <tr>
+                    <td><a class="xref" href="https://msdn.microsoft.com/en-us/library/system.xml.linq.xelement(v=vs.110).aspx">XElement</a></td>
+                    <td><span class="parametername">element</span></td>
+                    <td><p>The element to set the <span class="paramref">entry</span> for</p>
+</td>
+                  </tr>
+                  <tr>
+                    <td><a class="xref" href="https://msdn.microsoft.com/en-us/library/system.threading.cancellationtoken(v=vs.110).aspx">CancellationToken</a></td>
+                    <td><span class="parametername">cancellationToken</span></td>
+                    <td><p>The cancellation token</p>
+</td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 class="returns">Returns</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><a class="xref" href="https://msdn.microsoft.com/en-us/library/system.threading.tasks.task(v=vs.110).aspx">Task</a></td>
+                    <td><p>The async task</p>
+</td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 id="FubarDev_WebDavServer_Props_Store_IPropertyStore_SetAsync_FubarDev_WebDavServer_FileSystem_IEntry_System_Xml_Linq_XElement_System_Threading_CancellationToken__remarks">Remarks</h5>
+              <div class="markdown level1 remarks"><p>A <a class="xref" href="FubarDev.WebDavServer.Props.Dead.GetETagProperty.html">GetETagProperty</a> cannot be updated by this function.</p>
+</div>
+              
+              
+              <a id="FubarDev_WebDavServer_Props_Store_IPropertyStore_UpdateETagAsync_" data-uid="FubarDev.WebDavServer.Props.Store.IPropertyStore.UpdateETagAsync*"></a>
+              <h4 id="FubarDev_WebDavServer_Props_Store_IPropertyStore_UpdateETagAsync_FubarDev_WebDavServer_FileSystem_IEntry_System_Threading_CancellationToken_" data-uid="FubarDev.WebDavServer.Props.Store.IPropertyStore.UpdateETagAsync(FubarDev.WebDavServer.FileSystem.IEntry,System.Threading.CancellationToken)">UpdateETagAsync(IEntry, CancellationToken)</h4>
+              <div class="markdown level1 summary"><p>Updates an entity tag for a given <span class="paramref">entry</span></p>
+</div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">[NotNull]
+Task&lt;EntityTag&gt; UpdateETagAsync([NotNull] IEntry entry, CancellationToken cancellationToken)</code></pre>
+              </div>
+              <h5 class="parameters">Parameters</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Name</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><a class="xref" href="FubarDev.WebDavServer.FileSystem.IEntry.html">IEntry</a></td>
+                    <td><span class="parametername">entry</span></td>
+                    <td><p>The entry to get the entity tag for</p>
+</td>
+                  </tr>
+                  <tr>
+                    <td><a class="xref" href="https://msdn.microsoft.com/en-us/library/system.threading.cancellationtoken(v=vs.110).aspx">CancellationToken</a></td>
+                    <td><span class="parametername">cancellationToken</span></td>
+                    <td><p>The cancellation token</p>
+</td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 class="returns">Returns</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><a class="xref" href="https://msdn.microsoft.com/en-us/library/dd321424(v=vs.110).aspx">Task</a>&lt;<a class="xref" href="FubarDev.WebDavServer.Model.Headers.EntityTag.html">EntityTag</a>&gt;</td>
+                    <td><p>The updated entity tag</p>
+</td>
+                  </tr>
+                </tbody>
+              </table>
+                        </article>
+          </div>
+          
+          <div class="hidden-sm col-md-2" role="complementary">
+            <div class="sideaffix">
+              <div class="contribution">
+                <ul class="nav">
+                </ul>
+              </div>
+              <nav class="bs-docs-sidebar hidden-print hidden-xs hidden-sm affix" id="affix">
+              <!-- <p><a class="back-to-top" href="#top">Back to top</a><p> -->
+              </nav>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <footer>
+        <div class="grad-bottom"></div>
+        <div class="footer">
+          <div class="container">
+            <span class="pull-right">
+              <a href="#top">Back to top</a>
+            </span>
+            
+            <span>Copyright © 2015-2016 Microsoft<br>Generated by <strong>DocFX</strong></span>
+          </div>
+        </div>
+      </footer>
+    </div>
+    
+    <script type="text/javascript" src="../styles/docfx.vendor.js"></script>
+    <script type="text/javascript" src="../styles/docfx.js"></script>
+    <script type="text/javascript" src="../styles/main.js"></script>
+  </body>
+</html>

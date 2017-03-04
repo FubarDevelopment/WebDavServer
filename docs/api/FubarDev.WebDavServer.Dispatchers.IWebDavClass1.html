@@ -1,0 +1,701 @@
+﻿<!DOCTYPE html>
+<!--[if IE]><![endif]-->
+<html>
+  
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <title>Interface IWebDavClass1
+   </title>
+    <meta name="viewport" content="width=device-width">
+    <meta name="title" content="Interface IWebDavClass1
+   ">
+    <meta name="generator" content="docfx 2.12.1.0">
+    
+    <link rel="shortcut icon" href="../favicon.ico">
+    <link rel="stylesheet" href="../styles/docfx.vendor.css">
+    <link rel="stylesheet" href="../styles/docfx.css">
+    <link rel="stylesheet" href="../styles/main.css">
+    <meta property="docfx:navrel" content="../toc.html">
+    <meta property="docfx:tocrel" content="toc.html">
+    
+  </head>
+  <body data-spy="scroll" data-target="#affix">
+    <div id="wrapper">
+      <header>
+        
+        <nav id="autocollapse" class="navbar navbar-inverse ng-scope" role="navigation">
+          <div class="container">
+            <div class="navbar-header">
+              <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+              </button>
+              
+              <a class="navbar-brand" href="../index.html">
+                <img id="logo" class="svg" src="../logo.svg" alt="">
+              </a>
+            </div>
+            <div class="collapse navbar-collapse" id="navbar">
+              <form class="navbar-form navbar-right" role="search" id="search">
+                <div class="form-group">
+                  <input type="text" class="form-control" id="search-query" placeholder="Search" autocomplete="off">
+                </div>
+              </form>
+            </div>
+          </div>
+        </nav>
+        
+        <div class="subnav navbar navbar-default">
+          <div class="container hide-when-search" id="breadcrumb">
+            <ul class="breadcrumb">
+              <li></li>
+            </ul>
+          </div>
+        </div>
+      </header>
+      <div role="main" class="container body-content hide-when-search">
+        
+        <div class="sidenav hide-when-search">
+          <a class="btn toc-toggle collapse" data-toggle="collapse" href="#sidetoggle" aria-expanded="false" aria-controls="sidetoggle">Show / Hide Table of Contents</a>
+          <div class="sidetoggle collapse" id="sidetoggle">
+            <div id="sidetoc"></div>
+          </div>
+        </div>
+        <div class="article row grid-right">
+          <div class="col-md-10">
+            <article class="content wrap" id="_content">
+              
+              
+              <h1 id="FubarDev_WebDavServer_Dispatchers_IWebDavClass1" data-uid="FubarDev.WebDavServer.Dispatchers.IWebDavClass1">Interface IWebDavClass1
+              </h1>
+              <div class="markdown level0 summary"><p>Interface for WebDAV class 1 support</p>
+</div>
+              <div class="markdown level0 conceptual"></div>
+              <div class="inheritedMembers">
+                <h5>Inherited Members</h5>
+                <div>
+                  <a class="xref" href="FubarDev.WebDavServer.Dispatchers.IWebDavClass.html#FubarDev_WebDavServer_Dispatchers_IWebDavClass_HttpMethods">IWebDavClass.HttpMethods</a>
+                </div>
+                <div>
+                  <a class="xref" href="FubarDev.WebDavServer.Dispatchers.IWebDavClass.html#FubarDev_WebDavServer_Dispatchers_IWebDavClass_WebDavContext">IWebDavClass.WebDavContext</a>
+                </div>
+                <div>
+                  <a class="xref" href="FubarDev.WebDavServer.Dispatchers.IWebDavClass.html#FubarDev_WebDavServer_Dispatchers_IWebDavClass_OptionsResponseHeaders">IWebDavClass.OptionsResponseHeaders</a>
+                </div>
+                <div>
+                  <a class="xref" href="FubarDev.WebDavServer.Dispatchers.IWebDavClass.html#FubarDev_WebDavServer_Dispatchers_IWebDavClass_DefaultResponseHeaders">IWebDavClass.DefaultResponseHeaders</a>
+                </div>
+                <div>
+                  <a class="xref" href="FubarDev.WebDavServer.Dispatchers.IWebDavClass.html#FubarDev_WebDavServer_Dispatchers_IWebDavClass_GetProperties_FubarDev_WebDavServer_FileSystem_IEntry_">IWebDavClass.GetProperties(IEntry)</a>
+                </div>
+              </div>
+              <h6><strong>Namespace</strong>:FubarDev.WebDavServer.Dispatchers</h6>
+              <h6><strong>Assembly</strong>:FubarDev.WebDavServer.dll</h6>
+              <h5 id="FubarDev_WebDavServer_Dispatchers_IWebDavClass1_syntax">Syntax</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public interface IWebDavClass1 : IWebDavClass</code></pre>
+              </div>
+              <h3 id="methods">Methods
+              </h3>
+              
+              
+              <a id="FubarDev_WebDavServer_Dispatchers_IWebDavClass1_CopyAsync_" data-uid="FubarDev.WebDavServer.Dispatchers.IWebDavClass1.CopyAsync*"></a>
+              <h4 id="FubarDev_WebDavServer_Dispatchers_IWebDavClass1_CopyAsync_System_String_System_Uri_System_Threading_CancellationToken_" data-uid="FubarDev.WebDavServer.Dispatchers.IWebDavClass1.CopyAsync(System.String,System.Uri,System.Threading.CancellationToken)">CopyAsync(String, Uri, CancellationToken)</h4>
+              <div class="markdown level1 summary"><p>Copies from the source to the destination</p>
+</div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">[NotNull]
+[ItemNotNull]
+Task&lt;IWebDavResult&gt; CopyAsync([NotNull] string path, [NotNull] Uri destination, CancellationToken cancellationToken)</code></pre>
+              </div>
+              <h5 class="parameters">Parameters</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Name</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><a class="xref" href="https://msdn.microsoft.com/en-us/library/system.string(v=vs.110).aspx">String</a></td>
+                    <td><span class="parametername">path</span></td>
+                    <td><p>The source to copy</p>
+</td>
+                  </tr>
+                  <tr>
+                    <td><a class="xref" href="https://msdn.microsoft.com/en-us/library/system.uri(v=vs.110).aspx">Uri</a></td>
+                    <td><span class="parametername">destination</span></td>
+                    <td><p>The destination to copy to</p>
+</td>
+                  </tr>
+                  <tr>
+                    <td><a class="xref" href="https://msdn.microsoft.com/en-us/library/system.threading.cancellationtoken(v=vs.110).aspx">CancellationToken</a></td>
+                    <td><span class="parametername">cancellationToken</span></td>
+                    <td><p>The cancellation token</p>
+</td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 class="returns">Returns</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><a class="xref" href="https://msdn.microsoft.com/en-us/library/dd321424(v=vs.110).aspx">Task</a>&lt;<a class="xref" href="FubarDev.WebDavServer.IWebDavResult.html">IWebDavResult</a>&gt;</td>
+                    <td><p>The result of the operation</p>
+</td>
+                  </tr>
+                </tbody>
+              </table>
+              
+              
+              <a id="FubarDev_WebDavServer_Dispatchers_IWebDavClass1_DeleteAsync_" data-uid="FubarDev.WebDavServer.Dispatchers.IWebDavClass1.DeleteAsync*"></a>
+              <h4 id="FubarDev_WebDavServer_Dispatchers_IWebDavClass1_DeleteAsync_System_String_System_Threading_CancellationToken_" data-uid="FubarDev.WebDavServer.Dispatchers.IWebDavClass1.DeleteAsync(System.String,System.Threading.CancellationToken)">DeleteAsync(String, CancellationToken)</h4>
+              <div class="markdown level1 summary"><p>Deletes the element at the given path</p>
+</div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">[NotNull]
+[ItemNotNull]
+Task&lt;IWebDavResult&gt; DeleteAsync([NotNull] string path, CancellationToken cancellationToken)</code></pre>
+              </div>
+              <h5 class="parameters">Parameters</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Name</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><a class="xref" href="https://msdn.microsoft.com/en-us/library/system.string(v=vs.110).aspx">String</a></td>
+                    <td><span class="parametername">path</span></td>
+                    <td><p>The path to the element to delete</p>
+</td>
+                  </tr>
+                  <tr>
+                    <td><a class="xref" href="https://msdn.microsoft.com/en-us/library/system.threading.cancellationtoken(v=vs.110).aspx">CancellationToken</a></td>
+                    <td><span class="parametername">cancellationToken</span></td>
+                    <td><p>The cancellcation token</p>
+</td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 class="returns">Returns</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><a class="xref" href="https://msdn.microsoft.com/en-us/library/dd321424(v=vs.110).aspx">Task</a>&lt;<a class="xref" href="FubarDev.WebDavServer.IWebDavResult.html">IWebDavResult</a>&gt;</td>
+                    <td><p>The result of the operation</p>
+</td>
+                  </tr>
+                </tbody>
+              </table>
+              
+              
+              <a id="FubarDev_WebDavServer_Dispatchers_IWebDavClass1_GetAsync_" data-uid="FubarDev.WebDavServer.Dispatchers.IWebDavClass1.GetAsync*"></a>
+              <h4 id="FubarDev_WebDavServer_Dispatchers_IWebDavClass1_GetAsync_System_String_System_Threading_CancellationToken_" data-uid="FubarDev.WebDavServer.Dispatchers.IWebDavClass1.GetAsync(System.String,System.Threading.CancellationToken)">GetAsync(String, CancellationToken)</h4>
+              <div class="markdown level1 summary"><p>Gets the element at the given path</p>
+</div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">[NotNull]
+[ItemNotNull]
+Task&lt;IWebDavResult&gt; GetAsync([NotNull] string path, CancellationToken cancellationToken)</code></pre>
+              </div>
+              <h5 class="parameters">Parameters</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Name</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><a class="xref" href="https://msdn.microsoft.com/en-us/library/system.string(v=vs.110).aspx">String</a></td>
+                    <td><span class="parametername">path</span></td>
+                    <td><p>The path to the element to get</p>
+</td>
+                  </tr>
+                  <tr>
+                    <td><a class="xref" href="https://msdn.microsoft.com/en-us/library/system.threading.cancellationtoken(v=vs.110).aspx">CancellationToken</a></td>
+                    <td><span class="parametername">cancellationToken</span></td>
+                    <td><p>The cancellcation token</p>
+</td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 class="returns">Returns</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><a class="xref" href="https://msdn.microsoft.com/en-us/library/dd321424(v=vs.110).aspx">Task</a>&lt;<a class="xref" href="FubarDev.WebDavServer.IWebDavResult.html">IWebDavResult</a>&gt;</td>
+                    <td><p>The result of the operation</p>
+</td>
+                  </tr>
+                </tbody>
+              </table>
+              
+              
+              <a id="FubarDev_WebDavServer_Dispatchers_IWebDavClass1_HeadAsync_" data-uid="FubarDev.WebDavServer.Dispatchers.IWebDavClass1.HeadAsync*"></a>
+              <h4 id="FubarDev_WebDavServer_Dispatchers_IWebDavClass1_HeadAsync_System_String_System_Threading_CancellationToken_" data-uid="FubarDev.WebDavServer.Dispatchers.IWebDavClass1.HeadAsync(System.String,System.Threading.CancellationToken)">HeadAsync(String, CancellationToken)</h4>
+              <div class="markdown level1 summary"><p>Gets the information about an element at the given path</p>
+</div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">[NotNull]
+[ItemNotNull]
+Task&lt;IWebDavResult&gt; HeadAsync([NotNull] string path, CancellationToken cancellationToken)</code></pre>
+              </div>
+              <h5 class="parameters">Parameters</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Name</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><a class="xref" href="https://msdn.microsoft.com/en-us/library/system.string(v=vs.110).aspx">String</a></td>
+                    <td><span class="parametername">path</span></td>
+                    <td><p>The path to the element to get the information for</p>
+</td>
+                  </tr>
+                  <tr>
+                    <td><a class="xref" href="https://msdn.microsoft.com/en-us/library/system.threading.cancellationtoken(v=vs.110).aspx">CancellationToken</a></td>
+                    <td><span class="parametername">cancellationToken</span></td>
+                    <td><p>The cancellcation token</p>
+</td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 class="returns">Returns</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><a class="xref" href="https://msdn.microsoft.com/en-us/library/dd321424(v=vs.110).aspx">Task</a>&lt;<a class="xref" href="FubarDev.WebDavServer.IWebDavResult.html">IWebDavResult</a>&gt;</td>
+                    <td><p>The result of the operation</p>
+</td>
+                  </tr>
+                </tbody>
+              </table>
+              
+              
+              <a id="FubarDev_WebDavServer_Dispatchers_IWebDavClass1_MkColAsync_" data-uid="FubarDev.WebDavServer.Dispatchers.IWebDavClass1.MkColAsync*"></a>
+              <h4 id="FubarDev_WebDavServer_Dispatchers_IWebDavClass1_MkColAsync_System_String_System_Threading_CancellationToken_" data-uid="FubarDev.WebDavServer.Dispatchers.IWebDavClass1.MkColAsync(System.String,System.Threading.CancellationToken)">MkColAsync(String, CancellationToken)</h4>
+              <div class="markdown level1 summary"><p>Creates a collection at the given path</p>
+</div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">[NotNull]
+[ItemNotNull]
+Task&lt;IWebDavResult&gt; MkColAsync([NotNull] string path, CancellationToken cancellationToken)</code></pre>
+              </div>
+              <h5 class="parameters">Parameters</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Name</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><a class="xref" href="https://msdn.microsoft.com/en-us/library/system.string(v=vs.110).aspx">String</a></td>
+                    <td><span class="parametername">path</span></td>
+                    <td><p>The path to the collection to create</p>
+</td>
+                  </tr>
+                  <tr>
+                    <td><a class="xref" href="https://msdn.microsoft.com/en-us/library/system.threading.cancellationtoken(v=vs.110).aspx">CancellationToken</a></td>
+                    <td><span class="parametername">cancellationToken</span></td>
+                    <td><p>The cancellcation token</p>
+</td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 class="returns">Returns</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><a class="xref" href="https://msdn.microsoft.com/en-us/library/dd321424(v=vs.110).aspx">Task</a>&lt;<a class="xref" href="FubarDev.WebDavServer.IWebDavResult.html">IWebDavResult</a>&gt;</td>
+                    <td><p>The result of the operation</p>
+</td>
+                  </tr>
+                </tbody>
+              </table>
+              
+              
+              <a id="FubarDev_WebDavServer_Dispatchers_IWebDavClass1_MoveAsync_" data-uid="FubarDev.WebDavServer.Dispatchers.IWebDavClass1.MoveAsync*"></a>
+              <h4 id="FubarDev_WebDavServer_Dispatchers_IWebDavClass1_MoveAsync_System_String_System_Uri_System_Threading_CancellationToken_" data-uid="FubarDev.WebDavServer.Dispatchers.IWebDavClass1.MoveAsync(System.String,System.Uri,System.Threading.CancellationToken)">MoveAsync(String, Uri, CancellationToken)</h4>
+              <div class="markdown level1 summary"><p>Moves from the source to the destination</p>
+</div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">[NotNull]
+[ItemNotNull]
+Task&lt;IWebDavResult&gt; MoveAsync([NotNull] string path, [NotNull] Uri destination, CancellationToken cancellationToken)</code></pre>
+              </div>
+              <h5 class="parameters">Parameters</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Name</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><a class="xref" href="https://msdn.microsoft.com/en-us/library/system.string(v=vs.110).aspx">String</a></td>
+                    <td><span class="parametername">path</span></td>
+                    <td><p>The source to move</p>
+</td>
+                  </tr>
+                  <tr>
+                    <td><a class="xref" href="https://msdn.microsoft.com/en-us/library/system.uri(v=vs.110).aspx">Uri</a></td>
+                    <td><span class="parametername">destination</span></td>
+                    <td><p>The destination to move to</p>
+</td>
+                  </tr>
+                  <tr>
+                    <td><a class="xref" href="https://msdn.microsoft.com/en-us/library/system.threading.cancellationtoken(v=vs.110).aspx">CancellationToken</a></td>
+                    <td><span class="parametername">cancellationToken</span></td>
+                    <td><p>The cancellation token</p>
+</td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 class="returns">Returns</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><a class="xref" href="https://msdn.microsoft.com/en-us/library/dd321424(v=vs.110).aspx">Task</a>&lt;<a class="xref" href="FubarDev.WebDavServer.IWebDavResult.html">IWebDavResult</a>&gt;</td>
+                    <td><p>The result of the operation</p>
+</td>
+                  </tr>
+                </tbody>
+              </table>
+              
+              
+              <a id="FubarDev_WebDavServer_Dispatchers_IWebDavClass1_OptionsAsync_" data-uid="FubarDev.WebDavServer.Dispatchers.IWebDavClass1.OptionsAsync*"></a>
+              <h4 id="FubarDev_WebDavServer_Dispatchers_IWebDavClass1_OptionsAsync_System_String_System_Threading_CancellationToken_" data-uid="FubarDev.WebDavServer.Dispatchers.IWebDavClass1.OptionsAsync(System.String,System.Threading.CancellationToken)">OptionsAsync(String, CancellationToken)</h4>
+              <div class="markdown level1 summary"><p>Queries the options for a given path.</p>
+</div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">[NotNull]
+[ItemNotNull]
+Task&lt;IWebDavResult&gt; OptionsAsync([NotNull] string path, CancellationToken cancellationToken)</code></pre>
+              </div>
+              <h5 class="parameters">Parameters</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Name</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><a class="xref" href="https://msdn.microsoft.com/en-us/library/system.string(v=vs.110).aspx">String</a></td>
+                    <td><span class="parametername">path</span></td>
+                    <td><p>The root-relataive file system path to query the options for</p>
+</td>
+                  </tr>
+                  <tr>
+                    <td><a class="xref" href="https://msdn.microsoft.com/en-us/library/system.threading.cancellationtoken(v=vs.110).aspx">CancellationToken</a></td>
+                    <td><span class="parametername">cancellationToken</span></td>
+                    <td><p>The cancellcation token</p>
+</td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 class="returns">Returns</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><a class="xref" href="https://msdn.microsoft.com/en-us/library/dd321424(v=vs.110).aspx">Task</a>&lt;<a class="xref" href="FubarDev.WebDavServer.IWebDavResult.html">IWebDavResult</a>&gt;</td>
+                    <td><p>The result of the operation</p>
+</td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 id="FubarDev_WebDavServer_Dispatchers_IWebDavClass1_OptionsAsync_System_String_System_Threading_CancellationToken__remarks">Remarks</h5>
+              <div class="markdown level1 remarks"><p>This is used to identify the WebDAV capabilities at a given URL.</p>
+</div>
+              
+              
+              <a id="FubarDev_WebDavServer_Dispatchers_IWebDavClass1_PropFindAsync_" data-uid="FubarDev.WebDavServer.Dispatchers.IWebDavClass1.PropFindAsync*"></a>
+              <h4 id="FubarDev_WebDavServer_Dispatchers_IWebDavClass1_PropFindAsync_System_String_FubarDev_WebDavServer_Model_propfind_System_Threading_CancellationToken_" data-uid="FubarDev.WebDavServer.Dispatchers.IWebDavClass1.PropFindAsync(System.String,FubarDev.WebDavServer.Model.propfind,System.Threading.CancellationToken)">PropFindAsync(String, propfind, CancellationToken)</h4>
+              <div class="markdown level1 summary"><p>Queries properties (dead or live) for a given <span class="paramref">path</span>.</p>
+</div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">[NotNull]
+[ItemNotNull]
+Task&lt;IWebDavResult&gt; PropFindAsync([NotNull] string path, [CanBeNull] propfind request, CancellationToken cancellationToken)</code></pre>
+              </div>
+              <h5 class="parameters">Parameters</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Name</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><a class="xref" href="https://msdn.microsoft.com/en-us/library/system.string(v=vs.110).aspx">String</a></td>
+                    <td><span class="parametername">path</span></td>
+                    <td><p>The path to query the properties for</p>
+</td>
+                  </tr>
+                  <tr>
+                    <td><a class="xref" href="FubarDev.WebDavServer.Model.propfind.html">propfind</a></td>
+                    <td><span class="parametername">request</span></td>
+                    <td><p>Some information about the properties to query</p>
+</td>
+                  </tr>
+                  <tr>
+                    <td><a class="xref" href="https://msdn.microsoft.com/en-us/library/system.threading.cancellationtoken(v=vs.110).aspx">CancellationToken</a></td>
+                    <td><span class="parametername">cancellationToken</span></td>
+                    <td><p>The cancellcation token</p>
+</td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 class="returns">Returns</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><a class="xref" href="https://msdn.microsoft.com/en-us/library/dd321424(v=vs.110).aspx">Task</a>&lt;<a class="xref" href="FubarDev.WebDavServer.IWebDavResult.html">IWebDavResult</a>&gt;</td>
+                    <td><p>The result of the operation</p>
+</td>
+                  </tr>
+                </tbody>
+              </table>
+              
+              
+              <a id="FubarDev_WebDavServer_Dispatchers_IWebDavClass1_PropPatchAsync_" data-uid="FubarDev.WebDavServer.Dispatchers.IWebDavClass1.PropPatchAsync*"></a>
+              <h4 id="FubarDev_WebDavServer_Dispatchers_IWebDavClass1_PropPatchAsync_System_String_FubarDev_WebDavServer_Model_propertyupdate_System_Threading_CancellationToken_" data-uid="FubarDev.WebDavServer.Dispatchers.IWebDavClass1.PropPatchAsync(System.String,FubarDev.WebDavServer.Model.propertyupdate,System.Threading.CancellationToken)">PropPatchAsync(String, propertyupdate, CancellationToken)</h4>
+              <div class="markdown level1 summary"><p>Patches (sets or removes) properties from the given <span class="paramref">path</span></p>
+</div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">[NotNull]
+[ItemNotNull]
+Task&lt;IWebDavResult&gt; PropPatchAsync([NotNull] string path, [NotNull] propertyupdate request, CancellationToken cancellationToken)</code></pre>
+              </div>
+              <h5 class="parameters">Parameters</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Name</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><a class="xref" href="https://msdn.microsoft.com/en-us/library/system.string(v=vs.110).aspx">String</a></td>
+                    <td><span class="parametername">path</span></td>
+                    <td><p>The path to patch the properties for</p>
+</td>
+                  </tr>
+                  <tr>
+                    <td><a class="xref" href="FubarDev.WebDavServer.Model.propertyupdate.html">propertyupdate</a></td>
+                    <td><span class="parametername">request</span></td>
+                    <td><p>The properties to patch</p>
+</td>
+                  </tr>
+                  <tr>
+                    <td><a class="xref" href="https://msdn.microsoft.com/en-us/library/system.threading.cancellationtoken(v=vs.110).aspx">CancellationToken</a></td>
+                    <td><span class="parametername">cancellationToken</span></td>
+                    <td><p>The cancellcation token</p>
+</td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 class="returns">Returns</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><a class="xref" href="https://msdn.microsoft.com/en-us/library/dd321424(v=vs.110).aspx">Task</a>&lt;<a class="xref" href="FubarDev.WebDavServer.IWebDavResult.html">IWebDavResult</a>&gt;</td>
+                    <td><p>The result of the operation</p>
+</td>
+                  </tr>
+                </tbody>
+              </table>
+              
+              
+              <a id="FubarDev_WebDavServer_Dispatchers_IWebDavClass1_PutAsync_" data-uid="FubarDev.WebDavServer.Dispatchers.IWebDavClass1.PutAsync*"></a>
+              <h4 id="FubarDev_WebDavServer_Dispatchers_IWebDavClass1_PutAsync_System_String_System_IO_Stream_System_Threading_CancellationToken_" data-uid="FubarDev.WebDavServer.Dispatchers.IWebDavClass1.PutAsync(System.String,System.IO.Stream,System.Threading.CancellationToken)">PutAsync(String, Stream, CancellationToken)</h4>
+              <div class="markdown level1 summary"><p>Creates or updates a document at the given <span class="paramref">path</span></p>
+</div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">[NotNull]
+[ItemNotNull]
+Task&lt;IWebDavResult&gt; PutAsync([NotNull] string path, [NotNull] Stream data, CancellationToken cancellationToken)</code></pre>
+              </div>
+              <h5 class="parameters">Parameters</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Name</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><a class="xref" href="https://msdn.microsoft.com/en-us/library/system.string(v=vs.110).aspx">String</a></td>
+                    <td><span class="parametername">path</span></td>
+                    <td><p>The path where to create or update the document</p>
+</td>
+                  </tr>
+                  <tr>
+                    <td><a class="xref" href="https://msdn.microsoft.com/en-us/library/system.io.stream(v=vs.110).aspx">Stream</a></td>
+                    <td><span class="parametername">data</span></td>
+                    <td><p>The data to write to the new or existing document</p>
+</td>
+                  </tr>
+                  <tr>
+                    <td><a class="xref" href="https://msdn.microsoft.com/en-us/library/system.threading.cancellationtoken(v=vs.110).aspx">CancellationToken</a></td>
+                    <td><span class="parametername">cancellationToken</span></td>
+                    <td><p>The cancellcation token</p>
+</td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 class="returns">Returns</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><a class="xref" href="https://msdn.microsoft.com/en-us/library/dd321424(v=vs.110).aspx">Task</a>&lt;<a class="xref" href="FubarDev.WebDavServer.IWebDavResult.html">IWebDavResult</a>&gt;</td>
+                    <td><p>The result of the operation</p>
+</td>
+                  </tr>
+                </tbody>
+              </table>
+                        </article>
+          </div>
+          
+          <div class="hidden-sm col-md-2" role="complementary">
+            <div class="sideaffix">
+              <div class="contribution">
+                <ul class="nav">
+                </ul>
+              </div>
+              <nav class="bs-docs-sidebar hidden-print hidden-xs hidden-sm affix" id="affix">
+              <!-- <p><a class="back-to-top" href="#top">Back to top</a><p> -->
+              </nav>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <footer>
+        <div class="grad-bottom"></div>
+        <div class="footer">
+          <div class="container">
+            <span class="pull-right">
+              <a href="#top">Back to top</a>
+            </span>
+            
+            <span>Copyright © 2015-2016 Microsoft<br>Generated by <strong>DocFX</strong></span>
+          </div>
+        </div>
+      </footer>
+    </div>
+    
+    <script type="text/javascript" src="../styles/docfx.vendor.js"></script>
+    <script type="text/javascript" src="../styles/docfx.js"></script>
+    <script type="text/javascript" src="../styles/main.js"></script>
+  </body>
+</html>

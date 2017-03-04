@@ -1,0 +1,298 @@
+﻿<!DOCTYPE html>
+<!--[if IE]><![endif]-->
+<html>
+  
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <title>Interface IImplicitLock
+   </title>
+    <meta name="viewport" content="width=device-width">
+    <meta name="title" content="Interface IImplicitLock
+   ">
+    <meta name="generator" content="docfx 2.12.1.0">
+    
+    <link rel="shortcut icon" href="../favicon.ico">
+    <link rel="stylesheet" href="../styles/docfx.vendor.css">
+    <link rel="stylesheet" href="../styles/docfx.css">
+    <link rel="stylesheet" href="../styles/main.css">
+    <meta property="docfx:navrel" content="../toc.html">
+    <meta property="docfx:tocrel" content="toc.html">
+    
+  </head>
+  <body data-spy="scroll" data-target="#affix">
+    <div id="wrapper">
+      <header>
+        
+        <nav id="autocollapse" class="navbar navbar-inverse ng-scope" role="navigation">
+          <div class="container">
+            <div class="navbar-header">
+              <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+              </button>
+              
+              <a class="navbar-brand" href="../index.html">
+                <img id="logo" class="svg" src="../logo.svg" alt="">
+              </a>
+            </div>
+            <div class="collapse navbar-collapse" id="navbar">
+              <form class="navbar-form navbar-right" role="search" id="search">
+                <div class="form-group">
+                  <input type="text" class="form-control" id="search-query" placeholder="Search" autocomplete="off">
+                </div>
+              </form>
+            </div>
+          </div>
+        </nav>
+        
+        <div class="subnav navbar navbar-default">
+          <div class="container hide-when-search" id="breadcrumb">
+            <ul class="breadcrumb">
+              <li></li>
+            </ul>
+          </div>
+        </div>
+      </header>
+      <div role="main" class="container body-content hide-when-search">
+        
+        <div class="sidenav hide-when-search">
+          <a class="btn toc-toggle collapse" data-toggle="collapse" href="#sidetoggle" aria-expanded="false" aria-controls="sidetoggle">Show / Hide Table of Contents</a>
+          <div class="sidetoggle collapse" id="sidetoggle">
+            <div id="sidetoc"></div>
+          </div>
+        </div>
+        <div class="article row grid-right">
+          <div class="col-md-10">
+            <article class="content wrap" id="_content">
+              
+              
+              <h1 id="FubarDev_WebDavServer_Locking_IImplicitLock" data-uid="FubarDev.WebDavServer.Locking.IImplicitLock">Interface IImplicitLock
+              </h1>
+              <div class="markdown level0 summary"><p>The interface for the result of the <code>If</code> header evaluation</p>
+</div>
+              <div class="markdown level0 conceptual"></div>
+              <h6><strong>Namespace</strong>:FubarDev.WebDavServer.Locking</h6>
+              <h6><strong>Assembly</strong>:FubarDev.WebDavServer.dll</h6>
+              <h5 id="FubarDev_WebDavServer_Locking_IImplicitLock_syntax">Syntax</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public interface IImplicitLock</code></pre>
+              </div>
+              <h3 id="properties">Properties
+              </h3>
+              
+              
+              <a id="FubarDev_WebDavServer_Locking_IImplicitLock_ConflictingLocks_" data-uid="FubarDev.WebDavServer.Locking.IImplicitLock.ConflictingLocks*"></a>
+              <h4 id="FubarDev_WebDavServer_Locking_IImplicitLock_ConflictingLocks" data-uid="FubarDev.WebDavServer.Locking.IImplicitLock.ConflictingLocks">ConflictingLocks</h4>
+              <div class="markdown level1 summary"><p>Gets the locks preventing the usage of an implicit lock</p>
+</div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">IReadOnlyCollection&lt;IActiveLock&gt; ConflictingLocks { get; }</code></pre>
+              </div>
+              <h5 class="propertyValue">Property Value</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><a class="xref" href="https://msdn.microsoft.com/en-us/library/hh881542(v=vs.110).aspx">IReadOnlyCollection</a>&lt;<a class="xref" href="FubarDev.WebDavServer.Locking.IActiveLock.html">IActiveLock</a>&gt;</td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              
+              
+              <a id="FubarDev_WebDavServer_Locking_IImplicitLock_IsSuccessful_" data-uid="FubarDev.WebDavServer.Locking.IImplicitLock.IsSuccessful*"></a>
+              <h4 id="FubarDev_WebDavServer_Locking_IImplicitLock_IsSuccessful" data-uid="FubarDev.WebDavServer.Locking.IImplicitLock.IsSuccessful">IsSuccessful</h4>
+              <div class="markdown level1 summary"><p>Gets a value indicating whether the <code>If</code> header was evaluated successfully</p>
+</div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">bool IsSuccessful { get; }</code></pre>
+              </div>
+              <h5 class="propertyValue">Property Value</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><a class="xref" href="https://msdn.microsoft.com/en-us/library/system.boolean(v=vs.110).aspx">Boolean</a></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              
+              
+              <a id="FubarDev_WebDavServer_Locking_IImplicitLock_IsTemporaryLock_" data-uid="FubarDev.WebDavServer.Locking.IImplicitLock.IsTemporaryLock*"></a>
+              <h4 id="FubarDev_WebDavServer_Locking_IImplicitLock_IsTemporaryLock" data-uid="FubarDev.WebDavServer.Locking.IImplicitLock.IsTemporaryLock">IsTemporaryLock</h4>
+              <div class="markdown level1 summary"><p>Gets a value indicating whether an implicit lock was created</p>
+</div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">bool IsTemporaryLock { get; }</code></pre>
+              </div>
+              <h5 class="propertyValue">Property Value</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><a class="xref" href="https://msdn.microsoft.com/en-us/library/system.boolean(v=vs.110).aspx">Boolean</a></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              
+              
+              <a id="FubarDev_WebDavServer_Locking_IImplicitLock_OwnedLocks_" data-uid="FubarDev.WebDavServer.Locking.IImplicitLock.OwnedLocks*"></a>
+              <h4 id="FubarDev_WebDavServer_Locking_IImplicitLock_OwnedLocks" data-uid="FubarDev.WebDavServer.Locking.IImplicitLock.OwnedLocks">OwnedLocks</h4>
+              <div class="markdown level1 summary"><p>Gets the locks matched by the <code>If</code> header or implicit shared lock</p>
+</div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">IReadOnlyCollection&lt;IActiveLock&gt; OwnedLocks { get; }</code></pre>
+              </div>
+              <h5 class="propertyValue">Property Value</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><a class="xref" href="https://msdn.microsoft.com/en-us/library/hh881542(v=vs.110).aspx">IReadOnlyCollection</a>&lt;<a class="xref" href="FubarDev.WebDavServer.Locking.IActiveLock.html">IActiveLock</a>&gt;</td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              <h3 id="methods">Methods
+              </h3>
+              
+              
+              <a id="FubarDev_WebDavServer_Locking_IImplicitLock_CreateErrorResponse_" data-uid="FubarDev.WebDavServer.Locking.IImplicitLock.CreateErrorResponse*"></a>
+              <h4 id="FubarDev_WebDavServer_Locking_IImplicitLock_CreateErrorResponse" data-uid="FubarDev.WebDavServer.Locking.IImplicitLock.CreateErrorResponse">CreateErrorResponse()</h4>
+              <div class="markdown level1 summary"><p>Creates an error response when <a class="xref" href="FubarDev.WebDavServer.Locking.IImplicitLock.html#FubarDev_WebDavServer_Locking_IImplicitLock_IsSuccessful">IsSuccessful</a> is <span class="xref">false</span></p>
+</div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">IWebDavResult CreateErrorResponse()</code></pre>
+              </div>
+              <h5 class="returns">Returns</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><a class="xref" href="FubarDev.WebDavServer.IWebDavResult.html">IWebDavResult</a></td>
+                    <td><p>The WebDAV response</p>
+</td>
+                  </tr>
+                </tbody>
+              </table>
+              
+              
+              <a id="FubarDev_WebDavServer_Locking_IImplicitLock_DisposeAsync_" data-uid="FubarDev.WebDavServer.Locking.IImplicitLock.DisposeAsync*"></a>
+              <h4 id="FubarDev_WebDavServer_Locking_IImplicitLock_DisposeAsync_System_Threading_CancellationToken_" data-uid="FubarDev.WebDavServer.Locking.IImplicitLock.DisposeAsync(System.Threading.CancellationToken)">DisposeAsync(CancellationToken)</h4>
+              <div class="markdown level1 summary"><p>Disposes the temporary lock (when it was issued)</p>
+</div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">Task DisposeAsync(CancellationToken cancellationToken)</code></pre>
+              </div>
+              <h5 class="parameters">Parameters</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Name</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><a class="xref" href="https://msdn.microsoft.com/en-us/library/system.threading.cancellationtoken(v=vs.110).aspx">CancellationToken</a></td>
+                    <td><span class="parametername">cancellationToken</span></td>
+                    <td><p>The cancellation token</p>
+</td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 class="returns">Returns</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><a class="xref" href="https://msdn.microsoft.com/en-us/library/system.threading.tasks.task(v=vs.110).aspx">Task</a></td>
+                    <td><p>The async task</p>
+</td>
+                  </tr>
+                </tbody>
+              </table>
+                        </article>
+          </div>
+          
+          <div class="hidden-sm col-md-2" role="complementary">
+            <div class="sideaffix">
+              <div class="contribution">
+                <ul class="nav">
+                </ul>
+              </div>
+              <nav class="bs-docs-sidebar hidden-print hidden-xs hidden-sm affix" id="affix">
+              <!-- <p><a class="back-to-top" href="#top">Back to top</a><p> -->
+              </nav>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <footer>
+        <div class="grad-bottom"></div>
+        <div class="footer">
+          <div class="container">
+            <span class="pull-right">
+              <a href="#top">Back to top</a>
+            </span>
+            
+            <span>Copyright © 2015-2016 Microsoft<br>Generated by <strong>DocFX</strong></span>
+          </div>
+        </div>
+      </footer>
+    </div>
+    
+    <script type="text/javascript" src="../styles/docfx.vendor.js"></script>
+    <script type="text/javascript" src="../styles/docfx.js"></script>
+    <script type="text/javascript" src="../styles/main.js"></script>
+  </body>
+</html>

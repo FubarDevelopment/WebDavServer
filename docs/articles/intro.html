@@ -1,0 +1,134 @@
+﻿<!DOCTYPE html>
+<!--[if IE]><![endif]-->
+<html>
+  
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <title>Introduction </title>
+    <meta name="viewport" content="width=device-width">
+    <meta name="title" content="Introduction ">
+    <meta name="generator" content="docfx 2.12.1.0">
+    
+    <link rel="shortcut icon" href="../favicon.ico">
+    <link rel="stylesheet" href="../styles/docfx.vendor.css">
+    <link rel="stylesheet" href="../styles/docfx.css">
+    <link rel="stylesheet" href="../styles/main.css">
+    <meta property="docfx:navrel" content="../toc.html">
+    <meta property="docfx:tocrel" content="toc.html">
+    
+  </head>
+  <body data-spy="scroll" data-target="#affix">
+    <div id="wrapper">
+      <header>
+        
+        <nav id="autocollapse" class="navbar navbar-inverse ng-scope" role="navigation">
+          <div class="container">
+            <div class="navbar-header">
+              <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+              </button>
+              
+              <a class="navbar-brand" href="../index.html">
+                <img id="logo" class="svg" src="../logo.svg" alt="">
+              </a>
+            </div>
+            <div class="collapse navbar-collapse" id="navbar">
+              <form class="navbar-form navbar-right" role="search" id="search">
+                <div class="form-group">
+                  <input type="text" class="form-control" id="search-query" placeholder="Search" autocomplete="off">
+                </div>
+              </form>
+            </div>
+          </div>
+        </nav>
+        
+        <div class="subnav navbar navbar-default">
+          <div class="container hide-when-search" id="breadcrumb">
+            <ul class="breadcrumb">
+              <li></li>
+            </ul>
+          </div>
+        </div>
+      </header>
+      <div role="main" class="container body-content hide-when-search">
+        
+        <div class="sidenav hide-when-search">
+          <a class="btn toc-toggle collapse" data-toggle="collapse" href="#sidetoggle" aria-expanded="false" aria-controls="sidetoggle">Show / Hide Table of Contents</a>
+          <div class="sidetoggle collapse" id="sidetoggle">
+            <div id="sidetoc"></div>
+          </div>
+        </div>
+        <div class="article row grid-right">
+          <div class="col-md-10">
+            <article class="content wrap" id="_content" data-uid="">
+              <h1 id="introduction">Introduction</h1>
+              
+<p>This WebDAV server is extensible and mainly a framework that allows hosting
+your own WebDAV server using ASP.NET Core.</p>
+<h1 id="main-architecture">Main architecture</h1>
+<p>The following extension points must be implemented by every hoster.</p>
+<p><img src="../images/WebDavServerComponents.png" alt="Architectural overview"></p>
+<ul>
+<li><p><a class="xref" href="../api/FubarDev.WebDavServer.FileSystem.IFileSystem.html">IFileSystem</a></p>
+<p>The root file system is a hierarchical system consisting of <a class="xref" href="../api/FubarDev.WebDavServer.FileSystem.ICollection.html">ICollection</a> and <a class="xref" href="../api/FubarDev.WebDavServer.FileSystem.IDocument.html">IDocument</a>. The file system is accessed by using the <a class="xref" href="../api/FubarDev.WebDavServer.FileSystem.IFileSystemFactory.html">IFileSystemFactory</a> to get the file system for the currently authenticated <a class="xref" href="https://msdn.microsoft.com/en-us/library/system.security.principal.iprincipal(v=vs.110).aspx">IPrincipal</a>.</p>
+</li>
+<li><p><a class="xref" href="../api/FubarDev.WebDavServer.Props.Store.IPropertyStore.html">IPropertyStore</a></p>
+<p>The property store is used for storing dead properties and (if the file system entries don&#39;t implement <a class="xref" href="../api/FubarDev.WebDavServer.FileSystem.IEntityTagEntry.html">IEntityTagEntry</a>) the file system entries <a class="xref" href="../api/FubarDev.WebDavServer.Model.Headers.EntityTag.html">EntityTag</a>. A property store is always created for a file system using the <a class="xref" href="../api/FubarDev.WebDavServer.Props.Store.IPropertyStoreFactory.html">IPropertyStoreFactory</a>.</p>
+</li>
+</ul>
+<p>This project provides default implementation for those extension points.</p>
+<h2 id="default-implementations-for-ifilesystemfactoryxreffubardevwebdavserverfilesystemifilesystemfactory">Default implementations for <a class="xref" href="../api/FubarDev.WebDavServer.FileSystem.IFileSystemFactory.html">IFileSystemFactory</a></h2>
+<p>The following default implementation is available:</p>
+<ul>
+<li><a class="xref" href="../api/FubarDev.WebDavServer.FileSystem.DotNet.DotNetFileSystemFactory.html">DotNetFileSystemFactory</a></li>
+<li><a class="xref" href="../api/FubarDev.WebDavServer.FileSystem.InMemory.InMemoryFileSystemFactory.html">InMemoryFileSystemFactory</a></li>
+</ul>
+<h2 id="default-implementation-for-ipropertystorefactoryxreffubardevwebdavserverpropsstoreipropertystorefactory">Default implementation for <a class="xref" href="../api/FubarDev.WebDavServer.Props.Store.IPropertyStoreFactory.html">IPropertyStoreFactory</a></h2>
+<ul>
+<li><a class="xref" href="../api/FubarDev.WebDavServer.Props.Store.TextFile.TextFilePropertyStoreFactory.html">TextFilePropertyStoreFactory</a></li>
+<li><a class="xref" href="../api/FubarDev.WebDavServer.Props.Store.InMemory.InMemoryPropertyStoreFactory.html">InMemoryPropertyStoreFactory</a></li>
+</ul>
+<h1 id="getting-started">Getting started</h1>
+<p>The easiest way to get started is creating a ASP.NET Core project.
+A <a href="getting-started.html">walk-through</a> is available.</p>
+
+            </article>
+          </div>
+          
+          <div class="hidden-sm col-md-2" role="complementary">
+            <div class="sideaffix">
+              <div class="contribution">
+                <ul class="nav">
+                </ul>
+              </div>
+              <nav class="bs-docs-sidebar hidden-print hidden-xs hidden-sm affix" id="affix">
+              <!-- <p><a class="back-to-top" href="#top">Back to top</a><p> -->
+              </nav>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <footer>
+        <div class="grad-bottom"></div>
+        <div class="footer">
+          <div class="container">
+            <span class="pull-right">
+              <a href="#top">Back to top</a>
+            </span>
+            
+            <span>Copyright © 2015-2016 Microsoft<br>Generated by <strong>DocFX</strong></span>
+          </div>
+        </div>
+      </footer>
+    </div>
+    
+    <script type="text/javascript" src="../styles/docfx.vendor.js"></script>
+    <script type="text/javascript" src="../styles/docfx.js"></script>
+    <script type="text/javascript" src="../styles/main.js"></script>
+  </body>
+</html>

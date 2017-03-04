@@ -1,0 +1,520 @@
+﻿<!DOCTYPE html>
+<!--[if IE]><![endif]-->
+<html>
+  
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <title>Class RangeHeader
+   </title>
+    <meta name="viewport" content="width=device-width">
+    <meta name="title" content="Class RangeHeader
+   ">
+    <meta name="generator" content="docfx 2.12.1.0">
+    
+    <link rel="shortcut icon" href="../favicon.ico">
+    <link rel="stylesheet" href="../styles/docfx.vendor.css">
+    <link rel="stylesheet" href="../styles/docfx.css">
+    <link rel="stylesheet" href="../styles/main.css">
+    <meta property="docfx:navrel" content="../toc.html">
+    <meta property="docfx:tocrel" content="toc.html">
+    
+  </head>
+  <body data-spy="scroll" data-target="#affix">
+    <div id="wrapper">
+      <header>
+        
+        <nav id="autocollapse" class="navbar navbar-inverse ng-scope" role="navigation">
+          <div class="container">
+            <div class="navbar-header">
+              <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+              </button>
+              
+              <a class="navbar-brand" href="../index.html">
+                <img id="logo" class="svg" src="../logo.svg" alt="">
+              </a>
+            </div>
+            <div class="collapse navbar-collapse" id="navbar">
+              <form class="navbar-form navbar-right" role="search" id="search">
+                <div class="form-group">
+                  <input type="text" class="form-control" id="search-query" placeholder="Search" autocomplete="off">
+                </div>
+              </form>
+            </div>
+          </div>
+        </nav>
+        
+        <div class="subnav navbar navbar-default">
+          <div class="container hide-when-search" id="breadcrumb">
+            <ul class="breadcrumb">
+              <li></li>
+            </ul>
+          </div>
+        </div>
+      </header>
+      <div role="main" class="container body-content hide-when-search">
+        
+        <div class="sidenav hide-when-search">
+          <a class="btn toc-toggle collapse" data-toggle="collapse" href="#sidetoggle" aria-expanded="false" aria-controls="sidetoggle">Show / Hide Table of Contents</a>
+          <div class="sidetoggle collapse" id="sidetoggle">
+            <div id="sidetoc"></div>
+          </div>
+        </div>
+        <div class="article row grid-right">
+          <div class="col-md-10">
+            <article class="content wrap" id="_content">
+              
+              
+              <h1 id="FubarDev_WebDavServer_Model_Headers_RangeHeader" data-uid="FubarDev.WebDavServer.Model.Headers.RangeHeader">Class RangeHeader
+              </h1>
+              <div class="markdown level0 summary"><p>This class encapsualtes a HTTP range</p>
+</div>
+              <div class="markdown level0 conceptual"></div>
+              <div class="inheritance">
+                <h5>Inheritance</h5>
+                  <div class="level0"><a class="xref" href="https://msdn.microsoft.com/en-us/library/system.object(v=vs.110).aspx">Object</a></div>
+                  <div class="level1"><span class="xref">RangeHeader</span></div>
+              </div>
+              <div class="inheritedMembers">
+                <h5>Inherited Members</h5>
+                <div>
+                  <a class="xref" href="https://msdn.microsoft.com/en-us/library/bsc2ak47(v=vs.110).aspx">Object.Equals(Object)</a>
+                </div>
+                <div>
+                  <a class="xref" href="https://msdn.microsoft.com/en-us/library/w4hkze5k(v=vs.110).aspx">Object.Equals(Object, Object)</a>
+                </div>
+                <div>
+                  <a class="xref" href="https://msdn.microsoft.com/en-us/library/hz2a0b8x(v=vs.110).aspx">Object.ReferenceEquals(Object, Object)</a>
+                </div>
+                <div>
+                  <a class="xref" href="https://msdn.microsoft.com/en-us/library/zdee4b3y(v=vs.110).aspx">Object.GetHashCode()</a>
+                </div>
+                <div>
+                  <a class="xref" href="https://msdn.microsoft.com/en-us/library/dfwy45w9(v=vs.110).aspx">Object.GetType()</a>
+                </div>
+                <div>
+                  <a class="xref" href="https://msdn.microsoft.com/en-us/library/57ctke0a(v=vs.110).aspx">Object.MemberwiseClone()</a>
+                </div>
+              </div>
+              <h6><strong>Namespace</strong>:FubarDev.WebDavServer.Model.Headers</h6>
+              <h6><strong>Assembly</strong>:FubarDev.WebDavServer.dll</h6>
+              <h5 id="FubarDev_WebDavServer_Model_Headers_RangeHeader_syntax">Syntax</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public class RangeHeader</code></pre>
+              </div>
+              <h3 id="constructors">Constructors
+              </h3>
+              
+              
+              <a id="FubarDev_WebDavServer_Model_Headers_RangeHeader__ctor_" data-uid="FubarDev.WebDavServer.Model.Headers.RangeHeader.#ctor*"></a>
+              <h4 id="FubarDev_WebDavServer_Model_Headers_RangeHeader__ctor_System_String_FubarDev_WebDavServer_Model_Headers_RangeHeaderItem___" data-uid="FubarDev.WebDavServer.Model.Headers.RangeHeader.#ctor(System.String,FubarDev.WebDavServer.Model.Headers.RangeHeaderItem[])">RangeHeader(String, RangeHeaderItem[])</h4>
+              <div class="markdown level1 summary"><p>Initializes a new instance of the <a class="xref" href="FubarDev.WebDavServer.Model.Headers.RangeHeader.html">RangeHeader</a> class.</p>
+</div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public RangeHeader([NotNull] string unit, params RangeHeaderItem[] rangeItems)</code></pre>
+              </div>
+              <h5 class="parameters">Parameters</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Name</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><a class="xref" href="https://msdn.microsoft.com/en-us/library/system.string(v=vs.110).aspx">String</a></td>
+                    <td><span class="parametername">unit</span></td>
+                    <td><p>The unit of the range (currently only <code>bytes</code> is allowed)</p>
+</td>
+                  </tr>
+                  <tr>
+                    <td><a class="xref" href="FubarDev.WebDavServer.Model.Headers.RangeHeaderItem.html">RangeHeaderItem</a>[]</td>
+                    <td><span class="parametername">rangeItems</span></td>
+                    <td><p>The HTTP range items for this range</p>
+</td>
+                  </tr>
+                </tbody>
+              </table>
+              <h3 id="properties">Properties
+              </h3>
+              
+              
+              <a id="FubarDev_WebDavServer_Model_Headers_RangeHeader_RangeItems_" data-uid="FubarDev.WebDavServer.Model.Headers.RangeHeader.RangeItems*"></a>
+              <h4 id="FubarDev_WebDavServer_Model_Headers_RangeHeader_RangeItems" data-uid="FubarDev.WebDavServer.Model.Headers.RangeHeader.RangeItems">RangeItems</h4>
+              <div class="markdown level1 summary"><p>Gets the HTTP range items</p>
+</div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">[NotNull]
+public IReadOnlyCollection&lt;RangeHeaderItem&gt; RangeItems { get; }</code></pre>
+              </div>
+              <h5 class="propertyValue">Property Value</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><a class="xref" href="https://msdn.microsoft.com/en-us/library/hh881542(v=vs.110).aspx">IReadOnlyCollection</a>&lt;<a class="xref" href="FubarDev.WebDavServer.Model.Headers.RangeHeaderItem.html">RangeHeaderItem</a>&gt;</td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              
+              
+              <a id="FubarDev_WebDavServer_Model_Headers_RangeHeader_Unit_" data-uid="FubarDev.WebDavServer.Model.Headers.RangeHeader.Unit*"></a>
+              <h4 id="FubarDev_WebDavServer_Model_Headers_RangeHeader_Unit" data-uid="FubarDev.WebDavServer.Model.Headers.RangeHeader.Unit">Unit</h4>
+              <div class="markdown level1 summary"><p>Gets the unit for this HTTP range</p>
+</div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">[NotNull]
+public string Unit { get; }</code></pre>
+              </div>
+              <h5 class="propertyValue">Property Value</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><a class="xref" href="https://msdn.microsoft.com/en-us/library/system.string(v=vs.110).aspx">String</a></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              <h3 id="methods">Methods
+              </h3>
+              
+              
+              <a id="FubarDev_WebDavServer_Model_Headers_RangeHeader_Normalize_" data-uid="FubarDev.WebDavServer.Model.Headers.RangeHeader.Normalize*"></a>
+              <h4 id="FubarDev_WebDavServer_Model_Headers_RangeHeader_Normalize_System_Int64_" data-uid="FubarDev.WebDavServer.Model.Headers.RangeHeader.Normalize(System.Int64)">Normalize(Int64)</h4>
+              <div class="markdown level1 summary"><p>Normalize all byte ranges using the specified <span class="paramref">totalLength</span></p>
+</div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">[NotNull]
+public IReadOnlyList&lt;NormalizedRangeItem&gt; Normalize(long totalLength)</code></pre>
+              </div>
+              <h5 class="parameters">Parameters</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Name</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><a class="xref" href="https://msdn.microsoft.com/en-us/library/system.int64(v=vs.110).aspx">Int64</a></td>
+                    <td><span class="parametername">totalLength</span></td>
+                    <td><p>The length of the resource</p>
+</td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 class="returns">Returns</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><a class="xref" href="https://msdn.microsoft.com/en-us/library/hh192385(v=vs.110).aspx">IReadOnlyList</a>&lt;<a class="xref" href="FubarDev.WebDavServer.Model.Headers.NormalizedRangeItem.html">NormalizedRangeItem</a>&gt;</td>
+                    <td><p>The list of normalized byte ranges</p>
+</td>
+                  </tr>
+                </tbody>
+              </table>
+              
+              
+              <a id="FubarDev_WebDavServer_Model_Headers_RangeHeader_Parse_" data-uid="FubarDev.WebDavServer.Model.Headers.RangeHeader.Parse*"></a>
+              <h4 id="FubarDev_WebDavServer_Model_Headers_RangeHeader_Parse_System_Collections_Generic_IEnumerable_System_String__" data-uid="FubarDev.WebDavServer.Model.Headers.RangeHeader.Parse(System.Collections.Generic.IEnumerable{System.String})">Parse(IEnumerable&lt;String&gt;)</h4>
+              <div class="markdown level1 summary"><p>Parses the <span class="paramref">ranges</span> into a new <a class="xref" href="FubarDev.WebDavServer.Model.Headers.RangeHeader.html">RangeHeader</a> instance</p>
+</div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">[NotNull]
+public static RangeHeader Parse([NotNull, ItemNotNull] IEnumerable&lt;string&gt; ranges)</code></pre>
+              </div>
+              <h5 class="parameters">Parameters</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Name</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><a class="xref" href="https://msdn.microsoft.com/en-us/library/9eekhta0(v=vs.110).aspx">IEnumerable</a>&lt;<a class="xref" href="https://msdn.microsoft.com/en-us/library/system.string(v=vs.110).aspx">String</a>&gt;</td>
+                    <td><span class="parametername">ranges</span></td>
+                    <td><p>The ranges to parse</p>
+</td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 class="returns">Returns</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><a class="xref" href="FubarDev.WebDavServer.Model.Headers.RangeHeader.html">RangeHeader</a></td>
+                    <td><p>The new <a class="xref" href="FubarDev.WebDavServer.Model.Headers.RangeHeader.html">RangeHeader</a></p>
+</td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 id="FubarDev_WebDavServer_Model_Headers_RangeHeader_Parse_System_Collections_Generic_IEnumerable_System_String___remarks">Remarks</h5>
+              <div class="markdown level1 remarks"><p>The range must be in the form <code>unit=(range)+</code></p>
+</div>
+              
+              
+              <a id="FubarDev_WebDavServer_Model_Headers_RangeHeader_Parse_" data-uid="FubarDev.WebDavServer.Model.Headers.RangeHeader.Parse*"></a>
+              <h4 id="FubarDev_WebDavServer_Model_Headers_RangeHeader_Parse_System_String_" data-uid="FubarDev.WebDavServer.Model.Headers.RangeHeader.Parse(System.String)">Parse(String)</h4>
+              <div class="markdown level1 summary"><p>Parses a <span class="paramref">range</span> into a new <a class="xref" href="FubarDev.WebDavServer.Model.Headers.RangeHeader.html">RangeHeader</a> instance</p>
+</div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">[NotNull]
+public static RangeHeader Parse([NotNull] string range)</code></pre>
+              </div>
+              <h5 class="parameters">Parameters</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Name</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><a class="xref" href="https://msdn.microsoft.com/en-us/library/system.string(v=vs.110).aspx">String</a></td>
+                    <td><span class="parametername">range</span></td>
+                    <td><p>The range to parse</p>
+</td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 class="returns">Returns</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><a class="xref" href="FubarDev.WebDavServer.Model.Headers.RangeHeader.html">RangeHeader</a></td>
+                    <td><p>The new <a class="xref" href="FubarDev.WebDavServer.Model.Headers.RangeHeader.html">RangeHeader</a></p>
+</td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 id="FubarDev_WebDavServer_Model_Headers_RangeHeader_Parse_System_String__remarks">Remarks</h5>
+              <div class="markdown level1 remarks"><p>The range must be in the form <code>unit=(range)+</code></p>
+</div>
+              
+              
+              <a id="FubarDev_WebDavServer_Model_Headers_RangeHeader_ToString_" data-uid="FubarDev.WebDavServer.Model.Headers.RangeHeader.ToString*"></a>
+              <h4 id="FubarDev_WebDavServer_Model_Headers_RangeHeader_ToString" data-uid="FubarDev.WebDavServer.Model.Headers.RangeHeader.ToString">ToString()</h4>
+              <div class="markdown level1 summary"><p>Returns the textual representation of this range.</p>
+</div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">[NotNull]
+public override string ToString()</code></pre>
+              </div>
+              <h5 class="returns">Returns</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><a class="xref" href="https://msdn.microsoft.com/en-us/library/system.string(v=vs.110).aspx">String</a></td>
+                    <td><p>The textual representation of this range</p>
+</td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 class="overrides">Overrides</h5>
+              <div><a class="xref" href="https://msdn.microsoft.com/en-us/library/7bxwbwt2(v=vs.110).aspx">Object.ToString()</a></div>
+              <h5 id="FubarDev_WebDavServer_Model_Headers_RangeHeader_ToString_remarks">Remarks</h5>
+              <div class="markdown level1 remarks"><p>The return value of this function can be parsed using <a class="xref" href="FubarDev.WebDavServer.Model.Headers.RangeHeader.html#FubarDev_WebDavServer_Model_Headers_RangeHeader_Parse_System_String_">Parse(String)</a>.</p>
+</div>
+              
+              
+              <a id="FubarDev_WebDavServer_Model_Headers_RangeHeader_ToString_" data-uid="FubarDev.WebDavServer.Model.Headers.RangeHeader.ToString*"></a>
+              <h4 id="FubarDev_WebDavServer_Model_Headers_RangeHeader_ToString_FubarDev_WebDavServer_Model_Headers_RangeHeaderItem_" data-uid="FubarDev.WebDavServer.Model.Headers.RangeHeader.ToString(FubarDev.WebDavServer.Model.Headers.RangeHeaderItem)">ToString(RangeHeaderItem)</h4>
+              <div class="markdown level1 summary"><p>Returns the textual representation of a single <a class="xref" href="FubarDev.WebDavServer.Model.Headers.RangeHeaderItem.html">RangeHeaderItem</a></p>
+</div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">[NotNull]
+public virtual string ToString(RangeHeaderItem rangeItem)</code></pre>
+              </div>
+              <h5 class="parameters">Parameters</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Name</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><a class="xref" href="FubarDev.WebDavServer.Model.Headers.RangeHeaderItem.html">RangeHeaderItem</a></td>
+                    <td><span class="parametername">rangeItem</span></td>
+                    <td><p>The <a class="xref" href="FubarDev.WebDavServer.Model.Headers.RangeHeaderItem.html">RangeHeaderItem</a> to get the textual representation for</p>
+</td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 class="returns">Returns</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><a class="xref" href="https://msdn.microsoft.com/en-us/library/system.string(v=vs.110).aspx">String</a></td>
+                    <td><p>The textual representation of <span class="paramref">rangeItem</span></p>
+</td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 id="FubarDev_WebDavServer_Model_Headers_RangeHeader_ToString_FubarDev_WebDavServer_Model_Headers_RangeHeaderItem__remarks">Remarks</h5>
+              <div class="markdown level1 remarks"><p>The return value of this function looks like <code>unit range/length</code></p>
+</div>
+              
+              
+              <a id="FubarDev_WebDavServer_Model_Headers_RangeHeader_ToString_" data-uid="FubarDev.WebDavServer.Model.Headers.RangeHeader.ToString*"></a>
+              <h4 id="FubarDev_WebDavServer_Model_Headers_RangeHeader_ToString_FubarDev_WebDavServer_Model_Headers_RangeHeaderItem_System_Nullable_System_Int64__" data-uid="FubarDev.WebDavServer.Model.Headers.RangeHeader.ToString(FubarDev.WebDavServer.Model.Headers.RangeHeaderItem,System.Nullable{System.Int64})">ToString(RangeHeaderItem, Nullable&lt;Int64&gt;)</h4>
+              <div class="markdown level1 summary"><p>Returns the textual representation of a single <a class="xref" href="FubarDev.WebDavServer.Model.Headers.RangeHeaderItem.html">RangeHeaderItem</a></p>
+</div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">[NotNull]
+public virtual string ToString(RangeHeaderItem rangeItem, long ? length)</code></pre>
+              </div>
+              <h5 class="parameters">Parameters</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Name</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><a class="xref" href="FubarDev.WebDavServer.Model.Headers.RangeHeaderItem.html">RangeHeaderItem</a></td>
+                    <td><span class="parametername">rangeItem</span></td>
+                    <td><p>The <a class="xref" href="FubarDev.WebDavServer.Model.Headers.RangeHeaderItem.html">RangeHeaderItem</a> to get the textual representation for</p>
+</td>
+                  </tr>
+                  <tr>
+                    <td><a class="xref" href="https://msdn.microsoft.com/en-us/library/b3h38hb0(v=vs.110).aspx">Nullable</a>&lt;<a class="xref" href="https://msdn.microsoft.com/en-us/library/system.int64(v=vs.110).aspx">Int64</a>&gt;</td>
+                    <td><span class="parametername">length</span></td>
+                    <td><p>The length value to be used in the textual representation</p>
+</td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 class="returns">Returns</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><a class="xref" href="https://msdn.microsoft.com/en-us/library/system.string(v=vs.110).aspx">String</a></td>
+                    <td><p>The textual representation of <span class="paramref">rangeItem</span></p>
+</td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 id="FubarDev_WebDavServer_Model_Headers_RangeHeader_ToString_FubarDev_WebDavServer_Model_Headers_RangeHeaderItem_System_Nullable_System_Int64___remarks">Remarks</h5>
+              <div class="markdown level1 remarks"><p>The return value of this function looks like <code>unit range/length</code></p>
+</div>
+                        </article>
+          </div>
+          
+          <div class="hidden-sm col-md-2" role="complementary">
+            <div class="sideaffix">
+              <div class="contribution">
+                <ul class="nav">
+                </ul>
+              </div>
+              <nav class="bs-docs-sidebar hidden-print hidden-xs hidden-sm affix" id="affix">
+              <!-- <p><a class="back-to-top" href="#top">Back to top</a><p> -->
+              </nav>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <footer>
+        <div class="grad-bottom"></div>
+        <div class="footer">
+          <div class="container">
+            <span class="pull-right">
+              <a href="#top">Back to top</a>
+            </span>
+            
+            <span>Copyright © 2015-2016 Microsoft<br>Generated by <strong>DocFX</strong></span>
+          </div>
+        </div>
+      </footer>
+    </div>
+    
+    <script type="text/javascript" src="../styles/docfx.vendor.js"></script>
+    <script type="text/javascript" src="../styles/docfx.js"></script>
+    <script type="text/javascript" src="../styles/main.js"></script>
+  </body>
+</html>

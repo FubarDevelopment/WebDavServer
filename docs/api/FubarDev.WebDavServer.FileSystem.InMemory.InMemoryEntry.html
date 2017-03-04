@@ -1,0 +1,658 @@
+﻿<!DOCTYPE html>
+<!--[if IE]><![endif]-->
+<html>
+  
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <title>Class InMemoryEntry
+   </title>
+    <meta name="viewport" content="width=device-width">
+    <meta name="title" content="Class InMemoryEntry
+   ">
+    <meta name="generator" content="docfx 2.12.1.0">
+    
+    <link rel="shortcut icon" href="../favicon.ico">
+    <link rel="stylesheet" href="../styles/docfx.vendor.css">
+    <link rel="stylesheet" href="../styles/docfx.css">
+    <link rel="stylesheet" href="../styles/main.css">
+    <meta property="docfx:navrel" content="../toc.html">
+    <meta property="docfx:tocrel" content="toc.html">
+    
+  </head>
+  <body data-spy="scroll" data-target="#affix">
+    <div id="wrapper">
+      <header>
+        
+        <nav id="autocollapse" class="navbar navbar-inverse ng-scope" role="navigation">
+          <div class="container">
+            <div class="navbar-header">
+              <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+              </button>
+              
+              <a class="navbar-brand" href="../index.html">
+                <img id="logo" class="svg" src="../logo.svg" alt="">
+              </a>
+            </div>
+            <div class="collapse navbar-collapse" id="navbar">
+              <form class="navbar-form navbar-right" role="search" id="search">
+                <div class="form-group">
+                  <input type="text" class="form-control" id="search-query" placeholder="Search" autocomplete="off">
+                </div>
+              </form>
+            </div>
+          </div>
+        </nav>
+        
+        <div class="subnav navbar navbar-default">
+          <div class="container hide-when-search" id="breadcrumb">
+            <ul class="breadcrumb">
+              <li></li>
+            </ul>
+          </div>
+        </div>
+      </header>
+      <div role="main" class="container body-content hide-when-search">
+        
+        <div class="sidenav hide-when-search">
+          <a class="btn toc-toggle collapse" data-toggle="collapse" href="#sidetoggle" aria-expanded="false" aria-controls="sidetoggle">Show / Hide Table of Contents</a>
+          <div class="sidetoggle collapse" id="sidetoggle">
+            <div id="sidetoc"></div>
+          </div>
+        </div>
+        <div class="article row grid-right">
+          <div class="col-md-10">
+            <article class="content wrap" id="_content">
+              
+              
+              <h1 id="FubarDev_WebDavServer_FileSystem_InMemory_InMemoryEntry" data-uid="FubarDev.WebDavServer.FileSystem.InMemory.InMemoryEntry">Class InMemoryEntry
+              </h1>
+              <div class="markdown level0 summary"><p>Am in-memory implementation of a WebDAV entry (collection or document)</p>
+</div>
+              <div class="markdown level0 conceptual"></div>
+              <div class="inheritance">
+                <h5>Inheritance</h5>
+                  <div class="level0"><a class="xref" href="https://msdn.microsoft.com/en-us/library/system.object(v=vs.110).aspx">Object</a></div>
+                  <div class="level1"><span class="xref">InMemoryEntry</span></div>
+                  <div class="level2"><a class="xref" href="FubarDev.WebDavServer.FileSystem.InMemory.InMemoryDirectory.html">InMemoryDirectory</a></div>
+                  <div class="level2"><a class="xref" href="FubarDev.WebDavServer.FileSystem.InMemory.InMemoryFile.html">InMemoryFile</a></div>
+              </div>
+              <div class="inheritedMembers">
+                <h5>Inherited Members</h5>
+                <div>
+                  <a class="xref" href="https://msdn.microsoft.com/en-us/library/7bxwbwt2(v=vs.110).aspx">Object.ToString()</a>
+                </div>
+                <div>
+                  <a class="xref" href="https://msdn.microsoft.com/en-us/library/bsc2ak47(v=vs.110).aspx">Object.Equals(Object)</a>
+                </div>
+                <div>
+                  <a class="xref" href="https://msdn.microsoft.com/en-us/library/w4hkze5k(v=vs.110).aspx">Object.Equals(Object, Object)</a>
+                </div>
+                <div>
+                  <a class="xref" href="https://msdn.microsoft.com/en-us/library/hz2a0b8x(v=vs.110).aspx">Object.ReferenceEquals(Object, Object)</a>
+                </div>
+                <div>
+                  <a class="xref" href="https://msdn.microsoft.com/en-us/library/zdee4b3y(v=vs.110).aspx">Object.GetHashCode()</a>
+                </div>
+                <div>
+                  <a class="xref" href="https://msdn.microsoft.com/en-us/library/dfwy45w9(v=vs.110).aspx">Object.GetType()</a>
+                </div>
+                <div>
+                  <a class="xref" href="https://msdn.microsoft.com/en-us/library/57ctke0a(v=vs.110).aspx">Object.MemberwiseClone()</a>
+                </div>
+              </div>
+              <h6><strong>Namespace</strong>:FubarDev.WebDavServer.FileSystem.InMemory</h6>
+              <h6><strong>Assembly</strong>:FubarDev.WebDavServer.FileSystem.InMemory.dll</h6>
+              <h5 id="FubarDev_WebDavServer_FileSystem_InMemory_InMemoryEntry_syntax">Syntax</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public abstract class InMemoryEntry : IEntry, IEntityTagEntry</code></pre>
+              </div>
+              <h3 id="constructors">Constructors
+              </h3>
+              
+              
+              <a id="FubarDev_WebDavServer_FileSystem_InMemory_InMemoryEntry__ctor_" data-uid="FubarDev.WebDavServer.FileSystem.InMemory.InMemoryEntry.#ctor*"></a>
+              <h4 id="FubarDev_WebDavServer_FileSystem_InMemory_InMemoryEntry__ctor_FubarDev_WebDavServer_FileSystem_InMemory_InMemoryFileSystem_FubarDev_WebDavServer_FileSystem_InMemory_InMemoryDirectory_System_Uri_System_String_" data-uid="FubarDev.WebDavServer.FileSystem.InMemory.InMemoryEntry.#ctor(FubarDev.WebDavServer.FileSystem.InMemory.InMemoryFileSystem,FubarDev.WebDavServer.FileSystem.InMemory.InMemoryDirectory,System.Uri,System.String)">InMemoryEntry(InMemoryFileSystem, InMemoryDirectory, Uri, String)</h4>
+              <div class="markdown level1 summary"><p>Initializes a new instance of the <a class="xref" href="FubarDev.WebDavServer.FileSystem.InMemory.InMemoryEntry.html">InMemoryEntry</a> class.</p>
+</div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">protected InMemoryEntry(InMemoryFileSystem fileSystem, InMemoryDirectory parent, Uri path, string name)</code></pre>
+              </div>
+              <h5 class="parameters">Parameters</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Name</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><a class="xref" href="FubarDev.WebDavServer.FileSystem.InMemory.InMemoryFileSystem.html">InMemoryFileSystem</a></td>
+                    <td><span class="parametername">fileSystem</span></td>
+                    <td><p>The file system this entry belongs to</p>
+</td>
+                  </tr>
+                  <tr>
+                    <td><a class="xref" href="FubarDev.WebDavServer.FileSystem.InMemory.InMemoryDirectory.html">InMemoryDirectory</a></td>
+                    <td><span class="parametername">parent</span></td>
+                    <td><p>The parent collection</p>
+</td>
+                  </tr>
+                  <tr>
+                    <td><a class="xref" href="https://msdn.microsoft.com/en-us/library/system.uri(v=vs.110).aspx">Uri</a></td>
+                    <td><span class="parametername">path</span></td>
+                    <td><p>The root-relative path of this entry</p>
+</td>
+                  </tr>
+                  <tr>
+                    <td><a class="xref" href="https://msdn.microsoft.com/en-us/library/system.string(v=vs.110).aspx">String</a></td>
+                    <td><span class="parametername">name</span></td>
+                    <td><p>The name of the entry</p>
+</td>
+                  </tr>
+                </tbody>
+              </table>
+              <h3 id="properties">Properties
+              </h3>
+              
+              
+              <a id="FubarDev_WebDavServer_FileSystem_InMemory_InMemoryEntry_CreationTimeUtc_" data-uid="FubarDev.WebDavServer.FileSystem.InMemory.InMemoryEntry.CreationTimeUtc*"></a>
+              <h4 id="FubarDev_WebDavServer_FileSystem_InMemory_InMemoryEntry_CreationTimeUtc" data-uid="FubarDev.WebDavServer.FileSystem.InMemory.InMemoryEntry.CreationTimeUtc">CreationTimeUtc</h4>
+              <div class="markdown level1 summary"></div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public DateTime CreationTimeUtc { get; protected set; }</code></pre>
+              </div>
+              <h5 class="propertyValue">Property Value</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><a class="xref" href="https://msdn.microsoft.com/en-us/library/system.datetime(v=vs.110).aspx">DateTime</a></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 class="implements">Implements</h5>
+                  <div><a class="xref" href="FubarDev.WebDavServer.FileSystem.IEntry.html#FubarDev_WebDavServer_FileSystem_IEntry_CreationTimeUtc">IEntry.CreationTimeUtc</a></div>
+              
+              
+              <a id="FubarDev_WebDavServer_FileSystem_InMemory_InMemoryEntry_ETag_" data-uid="FubarDev.WebDavServer.FileSystem.InMemory.InMemoryEntry.ETag*"></a>
+              <h4 id="FubarDev_WebDavServer_FileSystem_InMemory_InMemoryEntry_ETag" data-uid="FubarDev.WebDavServer.FileSystem.InMemory.InMemoryEntry.ETag">ETag</h4>
+              <div class="markdown level1 summary"></div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public EntityTag ETag { get; protected set; }</code></pre>
+              </div>
+              <h5 class="propertyValue">Property Value</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><a class="xref" href="FubarDev.WebDavServer.Model.Headers.EntityTag.html">EntityTag</a></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 class="implements">Implements</h5>
+                  <div><a class="xref" href="FubarDev.WebDavServer.FileSystem.IEntityTagEntry.html#FubarDev_WebDavServer_FileSystem_IEntityTagEntry_ETag">IEntityTagEntry.ETag</a></div>
+              
+              
+              <a id="FubarDev_WebDavServer_FileSystem_InMemory_InMemoryEntry_FileSystem_" data-uid="FubarDev.WebDavServer.FileSystem.InMemory.InMemoryEntry.FileSystem*"></a>
+              <h4 id="FubarDev_WebDavServer_FileSystem_InMemory_InMemoryEntry_FileSystem" data-uid="FubarDev.WebDavServer.FileSystem.InMemory.InMemoryEntry.FileSystem">FileSystem</h4>
+              <div class="markdown level1 summary"></div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public IFileSystem FileSystem { get; }</code></pre>
+              </div>
+              <h5 class="propertyValue">Property Value</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><a class="xref" href="FubarDev.WebDavServer.FileSystem.IFileSystem.html">IFileSystem</a></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 class="implements">Implements</h5>
+                  <div><a class="xref" href="FubarDev.WebDavServer.FileSystem.IEntry.html#FubarDev_WebDavServer_FileSystem_IEntry_FileSystem">IEntry.FileSystem</a></div>
+              
+              
+              <a id="FubarDev_WebDavServer_FileSystem_InMemory_InMemoryEntry_InMemoryFileSystem_" data-uid="FubarDev.WebDavServer.FileSystem.InMemory.InMemoryEntry.InMemoryFileSystem*"></a>
+              <h4 id="FubarDev_WebDavServer_FileSystem_InMemory_InMemoryEntry_InMemoryFileSystem" data-uid="FubarDev.WebDavServer.FileSystem.InMemory.InMemoryEntry.InMemoryFileSystem">InMemoryFileSystem</h4>
+              <div class="markdown level1 summary"><p>Gets the file system</p>
+</div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">[NotNull]
+protected InMemoryFileSystem InMemoryFileSystem { get; }</code></pre>
+              </div>
+              <h5 class="propertyValue">Property Value</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><a class="xref" href="FubarDev.WebDavServer.FileSystem.InMemory.InMemoryFileSystem.html">InMemoryFileSystem</a></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              
+              
+              <a id="FubarDev_WebDavServer_FileSystem_InMemory_InMemoryEntry_InMemoryParent_" data-uid="FubarDev.WebDavServer.FileSystem.InMemory.InMemoryEntry.InMemoryParent*"></a>
+              <h4 id="FubarDev_WebDavServer_FileSystem_InMemory_InMemoryEntry_InMemoryParent" data-uid="FubarDev.WebDavServer.FileSystem.InMemory.InMemoryEntry.InMemoryParent">InMemoryParent</h4>
+              <div class="markdown level1 summary"><p>Gets the parent collection</p>
+</div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">[CanBeNull]
+protected InMemoryDirectory InMemoryParent { get; }</code></pre>
+              </div>
+              <h5 class="propertyValue">Property Value</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><a class="xref" href="FubarDev.WebDavServer.FileSystem.InMemory.InMemoryDirectory.html">InMemoryDirectory</a></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              
+              
+              <a id="FubarDev_WebDavServer_FileSystem_InMemory_InMemoryEntry_LastWriteTimeUtc_" data-uid="FubarDev.WebDavServer.FileSystem.InMemory.InMemoryEntry.LastWriteTimeUtc*"></a>
+              <h4 id="FubarDev_WebDavServer_FileSystem_InMemory_InMemoryEntry_LastWriteTimeUtc" data-uid="FubarDev.WebDavServer.FileSystem.InMemory.InMemoryEntry.LastWriteTimeUtc">LastWriteTimeUtc</h4>
+              <div class="markdown level1 summary"></div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public DateTime LastWriteTimeUtc { get; protected set; }</code></pre>
+              </div>
+              <h5 class="propertyValue">Property Value</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><a class="xref" href="https://msdn.microsoft.com/en-us/library/system.datetime(v=vs.110).aspx">DateTime</a></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 class="implements">Implements</h5>
+                  <div><a class="xref" href="FubarDev.WebDavServer.FileSystem.IEntry.html#FubarDev_WebDavServer_FileSystem_IEntry_LastWriteTimeUtc">IEntry.LastWriteTimeUtc</a></div>
+              
+              
+              <a id="FubarDev_WebDavServer_FileSystem_InMemory_InMemoryEntry_Name_" data-uid="FubarDev.WebDavServer.FileSystem.InMemory.InMemoryEntry.Name*"></a>
+              <h4 id="FubarDev_WebDavServer_FileSystem_InMemory_InMemoryEntry_Name" data-uid="FubarDev.WebDavServer.FileSystem.InMemory.InMemoryEntry.Name">Name</h4>
+              <div class="markdown level1 summary"></div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public string Name { get; }</code></pre>
+              </div>
+              <h5 class="propertyValue">Property Value</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><a class="xref" href="https://msdn.microsoft.com/en-us/library/system.string(v=vs.110).aspx">String</a></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 class="implements">Implements</h5>
+                  <div><a class="xref" href="FubarDev.WebDavServer.FileSystem.IEntry.html#FubarDev_WebDavServer_FileSystem_IEntry_Name">IEntry.Name</a></div>
+              
+              
+              <a id="FubarDev_WebDavServer_FileSystem_InMemory_InMemoryEntry_Parent_" data-uid="FubarDev.WebDavServer.FileSystem.InMemory.InMemoryEntry.Parent*"></a>
+              <h4 id="FubarDev_WebDavServer_FileSystem_InMemory_InMemoryEntry_Parent" data-uid="FubarDev.WebDavServer.FileSystem.InMemory.InMemoryEntry.Parent">Parent</h4>
+              <div class="markdown level1 summary"></div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public ICollection Parent { get; }</code></pre>
+              </div>
+              <h5 class="propertyValue">Property Value</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><a class="xref" href="FubarDev.WebDavServer.FileSystem.ICollection.html">ICollection</a></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 class="implements">Implements</h5>
+                  <div><a class="xref" href="FubarDev.WebDavServer.FileSystem.IEntry.html#FubarDev_WebDavServer_FileSystem_IEntry_Parent">IEntry.Parent</a></div>
+              
+              
+              <a id="FubarDev_WebDavServer_FileSystem_InMemory_InMemoryEntry_Path_" data-uid="FubarDev.WebDavServer.FileSystem.InMemory.InMemoryEntry.Path*"></a>
+              <h4 id="FubarDev_WebDavServer_FileSystem_InMemory_InMemoryEntry_Path" data-uid="FubarDev.WebDavServer.FileSystem.InMemory.InMemoryEntry.Path">Path</h4>
+              <div class="markdown level1 summary"></div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public Uri Path { get; }</code></pre>
+              </div>
+              <h5 class="propertyValue">Property Value</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><a class="xref" href="https://msdn.microsoft.com/en-us/library/system.uri(v=vs.110).aspx">Uri</a></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 class="implements">Implements</h5>
+                  <div><a class="xref" href="FubarDev.WebDavServer.FileSystem.IEntry.html#FubarDev_WebDavServer_FileSystem_IEntry_Path">IEntry.Path</a></div>
+              
+              
+              <a id="FubarDev_WebDavServer_FileSystem_InMemory_InMemoryEntry_RootFileSystem_" data-uid="FubarDev.WebDavServer.FileSystem.InMemory.InMemoryEntry.RootFileSystem*"></a>
+              <h4 id="FubarDev_WebDavServer_FileSystem_InMemory_InMemoryEntry_RootFileSystem" data-uid="FubarDev.WebDavServer.FileSystem.InMemory.InMemoryEntry.RootFileSystem">RootFileSystem</h4>
+              <div class="markdown level1 summary"></div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public IFileSystem RootFileSystem { get; }</code></pre>
+              </div>
+              <h5 class="propertyValue">Property Value</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><a class="xref" href="FubarDev.WebDavServer.FileSystem.IFileSystem.html">IFileSystem</a></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 class="implements">Implements</h5>
+                  <div><a class="xref" href="FubarDev.WebDavServer.FileSystem.IEntry.html#FubarDev_WebDavServer_FileSystem_IEntry_RootFileSystem">IEntry.RootFileSystem</a></div>
+              <h3 id="methods">Methods
+              </h3>
+              
+              
+              <a id="FubarDev_WebDavServer_FileSystem_InMemory_InMemoryEntry_DeleteAsync_" data-uid="FubarDev.WebDavServer.FileSystem.InMemory.InMemoryEntry.DeleteAsync*"></a>
+              <h4 id="FubarDev_WebDavServer_FileSystem_InMemory_InMemoryEntry_DeleteAsync_System_Threading_CancellationToken_" data-uid="FubarDev.WebDavServer.FileSystem.InMemory.InMemoryEntry.DeleteAsync(System.Threading.CancellationToken)">DeleteAsync(CancellationToken)</h4>
+              <div class="markdown level1 summary"></div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public abstract Task&lt;DeleteResult&gt; DeleteAsync(CancellationToken cancellationToken)</code></pre>
+              </div>
+              <h5 class="parameters">Parameters</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Name</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><a class="xref" href="https://msdn.microsoft.com/en-us/library/system.threading.cancellationtoken(v=vs.110).aspx">CancellationToken</a></td>
+                    <td><span class="parametername">cancellationToken</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 class="returns">Returns</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><a class="xref" href="https://msdn.microsoft.com/en-us/library/dd321424(v=vs.110).aspx">Task</a>&lt;<a class="xref" href="FubarDev.WebDavServer.FileSystem.DeleteResult.html">DeleteResult</a>&gt;</td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 class="implements">Implements</h5>
+                  <div><a class="xref" href="FubarDev.WebDavServer.FileSystem.IEntry.html#FubarDev_WebDavServer_FileSystem_IEntry_DeleteAsync_System_Threading_CancellationToken_">IEntry.DeleteAsync(CancellationToken)</a></div>
+              
+              
+              <a id="FubarDev_WebDavServer_FileSystem_InMemory_InMemoryEntry_SetCreationTimeUtcAsync_" data-uid="FubarDev.WebDavServer.FileSystem.InMemory.InMemoryEntry.SetCreationTimeUtcAsync*"></a>
+              <h4 id="FubarDev_WebDavServer_FileSystem_InMemory_InMemoryEntry_SetCreationTimeUtcAsync_System_DateTime_System_Threading_CancellationToken_" data-uid="FubarDev.WebDavServer.FileSystem.InMemory.InMemoryEntry.SetCreationTimeUtcAsync(System.DateTime,System.Threading.CancellationToken)">SetCreationTimeUtcAsync(DateTime, CancellationToken)</h4>
+              <div class="markdown level1 summary"></div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public Task SetCreationTimeUtcAsync(DateTime creationTime, CancellationToken cancellationToken)</code></pre>
+              </div>
+              <h5 class="parameters">Parameters</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Name</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><a class="xref" href="https://msdn.microsoft.com/en-us/library/system.datetime(v=vs.110).aspx">DateTime</a></td>
+                    <td><span class="parametername">creationTime</span></td>
+                    <td></td>
+                  </tr>
+                  <tr>
+                    <td><a class="xref" href="https://msdn.microsoft.com/en-us/library/system.threading.cancellationtoken(v=vs.110).aspx">CancellationToken</a></td>
+                    <td><span class="parametername">cancellationToken</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 class="returns">Returns</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><a class="xref" href="https://msdn.microsoft.com/en-us/library/system.threading.tasks.task(v=vs.110).aspx">Task</a></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 class="implements">Implements</h5>
+                  <div><a class="xref" href="FubarDev.WebDavServer.FileSystem.IEntry.html#FubarDev_WebDavServer_FileSystem_IEntry_SetCreationTimeUtcAsync_System_DateTime_System_Threading_CancellationToken_">IEntry.SetCreationTimeUtcAsync(DateTime, CancellationToken)</a></div>
+              
+              
+              <a id="FubarDev_WebDavServer_FileSystem_InMemory_InMemoryEntry_SetLastWriteTimeUtcAsync_" data-uid="FubarDev.WebDavServer.FileSystem.InMemory.InMemoryEntry.SetLastWriteTimeUtcAsync*"></a>
+              <h4 id="FubarDev_WebDavServer_FileSystem_InMemory_InMemoryEntry_SetLastWriteTimeUtcAsync_System_DateTime_System_Threading_CancellationToken_" data-uid="FubarDev.WebDavServer.FileSystem.InMemory.InMemoryEntry.SetLastWriteTimeUtcAsync(System.DateTime,System.Threading.CancellationToken)">SetLastWriteTimeUtcAsync(DateTime, CancellationToken)</h4>
+              <div class="markdown level1 summary"></div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public Task SetLastWriteTimeUtcAsync(DateTime lastWriteTime, CancellationToken cancellationToken)</code></pre>
+              </div>
+              <h5 class="parameters">Parameters</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Name</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><a class="xref" href="https://msdn.microsoft.com/en-us/library/system.datetime(v=vs.110).aspx">DateTime</a></td>
+                    <td><span class="parametername">lastWriteTime</span></td>
+                    <td></td>
+                  </tr>
+                  <tr>
+                    <td><a class="xref" href="https://msdn.microsoft.com/en-us/library/system.threading.cancellationtoken(v=vs.110).aspx">CancellationToken</a></td>
+                    <td><span class="parametername">cancellationToken</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 class="returns">Returns</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><a class="xref" href="https://msdn.microsoft.com/en-us/library/system.threading.tasks.task(v=vs.110).aspx">Task</a></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 class="implements">Implements</h5>
+                  <div><a class="xref" href="FubarDev.WebDavServer.FileSystem.IEntry.html#FubarDev_WebDavServer_FileSystem_IEntry_SetLastWriteTimeUtcAsync_System_DateTime_System_Threading_CancellationToken_">IEntry.SetLastWriteTimeUtcAsync(DateTime, CancellationToken)</a></div>
+              
+              
+              <a id="FubarDev_WebDavServer_FileSystem_InMemory_InMemoryEntry_UpdateETagAsync_" data-uid="FubarDev.WebDavServer.FileSystem.InMemory.InMemoryEntry.UpdateETagAsync*"></a>
+              <h4 id="FubarDev_WebDavServer_FileSystem_InMemory_InMemoryEntry_UpdateETagAsync_System_Threading_CancellationToken_" data-uid="FubarDev.WebDavServer.FileSystem.InMemory.InMemoryEntry.UpdateETagAsync(System.Threading.CancellationToken)">UpdateETagAsync(CancellationToken)</h4>
+              <div class="markdown level1 summary"></div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public Task&lt;EntityTag&gt; UpdateETagAsync(CancellationToken cancellationToken)</code></pre>
+              </div>
+              <h5 class="parameters">Parameters</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Name</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><a class="xref" href="https://msdn.microsoft.com/en-us/library/system.threading.cancellationtoken(v=vs.110).aspx">CancellationToken</a></td>
+                    <td><span class="parametername">cancellationToken</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 class="returns">Returns</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><a class="xref" href="https://msdn.microsoft.com/en-us/library/dd321424(v=vs.110).aspx">Task</a>&lt;<a class="xref" href="FubarDev.WebDavServer.Model.Headers.EntityTag.html">EntityTag</a>&gt;</td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 class="implements">Implements</h5>
+                  <div><a class="xref" href="FubarDev.WebDavServer.FileSystem.IEntityTagEntry.html#FubarDev_WebDavServer_FileSystem_IEntityTagEntry_UpdateETagAsync_System_Threading_CancellationToken_">IEntityTagEntry.UpdateETagAsync(CancellationToken)</a></div>
+                        </article>
+          </div>
+          
+          <div class="hidden-sm col-md-2" role="complementary">
+            <div class="sideaffix">
+              <div class="contribution">
+                <ul class="nav">
+                </ul>
+              </div>
+              <nav class="bs-docs-sidebar hidden-print hidden-xs hidden-sm affix" id="affix">
+              <!-- <p><a class="back-to-top" href="#top">Back to top</a><p> -->
+              </nav>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <footer>
+        <div class="grad-bottom"></div>
+        <div class="footer">
+          <div class="container">
+            <span class="pull-right">
+              <a href="#top">Back to top</a>
+            </span>
+            
+            <span>Copyright © 2015-2016 Microsoft<br>Generated by <strong>DocFX</strong></span>
+          </div>
+        </div>
+      </footer>
+    </div>
+    
+    <script type="text/javascript" src="../styles/docfx.vendor.js"></script>
+    <script type="text/javascript" src="../styles/docfx.js"></script>
+    <script type="text/javascript" src="../styles/main.js"></script>
+  </body>
+</html>

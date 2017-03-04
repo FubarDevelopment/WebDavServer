@@ -1,0 +1,663 @@
+﻿<!DOCTYPE html>
+<!--[if IE]><![endif]-->
+<html>
+  
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <title>Class InMemoryLockManager
+   </title>
+    <meta name="viewport" content="width=device-width">
+    <meta name="title" content="Class InMemoryLockManager
+   ">
+    <meta name="generator" content="docfx 2.12.1.0">
+    
+    <link rel="shortcut icon" href="../favicon.ico">
+    <link rel="stylesheet" href="../styles/docfx.vendor.css">
+    <link rel="stylesheet" href="../styles/docfx.css">
+    <link rel="stylesheet" href="../styles/main.css">
+    <meta property="docfx:navrel" content="../toc.html">
+    <meta property="docfx:tocrel" content="toc.html">
+    
+  </head>
+  <body data-spy="scroll" data-target="#affix">
+    <div id="wrapper">
+      <header>
+        
+        <nav id="autocollapse" class="navbar navbar-inverse ng-scope" role="navigation">
+          <div class="container">
+            <div class="navbar-header">
+              <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+              </button>
+              
+              <a class="navbar-brand" href="../index.html">
+                <img id="logo" class="svg" src="../logo.svg" alt="">
+              </a>
+            </div>
+            <div class="collapse navbar-collapse" id="navbar">
+              <form class="navbar-form navbar-right" role="search" id="search">
+                <div class="form-group">
+                  <input type="text" class="form-control" id="search-query" placeholder="Search" autocomplete="off">
+                </div>
+              </form>
+            </div>
+          </div>
+        </nav>
+        
+        <div class="subnav navbar navbar-default">
+          <div class="container hide-when-search" id="breadcrumb">
+            <ul class="breadcrumb">
+              <li></li>
+            </ul>
+          </div>
+        </div>
+      </header>
+      <div role="main" class="container body-content hide-when-search">
+        
+        <div class="sidenav hide-when-search">
+          <a class="btn toc-toggle collapse" data-toggle="collapse" href="#sidetoggle" aria-expanded="false" aria-controls="sidetoggle">Show / Hide Table of Contents</a>
+          <div class="sidetoggle collapse" id="sidetoggle">
+            <div id="sidetoc"></div>
+          </div>
+        </div>
+        <div class="article row grid-right">
+          <div class="col-md-10">
+            <article class="content wrap" id="_content">
+              
+              
+              <h1 id="FubarDev_WebDavServer_Locking_InMemory_InMemoryLockManager" data-uid="FubarDev.WebDavServer.Locking.InMemory.InMemoryLockManager">Class InMemoryLockManager
+              </h1>
+              <div class="markdown level0 summary"><p>An in-memory implementation of a lock manager</p>
+</div>
+              <div class="markdown level0 conceptual"></div>
+              <div class="inheritance">
+                <h5>Inheritance</h5>
+                  <div class="level0"><a class="xref" href="https://msdn.microsoft.com/en-us/library/system.object(v=vs.110).aspx">Object</a></div>
+                  <div class="level1"><span class="xref">InMemoryLockManager</span></div>
+              </div>
+              <div class="inheritedMembers">
+                <h5>Inherited Members</h5>
+                <div>
+                  <a class="xref" href="https://msdn.microsoft.com/en-us/library/7bxwbwt2(v=vs.110).aspx">Object.ToString()</a>
+                </div>
+                <div>
+                  <a class="xref" href="https://msdn.microsoft.com/en-us/library/bsc2ak47(v=vs.110).aspx">Object.Equals(Object)</a>
+                </div>
+                <div>
+                  <a class="xref" href="https://msdn.microsoft.com/en-us/library/w4hkze5k(v=vs.110).aspx">Object.Equals(Object, Object)</a>
+                </div>
+                <div>
+                  <a class="xref" href="https://msdn.microsoft.com/en-us/library/hz2a0b8x(v=vs.110).aspx">Object.ReferenceEquals(Object, Object)</a>
+                </div>
+                <div>
+                  <a class="xref" href="https://msdn.microsoft.com/en-us/library/zdee4b3y(v=vs.110).aspx">Object.GetHashCode()</a>
+                </div>
+                <div>
+                  <a class="xref" href="https://msdn.microsoft.com/en-us/library/dfwy45w9(v=vs.110).aspx">Object.GetType()</a>
+                </div>
+                <div>
+                  <a class="xref" href="https://msdn.microsoft.com/en-us/library/57ctke0a(v=vs.110).aspx">Object.MemberwiseClone()</a>
+                </div>
+              </div>
+              <h6><strong>Namespace</strong>:FubarDev.WebDavServer.Locking.InMemory</h6>
+              <h6><strong>Assembly</strong>:FubarDev.WebDavServer.Locking.InMemory.dll</h6>
+              <h5 id="FubarDev_WebDavServer_Locking_InMemory_InMemoryLockManager_syntax">Syntax</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public class InMemoryLockManager : ILockManager</code></pre>
+              </div>
+              <h3 id="constructors">Constructors
+              </h3>
+              
+              
+              <a id="FubarDev_WebDavServer_Locking_InMemory_InMemoryLockManager__ctor_" data-uid="FubarDev.WebDavServer.Locking.InMemory.InMemoryLockManager.#ctor*"></a>
+              <h4 id="FubarDev_WebDavServer_Locking_InMemory_InMemoryLockManager__ctor_Microsoft_Extensions_Options_IOptions_FubarDev_WebDavServer_Locking_LockManagerOptions__FubarDev_WebDavServer_Locking_LockCleanupTask_FubarDev_WebDavServer_ISystemClock_Microsoft_Extensions_Logging_ILogger_FubarDev_WebDavServer_Locking_InMemory_InMemoryLockManager__" data-uid="FubarDev.WebDavServer.Locking.InMemory.InMemoryLockManager.#ctor(Microsoft.Extensions.Options.IOptions{FubarDev.WebDavServer.Locking.LockManagerOptions},FubarDev.WebDavServer.Locking.LockCleanupTask,FubarDev.WebDavServer.ISystemClock,Microsoft.Extensions.Logging.ILogger{FubarDev.WebDavServer.Locking.InMemory.InMemoryLockManager})">InMemoryLockManager(IOptions&lt;LockManagerOptions&gt;, LockCleanupTask, ISystemClock, ILogger&lt;InMemoryLockManager&gt;)</h4>
+              <div class="markdown level1 summary"><p>Initializes a new instance of the <a class="xref" href="FubarDev.WebDavServer.Locking.InMemory.InMemoryLockManager.html">InMemoryLockManager</a> class.</p>
+</div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public InMemoryLockManager(IOptions&lt;LockManagerOptions&gt; options, LockCleanupTask cleanupTask, ISystemClock systemClock, ILogger&lt;InMemoryLockManager&gt; logger)</code></pre>
+              </div>
+              <h5 class="parameters">Parameters</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Name</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="xref">Microsoft.Extensions.Options.IOptions</span>&lt;<a class="xref" href="FubarDev.WebDavServer.Locking.LockManagerOptions.html">LockManagerOptions</a>&gt;</td>
+                    <td><span class="parametername">options</span></td>
+                    <td><p>The options of the lock manager</p>
+</td>
+                  </tr>
+                  <tr>
+                    <td><a class="xref" href="FubarDev.WebDavServer.Locking.LockCleanupTask.html">LockCleanupTask</a></td>
+                    <td><span class="parametername">cleanupTask</span></td>
+                    <td><p>The clean-up task for expired locks</p>
+</td>
+                  </tr>
+                  <tr>
+                    <td><a class="xref" href="FubarDev.WebDavServer.ISystemClock.html">ISystemClock</a></td>
+                    <td><span class="parametername">systemClock</span></td>
+                    <td><p>The system clock interface</p>
+</td>
+                  </tr>
+                  <tr>
+                    <td><span class="xref">Microsoft.Extensions.Logging.ILogger</span>&lt;<a class="xref" href="FubarDev.WebDavServer.Locking.InMemory.InMemoryLockManager.html">InMemoryLockManager</a>&gt;</td>
+                    <td><span class="parametername">logger</span></td>
+                    <td><p>The logger</p>
+</td>
+                  </tr>
+                </tbody>
+              </table>
+              <h3 id="properties">Properties
+              </h3>
+              
+              
+              <a id="FubarDev_WebDavServer_Locking_InMemory_InMemoryLockManager_Cost_" data-uid="FubarDev.WebDavServer.Locking.InMemory.InMemoryLockManager.Cost*"></a>
+              <h4 id="FubarDev_WebDavServer_Locking_InMemory_InMemoryLockManager_Cost" data-uid="FubarDev.WebDavServer.Locking.InMemory.InMemoryLockManager.Cost">Cost</h4>
+              <div class="markdown level1 summary"></div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public int Cost { get; }</code></pre>
+              </div>
+              <h5 class="propertyValue">Property Value</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><a class="xref" href="https://msdn.microsoft.com/en-us/library/system.int32(v=vs.110).aspx">Int32</a></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 class="implements">Implements</h5>
+                  <div><a class="xref" href="FubarDev.WebDavServer.Locking.ILockManager.html#FubarDev_WebDavServer_Locking_ILockManager_Cost">ILockManager.Cost</a></div>
+              <h3 id="methods">Methods
+              </h3>
+              
+              
+              <a id="FubarDev_WebDavServer_Locking_InMemory_InMemoryLockManager_GetAffectedLocksAsync_" data-uid="FubarDev.WebDavServer.Locking.InMemory.InMemoryLockManager.GetAffectedLocksAsync*"></a>
+              <h4 id="FubarDev_WebDavServer_Locking_InMemory_InMemoryLockManager_GetAffectedLocksAsync_System_String_System_Boolean_System_Boolean_System_Threading_CancellationToken_" data-uid="FubarDev.WebDavServer.Locking.InMemory.InMemoryLockManager.GetAffectedLocksAsync(System.String,System.Boolean,System.Boolean,System.Threading.CancellationToken)">GetAffectedLocksAsync(String, Boolean, Boolean, CancellationToken)</h4>
+              <div class="markdown level1 summary"></div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public Task&lt;IEnumerable&lt;IActiveLock&gt;&gt; GetAffectedLocksAsync(string path, bool findChildren, bool findParents, CancellationToken cancellationToken)</code></pre>
+              </div>
+              <h5 class="parameters">Parameters</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Name</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><a class="xref" href="https://msdn.microsoft.com/en-us/library/system.string(v=vs.110).aspx">String</a></td>
+                    <td><span class="parametername">path</span></td>
+                    <td></td>
+                  </tr>
+                  <tr>
+                    <td><a class="xref" href="https://msdn.microsoft.com/en-us/library/system.boolean(v=vs.110).aspx">Boolean</a></td>
+                    <td><span class="parametername">findChildren</span></td>
+                    <td></td>
+                  </tr>
+                  <tr>
+                    <td><a class="xref" href="https://msdn.microsoft.com/en-us/library/system.boolean(v=vs.110).aspx">Boolean</a></td>
+                    <td><span class="parametername">findParents</span></td>
+                    <td></td>
+                  </tr>
+                  <tr>
+                    <td><a class="xref" href="https://msdn.microsoft.com/en-us/library/system.threading.cancellationtoken(v=vs.110).aspx">CancellationToken</a></td>
+                    <td><span class="parametername">cancellationToken</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 class="returns">Returns</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><a class="xref" href="https://msdn.microsoft.com/en-us/library/dd321424(v=vs.110).aspx">Task</a>&lt;<a class="xref" href="https://msdn.microsoft.com/en-us/library/9eekhta0(v=vs.110).aspx">IEnumerable</a>&lt;<a class="xref" href="FubarDev.WebDavServer.Locking.IActiveLock.html">IActiveLock</a>&gt;&gt;</td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 class="implements">Implements</h5>
+                  <div><a class="xref" href="FubarDev.WebDavServer.Locking.ILockManager.html#FubarDev_WebDavServer_Locking_ILockManager_GetAffectedLocksAsync_System_String_System_Boolean_System_Boolean_System_Threading_CancellationToken_">ILockManager.GetAffectedLocksAsync(String, Boolean, Boolean, CancellationToken)</a></div>
+              
+              
+              <a id="FubarDev_WebDavServer_Locking_InMemory_InMemoryLockManager_GetLocksAsync_" data-uid="FubarDev.WebDavServer.Locking.InMemory.InMemoryLockManager.GetLocksAsync*"></a>
+              <h4 id="FubarDev_WebDavServer_Locking_InMemory_InMemoryLockManager_GetLocksAsync_System_Threading_CancellationToken_" data-uid="FubarDev.WebDavServer.Locking.InMemory.InMemoryLockManager.GetLocksAsync(System.Threading.CancellationToken)">GetLocksAsync(CancellationToken)</h4>
+              <div class="markdown level1 summary"></div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public Task&lt;IEnumerable&lt;IActiveLock&gt;&gt; GetLocksAsync(CancellationToken cancellationToken)</code></pre>
+              </div>
+              <h5 class="parameters">Parameters</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Name</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><a class="xref" href="https://msdn.microsoft.com/en-us/library/system.threading.cancellationtoken(v=vs.110).aspx">CancellationToken</a></td>
+                    <td><span class="parametername">cancellationToken</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 class="returns">Returns</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><a class="xref" href="https://msdn.microsoft.com/en-us/library/dd321424(v=vs.110).aspx">Task</a>&lt;<a class="xref" href="https://msdn.microsoft.com/en-us/library/9eekhta0(v=vs.110).aspx">IEnumerable</a>&lt;<a class="xref" href="FubarDev.WebDavServer.Locking.IActiveLock.html">IActiveLock</a>&gt;&gt;</td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 class="implements">Implements</h5>
+                  <div><a class="xref" href="FubarDev.WebDavServer.Locking.ILockManager.html#FubarDev_WebDavServer_Locking_ILockManager_GetLocksAsync_System_Threading_CancellationToken_">ILockManager.GetLocksAsync(CancellationToken)</a></div>
+              
+              
+              <a id="FubarDev_WebDavServer_Locking_InMemory_InMemoryLockManager_LockAsync_" data-uid="FubarDev.WebDavServer.Locking.InMemory.InMemoryLockManager.LockAsync*"></a>
+              <h4 id="FubarDev_WebDavServer_Locking_InMemory_InMemoryLockManager_LockAsync_FubarDev_WebDavServer_Locking_ILock_System_Threading_CancellationToken_" data-uid="FubarDev.WebDavServer.Locking.InMemory.InMemoryLockManager.LockAsync(FubarDev.WebDavServer.Locking.ILock,System.Threading.CancellationToken)">LockAsync(ILock, CancellationToken)</h4>
+              <div class="markdown level1 summary"></div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public Task&lt;LockResult&gt; LockAsync(ILock l, CancellationToken cancellationToken)</code></pre>
+              </div>
+              <h5 class="parameters">Parameters</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Name</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><a class="xref" href="FubarDev.WebDavServer.Locking.ILock.html">ILock</a></td>
+                    <td><span class="parametername">l</span></td>
+                    <td></td>
+                  </tr>
+                  <tr>
+                    <td><a class="xref" href="https://msdn.microsoft.com/en-us/library/system.threading.cancellationtoken(v=vs.110).aspx">CancellationToken</a></td>
+                    <td><span class="parametername">cancellationToken</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 class="returns">Returns</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><a class="xref" href="https://msdn.microsoft.com/en-us/library/dd321424(v=vs.110).aspx">Task</a>&lt;<a class="xref" href="FubarDev.WebDavServer.Locking.LockResult.html">LockResult</a>&gt;</td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 class="implements">Implements</h5>
+                  <div><a class="xref" href="FubarDev.WebDavServer.Locking.ILockManager.html#FubarDev_WebDavServer_Locking_ILockManager_LockAsync_FubarDev_WebDavServer_Locking_ILock_System_Threading_CancellationToken_">ILockManager.LockAsync(ILock, CancellationToken)</a></div>
+              
+              
+              <a id="FubarDev_WebDavServer_Locking_InMemory_InMemoryLockManager_LockImplicitAsync_" data-uid="FubarDev.WebDavServer.Locking.InMemory.InMemoryLockManager.LockImplicitAsync*"></a>
+              <h4 id="FubarDev_WebDavServer_Locking_InMemory_InMemoryLockManager_LockImplicitAsync_FubarDev_WebDavServer_FileSystem_IFileSystem_System_Collections_Generic_IReadOnlyCollection_FubarDev_WebDavServer_Model_Headers_IfHeaderList__FubarDev_WebDavServer_Locking_ILock_System_Threading_CancellationToken_" data-uid="FubarDev.WebDavServer.Locking.InMemory.InMemoryLockManager.LockImplicitAsync(FubarDev.WebDavServer.FileSystem.IFileSystem,System.Collections.Generic.IReadOnlyCollection{FubarDev.WebDavServer.Model.Headers.IfHeaderList},FubarDev.WebDavServer.Locking.ILock,System.Threading.CancellationToken)">LockImplicitAsync(IFileSystem, IReadOnlyCollection&lt;IfHeaderList&gt;, ILock, CancellationToken)</h4>
+              <div class="markdown level1 summary"></div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public Task&lt;IImplicitLock&gt; LockImplicitAsync(IFileSystem rootFileSystem, IReadOnlyCollection&lt;IfHeaderList&gt; ifHeaderLists, ILock lockRequirements, CancellationToken cancellationToken)</code></pre>
+              </div>
+              <h5 class="parameters">Parameters</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Name</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><a class="xref" href="FubarDev.WebDavServer.FileSystem.IFileSystem.html">IFileSystem</a></td>
+                    <td><span class="parametername">rootFileSystem</span></td>
+                    <td></td>
+                  </tr>
+                  <tr>
+                    <td><a class="xref" href="https://msdn.microsoft.com/en-us/library/hh881542(v=vs.110).aspx">IReadOnlyCollection</a>&lt;<a class="xref" href="FubarDev.WebDavServer.Model.Headers.IfHeaderList.html">IfHeaderList</a>&gt;</td>
+                    <td><span class="parametername">ifHeaderLists</span></td>
+                    <td></td>
+                  </tr>
+                  <tr>
+                    <td><a class="xref" href="FubarDev.WebDavServer.Locking.ILock.html">ILock</a></td>
+                    <td><span class="parametername">lockRequirements</span></td>
+                    <td></td>
+                  </tr>
+                  <tr>
+                    <td><a class="xref" href="https://msdn.microsoft.com/en-us/library/system.threading.cancellationtoken(v=vs.110).aspx">CancellationToken</a></td>
+                    <td><span class="parametername">cancellationToken</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 class="returns">Returns</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><a class="xref" href="https://msdn.microsoft.com/en-us/library/dd321424(v=vs.110).aspx">Task</a>&lt;<a class="xref" href="FubarDev.WebDavServer.Locking.IImplicitLock.html">IImplicitLock</a>&gt;</td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 class="implements">Implements</h5>
+                  <div><a class="xref" href="FubarDev.WebDavServer.Locking.ILockManager.html#FubarDev_WebDavServer_Locking_ILockManager_LockImplicitAsync_FubarDev_WebDavServer_FileSystem_IFileSystem_System_Collections_Generic_IReadOnlyCollection_FubarDev_WebDavServer_Model_Headers_IfHeaderList__FubarDev_WebDavServer_Locking_ILock_System_Threading_CancellationToken_">ILockManager.LockImplicitAsync(IFileSystem, IReadOnlyCollection&lt;IfHeaderList&gt;, ILock, CancellationToken)</a></div>
+              
+              
+              <a id="FubarDev_WebDavServer_Locking_InMemory_InMemoryLockManager_OnLockAdded_" data-uid="FubarDev.WebDavServer.Locking.InMemory.InMemoryLockManager.OnLockAdded*"></a>
+              <h4 id="FubarDev_WebDavServer_Locking_InMemory_InMemoryLockManager_OnLockAdded_FubarDev_WebDavServer_Locking_IActiveLock_" data-uid="FubarDev.WebDavServer.Locking.InMemory.InMemoryLockManager.OnLockAdded(FubarDev.WebDavServer.Locking.IActiveLock)">OnLockAdded(IActiveLock)</h4>
+              <div class="markdown level1 summary"><p>Gets called when a lock was added</p>
+</div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">protected virtual void OnLockAdded(IActiveLock activeLock)</code></pre>
+              </div>
+              <h5 class="parameters">Parameters</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Name</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><a class="xref" href="FubarDev.WebDavServer.Locking.IActiveLock.html">IActiveLock</a></td>
+                    <td><span class="parametername">activeLock</span></td>
+                    <td><p>The lock that was added</p>
+</td>
+                  </tr>
+                </tbody>
+              </table>
+              
+              
+              <a id="FubarDev_WebDavServer_Locking_InMemory_InMemoryLockManager_OnLockReleased_" data-uid="FubarDev.WebDavServer.Locking.InMemory.InMemoryLockManager.OnLockReleased*"></a>
+              <h4 id="FubarDev_WebDavServer_Locking_InMemory_InMemoryLockManager_OnLockReleased_FubarDev_WebDavServer_Locking_IActiveLock_" data-uid="FubarDev.WebDavServer.Locking.InMemory.InMemoryLockManager.OnLockReleased(FubarDev.WebDavServer.Locking.IActiveLock)">OnLockReleased(IActiveLock)</h4>
+              <div class="markdown level1 summary"><p>Gets called when a lock was released</p>
+</div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">protected virtual void OnLockReleased(IActiveLock activeLock)</code></pre>
+              </div>
+              <h5 class="parameters">Parameters</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Name</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><a class="xref" href="FubarDev.WebDavServer.Locking.IActiveLock.html">IActiveLock</a></td>
+                    <td><span class="parametername">activeLock</span></td>
+                    <td><p>The lock that was released</p>
+</td>
+                  </tr>
+                </tbody>
+              </table>
+              
+              
+              <a id="FubarDev_WebDavServer_Locking_InMemory_InMemoryLockManager_RefreshLockAsync_" data-uid="FubarDev.WebDavServer.Locking.InMemory.InMemoryLockManager.RefreshLockAsync*"></a>
+              <h4 id="FubarDev_WebDavServer_Locking_InMemory_InMemoryLockManager_RefreshLockAsync_FubarDev_WebDavServer_FileSystem_IFileSystem_FubarDev_WebDavServer_Model_Headers_IfHeader_System_TimeSpan_System_Threading_CancellationToken_" data-uid="FubarDev.WebDavServer.Locking.InMemory.InMemoryLockManager.RefreshLockAsync(FubarDev.WebDavServer.FileSystem.IFileSystem,FubarDev.WebDavServer.Model.Headers.IfHeader,System.TimeSpan,System.Threading.CancellationToken)">RefreshLockAsync(IFileSystem, IfHeader, TimeSpan, CancellationToken)</h4>
+              <div class="markdown level1 summary"></div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public Task&lt;LockRefreshResult&gt; RefreshLockAsync(IFileSystem rootFileSystem, IfHeader ifHeader, TimeSpan timeout, CancellationToken cancellationToken)</code></pre>
+              </div>
+              <h5 class="parameters">Parameters</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Name</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><a class="xref" href="FubarDev.WebDavServer.FileSystem.IFileSystem.html">IFileSystem</a></td>
+                    <td><span class="parametername">rootFileSystem</span></td>
+                    <td></td>
+                  </tr>
+                  <tr>
+                    <td><a class="xref" href="FubarDev.WebDavServer.Model.Headers.IfHeader.html">IfHeader</a></td>
+                    <td><span class="parametername">ifHeader</span></td>
+                    <td></td>
+                  </tr>
+                  <tr>
+                    <td><a class="xref" href="https://msdn.microsoft.com/en-us/library/system.timespan(v=vs.110).aspx">TimeSpan</a></td>
+                    <td><span class="parametername">timeout</span></td>
+                    <td></td>
+                  </tr>
+                  <tr>
+                    <td><a class="xref" href="https://msdn.microsoft.com/en-us/library/system.threading.cancellationtoken(v=vs.110).aspx">CancellationToken</a></td>
+                    <td><span class="parametername">cancellationToken</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 class="returns">Returns</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><a class="xref" href="https://msdn.microsoft.com/en-us/library/dd321424(v=vs.110).aspx">Task</a>&lt;<a class="xref" href="FubarDev.WebDavServer.Locking.LockRefreshResult.html">LockRefreshResult</a>&gt;</td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 class="implements">Implements</h5>
+                  <div><a class="xref" href="FubarDev.WebDavServer.Locking.ILockManager.html#FubarDev_WebDavServer_Locking_ILockManager_RefreshLockAsync_FubarDev_WebDavServer_FileSystem_IFileSystem_FubarDev_WebDavServer_Model_Headers_IfHeader_System_TimeSpan_System_Threading_CancellationToken_">ILockManager.RefreshLockAsync(IFileSystem, IfHeader, TimeSpan, CancellationToken)</a></div>
+              
+              
+              <a id="FubarDev_WebDavServer_Locking_InMemory_InMemoryLockManager_ReleaseAsync_" data-uid="FubarDev.WebDavServer.Locking.InMemory.InMemoryLockManager.ReleaseAsync*"></a>
+              <h4 id="FubarDev_WebDavServer_Locking_InMemory_InMemoryLockManager_ReleaseAsync_System_String_System_Uri_System_Threading_CancellationToken_" data-uid="FubarDev.WebDavServer.Locking.InMemory.InMemoryLockManager.ReleaseAsync(System.String,System.Uri,System.Threading.CancellationToken)">ReleaseAsync(String, Uri, CancellationToken)</h4>
+              <div class="markdown level1 summary"></div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public Task&lt;LockReleaseStatus&gt; ReleaseAsync(string path, Uri stateToken, CancellationToken cancellationToken)</code></pre>
+              </div>
+              <h5 class="parameters">Parameters</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Name</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><a class="xref" href="https://msdn.microsoft.com/en-us/library/system.string(v=vs.110).aspx">String</a></td>
+                    <td><span class="parametername">path</span></td>
+                    <td></td>
+                  </tr>
+                  <tr>
+                    <td><a class="xref" href="https://msdn.microsoft.com/en-us/library/system.uri(v=vs.110).aspx">Uri</a></td>
+                    <td><span class="parametername">stateToken</span></td>
+                    <td></td>
+                  </tr>
+                  <tr>
+                    <td><a class="xref" href="https://msdn.microsoft.com/en-us/library/system.threading.cancellationtoken(v=vs.110).aspx">CancellationToken</a></td>
+                    <td><span class="parametername">cancellationToken</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 class="returns">Returns</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><a class="xref" href="https://msdn.microsoft.com/en-us/library/dd321424(v=vs.110).aspx">Task</a>&lt;<a class="xref" href="FubarDev.WebDavServer.Locking.LockReleaseStatus.html">LockReleaseStatus</a>&gt;</td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 class="implements">Implements</h5>
+                  <div><a class="xref" href="FubarDev.WebDavServer.Locking.ILockManager.html#FubarDev_WebDavServer_Locking_ILockManager_ReleaseAsync_System_String_System_Uri_System_Threading_CancellationToken_">ILockManager.ReleaseAsync(String, Uri, CancellationToken)</a></div>
+              <h3 id="events">Events
+              </h3>
+              
+              
+              <h4 id="FubarDev_WebDavServer_Locking_InMemory_InMemoryLockManager_LockAdded" data-uid="FubarDev.WebDavServer.Locking.InMemory.InMemoryLockManager.LockAdded">LockAdded</h4>
+              <div class="markdown level1 summary"></div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public event EventHandler&lt;LockEventArgs&gt; LockAdded</code></pre>
+              </div>
+              <h5 class="eventType">Event Type</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><a class="xref" href="https://msdn.microsoft.com/en-us/library/db0etb8x(v=vs.110).aspx">EventHandler</a>&lt;<a class="xref" href="FubarDev.WebDavServer.Locking.LockEventArgs.html">LockEventArgs</a>&gt;</td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 class="implements">Implements</h5>
+                  <div><a class="xref" href="FubarDev.WebDavServer.Locking.ILockManager.html#FubarDev_WebDavServer_Locking_ILockManager_LockAdded">ILockManager.LockAdded</a></div>
+              
+              
+              <h4 id="FubarDev_WebDavServer_Locking_InMemory_InMemoryLockManager_LockReleased" data-uid="FubarDev.WebDavServer.Locking.InMemory.InMemoryLockManager.LockReleased">LockReleased</h4>
+              <div class="markdown level1 summary"></div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public event EventHandler&lt;LockEventArgs&gt; LockReleased</code></pre>
+              </div>
+              <h5 class="eventType">Event Type</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><a class="xref" href="https://msdn.microsoft.com/en-us/library/db0etb8x(v=vs.110).aspx">EventHandler</a>&lt;<a class="xref" href="FubarDev.WebDavServer.Locking.LockEventArgs.html">LockEventArgs</a>&gt;</td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 class="implements">Implements</h5>
+                  <div><a class="xref" href="FubarDev.WebDavServer.Locking.ILockManager.html#FubarDev_WebDavServer_Locking_ILockManager_LockReleased">ILockManager.LockReleased</a></div>
+                        </article>
+          </div>
+          
+          <div class="hidden-sm col-md-2" role="complementary">
+            <div class="sideaffix">
+              <div class="contribution">
+                <ul class="nav">
+                </ul>
+              </div>
+              <nav class="bs-docs-sidebar hidden-print hidden-xs hidden-sm affix" id="affix">
+              <!-- <p><a class="back-to-top" href="#top">Back to top</a><p> -->
+              </nav>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <footer>
+        <div class="grad-bottom"></div>
+        <div class="footer">
+          <div class="container">
+            <span class="pull-right">
+              <a href="#top">Back to top</a>
+            </span>
+            
+            <span>Copyright © 2015-2016 Microsoft<br>Generated by <strong>DocFX</strong></span>
+          </div>
+        </div>
+      </footer>
+    </div>
+    
+    <script type="text/javascript" src="../styles/docfx.vendor.js"></script>
+    <script type="text/javascript" src="../styles/docfx.js"></script>
+    <script type="text/javascript" src="../styles/main.js"></script>
+  </body>
+</html>

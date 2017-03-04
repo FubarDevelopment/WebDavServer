@@ -1,0 +1,1153 @@
+﻿<!DOCTYPE html>
+<!--[if IE]><![endif]-->
+<html>
+  
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <title>Class WebDavControllerBase
+   </title>
+    <meta name="viewport" content="width=device-width">
+    <meta name="title" content="Class WebDavControllerBase
+   ">
+    <meta name="generator" content="docfx 2.12.1.0">
+    
+    <link rel="shortcut icon" href="../favicon.ico">
+    <link rel="stylesheet" href="../styles/docfx.vendor.css">
+    <link rel="stylesheet" href="../styles/docfx.css">
+    <link rel="stylesheet" href="../styles/main.css">
+    <meta property="docfx:navrel" content="../toc.html">
+    <meta property="docfx:tocrel" content="toc.html">
+    
+  </head>
+  <body data-spy="scroll" data-target="#affix">
+    <div id="wrapper">
+      <header>
+        
+        <nav id="autocollapse" class="navbar navbar-inverse ng-scope" role="navigation">
+          <div class="container">
+            <div class="navbar-header">
+              <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+              </button>
+              
+              <a class="navbar-brand" href="../index.html">
+                <img id="logo" class="svg" src="../logo.svg" alt="">
+              </a>
+            </div>
+            <div class="collapse navbar-collapse" id="navbar">
+              <form class="navbar-form navbar-right" role="search" id="search">
+                <div class="form-group">
+                  <input type="text" class="form-control" id="search-query" placeholder="Search" autocomplete="off">
+                </div>
+              </form>
+            </div>
+          </div>
+        </nav>
+        
+        <div class="subnav navbar navbar-default">
+          <div class="container hide-when-search" id="breadcrumb">
+            <ul class="breadcrumb">
+              <li></li>
+            </ul>
+          </div>
+        </div>
+      </header>
+      <div role="main" class="container body-content hide-when-search">
+        
+        <div class="sidenav hide-when-search">
+          <a class="btn toc-toggle collapse" data-toggle="collapse" href="#sidetoggle" aria-expanded="false" aria-controls="sidetoggle">Show / Hide Table of Contents</a>
+          <div class="sidetoggle collapse" id="sidetoggle">
+            <div id="sidetoc"></div>
+          </div>
+        </div>
+        <div class="article row grid-right">
+          <div class="col-md-10">
+            <article class="content wrap" id="_content">
+              
+              
+              <h1 id="FubarDev_WebDavServer_AspNetCore_WebDavControllerBase" data-uid="FubarDev.WebDavServer.AspNetCore.WebDavControllerBase">Class WebDavControllerBase
+              </h1>
+              <div class="markdown level0 summary"><p>The default WebDAV controller</p>
+</div>
+              <div class="markdown level0 conceptual"></div>
+              <div class="inheritance">
+                <h5>Inheritance</h5>
+                  <div class="level0"><a class="xref" href="https://msdn.microsoft.com/en-us/library/system.object(v=vs.110).aspx">Object</a></div>
+                  <div class="level1"><span class="xref">Microsoft.AspNetCore.Mvc.ControllerBase</span></div>
+                  <div class="level2"><span class="xref">WebDavControllerBase</span></div>
+              </div>
+              <div class="inheritedMembers">
+                <h5>Inherited Members</h5>
+                <div>
+                  <span class="xref">Microsoft.AspNetCore.Mvc.ControllerBase.StatusCode(System.Int32)</span>
+                </div>
+                <div>
+                  <span class="xref">Microsoft.AspNetCore.Mvc.ControllerBase.StatusCode(System.Int32, System.Object)</span>
+                </div>
+                <div>
+                  <span class="xref">Microsoft.AspNetCore.Mvc.ControllerBase.Content(System.String)</span>
+                </div>
+                <div>
+                  <span class="xref">Microsoft.AspNetCore.Mvc.ControllerBase.Content(System.String, System.String)</span>
+                </div>
+                <div>
+                  <span class="xref">Microsoft.AspNetCore.Mvc.ControllerBase.Content(System.String, System.String, System.Text.Encoding)</span>
+                </div>
+                <div>
+                  <span class="xref">Microsoft.AspNetCore.Mvc.ControllerBase.Content(System.String, Microsoft.Net.Http.Headers.MediaTypeHeaderValue)</span>
+                </div>
+                <div>
+                  <span class="xref">Microsoft.AspNetCore.Mvc.ControllerBase.NoContent()</span>
+                </div>
+                <div>
+                  <span class="xref">Microsoft.AspNetCore.Mvc.ControllerBase.Ok()</span>
+                </div>
+                <div>
+                  <span class="xref">Microsoft.AspNetCore.Mvc.ControllerBase.Ok(System.Object)</span>
+                </div>
+                <div>
+                  <span class="xref">Microsoft.AspNetCore.Mvc.ControllerBase.Redirect(System.String)</span>
+                </div>
+                <div>
+                  <span class="xref">Microsoft.AspNetCore.Mvc.ControllerBase.RedirectPermanent(System.String)</span>
+                </div>
+                <div>
+                  <span class="xref">Microsoft.AspNetCore.Mvc.ControllerBase.LocalRedirect(System.String)</span>
+                </div>
+                <div>
+                  <span class="xref">Microsoft.AspNetCore.Mvc.ControllerBase.LocalRedirectPermanent(System.String)</span>
+                </div>
+                <div>
+                  <span class="xref">Microsoft.AspNetCore.Mvc.ControllerBase.RedirectToAction(System.String)</span>
+                </div>
+                <div>
+                  <span class="xref">Microsoft.AspNetCore.Mvc.ControllerBase.RedirectToAction(System.String, System.Object)</span>
+                </div>
+                <div>
+                  <span class="xref">Microsoft.AspNetCore.Mvc.ControllerBase.RedirectToAction(System.String, System.String)</span>
+                </div>
+                <div>
+                  <span class="xref">Microsoft.AspNetCore.Mvc.ControllerBase.RedirectToAction(System.String, System.String, System.Object)</span>
+                </div>
+                <div>
+                  <span class="xref">Microsoft.AspNetCore.Mvc.ControllerBase.RedirectToActionPermanent(System.String)</span>
+                </div>
+                <div>
+                  <span class="xref">Microsoft.AspNetCore.Mvc.ControllerBase.RedirectToActionPermanent(System.String, System.Object)</span>
+                </div>
+                <div>
+                  <span class="xref">Microsoft.AspNetCore.Mvc.ControllerBase.RedirectToActionPermanent(System.String, System.String)</span>
+                </div>
+                <div>
+                  <span class="xref">Microsoft.AspNetCore.Mvc.ControllerBase.RedirectToActionPermanent(System.String, System.String, System.Object)</span>
+                </div>
+                <div>
+                  <span class="xref">Microsoft.AspNetCore.Mvc.ControllerBase.RedirectToRoute(System.String)</span>
+                </div>
+                <div>
+                  <span class="xref">Microsoft.AspNetCore.Mvc.ControllerBase.RedirectToRoute(System.Object)</span>
+                </div>
+                <div>
+                  <span class="xref">Microsoft.AspNetCore.Mvc.ControllerBase.RedirectToRoute(System.String, System.Object)</span>
+                </div>
+                <div>
+                  <span class="xref">Microsoft.AspNetCore.Mvc.ControllerBase.RedirectToRoutePermanent(System.String)</span>
+                </div>
+                <div>
+                  <span class="xref">Microsoft.AspNetCore.Mvc.ControllerBase.RedirectToRoutePermanent(System.Object)</span>
+                </div>
+                <div>
+                  <span class="xref">Microsoft.AspNetCore.Mvc.ControllerBase.RedirectToRoutePermanent(System.String, System.Object)</span>
+                </div>
+                <div>
+                  <span class="xref">Microsoft.AspNetCore.Mvc.ControllerBase.File(System.Byte[], System.String)</span>
+                </div>
+                <div>
+                  <span class="xref">Microsoft.AspNetCore.Mvc.ControllerBase.File(System.Byte[], System.String, System.String)</span>
+                </div>
+                <div>
+                  <span class="xref">Microsoft.AspNetCore.Mvc.ControllerBase.File(System.IO.Stream, System.String)</span>
+                </div>
+                <div>
+                  <span class="xref">Microsoft.AspNetCore.Mvc.ControllerBase.File(System.IO.Stream, System.String, System.String)</span>
+                </div>
+                <div>
+                  <span class="xref">Microsoft.AspNetCore.Mvc.ControllerBase.File(System.String, System.String)</span>
+                </div>
+                <div>
+                  <span class="xref">Microsoft.AspNetCore.Mvc.ControllerBase.File(System.String, System.String, System.String)</span>
+                </div>
+                <div>
+                  <span class="xref">Microsoft.AspNetCore.Mvc.ControllerBase.PhysicalFile(System.String, System.String)</span>
+                </div>
+                <div>
+                  <span class="xref">Microsoft.AspNetCore.Mvc.ControllerBase.PhysicalFile(System.String, System.String, System.String)</span>
+                </div>
+                <div>
+                  <span class="xref">Microsoft.AspNetCore.Mvc.ControllerBase.Unauthorized()</span>
+                </div>
+                <div>
+                  <span class="xref">Microsoft.AspNetCore.Mvc.ControllerBase.NotFound()</span>
+                </div>
+                <div>
+                  <span class="xref">Microsoft.AspNetCore.Mvc.ControllerBase.NotFound(System.Object)</span>
+                </div>
+                <div>
+                  <span class="xref">Microsoft.AspNetCore.Mvc.ControllerBase.BadRequest()</span>
+                </div>
+                <div>
+                  <span class="xref">Microsoft.AspNetCore.Mvc.ControllerBase.BadRequest(System.Object)</span>
+                </div>
+                <div>
+                  <span class="xref">Microsoft.AspNetCore.Mvc.ControllerBase.BadRequest(Microsoft.AspNetCore.Mvc.ModelBinding.ModelStateDictionary)</span>
+                </div>
+                <div>
+                  <span class="xref">Microsoft.AspNetCore.Mvc.ControllerBase.Created(System.String, System.Object)</span>
+                </div>
+                <div>
+                  <span class="xref">Microsoft.AspNetCore.Mvc.ControllerBase.Created(System.Uri, System.Object)</span>
+                </div>
+                <div>
+                  <span class="xref">Microsoft.AspNetCore.Mvc.ControllerBase.CreatedAtAction(System.String, System.Object)</span>
+                </div>
+                <div>
+                  <span class="xref">Microsoft.AspNetCore.Mvc.ControllerBase.CreatedAtAction(System.String, System.Object, System.Object)</span>
+                </div>
+                <div>
+                  <span class="xref">Microsoft.AspNetCore.Mvc.ControllerBase.CreatedAtAction(System.String, System.String, System.Object, System.Object)</span>
+                </div>
+                <div>
+                  <span class="xref">Microsoft.AspNetCore.Mvc.ControllerBase.CreatedAtRoute(System.String, System.Object)</span>
+                </div>
+                <div>
+                  <span class="xref">Microsoft.AspNetCore.Mvc.ControllerBase.CreatedAtRoute(System.Object, System.Object)</span>
+                </div>
+                <div>
+                  <span class="xref">Microsoft.AspNetCore.Mvc.ControllerBase.CreatedAtRoute(System.String, System.Object, System.Object)</span>
+                </div>
+                <div>
+                  <span class="xref">Microsoft.AspNetCore.Mvc.ControllerBase.Accepted()</span>
+                </div>
+                <div>
+                  <span class="xref">Microsoft.AspNetCore.Mvc.ControllerBase.Accepted(System.Object)</span>
+                </div>
+                <div>
+                  <span class="xref">Microsoft.AspNetCore.Mvc.ControllerBase.Accepted(System.Uri)</span>
+                </div>
+                <div>
+                  <span class="xref">Microsoft.AspNetCore.Mvc.ControllerBase.Accepted(System.String)</span>
+                </div>
+                <div>
+                  <span class="xref">Microsoft.AspNetCore.Mvc.ControllerBase.Accepted(System.String, System.Object)</span>
+                </div>
+                <div>
+                  <span class="xref">Microsoft.AspNetCore.Mvc.ControllerBase.Accepted(System.Uri, System.Object)</span>
+                </div>
+                <div>
+                  <span class="xref">Microsoft.AspNetCore.Mvc.ControllerBase.AcceptedAtAction(System.String)</span>
+                </div>
+                <div>
+                  <span class="xref">Microsoft.AspNetCore.Mvc.ControllerBase.AcceptedAtAction(System.String, System.String)</span>
+                </div>
+                <div>
+                  <span class="xref">Microsoft.AspNetCore.Mvc.ControllerBase.AcceptedAtAction(System.String, System.Object)</span>
+                </div>
+                <div>
+                  <span class="xref">Microsoft.AspNetCore.Mvc.ControllerBase.AcceptedAtAction(System.String, System.String, System.Object)</span>
+                </div>
+                <div>
+                  <span class="xref">Microsoft.AspNetCore.Mvc.ControllerBase.AcceptedAtAction(System.String, System.Object, System.Object)</span>
+                </div>
+                <div>
+                  <span class="xref">Microsoft.AspNetCore.Mvc.ControllerBase.AcceptedAtAction(System.String, System.String, System.Object, System.Object)</span>
+                </div>
+                <div>
+                  <span class="xref">Microsoft.AspNetCore.Mvc.ControllerBase.AcceptedAtRoute(System.Object)</span>
+                </div>
+                <div>
+                  <span class="xref">Microsoft.AspNetCore.Mvc.ControllerBase.AcceptedAtRoute(System.String)</span>
+                </div>
+                <div>
+                  <span class="xref">Microsoft.AspNetCore.Mvc.ControllerBase.AcceptedAtRoute(System.String, System.Object)</span>
+                </div>
+                <div>
+                  <span class="xref">Microsoft.AspNetCore.Mvc.ControllerBase.AcceptedAtRoute(System.Object, System.Object)</span>
+                </div>
+                <div>
+                  <span class="xref">Microsoft.AspNetCore.Mvc.ControllerBase.AcceptedAtRoute(System.String, System.Object, System.Object)</span>
+                </div>
+                <div>
+                  <span class="xref">Microsoft.AspNetCore.Mvc.ControllerBase.Challenge()</span>
+                </div>
+                <div>
+                  <span class="xref">Microsoft.AspNetCore.Mvc.ControllerBase.Challenge(System.String[])</span>
+                </div>
+                <div>
+                  <span class="xref">Microsoft.AspNetCore.Mvc.ControllerBase.Challenge(Microsoft.AspNetCore.Http.Authentication.AuthenticationProperties)</span>
+                </div>
+                <div>
+                  <span class="xref">Microsoft.AspNetCore.Mvc.ControllerBase.Challenge(Microsoft.AspNetCore.Http.Authentication.AuthenticationProperties, System.String[])</span>
+                </div>
+                <div>
+                  <span class="xref">Microsoft.AspNetCore.Mvc.ControllerBase.Forbid()</span>
+                </div>
+                <div>
+                  <span class="xref">Microsoft.AspNetCore.Mvc.ControllerBase.Forbid(System.String[])</span>
+                </div>
+                <div>
+                  <span class="xref">Microsoft.AspNetCore.Mvc.ControllerBase.Forbid(Microsoft.AspNetCore.Http.Authentication.AuthenticationProperties)</span>
+                </div>
+                <div>
+                  <span class="xref">Microsoft.AspNetCore.Mvc.ControllerBase.Forbid(Microsoft.AspNetCore.Http.Authentication.AuthenticationProperties, System.String[])</span>
+                </div>
+                <div>
+                  <span class="xref">Microsoft.AspNetCore.Mvc.ControllerBase.SignIn(System.Security.Claims.ClaimsPrincipal, System.String)</span>
+                </div>
+                <div>
+                  <span class="xref">Microsoft.AspNetCore.Mvc.ControllerBase.SignIn(System.Security.Claims.ClaimsPrincipal, Microsoft.AspNetCore.Http.Authentication.AuthenticationProperties, System.String)</span>
+                </div>
+                <div>
+                  <span class="xref">Microsoft.AspNetCore.Mvc.ControllerBase.SignOut(System.String[])</span>
+                </div>
+                <div>
+                  <span class="xref">Microsoft.AspNetCore.Mvc.ControllerBase.SignOut(Microsoft.AspNetCore.Http.Authentication.AuthenticationProperties, System.String[])</span>
+                </div>
+                <div>
+                  <span class="xref">Microsoft.AspNetCore.Mvc.ControllerBase.TryUpdateModelAsync&lt;TModel&gt;(TModel)</span>
+                </div>
+                <div>
+                  <span class="xref">Microsoft.AspNetCore.Mvc.ControllerBase.TryUpdateModelAsync&lt;TModel&gt;(TModel, System.String)</span>
+                </div>
+                <div>
+                  <span class="xref">Microsoft.AspNetCore.Mvc.ControllerBase.TryUpdateModelAsync&lt;TModel&gt;(TModel, System.String, Microsoft.AspNetCore.Mvc.ModelBinding.IValueProvider)</span>
+                </div>
+                <div>
+                  <span class="xref">Microsoft.AspNetCore.Mvc.ControllerBase.TryUpdateModelAsync&lt;TModel&gt;(TModel, System.String, System.Linq.Expressions.Expression&lt;System.Func&lt;TModel, System.Object&gt;&gt;[])</span>
+                </div>
+                <div>
+                  <span class="xref">Microsoft.AspNetCore.Mvc.ControllerBase.TryUpdateModelAsync&lt;TModel&gt;(TModel, System.String, System.Func&lt;Microsoft.AspNetCore.Mvc.ModelBinding.ModelMetadata, System.Boolean&gt;)</span>
+                </div>
+                <div>
+                  <span class="xref">Microsoft.AspNetCore.Mvc.ControllerBase.TryUpdateModelAsync&lt;TModel&gt;(TModel, System.String, Microsoft.AspNetCore.Mvc.ModelBinding.IValueProvider, System.Linq.Expressions.Expression&lt;System.Func&lt;TModel, System.Object&gt;&gt;[])</span>
+                </div>
+                <div>
+                  <span class="xref">Microsoft.AspNetCore.Mvc.ControllerBase.TryUpdateModelAsync&lt;TModel&gt;(TModel, System.String, Microsoft.AspNetCore.Mvc.ModelBinding.IValueProvider, System.Func&lt;Microsoft.AspNetCore.Mvc.ModelBinding.ModelMetadata, System.Boolean&gt;)</span>
+                </div>
+                <div>
+                  <span class="xref">Microsoft.AspNetCore.Mvc.ControllerBase.TryUpdateModelAsync(System.Object, System.Type, System.String)</span>
+                </div>
+                <div>
+                  <span class="xref">Microsoft.AspNetCore.Mvc.ControllerBase.TryUpdateModelAsync(System.Object, System.Type, System.String, Microsoft.AspNetCore.Mvc.ModelBinding.IValueProvider, System.Func&lt;Microsoft.AspNetCore.Mvc.ModelBinding.ModelMetadata, System.Boolean&gt;)</span>
+                </div>
+                <div>
+                  <span class="xref">Microsoft.AspNetCore.Mvc.ControllerBase.TryValidateModel(System.Object)</span>
+                </div>
+                <div>
+                  <span class="xref">Microsoft.AspNetCore.Mvc.ControllerBase.TryValidateModel(System.Object, System.String)</span>
+                </div>
+                <div>
+                  <span class="xref">Microsoft.AspNetCore.Mvc.ControllerBase.HttpContext</span>
+                </div>
+                <div>
+                  <span class="xref">Microsoft.AspNetCore.Mvc.ControllerBase.Request</span>
+                </div>
+                <div>
+                  <span class="xref">Microsoft.AspNetCore.Mvc.ControllerBase.Response</span>
+                </div>
+                <div>
+                  <span class="xref">Microsoft.AspNetCore.Mvc.ControllerBase.RouteData</span>
+                </div>
+                <div>
+                  <span class="xref">Microsoft.AspNetCore.Mvc.ControllerBase.ModelState</span>
+                </div>
+                <div>
+                  <span class="xref">Microsoft.AspNetCore.Mvc.ControllerBase.ControllerContext</span>
+                </div>
+                <div>
+                  <span class="xref">Microsoft.AspNetCore.Mvc.ControllerBase.MetadataProvider</span>
+                </div>
+                <div>
+                  <span class="xref">Microsoft.AspNetCore.Mvc.ControllerBase.ModelBinderFactory</span>
+                </div>
+                <div>
+                  <span class="xref">Microsoft.AspNetCore.Mvc.ControllerBase.Url</span>
+                </div>
+                <div>
+                  <span class="xref">Microsoft.AspNetCore.Mvc.ControllerBase.ObjectValidator</span>
+                </div>
+                <div>
+                  <span class="xref">Microsoft.AspNetCore.Mvc.ControllerBase.User</span>
+                </div>
+                <div>
+                  <a class="xref" href="https://msdn.microsoft.com/en-us/library/7bxwbwt2(v=vs.110).aspx">Object.ToString()</a>
+                </div>
+                <div>
+                  <a class="xref" href="https://msdn.microsoft.com/en-us/library/bsc2ak47(v=vs.110).aspx">Object.Equals(Object)</a>
+                </div>
+                <div>
+                  <a class="xref" href="https://msdn.microsoft.com/en-us/library/w4hkze5k(v=vs.110).aspx">Object.Equals(Object, Object)</a>
+                </div>
+                <div>
+                  <a class="xref" href="https://msdn.microsoft.com/en-us/library/hz2a0b8x(v=vs.110).aspx">Object.ReferenceEquals(Object, Object)</a>
+                </div>
+                <div>
+                  <a class="xref" href="https://msdn.microsoft.com/en-us/library/zdee4b3y(v=vs.110).aspx">Object.GetHashCode()</a>
+                </div>
+                <div>
+                  <a class="xref" href="https://msdn.microsoft.com/en-us/library/dfwy45w9(v=vs.110).aspx">Object.GetType()</a>
+                </div>
+                <div>
+                  <a class="xref" href="https://msdn.microsoft.com/en-us/library/57ctke0a(v=vs.110).aspx">Object.MemberwiseClone()</a>
+                </div>
+              </div>
+              <h6><strong>Namespace</strong>:FubarDev.WebDavServer.AspNetCore</h6>
+              <h6><strong>Assembly</strong>:FubarDev.WebDavServer.AspNetCore.dll</h6>
+              <h5 id="FubarDev_WebDavServer_AspNetCore_WebDavControllerBase_syntax">Syntax</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public class WebDavControllerBase : ControllerBase</code></pre>
+              </div>
+              <h3 id="constructors">Constructors
+              </h3>
+              
+              
+              <a id="FubarDev_WebDavServer_AspNetCore_WebDavControllerBase__ctor_" data-uid="FubarDev.WebDavServer.AspNetCore.WebDavControllerBase.#ctor*"></a>
+              <h4 id="FubarDev_WebDavServer_AspNetCore_WebDavControllerBase__ctor_FubarDev_WebDavServer_IWebDavContext_FubarDev_WebDavServer_IWebDavDispatcher_Microsoft_Extensions_Logging_ILogger_FubarDev_WebDavServer_AspNetCore_WebDavIndirectResult__" data-uid="FubarDev.WebDavServer.AspNetCore.WebDavControllerBase.#ctor(FubarDev.WebDavServer.IWebDavContext,FubarDev.WebDavServer.IWebDavDispatcher,Microsoft.Extensions.Logging.ILogger{FubarDev.WebDavServer.AspNetCore.WebDavIndirectResult})">WebDavControllerBase(IWebDavContext, IWebDavDispatcher, ILogger&lt;WebDavIndirectResult&gt;)</h4>
+              <div class="markdown level1 summary"><p>Initializes a new instance of the <a class="xref" href="FubarDev.WebDavServer.AspNetCore.WebDavControllerBase.html">WebDavControllerBase</a> class.</p>
+</div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public WebDavControllerBase(IWebDavContext context, IWebDavDispatcher dispatcher, ILogger&lt;WebDavIndirectResult&gt; responseLogger = null)</code></pre>
+              </div>
+              <h5 class="parameters">Parameters</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Name</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><a class="xref" href="FubarDev.WebDavServer.IWebDavContext.html">IWebDavContext</a></td>
+                    <td><span class="parametername">context</span></td>
+                    <td><p>The WebDAV request context</p>
+</td>
+                  </tr>
+                  <tr>
+                    <td><a class="xref" href="FubarDev.WebDavServer.IWebDavDispatcher.html">IWebDavDispatcher</a></td>
+                    <td><span class="parametername">dispatcher</span></td>
+                    <td><p>The WebDAV HTTP method dispatcher</p>
+</td>
+                  </tr>
+                  <tr>
+                    <td><span class="xref">Microsoft.Extensions.Logging.ILogger</span>&lt;<a class="xref" href="FubarDev.WebDavServer.AspNetCore.WebDavIndirectResult.html">WebDavIndirectResult</a>&gt;</td>
+                    <td><span class="parametername">responseLogger</span></td>
+                    <td><p>The logger for the <a class="xref" href="FubarDev.WebDavServer.AspNetCore.WebDavIndirectResult.html">WebDavIndirectResult</a></p>
+</td>
+                  </tr>
+                </tbody>
+              </table>
+              <h3 id="methods">Methods
+              </h3>
+              
+              
+              <a id="FubarDev_WebDavServer_AspNetCore_WebDavControllerBase_CopyAsync_" data-uid="FubarDev.WebDavServer.AspNetCore.WebDavControllerBase.CopyAsync*"></a>
+              <h4 id="FubarDev_WebDavServer_AspNetCore_WebDavControllerBase_CopyAsync_System_String_System_String_System_Threading_CancellationToken_" data-uid="FubarDev.WebDavServer.AspNetCore.WebDavControllerBase.CopyAsync(System.String,System.String,System.Threading.CancellationToken)">CopyAsync(String, String, CancellationToken)</h4>
+              <div class="markdown level1 summary"><p>Handler for the <code>COPY</code> method</p>
+</div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">[HttpCopy]
+public Task&lt;IActionResult&gt; CopyAsync(string path, [FromHeader(Name = &quot;Destination&quot;)] string destination, CancellationToken cancellationToken = null)</code></pre>
+              </div>
+              <h5 class="parameters">Parameters</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Name</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><a class="xref" href="https://msdn.microsoft.com/en-us/library/system.string(v=vs.110).aspx">String</a></td>
+                    <td><span class="parametername">path</span></td>
+                    <td><p>The root-relative path to the source of this method</p>
+</td>
+                  </tr>
+                  <tr>
+                    <td><a class="xref" href="https://msdn.microsoft.com/en-us/library/system.string(v=vs.110).aspx">String</a></td>
+                    <td><span class="parametername">destination</span></td>
+                    <td><p>The destination of the COPY operation</p>
+</td>
+                  </tr>
+                  <tr>
+                    <td><a class="xref" href="https://msdn.microsoft.com/en-us/library/system.threading.cancellationtoken(v=vs.110).aspx">CancellationToken</a></td>
+                    <td><span class="parametername">cancellationToken</span></td>
+                    <td><p>The cancellation token</p>
+</td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 class="returns">Returns</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><a class="xref" href="https://msdn.microsoft.com/en-us/library/dd321424(v=vs.110).aspx">Task</a>&lt;<span class="xref">Microsoft.AspNetCore.Mvc.IActionResult</span>&gt;</td>
+                    <td><p>The action result</p>
+</td>
+                  </tr>
+                </tbody>
+              </table>
+              
+              
+              <a id="FubarDev_WebDavServer_AspNetCore_WebDavControllerBase_DeleteAsync_" data-uid="FubarDev.WebDavServer.AspNetCore.WebDavControllerBase.DeleteAsync*"></a>
+              <h4 id="FubarDev_WebDavServer_AspNetCore_WebDavControllerBase_DeleteAsync_System_String_System_Threading_CancellationToken_" data-uid="FubarDev.WebDavServer.AspNetCore.WebDavControllerBase.DeleteAsync(System.String,System.Threading.CancellationToken)">DeleteAsync(String, CancellationToken)</h4>
+              <div class="markdown level1 summary"><p>Handler for the <code>DELETE</code> method</p>
+</div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">[HttpDelete]
+public Task&lt;IActionResult&gt; DeleteAsync(string path, CancellationToken cancellationToken)</code></pre>
+              </div>
+              <h5 class="parameters">Parameters</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Name</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><a class="xref" href="https://msdn.microsoft.com/en-us/library/system.string(v=vs.110).aspx">String</a></td>
+                    <td><span class="parametername">path</span></td>
+                    <td><p>The root-relative path to the target of this method</p>
+</td>
+                  </tr>
+                  <tr>
+                    <td><a class="xref" href="https://msdn.microsoft.com/en-us/library/system.threading.cancellationtoken(v=vs.110).aspx">CancellationToken</a></td>
+                    <td><span class="parametername">cancellationToken</span></td>
+                    <td><p>The cancellation token</p>
+</td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 class="returns">Returns</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><a class="xref" href="https://msdn.microsoft.com/en-us/library/dd321424(v=vs.110).aspx">Task</a>&lt;<span class="xref">Microsoft.AspNetCore.Mvc.IActionResult</span>&gt;</td>
+                    <td><p>The action result</p>
+</td>
+                  </tr>
+                </tbody>
+              </table>
+              
+              
+              <a id="FubarDev_WebDavServer_AspNetCore_WebDavControllerBase_GetAsync_" data-uid="FubarDev.WebDavServer.AspNetCore.WebDavControllerBase.GetAsync*"></a>
+              <h4 id="FubarDev_WebDavServer_AspNetCore_WebDavControllerBase_GetAsync_System_String_System_Threading_CancellationToken_" data-uid="FubarDev.WebDavServer.AspNetCore.WebDavControllerBase.GetAsync(System.String,System.Threading.CancellationToken)">GetAsync(String, CancellationToken)</h4>
+              <div class="markdown level1 summary"><p>Handler for the <code>GET</code> method</p>
+</div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">[HttpGet]
+public Task&lt;IActionResult&gt; GetAsync(string path, CancellationToken cancellationToken)</code></pre>
+              </div>
+              <h5 class="parameters">Parameters</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Name</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><a class="xref" href="https://msdn.microsoft.com/en-us/library/system.string(v=vs.110).aspx">String</a></td>
+                    <td><span class="parametername">path</span></td>
+                    <td><p>The root-relative path to the source of this method</p>
+</td>
+                  </tr>
+                  <tr>
+                    <td><a class="xref" href="https://msdn.microsoft.com/en-us/library/system.threading.cancellationtoken(v=vs.110).aspx">CancellationToken</a></td>
+                    <td><span class="parametername">cancellationToken</span></td>
+                    <td><p>The cancellation token</p>
+</td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 class="returns">Returns</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><a class="xref" href="https://msdn.microsoft.com/en-us/library/dd321424(v=vs.110).aspx">Task</a>&lt;<span class="xref">Microsoft.AspNetCore.Mvc.IActionResult</span>&gt;</td>
+                    <td><p>The action result</p>
+</td>
+                  </tr>
+                </tbody>
+              </table>
+              
+              
+              <a id="FubarDev_WebDavServer_AspNetCore_WebDavControllerBase_HeadAsync_" data-uid="FubarDev.WebDavServer.AspNetCore.WebDavControllerBase.HeadAsync*"></a>
+              <h4 id="FubarDev_WebDavServer_AspNetCore_WebDavControllerBase_HeadAsync_System_String_System_Threading_CancellationToken_" data-uid="FubarDev.WebDavServer.AspNetCore.WebDavControllerBase.HeadAsync(System.String,System.Threading.CancellationToken)">HeadAsync(String, CancellationToken)</h4>
+              <div class="markdown level1 summary"><p>Handler for the <code>HEAD</code> method</p>
+</div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">[HttpHead]
+public Task&lt;IActionResult&gt; HeadAsync(string path, CancellationToken cancellationToken)</code></pre>
+              </div>
+              <h5 class="parameters">Parameters</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Name</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><a class="xref" href="https://msdn.microsoft.com/en-us/library/system.string(v=vs.110).aspx">String</a></td>
+                    <td><span class="parametername">path</span></td>
+                    <td><p>The root-relative path to the target of this method</p>
+</td>
+                  </tr>
+                  <tr>
+                    <td><a class="xref" href="https://msdn.microsoft.com/en-us/library/system.threading.cancellationtoken(v=vs.110).aspx">CancellationToken</a></td>
+                    <td><span class="parametername">cancellationToken</span></td>
+                    <td><p>The cancellation token</p>
+</td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 class="returns">Returns</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><a class="xref" href="https://msdn.microsoft.com/en-us/library/dd321424(v=vs.110).aspx">Task</a>&lt;<span class="xref">Microsoft.AspNetCore.Mvc.IActionResult</span>&gt;</td>
+                    <td><p>The action result</p>
+</td>
+                  </tr>
+                </tbody>
+              </table>
+              
+              
+              <a id="FubarDev_WebDavServer_AspNetCore_WebDavControllerBase_LockAsync_" data-uid="FubarDev.WebDavServer.AspNetCore.WebDavControllerBase.LockAsync*"></a>
+              <h4 id="FubarDev_WebDavServer_AspNetCore_WebDavControllerBase_LockAsync_System_String_FubarDev_WebDavServer_Model_lockinfo_System_Threading_CancellationToken_" data-uid="FubarDev.WebDavServer.AspNetCore.WebDavControllerBase.LockAsync(System.String,FubarDev.WebDavServer.Model.lockinfo,System.Threading.CancellationToken)">LockAsync(String, lockinfo, CancellationToken)</h4>
+              <div class="markdown level1 summary"><p>Handler for the <code>LOCK</code> method</p>
+</div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">[HttpLock]
+public Task&lt;IActionResult&gt; LockAsync(string path, [FromBody] lockinfo lockinfo, CancellationToken cancellationToken = null)</code></pre>
+              </div>
+              <h5 class="parameters">Parameters</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Name</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><a class="xref" href="https://msdn.microsoft.com/en-us/library/system.string(v=vs.110).aspx">String</a></td>
+                    <td><span class="parametername">path</span></td>
+                    <td><p>The root-relative path to the target of this method</p>
+</td>
+                  </tr>
+                  <tr>
+                    <td><a class="xref" href="FubarDev.WebDavServer.Model.lockinfo.html">lockinfo</a></td>
+                    <td><span class="parametername">lockinfo</span></td>
+                    <td><p>The information about the requested lock</p>
+</td>
+                  </tr>
+                  <tr>
+                    <td><a class="xref" href="https://msdn.microsoft.com/en-us/library/system.threading.cancellationtoken(v=vs.110).aspx">CancellationToken</a></td>
+                    <td><span class="parametername">cancellationToken</span></td>
+                    <td><p>The cancellation token</p>
+</td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 class="returns">Returns</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><a class="xref" href="https://msdn.microsoft.com/en-us/library/dd321424(v=vs.110).aspx">Task</a>&lt;<span class="xref">Microsoft.AspNetCore.Mvc.IActionResult</span>&gt;</td>
+                    <td><p>The action result</p>
+</td>
+                  </tr>
+                </tbody>
+              </table>
+              
+              
+              <a id="FubarDev_WebDavServer_AspNetCore_WebDavControllerBase_MkColAsync_" data-uid="FubarDev.WebDavServer.AspNetCore.WebDavControllerBase.MkColAsync*"></a>
+              <h4 id="FubarDev_WebDavServer_AspNetCore_WebDavControllerBase_MkColAsync_System_String_System_Threading_CancellationToken_" data-uid="FubarDev.WebDavServer.AspNetCore.WebDavControllerBase.MkColAsync(System.String,System.Threading.CancellationToken)">MkColAsync(String, CancellationToken)</h4>
+              <div class="markdown level1 summary"><p>Handler for the <code>MKCOL</code> method</p>
+</div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">[HttpMkCol]
+public Task&lt;IActionResult&gt; MkColAsync(string path, CancellationToken cancellationToken)</code></pre>
+              </div>
+              <h5 class="parameters">Parameters</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Name</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><a class="xref" href="https://msdn.microsoft.com/en-us/library/system.string(v=vs.110).aspx">String</a></td>
+                    <td><span class="parametername">path</span></td>
+                    <td><p>The root-relative path to the target of this method</p>
+</td>
+                  </tr>
+                  <tr>
+                    <td><a class="xref" href="https://msdn.microsoft.com/en-us/library/system.threading.cancellationtoken(v=vs.110).aspx">CancellationToken</a></td>
+                    <td><span class="parametername">cancellationToken</span></td>
+                    <td><p>The cancellation token</p>
+</td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 class="returns">Returns</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><a class="xref" href="https://msdn.microsoft.com/en-us/library/dd321424(v=vs.110).aspx">Task</a>&lt;<span class="xref">Microsoft.AspNetCore.Mvc.IActionResult</span>&gt;</td>
+                    <td><p>The action result</p>
+</td>
+                  </tr>
+                </tbody>
+              </table>
+              
+              
+              <a id="FubarDev_WebDavServer_AspNetCore_WebDavControllerBase_MoveAsync_" data-uid="FubarDev.WebDavServer.AspNetCore.WebDavControllerBase.MoveAsync*"></a>
+              <h4 id="FubarDev_WebDavServer_AspNetCore_WebDavControllerBase_MoveAsync_System_String_System_String_System_Threading_CancellationToken_" data-uid="FubarDev.WebDavServer.AspNetCore.WebDavControllerBase.MoveAsync(System.String,System.String,System.Threading.CancellationToken)">MoveAsync(String, String, CancellationToken)</h4>
+              <div class="markdown level1 summary"><p>Handler for the <code>MOVE</code> method</p>
+</div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">[HttpMove]
+public Task&lt;IActionResult&gt; MoveAsync(string path, [FromHeader(Name = &quot;Destination&quot;)] string destination, CancellationToken cancellationToken = null)</code></pre>
+              </div>
+              <h5 class="parameters">Parameters</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Name</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><a class="xref" href="https://msdn.microsoft.com/en-us/library/system.string(v=vs.110).aspx">String</a></td>
+                    <td><span class="parametername">path</span></td>
+                    <td><p>The root-relative path to the source of this method</p>
+</td>
+                  </tr>
+                  <tr>
+                    <td><a class="xref" href="https://msdn.microsoft.com/en-us/library/system.string(v=vs.110).aspx">String</a></td>
+                    <td><span class="parametername">destination</span></td>
+                    <td><p>The destination of the MOVE operation</p>
+</td>
+                  </tr>
+                  <tr>
+                    <td><a class="xref" href="https://msdn.microsoft.com/en-us/library/system.threading.cancellationtoken(v=vs.110).aspx">CancellationToken</a></td>
+                    <td><span class="parametername">cancellationToken</span></td>
+                    <td><p>The cancellation token</p>
+</td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 class="returns">Returns</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><a class="xref" href="https://msdn.microsoft.com/en-us/library/dd321424(v=vs.110).aspx">Task</a>&lt;<span class="xref">Microsoft.AspNetCore.Mvc.IActionResult</span>&gt;</td>
+                    <td><p>The action result</p>
+</td>
+                  </tr>
+                </tbody>
+              </table>
+              
+              
+              <a id="FubarDev_WebDavServer_AspNetCore_WebDavControllerBase_PropFindAsync_" data-uid="FubarDev.WebDavServer.AspNetCore.WebDavControllerBase.PropFindAsync*"></a>
+              <h4 id="FubarDev_WebDavServer_AspNetCore_WebDavControllerBase_PropFindAsync_System_String_FubarDev_WebDavServer_Model_propfind_System_Threading_CancellationToken_" data-uid="FubarDev.WebDavServer.AspNetCore.WebDavControllerBase.PropFindAsync(System.String,FubarDev.WebDavServer.Model.propfind,System.Threading.CancellationToken)">PropFindAsync(String, propfind, CancellationToken)</h4>
+              <div class="markdown level1 summary"><p>Handler for the <code>PROPFIND</code> method</p>
+</div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">[HttpPropFind]
+public Task&lt;IActionResult&gt; PropFindAsync(string path, [FromBody] propfind request, CancellationToken cancellationToken = null)</code></pre>
+              </div>
+              <h5 class="parameters">Parameters</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Name</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><a class="xref" href="https://msdn.microsoft.com/en-us/library/system.string(v=vs.110).aspx">String</a></td>
+                    <td><span class="parametername">path</span></td>
+                    <td><p>The root-relative path to the target of this method</p>
+</td>
+                  </tr>
+                  <tr>
+                    <td><a class="xref" href="FubarDev.WebDavServer.Model.propfind.html">propfind</a></td>
+                    <td><span class="parametername">request</span></td>
+                    <td><p>The <a class="xref" href="FubarDev.WebDavServer.Model.propfind.html">propfind</a> request element (may be null)</p>
+</td>
+                  </tr>
+                  <tr>
+                    <td><a class="xref" href="https://msdn.microsoft.com/en-us/library/system.threading.cancellationtoken(v=vs.110).aspx">CancellationToken</a></td>
+                    <td><span class="parametername">cancellationToken</span></td>
+                    <td><p>The cancellation token</p>
+</td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 class="returns">Returns</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><a class="xref" href="https://msdn.microsoft.com/en-us/library/dd321424(v=vs.110).aspx">Task</a>&lt;<span class="xref">Microsoft.AspNetCore.Mvc.IActionResult</span>&gt;</td>
+                    <td><p>The action result</p>
+</td>
+                  </tr>
+                </tbody>
+              </table>
+              
+              
+              <a id="FubarDev_WebDavServer_AspNetCore_WebDavControllerBase_PropPatchAsync_" data-uid="FubarDev.WebDavServer.AspNetCore.WebDavControllerBase.PropPatchAsync*"></a>
+              <h4 id="FubarDev_WebDavServer_AspNetCore_WebDavControllerBase_PropPatchAsync_System_String_FubarDev_WebDavServer_Model_propertyupdate_System_Threading_CancellationToken_" data-uid="FubarDev.WebDavServer.AspNetCore.WebDavControllerBase.PropPatchAsync(System.String,FubarDev.WebDavServer.Model.propertyupdate,System.Threading.CancellationToken)">PropPatchAsync(String, propertyupdate, CancellationToken)</h4>
+              <div class="markdown level1 summary"><p>Handler for the <code>PROPPATCH</code> method</p>
+</div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">[HttpPropPatch]
+public Task&lt;IActionResult&gt; PropPatchAsync(string path, [FromBody] propertyupdate request, CancellationToken cancellationToken)</code></pre>
+              </div>
+              <h5 class="parameters">Parameters</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Name</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><a class="xref" href="https://msdn.microsoft.com/en-us/library/system.string(v=vs.110).aspx">String</a></td>
+                    <td><span class="parametername">path</span></td>
+                    <td><p>The root-relative path to the target of this method</p>
+</td>
+                  </tr>
+                  <tr>
+                    <td><a class="xref" href="FubarDev.WebDavServer.Model.propertyupdate.html">propertyupdate</a></td>
+                    <td><span class="parametername">request</span></td>
+                    <td><p>The <a class="xref" href="FubarDev.WebDavServer.Model.propertyupdate.html">propertyupdate</a> request element</p>
+</td>
+                  </tr>
+                  <tr>
+                    <td><a class="xref" href="https://msdn.microsoft.com/en-us/library/system.threading.cancellationtoken(v=vs.110).aspx">CancellationToken</a></td>
+                    <td><span class="parametername">cancellationToken</span></td>
+                    <td><p>The cancellation token</p>
+</td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 class="returns">Returns</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><a class="xref" href="https://msdn.microsoft.com/en-us/library/dd321424(v=vs.110).aspx">Task</a>&lt;<span class="xref">Microsoft.AspNetCore.Mvc.IActionResult</span>&gt;</td>
+                    <td><p>The action result</p>
+</td>
+                  </tr>
+                </tbody>
+              </table>
+              
+              
+              <a id="FubarDev_WebDavServer_AspNetCore_WebDavControllerBase_PutAsync_" data-uid="FubarDev.WebDavServer.AspNetCore.WebDavControllerBase.PutAsync*"></a>
+              <h4 id="FubarDev_WebDavServer_AspNetCore_WebDavControllerBase_PutAsync_System_String_System_Threading_CancellationToken_" data-uid="FubarDev.WebDavServer.AspNetCore.WebDavControllerBase.PutAsync(System.String,System.Threading.CancellationToken)">PutAsync(String, CancellationToken)</h4>
+              <div class="markdown level1 summary"><p>Handler for the <code>PUT</code> method</p>
+</div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">[HttpPut]
+public Task&lt;IActionResult&gt; PutAsync(string path, CancellationToken cancellationToken)</code></pre>
+              </div>
+              <h5 class="parameters">Parameters</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Name</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><a class="xref" href="https://msdn.microsoft.com/en-us/library/system.string(v=vs.110).aspx">String</a></td>
+                    <td><span class="parametername">path</span></td>
+                    <td><p>The root-relative path to the target of this method</p>
+</td>
+                  </tr>
+                  <tr>
+                    <td><a class="xref" href="https://msdn.microsoft.com/en-us/library/system.threading.cancellationtoken(v=vs.110).aspx">CancellationToken</a></td>
+                    <td><span class="parametername">cancellationToken</span></td>
+                    <td><p>The cancellation token</p>
+</td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 class="returns">Returns</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><a class="xref" href="https://msdn.microsoft.com/en-us/library/dd321424(v=vs.110).aspx">Task</a>&lt;<span class="xref">Microsoft.AspNetCore.Mvc.IActionResult</span>&gt;</td>
+                    <td><p>The action result</p>
+</td>
+                  </tr>
+                </tbody>
+              </table>
+              
+              
+              <a id="FubarDev_WebDavServer_AspNetCore_WebDavControllerBase_QueryOptionsAsync_" data-uid="FubarDev.WebDavServer.AspNetCore.WebDavControllerBase.QueryOptionsAsync*"></a>
+              <h4 id="FubarDev_WebDavServer_AspNetCore_WebDavControllerBase_QueryOptionsAsync_System_String_System_Threading_CancellationToken_" data-uid="FubarDev.WebDavServer.AspNetCore.WebDavControllerBase.QueryOptionsAsync(System.String,System.Threading.CancellationToken)">QueryOptionsAsync(String, CancellationToken)</h4>
+              <div class="markdown level1 summary"><p>Handler for the <code>QUERY</code> method</p>
+</div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">[HttpOptions]
+public Task&lt;IActionResult&gt; QueryOptionsAsync(string path, CancellationToken cancellationToken)</code></pre>
+              </div>
+              <h5 class="parameters">Parameters</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Name</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><a class="xref" href="https://msdn.microsoft.com/en-us/library/system.string(v=vs.110).aspx">String</a></td>
+                    <td><span class="parametername">path</span></td>
+                    <td><p>The root-relative path to the target of this method</p>
+</td>
+                  </tr>
+                  <tr>
+                    <td><a class="xref" href="https://msdn.microsoft.com/en-us/library/system.threading.cancellationtoken(v=vs.110).aspx">CancellationToken</a></td>
+                    <td><span class="parametername">cancellationToken</span></td>
+                    <td><p>The cancellation token</p>
+</td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 class="returns">Returns</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><a class="xref" href="https://msdn.microsoft.com/en-us/library/dd321424(v=vs.110).aspx">Task</a>&lt;<span class="xref">Microsoft.AspNetCore.Mvc.IActionResult</span>&gt;</td>
+                    <td><p>The action result</p>
+</td>
+                  </tr>
+                </tbody>
+              </table>
+              
+              
+              <a id="FubarDev_WebDavServer_AspNetCore_WebDavControllerBase_UnlockAsync_" data-uid="FubarDev.WebDavServer.AspNetCore.WebDavControllerBase.UnlockAsync*"></a>
+              <h4 id="FubarDev_WebDavServer_AspNetCore_WebDavControllerBase_UnlockAsync_System_String_System_String_System_Threading_CancellationToken_" data-uid="FubarDev.WebDavServer.AspNetCore.WebDavControllerBase.UnlockAsync(System.String,System.String,System.Threading.CancellationToken)">UnlockAsync(String, String, CancellationToken)</h4>
+              <div class="markdown level1 summary"><p>Handler for the <code>UNLOCK</code> method</p>
+</div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">[HttpUnlock]
+public Task&lt;IActionResult&gt; UnlockAsync(string path, [FromHeader(Name = &quot;Lock-Token&quot;)] string lockToken, CancellationToken cancellationToken = null)</code></pre>
+              </div>
+              <h5 class="parameters">Parameters</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Name</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><a class="xref" href="https://msdn.microsoft.com/en-us/library/system.string(v=vs.110).aspx">String</a></td>
+                    <td><span class="parametername">path</span></td>
+                    <td><p>The root-relative path to the target of this method</p>
+</td>
+                  </tr>
+                  <tr>
+                    <td><a class="xref" href="https://msdn.microsoft.com/en-us/library/system.string(v=vs.110).aspx">String</a></td>
+                    <td><span class="parametername">lockToken</span></td>
+                    <td><p>The token of the lock to remove</p>
+</td>
+                  </tr>
+                  <tr>
+                    <td><a class="xref" href="https://msdn.microsoft.com/en-us/library/system.threading.cancellationtoken(v=vs.110).aspx">CancellationToken</a></td>
+                    <td><span class="parametername">cancellationToken</span></td>
+                    <td><p>The cancellation token</p>
+</td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 class="returns">Returns</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><a class="xref" href="https://msdn.microsoft.com/en-us/library/dd321424(v=vs.110).aspx">Task</a>&lt;<span class="xref">Microsoft.AspNetCore.Mvc.IActionResult</span>&gt;</td>
+                    <td><p>The action result</p>
+</td>
+                  </tr>
+                </tbody>
+              </table>
+                        </article>
+          </div>
+          
+          <div class="hidden-sm col-md-2" role="complementary">
+            <div class="sideaffix">
+              <div class="contribution">
+                <ul class="nav">
+                </ul>
+              </div>
+              <nav class="bs-docs-sidebar hidden-print hidden-xs hidden-sm affix" id="affix">
+              <!-- <p><a class="back-to-top" href="#top">Back to top</a><p> -->
+              </nav>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <footer>
+        <div class="grad-bottom"></div>
+        <div class="footer">
+          <div class="container">
+            <span class="pull-right">
+              <a href="#top">Back to top</a>
+            </span>
+            
+            <span>Copyright © 2015-2016 Microsoft<br>Generated by <strong>DocFX</strong></span>
+          </div>
+        </div>
+      </footer>
+    </div>
+    
+    <script type="text/javascript" src="../styles/docfx.vendor.js"></script>
+    <script type="text/javascript" src="../styles/docfx.js"></script>
+    <script type="text/javascript" src="../styles/main.js"></script>
+  </body>
+</html>

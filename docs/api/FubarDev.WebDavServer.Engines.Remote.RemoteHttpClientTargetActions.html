@@ -1,0 +1,916 @@
+﻿<!DOCTYPE html>
+<!--[if IE]><![endif]-->
+<html>
+  
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <title>Class RemoteHttpClientTargetActions
+   </title>
+    <meta name="viewport" content="width=device-width">
+    <meta name="title" content="Class RemoteHttpClientTargetActions
+   ">
+    <meta name="generator" content="docfx 2.12.1.0">
+    
+    <link rel="shortcut icon" href="../favicon.ico">
+    <link rel="stylesheet" href="../styles/docfx.vendor.css">
+    <link rel="stylesheet" href="../styles/docfx.css">
+    <link rel="stylesheet" href="../styles/main.css">
+    <meta property="docfx:navrel" content="../toc.html">
+    <meta property="docfx:tocrel" content="toc.html">
+    
+  </head>
+  <body data-spy="scroll" data-target="#affix">
+    <div id="wrapper">
+      <header>
+        
+        <nav id="autocollapse" class="navbar navbar-inverse ng-scope" role="navigation">
+          <div class="container">
+            <div class="navbar-header">
+              <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+              </button>
+              
+              <a class="navbar-brand" href="../index.html">
+                <img id="logo" class="svg" src="../logo.svg" alt="">
+              </a>
+            </div>
+            <div class="collapse navbar-collapse" id="navbar">
+              <form class="navbar-form navbar-right" role="search" id="search">
+                <div class="form-group">
+                  <input type="text" class="form-control" id="search-query" placeholder="Search" autocomplete="off">
+                </div>
+              </form>
+            </div>
+          </div>
+        </nav>
+        
+        <div class="subnav navbar navbar-default">
+          <div class="container hide-when-search" id="breadcrumb">
+            <ul class="breadcrumb">
+              <li></li>
+            </ul>
+          </div>
+        </div>
+      </header>
+      <div role="main" class="container body-content hide-when-search">
+        
+        <div class="sidenav hide-when-search">
+          <a class="btn toc-toggle collapse" data-toggle="collapse" href="#sidetoggle" aria-expanded="false" aria-controls="sidetoggle">Show / Hide Table of Contents</a>
+          <div class="sidetoggle collapse" id="sidetoggle">
+            <div id="sidetoc"></div>
+          </div>
+        </div>
+        <div class="article row grid-right">
+          <div class="col-md-10">
+            <article class="content wrap" id="_content">
+              
+              
+              <h1 id="FubarDev_WebDavServer_Engines_Remote_RemoteHttpClientTargetActions" data-uid="FubarDev.WebDavServer.Engines.Remote.RemoteHttpClientTargetActions">Class RemoteHttpClientTargetActions
+              </h1>
+              <div class="markdown level0 summary"><p>Base class for remote target actions</p>
+</div>
+              <div class="markdown level0 conceptual"></div>
+              <div class="inheritance">
+                <h5>Inheritance</h5>
+                  <div class="level0"><a class="xref" href="https://msdn.microsoft.com/en-us/library/system.object(v=vs.110).aspx">Object</a></div>
+                  <div class="level1"><span class="xref">RemoteHttpClientTargetActions</span></div>
+                  <div class="level2"><a class="xref" href="FubarDev.WebDavServer.Engines.Remote.CopyRemoteHttpClientTargetActions.html">CopyRemoteHttpClientTargetActions</a></div>
+                  <div class="level2"><a class="xref" href="FubarDev.WebDavServer.Engines.Remote.MoveRemoteHttpClientTargetActions.html">MoveRemoteHttpClientTargetActions</a></div>
+              </div>
+              <div class="inheritedMembers">
+                <h5>Inherited Members</h5>
+                <div>
+                  <a class="xref" href="https://msdn.microsoft.com/en-us/library/7bxwbwt2(v=vs.110).aspx">Object.ToString()</a>
+                </div>
+                <div>
+                  <a class="xref" href="https://msdn.microsoft.com/en-us/library/bsc2ak47(v=vs.110).aspx">Object.Equals(Object)</a>
+                </div>
+                <div>
+                  <a class="xref" href="https://msdn.microsoft.com/en-us/library/w4hkze5k(v=vs.110).aspx">Object.Equals(Object, Object)</a>
+                </div>
+                <div>
+                  <a class="xref" href="https://msdn.microsoft.com/en-us/library/hz2a0b8x(v=vs.110).aspx">Object.ReferenceEquals(Object, Object)</a>
+                </div>
+                <div>
+                  <a class="xref" href="https://msdn.microsoft.com/en-us/library/zdee4b3y(v=vs.110).aspx">Object.GetHashCode()</a>
+                </div>
+                <div>
+                  <a class="xref" href="https://msdn.microsoft.com/en-us/library/dfwy45w9(v=vs.110).aspx">Object.GetType()</a>
+                </div>
+                <div>
+                  <a class="xref" href="https://msdn.microsoft.com/en-us/library/57ctke0a(v=vs.110).aspx">Object.MemberwiseClone()</a>
+                </div>
+              </div>
+              <h6><strong>Namespace</strong>:FubarDev.WebDavServer.Engines.Remote</h6>
+              <h6><strong>Assembly</strong>:FubarDev.WebDavServer.dll</h6>
+              <h5 id="FubarDev_WebDavServer_Engines_Remote_RemoteHttpClientTargetActions_syntax">Syntax</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public abstract class RemoteHttpClientTargetActions : IRemoteTargetActions, ITargetActions&lt;RemoteCollectionTarget, RemoteDocumentTarget, RemoteMissingTarget&gt;, IDisposable</code></pre>
+              </div>
+              <h3 id="constructors">Constructors
+              </h3>
+              
+              
+              <a id="FubarDev_WebDavServer_Engines_Remote_RemoteHttpClientTargetActions__ctor_" data-uid="FubarDev.WebDavServer.Engines.Remote.RemoteHttpClientTargetActions.#ctor*"></a>
+              <h4 id="FubarDev_WebDavServer_Engines_Remote_RemoteHttpClientTargetActions__ctor_FubarDev_WebDavServer_IWebDavDispatcher_System_Net_Http_HttpClient_" data-uid="FubarDev.WebDavServer.Engines.Remote.RemoteHttpClientTargetActions.#ctor(FubarDev.WebDavServer.IWebDavDispatcher,System.Net.Http.HttpClient)">RemoteHttpClientTargetActions(IWebDavDispatcher, HttpClient)</h4>
+              <div class="markdown level1 summary"><p>Initializes a new instance of the <a class="xref" href="FubarDev.WebDavServer.Engines.Remote.RemoteHttpClientTargetActions.html">RemoteHttpClientTargetActions</a> class.</p>
+</div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">protected RemoteHttpClientTargetActions([NotNull] IWebDavDispatcher dispatcher, [NotNull] HttpClient httpClient)</code></pre>
+              </div>
+              <h5 class="parameters">Parameters</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Name</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><a class="xref" href="FubarDev.WebDavServer.IWebDavDispatcher.html">IWebDavDispatcher</a></td>
+                    <td><span class="parametername">dispatcher</span></td>
+                    <td><p>The WebDAV dispatcher</p>
+</td>
+                  </tr>
+                  <tr>
+                    <td><a class="xref" href="https://msdn.microsoft.com/en-us/library/system.net.http.httpclient(v=vs.110).aspx">HttpClient</a></td>
+                    <td><span class="parametername">httpClient</span></td>
+                    <td><p>The <a class="xref" href="https://msdn.microsoft.com/en-us/library/system.net.http.httpclient(v=vs.110).aspx">HttpClient</a> to use for the communication with the remote server</p>
+</td>
+                  </tr>
+                </tbody>
+              </table>
+              <h3 id="properties">Properties
+              </h3>
+              
+              
+              <a id="FubarDev_WebDavServer_Engines_Remote_RemoteHttpClientTargetActions_Client_" data-uid="FubarDev.WebDavServer.Engines.Remote.RemoteHttpClientTargetActions.Client*"></a>
+              <h4 id="FubarDev_WebDavServer_Engines_Remote_RemoteHttpClientTargetActions_Client" data-uid="FubarDev.WebDavServer.Engines.Remote.RemoteHttpClientTargetActions.Client">Client</h4>
+              <div class="markdown level1 summary"><p>Gets the <a class="xref" href="https://msdn.microsoft.com/en-us/library/system.net.http.httpclient(v=vs.110).aspx">HttpClient</a> to communicate with the remote server</p>
+</div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">[NotNull]
+protected HttpClient Client { get; }</code></pre>
+              </div>
+              <h5 class="propertyValue">Property Value</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><a class="xref" href="https://msdn.microsoft.com/en-us/library/system.net.http.httpclient(v=vs.110).aspx">HttpClient</a></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              
+              
+              <a id="FubarDev_WebDavServer_Engines_Remote_RemoteHttpClientTargetActions_Dispatcher_" data-uid="FubarDev.WebDavServer.Engines.Remote.RemoteHttpClientTargetActions.Dispatcher*"></a>
+              <h4 id="FubarDev_WebDavServer_Engines_Remote_RemoteHttpClientTargetActions_Dispatcher" data-uid="FubarDev.WebDavServer.Engines.Remote.RemoteHttpClientTargetActions.Dispatcher">Dispatcher</h4>
+              <div class="markdown level1 summary"></div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">[NotNull]
+public IWebDavDispatcher Dispatcher { get; }</code></pre>
+              </div>
+              <h5 class="propertyValue">Property Value</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><a class="xref" href="FubarDev.WebDavServer.IWebDavDispatcher.html">IWebDavDispatcher</a></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 class="implements">Implements</h5>
+                  <div><a class="xref" href="FubarDev.WebDavServer.Engines.ITargetActions-3.html#FubarDev_WebDavServer_Engines_ITargetActions_3_Dispatcher">ITargetActions&lt;TCollection, TDocument, TMissing&gt;.Dispatcher</a></div>
+              
+              
+              <a id="FubarDev_WebDavServer_Engines_Remote_RemoteHttpClientTargetActions_ExistingTargetBehaviour_" data-uid="FubarDev.WebDavServer.Engines.Remote.RemoteHttpClientTargetActions.ExistingTargetBehaviour*"></a>
+              <h4 id="FubarDev_WebDavServer_Engines_Remote_RemoteHttpClientTargetActions_ExistingTargetBehaviour" data-uid="FubarDev.WebDavServer.Engines.Remote.RemoteHttpClientTargetActions.ExistingTargetBehaviour">ExistingTargetBehaviour</h4>
+              <div class="markdown level1 summary"></div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public RecursiveTargetBehaviour ExistingTargetBehaviour { get; }</code></pre>
+              </div>
+              <h5 class="propertyValue">Property Value</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><a class="xref" href="FubarDev.WebDavServer.RecursiveTargetBehaviour.html">RecursiveTargetBehaviour</a></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 class="implements">Implements</h5>
+                  <div><a class="xref" href="FubarDev.WebDavServer.Engines.ITargetActions-3.html#FubarDev_WebDavServer_Engines_ITargetActions_3_ExistingTargetBehaviour">ITargetActions&lt;TCollection, TDocument, TMissing&gt;.ExistingTargetBehaviour</a></div>
+              <h3 id="methods">Methods
+              </h3>
+              
+              
+              <a id="FubarDev_WebDavServer_Engines_Remote_RemoteHttpClientTargetActions_CreateCollectionAsync_" data-uid="FubarDev.WebDavServer.Engines.Remote.RemoteHttpClientTargetActions.CreateCollectionAsync*"></a>
+              <h4 id="FubarDev_WebDavServer_Engines_Remote_RemoteHttpClientTargetActions_CreateCollectionAsync_FubarDev_WebDavServer_Engines_Remote_RemoteCollectionTarget_System_String_System_Threading_CancellationToken_" data-uid="FubarDev.WebDavServer.Engines.Remote.RemoteHttpClientTargetActions.CreateCollectionAsync(FubarDev.WebDavServer.Engines.Remote.RemoteCollectionTarget,System.String,System.Threading.CancellationToken)">CreateCollectionAsync(RemoteCollectionTarget, String, CancellationToken)</h4>
+              <div class="markdown level1 summary"></div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public Task&lt;RemoteCollectionTarget&gt; CreateCollectionAsync(RemoteCollectionTarget collection, string name, CancellationToken cancellationToken)</code></pre>
+              </div>
+              <h5 class="parameters">Parameters</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Name</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><a class="xref" href="FubarDev.WebDavServer.Engines.Remote.RemoteCollectionTarget.html">RemoteCollectionTarget</a></td>
+                    <td><span class="parametername">collection</span></td>
+                    <td></td>
+                  </tr>
+                  <tr>
+                    <td><a class="xref" href="https://msdn.microsoft.com/en-us/library/system.string(v=vs.110).aspx">String</a></td>
+                    <td><span class="parametername">name</span></td>
+                    <td></td>
+                  </tr>
+                  <tr>
+                    <td><a class="xref" href="https://msdn.microsoft.com/en-us/library/system.threading.cancellationtoken(v=vs.110).aspx">CancellationToken</a></td>
+                    <td><span class="parametername">cancellationToken</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 class="returns">Returns</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><a class="xref" href="https://msdn.microsoft.com/en-us/library/dd321424(v=vs.110).aspx">Task</a>&lt;<a class="xref" href="FubarDev.WebDavServer.Engines.Remote.RemoteCollectionTarget.html">RemoteCollectionTarget</a>&gt;</td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 class="implements">Implements</h5>
+                  <div><a class="xref" href="FubarDev.WebDavServer.Engines.Remote.IRemoteTargetActions.html#FubarDev_WebDavServer_Engines_Remote_IRemoteTargetActions_CreateCollectionAsync_FubarDev_WebDavServer_Engines_Remote_RemoteCollectionTarget_System_String_System_Threading_CancellationToken_">IRemoteTargetActions.CreateCollectionAsync(RemoteCollectionTarget, String, CancellationToken)</a></div>
+              
+              
+              <a id="FubarDev_WebDavServer_Engines_Remote_RemoteHttpClientTargetActions_CreateException_" data-uid="FubarDev.WebDavServer.Engines.Remote.RemoteHttpClientTargetActions.CreateException*"></a>
+              <h4 id="FubarDev_WebDavServer_Engines_Remote_RemoteHttpClientTargetActions_CreateException_System_Uri_FubarDev_WebDavServer_Model_error_" data-uid="FubarDev.WebDavServer.Engines.Remote.RemoteHttpClientTargetActions.CreateException(System.Uri,FubarDev.WebDavServer.Model.error)">CreateException(Uri, error)</h4>
+              <div class="markdown level1 summary"><p>Creates an exception for a failed remote operation</p>
+</div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">[NotNull]
+protected static RemoteTargetException CreateException([NotNull] Uri requestUrl, [NotNull] error error)</code></pre>
+              </div>
+              <h5 class="parameters">Parameters</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Name</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><a class="xref" href="https://msdn.microsoft.com/en-us/library/system.uri(v=vs.110).aspx">Uri</a></td>
+                    <td><span class="parametername">requestUrl</span></td>
+                    <td><p>The request URL</p>
+</td>
+                  </tr>
+                  <tr>
+                    <td><a class="xref" href="FubarDev.WebDavServer.Model.error.html">error</a></td>
+                    <td><span class="parametername">error</span></td>
+                    <td><p>The error object</p>
+</td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 class="returns">Returns</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><a class="xref" href="FubarDev.WebDavServer.Engines.Remote.RemoteTargetException.html">RemoteTargetException</a></td>
+                    <td><p>The new remote target exception</p>
+</td>
+                  </tr>
+                </tbody>
+              </table>
+              
+              
+              <a id="FubarDev_WebDavServer_Engines_Remote_RemoteHttpClientTargetActions_DeleteAsync_" data-uid="FubarDev.WebDavServer.Engines.Remote.RemoteHttpClientTargetActions.DeleteAsync*"></a>
+              <h4 id="FubarDev_WebDavServer_Engines_Remote_RemoteHttpClientTargetActions_DeleteAsync_FubarDev_WebDavServer_Engines_Remote_RemoteCollectionTarget_System_Threading_CancellationToken_" data-uid="FubarDev.WebDavServer.Engines.Remote.RemoteHttpClientTargetActions.DeleteAsync(FubarDev.WebDavServer.Engines.Remote.RemoteCollectionTarget,System.Threading.CancellationToken)">DeleteAsync(RemoteCollectionTarget, CancellationToken)</h4>
+              <div class="markdown level1 summary"></div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public Task DeleteAsync(RemoteCollectionTarget target, CancellationToken cancellationToken)</code></pre>
+              </div>
+              <h5 class="parameters">Parameters</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Name</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><a class="xref" href="FubarDev.WebDavServer.Engines.Remote.RemoteCollectionTarget.html">RemoteCollectionTarget</a></td>
+                    <td><span class="parametername">target</span></td>
+                    <td></td>
+                  </tr>
+                  <tr>
+                    <td><a class="xref" href="https://msdn.microsoft.com/en-us/library/system.threading.cancellationtoken(v=vs.110).aspx">CancellationToken</a></td>
+                    <td><span class="parametername">cancellationToken</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 class="returns">Returns</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><a class="xref" href="https://msdn.microsoft.com/en-us/library/system.threading.tasks.task(v=vs.110).aspx">Task</a></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 class="implements">Implements</h5>
+                  <div><a class="xref" href="FubarDev.WebDavServer.Engines.Remote.IRemoteTargetActions.html#FubarDev_WebDavServer_Engines_Remote_IRemoteTargetActions_DeleteAsync_FubarDev_WebDavServer_Engines_Remote_RemoteCollectionTarget_System_Threading_CancellationToken_">IRemoteTargetActions.DeleteAsync(RemoteCollectionTarget, CancellationToken)</a></div>
+              
+              
+              <a id="FubarDev_WebDavServer_Engines_Remote_RemoteHttpClientTargetActions_DeleteAsync_" data-uid="FubarDev.WebDavServer.Engines.Remote.RemoteHttpClientTargetActions.DeleteAsync*"></a>
+              <h4 id="FubarDev_WebDavServer_Engines_Remote_RemoteHttpClientTargetActions_DeleteAsync_FubarDev_WebDavServer_Engines_Remote_RemoteDocumentTarget_System_Threading_CancellationToken_" data-uid="FubarDev.WebDavServer.Engines.Remote.RemoteHttpClientTargetActions.DeleteAsync(FubarDev.WebDavServer.Engines.Remote.RemoteDocumentTarget,System.Threading.CancellationToken)">DeleteAsync(RemoteDocumentTarget, CancellationToken)</h4>
+              <div class="markdown level1 summary"></div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public Task DeleteAsync(RemoteDocumentTarget target, CancellationToken cancellationToken)</code></pre>
+              </div>
+              <h5 class="parameters">Parameters</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Name</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><a class="xref" href="FubarDev.WebDavServer.Engines.Remote.RemoteDocumentTarget.html">RemoteDocumentTarget</a></td>
+                    <td><span class="parametername">target</span></td>
+                    <td></td>
+                  </tr>
+                  <tr>
+                    <td><a class="xref" href="https://msdn.microsoft.com/en-us/library/system.threading.cancellationtoken(v=vs.110).aspx">CancellationToken</a></td>
+                    <td><span class="parametername">cancellationToken</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 class="returns">Returns</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><a class="xref" href="https://msdn.microsoft.com/en-us/library/system.threading.tasks.task(v=vs.110).aspx">Task</a></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 class="implements">Implements</h5>
+                  <div><a class="xref" href="FubarDev.WebDavServer.Engines.Remote.IRemoteTargetActions.html#FubarDev_WebDavServer_Engines_Remote_IRemoteTargetActions_DeleteAsync_FubarDev_WebDavServer_Engines_Remote_RemoteDocumentTarget_System_Threading_CancellationToken_">IRemoteTargetActions.DeleteAsync(RemoteDocumentTarget, CancellationToken)</a></div>
+              
+              
+              <a id="FubarDev_WebDavServer_Engines_Remote_RemoteHttpClientTargetActions_Dispose_" data-uid="FubarDev.WebDavServer.Engines.Remote.RemoteHttpClientTargetActions.Dispose*"></a>
+              <h4 id="FubarDev_WebDavServer_Engines_Remote_RemoteHttpClientTargetActions_Dispose" data-uid="FubarDev.WebDavServer.Engines.Remote.RemoteHttpClientTargetActions.Dispose">Dispose()</h4>
+              <div class="markdown level1 summary"></div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public void Dispose()</code></pre>
+              </div>
+              <h5 class="implements">Implements</h5>
+                  <div><a class="xref" href="https://msdn.microsoft.com/en-us/library/es4s3w1d(v=vs.110).aspx">IDisposable.Dispose()</a></div>
+              
+              
+              <a id="FubarDev_WebDavServer_Engines_Remote_RemoteHttpClientTargetActions_ExecuteAsync_" data-uid="FubarDev.WebDavServer.Engines.Remote.RemoteHttpClientTargetActions.ExecuteAsync*"></a>
+              <h4 id="FubarDev_WebDavServer_Engines_Remote_RemoteHttpClientTargetActions_ExecuteAsync_FubarDev_WebDavServer_FileSystem_ICollection_FubarDev_WebDavServer_Engines_Remote_RemoteCollectionTarget_System_Threading_CancellationToken_" data-uid="FubarDev.WebDavServer.Engines.Remote.RemoteHttpClientTargetActions.ExecuteAsync(FubarDev.WebDavServer.FileSystem.ICollection,FubarDev.WebDavServer.Engines.Remote.RemoteCollectionTarget,System.Threading.CancellationToken)">ExecuteAsync(ICollection, RemoteCollectionTarget, CancellationToken)</h4>
+              <div class="markdown level1 summary"></div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public abstract Task ExecuteAsync(ICollection source, RemoteCollectionTarget destination, CancellationToken cancellationToken)</code></pre>
+              </div>
+              <h5 class="parameters">Parameters</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Name</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><a class="xref" href="FubarDev.WebDavServer.FileSystem.ICollection.html">ICollection</a></td>
+                    <td><span class="parametername">source</span></td>
+                    <td></td>
+                  </tr>
+                  <tr>
+                    <td><a class="xref" href="FubarDev.WebDavServer.Engines.Remote.RemoteCollectionTarget.html">RemoteCollectionTarget</a></td>
+                    <td><span class="parametername">destination</span></td>
+                    <td></td>
+                  </tr>
+                  <tr>
+                    <td><a class="xref" href="https://msdn.microsoft.com/en-us/library/system.threading.cancellationtoken(v=vs.110).aspx">CancellationToken</a></td>
+                    <td><span class="parametername">cancellationToken</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 class="returns">Returns</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><a class="xref" href="https://msdn.microsoft.com/en-us/library/system.threading.tasks.task(v=vs.110).aspx">Task</a></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 class="implements">Implements</h5>
+                  <div><a class="xref" href="FubarDev.WebDavServer.Engines.ITargetActions-3.html#FubarDev_WebDavServer_Engines_ITargetActions_3_ExecuteAsync_FubarDev_WebDavServer_FileSystem_ICollection__0_System_Threading_CancellationToken_">ITargetActions&lt;TCollection, TDocument, TMissing&gt;.ExecuteAsync(ICollection, TCollection, CancellationToken)</a></div>
+              
+              
+              <a id="FubarDev_WebDavServer_Engines_Remote_RemoteHttpClientTargetActions_ExecuteAsync_" data-uid="FubarDev.WebDavServer.Engines.Remote.RemoteHttpClientTargetActions.ExecuteAsync*"></a>
+              <h4 id="FubarDev_WebDavServer_Engines_Remote_RemoteHttpClientTargetActions_ExecuteAsync_FubarDev_WebDavServer_FileSystem_IDocument_FubarDev_WebDavServer_Engines_Remote_RemoteDocumentTarget_System_Threading_CancellationToken_" data-uid="FubarDev.WebDavServer.Engines.Remote.RemoteHttpClientTargetActions.ExecuteAsync(FubarDev.WebDavServer.FileSystem.IDocument,FubarDev.WebDavServer.Engines.Remote.RemoteDocumentTarget,System.Threading.CancellationToken)">ExecuteAsync(IDocument, RemoteDocumentTarget, CancellationToken)</h4>
+              <div class="markdown level1 summary"></div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public abstract Task&lt;ActionResult&gt; ExecuteAsync(IDocument source, RemoteDocumentTarget destination, CancellationToken cancellationToken)</code></pre>
+              </div>
+              <h5 class="parameters">Parameters</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Name</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><a class="xref" href="FubarDev.WebDavServer.FileSystem.IDocument.html">IDocument</a></td>
+                    <td><span class="parametername">source</span></td>
+                    <td></td>
+                  </tr>
+                  <tr>
+                    <td><a class="xref" href="FubarDev.WebDavServer.Engines.Remote.RemoteDocumentTarget.html">RemoteDocumentTarget</a></td>
+                    <td><span class="parametername">destination</span></td>
+                    <td></td>
+                  </tr>
+                  <tr>
+                    <td><a class="xref" href="https://msdn.microsoft.com/en-us/library/system.threading.cancellationtoken(v=vs.110).aspx">CancellationToken</a></td>
+                    <td><span class="parametername">cancellationToken</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 class="returns">Returns</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><a class="xref" href="https://msdn.microsoft.com/en-us/library/dd321424(v=vs.110).aspx">Task</a>&lt;<a class="xref" href="FubarDev.WebDavServer.Engines.ActionResult.html">ActionResult</a>&gt;</td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 class="implements">Implements</h5>
+                  <div><a class="xref" href="FubarDev.WebDavServer.Engines.ITargetActions-3.html#FubarDev_WebDavServer_Engines_ITargetActions_3_ExecuteAsync_FubarDev_WebDavServer_FileSystem_IDocument__1_System_Threading_CancellationToken_">ITargetActions&lt;TCollection, TDocument, TMissing&gt;.ExecuteAsync(IDocument, TDocument, CancellationToken)</a></div>
+              
+              
+              <a id="FubarDev_WebDavServer_Engines_Remote_RemoteHttpClientTargetActions_ExecuteAsync_" data-uid="FubarDev.WebDavServer.Engines.Remote.RemoteHttpClientTargetActions.ExecuteAsync*"></a>
+              <h4 id="FubarDev_WebDavServer_Engines_Remote_RemoteHttpClientTargetActions_ExecuteAsync_FubarDev_WebDavServer_FileSystem_IDocument_FubarDev_WebDavServer_Engines_Remote_RemoteMissingTarget_System_Threading_CancellationToken_" data-uid="FubarDev.WebDavServer.Engines.Remote.RemoteHttpClientTargetActions.ExecuteAsync(FubarDev.WebDavServer.FileSystem.IDocument,FubarDev.WebDavServer.Engines.Remote.RemoteMissingTarget,System.Threading.CancellationToken)">ExecuteAsync(IDocument, RemoteMissingTarget, CancellationToken)</h4>
+              <div class="markdown level1 summary"></div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public abstract Task&lt;RemoteDocumentTarget&gt; ExecuteAsync(IDocument source, RemoteMissingTarget destination, CancellationToken cancellationToken)</code></pre>
+              </div>
+              <h5 class="parameters">Parameters</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Name</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><a class="xref" href="FubarDev.WebDavServer.FileSystem.IDocument.html">IDocument</a></td>
+                    <td><span class="parametername">source</span></td>
+                    <td></td>
+                  </tr>
+                  <tr>
+                    <td><a class="xref" href="FubarDev.WebDavServer.Engines.Remote.RemoteMissingTarget.html">RemoteMissingTarget</a></td>
+                    <td><span class="parametername">destination</span></td>
+                    <td></td>
+                  </tr>
+                  <tr>
+                    <td><a class="xref" href="https://msdn.microsoft.com/en-us/library/system.threading.cancellationtoken(v=vs.110).aspx">CancellationToken</a></td>
+                    <td><span class="parametername">cancellationToken</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 class="returns">Returns</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><a class="xref" href="https://msdn.microsoft.com/en-us/library/dd321424(v=vs.110).aspx">Task</a>&lt;<a class="xref" href="FubarDev.WebDavServer.Engines.Remote.RemoteDocumentTarget.html">RemoteDocumentTarget</a>&gt;</td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 class="implements">Implements</h5>
+                  <div><a class="xref" href="FubarDev.WebDavServer.Engines.ITargetActions-3.html#FubarDev_WebDavServer_Engines_ITargetActions_3_ExecuteAsync_FubarDev_WebDavServer_FileSystem_IDocument__2_System_Threading_CancellationToken_">ITargetActions&lt;TCollection, TDocument, TMissing&gt;.ExecuteAsync(IDocument, TMissing, CancellationToken)</a></div>
+              
+              
+              <a id="FubarDev_WebDavServer_Engines_Remote_RemoteHttpClientTargetActions_GetAsync_" data-uid="FubarDev.WebDavServer.Engines.Remote.RemoteHttpClientTargetActions.GetAsync*"></a>
+              <h4 id="FubarDev_WebDavServer_Engines_Remote_RemoteHttpClientTargetActions_GetAsync_FubarDev_WebDavServer_Engines_Remote_RemoteCollectionTarget_System_String_System_Threading_CancellationToken_" data-uid="FubarDev.WebDavServer.Engines.Remote.RemoteHttpClientTargetActions.GetAsync(FubarDev.WebDavServer.Engines.Remote.RemoteCollectionTarget,System.String,System.Threading.CancellationToken)">GetAsync(RemoteCollectionTarget, String, CancellationToken)</h4>
+              <div class="markdown level1 summary"></div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public Task&lt;ITarget&gt; GetAsync(RemoteCollectionTarget collection, string name, CancellationToken cancellationToken)</code></pre>
+              </div>
+              <h5 class="parameters">Parameters</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Name</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><a class="xref" href="FubarDev.WebDavServer.Engines.Remote.RemoteCollectionTarget.html">RemoteCollectionTarget</a></td>
+                    <td><span class="parametername">collection</span></td>
+                    <td></td>
+                  </tr>
+                  <tr>
+                    <td><a class="xref" href="https://msdn.microsoft.com/en-us/library/system.string(v=vs.110).aspx">String</a></td>
+                    <td><span class="parametername">name</span></td>
+                    <td></td>
+                  </tr>
+                  <tr>
+                    <td><a class="xref" href="https://msdn.microsoft.com/en-us/library/system.threading.cancellationtoken(v=vs.110).aspx">CancellationToken</a></td>
+                    <td><span class="parametername">cancellationToken</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 class="returns">Returns</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><a class="xref" href="https://msdn.microsoft.com/en-us/library/dd321424(v=vs.110).aspx">Task</a>&lt;<a class="xref" href="FubarDev.WebDavServer.Engines.ITarget.html">ITarget</a>&gt;</td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 class="implements">Implements</h5>
+                  <div><a class="xref" href="FubarDev.WebDavServer.Engines.Remote.IRemoteTargetActions.html#FubarDev_WebDavServer_Engines_Remote_IRemoteTargetActions_GetAsync_FubarDev_WebDavServer_Engines_Remote_RemoteCollectionTarget_System_String_System_Threading_CancellationToken_">IRemoteTargetActions.GetAsync(RemoteCollectionTarget, String, CancellationToken)</a></div>
+              
+              
+              <a id="FubarDev_WebDavServer_Engines_Remote_RemoteHttpClientTargetActions_Parse_" data-uid="FubarDev.WebDavServer.Engines.Remote.RemoteHttpClientTargetActions.Parse*"></a>
+              <h4 id="FubarDev_WebDavServer_Engines_Remote_RemoteHttpClientTargetActions_Parse_System_Uri_System_Net_Http_HttpResponseMessage_System_Xml_Linq_XDocument_" data-uid="FubarDev.WebDavServer.Engines.Remote.RemoteHttpClientTargetActions.Parse(System.Uri,System.Net.Http.HttpResponseMessage,System.Xml.Linq.XDocument)">Parse(Uri, HttpResponseMessage, XDocument)</h4>
+              <div class="markdown level1 summary"><p>Parse the response for a request</p>
+</div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">protected multistatus Parse([NotNull] Uri requrestUrl, [NotNull] HttpResponseMessage responseMessage, [CanBeNull] XDocument document)</code></pre>
+              </div>
+              <h5 class="parameters">Parameters</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Name</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><a class="xref" href="https://msdn.microsoft.com/en-us/library/system.uri(v=vs.110).aspx">Uri</a></td>
+                    <td><span class="parametername">requrestUrl</span></td>
+                    <td><p>The request URL</p>
+</td>
+                  </tr>
+                  <tr>
+                    <td><a class="xref" href="https://msdn.microsoft.com/en-us/library/system.net.http.httpresponsemessage(v=vs.110).aspx">HttpResponseMessage</a></td>
+                    <td><span class="parametername">responseMessage</span></td>
+                    <td><p>The response message</p>
+</td>
+                  </tr>
+                  <tr>
+                    <td><a class="xref" href="https://msdn.microsoft.com/en-us/library/system.xml.linq.xdocument(v=vs.110).aspx">XDocument</a></td>
+                    <td><span class="parametername">document</span></td>
+                    <td><p>The response document</p>
+</td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 class="returns">Returns</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><a class="xref" href="FubarDev.WebDavServer.Model.multistatus.html">multistatus</a></td>
+                    <td><p>The multistatus created from the <span class="paramref">document</span></p>
+</td>
+                  </tr>
+                </tbody>
+              </table>
+              
+              
+              <a id="FubarDev_WebDavServer_Engines_Remote_RemoteHttpClientTargetActions_ReadResponseAsync_" data-uid="FubarDev.WebDavServer.Engines.Remote.RemoteHttpClientTargetActions.ReadResponseAsync*"></a>
+              <h4 id="FubarDev_WebDavServer_Engines_Remote_RemoteHttpClientTargetActions_ReadResponseAsync_System_Net_Http_HttpResponseMessage_" data-uid="FubarDev.WebDavServer.Engines.Remote.RemoteHttpClientTargetActions.ReadResponseAsync(System.Net.Http.HttpResponseMessage)">ReadResponseAsync(HttpResponseMessage)</h4>
+              <div class="markdown level1 summary"><p>Read the response from the <span class="paramref">responseMessage</span></p>
+</div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">[NotNull]
+[ItemCanBeNull]
+protected Task&lt;XDocument&gt; ReadResponseAsync([NotNull] HttpResponseMessage responseMessage)</code></pre>
+              </div>
+              <h5 class="parameters">Parameters</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Name</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><a class="xref" href="https://msdn.microsoft.com/en-us/library/system.net.http.httpresponsemessage(v=vs.110).aspx">HttpResponseMessage</a></td>
+                    <td><span class="parametername">responseMessage</span></td>
+                    <td><p>The response to read the <a class="xref" href="https://msdn.microsoft.com/en-us/library/system.xml.linq.xdocument(v=vs.110).aspx">XDocument</a> from</p>
+</td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 class="returns">Returns</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><a class="xref" href="https://msdn.microsoft.com/en-us/library/dd321424(v=vs.110).aspx">Task</a>&lt;<a class="xref" href="https://msdn.microsoft.com/en-us/library/system.xml.linq.xdocument(v=vs.110).aspx">XDocument</a>&gt;</td>
+                    <td><p>The <a class="xref" href="https://msdn.microsoft.com/en-us/library/system.xml.linq.xdocument(v=vs.110).aspx">XDocument</a></p>
+</td>
+                  </tr>
+                </tbody>
+              </table>
+              
+              
+              <a id="FubarDev_WebDavServer_Engines_Remote_RemoteHttpClientTargetActions_SetPropertiesAsync_" data-uid="FubarDev.WebDavServer.Engines.Remote.RemoteHttpClientTargetActions.SetPropertiesAsync*"></a>
+              <h4 id="FubarDev_WebDavServer_Engines_Remote_RemoteHttpClientTargetActions_SetPropertiesAsync_FubarDev_WebDavServer_Engines_Remote_RemoteCollectionTarget_System_Collections_Generic_IEnumerable_FubarDev_WebDavServer_Props_IUntypedWriteableProperty__System_Threading_CancellationToken_" data-uid="FubarDev.WebDavServer.Engines.Remote.RemoteHttpClientTargetActions.SetPropertiesAsync(FubarDev.WebDavServer.Engines.Remote.RemoteCollectionTarget,System.Collections.Generic.IEnumerable{FubarDev.WebDavServer.Props.IUntypedWriteableProperty},System.Threading.CancellationToken)">SetPropertiesAsync(RemoteCollectionTarget, IEnumerable&lt;IUntypedWriteableProperty&gt;, CancellationToken)</h4>
+              <div class="markdown level1 summary"></div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public Task&lt;IReadOnlyCollection&lt;XName&gt;&gt; SetPropertiesAsync(RemoteCollectionTarget target, IEnumerable&lt;IUntypedWriteableProperty&gt; properties, CancellationToken cancellationToken)</code></pre>
+              </div>
+              <h5 class="parameters">Parameters</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Name</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><a class="xref" href="FubarDev.WebDavServer.Engines.Remote.RemoteCollectionTarget.html">RemoteCollectionTarget</a></td>
+                    <td><span class="parametername">target</span></td>
+                    <td></td>
+                  </tr>
+                  <tr>
+                    <td><a class="xref" href="https://msdn.microsoft.com/en-us/library/9eekhta0(v=vs.110).aspx">IEnumerable</a>&lt;<a class="xref" href="FubarDev.WebDavServer.Props.IUntypedWriteableProperty.html">IUntypedWriteableProperty</a>&gt;</td>
+                    <td><span class="parametername">properties</span></td>
+                    <td></td>
+                  </tr>
+                  <tr>
+                    <td><a class="xref" href="https://msdn.microsoft.com/en-us/library/system.threading.cancellationtoken(v=vs.110).aspx">CancellationToken</a></td>
+                    <td><span class="parametername">cancellationToken</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 class="returns">Returns</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><a class="xref" href="https://msdn.microsoft.com/en-us/library/dd321424(v=vs.110).aspx">Task</a>&lt;<a class="xref" href="https://msdn.microsoft.com/en-us/library/hh881542(v=vs.110).aspx">IReadOnlyCollection</a>&lt;<a class="xref" href="https://msdn.microsoft.com/en-us/library/system.xml.linq.xname(v=vs.110).aspx">XName</a>&gt;&gt;</td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 class="implements">Implements</h5>
+                  <div><a class="xref" href="FubarDev.WebDavServer.Engines.Remote.IRemoteTargetActions.html#FubarDev_WebDavServer_Engines_Remote_IRemoteTargetActions_SetPropertiesAsync_FubarDev_WebDavServer_Engines_Remote_RemoteCollectionTarget_System_Collections_Generic_IEnumerable_FubarDev_WebDavServer_Props_IUntypedWriteableProperty__System_Threading_CancellationToken_">IRemoteTargetActions.SetPropertiesAsync(RemoteCollectionTarget, IEnumerable&lt;IUntypedWriteableProperty&gt;, CancellationToken)</a></div>
+              
+              
+              <a id="FubarDev_WebDavServer_Engines_Remote_RemoteHttpClientTargetActions_SetPropertiesAsync_" data-uid="FubarDev.WebDavServer.Engines.Remote.RemoteHttpClientTargetActions.SetPropertiesAsync*"></a>
+              <h4 id="FubarDev_WebDavServer_Engines_Remote_RemoteHttpClientTargetActions_SetPropertiesAsync_FubarDev_WebDavServer_Engines_Remote_RemoteDocumentTarget_System_Collections_Generic_IEnumerable_FubarDev_WebDavServer_Props_IUntypedWriteableProperty__System_Threading_CancellationToken_" data-uid="FubarDev.WebDavServer.Engines.Remote.RemoteHttpClientTargetActions.SetPropertiesAsync(FubarDev.WebDavServer.Engines.Remote.RemoteDocumentTarget,System.Collections.Generic.IEnumerable{FubarDev.WebDavServer.Props.IUntypedWriteableProperty},System.Threading.CancellationToken)">SetPropertiesAsync(RemoteDocumentTarget, IEnumerable&lt;IUntypedWriteableProperty&gt;, CancellationToken)</h4>
+              <div class="markdown level1 summary"></div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public Task&lt;IReadOnlyCollection&lt;XName&gt;&gt; SetPropertiesAsync(RemoteDocumentTarget target, IEnumerable&lt;IUntypedWriteableProperty&gt; properties, CancellationToken cancellationToken)</code></pre>
+              </div>
+              <h5 class="parameters">Parameters</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Name</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><a class="xref" href="FubarDev.WebDavServer.Engines.Remote.RemoteDocumentTarget.html">RemoteDocumentTarget</a></td>
+                    <td><span class="parametername">target</span></td>
+                    <td></td>
+                  </tr>
+                  <tr>
+                    <td><a class="xref" href="https://msdn.microsoft.com/en-us/library/9eekhta0(v=vs.110).aspx">IEnumerable</a>&lt;<a class="xref" href="FubarDev.WebDavServer.Props.IUntypedWriteableProperty.html">IUntypedWriteableProperty</a>&gt;</td>
+                    <td><span class="parametername">properties</span></td>
+                    <td></td>
+                  </tr>
+                  <tr>
+                    <td><a class="xref" href="https://msdn.microsoft.com/en-us/library/system.threading.cancellationtoken(v=vs.110).aspx">CancellationToken</a></td>
+                    <td><span class="parametername">cancellationToken</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 class="returns">Returns</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><a class="xref" href="https://msdn.microsoft.com/en-us/library/dd321424(v=vs.110).aspx">Task</a>&lt;<a class="xref" href="https://msdn.microsoft.com/en-us/library/hh881542(v=vs.110).aspx">IReadOnlyCollection</a>&lt;<a class="xref" href="https://msdn.microsoft.com/en-us/library/system.xml.linq.xname(v=vs.110).aspx">XName</a>&gt;&gt;</td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 class="implements">Implements</h5>
+                  <div><a class="xref" href="FubarDev.WebDavServer.Engines.Remote.IRemoteTargetActions.html#FubarDev_WebDavServer_Engines_Remote_IRemoteTargetActions_SetPropertiesAsync_FubarDev_WebDavServer_Engines_Remote_RemoteDocumentTarget_System_Collections_Generic_IEnumerable_FubarDev_WebDavServer_Props_IUntypedWriteableProperty__System_Threading_CancellationToken_">IRemoteTargetActions.SetPropertiesAsync(RemoteDocumentTarget, IEnumerable&lt;IUntypedWriteableProperty&gt;, CancellationToken)</a></div>
+                        </article>
+          </div>
+          
+          <div class="hidden-sm col-md-2" role="complementary">
+            <div class="sideaffix">
+              <div class="contribution">
+                <ul class="nav">
+                </ul>
+              </div>
+              <nav class="bs-docs-sidebar hidden-print hidden-xs hidden-sm affix" id="affix">
+              <!-- <p><a class="back-to-top" href="#top">Back to top</a><p> -->
+              </nav>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <footer>
+        <div class="grad-bottom"></div>
+        <div class="footer">
+          <div class="container">
+            <span class="pull-right">
+              <a href="#top">Back to top</a>
+            </span>
+            
+            <span>Copyright © 2015-2016 Microsoft<br>Generated by <strong>DocFX</strong></span>
+          </div>
+        </div>
+      </footer>
+    </div>
+    
+    <script type="text/javascript" src="../styles/docfx.vendor.js"></script>
+    <script type="text/javascript" src="../styles/docfx.js"></script>
+    <script type="text/javascript" src="../styles/main.js"></script>
+  </body>
+</html>
