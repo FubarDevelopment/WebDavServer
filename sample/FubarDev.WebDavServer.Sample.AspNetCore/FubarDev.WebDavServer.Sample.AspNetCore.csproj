@@ -3,13 +3,13 @@
     <OutputType>Exe</OutputType>
     <TargetFramework>netcoreapp1.0</TargetFramework>
     <PreserveCompilationContext>true</PreserveCompilationContext>
-    <CodeAnalysisRuleSet>$(SolutionDir)WebDavServer.ruleset</CodeAnalysisRuleSet>
+    <CodeAnalysisRuleSet>$(ProjectDir)..\..\WebDavServer.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
   <ItemGroup>
-    <AdditionalFiles Include="$(SolutionDir)stylecop.json" Link="stylecop.json" />
+    <AdditionalFiles Include="$(ProjectDir)..\..\stylecop.json" Link="stylecop.json" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="$(SolutionDir)WebDavServer.ruleset" Link="WebDavServer.ruleset" />
+    <None Include="$(ProjectDir)..\..\WebDavServer.ruleset" Link="WebDavServer.ruleset" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="idunno.Authentication" Version="1.0.0" />
