@@ -7,13 +7,16 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
+using System.Xml.Linq;
 
 using FubarDev.WebDavServer.FileSystem;
 using FubarDev.WebDavServer.Handlers;
 using FubarDev.WebDavServer.Model;
 using FubarDev.WebDavServer.Model.Headers;
 using FubarDev.WebDavServer.Props;
+using FubarDev.WebDavServer.Props.Dead;
 using FubarDev.WebDavServer.Props.Live;
+using FubarDev.WebDavServer.Props.Store;
 
 using JetBrains.Annotations;
 
@@ -121,6 +124,13 @@ namespace FubarDev.WebDavServer.Dispatchers
         {
             yield return new LockDiscoveryProperty(entry);
             yield return new SupportedLockProperty(entry);
+        }
+
+        /// <inheritdoc />
+        public bool TryCreateDeadProperty(IPropertyStore store, IEntry entry, XName name, out IDeadProperty deadProperty)
+        {
+            deadProperty = null;
+            return false;
         }
     }
 }

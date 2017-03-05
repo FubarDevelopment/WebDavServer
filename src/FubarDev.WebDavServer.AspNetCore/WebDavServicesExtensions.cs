@@ -48,7 +48,7 @@ namespace Microsoft.Extensions.DependencyInjection
             services.TryAddEnumerable(ServiceDescriptor.Transient<IConfigureOptions<MvcOptions>, WebDavXmlSerializerMvcOptionsSetup>());
             services.TryAddEnumerable(ServiceDescriptor.Transient<IConfigureOptions<MvcOptions>, WebDavExceptionFilterMvcOptionsSetup>());
             services.TryAddSingleton<IHttpContextAccessor, HttpContextAccessor>();
-            services.TryAddSingleton<IDeadPropertyFactory, DeadPropertyFactory>();
+            services.TryAddScoped<IDeadPropertyFactory, DeadPropertyFactory>();
             services.TryAddSingleton<IRemoteCopyTargetActionsFactory, DefaultRemoteTargetActionsFactory>();
             services.TryAddSingleton<IRemoteMoveTargetActionsFactory, DefaultRemoteTargetActionsFactory>();
             services.TryAddSingleton<IHttpMessageHandlerFactory, DefaultHttpMessageHandlerFactory>();

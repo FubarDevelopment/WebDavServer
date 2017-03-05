@@ -15,6 +15,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)Dispatchers\IWebDavClass1.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Dispatchers\IWebDavClass2.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Dispatchers\WebDavDispatcherClass1.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Dispatchers\WebDavDispatcherClass1Options.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Dispatchers\WebDavDispatcherClass2.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Engines\ActionResult.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Engines\ActionStatus.cs" />
@@ -163,7 +164,6 @@
     <Compile Include="$(MSBuildThisFileDirectory)Props\Converters\XmlConverter.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Props\Dead\DeadProperty.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Props\Dead\DeadPropertyFactory.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Props\Dead\DeadPropertyFactoryOptions.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Props\Dead\DisplayNameProperty.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Props\Dead\GetContentLanguageProperty.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Props\Dead\GetContentTypeProperty.cs" />

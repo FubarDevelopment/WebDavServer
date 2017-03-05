@@ -3,9 +3,12 @@
 // </copyright>
 
 using System.Collections.Generic;
+using System.Xml.Linq;
 
 using FubarDev.WebDavServer.FileSystem;
 using FubarDev.WebDavServer.Props;
+using FubarDev.WebDavServer.Props.Dead;
+using FubarDev.WebDavServer.Props.Store;
 
 using JetBrains.Annotations;
 
@@ -49,5 +52,15 @@ namespace FubarDev.WebDavServer.Dispatchers
         [NotNull]
         [ItemNotNull]
         IEnumerable<IUntypedReadableProperty> GetProperties([NotNull] IEntry entry);
+
+        /// <summary>
+        /// Tries to create a well known dead property required/used by this WebDAV class implementation
+        /// </summary>
+        /// <param name="store">The property store to store this property</param>
+        /// <param name="entry">The entry to instantiate this property for</param>
+        /// <param name="name">The name of the dead property to create</param>
+        /// <param name="deadProperty">The created dead property if this function returned <see langword="true"/>.</param>
+        /// <returns><see langword="true"/> when this function could handle the creation of the well known dead property with the given <paramref name="name"/></returns>
+        bool TryCreateDeadProperty(IPropertyStore store, IEntry entry, XName name, out IDeadProperty deadProperty);
     }
 }

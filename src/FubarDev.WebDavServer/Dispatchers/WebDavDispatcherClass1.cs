@@ -9,16 +9,21 @@ using System.IO;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
+using System.Xml.Linq;
 
 using FubarDev.WebDavServer.FileSystem;
 using FubarDev.WebDavServer.Handlers;
 using FubarDev.WebDavServer.Model;
+using FubarDev.WebDavServer.Model.Headers;
 using FubarDev.WebDavServer.Props;
 using FubarDev.WebDavServer.Props.Converters;
 using FubarDev.WebDavServer.Props.Dead;
 using FubarDev.WebDavServer.Props.Live;
+using FubarDev.WebDavServer.Props.Store;
 
 using JetBrains.Annotations;
+
+using Microsoft.Extensions.Options;
 
 namespace FubarDev.WebDavServer.Dispatchers
 {
@@ -27,6 +32,9 @@ namespace FubarDev.WebDavServer.Dispatchers
     /// </summary>
     public class WebDavDispatcherClass1 : IWebDavClass1
     {
+        [NotNull]
+        private readonly Lazy<IReadOnlyDictionary<XName, CreateDeadPropertyDelegate>> _defaultCreationMap;
+
         [NotNull]
         private readonly IDeadPropertyFactory _deadPropertyFactory;
 
@@ -66,7 +74,8 @@ namespace FubarDev.WebDavServer.Dispatchers
         /// <param name="class1Handlers">The WebDAV class 1 handlers</param>
         /// <param name="context">The WebDAV context</param>
         /// <param name="deadPropertyFactory">The factory to create dead properties</param>
-        public WebDavDispatcherClass1([NotNull] [ItemNotNull] IEnumerable<IClass1Handler> class1Handlers, [NotNull] IWebDavContext context, [NotNull] IDeadPropertyFactory deadPropertyFactory)
+        /// <param name="options">The options for the WebDAV class 1 implementation</param>
+        public WebDavDispatcherClass1([NotNull] [ItemNotNull] IEnumerable<IClass1Handler> class1Handlers, [NotNull] IWebDavContext context, [NotNull] IDeadPropertyFactory deadPropertyFactory, [CanBeNull] IOptions<WebDavDispatcherClass1Options> options)
         {
             _deadPropertyFactory = deadPropertyFactory;
             var httpMethods = new HashSet<string>();
@@ -159,7 +168,11 @@ namespace FubarDev.WebDavServer.Dispatchers
             {
                 ["DAV"] = new[] { "1" },
             };
+
+            _defaultCreationMap = new Lazy<IReadOnlyDictionary<XName, CreateDeadPropertyDelegate>>(() => CreateDeadPropertiesMap(options?.Value ?? new WebDavDispatcherClass1Options()));
         }
+
+        private delegate IDeadProperty CreateDeadPropertyDelegate(IPropertyStore store, IEntry entry, XName name);
 
         /// <inheritdoc />
         public IEnumerable<string> HttpMethods { get; }
@@ -282,6 +295,34 @@ namespace FubarDev.WebDavServer.Dispatchers
                 contentType.Init(new StringConverter().ToElement(GetContentTypeProperty.PropertyName, Utils.MimeTypesMap.FolderContentType));
                 yield return contentType;
             }
+        }
+
+        /// <inheritdoc />
+        public bool TryCreateDeadProperty(IPropertyStore store, IEntry entry, XName name, out IDeadProperty deadProperty)
+        {
+            CreateDeadPropertyDelegate createDeadProp;
+            if (!_defaultCreationMap.Value.TryGetValue(name, out createDeadProp))
+            {
+                deadProperty = null;
+                return false;
+            }
+
+            deadProperty = createDeadProp(store, entry, name);
+            return true;
+        }
+
+        [NotNull]
+        private static IReadOnlyDictionary<XName, CreateDeadPropertyDelegate> CreateDeadPropertiesMap([NotNull] WebDavDispatcherClass1Options options)
+        {
+            var result = new Dictionary<XName, CreateDeadPropertyDelegate>()
+            {
+                [EntityTag.PropertyName] = (store, entry, name) => new GetETagProperty(store, entry),
+                [DisplayNameProperty.PropertyName] = (store, entry, name) => new DisplayNameProperty(entry, store, options.HideExtensionForDisplayName),
+                [GetContentLanguageProperty.PropertyName] = (store, entry, name) => new GetContentLanguageProperty(entry, store),
+                [GetContentTypeProperty.PropertyName] = (store, entry, name) => new GetContentTypeProperty(entry, store),
+            };
+
+            return result;
         }
     }
 }

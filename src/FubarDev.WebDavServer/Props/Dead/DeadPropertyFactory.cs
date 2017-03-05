@@ -2,16 +2,15 @@
 // Copyright (c) Fubar Development Junker. All rights reserved.
 // </copyright>
 
-using System.Collections.Generic;
+using System;
 using System.Xml.Linq;
 
 using FubarDev.WebDavServer.FileSystem;
-using FubarDev.WebDavServer.Model.Headers;
 using FubarDev.WebDavServer.Props.Store;
 
 using JetBrains.Annotations;
 
-using Microsoft.Extensions.Options;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace FubarDev.WebDavServer.Props.Dead
 {
@@ -23,40 +22,28 @@ namespace FubarDev.WebDavServer.Props.Dead
     /// </remarks>
     public class DeadPropertyFactory : IDeadPropertyFactory
     {
-        private readonly IReadOnlyDictionary<XName, CreateDeadPropertyDelegate> _defaultCreationMap;
+        [NotNull]
+        private readonly Lazy<IWebDavDispatcher> _webDavDispatcher;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="DeadPropertyFactory"/> class.
         /// </summary>
-        /// <param name="options">The options for the dead property store</param>
-        public DeadPropertyFactory(IOptions<DeadPropertyFactoryOptions> options = null)
-            : this(options?.Value ?? new DeadPropertyFactoryOptions())
+        /// <param name="serviceProvider">The service provider used to query the <see cref="Dispatchers.IWebDavClass"/> implementations</param>
+        public DeadPropertyFactory([NotNull] IServiceProvider serviceProvider)
         {
+            _webDavDispatcher = new Lazy<IWebDavDispatcher>(serviceProvider.GetRequiredService<IWebDavDispatcher>);
         }
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="DeadPropertyFactory"/> class.
-        /// </summary>
-        /// <param name="options">The options for the dead property store</param>
-        public DeadPropertyFactory([NotNull] DeadPropertyFactoryOptions options)
-        {
-            _defaultCreationMap = new Dictionary<XName, CreateDeadPropertyDelegate>()
-            {
-                [EntityTag.PropertyName] = (store, entry, name) => new GetETagProperty(store, entry),
-                [DisplayNameProperty.PropertyName] = (store, entry, name) => new DisplayNameProperty(entry, store, options.HideExtensionForDisplayName),
-                [GetContentLanguageProperty.PropertyName] = (store, entry, name) => new GetContentLanguageProperty(entry, store),
-                [GetContentTypeProperty.PropertyName] = (store, entry, name) => new GetContentTypeProperty(entry, store),
-            };
-        }
-
-        private delegate IDeadProperty CreateDeadPropertyDelegate(IPropertyStore store, IEntry entry, XName name);
 
         /// <inheritdoc />
         public virtual IDeadProperty Create(IPropertyStore store, IEntry entry, XName name)
         {
-            CreateDeadPropertyDelegate createFunc;
-            if (_defaultCreationMap.TryGetValue(name, out createFunc))
-                return createFunc(store, entry, name);
+            foreach (var webDavClass in _webDavDispatcher.Value.SupportedClasses)
+            {
+                IDeadProperty deadProp;
+                if (webDavClass.TryCreateDeadProperty(store, entry, name, out deadProp))
+                    return deadProp;
+            }
+
             return new DeadProperty(store, entry, name);
         }
 
