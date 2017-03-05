@@ -24,5 +24,11 @@ namespace FubarDev.WebDavServer.Props.Converters
         {
             return value.ToXml();
         }
+
+        /// <inheritdoc />
+        public bool IsValidValue(EntityTag value)
+        {
+            return true;
+        }
     }
 }

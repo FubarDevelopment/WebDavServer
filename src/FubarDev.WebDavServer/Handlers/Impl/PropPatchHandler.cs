@@ -105,7 +105,7 @@ namespace FubarDev.WebDavServer.Handlers.Impl
             try
             {
                 var propertiesList = new List<IUntypedReadableProperty>();
-                using (var propEnum = targetEntry.GetProperties(_context.Dispatcher).GetEnumerator())
+                using (var propEnum = targetEntry.GetProperties(_context.Dispatcher, returnInvalidProperties: true).GetEnumerator())
                 {
                     while (await propEnum.MoveNext(cancellationToken).ConfigureAwait(false))
                     {

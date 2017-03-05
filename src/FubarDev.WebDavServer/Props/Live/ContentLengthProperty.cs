@@ -47,6 +47,12 @@ namespace FubarDev.WebDavServer.Props.Live
         public int Cost { get; }
 
         /// <inheritdoc />
+        public Task<bool> IsValidAsync(CancellationToken cancellationToken)
+        {
+            return Task.FromResult(true);
+        }
+
+        /// <inheritdoc />
         public async Task<XElement> GetXmlValueAsync(CancellationToken ct)
         {
             return _converter.ToElement(Name, await GetValueAsync(ct).ConfigureAwait(false));

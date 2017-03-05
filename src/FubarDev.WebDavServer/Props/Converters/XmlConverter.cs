@@ -13,6 +13,7 @@ namespace FubarDev.WebDavServer.Props.Converters
     /// </summary>
     /// <typeparam name="T">The type of the object to be de-/serialized</typeparam>
     public class XmlConverter<T> : IPropertyConverter<T>
+        where T : class
     {
         private static readonly XmlSerializer _serializer = new XmlSerializer(typeof(T));
 
@@ -30,6 +31,12 @@ namespace FubarDev.WebDavServer.Props.Converters
                 _serializer.Serialize(writer, value);
             var element = new XElement(name, doc.Root.Elements().Cast<object>().ToArray());
             return element;
+        }
+
+        /// <inheritdoc />
+        public bool IsValidValue(T value)
+        {
+            return value != null;
         }
     }
 }

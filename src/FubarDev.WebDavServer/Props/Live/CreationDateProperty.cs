@@ -3,6 +3,7 @@
 // </copyright>
 
 using System;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Xml.Linq;
 
@@ -29,6 +30,12 @@ namespace FubarDev.WebDavServer.Props.Live
         public CreationDateProperty(DateTime propValue, SetPropertyValueAsyncDelegate<DateTime> setValueAsyncFunc)
             : base(PropertyName, 0, ct => Task.FromResult(propValue), setValueAsyncFunc)
         {
+        }
+
+        /// <inheritdoc />
+        public async Task<bool> IsValidAsync(CancellationToken cancellationToken)
+        {
+            return Converter.IsValidValue(await GetValueAsync(cancellationToken).ConfigureAwait(false));
         }
     }
 }

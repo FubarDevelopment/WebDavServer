@@ -11,6 +11,7 @@ using System.Xml.Linq;
 
 using FubarDev.WebDavServer.FileSystem;
 using FubarDev.WebDavServer.Props.Dead;
+using FubarDev.WebDavServer.Props.Live;
 using FubarDev.WebDavServer.Props.Store;
 
 using JetBrains.Annotations;
@@ -34,6 +35,8 @@ namespace FubarDev.WebDavServer.Props
 
         private readonly int? _maxCost;
 
+        private readonly bool _returnInvalidProperties;
+
         /// <summary>
         /// Initializes a new instance of the <see cref="EntryProperties"/> class.
         /// </summary>
@@ -41,22 +44,25 @@ namespace FubarDev.WebDavServer.Props
         /// <param name="predefinedProperties">The predefined properties for the entry</param>
         /// <param name="propertyStore">The property store to get the remaining dead properties for</param>
         /// <param name="maxCost">The maximum cost of the properties to return</param>
+        /// <param name="returnInvalidProperties">Do we want to get invalid live properties?</param>
         public EntryProperties(
             [NotNull] IEntry entry,
             [NotNull] [ItemNotNull] IEnumerable<IUntypedReadableProperty> predefinedProperties,
             [CanBeNull] IPropertyStore propertyStore,
-            int? maxCost)
+            int? maxCost,
+            bool returnInvalidProperties)
         {
             _entry = entry;
             _predefinedProperties = predefinedProperties;
             _propertyStore = propertyStore;
             _maxCost = maxCost;
+            _returnInvalidProperties = returnInvalidProperties;
         }
 
         /// <inheritdoc />
         public IAsyncEnumerator<IUntypedReadableProperty> GetEnumerator()
         {
-            return new PropertiesEnumerator(_entry, _predefinedProperties, _propertyStore, _maxCost);
+            return new PropertiesEnumerator(_entry, _predefinedProperties, _propertyStore, _maxCost, _returnInvalidProperties);
         }
 
         private class PropertiesEnumerator : IAsyncEnumerator<IUntypedReadableProperty>
@@ -68,6 +74,8 @@ namespace FubarDev.WebDavServer.Props
             private readonly IPropertyStore _propertyStore;
 
             private readonly int? _maxCost;
+
+            private readonly bool _returnInvalidProperties;
 
             [NotNull]
             private readonly IEnumerator<IUntypedReadableProperty> _predefinedPropertiesEnumerator;
@@ -83,11 +91,13 @@ namespace FubarDev.WebDavServer.Props
                 [NotNull] IEntry entry,
                 [NotNull] [ItemNotNull] IEnumerable<IUntypedReadableProperty> predefinedProperties,
                 [CanBeNull] IPropertyStore propertyStore,
-                int? maxCost)
+                int? maxCost,
+                bool returnInvalidProperties)
             {
                 _entry = entry;
                 _propertyStore = propertyStore;
                 _maxCost = maxCost;
+                _returnInvalidProperties = returnInvalidProperties;
 
                 var emittedProperties = new HashSet<XName>();
                 var predefinedPropertiesList = new List<IUntypedReadableProperty>();
@@ -122,6 +132,16 @@ namespace FubarDev.WebDavServer.Props
                         // The predefined dead properties are reading their values from the property store
                         // themself and don't need to be intialized again.
                         continue;
+                    }
+
+                    if (!_returnInvalidProperties)
+                    {
+                        var liveProp = result as ILiveProperty;
+                        if (liveProp != null && !await liveProp.IsValidAsync(cancellationToken).ConfigureAwait(false))
+                        {
+                            // The properties value is not valid
+                            continue;
+                        }
                     }
 
                     _emittedProperties.Add(result.Name, result);

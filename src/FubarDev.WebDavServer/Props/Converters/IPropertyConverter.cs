@@ -15,6 +15,13 @@ namespace FubarDev.WebDavServer.Props.Converters
     public interface IPropertyConverter<T>
     {
         /// <summary>
+        /// Determines whether the value is valid
+        /// </summary>
+        /// <param name="value">The value to validate</param>
+        /// <returns><see langword="true"/> when the <paramref name="value"/> is valid</returns>
+        bool IsValidValue([CanBeNull] T value);
+
+        /// <summary>
         /// Convert to the type <typeparamref name="T"/> from a given <paramref name="element"/>
         /// </summary>
         /// <param name="element">The <see cref="XElement"/> to extract the value from</param>

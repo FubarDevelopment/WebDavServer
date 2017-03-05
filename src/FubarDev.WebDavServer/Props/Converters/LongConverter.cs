@@ -23,5 +23,11 @@ namespace FubarDev.WebDavServer.Props.Converters
         {
             return new XElement(name, XmlConvert.ToString(value));
         }
+
+        /// <inheritdoc />
+        public bool IsValidValue(long value)
+        {
+            return true;
+        }
     }
 }

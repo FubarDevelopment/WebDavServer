@@ -36,7 +36,16 @@ namespace FubarDev.WebDavServer.Props.Converters
         /// <inheritdoc />
         public XElement ToElement(XName name, DateTime value)
         {
+            if (value == DateTime.MinValue)
+                return new XElement(name);
+
             return new XElement(name, value.ToString("R"));
+        }
+
+        /// <inheritdoc />
+        public bool IsValidValue(DateTime value)
+        {
+            return value != DateTime.MinValue;
         }
     }
 }

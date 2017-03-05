@@ -42,8 +42,9 @@ namespace FubarDev.WebDavServer.FileSystem
         /// <param name="entry">The entry to get the properties for</param>
         /// <param name="dispatcher">The dispatcher that provides the predefined properties</param>
         /// <param name="maxCost">The maximum cost for querying a properties value</param>
+        /// <param name="returnInvalidProperties">Do we want to get invalid live properties?</param>
         /// <returns>The async enumerable of all property (including the property store when the <paramref name="maxCost"/> allows it)</returns>
-        public static IAsyncEnumerable<IUntypedReadableProperty> GetProperties(this IEntry entry, IWebDavDispatcher dispatcher, int? maxCost = null)
+        public static IAsyncEnumerable<IUntypedReadableProperty> GetProperties(this IEntry entry, IWebDavDispatcher dispatcher, int? maxCost = null, bool returnInvalidProperties = false)
         {
             var properties = new List<IUntypedReadableProperty>();
             foreach (var webDavClass in dispatcher.SupportedClasses)
@@ -51,7 +52,7 @@ namespace FubarDev.WebDavServer.FileSystem
                 properties.AddRange(webDavClass.GetProperties(entry));
             }
 
-            return new EntryProperties(entry, properties, entry.FileSystem.PropertyStore, maxCost);
+            return new EntryProperties(entry, properties, entry.FileSystem.PropertyStore, maxCost, returnInvalidProperties);
         }
     }
 }

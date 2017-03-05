@@ -290,8 +290,7 @@ namespace FubarDev.WebDavServer.Dispatchers
             {
                 Debug.Assert(entry is ICollection, "entry is ICollection");
                 yield return new ContentLengthProperty(0L);
-                var contentType = _deadPropertyFactory
-                    .Create(propStore, entry, GetContentTypeProperty.PropertyName);
+                var contentType = _deadPropertyFactory.Create(propStore, entry, GetContentTypeProperty.PropertyName);
                 contentType.Init(new StringConverter().ToElement(GetContentTypeProperty.PropertyName, Utils.MimeTypesMap.FolderContentType));
                 yield return contentType;
             }

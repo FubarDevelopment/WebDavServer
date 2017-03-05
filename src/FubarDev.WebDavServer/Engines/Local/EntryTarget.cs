@@ -125,7 +125,7 @@ namespace FubarDev.WebDavServer.Engines.Local
                 return new XName[0];
             }
 
-            using (var propEnum = _entry.GetProperties(TargetActions.Dispatcher).GetEnumerator())
+            using (var propEnum = _entry.GetProperties(TargetActions.Dispatcher, returnInvalidProperties: true).GetEnumerator())
             {
                 while (await propEnum.MoveNext(cancellationToken).ConfigureAwait(false))
                 {

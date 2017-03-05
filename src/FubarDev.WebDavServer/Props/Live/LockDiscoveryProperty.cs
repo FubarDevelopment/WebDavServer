@@ -52,6 +52,12 @@ namespace FubarDev.WebDavServer.Props.Live
         public int Cost => _lockManager?.Cost ?? 0;
 
         /// <inheritdoc />
+        public Task<bool> IsValidAsync(CancellationToken cancellationToken)
+        {
+            return Task.FromResult(true);
+        }
+
+        /// <inheritdoc />
         public Task<XElement> GetXmlValueAsync(CancellationToken ct)
         {
             return GetXmlValueAsync(false, true, ct);

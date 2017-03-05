@@ -56,6 +56,12 @@ namespace FubarDev.WebDavServer.Props.Live
             => new CollectionResourceType();
 
         /// <inheritdoc />
+        public Task<bool> IsValidAsync(CancellationToken cancellationToken)
+        {
+            return Task.FromResult(true);
+        }
+
+        /// <inheritdoc />
         public Task<XElement> GetXmlValueAsync(CancellationToken ct)
         {
             var result = new XElement(Name);
