@@ -7,7 +7,10 @@ using System.Collections.Immutable;
 using System.Threading;
 using System.Threading.Tasks;
 
+using FubarDev.WebDavServer.FileSystem;
 using FubarDev.WebDavServer.Model;
+
+using JetBrains.Annotations;
 
 namespace FubarDev.WebDavServer.Handlers.Impl
 {
@@ -16,20 +19,38 @@ namespace FubarDev.WebDavServer.Handlers.Impl
     /// </summary>
     public class OptionsHandler : IOptionsHandler
     {
+        [NotNull]
+        private readonly IFileSystem _rootFileSystem;
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="OptionsHandler"/> class.
+        /// </summary>
+        /// <param name="rootFileSystem">The root file system</param>
+        public OptionsHandler([NotNull] IFileSystem rootFileSystem)
+        {
+            _rootFileSystem = rootFileSystem;
+        }
+
         /// <inheritdoc />
         public IEnumerable<string> HttpMethods { get; } = new[] { "OPTIONS" };
 
         /// <inheritdoc />
-        public Task<IWebDavResult> OptionsAsync(string path, CancellationToken cancellationToken)
+        public async Task<IWebDavResult> OptionsAsync(string path, CancellationToken cancellationToken)
         {
-            return Task.FromResult<IWebDavResult>(new WebDavOptionsResult());
+            var selectionResult = await _rootFileSystem.SelectAsync(path, cancellationToken).ConfigureAwait(false);
+            var targetFileSystem = selectionResult.TargetFileSystem;
+            return new WebDavOptionsResult(targetFileSystem);
         }
 
         private class WebDavOptionsResult : WebDavResult
         {
-            public WebDavOptionsResult()
+            [NotNull]
+            private readonly IFileSystem _targetFileSystem;
+
+            public WebDavOptionsResult([NotNull] IFileSystem targetFileSystem)
                 : base(WebDavStatusCode.OK)
             {
+                _targetFileSystem = targetFileSystem;
             }
 
             public override Task ExecuteResultAsync(IWebDavResponse response, CancellationToken ct)
@@ -38,6 +59,9 @@ namespace FubarDev.WebDavServer.Handlers.Impl
 
                 foreach (var webDavClass in response.Dispatcher.SupportedClasses)
                     headers = AddHeaderValues(headers, webDavClass.OptionsResponseHeaders);
+
+                if (_targetFileSystem.SupportsRangedRead)
+                    Headers["Accept-Ranges"] = new[] { "bytes" };
 
                 foreach (var header in headers)
                     Headers[header.Key] = header.Value;

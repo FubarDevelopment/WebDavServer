@@ -24,6 +24,11 @@ namespace FubarDev.WebDavServer.FileSystem
         AsyncLazy<ICollection> Root { get; }
 
         /// <summary>
+        /// Gets a value indicating whether the file system allows seeking and partial reading.
+        /// </summary>
+        bool SupportsRangedRead { get; }
+
+        /// <summary>
         /// Gets the property store to be used for the file system.
         /// </summary>
         [CanBeNull]

@@ -161,7 +161,6 @@ namespace FubarDev.WebDavServer.Dispatchers
             OptionsResponseHeaders = new Dictionary<string, IEnumerable<string>>()
             {
                 ["Allow"] = HttpMethods,
-                ["Accept-Ranges"] = new[] { "bytes" },
             };
 
             DefaultResponseHeaders = new Dictionary<string, IEnumerable<string>>()

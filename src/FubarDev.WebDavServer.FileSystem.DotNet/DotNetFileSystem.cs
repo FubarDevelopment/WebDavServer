@@ -66,6 +66,9 @@ namespace FubarDev.WebDavServer.FileSystem.DotNet
         public ILockManager LockManager { get; }
 
         /// <inheritdoc />
+        public bool SupportsRangedRead { get; } = true;
+
+        /// <inheritdoc />
         public Task<SelectionResult> SelectAsync(string path, CancellationToken ct)
         {
             return _pathTraversalEngine.TraverseAsync(this, path, ct);
