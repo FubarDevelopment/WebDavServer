@@ -49,20 +49,35 @@ namespace FubarDev.WebDavServer.Props.Store.TextFile
         /// <inheritdoc />
         public IPropertyStore Create(IFileSystem fileSystem)
         {
-            if (_options.StoreInTargetFileSystem)
+            string rootPath;
+            ILocalFileSystem localFs;
+            if (_options.StoreInTargetFileSystem && (localFs = fileSystem as ILocalFileSystem) != null)
             {
-                var localFs = fileSystem as ILocalFileSystem;
-                if (localFs != null)
+                rootPath = localFs.RootDirectoryPath;
+                var storeInRoot = !localFs.HasSubfolders;
+                if (storeInRoot)
                 {
-                    return new TextFilePropertyStore(_options, _deadPropertyFactory, localFs.RootDirectoryPath, _logger);
+                    var userName = _webDavContext.User.Identity.IsAuthenticated
+                        ? _webDavContext.User.Identity.Name
+                        : "anonymous";
+                    return new TextFilePropertyStore(
+                        _options,
+                        _deadPropertyFactory,
+                        localFs.RootDirectoryPath,
+                        true,
+                        $"{userName}.json",
+                        _logger);
                 }
             }
+            else
+            {
+                var userHomePath = Utils.SystemInfo.GetUserHomePath(_webDavContext.User);
+                rootPath = Path.Combine(userHomePath, ".webdav");
+            }
 
-            var userHomePath = Utils.SystemInfo.GetUserHomePath(_webDavContext.User);
-            var rootPath = Path.Combine(userHomePath, ".webdav");
             Directory.CreateDirectory(rootPath);
 
-            return new TextFilePropertyStore(_options, _deadPropertyFactory, rootPath, _logger);
+            return new TextFilePropertyStore(_options, _deadPropertyFactory, rootPath, false, ".properties", _logger);
         }
     }
 }

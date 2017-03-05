@@ -13,5 +13,10 @@ namespace FubarDev.WebDavServer.FileSystem
         /// Gets the path to the root directory
         /// </summary>
         string RootDirectoryPath { get; }
+
+        /// <summary>
+        /// Gets a value indicating whether this file system uses sub folders.
+        /// </summary>
+        bool HasSubfolders { get; }
     }
 }

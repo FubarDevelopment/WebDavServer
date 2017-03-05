@@ -36,7 +36,9 @@ namespace FubarDev.WebDavServer.Props.Store.TextFile
 
         private readonly TextFilePropertyStoreOptions _options;
 
-        private readonly string _storeEntryName = ".properties";
+        private readonly bool _storeInRootOnly;
+
+        private readonly string _storeEntryName;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="TextFilePropertyStore"/> class.
@@ -44,12 +46,16 @@ namespace FubarDev.WebDavServer.Props.Store.TextFile
         /// <param name="options">The options for the text file property store</param>
         /// <param name="deadPropertyFactory">The factory for the dead properties</param>
         /// <param name="rootFolder">The root folder where the properties will be stored</param>
+        /// <param name="storeInRootOnly">Store all properties in the same JSON text file</param>
+        /// <param name="storeEntryName">The name of the JSON text file</param>
         /// <param name="logger">The logger for the property store</param>
-        public TextFilePropertyStore(TextFilePropertyStoreOptions options, IDeadPropertyFactory deadPropertyFactory, string rootFolder, ILogger<TextFilePropertyStore> logger)
+        public TextFilePropertyStore(TextFilePropertyStoreOptions options, IDeadPropertyFactory deadPropertyFactory, string rootFolder, bool storeInRootOnly, string storeEntryName, ILogger<TextFilePropertyStore> logger)
             : base(deadPropertyFactory)
         {
             _logger = logger;
             _options = options;
+            _storeInRootOnly = storeInRootOnly;
+            _storeEntryName = storeEntryName;
             RootPath = rootFolder;
             var rnd = new Random();
             _fileReadPolicy = Policy<string>
@@ -274,18 +280,25 @@ namespace FubarDev.WebDavServer.Props.Store.TextFile
 
         private string GetFileNameFor(IEntry entry)
         {
-            var isCollection = entry is ICollection;
-            var path = GetFileSystemPath(entry);
             string result;
-            if (isCollection)
+            if (_storeInRootOnly)
             {
-                result = Path.Combine(path, _storeEntryName);
+                result = Path.Combine(RootPath, _storeEntryName);
             }
             else
             {
-                var directoryName = Path.GetDirectoryName(path);
-                Debug.Assert(directoryName != null, "directoryName != null");
-                result = Path.Combine(directoryName, _storeEntryName);
+                var path = GetFileSystemPath(entry);
+                var isCollection = entry is ICollection;
+                if (isCollection)
+                {
+                    result = Path.Combine(path, _storeEntryName);
+                }
+                else
+                {
+                    var directoryName = Path.GetDirectoryName(path);
+                    Debug.Assert(directoryName != null, "directoryName != null");
+                    result = Path.Combine(directoryName, _storeEntryName);
+                }
             }
 
             if (_logger.IsEnabled(LogLevel.Trace))

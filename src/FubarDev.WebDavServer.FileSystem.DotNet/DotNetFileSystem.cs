@@ -41,10 +41,11 @@ namespace FubarDev.WebDavServer.FileSystem.DotNet
             Root = new AsyncLazy<ICollection>(() => Task.FromResult<ICollection>(rootDir));
         }
 
-        /// <summary>
-        /// Gets the root folder
-        /// </summary>
+        /// <inheritdoc />
         public string RootDirectoryPath { get; }
+
+        /// <inheritdoc />
+        public bool HasSubfolders { get; } = true;
 
         /// <summary>
         /// Gets the factory for dead properties
