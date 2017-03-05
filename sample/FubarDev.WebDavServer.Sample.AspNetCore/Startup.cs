@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Diagnostics.CodeAnalysis;
 using System.IO;
 using System.Linq;
 using System.Security.Claims;
@@ -11,6 +12,7 @@ using FubarDev.WebDavServer.AspNetCore;
 using FubarDev.WebDavServer.AspNetCore.Logging;
 using FubarDev.WebDavServer.FileSystem;
 using FubarDev.WebDavServer.FileSystem.DotNet;
+using FubarDev.WebDavServer.FileSystem.SQLite;
 using FubarDev.WebDavServer.Locking;
 using FubarDev.WebDavServer.Locking.InMemory;
 using FubarDev.WebDavServer.Props.Store;
@@ -35,12 +37,19 @@ namespace FubarDev.WebDavServer.Sample.AspNetCore
 {
     public class Startup
     {
+        private enum FileSystemType
+        {
+            DotNet,
+            SQLite,
+        }
+
         public Startup(IHostingEnvironment env)
         {
             var builder = new ConfigurationBuilder()
                 .SetBasePath(env.ContentRootPath)
                 .AddJsonFile("appsettings.json", optional: true, reloadOnChange: true)
                 .AddJsonFile($"appsettings.{env.EnvironmentName}.json", optional: true)
+                .AddCommandLine(Environment.GetCommandLineArgs().Skip(1).ToArray())
                 .AddEnvironmentVariables();
             Configuration = builder.Build();
         }
@@ -60,18 +69,40 @@ namespace FubarDev.WebDavServer.Sample.AspNetCore
                         var hostSection = Configuration.GetSection("Host");
                         hostSection?.Bind(opt);
                     })
-                .Configure<DotNetFileSystemOptions>(
-                    opt =>
-                    {
-                        opt.RootPath = Path.Combine(Path.GetTempPath(), "webdav");
-                        opt.AnonymousUserName = "anonymous";
-                    })
                 .AddTransient<IPropertyStoreFactory, TextFilePropertyStoreFactory>()
-                .AddSingleton<IFileSystemFactory, DotNetFileSystemFactory>()
                 .AddSingleton<ILockManager, InMemoryLockManager>()
                 .AddMvcCore()
                 .AddAuthorization()
                 .AddWebDav();
+
+            var serverConfig = new ServerConfiguration();
+            var serverConfigSection = Configuration.GetSection("Server");
+            serverConfigSection?.Bind(serverConfig);
+
+            switch (serverConfig.FileSystem)
+            {
+                case FileSystemType.DotNet:
+                    services
+                        .Configure<DotNetFileSystemOptions>(
+                            opt =>
+                            {
+                                opt.RootPath = Path.Combine(Path.GetTempPath(), "webdav");
+                                opt.AnonymousUserName = "anonymous";
+                            })
+                        .AddSingleton<IFileSystemFactory, DotNetFileSystemFactory>();
+                    break;
+                case FileSystemType.SQLite:
+                    services
+                        .Configure<SQLiteFileSystemOptions>(
+                            opt =>
+                            {
+                                opt.RootPath = Path.Combine(Path.GetTempPath(), "webdav");
+                            })
+                        .AddSingleton<IFileSystemFactory, SQLiteFileSystemFactory>();
+                    break;
+                default:
+                    throw new NotSupportedException();
+            }
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -242,6 +273,12 @@ namespace FubarDev.WebDavServer.Sample.AspNetCore
                     return result;
                 }
             }
+        }
+
+        [SuppressMessage("ReSharper", "AutoPropertyCanBeMadeGetOnly.Local")]
+        private class ServerConfiguration
+        {
+            public FileSystemType FileSystem { get; set; } = FileSystemType.DotNet;
         }
     }
 }
