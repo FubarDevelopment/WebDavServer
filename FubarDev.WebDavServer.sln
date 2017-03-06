@@ -73,6 +73,10 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "filesystem", "filesystem", 
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FubarDev.WebDavServer.FileSystem.SQLite", "src\FubarDev.WebDavServer.FileSystem.SQLite\FubarDev.WebDavServer.FileSystem.SQLite.csproj", "{07E32B0A-445D-440A-8506-62CEFB23F135}"
 EndProject
+Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "FubarDev.WebDavServer.FileSystem.SQLite", "src\FubarDev.WebDavServer.FileSystem.SQLite\FubarDev.WebDavServer.FileSystem.SQLite.shproj", "{8C0C4713-DD50-4283-8852-C0F99BBE369F}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FubarDev.WebDavServer.FileSystem.SQLite.Doc", "src-doc\FubarDev.WebDavServer.FileSystem.SQLite\FubarDev.WebDavServer.FileSystem.SQLite.Doc.csproj", "{589CAE0D-7AD6-4F5A-A654-68BE9C37F95C}"
+EndProject
 Global
 	GlobalSection(SharedMSBuildProjectFiles) = preSolution
 		src\FubarDev.WebDavServer.AspNetCore\FubarDev.WebDavServer.AspNetCore.projitems*{02e04b3e-170f-471a-9674-fcbd13f824de}*SharedItemsImports = 4
@@ -80,9 +84,11 @@ Global
 		src\FubarDev.WebDavServer.AspNetCore\FubarDev.WebDavServer.AspNetCore.projitems*{0d853af3-dd6e-4ba7-b4b9-7a6d26873352}*SharedItemsImports = 13
 		src\FubarDev.WebDavServer\FubarDev.WebDavServer.projitems*{373e3caa-169b-477d-ba8e-6c33395ce8e8}*SharedItemsImports = 13
 		src\FubarDev.WebDavServer.FileSystem.DotNet\FubarDev.WebDavServer.FileSystem.DotNet.projitems*{418300f4-c46e-4d1d-a527-cc1c8c077780}*SharedItemsImports = 4
+		src\FubarDev.WebDavServer.FileSystem.SQLite\FubarDev.WebDavServer.FileSystem.SQLite.projitems*{589cae0d-7ad6-4f5a-a654-68be9c37f95c}*SharedItemsImports = 4
 		src\FubarDev.WebDavServer.FileSystem.DotNet\FubarDev.WebDavServer.FileSystem.DotNet.projitems*{58eb93b9-486f-4f82-9532-13e40fc63b7b}*SharedItemsImports = 13
 		src\FubarDev.WebDavServer.FileSystem.InMemory\FubarDev.WebDavServer.FileSystem.InMemory.projitems*{753681f9-791e-4dec-afe3-c124b5d6d060}*SharedItemsImports = 4
 		src\FubarDev.WebDavServer.Props.Store.TextFile\FubarDev.WebDavServer.Props.Store.TextFile.projitems*{8190c873-17c8-4605-a53d-ecc620117dd1}*SharedItemsImports = 4
+		src\FubarDev.WebDavServer.FileSystem.SQLite\FubarDev.WebDavServer.FileSystem.SQLite.projitems*{8c0c4713-dd50-4283-8852-c0f99bbe369f}*SharedItemsImports = 13
 		src\FubarDev.WebDavServer.Props.Store.InMemory\FubarDev.WebDavServer.Props.Store.InMemory.projitems*{8dd387e8-0701-4f1f-934d-42b17f8ac40a}*SharedItemsImports = 4
 		src\FubarDev.WebDavServer.FileSystem.InMemory\FubarDev.WebDavServer.FileSystem.InMemory.projitems*{aee61d0b-0d36-44de-9a59-4b0efd749ef1}*SharedItemsImports = 13
 		src\FubarDev.WebDavServer.Props.Store.InMemory\FubarDev.WebDavServer.Props.Store.InMemory.projitems*{c4edee1e-f48c-40ef-ac40-3e47df7b6752}*SharedItemsImports = 13
@@ -315,6 +321,18 @@ Global
 		{07E32B0A-445D-440A-8506-62CEFB23F135}.Release|x64.Build.0 = Release|x64
 		{07E32B0A-445D-440A-8506-62CEFB23F135}.Release|x86.ActiveCfg = Release|x86
 		{07E32B0A-445D-440A-8506-62CEFB23F135}.Release|x86.Build.0 = Release|x86
+		{589CAE0D-7AD6-4F5A-A654-68BE9C37F95C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{589CAE0D-7AD6-4F5A-A654-68BE9C37F95C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{589CAE0D-7AD6-4F5A-A654-68BE9C37F95C}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{589CAE0D-7AD6-4F5A-A654-68BE9C37F95C}.Debug|x64.Build.0 = Debug|Any CPU
+		{589CAE0D-7AD6-4F5A-A654-68BE9C37F95C}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{589CAE0D-7AD6-4F5A-A654-68BE9C37F95C}.Debug|x86.Build.0 = Debug|Any CPU
+		{589CAE0D-7AD6-4F5A-A654-68BE9C37F95C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{589CAE0D-7AD6-4F5A-A654-68BE9C37F95C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{589CAE0D-7AD6-4F5A-A654-68BE9C37F95C}.Release|x64.ActiveCfg = Release|Any CPU
+		{589CAE0D-7AD6-4F5A-A654-68BE9C37F95C}.Release|x64.Build.0 = Release|Any CPU
+		{589CAE0D-7AD6-4F5A-A654-68BE9C37F95C}.Release|x86.ActiveCfg = Release|Any CPU
+		{589CAE0D-7AD6-4F5A-A654-68BE9C37F95C}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -349,5 +367,7 @@ Global
 		{5BF42C52-A65B-4419-A771-20ADFF257552} = {581960B3-7392-4BB5-AD95-D106F89604A1}
 		{9F3C7FF6-8CE2-4AE4-A952-4CFDB5019DCD} = {581960B3-7392-4BB5-AD95-D106F89604A1}
 		{07E32B0A-445D-440A-8506-62CEFB23F135} = {9F3C7FF6-8CE2-4AE4-A952-4CFDB5019DCD}
+		{8C0C4713-DD50-4283-8852-C0F99BBE369F} = {4E18F53E-6695-4491-88AC-C369FE90DBC4}
+		{589CAE0D-7AD6-4F5A-A654-68BE9C37F95C} = {5374846F-A7A5-457B-8231-FC1F959523B6}
 	EndGlobalSection
 EndGlobal
