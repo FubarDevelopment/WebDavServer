@@ -5,3 +5,39 @@
 @media (min-width:2500px){
 	.container{width:2370px}
 }
+
+.article img[alt=screenshot] {
+  max-width: 50%;
+}
+
+#lightbox {
+	position: fixed;
+	left: 0;
+	top: 0;
+    height: 100%;
+	width: 100%;
+    padding: 2em;
+    margin: 0;
+    display: -webkit-box;
+    display: -moz-box;
+    display: -ms-flexbox;
+    display: -webkit-flex;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+	visibility: hidden;
+	background: rgba(128,128,128,0.6);
+	z-index: 1000;
+    max-width: 100%;
+	max-height: 100%;
+	text-align: center;
+}
+
+#lightbox.visible {
+	visibility: visible;
+}
+
+#lightbox img[alt=screenshot] {
+	max-width: 100%;
+	max-height: 100%;
+}

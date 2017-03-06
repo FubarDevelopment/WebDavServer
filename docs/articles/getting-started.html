@@ -73,20 +73,20 @@
 is using a ASP.NET Core project as host.</p>
 <ol>
 <li><p>Create the ASP.NET Core project</p>
-<p><img src="../images/walk-through/01-create-project.png" alt="Select ASP.NET Core Web Application .NET Framework"></p>
+<p><img src="../images/walk-through/01-create-project.png" alt="screenshot"></p>
 </li>
 <li><p>Select the WebAPI template</p>
-<p><img src="../images/walk-through/02-select-webapi.png" alt="Select ASP.NET Core Web API template"></p>
+<p><img src="../images/walk-through/02-select-webapi.png" alt="screenshot"></p>
 </li>
 </ol>
 <h1 id="configure-the-webdav-nuget-repository-optional">Configure the WebDAV NuGet repository (optional)</h1>
 <ol>
 <li><p>Open the package manager setup</p>
-<p><img src="../images/walk-through/03-package-manager-setup.png" alt="Open package manager setup"></p>
+<p><img src="../images/walk-through/03-package-manager-setup.png" alt="screenshot"></p>
 </li>
 <li><p>Add the package source</p>
 <p>The package source for the WebDAV server is (until release) on <a href="https://www.myget.org/feed/Packages/webdav-server">MyGet</a>. The URL is for the NuGet v3 feed is <a href="https://www.myget.org/F/webdav-server/api/v3/index.json">https://www.myget.org/F/webdav-server/api/v3/index.json</a>.</p>
-<p><img src="../images/walk-through/03-webdav-server-nuget-repository.png" alt="WebDAV server package source configuration"></p>
+<p><img src="../images/walk-through/03-webdav-server-nuget-repository.png" alt="screenshot"></p>
 </li>
 </ol>
 <h1 id="add-the-webdav-nuget-packages">Add the WebDAV NuGet packages</h1>
@@ -108,13 +108,13 @@ is using a ASP.NET Core project as host.</p>
 <p> This package contains the glue between ASP.NET Core and the WebDAV server.</p>
 </li>
 </ul>
-<p><img src="../images/walk-through/04-packages.png" alt="The packages to install"></p>
+<p><img src="../images/walk-through/04-packages.png" alt="screenshot"></p>
 <p>Finally, we should install some remaining package updates.</p>
-<p><img src="../images/walk-through/05-update-packages.png" alt="The package updates"></p>
+<p><img src="../images/walk-through/05-update-packages.png" alt="screenshot"></p>
 <h1 id="create-the-webdav-controller">Create the WebDAV controller</h1>
 <ol>
 <li><p>Rename the <code>ValuesController.cs</code> to <code>WebDavController.cs</code></p>
-<p><img src="../images/walk-through/06-rename-controller.png" alt="Renaming the controller"></p>
+<p><img src="../images/walk-through/06-rename-controller.png" alt="screenshot"></p>
 </li>
 <li><p>Replace the content of <code>WebDavController.cs</code> with the following:</p>
 <pre><code class="lang-csharp"> using System;
@@ -137,7 +137,7 @@ is using a ASP.NET Core project as host.</p>
          }
      }
  }
-</code></pre><p> <img src="../images/walk-through/07-modify-controller.png" alt="Replacing the content of the controller"></p>
+</code></pre><p> <img src="../images/walk-through/07-modify-controller.png" alt="screenshot"></p>
 </li>
 </ol>
 <h2 id="explanation">Explanation</h2>
@@ -146,26 +146,20 @@ controller contains everything that&#39;s needed for a WebDAV server class 1,2 i
 <p>The <a class="xref" href="../api/FubarDev.WebDavServer.IWebDavContext.html">IWebDavContext</a> is the request context (similar to the <code>HttpContext</code> used in ASP.NET Core). It is used to query some basic information about the current request.</p>
 <p>The <a class="xref" href="../api/FubarDev.WebDavServer.IWebDavDispatcher.html">IWebDavDispatcher</a> is the interface to the main WebDAV server functionality.</p>
 <h1 id="configure-the-servies">Configure the servies</h1>
-<ol>
-<li><p>Add the <code>Microsoft.AspNetCore.Authentication</code> package</p>
-<p><img src="../images/walk-through/08-add-auth-package.png" alt="Add the Microsoft.AspNetCore.Authentication"></p>
-</li>
-<li><p>Replace in <code>Startup.cs</code> the <code>AddMvc()</code> in function <code>ConfigureServices</code> with the following code:</p>
-<pre><code class="lang-csharp"> .Configure&lt;DotNetFileSystemOptions&gt;(
-     opt =&gt;
-     {
-         opt.RootPath = Path.Combine(Path.GetTempPath(), &quot;webdav&quot;);
-         opt.AnonymousUserName = &quot;anonymous&quot;;
-     })
- .AddTransient&lt;IPropertyStoreFactory, TextFilePropertyStoreFactory&gt;()
- .AddSingleton&lt;IFileSystemFactory, DotNetFileSystemFactory&gt;()
- .AddSingleton&lt;ILockManager, InMemoryLockManager&gt;()
- .AddMvcCore()
- .AddAuthorization()
- .AddWebDav();
-</code></pre><p><img src="../images/walk-through/09-after-replace.png" alt="Replacement of .AddMvc()"></p>
-</li>
-</ol>
+<p>Replace in <code>Startup.cs</code> the <code>.AddMvc()</code> in function <code>ConfigureServices</code> with the following code:</p>
+<pre><code class="lang-csharp">.Configure&lt;DotNetFileSystemOptions&gt;(
+    opt =&gt;
+    {
+        opt.RootPath = Path.Combine(Path.GetTempPath(), &quot;webdav&quot;);
+        opt.AnonymousUserName = &quot;anonymous&quot;;
+    })
+.AddTransient&lt;IPropertyStoreFactory, TextFilePropertyStoreFactory&gt;()
+.AddSingleton&lt;IFileSystemFactory, DotNetFileSystemFactory&gt;()
+.AddSingleton&lt;ILockManager, InMemoryLockManager&gt;()
+.AddMvcCore()
+.AddAuthorization()
+.AddWebDav();
+</code></pre><p><img src="../images/walk-through/09-after-replace.png" alt="screenshot"></p>
 <h2 id="explanation-1">Explanation</h2>
 <p>The configuration of <code>DotNetFileSystemOptions</code> uses the <code>%TEMP%\webdav</code> folder as root folder. It also specifies that the unauthenticated user always gets the name <code>anonymous</code>.</p>
 <p>This code also adds some required services:</p>
@@ -181,10 +175,10 @@ controller contains everything that&#39;s needed for a WebDAV server class 1,2 i
 <p>To allow <code>NTLM</code> (or <code>Negotiate</code>) authentication, the following steps must be done:</p>
 <ol>
 <li><p>Add the <code>Microsoft.AspNetCore.Authentication</code> package</p>
-<p><img src="../images/walk-through/08-add-auth-package.png" alt="The Microsoft.AspNetCore.Authentication package in the package manager"></p>
+<p><img src="../images/walk-through/08-add-auth-package.png" alt="screenshot"></p>
 </li>
 <li><p>Add the <code>[Authorize]</code> attribute to the <code>WebDavController</code></p>
-<p><img src="../images/walk-through/10-add-authorize-controller-attribute.png" alt="The Authorize attribute to add to the controller"></p>
+<p><img src="../images/walk-through/10-add-authorize-controller-attribute.png" alt="screenshot"></p>
 </li>
 <li><p>Replace in <code>Program.cs</code> the <code>.UseKestrel()</code> with the WebListener</p>
 <pre><code class="lang-csharp">     .UseWebListener(opt =&gt;
@@ -197,19 +191,19 @@ controller contains everything that&#39;s needed for a WebDAV server class 1,2 i
 </li>
 </ol>
 <p>Now, your <code>Program.cs</code> file should like like this:</p>
-<p><img src="../images/walk-through/10-remove-iis-integration.png" alt="Final version of Program.cs"></p>
+<p><img src="../images/walk-through/10-remove-iis-integration.png" alt="screenshot"></p>
 <h1 id="disable-the-automatic-browser-launch-at-application-start">Disable the automatic browser launch at application start</h1>
 <p>To disable the automatic browser launch, you have to set the <code>launchBrowser</code> entry in the <code>launchSettings.json</code> file (can befound under <code>Properties</code>) to <code>false</code>.</p>
 <p>Before:</p>
-<p><img src="../images/walk-through/11-before-browser-disable.png" alt="Before change of launchSettings.json"></p>
+<p><img src="../images/walk-through/11-before-browser-disable.png" alt="screenshot"></p>
 <p>After:</p>
-<p><img src="../images/walk-through/11-after-browser-disable.png" alt="Before change of launchSettings.json"></p>
+<p><img src="../images/walk-through/11-after-browser-disable.png" alt="screenshot"></p>
 <h1 id="change-the-start-project-important">Change the start project (<strong>important!</strong>)</h1>
 <p>You must change the start project from <code>IIS Express</code> to <code>TestWebDavServer</code> (your test project). Otherwise, using the <code>NTLM</code> authentication configured above, doesn&#39;t work.</p>
-<p><img src="../images/walk-through/12-start-server.png" alt="Use of console instead of IIS Express"></p>
+<p><img src="../images/walk-through/12-start-server.png" alt="screenshot"></p>
 <h1 id="running-the-test-server">Running the test server</h1>
 <p>When you start the test server, you can see the WebDAV url in the console window:</p>
-<p><img src="../images/walk-through/13-use-explorer-with-url.png" alt="URL in console window"></p>
+<p><img src="../images/walk-through/13-use-explorer-with-url.png" alt="screenshot"></p>
 <p>Enter this URL into the Windows Explorers address bar and you should be able to connect to the server.</p>
 
             </article>
@@ -245,6 +239,9 @@ controller contains everything that&#39;s needed for a WebDAV server class 1,2 i
     
     <script type="text/javascript" src="../styles/docfx.vendor.js"></script>
     <script type="text/javascript" src="../styles/docfx.js"></script>
+    <script type="text/javascript" src="../styles/jquery.min.js"></script>
     <script type="text/javascript" src="../styles/main.js"></script>
+
+    <div id='lightbox'></div>
   </body>
 </html>
