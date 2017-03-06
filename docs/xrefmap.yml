@@ -982,6 +982,21 @@ references:
   commentId: Overload:FubarDev.WebDavServer.Dispatchers.IWebDavClass.OptionsResponseHeaders
   fullName: FubarDev.WebDavServer.Dispatchers.IWebDavClass.OptionsResponseHeaders
   nameWithType: IWebDavClass.OptionsResponseHeaders
+- uid: FubarDev.WebDavServer.Dispatchers.IWebDavClass.TryCreateDeadProperty(FubarDev.WebDavServer.Props.Store.IPropertyStore,FubarDev.WebDavServer.FileSystem.IEntry,System.Xml.Linq.XName,FubarDev.WebDavServer.Props.Dead.IDeadProperty@)
+  name: TryCreateDeadProperty(IPropertyStore, IEntry, XName, out IDeadProperty)
+  href: api/FubarDev.WebDavServer.Dispatchers.IWebDavClass.html#FubarDev_WebDavServer_Dispatchers_IWebDavClass_TryCreateDeadProperty_FubarDev_WebDavServer_Props_Store_IPropertyStore_FubarDev_WebDavServer_FileSystem_IEntry_System_Xml_Linq_XName_FubarDev_WebDavServer_Props_Dead_IDeadProperty__
+  commentId: M:FubarDev.WebDavServer.Dispatchers.IWebDavClass.TryCreateDeadProperty(FubarDev.WebDavServer.Props.Store.IPropertyStore,FubarDev.WebDavServer.FileSystem.IEntry,System.Xml.Linq.XName,FubarDev.WebDavServer.Props.Dead.IDeadProperty@)
+  name.vb: TryCreateDeadProperty(IPropertyStore, IEntry, XName, ByRef IDeadProperty)
+  fullName: FubarDev.WebDavServer.Dispatchers.IWebDavClass.TryCreateDeadProperty(FubarDev.WebDavServer.Props.Store.IPropertyStore, FubarDev.WebDavServer.FileSystem.IEntry, System.Xml.Linq.XName, out FubarDev.WebDavServer.Props.Dead.IDeadProperty)
+  fullName.vb: FubarDev.WebDavServer.Dispatchers.IWebDavClass.TryCreateDeadProperty(FubarDev.WebDavServer.Props.Store.IPropertyStore, FubarDev.WebDavServer.FileSystem.IEntry, System.Xml.Linq.XName, ByRef FubarDev.WebDavServer.Props.Dead.IDeadProperty)
+  nameWithType: IWebDavClass.TryCreateDeadProperty(IPropertyStore, IEntry, XName, out IDeadProperty)
+  nameWithType.vb: IWebDavClass.TryCreateDeadProperty(IPropertyStore, IEntry, XName, ByRef IDeadProperty)
+- uid: FubarDev.WebDavServer.Dispatchers.IWebDavClass.TryCreateDeadProperty*
+  name: TryCreateDeadProperty
+  href: api/FubarDev.WebDavServer.Dispatchers.IWebDavClass.html#FubarDev_WebDavServer_Dispatchers_IWebDavClass_TryCreateDeadProperty_
+  commentId: Overload:FubarDev.WebDavServer.Dispatchers.IWebDavClass.TryCreateDeadProperty
+  fullName: FubarDev.WebDavServer.Dispatchers.IWebDavClass.TryCreateDeadProperty
+  nameWithType: IWebDavClass.TryCreateDeadProperty
 - uid: FubarDev.WebDavServer.Dispatchers.IWebDavClass.WebDavContext
   name: WebDavContext
   href: api/FubarDev.WebDavServer.Dispatchers.IWebDavClass.html#FubarDev_WebDavServer_Dispatchers_IWebDavClass_WebDavContext
@@ -1168,15 +1183,15 @@ references:
   commentId: T:FubarDev.WebDavServer.Dispatchers.WebDavDispatcherClass1
   fullName: FubarDev.WebDavServer.Dispatchers.WebDavDispatcherClass1
   nameWithType: WebDavDispatcherClass1
-- uid: FubarDev.WebDavServer.Dispatchers.WebDavDispatcherClass1.#ctor(System.Collections.Generic.IEnumerable{FubarDev.WebDavServer.Handlers.IClass1Handler},FubarDev.WebDavServer.IWebDavContext,FubarDev.WebDavServer.Props.Dead.IDeadPropertyFactory)
-  name: WebDavDispatcherClass1(IEnumerable<IClass1Handler>, IWebDavContext, IDeadPropertyFactory)
-  href: api/FubarDev.WebDavServer.Dispatchers.WebDavDispatcherClass1.html#FubarDev_WebDavServer_Dispatchers_WebDavDispatcherClass1__ctor_System_Collections_Generic_IEnumerable_FubarDev_WebDavServer_Handlers_IClass1Handler__FubarDev_WebDavServer_IWebDavContext_FubarDev_WebDavServer_Props_Dead_IDeadPropertyFactory_
-  commentId: M:FubarDev.WebDavServer.Dispatchers.WebDavDispatcherClass1.#ctor(System.Collections.Generic.IEnumerable{FubarDev.WebDavServer.Handlers.IClass1Handler},FubarDev.WebDavServer.IWebDavContext,FubarDev.WebDavServer.Props.Dead.IDeadPropertyFactory)
-  name.vb: WebDavDispatcherClass1(IEnumerable(Of IClass1Handler), IWebDavContext, IDeadPropertyFactory)
-  fullName: FubarDev.WebDavServer.Dispatchers.WebDavDispatcherClass1.WebDavDispatcherClass1(System.Collections.Generic.IEnumerable<FubarDev.WebDavServer.Handlers.IClass1Handler>, FubarDev.WebDavServer.IWebDavContext, FubarDev.WebDavServer.Props.Dead.IDeadPropertyFactory)
-  fullName.vb: FubarDev.WebDavServer.Dispatchers.WebDavDispatcherClass1.WebDavDispatcherClass1(System.Collections.Generic.IEnumerable(Of FubarDev.WebDavServer.Handlers.IClass1Handler), FubarDev.WebDavServer.IWebDavContext, FubarDev.WebDavServer.Props.Dead.IDeadPropertyFactory)
-  nameWithType: WebDavDispatcherClass1.WebDavDispatcherClass1(IEnumerable<IClass1Handler>, IWebDavContext, IDeadPropertyFactory)
-  nameWithType.vb: WebDavDispatcherClass1.WebDavDispatcherClass1(IEnumerable(Of IClass1Handler), IWebDavContext, IDeadPropertyFactory)
+- uid: FubarDev.WebDavServer.Dispatchers.WebDavDispatcherClass1.#ctor(System.Collections.Generic.IEnumerable{FubarDev.WebDavServer.Handlers.IClass1Handler},FubarDev.WebDavServer.IWebDavContext,FubarDev.WebDavServer.Props.Dead.IDeadPropertyFactory,Microsoft.Extensions.Options.IOptions{FubarDev.WebDavServer.Dispatchers.WebDavDispatcherClass1Options})
+  name: WebDavDispatcherClass1(IEnumerable<IClass1Handler>, IWebDavContext, IDeadPropertyFactory, IOptions<WebDavDispatcherClass1Options>)
+  href: api/FubarDev.WebDavServer.Dispatchers.WebDavDispatcherClass1.html#FubarDev_WebDavServer_Dispatchers_WebDavDispatcherClass1__ctor_System_Collections_Generic_IEnumerable_FubarDev_WebDavServer_Handlers_IClass1Handler__FubarDev_WebDavServer_IWebDavContext_FubarDev_WebDavServer_Props_Dead_IDeadPropertyFactory_Microsoft_Extensions_Options_IOptions_FubarDev_WebDavServer_Dispatchers_WebDavDispatcherClass1Options__
+  commentId: M:FubarDev.WebDavServer.Dispatchers.WebDavDispatcherClass1.#ctor(System.Collections.Generic.IEnumerable{FubarDev.WebDavServer.Handlers.IClass1Handler},FubarDev.WebDavServer.IWebDavContext,FubarDev.WebDavServer.Props.Dead.IDeadPropertyFactory,Microsoft.Extensions.Options.IOptions{FubarDev.WebDavServer.Dispatchers.WebDavDispatcherClass1Options})
+  name.vb: WebDavDispatcherClass1(IEnumerable(Of IClass1Handler), IWebDavContext, IDeadPropertyFactory, IOptions(Of WebDavDispatcherClass1Options))
+  fullName: FubarDev.WebDavServer.Dispatchers.WebDavDispatcherClass1.WebDavDispatcherClass1(System.Collections.Generic.IEnumerable<FubarDev.WebDavServer.Handlers.IClass1Handler>, FubarDev.WebDavServer.IWebDavContext, FubarDev.WebDavServer.Props.Dead.IDeadPropertyFactory, Microsoft.Extensions.Options.IOptions<FubarDev.WebDavServer.Dispatchers.WebDavDispatcherClass1Options>)
+  fullName.vb: FubarDev.WebDavServer.Dispatchers.WebDavDispatcherClass1.WebDavDispatcherClass1(System.Collections.Generic.IEnumerable(Of FubarDev.WebDavServer.Handlers.IClass1Handler), FubarDev.WebDavServer.IWebDavContext, FubarDev.WebDavServer.Props.Dead.IDeadPropertyFactory, Microsoft.Extensions.Options.IOptions(Of FubarDev.WebDavServer.Dispatchers.WebDavDispatcherClass1Options))
+  nameWithType: WebDavDispatcherClass1.WebDavDispatcherClass1(IEnumerable<IClass1Handler>, IWebDavContext, IDeadPropertyFactory, IOptions<WebDavDispatcherClass1Options>)
+  nameWithType.vb: WebDavDispatcherClass1.WebDavDispatcherClass1(IEnumerable(Of IClass1Handler), IWebDavContext, IDeadPropertyFactory, IOptions(Of WebDavDispatcherClass1Options))
 - uid: FubarDev.WebDavServer.Dispatchers.WebDavDispatcherClass1.#ctor*
   name: WebDavDispatcherClass1
   href: api/FubarDev.WebDavServer.Dispatchers.WebDavDispatcherClass1.html#FubarDev_WebDavServer_Dispatchers_WebDavDispatcherClass1__ctor_
@@ -1351,6 +1366,21 @@ references:
   commentId: Overload:FubarDev.WebDavServer.Dispatchers.WebDavDispatcherClass1.PutAsync
   fullName: FubarDev.WebDavServer.Dispatchers.WebDavDispatcherClass1.PutAsync
   nameWithType: WebDavDispatcherClass1.PutAsync
+- uid: FubarDev.WebDavServer.Dispatchers.WebDavDispatcherClass1.TryCreateDeadProperty(FubarDev.WebDavServer.Props.Store.IPropertyStore,FubarDev.WebDavServer.FileSystem.IEntry,System.Xml.Linq.XName,FubarDev.WebDavServer.Props.Dead.IDeadProperty@)
+  name: TryCreateDeadProperty(IPropertyStore, IEntry, XName, out IDeadProperty)
+  href: api/FubarDev.WebDavServer.Dispatchers.WebDavDispatcherClass1.html#FubarDev_WebDavServer_Dispatchers_WebDavDispatcherClass1_TryCreateDeadProperty_FubarDev_WebDavServer_Props_Store_IPropertyStore_FubarDev_WebDavServer_FileSystem_IEntry_System_Xml_Linq_XName_FubarDev_WebDavServer_Props_Dead_IDeadProperty__
+  commentId: M:FubarDev.WebDavServer.Dispatchers.WebDavDispatcherClass1.TryCreateDeadProperty(FubarDev.WebDavServer.Props.Store.IPropertyStore,FubarDev.WebDavServer.FileSystem.IEntry,System.Xml.Linq.XName,FubarDev.WebDavServer.Props.Dead.IDeadProperty@)
+  name.vb: TryCreateDeadProperty(IPropertyStore, IEntry, XName, ByRef IDeadProperty)
+  fullName: FubarDev.WebDavServer.Dispatchers.WebDavDispatcherClass1.TryCreateDeadProperty(FubarDev.WebDavServer.Props.Store.IPropertyStore, FubarDev.WebDavServer.FileSystem.IEntry, System.Xml.Linq.XName, out FubarDev.WebDavServer.Props.Dead.IDeadProperty)
+  fullName.vb: FubarDev.WebDavServer.Dispatchers.WebDavDispatcherClass1.TryCreateDeadProperty(FubarDev.WebDavServer.Props.Store.IPropertyStore, FubarDev.WebDavServer.FileSystem.IEntry, System.Xml.Linq.XName, ByRef FubarDev.WebDavServer.Props.Dead.IDeadProperty)
+  nameWithType: WebDavDispatcherClass1.TryCreateDeadProperty(IPropertyStore, IEntry, XName, out IDeadProperty)
+  nameWithType.vb: WebDavDispatcherClass1.TryCreateDeadProperty(IPropertyStore, IEntry, XName, ByRef IDeadProperty)
+- uid: FubarDev.WebDavServer.Dispatchers.WebDavDispatcherClass1.TryCreateDeadProperty*
+  name: TryCreateDeadProperty
+  href: api/FubarDev.WebDavServer.Dispatchers.WebDavDispatcherClass1.html#FubarDev_WebDavServer_Dispatchers_WebDavDispatcherClass1_TryCreateDeadProperty_
+  commentId: Overload:FubarDev.WebDavServer.Dispatchers.WebDavDispatcherClass1.TryCreateDeadProperty
+  fullName: FubarDev.WebDavServer.Dispatchers.WebDavDispatcherClass1.TryCreateDeadProperty
+  nameWithType: WebDavDispatcherClass1.TryCreateDeadProperty
 - uid: FubarDev.WebDavServer.Dispatchers.WebDavDispatcherClass1.WebDavContext
   name: WebDavContext
   href: api/FubarDev.WebDavServer.Dispatchers.WebDavDispatcherClass1.html#FubarDev_WebDavServer_Dispatchers_WebDavDispatcherClass1_WebDavContext
@@ -1363,6 +1393,24 @@ references:
   commentId: Overload:FubarDev.WebDavServer.Dispatchers.WebDavDispatcherClass1.WebDavContext
   fullName: FubarDev.WebDavServer.Dispatchers.WebDavDispatcherClass1.WebDavContext
   nameWithType: WebDavDispatcherClass1.WebDavContext
+- uid: FubarDev.WebDavServer.Dispatchers.WebDavDispatcherClass1Options
+  name: WebDavDispatcherClass1Options
+  href: api/FubarDev.WebDavServer.Dispatchers.WebDavDispatcherClass1Options.html
+  commentId: T:FubarDev.WebDavServer.Dispatchers.WebDavDispatcherClass1Options
+  fullName: FubarDev.WebDavServer.Dispatchers.WebDavDispatcherClass1Options
+  nameWithType: WebDavDispatcherClass1Options
+- uid: FubarDev.WebDavServer.Dispatchers.WebDavDispatcherClass1Options.HideExtensionForDisplayName
+  name: HideExtensionForDisplayName
+  href: api/FubarDev.WebDavServer.Dispatchers.WebDavDispatcherClass1Options.html#FubarDev_WebDavServer_Dispatchers_WebDavDispatcherClass1Options_HideExtensionForDisplayName
+  commentId: P:FubarDev.WebDavServer.Dispatchers.WebDavDispatcherClass1Options.HideExtensionForDisplayName
+  fullName: FubarDev.WebDavServer.Dispatchers.WebDavDispatcherClass1Options.HideExtensionForDisplayName
+  nameWithType: WebDavDispatcherClass1Options.HideExtensionForDisplayName
+- uid: FubarDev.WebDavServer.Dispatchers.WebDavDispatcherClass1Options.HideExtensionForDisplayName*
+  name: HideExtensionForDisplayName
+  href: api/FubarDev.WebDavServer.Dispatchers.WebDavDispatcherClass1Options.html#FubarDev_WebDavServer_Dispatchers_WebDavDispatcherClass1Options_HideExtensionForDisplayName_
+  commentId: Overload:FubarDev.WebDavServer.Dispatchers.WebDavDispatcherClass1Options.HideExtensionForDisplayName
+  fullName: FubarDev.WebDavServer.Dispatchers.WebDavDispatcherClass1Options.HideExtensionForDisplayName
+  nameWithType: WebDavDispatcherClass1Options.HideExtensionForDisplayName
 - uid: FubarDev.WebDavServer.Dispatchers.WebDavDispatcherClass2
   name: WebDavDispatcherClass2
   href: api/FubarDev.WebDavServer.Dispatchers.WebDavDispatcherClass2.html
@@ -1456,6 +1504,21 @@ references:
   commentId: Overload:FubarDev.WebDavServer.Dispatchers.WebDavDispatcherClass2.RefreshLockAsync
   fullName: FubarDev.WebDavServer.Dispatchers.WebDavDispatcherClass2.RefreshLockAsync
   nameWithType: WebDavDispatcherClass2.RefreshLockAsync
+- uid: FubarDev.WebDavServer.Dispatchers.WebDavDispatcherClass2.TryCreateDeadProperty(FubarDev.WebDavServer.Props.Store.IPropertyStore,FubarDev.WebDavServer.FileSystem.IEntry,System.Xml.Linq.XName,FubarDev.WebDavServer.Props.Dead.IDeadProperty@)
+  name: TryCreateDeadProperty(IPropertyStore, IEntry, XName, out IDeadProperty)
+  href: api/FubarDev.WebDavServer.Dispatchers.WebDavDispatcherClass2.html#FubarDev_WebDavServer_Dispatchers_WebDavDispatcherClass2_TryCreateDeadProperty_FubarDev_WebDavServer_Props_Store_IPropertyStore_FubarDev_WebDavServer_FileSystem_IEntry_System_Xml_Linq_XName_FubarDev_WebDavServer_Props_Dead_IDeadProperty__
+  commentId: M:FubarDev.WebDavServer.Dispatchers.WebDavDispatcherClass2.TryCreateDeadProperty(FubarDev.WebDavServer.Props.Store.IPropertyStore,FubarDev.WebDavServer.FileSystem.IEntry,System.Xml.Linq.XName,FubarDev.WebDavServer.Props.Dead.IDeadProperty@)
+  name.vb: TryCreateDeadProperty(IPropertyStore, IEntry, XName, ByRef IDeadProperty)
+  fullName: FubarDev.WebDavServer.Dispatchers.WebDavDispatcherClass2.TryCreateDeadProperty(FubarDev.WebDavServer.Props.Store.IPropertyStore, FubarDev.WebDavServer.FileSystem.IEntry, System.Xml.Linq.XName, out FubarDev.WebDavServer.Props.Dead.IDeadProperty)
+  fullName.vb: FubarDev.WebDavServer.Dispatchers.WebDavDispatcherClass2.TryCreateDeadProperty(FubarDev.WebDavServer.Props.Store.IPropertyStore, FubarDev.WebDavServer.FileSystem.IEntry, System.Xml.Linq.XName, ByRef FubarDev.WebDavServer.Props.Dead.IDeadProperty)
+  nameWithType: WebDavDispatcherClass2.TryCreateDeadProperty(IPropertyStore, IEntry, XName, out IDeadProperty)
+  nameWithType.vb: WebDavDispatcherClass2.TryCreateDeadProperty(IPropertyStore, IEntry, XName, ByRef IDeadProperty)
+- uid: FubarDev.WebDavServer.Dispatchers.WebDavDispatcherClass2.TryCreateDeadProperty*
+  name: TryCreateDeadProperty
+  href: api/FubarDev.WebDavServer.Dispatchers.WebDavDispatcherClass2.html#FubarDev_WebDavServer_Dispatchers_WebDavDispatcherClass2_TryCreateDeadProperty_
+  commentId: Overload:FubarDev.WebDavServer.Dispatchers.WebDavDispatcherClass2.TryCreateDeadProperty
+  fullName: FubarDev.WebDavServer.Dispatchers.WebDavDispatcherClass2.TryCreateDeadProperty
+  nameWithType: WebDavDispatcherClass2.TryCreateDeadProperty
 - uid: FubarDev.WebDavServer.Dispatchers.WebDavDispatcherClass2.UnlockAsync(System.String,FubarDev.WebDavServer.Model.Headers.LockTokenHeader,System.Threading.CancellationToken)
   name: UnlockAsync(String, LockTokenHeader, CancellationToken)
   href: api/FubarDev.WebDavServer.Dispatchers.WebDavDispatcherClass2.html#FubarDev_WebDavServer_Dispatchers_WebDavDispatcherClass2_UnlockAsync_System_String_FubarDev_WebDavServer_Model_Headers_LockTokenHeader_System_Threading_CancellationToken_
@@ -4139,6 +4202,18 @@ references:
   commentId: Overload:FubarDev.WebDavServer.FileSystem.DotNet.DotNetFileSystem.DeadPropertyFactory
   fullName: FubarDev.WebDavServer.FileSystem.DotNet.DotNetFileSystem.DeadPropertyFactory
   nameWithType: DotNetFileSystem.DeadPropertyFactory
+- uid: FubarDev.WebDavServer.FileSystem.DotNet.DotNetFileSystem.HasSubfolders
+  name: HasSubfolders
+  href: api/FubarDev.WebDavServer.FileSystem.DotNet.DotNetFileSystem.html#FubarDev_WebDavServer_FileSystem_DotNet_DotNetFileSystem_HasSubfolders
+  commentId: P:FubarDev.WebDavServer.FileSystem.DotNet.DotNetFileSystem.HasSubfolders
+  fullName: FubarDev.WebDavServer.FileSystem.DotNet.DotNetFileSystem.HasSubfolders
+  nameWithType: DotNetFileSystem.HasSubfolders
+- uid: FubarDev.WebDavServer.FileSystem.DotNet.DotNetFileSystem.HasSubfolders*
+  name: HasSubfolders
+  href: api/FubarDev.WebDavServer.FileSystem.DotNet.DotNetFileSystem.html#FubarDev_WebDavServer_FileSystem_DotNet_DotNetFileSystem_HasSubfolders_
+  commentId: Overload:FubarDev.WebDavServer.FileSystem.DotNet.DotNetFileSystem.HasSubfolders
+  fullName: FubarDev.WebDavServer.FileSystem.DotNet.DotNetFileSystem.HasSubfolders
+  nameWithType: DotNetFileSystem.HasSubfolders
 - uid: FubarDev.WebDavServer.FileSystem.DotNet.DotNetFileSystem.LockManager
   name: LockManager
   href: api/FubarDev.WebDavServer.FileSystem.DotNet.DotNetFileSystem.html#FubarDev_WebDavServer_FileSystem_DotNet_DotNetFileSystem_LockManager
@@ -4211,6 +4286,18 @@ references:
   commentId: Overload:FubarDev.WebDavServer.FileSystem.DotNet.DotNetFileSystem.SelectAsync
   fullName: FubarDev.WebDavServer.FileSystem.DotNet.DotNetFileSystem.SelectAsync
   nameWithType: DotNetFileSystem.SelectAsync
+- uid: FubarDev.WebDavServer.FileSystem.DotNet.DotNetFileSystem.SupportsRangedRead
+  name: SupportsRangedRead
+  href: api/FubarDev.WebDavServer.FileSystem.DotNet.DotNetFileSystem.html#FubarDev_WebDavServer_FileSystem_DotNet_DotNetFileSystem_SupportsRangedRead
+  commentId: P:FubarDev.WebDavServer.FileSystem.DotNet.DotNetFileSystem.SupportsRangedRead
+  fullName: FubarDev.WebDavServer.FileSystem.DotNet.DotNetFileSystem.SupportsRangedRead
+  nameWithType: DotNetFileSystem.SupportsRangedRead
+- uid: FubarDev.WebDavServer.FileSystem.DotNet.DotNetFileSystem.SupportsRangedRead*
+  name: SupportsRangedRead
+  href: api/FubarDev.WebDavServer.FileSystem.DotNet.DotNetFileSystem.html#FubarDev_WebDavServer_FileSystem_DotNet_DotNetFileSystem_SupportsRangedRead_
+  commentId: Overload:FubarDev.WebDavServer.FileSystem.DotNet.DotNetFileSystem.SupportsRangedRead
+  fullName: FubarDev.WebDavServer.FileSystem.DotNet.DotNetFileSystem.SupportsRangedRead
+  nameWithType: DotNetFileSystem.SupportsRangedRead
 - uid: FubarDev.WebDavServer.FileSystem.DotNet.DotNetFileSystemFactory
   name: DotNetFileSystemFactory
   href: api/FubarDev.WebDavServer.FileSystem.DotNet.DotNetFileSystemFactory.html
@@ -4316,15 +4403,15 @@ references:
   commentId: Overload:FubarDev.WebDavServer.FileSystem.EntryExtensions.GetEntityTagAsync
   fullName: FubarDev.WebDavServer.FileSystem.EntryExtensions.GetEntityTagAsync
   nameWithType: EntryExtensions.GetEntityTagAsync
-- uid: FubarDev.WebDavServer.FileSystem.EntryExtensions.GetProperties(FubarDev.WebDavServer.FileSystem.IEntry,FubarDev.WebDavServer.IWebDavDispatcher,System.Nullable{System.Int32})
-  name: GetProperties(IEntry, IWebDavDispatcher, Nullable<Int32>)
-  href: api/FubarDev.WebDavServer.FileSystem.EntryExtensions.html#FubarDev_WebDavServer_FileSystem_EntryExtensions_GetProperties_FubarDev_WebDavServer_FileSystem_IEntry_FubarDev_WebDavServer_IWebDavDispatcher_System_Nullable_System_Int32__
-  commentId: M:FubarDev.WebDavServer.FileSystem.EntryExtensions.GetProperties(FubarDev.WebDavServer.FileSystem.IEntry,FubarDev.WebDavServer.IWebDavDispatcher,System.Nullable{System.Int32})
-  name.vb: GetProperties(IEntry, IWebDavDispatcher, Nullable(Of Int32))
-  fullName: FubarDev.WebDavServer.FileSystem.EntryExtensions.GetProperties(FubarDev.WebDavServer.FileSystem.IEntry, FubarDev.WebDavServer.IWebDavDispatcher, System.Nullable<System.Int32>)
-  fullName.vb: FubarDev.WebDavServer.FileSystem.EntryExtensions.GetProperties(FubarDev.WebDavServer.FileSystem.IEntry, FubarDev.WebDavServer.IWebDavDispatcher, System.Nullable(Of System.Int32))
-  nameWithType: EntryExtensions.GetProperties(IEntry, IWebDavDispatcher, Nullable<Int32>)
-  nameWithType.vb: EntryExtensions.GetProperties(IEntry, IWebDavDispatcher, Nullable(Of Int32))
+- uid: FubarDev.WebDavServer.FileSystem.EntryExtensions.GetProperties(FubarDev.WebDavServer.FileSystem.IEntry,FubarDev.WebDavServer.IWebDavDispatcher,System.Nullable{System.Int32},System.Boolean)
+  name: GetProperties(IEntry, IWebDavDispatcher, Nullable<Int32>, Boolean)
+  href: api/FubarDev.WebDavServer.FileSystem.EntryExtensions.html#FubarDev_WebDavServer_FileSystem_EntryExtensions_GetProperties_FubarDev_WebDavServer_FileSystem_IEntry_FubarDev_WebDavServer_IWebDavDispatcher_System_Nullable_System_Int32__System_Boolean_
+  commentId: M:FubarDev.WebDavServer.FileSystem.EntryExtensions.GetProperties(FubarDev.WebDavServer.FileSystem.IEntry,FubarDev.WebDavServer.IWebDavDispatcher,System.Nullable{System.Int32},System.Boolean)
+  name.vb: GetProperties(IEntry, IWebDavDispatcher, Nullable(Of Int32), Boolean)
+  fullName: FubarDev.WebDavServer.FileSystem.EntryExtensions.GetProperties(FubarDev.WebDavServer.FileSystem.IEntry, FubarDev.WebDavServer.IWebDavDispatcher, System.Nullable<System.Int32>, System.Boolean)
+  fullName.vb: FubarDev.WebDavServer.FileSystem.EntryExtensions.GetProperties(FubarDev.WebDavServer.FileSystem.IEntry, FubarDev.WebDavServer.IWebDavDispatcher, System.Nullable(Of System.Int32), System.Boolean)
+  nameWithType: EntryExtensions.GetProperties(IEntry, IWebDavDispatcher, Nullable<Int32>, Boolean)
+  nameWithType.vb: EntryExtensions.GetProperties(IEntry, IWebDavDispatcher, Nullable(Of Int32), Boolean)
 - uid: FubarDev.WebDavServer.FileSystem.EntryExtensions.GetProperties*
   name: GetProperties
   href: api/FubarDev.WebDavServer.FileSystem.EntryExtensions.html#FubarDev_WebDavServer_FileSystem_EntryExtensions_GetProperties_
@@ -4715,6 +4802,18 @@ references:
   commentId: Overload:FubarDev.WebDavServer.FileSystem.IFileSystem.SelectAsync
   fullName: FubarDev.WebDavServer.FileSystem.IFileSystem.SelectAsync
   nameWithType: IFileSystem.SelectAsync
+- uid: FubarDev.WebDavServer.FileSystem.IFileSystem.SupportsRangedRead
+  name: SupportsRangedRead
+  href: api/FubarDev.WebDavServer.FileSystem.IFileSystem.html#FubarDev_WebDavServer_FileSystem_IFileSystem_SupportsRangedRead
+  commentId: P:FubarDev.WebDavServer.FileSystem.IFileSystem.SupportsRangedRead
+  fullName: FubarDev.WebDavServer.FileSystem.IFileSystem.SupportsRangedRead
+  nameWithType: IFileSystem.SupportsRangedRead
+- uid: FubarDev.WebDavServer.FileSystem.IFileSystem.SupportsRangedRead*
+  name: SupportsRangedRead
+  href: api/FubarDev.WebDavServer.FileSystem.IFileSystem.html#FubarDev_WebDavServer_FileSystem_IFileSystem_SupportsRangedRead_
+  commentId: Overload:FubarDev.WebDavServer.FileSystem.IFileSystem.SupportsRangedRead
+  fullName: FubarDev.WebDavServer.FileSystem.IFileSystem.SupportsRangedRead
+  nameWithType: IFileSystem.SupportsRangedRead
 - uid: FubarDev.WebDavServer.FileSystem.IFileSystemFactory
   name: IFileSystemFactory
   href: api/FubarDev.WebDavServer.FileSystem.IFileSystemFactory.html
@@ -4739,6 +4838,18 @@ references:
   commentId: T:FubarDev.WebDavServer.FileSystem.ILocalFileSystem
   fullName: FubarDev.WebDavServer.FileSystem.ILocalFileSystem
   nameWithType: ILocalFileSystem
+- uid: FubarDev.WebDavServer.FileSystem.ILocalFileSystem.HasSubfolders
+  name: HasSubfolders
+  href: api/FubarDev.WebDavServer.FileSystem.ILocalFileSystem.html#FubarDev_WebDavServer_FileSystem_ILocalFileSystem_HasSubfolders
+  commentId: P:FubarDev.WebDavServer.FileSystem.ILocalFileSystem.HasSubfolders
+  fullName: FubarDev.WebDavServer.FileSystem.ILocalFileSystem.HasSubfolders
+  nameWithType: ILocalFileSystem.HasSubfolders
+- uid: FubarDev.WebDavServer.FileSystem.ILocalFileSystem.HasSubfolders*
+  name: HasSubfolders
+  href: api/FubarDev.WebDavServer.FileSystem.ILocalFileSystem.html#FubarDev_WebDavServer_FileSystem_ILocalFileSystem_HasSubfolders_
+  commentId: Overload:FubarDev.WebDavServer.FileSystem.ILocalFileSystem.HasSubfolders
+  fullName: FubarDev.WebDavServer.FileSystem.ILocalFileSystem.HasSubfolders
+  nameWithType: ILocalFileSystem.HasSubfolders
 - uid: FubarDev.WebDavServer.FileSystem.ILocalFileSystem.RootDirectoryPath
   name: RootDirectoryPath
   href: api/FubarDev.WebDavServer.FileSystem.ILocalFileSystem.html#FubarDev_WebDavServer_FileSystem_ILocalFileSystem_RootDirectoryPath
@@ -5198,6 +5309,18 @@ references:
   commentId: Overload:FubarDev.WebDavServer.FileSystem.InMemory.InMemoryFileSystem.SelectAsync
   fullName: FubarDev.WebDavServer.FileSystem.InMemory.InMemoryFileSystem.SelectAsync
   nameWithType: InMemoryFileSystem.SelectAsync
+- uid: FubarDev.WebDavServer.FileSystem.InMemory.InMemoryFileSystem.SupportsRangedRead
+  name: SupportsRangedRead
+  href: api/FubarDev.WebDavServer.FileSystem.InMemory.InMemoryFileSystem.html#FubarDev_WebDavServer_FileSystem_InMemory_InMemoryFileSystem_SupportsRangedRead
+  commentId: P:FubarDev.WebDavServer.FileSystem.InMemory.InMemoryFileSystem.SupportsRangedRead
+  fullName: FubarDev.WebDavServer.FileSystem.InMemory.InMemoryFileSystem.SupportsRangedRead
+  nameWithType: InMemoryFileSystem.SupportsRangedRead
+- uid: FubarDev.WebDavServer.FileSystem.InMemory.InMemoryFileSystem.SupportsRangedRead*
+  name: SupportsRangedRead
+  href: api/FubarDev.WebDavServer.FileSystem.InMemory.InMemoryFileSystem.html#FubarDev_WebDavServer_FileSystem_InMemory_InMemoryFileSystem_SupportsRangedRead_
+  commentId: Overload:FubarDev.WebDavServer.FileSystem.InMemory.InMemoryFileSystem.SupportsRangedRead
+  fullName: FubarDev.WebDavServer.FileSystem.InMemory.InMemoryFileSystem.SupportsRangedRead
+  nameWithType: InMemoryFileSystem.SupportsRangedRead
 - uid: FubarDev.WebDavServer.FileSystem.InMemory.InMemoryFileSystem.SystemClock
   name: SystemClock
   href: api/FubarDev.WebDavServer.FileSystem.InMemory.InMemoryFileSystem.html#FubarDev_WebDavServer_FileSystem_InMemory_InMemoryFileSystem_SystemClock
@@ -5477,6 +5600,285 @@ references:
   commentId: F:FubarDev.WebDavServer.FileSystem.SelectionResultType.MissingDocumentOrCollection
   fullName: FubarDev.WebDavServer.FileSystem.SelectionResultType.MissingDocumentOrCollection
   nameWithType: SelectionResultType.MissingDocumentOrCollection
+- uid: FubarDev.WebDavServer.FileSystem.SQLite
+  name: FubarDev.WebDavServer.FileSystem.SQLite
+  href: api/FubarDev.WebDavServer.FileSystem.SQLite.html
+  commentId: N:FubarDev.WebDavServer.FileSystem.SQLite
+  fullName: FubarDev.WebDavServer.FileSystem.SQLite
+  nameWithType: FubarDev.WebDavServer.FileSystem.SQLite
+- uid: FubarDev.WebDavServer.FileSystem.SQLite.SQLiteFileSystem
+  name: SQLiteFileSystem
+  href: api/FubarDev.WebDavServer.FileSystem.SQLite.SQLiteFileSystem.html
+  commentId: T:FubarDev.WebDavServer.FileSystem.SQLite.SQLiteFileSystem
+  fullName: FubarDev.WebDavServer.FileSystem.SQLite.SQLiteFileSystem
+  nameWithType: SQLiteFileSystem
+- uid: FubarDev.WebDavServer.FileSystem.SQLite.SQLiteFileSystem.#ctor(FubarDev.WebDavServer.FileSystem.SQLite.SQLiteFileSystemOptions,SQLite.SQLiteConnection,FubarDev.WebDavServer.FileSystem.PathTraversalEngine,FubarDev.WebDavServer.Props.Dead.IDeadPropertyFactory,FubarDev.WebDavServer.Locking.ILockManager,FubarDev.WebDavServer.Props.Store.IPropertyStoreFactory)
+  name: SQLiteFileSystem(SQLiteFileSystemOptions, SQLiteConnection, PathTraversalEngine, IDeadPropertyFactory, ILockManager, IPropertyStoreFactory)
+  href: api/FubarDev.WebDavServer.FileSystem.SQLite.SQLiteFileSystem.html#FubarDev_WebDavServer_FileSystem_SQLite_SQLiteFileSystem__ctor_FubarDev_WebDavServer_FileSystem_SQLite_SQLiteFileSystemOptions_SQLite_SQLiteConnection_FubarDev_WebDavServer_FileSystem_PathTraversalEngine_FubarDev_WebDavServer_Props_Dead_IDeadPropertyFactory_FubarDev_WebDavServer_Locking_ILockManager_FubarDev_WebDavServer_Props_Store_IPropertyStoreFactory_
+  commentId: M:FubarDev.WebDavServer.FileSystem.SQLite.SQLiteFileSystem.#ctor(FubarDev.WebDavServer.FileSystem.SQLite.SQLiteFileSystemOptions,SQLite.SQLiteConnection,FubarDev.WebDavServer.FileSystem.PathTraversalEngine,FubarDev.WebDavServer.Props.Dead.IDeadPropertyFactory,FubarDev.WebDavServer.Locking.ILockManager,FubarDev.WebDavServer.Props.Store.IPropertyStoreFactory)
+  fullName: FubarDev.WebDavServer.FileSystem.SQLite.SQLiteFileSystem.SQLiteFileSystem(FubarDev.WebDavServer.FileSystem.SQLite.SQLiteFileSystemOptions, SQLite.SQLiteConnection, FubarDev.WebDavServer.FileSystem.PathTraversalEngine, FubarDev.WebDavServer.Props.Dead.IDeadPropertyFactory, FubarDev.WebDavServer.Locking.ILockManager, FubarDev.WebDavServer.Props.Store.IPropertyStoreFactory)
+  nameWithType: SQLiteFileSystem.SQLiteFileSystem(SQLiteFileSystemOptions, SQLiteConnection, PathTraversalEngine, IDeadPropertyFactory, ILockManager, IPropertyStoreFactory)
+- uid: FubarDev.WebDavServer.FileSystem.SQLite.SQLiteFileSystem.#ctor*
+  name: SQLiteFileSystem
+  href: api/FubarDev.WebDavServer.FileSystem.SQLite.SQLiteFileSystem.html#FubarDev_WebDavServer_FileSystem_SQLite_SQLiteFileSystem__ctor_
+  commentId: Overload:FubarDev.WebDavServer.FileSystem.SQLite.SQLiteFileSystem.#ctor
+  fullName: FubarDev.WebDavServer.FileSystem.SQLite.SQLiteFileSystem.SQLiteFileSystem
+  nameWithType: SQLiteFileSystem.SQLiteFileSystem
+- uid: FubarDev.WebDavServer.FileSystem.SQLite.SQLiteFileSystem.Connection
+  name: Connection
+  href: api/FubarDev.WebDavServer.FileSystem.SQLite.SQLiteFileSystem.html#FubarDev_WebDavServer_FileSystem_SQLite_SQLiteFileSystem_Connection
+  commentId: P:FubarDev.WebDavServer.FileSystem.SQLite.SQLiteFileSystem.Connection
+  fullName: FubarDev.WebDavServer.FileSystem.SQLite.SQLiteFileSystem.Connection
+  nameWithType: SQLiteFileSystem.Connection
+- uid: FubarDev.WebDavServer.FileSystem.SQLite.SQLiteFileSystem.Connection*
+  name: Connection
+  href: api/FubarDev.WebDavServer.FileSystem.SQLite.SQLiteFileSystem.html#FubarDev_WebDavServer_FileSystem_SQLite_SQLiteFileSystem_Connection_
+  commentId: Overload:FubarDev.WebDavServer.FileSystem.SQLite.SQLiteFileSystem.Connection
+  fullName: FubarDev.WebDavServer.FileSystem.SQLite.SQLiteFileSystem.Connection
+  nameWithType: SQLiteFileSystem.Connection
+- uid: FubarDev.WebDavServer.FileSystem.SQLite.SQLiteFileSystem.DeadPropertyFactory
+  name: DeadPropertyFactory
+  href: api/FubarDev.WebDavServer.FileSystem.SQLite.SQLiteFileSystem.html#FubarDev_WebDavServer_FileSystem_SQLite_SQLiteFileSystem_DeadPropertyFactory
+  commentId: P:FubarDev.WebDavServer.FileSystem.SQLite.SQLiteFileSystem.DeadPropertyFactory
+  fullName: FubarDev.WebDavServer.FileSystem.SQLite.SQLiteFileSystem.DeadPropertyFactory
+  nameWithType: SQLiteFileSystem.DeadPropertyFactory
+- uid: FubarDev.WebDavServer.FileSystem.SQLite.SQLiteFileSystem.DeadPropertyFactory*
+  name: DeadPropertyFactory
+  href: api/FubarDev.WebDavServer.FileSystem.SQLite.SQLiteFileSystem.html#FubarDev_WebDavServer_FileSystem_SQLite_SQLiteFileSystem_DeadPropertyFactory_
+  commentId: Overload:FubarDev.WebDavServer.FileSystem.SQLite.SQLiteFileSystem.DeadPropertyFactory
+  fullName: FubarDev.WebDavServer.FileSystem.SQLite.SQLiteFileSystem.DeadPropertyFactory
+  nameWithType: SQLiteFileSystem.DeadPropertyFactory
+- uid: FubarDev.WebDavServer.FileSystem.SQLite.SQLiteFileSystem.Dispose
+  name: Dispose()
+  href: api/FubarDev.WebDavServer.FileSystem.SQLite.SQLiteFileSystem.html#FubarDev_WebDavServer_FileSystem_SQLite_SQLiteFileSystem_Dispose
+  commentId: M:FubarDev.WebDavServer.FileSystem.SQLite.SQLiteFileSystem.Dispose
+  fullName: FubarDev.WebDavServer.FileSystem.SQLite.SQLiteFileSystem.Dispose()
+  nameWithType: SQLiteFileSystem.Dispose()
+- uid: FubarDev.WebDavServer.FileSystem.SQLite.SQLiteFileSystem.Dispose*
+  name: Dispose
+  href: api/FubarDev.WebDavServer.FileSystem.SQLite.SQLiteFileSystem.html#FubarDev_WebDavServer_FileSystem_SQLite_SQLiteFileSystem_Dispose_
+  commentId: Overload:FubarDev.WebDavServer.FileSystem.SQLite.SQLiteFileSystem.Dispose
+  fullName: FubarDev.WebDavServer.FileSystem.SQLite.SQLiteFileSystem.Dispose
+  nameWithType: SQLiteFileSystem.Dispose
+- uid: FubarDev.WebDavServer.FileSystem.SQLite.SQLiteFileSystem.HasSubfolders
+  name: HasSubfolders
+  href: api/FubarDev.WebDavServer.FileSystem.SQLite.SQLiteFileSystem.html#FubarDev_WebDavServer_FileSystem_SQLite_SQLiteFileSystem_HasSubfolders
+  commentId: P:FubarDev.WebDavServer.FileSystem.SQLite.SQLiteFileSystem.HasSubfolders
+  fullName: FubarDev.WebDavServer.FileSystem.SQLite.SQLiteFileSystem.HasSubfolders
+  nameWithType: SQLiteFileSystem.HasSubfolders
+- uid: FubarDev.WebDavServer.FileSystem.SQLite.SQLiteFileSystem.HasSubfolders*
+  name: HasSubfolders
+  href: api/FubarDev.WebDavServer.FileSystem.SQLite.SQLiteFileSystem.html#FubarDev_WebDavServer_FileSystem_SQLite_SQLiteFileSystem_HasSubfolders_
+  commentId: Overload:FubarDev.WebDavServer.FileSystem.SQLite.SQLiteFileSystem.HasSubfolders
+  fullName: FubarDev.WebDavServer.FileSystem.SQLite.SQLiteFileSystem.HasSubfolders
+  nameWithType: SQLiteFileSystem.HasSubfolders
+- uid: FubarDev.WebDavServer.FileSystem.SQLite.SQLiteFileSystem.LockManager
+  name: LockManager
+  href: api/FubarDev.WebDavServer.FileSystem.SQLite.SQLiteFileSystem.html#FubarDev_WebDavServer_FileSystem_SQLite_SQLiteFileSystem_LockManager
+  commentId: P:FubarDev.WebDavServer.FileSystem.SQLite.SQLiteFileSystem.LockManager
+  fullName: FubarDev.WebDavServer.FileSystem.SQLite.SQLiteFileSystem.LockManager
+  nameWithType: SQLiteFileSystem.LockManager
+- uid: FubarDev.WebDavServer.FileSystem.SQLite.SQLiteFileSystem.LockManager*
+  name: LockManager
+  href: api/FubarDev.WebDavServer.FileSystem.SQLite.SQLiteFileSystem.html#FubarDev_WebDavServer_FileSystem_SQLite_SQLiteFileSystem_LockManager_
+  commentId: Overload:FubarDev.WebDavServer.FileSystem.SQLite.SQLiteFileSystem.LockManager
+  fullName: FubarDev.WebDavServer.FileSystem.SQLite.SQLiteFileSystem.LockManager
+  nameWithType: SQLiteFileSystem.LockManager
+- uid: FubarDev.WebDavServer.FileSystem.SQLite.SQLiteFileSystem.Options
+  name: Options
+  href: api/FubarDev.WebDavServer.FileSystem.SQLite.SQLiteFileSystem.html#FubarDev_WebDavServer_FileSystem_SQLite_SQLiteFileSystem_Options
+  commentId: P:FubarDev.WebDavServer.FileSystem.SQLite.SQLiteFileSystem.Options
+  fullName: FubarDev.WebDavServer.FileSystem.SQLite.SQLiteFileSystem.Options
+  nameWithType: SQLiteFileSystem.Options
+- uid: FubarDev.WebDavServer.FileSystem.SQLite.SQLiteFileSystem.Options*
+  name: Options
+  href: api/FubarDev.WebDavServer.FileSystem.SQLite.SQLiteFileSystem.html#FubarDev_WebDavServer_FileSystem_SQLite_SQLiteFileSystem_Options_
+  commentId: Overload:FubarDev.WebDavServer.FileSystem.SQLite.SQLiteFileSystem.Options
+  fullName: FubarDev.WebDavServer.FileSystem.SQLite.SQLiteFileSystem.Options
+  nameWithType: SQLiteFileSystem.Options
+- uid: FubarDev.WebDavServer.FileSystem.SQLite.SQLiteFileSystem.PropertyStore
+  name: PropertyStore
+  href: api/FubarDev.WebDavServer.FileSystem.SQLite.SQLiteFileSystem.html#FubarDev_WebDavServer_FileSystem_SQLite_SQLiteFileSystem_PropertyStore
+  commentId: P:FubarDev.WebDavServer.FileSystem.SQLite.SQLiteFileSystem.PropertyStore
+  fullName: FubarDev.WebDavServer.FileSystem.SQLite.SQLiteFileSystem.PropertyStore
+  nameWithType: SQLiteFileSystem.PropertyStore
+- uid: FubarDev.WebDavServer.FileSystem.SQLite.SQLiteFileSystem.PropertyStore*
+  name: PropertyStore
+  href: api/FubarDev.WebDavServer.FileSystem.SQLite.SQLiteFileSystem.html#FubarDev_WebDavServer_FileSystem_SQLite_SQLiteFileSystem_PropertyStore_
+  commentId: Overload:FubarDev.WebDavServer.FileSystem.SQLite.SQLiteFileSystem.PropertyStore
+  fullName: FubarDev.WebDavServer.FileSystem.SQLite.SQLiteFileSystem.PropertyStore
+  nameWithType: SQLiteFileSystem.PropertyStore
+- uid: FubarDev.WebDavServer.FileSystem.SQLite.SQLiteFileSystem.Root
+  name: Root
+  href: api/FubarDev.WebDavServer.FileSystem.SQLite.SQLiteFileSystem.html#FubarDev_WebDavServer_FileSystem_SQLite_SQLiteFileSystem_Root
+  commentId: P:FubarDev.WebDavServer.FileSystem.SQLite.SQLiteFileSystem.Root
+  fullName: FubarDev.WebDavServer.FileSystem.SQLite.SQLiteFileSystem.Root
+  nameWithType: SQLiteFileSystem.Root
+- uid: FubarDev.WebDavServer.FileSystem.SQLite.SQLiteFileSystem.Root*
+  name: Root
+  href: api/FubarDev.WebDavServer.FileSystem.SQLite.SQLiteFileSystem.html#FubarDev_WebDavServer_FileSystem_SQLite_SQLiteFileSystem_Root_
+  commentId: Overload:FubarDev.WebDavServer.FileSystem.SQLite.SQLiteFileSystem.Root
+  fullName: FubarDev.WebDavServer.FileSystem.SQLite.SQLiteFileSystem.Root
+  nameWithType: SQLiteFileSystem.Root
+- uid: FubarDev.WebDavServer.FileSystem.SQLite.SQLiteFileSystem.RootDirectoryPath
+  name: RootDirectoryPath
+  href: api/FubarDev.WebDavServer.FileSystem.SQLite.SQLiteFileSystem.html#FubarDev_WebDavServer_FileSystem_SQLite_SQLiteFileSystem_RootDirectoryPath
+  commentId: P:FubarDev.WebDavServer.FileSystem.SQLite.SQLiteFileSystem.RootDirectoryPath
+  fullName: FubarDev.WebDavServer.FileSystem.SQLite.SQLiteFileSystem.RootDirectoryPath
+  nameWithType: SQLiteFileSystem.RootDirectoryPath
+- uid: FubarDev.WebDavServer.FileSystem.SQLite.SQLiteFileSystem.RootDirectoryPath*
+  name: RootDirectoryPath
+  href: api/FubarDev.WebDavServer.FileSystem.SQLite.SQLiteFileSystem.html#FubarDev_WebDavServer_FileSystem_SQLite_SQLiteFileSystem_RootDirectoryPath_
+  commentId: Overload:FubarDev.WebDavServer.FileSystem.SQLite.SQLiteFileSystem.RootDirectoryPath
+  fullName: FubarDev.WebDavServer.FileSystem.SQLite.SQLiteFileSystem.RootDirectoryPath
+  nameWithType: SQLiteFileSystem.RootDirectoryPath
+- uid: FubarDev.WebDavServer.FileSystem.SQLite.SQLiteFileSystem.SelectAsync(System.String,System.Threading.CancellationToken)
+  name: SelectAsync(String, CancellationToken)
+  href: api/FubarDev.WebDavServer.FileSystem.SQLite.SQLiteFileSystem.html#FubarDev_WebDavServer_FileSystem_SQLite_SQLiteFileSystem_SelectAsync_System_String_System_Threading_CancellationToken_
+  commentId: M:FubarDev.WebDavServer.FileSystem.SQLite.SQLiteFileSystem.SelectAsync(System.String,System.Threading.CancellationToken)
+  fullName: FubarDev.WebDavServer.FileSystem.SQLite.SQLiteFileSystem.SelectAsync(System.String, System.Threading.CancellationToken)
+  nameWithType: SQLiteFileSystem.SelectAsync(String, CancellationToken)
+- uid: FubarDev.WebDavServer.FileSystem.SQLite.SQLiteFileSystem.SelectAsync*
+  name: SelectAsync
+  href: api/FubarDev.WebDavServer.FileSystem.SQLite.SQLiteFileSystem.html#FubarDev_WebDavServer_FileSystem_SQLite_SQLiteFileSystem_SelectAsync_
+  commentId: Overload:FubarDev.WebDavServer.FileSystem.SQLite.SQLiteFileSystem.SelectAsync
+  fullName: FubarDev.WebDavServer.FileSystem.SQLite.SQLiteFileSystem.SelectAsync
+  nameWithType: SQLiteFileSystem.SelectAsync
+- uid: FubarDev.WebDavServer.FileSystem.SQLite.SQLiteFileSystem.SupportsRangedRead
+  name: SupportsRangedRead
+  href: api/FubarDev.WebDavServer.FileSystem.SQLite.SQLiteFileSystem.html#FubarDev_WebDavServer_FileSystem_SQLite_SQLiteFileSystem_SupportsRangedRead
+  commentId: P:FubarDev.WebDavServer.FileSystem.SQLite.SQLiteFileSystem.SupportsRangedRead
+  fullName: FubarDev.WebDavServer.FileSystem.SQLite.SQLiteFileSystem.SupportsRangedRead
+  nameWithType: SQLiteFileSystem.SupportsRangedRead
+- uid: FubarDev.WebDavServer.FileSystem.SQLite.SQLiteFileSystem.SupportsRangedRead*
+  name: SupportsRangedRead
+  href: api/FubarDev.WebDavServer.FileSystem.SQLite.SQLiteFileSystem.html#FubarDev_WebDavServer_FileSystem_SQLite_SQLiteFileSystem_SupportsRangedRead_
+  commentId: Overload:FubarDev.WebDavServer.FileSystem.SQLite.SQLiteFileSystem.SupportsRangedRead
+  fullName: FubarDev.WebDavServer.FileSystem.SQLite.SQLiteFileSystem.SupportsRangedRead
+  nameWithType: SQLiteFileSystem.SupportsRangedRead
+- uid: FubarDev.WebDavServer.FileSystem.SQLite.SQLiteFileSystemException
+  name: SQLiteFileSystemException
+  href: api/FubarDev.WebDavServer.FileSystem.SQLite.SQLiteFileSystemException.html
+  commentId: T:FubarDev.WebDavServer.FileSystem.SQLite.SQLiteFileSystemException
+  fullName: FubarDev.WebDavServer.FileSystem.SQLite.SQLiteFileSystemException
+  nameWithType: SQLiteFileSystemException
+- uid: FubarDev.WebDavServer.FileSystem.SQLite.SQLiteFileSystemException.#ctor
+  name: SQLiteFileSystemException()
+  href: api/FubarDev.WebDavServer.FileSystem.SQLite.SQLiteFileSystemException.html#FubarDev_WebDavServer_FileSystem_SQLite_SQLiteFileSystemException__ctor
+  commentId: M:FubarDev.WebDavServer.FileSystem.SQLite.SQLiteFileSystemException.#ctor
+  fullName: FubarDev.WebDavServer.FileSystem.SQLite.SQLiteFileSystemException.SQLiteFileSystemException()
+  nameWithType: SQLiteFileSystemException.SQLiteFileSystemException()
+- uid: FubarDev.WebDavServer.FileSystem.SQLite.SQLiteFileSystemException.#ctor(SQLitePCL.sqlite3)
+  name: SQLiteFileSystemException(sqlite3)
+  href: api/FubarDev.WebDavServer.FileSystem.SQLite.SQLiteFileSystemException.html#FubarDev_WebDavServer_FileSystem_SQLite_SQLiteFileSystemException__ctor_SQLitePCL_sqlite3_
+  commentId: M:FubarDev.WebDavServer.FileSystem.SQLite.SQLiteFileSystemException.#ctor(SQLitePCL.sqlite3)
+  fullName: FubarDev.WebDavServer.FileSystem.SQLite.SQLiteFileSystemException.SQLiteFileSystemException(SQLitePCL.sqlite3)
+  nameWithType: SQLiteFileSystemException.SQLiteFileSystemException(sqlite3)
+- uid: FubarDev.WebDavServer.FileSystem.SQLite.SQLiteFileSystemException.#ctor(System.String)
+  name: SQLiteFileSystemException(String)
+  href: api/FubarDev.WebDavServer.FileSystem.SQLite.SQLiteFileSystemException.html#FubarDev_WebDavServer_FileSystem_SQLite_SQLiteFileSystemException__ctor_System_String_
+  commentId: M:FubarDev.WebDavServer.FileSystem.SQLite.SQLiteFileSystemException.#ctor(System.String)
+  fullName: FubarDev.WebDavServer.FileSystem.SQLite.SQLiteFileSystemException.SQLiteFileSystemException(System.String)
+  nameWithType: SQLiteFileSystemException.SQLiteFileSystemException(String)
+- uid: FubarDev.WebDavServer.FileSystem.SQLite.SQLiteFileSystemException.#ctor(System.String,System.Exception)
+  name: SQLiteFileSystemException(String, Exception)
+  href: api/FubarDev.WebDavServer.FileSystem.SQLite.SQLiteFileSystemException.html#FubarDev_WebDavServer_FileSystem_SQLite_SQLiteFileSystemException__ctor_System_String_System_Exception_
+  commentId: M:FubarDev.WebDavServer.FileSystem.SQLite.SQLiteFileSystemException.#ctor(System.String,System.Exception)
+  fullName: FubarDev.WebDavServer.FileSystem.SQLite.SQLiteFileSystemException.SQLiteFileSystemException(System.String, System.Exception)
+  nameWithType: SQLiteFileSystemException.SQLiteFileSystemException(String, Exception)
+- uid: FubarDev.WebDavServer.FileSystem.SQLite.SQLiteFileSystemException.#ctor*
+  name: SQLiteFileSystemException
+  href: api/FubarDev.WebDavServer.FileSystem.SQLite.SQLiteFileSystemException.html#FubarDev_WebDavServer_FileSystem_SQLite_SQLiteFileSystemException__ctor_
+  commentId: Overload:FubarDev.WebDavServer.FileSystem.SQLite.SQLiteFileSystemException.#ctor
+  fullName: FubarDev.WebDavServer.FileSystem.SQLite.SQLiteFileSystemException.SQLiteFileSystemException
+  nameWithType: SQLiteFileSystemException.SQLiteFileSystemException
+- uid: FubarDev.WebDavServer.FileSystem.SQLite.SQLiteFileSystemFactory
+  name: SQLiteFileSystemFactory
+  href: api/FubarDev.WebDavServer.FileSystem.SQLite.SQLiteFileSystemFactory.html
+  commentId: T:FubarDev.WebDavServer.FileSystem.SQLite.SQLiteFileSystemFactory
+  fullName: FubarDev.WebDavServer.FileSystem.SQLite.SQLiteFileSystemFactory
+  nameWithType: SQLiteFileSystemFactory
+- uid: FubarDev.WebDavServer.FileSystem.SQLite.SQLiteFileSystemFactory.#ctor(Microsoft.Extensions.Options.IOptions{FubarDev.WebDavServer.FileSystem.SQLite.SQLiteFileSystemOptions},FubarDev.WebDavServer.FileSystem.PathTraversalEngine,FubarDev.WebDavServer.Props.Dead.IDeadPropertyFactory,FubarDev.WebDavServer.Props.Store.IPropertyStoreFactory,FubarDev.WebDavServer.Locking.ILockManager)
+  name: SQLiteFileSystemFactory(IOptions<SQLiteFileSystemOptions>, PathTraversalEngine, IDeadPropertyFactory, IPropertyStoreFactory, ILockManager)
+  href: api/FubarDev.WebDavServer.FileSystem.SQLite.SQLiteFileSystemFactory.html#FubarDev_WebDavServer_FileSystem_SQLite_SQLiteFileSystemFactory__ctor_Microsoft_Extensions_Options_IOptions_FubarDev_WebDavServer_FileSystem_SQLite_SQLiteFileSystemOptions__FubarDev_WebDavServer_FileSystem_PathTraversalEngine_FubarDev_WebDavServer_Props_Dead_IDeadPropertyFactory_FubarDev_WebDavServer_Props_Store_IPropertyStoreFactory_FubarDev_WebDavServer_Locking_ILockManager_
+  commentId: M:FubarDev.WebDavServer.FileSystem.SQLite.SQLiteFileSystemFactory.#ctor(Microsoft.Extensions.Options.IOptions{FubarDev.WebDavServer.FileSystem.SQLite.SQLiteFileSystemOptions},FubarDev.WebDavServer.FileSystem.PathTraversalEngine,FubarDev.WebDavServer.Props.Dead.IDeadPropertyFactory,FubarDev.WebDavServer.Props.Store.IPropertyStoreFactory,FubarDev.WebDavServer.Locking.ILockManager)
+  name.vb: SQLiteFileSystemFactory(IOptions(Of SQLiteFileSystemOptions), PathTraversalEngine, IDeadPropertyFactory, IPropertyStoreFactory, ILockManager)
+  fullName: FubarDev.WebDavServer.FileSystem.SQLite.SQLiteFileSystemFactory.SQLiteFileSystemFactory(Microsoft.Extensions.Options.IOptions<FubarDev.WebDavServer.FileSystem.SQLite.SQLiteFileSystemOptions>, FubarDev.WebDavServer.FileSystem.PathTraversalEngine, FubarDev.WebDavServer.Props.Dead.IDeadPropertyFactory, FubarDev.WebDavServer.Props.Store.IPropertyStoreFactory, FubarDev.WebDavServer.Locking.ILockManager)
+  fullName.vb: FubarDev.WebDavServer.FileSystem.SQLite.SQLiteFileSystemFactory.SQLiteFileSystemFactory(Microsoft.Extensions.Options.IOptions(Of FubarDev.WebDavServer.FileSystem.SQLite.SQLiteFileSystemOptions), FubarDev.WebDavServer.FileSystem.PathTraversalEngine, FubarDev.WebDavServer.Props.Dead.IDeadPropertyFactory, FubarDev.WebDavServer.Props.Store.IPropertyStoreFactory, FubarDev.WebDavServer.Locking.ILockManager)
+  nameWithType: SQLiteFileSystemFactory.SQLiteFileSystemFactory(IOptions<SQLiteFileSystemOptions>, PathTraversalEngine, IDeadPropertyFactory, IPropertyStoreFactory, ILockManager)
+  nameWithType.vb: SQLiteFileSystemFactory.SQLiteFileSystemFactory(IOptions(Of SQLiteFileSystemOptions), PathTraversalEngine, IDeadPropertyFactory, IPropertyStoreFactory, ILockManager)
+- uid: FubarDev.WebDavServer.FileSystem.SQLite.SQLiteFileSystemFactory.#ctor*
+  name: SQLiteFileSystemFactory
+  href: api/FubarDev.WebDavServer.FileSystem.SQLite.SQLiteFileSystemFactory.html#FubarDev_WebDavServer_FileSystem_SQLite_SQLiteFileSystemFactory__ctor_
+  commentId: Overload:FubarDev.WebDavServer.FileSystem.SQLite.SQLiteFileSystemFactory.#ctor
+  fullName: FubarDev.WebDavServer.FileSystem.SQLite.SQLiteFileSystemFactory.SQLiteFileSystemFactory
+  nameWithType: SQLiteFileSystemFactory.SQLiteFileSystemFactory
+- uid: FubarDev.WebDavServer.FileSystem.SQLite.SQLiteFileSystemFactory.CreateDatabase(System.String)
+  name: CreateDatabase(String)
+  href: api/FubarDev.WebDavServer.FileSystem.SQLite.SQLiteFileSystemFactory.html#FubarDev_WebDavServer_FileSystem_SQLite_SQLiteFileSystemFactory_CreateDatabase_System_String_
+  commentId: M:FubarDev.WebDavServer.FileSystem.SQLite.SQLiteFileSystemFactory.CreateDatabase(System.String)
+  fullName: FubarDev.WebDavServer.FileSystem.SQLite.SQLiteFileSystemFactory.CreateDatabase(System.String)
+  nameWithType: SQLiteFileSystemFactory.CreateDatabase(String)
+- uid: FubarDev.WebDavServer.FileSystem.SQLite.SQLiteFileSystemFactory.CreateDatabase*
+  name: CreateDatabase
+  href: api/FubarDev.WebDavServer.FileSystem.SQLite.SQLiteFileSystemFactory.html#FubarDev_WebDavServer_FileSystem_SQLite_SQLiteFileSystemFactory_CreateDatabase_
+  commentId: Overload:FubarDev.WebDavServer.FileSystem.SQLite.SQLiteFileSystemFactory.CreateDatabase
+  fullName: FubarDev.WebDavServer.FileSystem.SQLite.SQLiteFileSystemFactory.CreateDatabase
+  nameWithType: SQLiteFileSystemFactory.CreateDatabase
+- uid: FubarDev.WebDavServer.FileSystem.SQLite.SQLiteFileSystemFactory.CreateFileSystem(System.Security.Principal.IPrincipal)
+  name: CreateFileSystem(IPrincipal)
+  href: api/FubarDev.WebDavServer.FileSystem.SQLite.SQLiteFileSystemFactory.html#FubarDev_WebDavServer_FileSystem_SQLite_SQLiteFileSystemFactory_CreateFileSystem_System_Security_Principal_IPrincipal_
+  commentId: M:FubarDev.WebDavServer.FileSystem.SQLite.SQLiteFileSystemFactory.CreateFileSystem(System.Security.Principal.IPrincipal)
+  fullName: FubarDev.WebDavServer.FileSystem.SQLite.SQLiteFileSystemFactory.CreateFileSystem(System.Security.Principal.IPrincipal)
+  nameWithType: SQLiteFileSystemFactory.CreateFileSystem(IPrincipal)
+- uid: FubarDev.WebDavServer.FileSystem.SQLite.SQLiteFileSystemFactory.CreateFileSystem*
+  name: CreateFileSystem
+  href: api/FubarDev.WebDavServer.FileSystem.SQLite.SQLiteFileSystemFactory.html#FubarDev_WebDavServer_FileSystem_SQLite_SQLiteFileSystemFactory_CreateFileSystem_
+  commentId: Overload:FubarDev.WebDavServer.FileSystem.SQLite.SQLiteFileSystemFactory.CreateFileSystem
+  fullName: FubarDev.WebDavServer.FileSystem.SQLite.SQLiteFileSystemFactory.CreateFileSystem
+  nameWithType: SQLiteFileSystemFactory.CreateFileSystem
+- uid: FubarDev.WebDavServer.FileSystem.SQLite.SQLiteFileSystemFactory.EnsureDatabaseExists(System.String)
+  name: EnsureDatabaseExists(String)
+  href: api/FubarDev.WebDavServer.FileSystem.SQLite.SQLiteFileSystemFactory.html#FubarDev_WebDavServer_FileSystem_SQLite_SQLiteFileSystemFactory_EnsureDatabaseExists_System_String_
+  commentId: M:FubarDev.WebDavServer.FileSystem.SQLite.SQLiteFileSystemFactory.EnsureDatabaseExists(System.String)
+  fullName: FubarDev.WebDavServer.FileSystem.SQLite.SQLiteFileSystemFactory.EnsureDatabaseExists(System.String)
+  nameWithType: SQLiteFileSystemFactory.EnsureDatabaseExists(String)
+- uid: FubarDev.WebDavServer.FileSystem.SQLite.SQLiteFileSystemFactory.EnsureDatabaseExists*
+  name: EnsureDatabaseExists
+  href: api/FubarDev.WebDavServer.FileSystem.SQLite.SQLiteFileSystemFactory.html#FubarDev_WebDavServer_FileSystem_SQLite_SQLiteFileSystemFactory_EnsureDatabaseExists_
+  commentId: Overload:FubarDev.WebDavServer.FileSystem.SQLite.SQLiteFileSystemFactory.EnsureDatabaseExists
+  fullName: FubarDev.WebDavServer.FileSystem.SQLite.SQLiteFileSystemFactory.EnsureDatabaseExists
+  nameWithType: SQLiteFileSystemFactory.EnsureDatabaseExists
+- uid: FubarDev.WebDavServer.FileSystem.SQLite.SQLiteFileSystemOptions
+  name: SQLiteFileSystemOptions
+  href: api/FubarDev.WebDavServer.FileSystem.SQLite.SQLiteFileSystemOptions.html
+  commentId: T:FubarDev.WebDavServer.FileSystem.SQLite.SQLiteFileSystemOptions
+  fullName: FubarDev.WebDavServer.FileSystem.SQLite.SQLiteFileSystemOptions
+  nameWithType: SQLiteFileSystemOptions
+- uid: FubarDev.WebDavServer.FileSystem.SQLite.SQLiteFileSystemOptions.#ctor
+  name: SQLiteFileSystemOptions()
+  href: api/FubarDev.WebDavServer.FileSystem.SQLite.SQLiteFileSystemOptions.html#FubarDev_WebDavServer_FileSystem_SQLite_SQLiteFileSystemOptions__ctor
+  commentId: M:FubarDev.WebDavServer.FileSystem.SQLite.SQLiteFileSystemOptions.#ctor
+  fullName: FubarDev.WebDavServer.FileSystem.SQLite.SQLiteFileSystemOptions.SQLiteFileSystemOptions()
+  nameWithType: SQLiteFileSystemOptions.SQLiteFileSystemOptions()
+- uid: FubarDev.WebDavServer.FileSystem.SQLite.SQLiteFileSystemOptions.#ctor*
+  name: SQLiteFileSystemOptions
+  href: api/FubarDev.WebDavServer.FileSystem.SQLite.SQLiteFileSystemOptions.html#FubarDev_WebDavServer_FileSystem_SQLite_SQLiteFileSystemOptions__ctor_
+  commentId: Overload:FubarDev.WebDavServer.FileSystem.SQLite.SQLiteFileSystemOptions.#ctor
+  fullName: FubarDev.WebDavServer.FileSystem.SQLite.SQLiteFileSystemOptions.SQLiteFileSystemOptions
+  nameWithType: SQLiteFileSystemOptions.SQLiteFileSystemOptions
+- uid: FubarDev.WebDavServer.FileSystem.SQLite.SQLiteFileSystemOptions.RootPath
+  name: RootPath
+  href: api/FubarDev.WebDavServer.FileSystem.SQLite.SQLiteFileSystemOptions.html#FubarDev_WebDavServer_FileSystem_SQLite_SQLiteFileSystemOptions_RootPath
+  commentId: P:FubarDev.WebDavServer.FileSystem.SQLite.SQLiteFileSystemOptions.RootPath
+  fullName: FubarDev.WebDavServer.FileSystem.SQLite.SQLiteFileSystemOptions.RootPath
+  nameWithType: SQLiteFileSystemOptions.RootPath
+- uid: FubarDev.WebDavServer.FileSystem.SQLite.SQLiteFileSystemOptions.RootPath*
+  name: RootPath
+  href: api/FubarDev.WebDavServer.FileSystem.SQLite.SQLiteFileSystemOptions.html#FubarDev_WebDavServer_FileSystem_SQLite_SQLiteFileSystemOptions_RootPath_
+  commentId: Overload:FubarDev.WebDavServer.FileSystem.SQLite.SQLiteFileSystemOptions.RootPath
+  fullName: FubarDev.WebDavServer.FileSystem.SQLite.SQLiteFileSystemOptions.RootPath
+  nameWithType: SQLiteFileSystemOptions.RootPath
 - uid: FubarDev.WebDavServer.Formatters
   name: FubarDev.WebDavServer.Formatters
   href: api/FubarDev.WebDavServer.Formatters.html
@@ -6284,6 +6686,18 @@ references:
   commentId: T:FubarDev.WebDavServer.Handlers.Impl.OptionsHandler
   fullName: FubarDev.WebDavServer.Handlers.Impl.OptionsHandler
   nameWithType: OptionsHandler
+- uid: FubarDev.WebDavServer.Handlers.Impl.OptionsHandler.#ctor(FubarDev.WebDavServer.FileSystem.IFileSystem)
+  name: OptionsHandler(IFileSystem)
+  href: api/FubarDev.WebDavServer.Handlers.Impl.OptionsHandler.html#FubarDev_WebDavServer_Handlers_Impl_OptionsHandler__ctor_FubarDev_WebDavServer_FileSystem_IFileSystem_
+  commentId: M:FubarDev.WebDavServer.Handlers.Impl.OptionsHandler.#ctor(FubarDev.WebDavServer.FileSystem.IFileSystem)
+  fullName: FubarDev.WebDavServer.Handlers.Impl.OptionsHandler.OptionsHandler(FubarDev.WebDavServer.FileSystem.IFileSystem)
+  nameWithType: OptionsHandler.OptionsHandler(IFileSystem)
+- uid: FubarDev.WebDavServer.Handlers.Impl.OptionsHandler.#ctor*
+  name: OptionsHandler
+  href: api/FubarDev.WebDavServer.Handlers.Impl.OptionsHandler.html#FubarDev_WebDavServer_Handlers_Impl_OptionsHandler__ctor_
+  commentId: Overload:FubarDev.WebDavServer.Handlers.Impl.OptionsHandler.#ctor
+  fullName: FubarDev.WebDavServer.Handlers.Impl.OptionsHandler.OptionsHandler
+  nameWithType: OptionsHandler.OptionsHandler
 - uid: FubarDev.WebDavServer.Handlers.Impl.OptionsHandler.HttpMethods
   name: HttpMethods
   href: api/FubarDev.WebDavServer.Handlers.Impl.OptionsHandler.html#FubarDev_WebDavServer_Handlers_Impl_OptionsHandler_HttpMethods
@@ -11096,6 +11510,18 @@ references:
   commentId: Overload:FubarDev.WebDavServer.Props.Converters.DateTimeRfc1123Converter.FromElement
   fullName: FubarDev.WebDavServer.Props.Converters.DateTimeRfc1123Converter.FromElement
   nameWithType: DateTimeRfc1123Converter.FromElement
+- uid: FubarDev.WebDavServer.Props.Converters.DateTimeRfc1123Converter.IsValidValue(System.DateTime)
+  name: IsValidValue(DateTime)
+  href: api/FubarDev.WebDavServer.Props.Converters.DateTimeRfc1123Converter.html#FubarDev_WebDavServer_Props_Converters_DateTimeRfc1123Converter_IsValidValue_System_DateTime_
+  commentId: M:FubarDev.WebDavServer.Props.Converters.DateTimeRfc1123Converter.IsValidValue(System.DateTime)
+  fullName: FubarDev.WebDavServer.Props.Converters.DateTimeRfc1123Converter.IsValidValue(System.DateTime)
+  nameWithType: DateTimeRfc1123Converter.IsValidValue(DateTime)
+- uid: FubarDev.WebDavServer.Props.Converters.DateTimeRfc1123Converter.IsValidValue*
+  name: IsValidValue
+  href: api/FubarDev.WebDavServer.Props.Converters.DateTimeRfc1123Converter.html#FubarDev_WebDavServer_Props_Converters_DateTimeRfc1123Converter_IsValidValue_
+  commentId: Overload:FubarDev.WebDavServer.Props.Converters.DateTimeRfc1123Converter.IsValidValue
+  fullName: FubarDev.WebDavServer.Props.Converters.DateTimeRfc1123Converter.IsValidValue
+  nameWithType: DateTimeRfc1123Converter.IsValidValue
 - uid: FubarDev.WebDavServer.Props.Converters.DateTimeRfc1123Converter.Parse(System.String)
   name: Parse(String)
   href: api/FubarDev.WebDavServer.Props.Converters.DateTimeRfc1123Converter.html#FubarDev_WebDavServer_Props_Converters_DateTimeRfc1123Converter_Parse_System_String_
@@ -11138,6 +11564,18 @@ references:
   commentId: Overload:FubarDev.WebDavServer.Props.Converters.EntityTagConverter.FromElement
   fullName: FubarDev.WebDavServer.Props.Converters.EntityTagConverter.FromElement
   nameWithType: EntityTagConverter.FromElement
+- uid: FubarDev.WebDavServer.Props.Converters.EntityTagConverter.IsValidValue(FubarDev.WebDavServer.Model.Headers.EntityTag)
+  name: IsValidValue(EntityTag)
+  href: api/FubarDev.WebDavServer.Props.Converters.EntityTagConverter.html#FubarDev_WebDavServer_Props_Converters_EntityTagConverter_IsValidValue_FubarDev_WebDavServer_Model_Headers_EntityTag_
+  commentId: M:FubarDev.WebDavServer.Props.Converters.EntityTagConverter.IsValidValue(FubarDev.WebDavServer.Model.Headers.EntityTag)
+  fullName: FubarDev.WebDavServer.Props.Converters.EntityTagConverter.IsValidValue(FubarDev.WebDavServer.Model.Headers.EntityTag)
+  nameWithType: EntityTagConverter.IsValidValue(EntityTag)
+- uid: FubarDev.WebDavServer.Props.Converters.EntityTagConverter.IsValidValue*
+  name: IsValidValue
+  href: api/FubarDev.WebDavServer.Props.Converters.EntityTagConverter.html#FubarDev_WebDavServer_Props_Converters_EntityTagConverter_IsValidValue_
+  commentId: Overload:FubarDev.WebDavServer.Props.Converters.EntityTagConverter.IsValidValue
+  fullName: FubarDev.WebDavServer.Props.Converters.EntityTagConverter.IsValidValue
+  nameWithType: EntityTagConverter.IsValidValue
 - uid: FubarDev.WebDavServer.Props.Converters.EntityTagConverter.ToElement(System.Xml.Linq.XName,FubarDev.WebDavServer.Model.Headers.EntityTag)
   name: ToElement(XName, EntityTag)
   href: api/FubarDev.WebDavServer.Props.Converters.EntityTagConverter.html#FubarDev_WebDavServer_Props_Converters_EntityTagConverter_ToElement_System_Xml_Linq_XName_FubarDev_WebDavServer_Model_Headers_EntityTag_
@@ -11175,6 +11613,22 @@ references:
   fullName.vb: FubarDev.WebDavServer.Props.Converters.IPropertyConverter(Of T).FromElement
   nameWithType: IPropertyConverter<T>.FromElement
   nameWithType.vb: IPropertyConverter(Of T).FromElement
+- uid: FubarDev.WebDavServer.Props.Converters.IPropertyConverter`1.IsValidValue(`0)
+  name: IsValidValue(T)
+  href: api/FubarDev.WebDavServer.Props.Converters.IPropertyConverter-1.html#FubarDev_WebDavServer_Props_Converters_IPropertyConverter_1_IsValidValue__0_
+  commentId: M:FubarDev.WebDavServer.Props.Converters.IPropertyConverter`1.IsValidValue(`0)
+  fullName: FubarDev.WebDavServer.Props.Converters.IPropertyConverter<T>.IsValidValue(T)
+  fullName.vb: FubarDev.WebDavServer.Props.Converters.IPropertyConverter(Of T).IsValidValue(T)
+  nameWithType: IPropertyConverter<T>.IsValidValue(T)
+  nameWithType.vb: IPropertyConverter(Of T).IsValidValue(T)
+- uid: FubarDev.WebDavServer.Props.Converters.IPropertyConverter`1.IsValidValue*
+  name: IsValidValue
+  href: api/FubarDev.WebDavServer.Props.Converters.IPropertyConverter-1.html#FubarDev_WebDavServer_Props_Converters_IPropertyConverter_1_IsValidValue_
+  commentId: Overload:FubarDev.WebDavServer.Props.Converters.IPropertyConverter`1.IsValidValue
+  fullName: FubarDev.WebDavServer.Props.Converters.IPropertyConverter<T>.IsValidValue
+  fullName.vb: FubarDev.WebDavServer.Props.Converters.IPropertyConverter(Of T).IsValidValue
+  nameWithType: IPropertyConverter<T>.IsValidValue
+  nameWithType.vb: IPropertyConverter(Of T).IsValidValue
 - uid: FubarDev.WebDavServer.Props.Converters.IPropertyConverter`1.ToElement(System.Xml.Linq.XName,`0)
   name: ToElement(XName, T)
   href: api/FubarDev.WebDavServer.Props.Converters.IPropertyConverter-1.html#FubarDev_WebDavServer_Props_Converters_IPropertyConverter_1_ToElement_System_Xml_Linq_XName__0_
@@ -11209,6 +11663,18 @@ references:
   commentId: Overload:FubarDev.WebDavServer.Props.Converters.LongConverter.FromElement
   fullName: FubarDev.WebDavServer.Props.Converters.LongConverter.FromElement
   nameWithType: LongConverter.FromElement
+- uid: FubarDev.WebDavServer.Props.Converters.LongConverter.IsValidValue(System.Int64)
+  name: IsValidValue(Int64)
+  href: api/FubarDev.WebDavServer.Props.Converters.LongConverter.html#FubarDev_WebDavServer_Props_Converters_LongConverter_IsValidValue_System_Int64_
+  commentId: M:FubarDev.WebDavServer.Props.Converters.LongConverter.IsValidValue(System.Int64)
+  fullName: FubarDev.WebDavServer.Props.Converters.LongConverter.IsValidValue(System.Int64)
+  nameWithType: LongConverter.IsValidValue(Int64)
+- uid: FubarDev.WebDavServer.Props.Converters.LongConverter.IsValidValue*
+  name: IsValidValue
+  href: api/FubarDev.WebDavServer.Props.Converters.LongConverter.html#FubarDev_WebDavServer_Props_Converters_LongConverter_IsValidValue_
+  commentId: Overload:FubarDev.WebDavServer.Props.Converters.LongConverter.IsValidValue
+  fullName: FubarDev.WebDavServer.Props.Converters.LongConverter.IsValidValue
+  nameWithType: LongConverter.IsValidValue
 - uid: FubarDev.WebDavServer.Props.Converters.LongConverter.ToElement(System.Xml.Linq.XName,System.Int64)
   name: ToElement(XName, Int64)
   href: api/FubarDev.WebDavServer.Props.Converters.LongConverter.html#FubarDev_WebDavServer_Props_Converters_LongConverter_ToElement_System_Xml_Linq_XName_System_Int64_
@@ -11239,6 +11705,18 @@ references:
   commentId: Overload:FubarDev.WebDavServer.Props.Converters.StringConverter.FromElement
   fullName: FubarDev.WebDavServer.Props.Converters.StringConverter.FromElement
   nameWithType: StringConverter.FromElement
+- uid: FubarDev.WebDavServer.Props.Converters.StringConverter.IsValidValue(System.String)
+  name: IsValidValue(String)
+  href: api/FubarDev.WebDavServer.Props.Converters.StringConverter.html#FubarDev_WebDavServer_Props_Converters_StringConverter_IsValidValue_System_String_
+  commentId: M:FubarDev.WebDavServer.Props.Converters.StringConverter.IsValidValue(System.String)
+  fullName: FubarDev.WebDavServer.Props.Converters.StringConverter.IsValidValue(System.String)
+  nameWithType: StringConverter.IsValidValue(String)
+- uid: FubarDev.WebDavServer.Props.Converters.StringConverter.IsValidValue*
+  name: IsValidValue
+  href: api/FubarDev.WebDavServer.Props.Converters.StringConverter.html#FubarDev_WebDavServer_Props_Converters_StringConverter_IsValidValue_
+  commentId: Overload:FubarDev.WebDavServer.Props.Converters.StringConverter.IsValidValue
+  fullName: FubarDev.WebDavServer.Props.Converters.StringConverter.IsValidValue
+  nameWithType: StringConverter.IsValidValue
 - uid: FubarDev.WebDavServer.Props.Converters.StringConverter.ToElement(System.Xml.Linq.XName,System.String)
   name: ToElement(XName, String)
   href: api/FubarDev.WebDavServer.Props.Converters.StringConverter.html#FubarDev_WebDavServer_Props_Converters_StringConverter_ToElement_System_Xml_Linq_XName_System_String_
@@ -11276,6 +11754,22 @@ references:
   fullName.vb: FubarDev.WebDavServer.Props.Converters.XmlConverter(Of T).FromElement
   nameWithType: XmlConverter<T>.FromElement
   nameWithType.vb: XmlConverter(Of T).FromElement
+- uid: FubarDev.WebDavServer.Props.Converters.XmlConverter`1.IsValidValue(`0)
+  name: IsValidValue(T)
+  href: api/FubarDev.WebDavServer.Props.Converters.XmlConverter-1.html#FubarDev_WebDavServer_Props_Converters_XmlConverter_1_IsValidValue__0_
+  commentId: M:FubarDev.WebDavServer.Props.Converters.XmlConverter`1.IsValidValue(`0)
+  fullName: FubarDev.WebDavServer.Props.Converters.XmlConverter<T>.IsValidValue(T)
+  fullName.vb: FubarDev.WebDavServer.Props.Converters.XmlConverter(Of T).IsValidValue(T)
+  nameWithType: XmlConverter<T>.IsValidValue(T)
+  nameWithType.vb: XmlConverter(Of T).IsValidValue(T)
+- uid: FubarDev.WebDavServer.Props.Converters.XmlConverter`1.IsValidValue*
+  name: IsValidValue
+  href: api/FubarDev.WebDavServer.Props.Converters.XmlConverter-1.html#FubarDev_WebDavServer_Props_Converters_XmlConverter_1_IsValidValue_
+  commentId: Overload:FubarDev.WebDavServer.Props.Converters.XmlConverter`1.IsValidValue
+  fullName: FubarDev.WebDavServer.Props.Converters.XmlConverter<T>.IsValidValue
+  fullName.vb: FubarDev.WebDavServer.Props.Converters.XmlConverter(Of T).IsValidValue
+  nameWithType: XmlConverter<T>.IsValidValue
+  nameWithType.vb: XmlConverter(Of T).IsValidValue
 - uid: FubarDev.WebDavServer.Props.Converters.XmlConverter`1.ToElement(System.Xml.Linq.XName,`0)
   name: ToElement(XName, T)
   href: api/FubarDev.WebDavServer.Props.Converters.XmlConverter-1.html#FubarDev_WebDavServer_Props_Converters_XmlConverter_1_ToElement_System_Xml_Linq_XName__0_
@@ -11400,21 +11894,12 @@ references:
   commentId: T:FubarDev.WebDavServer.Props.Dead.DeadPropertyFactory
   fullName: FubarDev.WebDavServer.Props.Dead.DeadPropertyFactory
   nameWithType: DeadPropertyFactory
-- uid: FubarDev.WebDavServer.Props.Dead.DeadPropertyFactory.#ctor(FubarDev.WebDavServer.Props.Dead.DeadPropertyFactoryOptions)
-  name: DeadPropertyFactory(DeadPropertyFactoryOptions)
-  href: api/FubarDev.WebDavServer.Props.Dead.DeadPropertyFactory.html#FubarDev_WebDavServer_Props_Dead_DeadPropertyFactory__ctor_FubarDev_WebDavServer_Props_Dead_DeadPropertyFactoryOptions_
-  commentId: M:FubarDev.WebDavServer.Props.Dead.DeadPropertyFactory.#ctor(FubarDev.WebDavServer.Props.Dead.DeadPropertyFactoryOptions)
-  fullName: FubarDev.WebDavServer.Props.Dead.DeadPropertyFactory.DeadPropertyFactory(FubarDev.WebDavServer.Props.Dead.DeadPropertyFactoryOptions)
-  nameWithType: DeadPropertyFactory.DeadPropertyFactory(DeadPropertyFactoryOptions)
-- uid: FubarDev.WebDavServer.Props.Dead.DeadPropertyFactory.#ctor(Microsoft.Extensions.Options.IOptions{FubarDev.WebDavServer.Props.Dead.DeadPropertyFactoryOptions})
-  name: DeadPropertyFactory(IOptions<DeadPropertyFactoryOptions>)
-  href: api/FubarDev.WebDavServer.Props.Dead.DeadPropertyFactory.html#FubarDev_WebDavServer_Props_Dead_DeadPropertyFactory__ctor_Microsoft_Extensions_Options_IOptions_FubarDev_WebDavServer_Props_Dead_DeadPropertyFactoryOptions__
-  commentId: M:FubarDev.WebDavServer.Props.Dead.DeadPropertyFactory.#ctor(Microsoft.Extensions.Options.IOptions{FubarDev.WebDavServer.Props.Dead.DeadPropertyFactoryOptions})
-  name.vb: DeadPropertyFactory(IOptions(Of DeadPropertyFactoryOptions))
-  fullName: FubarDev.WebDavServer.Props.Dead.DeadPropertyFactory.DeadPropertyFactory(Microsoft.Extensions.Options.IOptions<FubarDev.WebDavServer.Props.Dead.DeadPropertyFactoryOptions>)
-  fullName.vb: FubarDev.WebDavServer.Props.Dead.DeadPropertyFactory.DeadPropertyFactory(Microsoft.Extensions.Options.IOptions(Of FubarDev.WebDavServer.Props.Dead.DeadPropertyFactoryOptions))
-  nameWithType: DeadPropertyFactory.DeadPropertyFactory(IOptions<DeadPropertyFactoryOptions>)
-  nameWithType.vb: DeadPropertyFactory.DeadPropertyFactory(IOptions(Of DeadPropertyFactoryOptions))
+- uid: FubarDev.WebDavServer.Props.Dead.DeadPropertyFactory.#ctor(System.IServiceProvider)
+  name: DeadPropertyFactory(IServiceProvider)
+  href: api/FubarDev.WebDavServer.Props.Dead.DeadPropertyFactory.html#FubarDev_WebDavServer_Props_Dead_DeadPropertyFactory__ctor_System_IServiceProvider_
+  commentId: M:FubarDev.WebDavServer.Props.Dead.DeadPropertyFactory.#ctor(System.IServiceProvider)
+  fullName: FubarDev.WebDavServer.Props.Dead.DeadPropertyFactory.DeadPropertyFactory(System.IServiceProvider)
+  nameWithType: DeadPropertyFactory.DeadPropertyFactory(IServiceProvider)
 - uid: FubarDev.WebDavServer.Props.Dead.DeadPropertyFactory.#ctor*
   name: DeadPropertyFactory
   href: api/FubarDev.WebDavServer.Props.Dead.DeadPropertyFactory.html#FubarDev_WebDavServer_Props_Dead_DeadPropertyFactory__ctor_
@@ -11823,15 +12308,15 @@ references:
   commentId: T:FubarDev.WebDavServer.Props.EntryProperties
   fullName: FubarDev.WebDavServer.Props.EntryProperties
   nameWithType: EntryProperties
-- uid: FubarDev.WebDavServer.Props.EntryProperties.#ctor(FubarDev.WebDavServer.FileSystem.IEntry,System.Collections.Generic.IEnumerable{FubarDev.WebDavServer.Props.IUntypedReadableProperty},FubarDev.WebDavServer.Props.Store.IPropertyStore,System.Nullable{System.Int32})
-  name: EntryProperties(IEntry, IEnumerable<IUntypedReadableProperty>, IPropertyStore, Nullable<Int32>)
-  href: api/FubarDev.WebDavServer.Props.EntryProperties.html#FubarDev_WebDavServer_Props_EntryProperties__ctor_FubarDev_WebDavServer_FileSystem_IEntry_System_Collections_Generic_IEnumerable_FubarDev_WebDavServer_Props_IUntypedReadableProperty__FubarDev_WebDavServer_Props_Store_IPropertyStore_System_Nullable_System_Int32__
-  commentId: M:FubarDev.WebDavServer.Props.EntryProperties.#ctor(FubarDev.WebDavServer.FileSystem.IEntry,System.Collections.Generic.IEnumerable{FubarDev.WebDavServer.Props.IUntypedReadableProperty},FubarDev.WebDavServer.Props.Store.IPropertyStore,System.Nullable{System.Int32})
-  name.vb: EntryProperties(IEntry, IEnumerable(Of IUntypedReadableProperty), IPropertyStore, Nullable(Of Int32))
-  fullName: FubarDev.WebDavServer.Props.EntryProperties.EntryProperties(FubarDev.WebDavServer.FileSystem.IEntry, System.Collections.Generic.IEnumerable<FubarDev.WebDavServer.Props.IUntypedReadableProperty>, FubarDev.WebDavServer.Props.Store.IPropertyStore, System.Nullable<System.Int32>)
-  fullName.vb: FubarDev.WebDavServer.Props.EntryProperties.EntryProperties(FubarDev.WebDavServer.FileSystem.IEntry, System.Collections.Generic.IEnumerable(Of FubarDev.WebDavServer.Props.IUntypedReadableProperty), FubarDev.WebDavServer.Props.Store.IPropertyStore, System.Nullable(Of System.Int32))
-  nameWithType: EntryProperties.EntryProperties(IEntry, IEnumerable<IUntypedReadableProperty>, IPropertyStore, Nullable<Int32>)
-  nameWithType.vb: EntryProperties.EntryProperties(IEntry, IEnumerable(Of IUntypedReadableProperty), IPropertyStore, Nullable(Of Int32))
+- uid: FubarDev.WebDavServer.Props.EntryProperties.#ctor(FubarDev.WebDavServer.FileSystem.IEntry,System.Collections.Generic.IEnumerable{FubarDev.WebDavServer.Props.IUntypedReadableProperty},FubarDev.WebDavServer.Props.Store.IPropertyStore,System.Nullable{System.Int32},System.Boolean)
+  name: EntryProperties(IEntry, IEnumerable<IUntypedReadableProperty>, IPropertyStore, Nullable<Int32>, Boolean)
+  href: api/FubarDev.WebDavServer.Props.EntryProperties.html#FubarDev_WebDavServer_Props_EntryProperties__ctor_FubarDev_WebDavServer_FileSystem_IEntry_System_Collections_Generic_IEnumerable_FubarDev_WebDavServer_Props_IUntypedReadableProperty__FubarDev_WebDavServer_Props_Store_IPropertyStore_System_Nullable_System_Int32__System_Boolean_
+  commentId: M:FubarDev.WebDavServer.Props.EntryProperties.#ctor(FubarDev.WebDavServer.FileSystem.IEntry,System.Collections.Generic.IEnumerable{FubarDev.WebDavServer.Props.IUntypedReadableProperty},FubarDev.WebDavServer.Props.Store.IPropertyStore,System.Nullable{System.Int32},System.Boolean)
+  name.vb: EntryProperties(IEntry, IEnumerable(Of IUntypedReadableProperty), IPropertyStore, Nullable(Of Int32), Boolean)
+  fullName: FubarDev.WebDavServer.Props.EntryProperties.EntryProperties(FubarDev.WebDavServer.FileSystem.IEntry, System.Collections.Generic.IEnumerable<FubarDev.WebDavServer.Props.IUntypedReadableProperty>, FubarDev.WebDavServer.Props.Store.IPropertyStore, System.Nullable<System.Int32>, System.Boolean)
+  fullName.vb: FubarDev.WebDavServer.Props.EntryProperties.EntryProperties(FubarDev.WebDavServer.FileSystem.IEntry, System.Collections.Generic.IEnumerable(Of FubarDev.WebDavServer.Props.IUntypedReadableProperty), FubarDev.WebDavServer.Props.Store.IPropertyStore, System.Nullable(Of System.Int32), System.Boolean)
+  nameWithType: EntryProperties.EntryProperties(IEntry, IEnumerable<IUntypedReadableProperty>, IPropertyStore, Nullable<Int32>, Boolean)
+  nameWithType.vb: EntryProperties.EntryProperties(IEntry, IEnumerable(Of IUntypedReadableProperty), IPropertyStore, Nullable(Of Int32), Boolean)
 - uid: FubarDev.WebDavServer.Props.EntryProperties.#ctor*
   name: EntryProperties
   href: api/FubarDev.WebDavServer.Props.EntryProperties.html#FubarDev_WebDavServer_Props_EntryProperties__ctor_
@@ -12477,6 +12962,18 @@ references:
   commentId: Overload:FubarDev.WebDavServer.Props.Live.ContentLengthProperty.GetXmlValueAsync
   fullName: FubarDev.WebDavServer.Props.Live.ContentLengthProperty.GetXmlValueAsync
   nameWithType: ContentLengthProperty.GetXmlValueAsync
+- uid: FubarDev.WebDavServer.Props.Live.ContentLengthProperty.IsValidAsync(System.Threading.CancellationToken)
+  name: IsValidAsync(CancellationToken)
+  href: api/FubarDev.WebDavServer.Props.Live.ContentLengthProperty.html#FubarDev_WebDavServer_Props_Live_ContentLengthProperty_IsValidAsync_System_Threading_CancellationToken_
+  commentId: M:FubarDev.WebDavServer.Props.Live.ContentLengthProperty.IsValidAsync(System.Threading.CancellationToken)
+  fullName: FubarDev.WebDavServer.Props.Live.ContentLengthProperty.IsValidAsync(System.Threading.CancellationToken)
+  nameWithType: ContentLengthProperty.IsValidAsync(CancellationToken)
+- uid: FubarDev.WebDavServer.Props.Live.ContentLengthProperty.IsValidAsync*
+  name: IsValidAsync
+  href: api/FubarDev.WebDavServer.Props.Live.ContentLengthProperty.html#FubarDev_WebDavServer_Props_Live_ContentLengthProperty_IsValidAsync_
+  commentId: Overload:FubarDev.WebDavServer.Props.Live.ContentLengthProperty.IsValidAsync
+  fullName: FubarDev.WebDavServer.Props.Live.ContentLengthProperty.IsValidAsync
+  nameWithType: ContentLengthProperty.IsValidAsync
 - uid: FubarDev.WebDavServer.Props.Live.ContentLengthProperty.Name
   name: Name
   href: api/FubarDev.WebDavServer.Props.Live.ContentLengthProperty.html#FubarDev_WebDavServer_Props_Live_ContentLengthProperty_Name
@@ -12516,6 +13013,18 @@ references:
   commentId: Overload:FubarDev.WebDavServer.Props.Live.CreationDateProperty.#ctor
   fullName: FubarDev.WebDavServer.Props.Live.CreationDateProperty.CreationDateProperty
   nameWithType: CreationDateProperty.CreationDateProperty
+- uid: FubarDev.WebDavServer.Props.Live.CreationDateProperty.IsValidAsync(System.Threading.CancellationToken)
+  name: IsValidAsync(CancellationToken)
+  href: api/FubarDev.WebDavServer.Props.Live.CreationDateProperty.html#FubarDev_WebDavServer_Props_Live_CreationDateProperty_IsValidAsync_System_Threading_CancellationToken_
+  commentId: M:FubarDev.WebDavServer.Props.Live.CreationDateProperty.IsValidAsync(System.Threading.CancellationToken)
+  fullName: FubarDev.WebDavServer.Props.Live.CreationDateProperty.IsValidAsync(System.Threading.CancellationToken)
+  nameWithType: CreationDateProperty.IsValidAsync(CancellationToken)
+- uid: FubarDev.WebDavServer.Props.Live.CreationDateProperty.IsValidAsync*
+  name: IsValidAsync
+  href: api/FubarDev.WebDavServer.Props.Live.CreationDateProperty.html#FubarDev_WebDavServer_Props_Live_CreationDateProperty_IsValidAsync_
+  commentId: Overload:FubarDev.WebDavServer.Props.Live.CreationDateProperty.IsValidAsync
+  fullName: FubarDev.WebDavServer.Props.Live.CreationDateProperty.IsValidAsync
+  nameWithType: CreationDateProperty.IsValidAsync
 - uid: FubarDev.WebDavServer.Props.Live.CreationDateProperty.PropertyName
   name: PropertyName
   href: api/FubarDev.WebDavServer.Props.Live.CreationDateProperty.html#FubarDev_WebDavServer_Props_Live_CreationDateProperty_PropertyName
@@ -12528,6 +13037,18 @@ references:
   commentId: T:FubarDev.WebDavServer.Props.Live.ILiveProperty
   fullName: FubarDev.WebDavServer.Props.Live.ILiveProperty
   nameWithType: ILiveProperty
+- uid: FubarDev.WebDavServer.Props.Live.ILiveProperty.IsValidAsync(System.Threading.CancellationToken)
+  name: IsValidAsync(CancellationToken)
+  href: api/FubarDev.WebDavServer.Props.Live.ILiveProperty.html#FubarDev_WebDavServer_Props_Live_ILiveProperty_IsValidAsync_System_Threading_CancellationToken_
+  commentId: M:FubarDev.WebDavServer.Props.Live.ILiveProperty.IsValidAsync(System.Threading.CancellationToken)
+  fullName: FubarDev.WebDavServer.Props.Live.ILiveProperty.IsValidAsync(System.Threading.CancellationToken)
+  nameWithType: ILiveProperty.IsValidAsync(CancellationToken)
+- uid: FubarDev.WebDavServer.Props.Live.ILiveProperty.IsValidAsync*
+  name: IsValidAsync
+  href: api/FubarDev.WebDavServer.Props.Live.ILiveProperty.html#FubarDev_WebDavServer_Props_Live_ILiveProperty_IsValidAsync_
+  commentId: Overload:FubarDev.WebDavServer.Props.Live.ILiveProperty.IsValidAsync
+  fullName: FubarDev.WebDavServer.Props.Live.ILiveProperty.IsValidAsync
+  nameWithType: ILiveProperty.IsValidAsync
 - uid: FubarDev.WebDavServer.Props.Live.LastModifiedProperty
   name: LastModifiedProperty
   href: api/FubarDev.WebDavServer.Props.Live.LastModifiedProperty.html
@@ -12549,6 +13070,18 @@ references:
   commentId: Overload:FubarDev.WebDavServer.Props.Live.LastModifiedProperty.#ctor
   fullName: FubarDev.WebDavServer.Props.Live.LastModifiedProperty.LastModifiedProperty
   nameWithType: LastModifiedProperty.LastModifiedProperty
+- uid: FubarDev.WebDavServer.Props.Live.LastModifiedProperty.IsValidAsync(System.Threading.CancellationToken)
+  name: IsValidAsync(CancellationToken)
+  href: api/FubarDev.WebDavServer.Props.Live.LastModifiedProperty.html#FubarDev_WebDavServer_Props_Live_LastModifiedProperty_IsValidAsync_System_Threading_CancellationToken_
+  commentId: M:FubarDev.WebDavServer.Props.Live.LastModifiedProperty.IsValidAsync(System.Threading.CancellationToken)
+  fullName: FubarDev.WebDavServer.Props.Live.LastModifiedProperty.IsValidAsync(System.Threading.CancellationToken)
+  nameWithType: LastModifiedProperty.IsValidAsync(CancellationToken)
+- uid: FubarDev.WebDavServer.Props.Live.LastModifiedProperty.IsValidAsync*
+  name: IsValidAsync
+  href: api/FubarDev.WebDavServer.Props.Live.LastModifiedProperty.html#FubarDev_WebDavServer_Props_Live_LastModifiedProperty_IsValidAsync_
+  commentId: Overload:FubarDev.WebDavServer.Props.Live.LastModifiedProperty.IsValidAsync
+  fullName: FubarDev.WebDavServer.Props.Live.LastModifiedProperty.IsValidAsync
+  nameWithType: LastModifiedProperty.IsValidAsync
 - uid: FubarDev.WebDavServer.Props.Live.LastModifiedProperty.PropertyName
   name: PropertyName
   href: api/FubarDev.WebDavServer.Props.Live.LastModifiedProperty.html#FubarDev_WebDavServer_Props_Live_LastModifiedProperty_PropertyName
@@ -12615,6 +13148,18 @@ references:
   commentId: Overload:FubarDev.WebDavServer.Props.Live.LockDiscoveryProperty.GetXmlValueAsync
   fullName: FubarDev.WebDavServer.Props.Live.LockDiscoveryProperty.GetXmlValueAsync
   nameWithType: LockDiscoveryProperty.GetXmlValueAsync
+- uid: FubarDev.WebDavServer.Props.Live.LockDiscoveryProperty.IsValidAsync(System.Threading.CancellationToken)
+  name: IsValidAsync(CancellationToken)
+  href: api/FubarDev.WebDavServer.Props.Live.LockDiscoveryProperty.html#FubarDev_WebDavServer_Props_Live_LockDiscoveryProperty_IsValidAsync_System_Threading_CancellationToken_
+  commentId: M:FubarDev.WebDavServer.Props.Live.LockDiscoveryProperty.IsValidAsync(System.Threading.CancellationToken)
+  fullName: FubarDev.WebDavServer.Props.Live.LockDiscoveryProperty.IsValidAsync(System.Threading.CancellationToken)
+  nameWithType: LockDiscoveryProperty.IsValidAsync(CancellationToken)
+- uid: FubarDev.WebDavServer.Props.Live.LockDiscoveryProperty.IsValidAsync*
+  name: IsValidAsync
+  href: api/FubarDev.WebDavServer.Props.Live.LockDiscoveryProperty.html#FubarDev_WebDavServer_Props_Live_LockDiscoveryProperty_IsValidAsync_
+  commentId: Overload:FubarDev.WebDavServer.Props.Live.LockDiscoveryProperty.IsValidAsync
+  fullName: FubarDev.WebDavServer.Props.Live.LockDiscoveryProperty.IsValidAsync
+  nameWithType: LockDiscoveryProperty.IsValidAsync
 - uid: FubarDev.WebDavServer.Props.Live.LockDiscoveryProperty.Name
   name: Name
   href: api/FubarDev.WebDavServer.Props.Live.LockDiscoveryProperty.html#FubarDev_WebDavServer_Props_Live_LockDiscoveryProperty_Name
@@ -12711,6 +13256,18 @@ references:
   commentId: Overload:FubarDev.WebDavServer.Props.Live.ResourceTypeProperty.GetXmlValueAsync
   fullName: FubarDev.WebDavServer.Props.Live.ResourceTypeProperty.GetXmlValueAsync
   nameWithType: ResourceTypeProperty.GetXmlValueAsync
+- uid: FubarDev.WebDavServer.Props.Live.ResourceTypeProperty.IsValidAsync(System.Threading.CancellationToken)
+  name: IsValidAsync(CancellationToken)
+  href: api/FubarDev.WebDavServer.Props.Live.ResourceTypeProperty.html#FubarDev_WebDavServer_Props_Live_ResourceTypeProperty_IsValidAsync_System_Threading_CancellationToken_
+  commentId: M:FubarDev.WebDavServer.Props.Live.ResourceTypeProperty.IsValidAsync(System.Threading.CancellationToken)
+  fullName: FubarDev.WebDavServer.Props.Live.ResourceTypeProperty.IsValidAsync(System.Threading.CancellationToken)
+  nameWithType: ResourceTypeProperty.IsValidAsync(CancellationToken)
+- uid: FubarDev.WebDavServer.Props.Live.ResourceTypeProperty.IsValidAsync*
+  name: IsValidAsync
+  href: api/FubarDev.WebDavServer.Props.Live.ResourceTypeProperty.html#FubarDev_WebDavServer_Props_Live_ResourceTypeProperty_IsValidAsync_
+  commentId: Overload:FubarDev.WebDavServer.Props.Live.ResourceTypeProperty.IsValidAsync
+  fullName: FubarDev.WebDavServer.Props.Live.ResourceTypeProperty.IsValidAsync
+  nameWithType: ResourceTypeProperty.IsValidAsync
 - uid: FubarDev.WebDavServer.Props.Live.ResourceTypeProperty.Name
   name: Name
   href: api/FubarDev.WebDavServer.Props.Live.ResourceTypeProperty.html#FubarDev_WebDavServer_Props_Live_ResourceTypeProperty_Name
@@ -12795,6 +13352,18 @@ references:
   commentId: Overload:FubarDev.WebDavServer.Props.Live.SupportedLockProperty.GetXmlValueAsync
   fullName: FubarDev.WebDavServer.Props.Live.SupportedLockProperty.GetXmlValueAsync
   nameWithType: SupportedLockProperty.GetXmlValueAsync
+- uid: FubarDev.WebDavServer.Props.Live.SupportedLockProperty.IsValidAsync(System.Threading.CancellationToken)
+  name: IsValidAsync(CancellationToken)
+  href: api/FubarDev.WebDavServer.Props.Live.SupportedLockProperty.html#FubarDev_WebDavServer_Props_Live_SupportedLockProperty_IsValidAsync_System_Threading_CancellationToken_
+  commentId: M:FubarDev.WebDavServer.Props.Live.SupportedLockProperty.IsValidAsync(System.Threading.CancellationToken)
+  fullName: FubarDev.WebDavServer.Props.Live.SupportedLockProperty.IsValidAsync(System.Threading.CancellationToken)
+  nameWithType: SupportedLockProperty.IsValidAsync(CancellationToken)
+- uid: FubarDev.WebDavServer.Props.Live.SupportedLockProperty.IsValidAsync*
+  name: IsValidAsync
+  href: api/FubarDev.WebDavServer.Props.Live.SupportedLockProperty.html#FubarDev_WebDavServer_Props_Live_SupportedLockProperty_IsValidAsync_
+  commentId: Overload:FubarDev.WebDavServer.Props.Live.SupportedLockProperty.IsValidAsync
+  fullName: FubarDev.WebDavServer.Props.Live.SupportedLockProperty.IsValidAsync
+  nameWithType: SupportedLockProperty.IsValidAsync
 - uid: FubarDev.WebDavServer.Props.Live.SupportedLockProperty.Name
   name: Name
   href: api/FubarDev.WebDavServer.Props.Live.SupportedLockProperty.html#FubarDev_WebDavServer_Props_Live_SupportedLockProperty_Name
@@ -13569,15 +14138,15 @@ references:
   commentId: T:FubarDev.WebDavServer.Props.Store.TextFile.TextFilePropertyStore
   fullName: FubarDev.WebDavServer.Props.Store.TextFile.TextFilePropertyStore
   nameWithType: TextFilePropertyStore
-- uid: FubarDev.WebDavServer.Props.Store.TextFile.TextFilePropertyStore.#ctor(FubarDev.WebDavServer.Props.Store.TextFile.TextFilePropertyStoreOptions,FubarDev.WebDavServer.Props.Dead.IDeadPropertyFactory,System.String,Microsoft.Extensions.Logging.ILogger{FubarDev.WebDavServer.Props.Store.TextFile.TextFilePropertyStore})
-  name: TextFilePropertyStore(TextFilePropertyStoreOptions, IDeadPropertyFactory, String, ILogger<TextFilePropertyStore>)
-  href: api/FubarDev.WebDavServer.Props.Store.TextFile.TextFilePropertyStore.html#FubarDev_WebDavServer_Props_Store_TextFile_TextFilePropertyStore__ctor_FubarDev_WebDavServer_Props_Store_TextFile_TextFilePropertyStoreOptions_FubarDev_WebDavServer_Props_Dead_IDeadPropertyFactory_System_String_Microsoft_Extensions_Logging_ILogger_FubarDev_WebDavServer_Props_Store_TextFile_TextFilePropertyStore__
-  commentId: M:FubarDev.WebDavServer.Props.Store.TextFile.TextFilePropertyStore.#ctor(FubarDev.WebDavServer.Props.Store.TextFile.TextFilePropertyStoreOptions,FubarDev.WebDavServer.Props.Dead.IDeadPropertyFactory,System.String,Microsoft.Extensions.Logging.ILogger{FubarDev.WebDavServer.Props.Store.TextFile.TextFilePropertyStore})
-  name.vb: TextFilePropertyStore(TextFilePropertyStoreOptions, IDeadPropertyFactory, String, ILogger(Of TextFilePropertyStore))
-  fullName: FubarDev.WebDavServer.Props.Store.TextFile.TextFilePropertyStore.TextFilePropertyStore(FubarDev.WebDavServer.Props.Store.TextFile.TextFilePropertyStoreOptions, FubarDev.WebDavServer.Props.Dead.IDeadPropertyFactory, System.String, Microsoft.Extensions.Logging.ILogger<FubarDev.WebDavServer.Props.Store.TextFile.TextFilePropertyStore>)
-  fullName.vb: FubarDev.WebDavServer.Props.Store.TextFile.TextFilePropertyStore.TextFilePropertyStore(FubarDev.WebDavServer.Props.Store.TextFile.TextFilePropertyStoreOptions, FubarDev.WebDavServer.Props.Dead.IDeadPropertyFactory, System.String, Microsoft.Extensions.Logging.ILogger(Of FubarDev.WebDavServer.Props.Store.TextFile.TextFilePropertyStore))
-  nameWithType: TextFilePropertyStore.TextFilePropertyStore(TextFilePropertyStoreOptions, IDeadPropertyFactory, String, ILogger<TextFilePropertyStore>)
-  nameWithType.vb: TextFilePropertyStore.TextFilePropertyStore(TextFilePropertyStoreOptions, IDeadPropertyFactory, String, ILogger(Of TextFilePropertyStore))
+- uid: FubarDev.WebDavServer.Props.Store.TextFile.TextFilePropertyStore.#ctor(FubarDev.WebDavServer.Props.Store.TextFile.TextFilePropertyStoreOptions,FubarDev.WebDavServer.Props.Dead.IDeadPropertyFactory,System.String,System.Boolean,System.String,Microsoft.Extensions.Logging.ILogger{FubarDev.WebDavServer.Props.Store.TextFile.TextFilePropertyStore})
+  name: TextFilePropertyStore(TextFilePropertyStoreOptions, IDeadPropertyFactory, String, Boolean, String, ILogger<TextFilePropertyStore>)
+  href: api/FubarDev.WebDavServer.Props.Store.TextFile.TextFilePropertyStore.html#FubarDev_WebDavServer_Props_Store_TextFile_TextFilePropertyStore__ctor_FubarDev_WebDavServer_Props_Store_TextFile_TextFilePropertyStoreOptions_FubarDev_WebDavServer_Props_Dead_IDeadPropertyFactory_System_String_System_Boolean_System_String_Microsoft_Extensions_Logging_ILogger_FubarDev_WebDavServer_Props_Store_TextFile_TextFilePropertyStore__
+  commentId: M:FubarDev.WebDavServer.Props.Store.TextFile.TextFilePropertyStore.#ctor(FubarDev.WebDavServer.Props.Store.TextFile.TextFilePropertyStoreOptions,FubarDev.WebDavServer.Props.Dead.IDeadPropertyFactory,System.String,System.Boolean,System.String,Microsoft.Extensions.Logging.ILogger{FubarDev.WebDavServer.Props.Store.TextFile.TextFilePropertyStore})
+  name.vb: TextFilePropertyStore(TextFilePropertyStoreOptions, IDeadPropertyFactory, String, Boolean, String, ILogger(Of TextFilePropertyStore))
+  fullName: FubarDev.WebDavServer.Props.Store.TextFile.TextFilePropertyStore.TextFilePropertyStore(FubarDev.WebDavServer.Props.Store.TextFile.TextFilePropertyStoreOptions, FubarDev.WebDavServer.Props.Dead.IDeadPropertyFactory, System.String, System.Boolean, System.String, Microsoft.Extensions.Logging.ILogger<FubarDev.WebDavServer.Props.Store.TextFile.TextFilePropertyStore>)
+  fullName.vb: FubarDev.WebDavServer.Props.Store.TextFile.TextFilePropertyStore.TextFilePropertyStore(FubarDev.WebDavServer.Props.Store.TextFile.TextFilePropertyStoreOptions, FubarDev.WebDavServer.Props.Dead.IDeadPropertyFactory, System.String, System.Boolean, System.String, Microsoft.Extensions.Logging.ILogger(Of FubarDev.WebDavServer.Props.Store.TextFile.TextFilePropertyStore))
+  nameWithType: TextFilePropertyStore.TextFilePropertyStore(TextFilePropertyStoreOptions, IDeadPropertyFactory, String, Boolean, String, ILogger<TextFilePropertyStore>)
+  nameWithType.vb: TextFilePropertyStore.TextFilePropertyStore(TextFilePropertyStoreOptions, IDeadPropertyFactory, String, Boolean, String, ILogger(Of TextFilePropertyStore))
 - uid: FubarDev.WebDavServer.Props.Store.TextFile.TextFilePropertyStore.#ctor*
   name: TextFilePropertyStore
   href: api/FubarDev.WebDavServer.Props.Store.TextFile.TextFilePropertyStore.html#FubarDev_WebDavServer_Props_Store_TextFile_TextFilePropertyStore__ctor_

@@ -9,7 +9,8 @@
           "exclude": [
             "**/obj/**",
             "**/bin/**",
-            "_site/**"
+            "_site/**",
+            "docs/**"
           ]
         }
       ],
@@ -33,7 +34,8 @@
         ],
         "exclude": [
           "obj/**",
-          "_site/**"
+          "_site/**",
+          "docs/**"
         ]
       }
     ],
@@ -44,7 +46,8 @@
         ],
         "exclude": [
           "obj/**",
-          "_site/**"
+          "_site/**",
+          "docs/**"
         ]
       }
     ],
@@ -55,11 +58,12 @@
         ],
         "exclude": [
           "obj/**",
-          "_site/**"
+          "_site/**",
+          "docs/**"
         ]
       }
     ],
-    "dest": "_site",
+    "dest": "docs",
     "globalMetadataFiles": [],
     "fileMetadataFiles": [],
     "template": [

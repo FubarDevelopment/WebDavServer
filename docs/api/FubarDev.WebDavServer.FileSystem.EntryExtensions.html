@@ -168,13 +168,13 @@
               
               
               <a id="FubarDev_WebDavServer_FileSystem_EntryExtensions_GetProperties_" data-uid="FubarDev.WebDavServer.FileSystem.EntryExtensions.GetProperties*"></a>
-              <h4 id="FubarDev_WebDavServer_FileSystem_EntryExtensions_GetProperties_FubarDev_WebDavServer_FileSystem_IEntry_FubarDev_WebDavServer_IWebDavDispatcher_System_Nullable_System_Int32__" data-uid="FubarDev.WebDavServer.FileSystem.EntryExtensions.GetProperties(FubarDev.WebDavServer.FileSystem.IEntry,FubarDev.WebDavServer.IWebDavDispatcher,System.Nullable{System.Int32})">GetProperties(IEntry, IWebDavDispatcher, Nullable&lt;Int32&gt;)</h4>
+              <h4 id="FubarDev_WebDavServer_FileSystem_EntryExtensions_GetProperties_FubarDev_WebDavServer_FileSystem_IEntry_FubarDev_WebDavServer_IWebDavDispatcher_System_Nullable_System_Int32__System_Boolean_" data-uid="FubarDev.WebDavServer.FileSystem.EntryExtensions.GetProperties(FubarDev.WebDavServer.FileSystem.IEntry,FubarDev.WebDavServer.IWebDavDispatcher,System.Nullable{System.Int32},System.Boolean)">GetProperties(IEntry, IWebDavDispatcher, Nullable&lt;Int32&gt;, Boolean)</h4>
               <div class="markdown level1 summary"><p>Gets all predefined properties for the given <span class="paramref">entry</span>, provided by the given <span class="paramref">dispatcher</span>.</p>
 </div>
               <div class="markdown level1 conceptual"></div>
               <h5 class="decalaration">Declaration</h5>
               <div class="codewrapper">
-                <pre><code class="lang-csharp hljs">public static IAsyncEnumerable&lt;IUntypedReadableProperty&gt; GetProperties(this IEntry entry, IWebDavDispatcher dispatcher, int ? maxCost = null)</code></pre>
+                <pre><code class="lang-csharp hljs">public static IAsyncEnumerable&lt;IUntypedReadableProperty&gt; GetProperties(this IEntry entry, IWebDavDispatcher dispatcher, int ? maxCost = null, bool returnInvalidProperties = false)</code></pre>
               </div>
               <h5 class="parameters">Parameters</h5>
               <table class="table table-bordered table-striped table-condensed">
@@ -202,6 +202,12 @@
                     <td><a class="xref" href="https://msdn.microsoft.com/en-us/library/b3h38hb0(v=vs.110).aspx">Nullable</a>&lt;<a class="xref" href="https://msdn.microsoft.com/en-us/library/system.int32(v=vs.110).aspx">Int32</a>&gt;</td>
                     <td><span class="parametername">maxCost</span></td>
                     <td><p>The maximum cost for querying a properties value</p>
+</td>
+                  </tr>
+                  <tr>
+                    <td><a class="xref" href="https://msdn.microsoft.com/en-us/library/system.boolean(v=vs.110).aspx">Boolean</a></td>
+                    <td><span class="parametername">returnInvalidProperties</span></td>
+                    <td><p>Do we want to get invalid live properties?</p>
 </td>
                   </tr>
                 </tbody>

@@ -5,10 +5,10 @@
   <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-    <title>Class SystemClock
+    <title>Class SQLiteFileSystemOptions
    </title>
     <meta name="viewport" content="width=device-width">
-    <meta name="title" content="Class SystemClock
+    <meta name="title" content="Class SQLiteFileSystemOptions
    ">
     <meta name="generator" content="docfx 2.12.1.0">
     
@@ -69,15 +69,15 @@
             <article class="content wrap" id="_content">
               
               
-              <h1 id="FubarDev_WebDavServer_SystemClock" data-uid="FubarDev.WebDavServer.SystemClock">Class SystemClock
+              <h1 id="FubarDev_WebDavServer_FileSystem_SQLite_SQLiteFileSystemOptions" data-uid="FubarDev.WebDavServer.FileSystem.SQLite.SQLiteFileSystemOptions">Class SQLiteFileSystemOptions
               </h1>
-              <div class="markdown level0 summary"><p>The default implementation of <a class="xref" href="FubarDev.WebDavServer.ISystemClock.html">ISystemClock</a></p>
+              <div class="markdown level0 summary"><p>The options for the <a class="xref" href="FubarDev.WebDavServer.FileSystem.SQLite.SQLiteFileSystemFactory.html">SQLiteFileSystemFactory</a> and <a class="xref" href="FubarDev.WebDavServer.FileSystem.SQLite.SQLiteFileSystem.html">SQLiteFileSystem</a></p>
 </div>
               <div class="markdown level0 conceptual"></div>
               <div class="inheritance">
                 <h5>Inheritance</h5>
                   <div class="level0"><a class="xref" href="https://msdn.microsoft.com/en-us/library/system.object(v=vs.110).aspx">Object</a></div>
-                  <div class="level1"><span class="xref">SystemClock</span></div>
+                  <div class="level1"><span class="xref">SQLiteFileSystemOptions</span></div>
               </div>
               <div class="inheritedMembers">
                 <h5>Inherited Members</h5>
@@ -103,24 +103,37 @@
                   <a class="xref" href="https://msdn.microsoft.com/en-us/library/57ctke0a(v=vs.110).aspx">Object.MemberwiseClone()</a>
                 </div>
               </div>
-              <h6><strong>Namespace</strong>:FubarDev.WebDavServer</h6>
-              <h6><strong>Assembly</strong>:FubarDev.WebDavServer.dll</h6>
-              <h5 id="FubarDev_WebDavServer_SystemClock_syntax">Syntax</h5>
+              <h6><strong>Namespace</strong>:FubarDev.WebDavServer.FileSystem.SQLite</h6>
+              <h6><strong>Assembly</strong>:FubarDev.WebDavServer.FileSystem.SQLite.dll</h6>
+              <h5 id="FubarDev_WebDavServer_FileSystem_SQLite_SQLiteFileSystemOptions_syntax">Syntax</h5>
               <div class="codewrapper">
-                <pre><code class="lang-csharp hljs">public class SystemClock : ISystemClock</code></pre>
+                <pre><code class="lang-csharp hljs">public class SQLiteFileSystemOptions</code></pre>
+              </div>
+              <h3 id="constructors">Constructors
+              </h3>
+              
+              
+              <a id="FubarDev_WebDavServer_FileSystem_SQLite_SQLiteFileSystemOptions__ctor_" data-uid="FubarDev.WebDavServer.FileSystem.SQLite.SQLiteFileSystemOptions.#ctor*"></a>
+              <h4 id="FubarDev_WebDavServer_FileSystem_SQLite_SQLiteFileSystemOptions__ctor" data-uid="FubarDev.WebDavServer.FileSystem.SQLite.SQLiteFileSystemOptions.#ctor">SQLiteFileSystemOptions()</h4>
+              <div class="markdown level1 summary"><p>Initializes a new instance of the <a class="xref" href="FubarDev.WebDavServer.FileSystem.SQLite.SQLiteFileSystemOptions.html">SQLiteFileSystemOptions</a> class.</p>
+</div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public SQLiteFileSystemOptions()</code></pre>
               </div>
               <h3 id="properties">Properties
               </h3>
               
               
-              <a id="FubarDev_WebDavServer_SystemClock_UtcNow_" data-uid="FubarDev.WebDavServer.SystemClock.UtcNow*"></a>
-              <h4 id="FubarDev_WebDavServer_SystemClock_UtcNow" data-uid="FubarDev.WebDavServer.SystemClock.UtcNow">UtcNow</h4>
-              <div class="markdown level1 summary"><p>Gets the <a class="xref" href="https://msdn.microsoft.com/en-us/library/89w2e3y3(v=vs.110).aspx">UtcNow</a></p>
+              <a id="FubarDev_WebDavServer_FileSystem_SQLite_SQLiteFileSystemOptions_RootPath_" data-uid="FubarDev.WebDavServer.FileSystem.SQLite.SQLiteFileSystemOptions.RootPath*"></a>
+              <h4 id="FubarDev_WebDavServer_FileSystem_SQLite_SQLiteFileSystemOptions_RootPath" data-uid="FubarDev.WebDavServer.FileSystem.SQLite.SQLiteFileSystemOptions.RootPath">RootPath</h4>
+              <div class="markdown level1 summary"><p>Gets or sets the home path for all users</p>
 </div>
               <div class="markdown level1 conceptual"></div>
               <h5 class="decalaration">Declaration</h5>
               <div class="codewrapper">
-                <pre><code class="lang-csharp hljs">public DateTime UtcNow { get; }</code></pre>
+                <pre><code class="lang-csharp hljs">public string RootPath { get; set; }</code></pre>
               </div>
               <h5 class="propertyValue">Property Value</h5>
               <table class="table table-bordered table-striped table-condensed">
@@ -132,13 +145,11 @@
                 </thead>
                 <tbody>
                   <tr>
-                    <td><a class="xref" href="https://msdn.microsoft.com/en-us/library/system.datetime(v=vs.110).aspx">DateTime</a></td>
+                    <td><a class="xref" href="https://msdn.microsoft.com/en-us/library/system.string(v=vs.110).aspx">String</a></td>
                     <td></td>
                   </tr>
                 </tbody>
               </table>
-              <h5 class="implements">Implements</h5>
-                  <div><a class="xref" href="FubarDev.WebDavServer.ISystemClock.html#FubarDev_WebDavServer_ISystemClock_UtcNow">ISystemClock.UtcNow</a></div>
                         </article>
           </div>
           

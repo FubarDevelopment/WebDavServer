@@ -1,0 +1,268 @@
+﻿<!DOCTYPE html>
+<!--[if IE]><![endif]-->
+<html>
+  
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <title>Project overview </title>
+    <meta name="viewport" content="width=device-width">
+    <meta name="title" content="Project overview ">
+    <meta name="generator" content="docfx 2.12.1.0">
+    
+    <link rel="shortcut icon" href="../favicon.ico">
+    <link rel="stylesheet" href="../styles/docfx.vendor.css">
+    <link rel="stylesheet" href="../styles/docfx.css">
+    <link rel="stylesheet" href="../styles/main.css">
+    <meta property="docfx:navrel" content="../toc.html">
+    <meta property="docfx:tocrel" content="toc.html">
+    
+  </head>
+  <body data-spy="scroll" data-target="#affix">
+    <div id="wrapper">
+      <header>
+        
+        <nav id="autocollapse" class="navbar navbar-inverse ng-scope" role="navigation">
+          <div class="container">
+            <div class="navbar-header">
+              <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+              </button>
+              
+              <a class="navbar-brand" href="../index.html">
+                <img id="logo" class="svg" src="../logo.svg" alt="">
+              </a>
+            </div>
+            <div class="collapse navbar-collapse" id="navbar">
+              <form class="navbar-form navbar-right" role="search" id="search">
+                <div class="form-group">
+                  <input type="text" class="form-control" id="search-query" placeholder="Search" autocomplete="off">
+                </div>
+              </form>
+            </div>
+          </div>
+        </nav>
+        
+        <div class="subnav navbar navbar-default">
+          <div class="container hide-when-search" id="breadcrumb">
+            <ul class="breadcrumb">
+              <li></li>
+            </ul>
+          </div>
+        </div>
+      </header>
+      <div role="main" class="container body-content hide-when-search">
+        
+        <div class="sidenav hide-when-search">
+          <a class="btn toc-toggle collapse" data-toggle="collapse" href="#sidetoggle" aria-expanded="false" aria-controls="sidetoggle">Show / Hide Table of Contents</a>
+          <div class="sidetoggle collapse" id="sidetoggle">
+            <div id="sidetoc"></div>
+          </div>
+        </div>
+        <div class="article row grid-right">
+          <div class="col-md-10">
+            <article class="content wrap" id="_content" data-uid="">
+              <h1 id="project-overview">Project overview</h1>
+              
+<p>We will start with a simple directory based overview of the WebDAV server project.</p>
+<table>
+<thead>
+<tr>
+<th>Path</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>api</code></td>
+<td>API documentation</td>
+</tr>
+<tr>
+<td><code>articles</code></td>
+<td>The articles for the documentation</td>
+</tr>
+<tr>
+<td><code>docs</code></td>
+<td>The compiled documentation</td>
+</tr>
+<tr>
+<td><code>images</code></td>
+<td>Images for the documentation</td>
+</tr>
+<tr>
+<td><code>src</code></td>
+<td>The source code</td>
+</tr>
+<tr>
+<td><code>src/FubarDev.WebDavServer</code></td>
+<td>The core WebDAV server assembly</td>
+</tr>
+<tr>
+<td><code>src/FubarDev.WebDavServer.FileSystem.DotNet</code></td>
+<td>A file system for the WebDAV server using <a class="xref" href="https://msdn.microsoft.com/en-us/library/system.io(v=vs.110).aspx">System.IO</a></td>
+</tr>
+<tr>
+<td><code>src/FubarDev.WebDavServer.FileSystem.InMemory</code></td>
+<td>A file system for the WebDAV server storing all data in memory only</td>
+</tr>
+<tr>
+<td><code>src/FubarDev.WebDavServer.FileSystem.SQLite</code></td>
+<td>A file system for the WebDAV server storing all data in a SQLite database</td>
+</tr>
+<tr>
+<td><code>src/FubarDev.WebDavServer.Locking.InMemory</code></td>
+<td>A <a class="xref" href="../api/FubarDev.WebDavServer.Locking.ILockManager.html">ILockManager</a> implementation that holds its locks only in memory</td>
+</tr>
+<tr>
+<td><code>src/FubarDev.WebDavServer.Props.Store.InMemory</code></td>
+<td>A property store implementation that holds all dead properties in memory only</td>
+</tr>
+<tr>
+<td><code>src/FubarDev.WebDavServer.Props.Store.TextFile</code></td>
+<td>A property store implementation that stores the dead properties in a JSON text file</td>
+</tr>
+<tr>
+<td><code>src-doc</code></td>
+<td>Project files for docfx</td>
+</tr>
+<tr>
+<td><code>test</code></td>
+<td>Test projects</td>
+</tr>
+<tr>
+<td><code>third-party</code></td>
+<td>Third party library</td>
+</tr>
+<tr>
+<td><code>tools</code></td>
+<td>binary tools directory</td>
+</tr>
+<tr>
+<td><code>webdav-docs</code></td>
+<td>WebDAV specifications</td>
+</tr>
+</tbody>
+</table>
+<h1 id="namespace-overview">Namespace overview</h1>
+<table>
+<thead>
+<tr>
+<th>Namespace</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><a class="xref" href="../api/FubarDev.WebDavServer.html">FubarDev.WebDavServer</a></td>
+<td>Common interfaces and classes of global interest</td>
+</tr>
+<tr>
+<td><a class="xref" href="../api/FubarDev.WebDavServer.Dispatchers.html">FubarDev.WebDavServer.Dispatchers</a></td>
+<td>WebDAV class interfaces and dispatchers to their handlers</td>
+</tr>
+<tr>
+<td><a class="xref" href="../api/FubarDev.WebDavServer.Engines.html">FubarDev.WebDavServer.Engines</a></td>
+<td>Some commonly used engines. The only one here is currently <a class="xref" href="../api/FubarDev.WebDavServer.Engines.RecursiveExecutionEngine-3.html">RecursiveExecutionEngine</a>.</td>
+</tr>
+<tr>
+<td><a class="xref" href="../api/FubarDev.WebDavServer.FileSystem.html">FubarDev.WebDavServer.FileSystem</a></td>
+<td>The interfaces and classes for the underlying file system support</td>
+</tr>
+<tr>
+<td><a class="xref" href="../api/FubarDev.WebDavServer.Formatters.html">FubarDev.WebDavServer.Formatters</a></td>
+<td>The formatter for WebDAV XML responses</td>
+</tr>
+<tr>
+<td><a class="xref" href="../api/FubarDev.WebDavServer.Handlers.html">FubarDev.WebDavServer.Handlers</a></td>
+<td>The interfaces for the handlers of the HTTP WebDAV methods</td>
+</tr>
+<tr>
+<td><a class="xref" href="../api/FubarDev.WebDavServer.Handlers.Impl.html">FubarDev.WebDavServer.Handlers.Impl</a></td>
+<td>The default implementations of the interfaces for the handlers of the HTTP WebDAV methods</td>
+</tr>
+<tr>
+<td><a class="xref" href="../api/FubarDev.WebDavServer.Locking.html">FubarDev.WebDavServer.Locking</a></td>
+<td>The interfaces and classes the <code>LOCK</code>/<code>UNLOCK</code> support for WebDAV</td>
+</tr>
+<tr>
+<td><a class="xref" href="../api/FubarDev.WebDavServer.Model.html">FubarDev.WebDavServer.Model</a></td>
+<td>The model for the WebDAV XML messages</td>
+</tr>
+<tr>
+<td><a class="xref" href="../api/FubarDev.WebDavServer.Model.Headers.html">FubarDev.WebDavServer.Model.Headers</a></td>
+<td>The model for the WebDAV HTTP headers</td>
+</tr>
+<tr>
+<td><a class="xref" href="../api/FubarDev.WebDavServer.Props.html">FubarDev.WebDavServer.Props</a></td>
+<td>The interfaces and classes for the underlying WebDAV property support</td>
+</tr>
+<tr>
+<td><a class="xref" href="../api/FubarDev.WebDavServer.Props.Converters.html">FubarDev.WebDavServer.Props.Converters</a></td>
+<td>The interfaces and classes for WebDAV property converters that support conversion between a given value and an <a class="xref" href="https://msdn.microsoft.com/en-us/library/system.xml.linq.xelement(v=vs.110).aspx">XElement</a></td>
+</tr>
+<tr>
+<td><a class="xref" href="../api/FubarDev.WebDavServer.Props.Dead.html">FubarDev.WebDavServer.Props.Dead</a></td>
+<td>The interfaces and classes for the support of dead properties</td>
+</tr>
+<tr>
+<td><a class="xref" href="../api/FubarDev.WebDavServer.Props.Filters.html">FubarDev.WebDavServer.Props.Filters</a></td>
+<td>Filters for properties used by the <code>PROPFIND</code> implementation</td>
+</tr>
+<tr>
+<td><a class="xref" href="../api/FubarDev.WebDavServer.Props.Generic.html">FubarDev.WebDavServer.Props.Generic</a></td>
+<td>Implementations of generic typed WebDAV properties</td>
+</tr>
+<tr>
+<td><a class="xref" href="../api/FubarDev.WebDavServer.Props.Live.html">FubarDev.WebDavServer.Props.Live</a></td>
+<td>The interfaces and classes for the support of live properties</td>
+</tr>
+<tr>
+<td><a class="xref" href="../api/FubarDev.WebDavServer.Props.Store.html">FubarDev.WebDavServer.Props.Store</a></td>
+<td>The interfaces and classes for the a storage of dead properties (and <a class="xref" href="../api/FubarDev.WebDavServer.Model.Headers.EntityTag.html">EntityTag</a>)</td>
+</tr>
+<tr>
+<td><a class="xref" href="../api/FubarDev.WebDavServer.Utils.html">FubarDev.WebDavServer.Utils</a></td>
+<td>Utility classes</td>
+</tr>
+</tbody>
+</table>
+
+            </article>
+          </div>
+          
+          <div class="hidden-sm col-md-2" role="complementary">
+            <div class="sideaffix">
+              <div class="contribution">
+                <ul class="nav">
+                </ul>
+              </div>
+              <nav class="bs-docs-sidebar hidden-print hidden-xs hidden-sm affix" id="affix">
+              <!-- <p><a class="back-to-top" href="#top">Back to top</a><p> -->
+              </nav>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <footer>
+        <div class="grad-bottom"></div>
+        <div class="footer">
+          <div class="container">
+            <span class="pull-right">
+              <a href="#top">Back to top</a>
+            </span>
+            
+            <span>Copyright © 2015-2016 Microsoft<br>Generated by <strong>DocFX</strong></span>
+          </div>
+        </div>
+      </footer>
+    </div>
+    
+    <script type="text/javascript" src="../styles/docfx.vendor.js"></script>
+    <script type="text/javascript" src="../styles/docfx.js"></script>
+    <script type="text/javascript" src="../styles/main.js"></script>
+  </body>
+</html>

@@ -5,10 +5,10 @@
   <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-    <title>Class StringConverter
+    <title>Class SQLiteFileSystemException
    </title>
     <meta name="viewport" content="width=device-width">
-    <meta name="title" content="Class StringConverter
+    <meta name="title" content="Class SQLiteFileSystemException
    ">
     <meta name="generator" content="docfx 2.12.1.0">
     
@@ -69,20 +69,57 @@
             <article class="content wrap" id="_content">
               
               
-              <h1 id="FubarDev_WebDavServer_Props_Converters_StringConverter" data-uid="FubarDev.WebDavServer.Props.Converters.StringConverter">Class StringConverter
+              <h1 id="FubarDev_WebDavServer_FileSystem_SQLite_SQLiteFileSystemException" data-uid="FubarDev.WebDavServer.FileSystem.SQLite.SQLiteFileSystemException">Class SQLiteFileSystemException
               </h1>
-              <div class="markdown level0 summary"><p>Property converter for a <span class="xref">langword_csharp_string</span></p>
+              <div class="markdown level0 summary"><p>An exception to be thrown, because the internal exception of SQLite.NET isn&#39;t accessible</p>
 </div>
               <div class="markdown level0 conceptual"></div>
               <div class="inheritance">
                 <h5>Inheritance</h5>
                   <div class="level0"><a class="xref" href="https://msdn.microsoft.com/en-us/library/system.object(v=vs.110).aspx">Object</a></div>
-                  <div class="level1"><span class="xref">StringConverter</span></div>
+                  <div class="level1"><a class="xref" href="https://msdn.microsoft.com/en-us/library/system.exception(v=vs.110).aspx">Exception</a></div>
+                  <div class="level2"><span class="xref">SQLiteFileSystemException</span></div>
               </div>
               <div class="inheritedMembers">
                 <h5>Inherited Members</h5>
                 <div>
-                  <a class="xref" href="https://msdn.microsoft.com/en-us/library/7bxwbwt2(v=vs.110).aspx">Object.ToString()</a>
+                  <a class="xref" href="https://msdn.microsoft.com/en-us/library/49kcee3b(v=vs.110).aspx">Exception.GetBaseException()</a>
+                </div>
+                <div>
+                  <a class="xref" href="https://msdn.microsoft.com/en-us/library/es4y6f7e(v=vs.110).aspx">Exception.ToString()</a>
+                </div>
+                <div>
+                  <a class="xref" href="https://msdn.microsoft.com/en-us/library/fwb1489e(v=vs.110).aspx">Exception.GetObjectData(SerializationInfo, StreamingContext)</a>
+                </div>
+                <div>
+                  <a class="xref" href="https://msdn.microsoft.com/en-us/library/44zb316t(v=vs.110).aspx">Exception.GetType()</a>
+                </div>
+                <div>
+                  <a class="xref" href="https://msdn.microsoft.com/en-us/library/9btwf6wk(v=vs.110).aspx">Exception.Message</a>
+                </div>
+                <div>
+                  <a class="xref" href="https://msdn.microsoft.com/en-us/library/2wyfbc48(v=vs.110).aspx">Exception.Data</a>
+                </div>
+                <div>
+                  <a class="xref" href="https://msdn.microsoft.com/en-us/library/902sca80(v=vs.110).aspx">Exception.InnerException</a>
+                </div>
+                <div>
+                  <a class="xref" href="https://msdn.microsoft.com/en-us/library/2wchw354(v=vs.110).aspx">Exception.TargetSite</a>
+                </div>
+                <div>
+                  <a class="xref" href="https://msdn.microsoft.com/en-us/library/dxzhy005(v=vs.110).aspx">Exception.StackTrace</a>
+                </div>
+                <div>
+                  <a class="xref" href="https://msdn.microsoft.com/en-us/library/71tawy4s(v=vs.110).aspx">Exception.HelpLink</a>
+                </div>
+                <div>
+                  <a class="xref" href="https://msdn.microsoft.com/en-us/library/85weac5w(v=vs.110).aspx">Exception.Source</a>
+                </div>
+                <div>
+                  <a class="xref" href="https://msdn.microsoft.com/en-us/library/sh5cw61c(v=vs.110).aspx">Exception.HResult</a>
+                </div>
+                <div>
+                  <a class="xref" href="https://msdn.microsoft.com/en-us/library/ee332915(v=vs.110).aspx">Exception.SerializeObjectState</a>
                 </div>
                 <div>
                   <a class="xref" href="https://msdn.microsoft.com/en-us/library/bsc2ak47(v=vs.110).aspx">Object.Equals(Object)</a>
@@ -97,29 +134,38 @@
                   <a class="xref" href="https://msdn.microsoft.com/en-us/library/zdee4b3y(v=vs.110).aspx">Object.GetHashCode()</a>
                 </div>
                 <div>
-                  <a class="xref" href="https://msdn.microsoft.com/en-us/library/dfwy45w9(v=vs.110).aspx">Object.GetType()</a>
-                </div>
-                <div>
                   <a class="xref" href="https://msdn.microsoft.com/en-us/library/57ctke0a(v=vs.110).aspx">Object.MemberwiseClone()</a>
                 </div>
               </div>
-              <h6><strong>Namespace</strong>:FubarDev.WebDavServer.Props.Converters</h6>
-              <h6><strong>Assembly</strong>:FubarDev.WebDavServer.dll</h6>
-              <h5 id="FubarDev_WebDavServer_Props_Converters_StringConverter_syntax">Syntax</h5>
+              <h6><strong>Namespace</strong>:FubarDev.WebDavServer.FileSystem.SQLite</h6>
+              <h6><strong>Assembly</strong>:FubarDev.WebDavServer.FileSystem.SQLite.dll</h6>
+              <h5 id="FubarDev_WebDavServer_FileSystem_SQLite_SQLiteFileSystemException_syntax">Syntax</h5>
               <div class="codewrapper">
-                <pre><code class="lang-csharp hljs">public class StringConverter : IPropertyConverter&lt;string&gt;</code></pre>
+                <pre><code class="lang-csharp hljs">public class SQLiteFileSystemException : Exception, ISerializable, _Exception</code></pre>
               </div>
-              <h3 id="methods">Methods
+              <h3 id="constructors">Constructors
               </h3>
               
               
-              <a id="FubarDev_WebDavServer_Props_Converters_StringConverter_FromElement_" data-uid="FubarDev.WebDavServer.Props.Converters.StringConverter.FromElement*"></a>
-              <h4 id="FubarDev_WebDavServer_Props_Converters_StringConverter_FromElement_System_Xml_Linq_XElement_" data-uid="FubarDev.WebDavServer.Props.Converters.StringConverter.FromElement(System.Xml.Linq.XElement)">FromElement(XElement)</h4>
-              <div class="markdown level1 summary"></div>
+              <a id="FubarDev_WebDavServer_FileSystem_SQLite_SQLiteFileSystemException__ctor_" data-uid="FubarDev.WebDavServer.FileSystem.SQLite.SQLiteFileSystemException.#ctor*"></a>
+              <h4 id="FubarDev_WebDavServer_FileSystem_SQLite_SQLiteFileSystemException__ctor" data-uid="FubarDev.WebDavServer.FileSystem.SQLite.SQLiteFileSystemException.#ctor">SQLiteFileSystemException()</h4>
+              <div class="markdown level1 summary"><p>Initializes a new instance of the <a class="xref" href="FubarDev.WebDavServer.FileSystem.SQLite.SQLiteFileSystemException.html">SQLiteFileSystemException</a> class.</p>
+</div>
               <div class="markdown level1 conceptual"></div>
               <h5 class="decalaration">Declaration</h5>
               <div class="codewrapper">
-                <pre><code class="lang-csharp hljs">public string FromElement(XElement element)</code></pre>
+                <pre><code class="lang-csharp hljs">public SQLiteFileSystemException()</code></pre>
+              </div>
+              
+              
+              <a id="FubarDev_WebDavServer_FileSystem_SQLite_SQLiteFileSystemException__ctor_" data-uid="FubarDev.WebDavServer.FileSystem.SQLite.SQLiteFileSystemException.#ctor*"></a>
+              <h4 id="FubarDev_WebDavServer_FileSystem_SQLite_SQLiteFileSystemException__ctor_SQLitePCL_sqlite3_" data-uid="FubarDev.WebDavServer.FileSystem.SQLite.SQLiteFileSystemException.#ctor(SQLitePCL.sqlite3)">SQLiteFileSystemException(sqlite3)</h4>
+              <div class="markdown level1 summary"><p>Initializes a new instance of the <a class="xref" href="FubarDev.WebDavServer.FileSystem.SQLite.SQLiteFileSystemException.html">SQLiteFileSystemException</a> class.</p>
+</div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public SQLiteFileSystemException(sqlite3 db)</code></pre>
               </div>
               <h5 class="parameters">Parameters</h5>
               <table class="table table-bordered table-striped table-condensed">
@@ -132,38 +178,23 @@
                 </thead>
                 <tbody>
                   <tr>
-                    <td><a class="xref" href="https://msdn.microsoft.com/en-us/library/system.xml.linq.xelement(v=vs.110).aspx">XElement</a></td>
-                    <td><span class="parametername">element</span></td>
-                    <td></td>
+                    <td><span class="xref">SQLitePCL.sqlite3</span></td>
+                    <td><span class="parametername">db</span></td>
+                    <td><p>The SQLite DB handle</p>
+</td>
                   </tr>
                 </tbody>
               </table>
-              <h5 class="returns">Returns</h5>
-              <table class="table table-bordered table-striped table-condensed">
-                <thead>
-                  <tr>
-                    <th>Type</th>
-                    <th>Description</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr>
-                    <td><a class="xref" href="https://msdn.microsoft.com/en-us/library/system.string(v=vs.110).aspx">String</a></td>
-                    <td></td>
-                  </tr>
-                </tbody>
-              </table>
-              <h5 class="implements">Implements</h5>
-                  <div><a class="xref" href="FubarDev.WebDavServer.Props.Converters.IPropertyConverter-1.html#FubarDev_WebDavServer_Props_Converters_IPropertyConverter_1_FromElement_System_Xml_Linq_XElement_">IPropertyConverter&lt;T&gt;.FromElement(XElement)</a></div>
               
               
-              <a id="FubarDev_WebDavServer_Props_Converters_StringConverter_IsValidValue_" data-uid="FubarDev.WebDavServer.Props.Converters.StringConverter.IsValidValue*"></a>
-              <h4 id="FubarDev_WebDavServer_Props_Converters_StringConverter_IsValidValue_System_String_" data-uid="FubarDev.WebDavServer.Props.Converters.StringConverter.IsValidValue(System.String)">IsValidValue(String)</h4>
-              <div class="markdown level1 summary"></div>
+              <a id="FubarDev_WebDavServer_FileSystem_SQLite_SQLiteFileSystemException__ctor_" data-uid="FubarDev.WebDavServer.FileSystem.SQLite.SQLiteFileSystemException.#ctor*"></a>
+              <h4 id="FubarDev_WebDavServer_FileSystem_SQLite_SQLiteFileSystemException__ctor_System_String_" data-uid="FubarDev.WebDavServer.FileSystem.SQLite.SQLiteFileSystemException.#ctor(System.String)">SQLiteFileSystemException(String)</h4>
+              <div class="markdown level1 summary"><p>Initializes a new instance of the <a class="xref" href="FubarDev.WebDavServer.FileSystem.SQLite.SQLiteFileSystemException.html">SQLiteFileSystemException</a> class.</p>
+</div>
               <div class="markdown level1 conceptual"></div>
               <h5 class="decalaration">Declaration</h5>
               <div class="codewrapper">
-                <pre><code class="lang-csharp hljs">public bool IsValidValue(string value)</code></pre>
+                <pre><code class="lang-csharp hljs">public SQLiteFileSystemException(string message)</code></pre>
               </div>
               <h5 class="parameters">Parameters</h5>
               <table class="table table-bordered table-striped table-condensed">
@@ -177,37 +208,22 @@
                 <tbody>
                   <tr>
                     <td><a class="xref" href="https://msdn.microsoft.com/en-us/library/system.string(v=vs.110).aspx">String</a></td>
-                    <td><span class="parametername">value</span></td>
-                    <td></td>
+                    <td><span class="parametername">message</span></td>
+                    <td><p>The exception message</p>
+</td>
                   </tr>
                 </tbody>
               </table>
-              <h5 class="returns">Returns</h5>
-              <table class="table table-bordered table-striped table-condensed">
-                <thead>
-                  <tr>
-                    <th>Type</th>
-                    <th>Description</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr>
-                    <td><a class="xref" href="https://msdn.microsoft.com/en-us/library/system.boolean(v=vs.110).aspx">Boolean</a></td>
-                    <td></td>
-                  </tr>
-                </tbody>
-              </table>
-              <h5 class="implements">Implements</h5>
-                  <div><a class="xref" href="FubarDev.WebDavServer.Props.Converters.IPropertyConverter-1.html#FubarDev_WebDavServer_Props_Converters_IPropertyConverter_1_IsValidValue__0_">IPropertyConverter&lt;T&gt;.IsValidValue(T)</a></div>
               
               
-              <a id="FubarDev_WebDavServer_Props_Converters_StringConverter_ToElement_" data-uid="FubarDev.WebDavServer.Props.Converters.StringConverter.ToElement*"></a>
-              <h4 id="FubarDev_WebDavServer_Props_Converters_StringConverter_ToElement_System_Xml_Linq_XName_System_String_" data-uid="FubarDev.WebDavServer.Props.Converters.StringConverter.ToElement(System.Xml.Linq.XName,System.String)">ToElement(XName, String)</h4>
-              <div class="markdown level1 summary"></div>
+              <a id="FubarDev_WebDavServer_FileSystem_SQLite_SQLiteFileSystemException__ctor_" data-uid="FubarDev.WebDavServer.FileSystem.SQLite.SQLiteFileSystemException.#ctor*"></a>
+              <h4 id="FubarDev_WebDavServer_FileSystem_SQLite_SQLiteFileSystemException__ctor_System_String_System_Exception_" data-uid="FubarDev.WebDavServer.FileSystem.SQLite.SQLiteFileSystemException.#ctor(System.String,System.Exception)">SQLiteFileSystemException(String, Exception)</h4>
+              <div class="markdown level1 summary"><p>Initializes a new instance of the <a class="xref" href="FubarDev.WebDavServer.FileSystem.SQLite.SQLiteFileSystemException.html">SQLiteFileSystemException</a> class.</p>
+</div>
               <div class="markdown level1 conceptual"></div>
               <h5 class="decalaration">Declaration</h5>
               <div class="codewrapper">
-                <pre><code class="lang-csharp hljs">public XElement ToElement(XName name, string value)</code></pre>
+                <pre><code class="lang-csharp hljs">public SQLiteFileSystemException(string message, Exception innerException)</code></pre>
               </div>
               <h5 class="parameters">Parameters</h5>
               <table class="table table-bordered table-striped table-condensed">
@@ -220,34 +236,19 @@
                 </thead>
                 <tbody>
                   <tr>
-                    <td><a class="xref" href="https://msdn.microsoft.com/en-us/library/system.xml.linq.xname(v=vs.110).aspx">XName</a></td>
-                    <td><span class="parametername">name</span></td>
-                    <td></td>
-                  </tr>
-                  <tr>
                     <td><a class="xref" href="https://msdn.microsoft.com/en-us/library/system.string(v=vs.110).aspx">String</a></td>
-                    <td><span class="parametername">value</span></td>
-                    <td></td>
+                    <td><span class="parametername">message</span></td>
+                    <td><p>The exception message</p>
+</td>
+                  </tr>
+                  <tr>
+                    <td><a class="xref" href="https://msdn.microsoft.com/en-us/library/system.exception(v=vs.110).aspx">Exception</a></td>
+                    <td><span class="parametername">innerException</span></td>
+                    <td><p>The inner exception</p>
+</td>
                   </tr>
                 </tbody>
               </table>
-              <h5 class="returns">Returns</h5>
-              <table class="table table-bordered table-striped table-condensed">
-                <thead>
-                  <tr>
-                    <th>Type</th>
-                    <th>Description</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr>
-                    <td><a class="xref" href="https://msdn.microsoft.com/en-us/library/system.xml.linq.xelement(v=vs.110).aspx">XElement</a></td>
-                    <td></td>
-                  </tr>
-                </tbody>
-              </table>
-              <h5 class="implements">Implements</h5>
-                  <div><a class="xref" href="FubarDev.WebDavServer.Props.Converters.IPropertyConverter-1.html#FubarDev_WebDavServer_Props_Converters_IPropertyConverter_1_ToElement_System_Xml_Linq_XName__0_">IPropertyConverter&lt;T&gt;.ToElement(XName, T)</a></div>
                         </article>
           </div>
           
