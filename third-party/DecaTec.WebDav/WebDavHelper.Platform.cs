@@ -24,7 +24,7 @@ namespace DecaTec.WebDav
             // If lock token was not submitted by response header, it should be found in the response content.
             try
             {
-                var prop = responseMessage.Content.ParsePropResponseContentAsync().Result;
+                var prop = WebDavResponseContentParser.ParsePropResponseContentAsync(responseMessage.Content).Result;
                 return new LockToken(prop.LockDiscovery.ActiveLock[0].LockToken.Href);
             }
             catch (Exception)

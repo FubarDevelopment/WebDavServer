@@ -31,8 +31,7 @@ namespace FubarDev.WebDavServer.Tests.Locking
                     LockScope = LockScope.CreateExclusiveLockScope(),
                     LockType = LockType.CreateWriteLockType(),
                 }).ConfigureAwait(false);
-            var prop = await response.EnsureSuccessStatusCode()
-                .Content.ParsePropResponseContentAsync().ConfigureAwait(false);
+            var prop = await WebDavResponseContentParser.ParsePropResponseContentAsync(response.EnsureSuccessStatusCode().Content).ConfigureAwait(false);
             var lockToken = CodedUrlParser.Parse(response.Headers.GetValues(WebDavRequestHeader.LockTocken).Single());
             Assert.NotNull(prop.LockDiscovery);
             Assert.Collection(
@@ -62,8 +61,7 @@ namespace FubarDev.WebDavServer.Tests.Locking
                     LockScope = LockScope.CreateExclusiveLockScope(),
                     LockType = LockType.CreateWriteLockType(),
                 }).ConfigureAwait(false);
-            var prop = await response.EnsureSuccessStatusCode()
-                .Content.ParsePropResponseContentAsync().ConfigureAwait(false);
+            var prop = await WebDavResponseContentParser.ParsePropResponseContentAsync(response.EnsureSuccessStatusCode().Content).ConfigureAwait(false);
             Assert.Collection(
                 prop.LockDiscovery.ActiveLock,
                 activeLock =>
@@ -92,8 +90,7 @@ namespace FubarDev.WebDavServer.Tests.Locking
                         Owner = new XElement("{DAV:}owner", "principal"),
                     })
                 .ConfigureAwait(false);
-            var prop = await response.EnsureSuccessStatusCode()
-                .Content.ParsePropResponseContentAsync().ConfigureAwait(false);
+            var prop = await WebDavResponseContentParser.ParsePropResponseContentAsync(response.EnsureSuccessStatusCode().Content).ConfigureAwait(false);
             Assert.Collection(
                 prop.LockDiscovery.ActiveLock,
                 activeLock =>
@@ -122,8 +119,7 @@ namespace FubarDev.WebDavServer.Tests.Locking
                         Owner = new XElement("{DAV:}owner", new XElement("{DAV:}href", "http://localhost/uri-owner")),
                     })
                 .ConfigureAwait(false);
-            var prop = await response.EnsureSuccessStatusCode()
-                .Content.ParsePropResponseContentAsync().ConfigureAwait(false);
+            var prop = await WebDavResponseContentParser.ParsePropResponseContentAsync(response.EnsureSuccessStatusCode().Content).ConfigureAwait(false);
             Assert.Collection(
                 prop.LockDiscovery.ActiveLock,
                 activeLock =>
@@ -152,8 +148,7 @@ namespace FubarDev.WebDavServer.Tests.Locking
                         Owner = new XElement("{DAV:}owner", new XAttribute("attr", "attr-value")),
                     })
                 .ConfigureAwait(false);
-            var prop = await response.EnsureSuccessStatusCode()
-                .Content.ParsePropResponseContentAsync().ConfigureAwait(false);
+            var prop = await WebDavResponseContentParser.ParsePropResponseContentAsync(response.EnsureSuccessStatusCode().Content).ConfigureAwait(false);
             Assert.NotNull(prop?.LockDiscovery?.ActiveLock);
             Assert.Collection(
                 prop.LockDiscovery.ActiveLock,
@@ -186,9 +181,15 @@ namespace FubarDev.WebDavServer.Tests.Locking
             var propFindResponse = await Client.PropFindAsync(
                 "/",
                 WebDavDepthHeaderValue.Zero,
-                PropFind.CreatePropFindWithEmptyProperties("lockdiscovery")).ConfigureAwait(false);
+                new PropFind()
+                {
+                    Item = new Prop()
+                    {
+                        LockDiscovery = new LockDiscovery(),
+                    },
+                }).ConfigureAwait(false);
             Assert.Equal(WebDavStatusCode.MultiStatus, propFindResponse.StatusCode);
-            var multiStatus = await propFindResponse.Content.ParseMultistatusResponseContentAsync().ConfigureAwait(false);
+            var multiStatus = await WebDavResponseContentParser.ParseMultistatusResponseContentAsync(propFindResponse.Content).ConfigureAwait(false);
             Assert.Collection(
                 multiStatus.Response,
                 response =>
@@ -256,7 +257,7 @@ namespace FubarDev.WebDavServer.Tests.Locking
                     })
                 .ConfigureAwait(false);
             lockResponse.EnsureSuccessStatusCode();
-            var prop = await lockResponse.Content.ParsePropResponseContentAsync().ConfigureAwait(false);
+            var prop = await WebDavResponseContentParser.ParsePropResponseContentAsync(lockResponse.Content).ConfigureAwait(false);
             var lockToken = prop.LockDiscovery.ActiveLock.Single().LockToken.Href;
             var refreshResult = await Client.RefreshLockAsync(
                 "/",
@@ -277,8 +278,7 @@ namespace FubarDev.WebDavServer.Tests.Locking
                     LockScope = LockScope.CreateExclusiveLockScope(),
                     LockType = LockType.CreateWriteLockType(),
                 }).ConfigureAwait(false);
-            var prop = await response.EnsureSuccessStatusCode()
-                .Content.ParsePropResponseContentAsync().ConfigureAwait(false);
+            var prop = await WebDavResponseContentParser.ParsePropResponseContentAsync(response.EnsureSuccessStatusCode().Content).ConfigureAwait(false);
             Assert.NotNull(prop.LockDiscovery);
             Assert.Collection(
                 prop.LockDiscovery.ActiveLock,

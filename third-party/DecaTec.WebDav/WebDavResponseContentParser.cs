@@ -19,7 +19,7 @@ namespace DecaTec.WebDav
         /// </summary>
         /// <param name="content">The <see cref="HttpContent"/> containing the <see cref="Multistatus"/> as XML.</param>
         /// <returns>The <see cref="Task"/>t representing the asynchronous operation.</returns>
-        public static async Task<Multistatus> ParseMultistatusResponseContentAsync(this HttpContent content)
+        public static async Task<Multistatus> ParseMultistatusResponseContentAsync(HttpContent content)
         {
             if (content == null)
                 return null;
@@ -41,7 +41,7 @@ namespace DecaTec.WebDav
         /// </summary>
         /// <param name="content">The <see cref="HttpContent"/> containing the <see cref="Prop"/> as XML.</param>
         /// <returns>The <see cref="Task"/>t representing the asynchronous operation.</returns>
-        public static async Task<Prop> ParsePropResponseContentAsync(this HttpContent content)
+        public static async Task<Prop> ParsePropResponseContentAsync(HttpContent content)
         {
             if (content == null)
                 return null;

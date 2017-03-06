@@ -28,8 +28,7 @@ namespace FubarDev.WebDavServer.Tests.Locking
                     LockScope = LockScope.CreateExclusiveLockScope(),
                     LockType = LockType.CreateWriteLockType(),
                 }).ConfigureAwait(false);
-            var prop = await response.EnsureSuccessStatusCode()
-                .Content.ParsePropResponseContentAsync().ConfigureAwait(false);
+            var prop = await WebDavResponseContentParser.ParsePropResponseContentAsync(response.EnsureSuccessStatusCode().Content).ConfigureAwait(false);
             Assert.NotNull(prop.LockDiscovery);
             Assert.Collection(
                 prop.LockDiscovery.ActiveLock,
