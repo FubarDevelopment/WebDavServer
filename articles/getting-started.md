@@ -9,23 +9,23 @@ is using a ASP.NET Core project as host.
 
 1. Create the ASP.NET Core project
 
-   ![Select ASP.NET Core Web Application .NET Framework](~/images/walk-through/01-create-project.png)
+   ![screenshot](~/images/walk-through/01-create-project.png)
 
 2. Select the WebAPI template
 
-   ![Select ASP.NET Core Web API template](~/images/walk-through/02-select-webapi.png)
+   ![screenshot](~/images/walk-through/02-select-webapi.png)
 
 # Configure the WebDAV NuGet repository (optional)
 
 1. Open the package manager setup
 
-   ![Open package manager setup](~/images/walk-through/03-package-manager-setup.png)
+   ![screenshot](~/images/walk-through/03-package-manager-setup.png)
 
 2. Add the package source
 
    The package source for the WebDAV server is (until release) on [MyGet](https://www.myget.org/feed/Packages/webdav-server). The URL is for the NuGet v3 feed is [https://www.myget.org/F/webdav-server/api/v3/index.json](https://www.myget.org/F/webdav-server/api/v3/index.json).
 
-   ![WebDAV server package source configuration](~/images/walk-through/03-webdav-server-nuget-repository.png)
+   ![screenshot](~/images/walk-through/03-webdav-server-nuget-repository.png)
 
 # Add the WebDAV NuGet packages
 
@@ -51,17 +51,17 @@ This are the packages that must be installed:
 
    This package contains the glue between ASP.NET Core and the WebDAV server.
 
-![The packages to install](~/images/walk-through/04-packages.png)
+![screenshot](~/images/walk-through/04-packages.png)
 
 Finally, we should install some remaining package updates.
 
-![The package updates](~/images/walk-through/05-update-packages.png)
+![screenshot](~/images/walk-through/05-update-packages.png)
 
 # Create the WebDAV controller
 
 1. Rename the `ValuesController.cs` to `WebDavController.cs`
 
-   ![Renaming the controller](~/images/walk-through/06-rename-controller.png)
+   ![screenshot](~/images/walk-through/06-rename-controller.png)
 
 2. Replace the content of `WebDavController.cs` with the following:
 
@@ -88,7 +88,7 @@ Finally, we should install some remaining package updates.
     }
     ```
 
-    ![Replacing the content of the controller](~/images/walk-through/07-modify-controller.png)
+    ![screenshot](~/images/walk-through/07-modify-controller.png)
 
 ## Explanation
 
@@ -101,28 +101,24 @@ The [IWebDavDispatcher](xref:FubarDev.WebDavServer.IWebDavDispatcher) is the int
 
 # Configure the servies
 
-1. Add the `Microsoft.AspNetCore.Authentication` package
+Replace in `Startup.cs` the `.AddMvc()` in function `ConfigureServices` with the following code:
 
-   ![Add the Microsoft.AspNetCore.Authentication](~/images/walk-through/08-add-auth-package.png)
+```csharp
+.Configure<DotNetFileSystemOptions>(
+    opt =>
+    {
+        opt.RootPath = Path.Combine(Path.GetTempPath(), "webdav");
+        opt.AnonymousUserName = "anonymous";
+    })
+.AddTransient<IPropertyStoreFactory, TextFilePropertyStoreFactory>()
+.AddSingleton<IFileSystemFactory, DotNetFileSystemFactory>()
+.AddSingleton<ILockManager, InMemoryLockManager>()
+.AddMvcCore()
+.AddAuthorization()
+.AddWebDav();
+```
 
-2. Replace in `Startup.cs` the `AddMvc()` in function `ConfigureServices` with the following code:
-
-    ```csharp
-    .Configure<DotNetFileSystemOptions>(
-        opt =>
-        {
-            opt.RootPath = Path.Combine(Path.GetTempPath(), "webdav");
-            opt.AnonymousUserName = "anonymous";
-        })
-    .AddTransient<IPropertyStoreFactory, TextFilePropertyStoreFactory>()
-    .AddSingleton<IFileSystemFactory, DotNetFileSystemFactory>()
-    .AddSingleton<ILockManager, InMemoryLockManager>()
-    .AddMvcCore()
-    .AddAuthorization()
-    .AddWebDav();
-    ```
-
-   ![Replacement of .AddMvc()](~/images/walk-through/09-after-replace.png)
+![screenshot](~/images/walk-through/09-after-replace.png)
 
 ## Explanation
 
@@ -142,11 +138,11 @@ To allow `NTLM` (or `Negotiate`) authentication, the following steps must be don
 
 1. Add the `Microsoft.AspNetCore.Authentication` package
 
-   ![The Microsoft.AspNetCore.Authentication package in the package manager](~/images/walk-through/08-add-auth-package.png)
+   ![screenshot](~/images/walk-through/08-add-auth-package.png)
 
 2. Add the `[Authorize]` attribute to the `WebDavController`
 
-   ![The Authorize attribute to add to the controller](~/images/walk-through/10-add-authorize-controller-attribute.png)
+   ![screenshot](~/images/walk-through/10-add-authorize-controller-attribute.png)
 
 3. Replace in `Program.cs` the `.UseKestrel()` with the WebListener
 
@@ -162,7 +158,7 @@ To allow `NTLM` (or `Negotiate`) authentication, the following steps must be don
 
 Now, your `Program.cs` file should like like this:
 
-![Final version of Program.cs](~/images/walk-through/10-remove-iis-integration.png)
+![screenshot](~/images/walk-through/10-remove-iis-integration.png)
 
 # Disable the automatic browser launch at application start
 
@@ -170,22 +166,22 @@ To disable the automatic browser launch, you have to set the `launchBrowser` ent
 
 Before:
 
-![Before change of launchSettings.json](~/images/walk-through/11-before-browser-disable.png)
+![screenshot](~/images/walk-through/11-before-browser-disable.png)
 
 After:
 
-![Before change of launchSettings.json](~/images/walk-through/11-after-browser-disable.png)
+![screenshot](~/images/walk-through/11-after-browser-disable.png)
 
 # Change the start project (**important!**)
 
 You must change the start project from `IIS Express` to `TestWebDavServer` (your test project). Otherwise, using the `NTLM` authentication configured above, doesn't work.
 
-![Use of console instead of IIS Express](~/images/walk-through/12-start-server.png)
+![screenshot](~/images/walk-through/12-start-server.png)
 
 # Running the test server
 
 When you start the test server, you can see the WebDAV url in the console window:
 
-![URL in console window](~/images/walk-through/13-use-explorer-with-url.png)
+![screenshot](~/images/walk-through/13-use-explorer-with-url.png)
 
 Enter this URL into the Windows Explorers address bar and you should be able to connect to the server.
