@@ -18,6 +18,9 @@ using sqlitenet = SQLite;
 
 namespace FubarDev.WebDavServer.FileSystem.SQLite
 {
+    /// <summary>
+    /// An implementation of <see cref="IFileSystemFactory"/> that provides file system storage in a SQLite database
+    /// </summary>
     public class SQLiteFileSystemFactory : IFileSystemFactory
     {
         [NotNull]
