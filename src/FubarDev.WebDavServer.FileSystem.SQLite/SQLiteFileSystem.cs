@@ -18,6 +18,9 @@ using db = SQLite;
 
 namespace FubarDev.WebDavServer.FileSystem.SQLite
 {
+    /// <summary>
+    /// The <see cref="ILocalFileSystem"/> implementation using an SQLite database
+    /// </summary>
     public class SQLiteFileSystem : ILocalFileSystem, IDisposable
     {
         [NotNull]
