@@ -7910,6 +7910,36 @@ references:
   commentId: Overload:FubarDev.WebDavServer.Locking.ILock.Timeout
   fullName: FubarDev.WebDavServer.Locking.ILock.Timeout
   nameWithType: ILock.Timeout
+- uid: FubarDev.WebDavServer.Locking.ILockCleanupTask
+  name: ILockCleanupTask
+  href: api/FubarDev.WebDavServer.Locking.ILockCleanupTask.html
+  commentId: T:FubarDev.WebDavServer.Locking.ILockCleanupTask
+  fullName: FubarDev.WebDavServer.Locking.ILockCleanupTask
+  nameWithType: ILockCleanupTask
+- uid: FubarDev.WebDavServer.Locking.ILockCleanupTask.Add(FubarDev.WebDavServer.Locking.ILockManager,FubarDev.WebDavServer.Locking.IActiveLock)
+  name: Add(ILockManager, IActiveLock)
+  href: api/FubarDev.WebDavServer.Locking.ILockCleanupTask.html#FubarDev_WebDavServer_Locking_ILockCleanupTask_Add_FubarDev_WebDavServer_Locking_ILockManager_FubarDev_WebDavServer_Locking_IActiveLock_
+  commentId: M:FubarDev.WebDavServer.Locking.ILockCleanupTask.Add(FubarDev.WebDavServer.Locking.ILockManager,FubarDev.WebDavServer.Locking.IActiveLock)
+  fullName: FubarDev.WebDavServer.Locking.ILockCleanupTask.Add(FubarDev.WebDavServer.Locking.ILockManager, FubarDev.WebDavServer.Locking.IActiveLock)
+  nameWithType: ILockCleanupTask.Add(ILockManager, IActiveLock)
+- uid: FubarDev.WebDavServer.Locking.ILockCleanupTask.Add*
+  name: Add
+  href: api/FubarDev.WebDavServer.Locking.ILockCleanupTask.html#FubarDev_WebDavServer_Locking_ILockCleanupTask_Add_
+  commentId: Overload:FubarDev.WebDavServer.Locking.ILockCleanupTask.Add
+  fullName: FubarDev.WebDavServer.Locking.ILockCleanupTask.Add
+  nameWithType: ILockCleanupTask.Add
+- uid: FubarDev.WebDavServer.Locking.ILockCleanupTask.Remove(FubarDev.WebDavServer.Locking.IActiveLock)
+  name: Remove(IActiveLock)
+  href: api/FubarDev.WebDavServer.Locking.ILockCleanupTask.html#FubarDev_WebDavServer_Locking_ILockCleanupTask_Remove_FubarDev_WebDavServer_Locking_IActiveLock_
+  commentId: M:FubarDev.WebDavServer.Locking.ILockCleanupTask.Remove(FubarDev.WebDavServer.Locking.IActiveLock)
+  fullName: FubarDev.WebDavServer.Locking.ILockCleanupTask.Remove(FubarDev.WebDavServer.Locking.IActiveLock)
+  nameWithType: ILockCleanupTask.Remove(IActiveLock)
+- uid: FubarDev.WebDavServer.Locking.ILockCleanupTask.Remove*
+  name: Remove
+  href: api/FubarDev.WebDavServer.Locking.ILockCleanupTask.html#FubarDev_WebDavServer_Locking_ILockCleanupTask_Remove_
+  commentId: Overload:FubarDev.WebDavServer.Locking.ILockCleanupTask.Remove
+  fullName: FubarDev.WebDavServer.Locking.ILockCleanupTask.Remove
+  nameWithType: ILockCleanupTask.Remove
 - uid: FubarDev.WebDavServer.Locking.ILockManager
   name: ILockManager
   href: api/FubarDev.WebDavServer.Locking.ILockManager.html

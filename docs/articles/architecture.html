@@ -8,7 +8,7 @@
     <title>Project overview </title>
     <meta name="viewport" content="width=device-width">
     <meta name="title" content="Project overview ">
-    <meta name="generator" content="docfx 2.12.1.0">
+    <meta name="generator" content="docfx 2.13.1.0">
     
     <link rel="shortcut icon" href="../favicon.ico">
     <link rel="stylesheet" href="../styles/docfx.vendor.css">
@@ -146,7 +146,7 @@
 </tr>
 </tbody>
 </table>
-<h1 id="namespace-overview">Namespace overview</h1>
+<h1 id="namespaces">Namespaces</h1>
 <table>
 <thead>
 <tr>
@@ -229,6 +229,47 @@
 </tr>
 </tbody>
 </table>
+<h1 id="file-system">File system</h1>
+<p>A file system implementation starts with a <a class="xref" href="../api/FubarDev.WebDavServer.FileSystem.IFileSystemFactory.html">IFileSystemFactory</a>.
+It&#39;s used to create an instance of an <a class="xref" href="../api/FubarDev.WebDavServer.FileSystem.IFileSystem.html">IFileSystem</a> for a given user.</p>
+<p>The file system consists of a root <a class="xref" href="../api/FubarDev.WebDavServer.FileSystem.ICollection.html">ICollection</a> which contains
+child <a class="xref" href="../api/FubarDev.WebDavServer.FileSystem.ICollection.html">ICollection</a>s and <a class="xref" href="../api/FubarDev.WebDavServer.FileSystem.IDocument.html">IDocument</a>s.
+Both inherit from a common interface <a class="xref" href="../api/FubarDev.WebDavServer.FileSystem.IEntry.html">IEntry</a>.</p>
+<p><img src="../images/overview-filesystem.png" alt="screenshot"></p>
+<h1 id="webdav-properties">WebDAV properties</h1>
+<p>WebDAV knows two types of properties, live and dead properties. The dead properties must be stored using a
+<a class="xref" href="../api/FubarDev.WebDavServer.Props.Store.IPropertyStore.html">IPropertyStore</a>. The property store is created
+using the <a class="xref" href="../api/FubarDev.WebDavServer.Props.Store.IPropertyStoreFactory.html">IPropertyStoreFactory</a> for a
+given <a class="xref" href="../api/FubarDev.WebDavServer.FileSystem.IFileSystem.html">IFileSystem</a>.</p>
+<p>Every property should at least implement <a class="xref" href="../api/FubarDev.WebDavServer.Props.Live.ILiveProperty.html">ILiveProperty</a> or
+<a class="xref" href="../api/FubarDev.WebDavServer.Props.Dead.IDeadProperty.html">IDeadProperty</a>. That a dead property isn&#39;t writeable is
+a design decision to allow storing an entity tag as dead property too.</p>
+<p>The <a class="xref" href="../api/FubarDev.WebDavServer.Props.ITypedReadableProperty-1.html">ITypedReadableProperty`1</a> and
+<a class="xref" href="../api/FubarDev.WebDavServer.Props.ITypedWriteableProperty-1.html">ITypedWriteableProperty`1</a> interfaces are convenience
+interfaces that allow accessing the dead property value without the need to handle all the XML fluff.</p>
+<p><img src="../images/overview-properties.png" alt="screenshot"></p>
+<h1 id="locking">Locking</h1>
+<p>The locking functionality consists of the following main parts:</p>
+<ul>
+<li><p><a class="xref" href="../api/FubarDev.WebDavServer.Locking.ILockManager.html">ILockManager</a></p>
+<p>This is the interface used to manage WebDAV locks. It ensures that lock conflicts are detected
+and stored.</p>
+</li>
+<li><p><a class="xref" href="../api/FubarDev.WebDavServer.Locking.ILock.html">ILock</a></p>
+<p>This is the base interface for all lock related information. It&#39;s implemented by both the
+<a class="xref" href="../api/FubarDev.WebDavServer.Locking.Lock.html">Lock</a> and <a class="xref" href="../api/FubarDev.WebDavServer.Locking.ActiveLock.html">ActiveLock</a>
+classes.</p>
+</li>
+<li><p><a class="xref" href="../api/FubarDev.WebDavServer.Locking.Lock.html">Lock</a></p>
+<p>This is the class that contains all information about a lock that the caller wants to create.
+It&#39;s created by a <code>LOCK</code> request or any other request that creates an implicit lock.</p>
+</li>
+<li><p><a class="xref" href="../api/FubarDev.WebDavServer.Locking.ActiveLock.html">ActiveLock</a></p>
+<p>This class contains all information about an active lock, like e.g. the state token, the time
+this lock was issued and when it expires.</p>
+</li>
+</ul>
+<p><img src="../images/overview-locking.png" alt="screenshot"></p>
 
             </article>
           </div>

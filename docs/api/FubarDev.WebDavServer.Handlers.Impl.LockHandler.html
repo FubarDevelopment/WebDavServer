@@ -10,7 +10,7 @@
     <meta name="viewport" content="width=device-width">
     <meta name="title" content="Class LockHandler
    ">
-    <meta name="generator" content="docfx 2.12.1.0">
+    <meta name="generator" content="docfx 2.13.1.0">
     
     <link rel="shortcut icon" href="../favicon.ico">
     <link rel="stylesheet" href="../styles/docfx.vendor.css">
@@ -164,7 +164,8 @@
               
               <a id="FubarDev_WebDavServer_Handlers_Impl_LockHandler_HttpMethods_" data-uid="FubarDev.WebDavServer.Handlers.Impl.LockHandler.HttpMethods*"></a>
               <h4 id="FubarDev_WebDavServer_Handlers_Impl_LockHandler_HttpMethods" data-uid="FubarDev.WebDavServer.Handlers.Impl.LockHandler.HttpMethods">HttpMethods</h4>
-              <div class="markdown level1 summary"></div>
+              <div class="markdown level1 summary"><p>Gets the HTTP methods that are processed by this handler</p>
+</div>
               <div class="markdown level1 conceptual"></div>
               <h5 class="decalaration">Declaration</h5>
               <div class="codewrapper">
@@ -193,7 +194,8 @@
               
               <a id="FubarDev_WebDavServer_Handlers_Impl_LockHandler_LockAsync_" data-uid="FubarDev.WebDavServer.Handlers.Impl.LockHandler.LockAsync*"></a>
               <h4 id="FubarDev_WebDavServer_Handlers_Impl_LockHandler_LockAsync_System_String_FubarDev_WebDavServer_Model_lockinfo_System_Threading_CancellationToken_" data-uid="FubarDev.WebDavServer.Handlers.Impl.LockHandler.LockAsync(System.String,FubarDev.WebDavServer.Model.lockinfo,System.Threading.CancellationToken)">LockAsync(String, lockinfo, CancellationToken)</h4>
-              <div class="markdown level1 summary"></div>
+              <div class="markdown level1 summary"><p>Creates a lock for the given <span class="paramref">path</span> using the information in <span class="paramref">info</span>.</p>
+</div>
               <div class="markdown level1 conceptual"></div>
               <h5 class="decalaration">Declaration</h5>
               <div class="codewrapper">
@@ -212,17 +214,20 @@
                   <tr>
                     <td><a class="xref" href="https://msdn.microsoft.com/en-us/library/system.string(v=vs.110).aspx">String</a></td>
                     <td><span class="parametername">path</span></td>
-                    <td></td>
+                    <td><p>The path to create the lock for</p>
+</td>
                   </tr>
                   <tr>
                     <td><a class="xref" href="FubarDev.WebDavServer.Model.lockinfo.html">lockinfo</a></td>
                     <td><span class="parametername">info</span></td>
-                    <td></td>
+                    <td><p>The additional information used to create the lock</p>
+</td>
                   </tr>
                   <tr>
                     <td><a class="xref" href="https://msdn.microsoft.com/en-us/library/system.threading.cancellationtoken(v=vs.110).aspx">CancellationToken</a></td>
                     <td><span class="parametername">cancellationToken</span></td>
-                    <td></td>
+                    <td><p>The cancellcation token</p>
+</td>
                   </tr>
                 </tbody>
               </table>
@@ -237,7 +242,8 @@
                 <tbody>
                   <tr>
                     <td><a class="xref" href="https://msdn.microsoft.com/en-us/library/dd321424(v=vs.110).aspx">Task</a>&lt;<a class="xref" href="FubarDev.WebDavServer.IWebDavResult.html">IWebDavResult</a>&gt;</td>
-                    <td></td>
+                    <td><p>The result of the operation</p>
+</td>
                   </tr>
                 </tbody>
               </table>
@@ -247,7 +253,8 @@
               
               <a id="FubarDev_WebDavServer_Handlers_Impl_LockHandler_RefreshLockAsync_" data-uid="FubarDev.WebDavServer.Handlers.Impl.LockHandler.RefreshLockAsync*"></a>
               <h4 id="FubarDev_WebDavServer_Handlers_Impl_LockHandler_RefreshLockAsync_System_String_FubarDev_WebDavServer_Model_Headers_IfHeader_FubarDev_WebDavServer_Model_Headers_TimeoutHeader_System_Threading_CancellationToken_" data-uid="FubarDev.WebDavServer.Handlers.Impl.LockHandler.RefreshLockAsync(System.String,FubarDev.WebDavServer.Model.Headers.IfHeader,FubarDev.WebDavServer.Model.Headers.TimeoutHeader,System.Threading.CancellationToken)">RefreshLockAsync(String, IfHeader, TimeoutHeader, CancellationToken)</h4>
-              <div class="markdown level1 summary"></div>
+              <div class="markdown level1 summary"><p>Refreshes a lock for the given <span class="paramref">path</span> using the lock identified by the <span class="paramref">ifHeader</span>.</p>
+</div>
               <div class="markdown level1 conceptual"></div>
               <h5 class="decalaration">Declaration</h5>
               <div class="codewrapper">
@@ -266,22 +273,26 @@
                   <tr>
                     <td><a class="xref" href="https://msdn.microsoft.com/en-us/library/system.string(v=vs.110).aspx">String</a></td>
                     <td><span class="parametername">path</span></td>
-                    <td></td>
+                    <td><p>The path to create the lock for</p>
+</td>
                   </tr>
                   <tr>
                     <td><a class="xref" href="FubarDev.WebDavServer.Model.Headers.IfHeader.html">IfHeader</a></td>
                     <td><span class="parametername">ifHeader</span></td>
-                    <td></td>
+                    <td><p>The <code>If</code> header used to identify the lock</p>
+</td>
                   </tr>
                   <tr>
                     <td><a class="xref" href="FubarDev.WebDavServer.Model.Headers.TimeoutHeader.html">TimeoutHeader</a></td>
                     <td><span class="parametername">timeoutHeader</span></td>
-                    <td></td>
+                    <td><p>The new timeout values</p>
+</td>
                   </tr>
                   <tr>
                     <td><a class="xref" href="https://msdn.microsoft.com/en-us/library/system.threading.cancellationtoken(v=vs.110).aspx">CancellationToken</a></td>
                     <td><span class="parametername">cancellationToken</span></td>
-                    <td></td>
+                    <td><p>The cancellcation token</p>
+</td>
                   </tr>
                 </tbody>
               </table>
@@ -296,7 +307,8 @@
                 <tbody>
                   <tr>
                     <td><a class="xref" href="https://msdn.microsoft.com/en-us/library/dd321424(v=vs.110).aspx">Task</a>&lt;<a class="xref" href="FubarDev.WebDavServer.IWebDavResult.html">IWebDavResult</a>&gt;</td>
-                    <td></td>
+                    <td><p>The result of the operation</p>
+</td>
                   </tr>
                 </tbody>
               </table>

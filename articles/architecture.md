@@ -22,7 +22,7 @@ Path                                              | Description
 `tools`                                           | binary tools directory
 `webdav-docs`                                     | WebDAV specifications
 
-# Namespace overview
+# Namespaces
 
 Namespace                                                                               | Description 
 ----------------------------------------------------------------------------------------|----------------------------------------------
@@ -44,3 +44,58 @@ Namespace                                                                       
 [FubarDev.WebDavServer.Props.Live](xref:FubarDev.WebDavServer.Props.Live)               | The interfaces and classes for the support of live properties
 [FubarDev.WebDavServer.Props.Store](xref:FubarDev.WebDavServer.Props.Store)             | The interfaces and classes for the a storage of dead properties (and [EntityTag](xref:FubarDev.WebDavServer.Model.Headers.EntityTag))
 [FubarDev.WebDavServer.Utils](xref:FubarDev.WebDavServer.Utils)                         | Utility classes
+
+# File system
+
+A file system implementation starts with a [IFileSystemFactory](xref:FubarDev.WebDavServer.FileSystem.IFileSystemFactory).
+It's used to create an instance of an [IFileSystem](xref:FubarDev.WebDavServer.FileSystem.IFileSystem) for a given user.
+
+The file system consists of a root [ICollection](xref:FubarDev.WebDavServer.FileSystem.ICollection) which contains
+child [ICollection](xref:FubarDev.WebDavServer.FileSystem.ICollection)s and [IDocument](xref:FubarDev.WebDavServer.FileSystem.IDocument)s.
+Both inherit from a common interface [IEntry](xref:FubarDev.WebDavServer.FileSystem.IEntry).
+
+![screenshot](~/images/overview-filesystem.png)
+
+# WebDAV properties
+
+WebDAV knows two types of properties, live and dead properties. The dead properties must be stored using a
+[IPropertyStore](xref:FubarDev.WebDavServer.Props.Store.IPropertyStore). The property store is created
+using the [IPropertyStoreFactory](xref:FubarDev.WebDavServer.Props.Store.IPropertyStoreFactory) for a
+given [IFileSystem](xref:FubarDev.WebDavServer.FileSystem.IFileSystem).
+
+Every property should at least implement [ILiveProperty](xref:FubarDev.WebDavServer.Props.Live.ILiveProperty) or
+[IDeadProperty](xref:FubarDev.WebDavServer.Props.Dead.IDeadProperty). That a dead property isn't writeable is
+a design decision to allow storing an entity tag as dead property too.
+
+The [ITypedReadableProperty`1](xref:FubarDev.WebDavServer.Props.ITypedReadableProperty`1) and
+[ITypedWriteableProperty`1](xref:FubarDev.WebDavServer.Props.ITypedWriteableProperty`1) interfaces are convenience
+interfaces that allow accessing the dead property value without the need to handle all the XML fluff.
+
+![screenshot](~/images/overview-properties.png)
+
+# Locking
+
+The locking functionality consists of the following main parts:
+
+* [ILockManager](xref:FubarDev.WebDavServer.Locking.ILockManager)
+
+  This is the interface used to manage WebDAV locks. It ensures that lock conflicts are detected
+  and stored.
+
+* [ILock](xref:FubarDev.WebDavServer.Locking.ILock)
+
+  This is the base interface for all lock related information. It's implemented by both the
+  [Lock](xref:FubarDev.WebDavServer.Locking.Lock) and [ActiveLock](xref:FubarDev.WebDavServer.Locking.ActiveLock)
+  classes.
+
+* [Lock](xref:FubarDev.WebDavServer.Locking.Lock)
+
+  This is the class that contains all information about a lock that the caller wants to create.
+  It's created by a `LOCK` request or any other request that creates an implicit lock.
+
+* [ActiveLock](xref:FubarDev.WebDavServer.Locking.ActiveLock)
+
+  This class contains all information about an active lock, like e.g. the state token, the time
+  this lock was issued and when it expires.
+
+![screenshot](~/images/overview-locking.png)

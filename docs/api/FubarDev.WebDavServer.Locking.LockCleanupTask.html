@@ -10,7 +10,7 @@
     <meta name="viewport" content="width=device-width">
     <meta name="title" content="Class LockCleanupTask
    ">
-    <meta name="generator" content="docfx 2.12.1.0">
+    <meta name="generator" content="docfx 2.13.1.0">
     
     <link rel="shortcut icon" href="../favicon.ico">
     <link rel="stylesheet" href="../styles/docfx.vendor.css">
@@ -107,7 +107,7 @@
               <h6><strong>Assembly</strong>:FubarDev.WebDavServer.dll</h6>
               <h5 id="FubarDev_WebDavServer_Locking_LockCleanupTask_syntax">Syntax</h5>
               <div class="codewrapper">
-                <pre><code class="lang-csharp hljs">public class LockCleanupTask : IDisposable</code></pre>
+                <pre><code class="lang-csharp hljs">public class LockCleanupTask : ILockCleanupTask, IDisposable</code></pre>
               </div>
               <h3 id="constructors">Constructors
               </h3>
@@ -183,6 +183,8 @@
                   </tr>
                 </tbody>
               </table>
+              <h5 class="implements">Implements</h5>
+                  <div><a class="xref" href="FubarDev.WebDavServer.Locking.ILockCleanupTask.html#FubarDev_WebDavServer_Locking_ILockCleanupTask_Add_FubarDev_WebDavServer_Locking_ILockManager_FubarDev_WebDavServer_Locking_IActiveLock_">ILockCleanupTask.Add(ILockManager, IActiveLock)</a></div>
               
               
               <a id="FubarDev_WebDavServer_Locking_LockCleanupTask_Dispose_" data-uid="FubarDev.WebDavServer.Locking.LockCleanupTask.Dispose*"></a>
@@ -224,6 +226,8 @@
                   </tr>
                 </tbody>
               </table>
+              <h5 class="implements">Implements</h5>
+                  <div><a class="xref" href="FubarDev.WebDavServer.Locking.ILockCleanupTask.html#FubarDev_WebDavServer_Locking_ILockCleanupTask_Remove_FubarDev_WebDavServer_Locking_IActiveLock_">ILockCleanupTask.Remove(IActiveLock)</a></div>
                         </article>
           </div>
           
