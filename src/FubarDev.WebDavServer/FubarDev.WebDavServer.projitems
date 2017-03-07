@@ -118,6 +118,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)Locking\IActiveLock.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Locking\IImplicitLock.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Locking\ILock.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Locking\ILockCleanupTask.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Locking\ILockManager.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Locking\ILockTimeRounding.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Locking\ImplicitLock.cs" />

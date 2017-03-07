@@ -18,7 +18,7 @@ namespace FubarDev.WebDavServer.Locking
     /// <summary>
     /// A background task that removes expired locks
     /// </summary>
-    public class LockCleanupTask : IDisposable
+    public class LockCleanupTask : ILockCleanupTask, IDisposable
     {
         private static readonly TimeSpan _deactivated = TimeSpan.FromMilliseconds(-1);
 
