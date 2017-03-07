@@ -295,6 +295,7 @@ namespace FubarDev.WebDavServer.Handlers.Impl
             if (request.Items == null)
                 return result;
 
+            var language = request.Language;
             var failed = false;
             foreach (var item in request.Items)
             {
@@ -302,7 +303,7 @@ namespace FubarDev.WebDavServer.Handlers.Impl
                 var set = item as propset;
                 if (set != null)
                 {
-                    changeItems = await ApplySetAsync(entry, properties, set, failed, cancellationToken).ConfigureAwait(false);
+                    changeItems = await ApplySetAsync(entry, properties, set, language, failed, cancellationToken).ConfigureAwait(false);
                 }
                 else
                 {
@@ -391,16 +392,24 @@ namespace FubarDev.WebDavServer.Handlers.Impl
 
         [NotNull]
         [ItemNotNull]
-        private async Task<IReadOnlyCollection<ChangeItem>> ApplySetAsync([NotNull] IEntry entry, [NotNull] Dictionary<XName, IUntypedReadableProperty> properties, [NotNull] propset set, bool previouslyFailed, CancellationToken cancellationToken)
+        private async Task<IReadOnlyCollection<ChangeItem>> ApplySetAsync([NotNull] IEntry entry, [NotNull] Dictionary<XName, IUntypedReadableProperty> properties, [NotNull] propset set, string language, bool previouslyFailed, CancellationToken cancellationToken)
         {
             var result = new List<ChangeItem>();
 
             if (set.prop.Any == null)
                 return result;
 
+            if (!string.IsNullOrEmpty(set.Language))
+                language = set.Language;
+
             var failed = previouslyFailed;
             foreach (var element in set.prop.Any)
             {
+                // Add a parent elements xml:lang to the element
+                var elementLanguage = element.Attribute(XNamespace.Xml + "lang")?.Value;
+                if (string.IsNullOrEmpty(elementLanguage) && !string.IsNullOrEmpty(language))
+                    element.SetAttributeValue(XNamespace.Xml + "lang", language);
+
                 if (failed)
                 {
                     result.Add(ChangeItem.FailedDependency(element.Name));

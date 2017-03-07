@@ -156,7 +156,10 @@ namespace FubarDev.WebDavServer.Model {
     public partial class prop {
         
         private XElement[] anyField;
-        
+
+        [XmlAttribute("xml:lang", DataType = "language")]
+        public string Language { get; set; }
+
         /// <remarks/>
         [System.Xml.Serialization.XmlAnyElementAttribute()]
         public XElement[] Any {
@@ -575,7 +578,10 @@ namespace FubarDev.WebDavServer.Model {
     public partial class propset {
         
         private prop propField;
-        
+
+        [XmlAttribute("xml:lang", DataType = "language")]
+        public string Language { get; set; }
+
         /// <remarks/>
         public prop prop {
             get {
@@ -761,7 +767,10 @@ namespace FubarDev.WebDavServer.Model {
     public partial class propertyupdate {
         
         private object[] itemsField;
-        
+
+        [XmlAttribute("xml:lang", DataType = "language")]
+        public string Language { get; set; }
+
         /// <remarks/>
         [System.Xml.Serialization.XmlElementAttribute("remove", typeof(propremove))]
         [System.Xml.Serialization.XmlElementAttribute("set", typeof(propset))]
