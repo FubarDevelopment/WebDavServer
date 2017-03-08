@@ -98,5 +98,11 @@ namespace FubarDev.WebDavServer.Props
         {
             return PropertyKeyComparer.Default.GetHashCode(this);
         }
+
+        /// <inheritdoc />
+        public override string ToString()
+        {
+            return $"{Language}:{Name}";
+        }
     }
 }
