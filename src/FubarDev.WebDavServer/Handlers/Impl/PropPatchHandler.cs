@@ -304,10 +304,13 @@ namespace FubarDev.WebDavServer.Handlers.Impl
                 {
                     changeItems = await ApplySetAsync(entry, properties, set, failed, cancellationToken).ConfigureAwait(false);
                 }
+                else if (item is propremove remove)
+                {
+                    changeItems = await ApplyRemoveAsync(entry, properties, remove, failed, cancellationToken).ConfigureAwait(false);
+                }
                 else
                 {
-                    var remove = (propremove)item;
-                    changeItems = await ApplyRemoveAsync(entry, properties, remove, failed, cancellationToken).ConfigureAwait(false);
+                    changeItems = new ChangeItem[0];
                 }
 
                 result.AddRange(changeItems);
@@ -324,7 +327,7 @@ namespace FubarDev.WebDavServer.Handlers.Impl
         {
             var result = new List<ChangeItem>();
 
-            if (remove.prop.Any == null)
+            if (remove.prop?.Any == null)
                 return result;
 
             var language = remove.prop.Language;
@@ -372,7 +375,7 @@ namespace FubarDev.WebDavServer.Handlers.Impl
                         {
                             var oldValue = await property.GetXmlValueAsync(cancellationToken).ConfigureAwait(false);
                             var success = await entry.FileSystem.PropertyStore.RemoveAsync(entry, propertyKey, cancellationToken).ConfigureAwait(false);
-                            
+
                             // ReSharper disable once ConvertIfStatementToConditionalTernaryExpression
                             if (!success)
                             {
@@ -405,7 +408,7 @@ namespace FubarDev.WebDavServer.Handlers.Impl
         {
             var result = new List<ChangeItem>();
 
-            if (set.prop.Any == null)
+            if (set.prop?.Any == null)
                 return result;
 
             var language = set.prop.Language;

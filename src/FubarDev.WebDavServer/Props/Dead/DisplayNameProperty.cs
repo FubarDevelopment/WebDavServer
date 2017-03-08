@@ -60,6 +60,7 @@ namespace FubarDev.WebDavServer.Props.Dead
                 var storedValue = await _store.GetAsync(_entry, Name, ct).ConfigureAwait(false);
                 if (storedValue != null)
                 {
+                    Language = storedValue.Attribute(XNamespace.Xml + "lang")?.Value;
                     return _value = storedValue.Value;
                 }
             }
@@ -69,10 +70,11 @@ namespace FubarDev.WebDavServer.Props.Dead
         }
 
         /// <inheritdoc />
-        public override Task SetValueAsync(string value, CancellationToken ct)
+        public override async Task SetValueAsync(string value, CancellationToken ct)
         {
             _value = value;
-            return _store.SetAsync(_entry, Converter.ToElement(Name, value), ct);
+            var element = await GetXmlValueAsync(ct).ConfigureAwait(false);
+            await _store.SetAsync(_entry, element, ct).ConfigureAwait(false);
         }
 
         /// <inheritdoc />

@@ -35,7 +35,7 @@ namespace FubarDev.WebDavServer.Props
         public XName Name { get; }
 
         /// <inheritdoc />
-        public string Language { get; }
+        public string Language { get; protected set; }
 
         /// <inheritdoc />
         public IReadOnlyCollection<XName> AlternativeNames { get; }

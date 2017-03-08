@@ -109,7 +109,9 @@ Instead, it's just an indicator for the language of the properties value.
 The `xml:lang` property is handled in the following way:
 
 * Live properties never return an `xml:lang`
-* The `getetag`, `getcontenttype`, and `getcontentlanguage` properties never return an `xml:lang`
+* The `getetag` property never returns an `xml:lang`
+* The `getcontenttype`, and `getcontentlanguage` may return an `xml:lang` even though it doesn't
+  make sense for them
 * The `xml:lang` attribute of a dead property element has precedence over  the `xml:lang` property
   of the `DAV:props` element
 * A `PROPFIND` doesn't use `xml:lang` at all

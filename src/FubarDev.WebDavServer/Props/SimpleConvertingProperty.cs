@@ -42,12 +42,16 @@ namespace FubarDev.WebDavServer.Props
         public override async Task<XElement> GetXmlValueAsync(CancellationToken ct)
         {
             var result = await GetValueAsync(ct).ConfigureAwait(false);
-            return Converter.ToElement(Name, result);
+            var element = Converter.ToElement(Name, result);
+            if (!string.IsNullOrEmpty(Language))
+                element.SetAttributeValue(XNamespace.Xml + "lang", Language);
+            return element;
         }
 
         /// <inheritdoc />
         public override Task SetXmlValueAsync(XElement element, CancellationToken ct)
         {
+            Language = element.Attribute(XNamespace.Xml + "lang")?.Value;
             return SetValueAsync(Converter.FromElement(element), ct);
         }
     }
