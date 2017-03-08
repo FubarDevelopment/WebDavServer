@@ -204,13 +204,13 @@ protected IDeadPropertyFactory DeadPropertyFactory { get; }</code></pre>
               
               
               <a id="FubarDev_WebDavServer_Props_Store_PropertyStoreBase_Create_" data-uid="FubarDev.WebDavServer.Props.Store.PropertyStoreBase.Create*"></a>
-              <h4 id="FubarDev_WebDavServer_Props_Store_PropertyStoreBase_Create_FubarDev_WebDavServer_FileSystem_IEntry_System_Xml_Linq_XName_System_String_" data-uid="FubarDev.WebDavServer.Props.Store.PropertyStoreBase.Create(FubarDev.WebDavServer.FileSystem.IEntry,System.Xml.Linq.XName,System.String)">Create(IEntry, XName, String)</h4>
+              <h4 id="FubarDev_WebDavServer_Props_Store_PropertyStoreBase_Create_FubarDev_WebDavServer_FileSystem_IEntry_System_Xml_Linq_XName_" data-uid="FubarDev.WebDavServer.Props.Store.PropertyStoreBase.Create(FubarDev.WebDavServer.FileSystem.IEntry,System.Xml.Linq.XName)">Create(IEntry, XName)</h4>
               <div class="markdown level1 summary"><p>Creates a dead property by its <span class="paramref">name</span> for a given <span class="paramref">entry</span></p>
 </div>
               <div class="markdown level1 conceptual"></div>
               <h5 class="decalaration">Declaration</h5>
               <div class="codewrapper">
-                <pre><code class="lang-csharp hljs">public IDeadProperty Create(IEntry entry, XName name, string language)</code></pre>
+                <pre><code class="lang-csharp hljs">public IDeadProperty Create(IEntry entry, XName name)</code></pre>
               </div>
               <h5 class="parameters">Parameters</h5>
               <table class="table table-bordered table-striped table-condensed">
@@ -234,12 +234,6 @@ protected IDeadPropertyFactory DeadPropertyFactory { get; }</code></pre>
                     <td><p>The name of the dead property to create for the given <span class="paramref">entry</span> for</p>
 </td>
                   </tr>
-                  <tr>
-                    <td><a class="xref" href="https://msdn.microsoft.com/en-us/library/system.string(v=vs.110).aspx">String</a></td>
-                    <td><span class="parametername">language</span></td>
-                    <td><p>The language for the property value</p>
-</td>
-                  </tr>
                 </tbody>
               </table>
               <h5 class="returns">Returns</h5>
@@ -259,7 +253,7 @@ protected IDeadPropertyFactory DeadPropertyFactory { get; }</code></pre>
                 </tbody>
               </table>
               <h5 class="implements">Implements</h5>
-                  <div><a class="xref" href="FubarDev.WebDavServer.Props.Store.IPropertyStore.html#FubarDev_WebDavServer_Props_Store_IPropertyStore_Create_FubarDev_WebDavServer_FileSystem_IEntry_System_Xml_Linq_XName_System_String_">IPropertyStore.Create(IEntry, XName, String)</a></div>
+                  <div><a class="xref" href="FubarDev.WebDavServer.Props.Store.IPropertyStore.html#FubarDev_WebDavServer_Props_Store_IPropertyStore_Create_FubarDev_WebDavServer_FileSystem_IEntry_System_Xml_Linq_XName_">IPropertyStore.Create(IEntry, XName)</a></div>
               
               
               <a id="FubarDev_WebDavServer_Props_Store_PropertyStoreBase_GetAsync_" data-uid="FubarDev.WebDavServer.Props.Store.PropertyStoreBase.GetAsync*"></a>
@@ -325,7 +319,7 @@ protected IDeadPropertyFactory DeadPropertyFactory { get; }</code></pre>
               <div class="markdown level1 conceptual"></div>
               <h5 class="decalaration">Declaration</h5>
               <div class="codewrapper">
-                <pre><code class="lang-csharp hljs">public virtual Task&lt;IReadOnlyCollection&lt;XElement&gt;&gt; GetAsync(IEntry entry, XName name, CancellationToken cancellationToken)</code></pre>
+                <pre><code class="lang-csharp hljs">public virtual Task&lt;XElement&gt; GetAsync(IEntry entry, XName name, CancellationToken cancellationToken)</code></pre>
               </div>
               <h5 class="parameters">Parameters</h5>
               <table class="table table-bordered table-striped table-condensed">
@@ -367,7 +361,7 @@ protected IDeadPropertyFactory DeadPropertyFactory { get; }</code></pre>
                 </thead>
                 <tbody>
                   <tr>
-                    <td><a class="xref" href="https://msdn.microsoft.com/en-us/library/dd321424(v=vs.110).aspx">Task</a>&lt;<a class="xref" href="https://msdn.microsoft.com/en-us/library/hh881542(v=vs.110).aspx">IReadOnlyCollection</a>&lt;<a class="xref" href="https://msdn.microsoft.com/en-us/library/system.xml.linq.xelement(v=vs.110).aspx">XElement</a>&gt;&gt;</td>
+                    <td><a class="xref" href="https://msdn.microsoft.com/en-us/library/dd321424(v=vs.110).aspx">Task</a>&lt;<a class="xref" href="https://msdn.microsoft.com/en-us/library/system.xml.linq.xelement(v=vs.110).aspx">XElement</a>&gt;</td>
                     <td><p>The <a class="xref" href="https://msdn.microsoft.com/en-us/library/system.xml.linq.xelement(v=vs.110).aspx">XElement</a> for the given dead property</p>
 </td>
                   </tr>
@@ -544,7 +538,7 @@ protected IDeadPropertyFactory DeadPropertyFactory { get; }</code></pre>
               <div class="markdown level1 conceptual"></div>
               <h5 class="decalaration">Declaration</h5>
               <div class="codewrapper">
-                <pre><code class="lang-csharp hljs">public virtual Task&lt;IReadOnlyCollection&lt;IDeadProperty&gt;&gt; LoadAsync(IEntry entry, XName name, CancellationToken cancellationToken)</code></pre>
+                <pre><code class="lang-csharp hljs">public virtual Task&lt;IDeadProperty&gt; LoadAsync(IEntry entry, XName name, CancellationToken cancellationToken)</code></pre>
               </div>
               <h5 class="parameters">Parameters</h5>
               <table class="table table-bordered table-striped table-condensed">
@@ -586,7 +580,7 @@ protected IDeadPropertyFactory DeadPropertyFactory { get; }</code></pre>
                 </thead>
                 <tbody>
                   <tr>
-                    <td><a class="xref" href="https://msdn.microsoft.com/en-us/library/dd321424(v=vs.110).aspx">Task</a>&lt;<a class="xref" href="https://msdn.microsoft.com/en-us/library/hh881542(v=vs.110).aspx">IReadOnlyCollection</a>&lt;<a class="xref" href="FubarDev.WebDavServer.Props.Dead.IDeadProperty.html">IDeadProperty</a>&gt;&gt;</td>
+                    <td><a class="xref" href="https://msdn.microsoft.com/en-us/library/dd321424(v=vs.110).aspx">Task</a>&lt;<a class="xref" href="FubarDev.WebDavServer.Props.Dead.IDeadProperty.html">IDeadProperty</a>&gt;</td>
                     <td><p>The implementation of the dead property</p>
 </td>
                   </tr>
@@ -597,13 +591,13 @@ protected IDeadPropertyFactory DeadPropertyFactory { get; }</code></pre>
               
               
               <a id="FubarDev_WebDavServer_Props_Store_PropertyStoreBase_RemoveAsync_" data-uid="FubarDev.WebDavServer.Props.Store.PropertyStoreBase.RemoveAsync*"></a>
-              <h4 id="FubarDev_WebDavServer_Props_Store_PropertyStoreBase_RemoveAsync_FubarDev_WebDavServer_FileSystem_IEntry_System_Collections_Generic_IEnumerable_FubarDev_WebDavServer_Props_PropertyKey__System_Threading_CancellationToken_" data-uid="FubarDev.WebDavServer.Props.Store.PropertyStoreBase.RemoveAsync(FubarDev.WebDavServer.FileSystem.IEntry,System.Collections.Generic.IEnumerable{FubarDev.WebDavServer.Props.PropertyKey},System.Threading.CancellationToken)">RemoveAsync(IEntry, IEnumerable&lt;PropertyKey&gt;, CancellationToken)</h4>
+              <h4 id="FubarDev_WebDavServer_Props_Store_PropertyStoreBase_RemoveAsync_FubarDev_WebDavServer_FileSystem_IEntry_System_Collections_Generic_IEnumerable_System_Xml_Linq_XName__System_Threading_CancellationToken_" data-uid="FubarDev.WebDavServer.Props.Store.PropertyStoreBase.RemoveAsync(FubarDev.WebDavServer.FileSystem.IEntry,System.Collections.Generic.IEnumerable{System.Xml.Linq.XName},System.Threading.CancellationToken)">RemoveAsync(IEntry, IEnumerable&lt;XName&gt;, CancellationToken)</h4>
               <div class="markdown level1 summary"><p>Remove multiple dead properties by its name at once from the given <span class="paramref">entry</span></p>
 </div>
               <div class="markdown level1 conceptual"></div>
               <h5 class="decalaration">Declaration</h5>
               <div class="codewrapper">
-                <pre><code class="lang-csharp hljs">public abstract Task&lt;IReadOnlyCollection&lt;bool&gt;&gt; RemoveAsync(IEntry entry, IEnumerable&lt;PropertyKey&gt; keys, CancellationToken cancellationToken)</code></pre>
+                <pre><code class="lang-csharp hljs">public abstract Task&lt;IReadOnlyCollection&lt;bool&gt;&gt; RemoveAsync(IEntry entry, IEnumerable&lt;XName&gt; names, CancellationToken cancellationToken)</code></pre>
               </div>
               <h5 class="parameters">Parameters</h5>
               <table class="table table-bordered table-striped table-condensed">
@@ -618,13 +612,13 @@ protected IDeadPropertyFactory DeadPropertyFactory { get; }</code></pre>
                   <tr>
                     <td><a class="xref" href="FubarDev.WebDavServer.FileSystem.IEntry.html">IEntry</a></td>
                     <td><span class="parametername">entry</span></td>
-                    <td><p>The entry to remove the given property <span class="paramref">keys</span> from</p>
+                    <td><p>The entry to remove the given property <span class="paramref">names</span> from</p>
 </td>
                   </tr>
                   <tr>
-                    <td><a class="xref" href="https://msdn.microsoft.com/en-us/library/9eekhta0(v=vs.110).aspx">IEnumerable</a>&lt;<a class="xref" href="FubarDev.WebDavServer.Props.PropertyKey.html">PropertyKey</a>&gt;</td>
-                    <td><span class="parametername">keys</span></td>
-                    <td><p>The names and languages of the dead properties to remove from the given <span class="paramref">entry</span></p>
+                    <td><a class="xref" href="https://msdn.microsoft.com/en-us/library/9eekhta0(v=vs.110).aspx">IEnumerable</a>&lt;<a class="xref" href="https://msdn.microsoft.com/en-us/library/system.xml.linq.xname(v=vs.110).aspx">XName</a>&gt;</td>
+                    <td><span class="parametername">names</span></td>
+                    <td><p>The names of the dead properties to remove from the given <span class="paramref">entry</span></p>
 </td>
                   </tr>
                   <tr>
@@ -654,7 +648,7 @@ by this function.</p>
                 </tbody>
               </table>
               <h5 class="implements">Implements</h5>
-                  <div><a class="xref" href="FubarDev.WebDavServer.Props.Store.IPropertyStore.html#FubarDev_WebDavServer_Props_Store_IPropertyStore_RemoveAsync_FubarDev_WebDavServer_FileSystem_IEntry_System_Collections_Generic_IEnumerable_FubarDev_WebDavServer_Props_PropertyKey__System_Threading_CancellationToken_">IPropertyStore.RemoveAsync(IEntry, IEnumerable&lt;PropertyKey&gt;, CancellationToken)</a></div>
+                  <div><a class="xref" href="FubarDev.WebDavServer.Props.Store.IPropertyStore.html#FubarDev_WebDavServer_Props_Store_IPropertyStore_RemoveAsync_FubarDev_WebDavServer_FileSystem_IEntry_System_Collections_Generic_IEnumerable_System_Xml_Linq_XName__System_Threading_CancellationToken_">IPropertyStore.RemoveAsync(IEntry, IEnumerable&lt;XName&gt;, CancellationToken)</a></div>
               
               
               <a id="FubarDev_WebDavServer_Props_Store_PropertyStoreBase_RemoveAsync_" data-uid="FubarDev.WebDavServer.Props.Store.PropertyStoreBase.RemoveAsync*"></a>
@@ -711,13 +705,13 @@ by this function.</p>
               
               
               <a id="FubarDev_WebDavServer_Props_Store_PropertyStoreBase_RemoveAsync_" data-uid="FubarDev.WebDavServer.Props.Store.PropertyStoreBase.RemoveAsync*"></a>
-              <h4 id="FubarDev_WebDavServer_Props_Store_PropertyStoreBase_RemoveAsync_FubarDev_WebDavServer_FileSystem_IEntry_System_Xml_Linq_XName_System_String_System_Threading_CancellationToken_" data-uid="FubarDev.WebDavServer.Props.Store.PropertyStoreBase.RemoveAsync(FubarDev.WebDavServer.FileSystem.IEntry,System.Xml.Linq.XName,System.String,System.Threading.CancellationToken)">RemoveAsync(IEntry, XName, String, CancellationToken)</h4>
+              <h4 id="FubarDev_WebDavServer_Props_Store_PropertyStoreBase_RemoveAsync_FubarDev_WebDavServer_FileSystem_IEntry_System_Xml_Linq_XName_System_Threading_CancellationToken_" data-uid="FubarDev.WebDavServer.Props.Store.PropertyStoreBase.RemoveAsync(FubarDev.WebDavServer.FileSystem.IEntry,System.Xml.Linq.XName,System.Threading.CancellationToken)">RemoveAsync(IEntry, XName, CancellationToken)</h4>
               <div class="markdown level1 summary"><p>Removes a dead property with a given <span class="paramref">name</span> from the given <span class="paramref">entry</span></p>
 </div>
               <div class="markdown level1 conceptual"></div>
               <h5 class="decalaration">Declaration</h5>
               <div class="codewrapper">
-                <pre><code class="lang-csharp hljs">public virtual Task&lt;bool&gt; RemoveAsync(IEntry entry, XName name, string language, CancellationToken cancellationToken)</code></pre>
+                <pre><code class="lang-csharp hljs">public virtual Task&lt;bool&gt; RemoveAsync(IEntry entry, XName name, CancellationToken cancellationToken)</code></pre>
               </div>
               <h5 class="parameters">Parameters</h5>
               <table class="table table-bordered table-striped table-condensed">
@@ -739,12 +733,6 @@ by this function.</p>
                     <td><a class="xref" href="https://msdn.microsoft.com/en-us/library/system.xml.linq.xname(v=vs.110).aspx">XName</a></td>
                     <td><span class="parametername">name</span></td>
                     <td><p>The name of the parameter to remove from the <span class="paramref">entry</span></p>
-</td>
-                  </tr>
-                  <tr>
-                    <td><a class="xref" href="https://msdn.microsoft.com/en-us/library/system.string(v=vs.110).aspx">String</a></td>
-                    <td><span class="parametername">language</span></td>
-                    <td><p>The language for the property value</p>
 </td>
                   </tr>
                   <tr>
@@ -772,8 +760,8 @@ by this function.</p>
                 </tbody>
               </table>
               <h5 class="implements">Implements</h5>
-                  <div><a class="xref" href="FubarDev.WebDavServer.Props.Store.IPropertyStore.html#FubarDev_WebDavServer_Props_Store_IPropertyStore_RemoveAsync_FubarDev_WebDavServer_FileSystem_IEntry_System_Xml_Linq_XName_System_String_System_Threading_CancellationToken_">IPropertyStore.RemoveAsync(IEntry, XName, String, CancellationToken)</a></div>
-              <h5 id="FubarDev_WebDavServer_Props_Store_PropertyStoreBase_RemoveAsync_FubarDev_WebDavServer_FileSystem_IEntry_System_Xml_Linq_XName_System_String_System_Threading_CancellationToken__remarks">Remarks</h5>
+                  <div><a class="xref" href="FubarDev.WebDavServer.Props.Store.IPropertyStore.html#FubarDev_WebDavServer_Props_Store_IPropertyStore_RemoveAsync_FubarDev_WebDavServer_FileSystem_IEntry_System_Xml_Linq_XName_System_Threading_CancellationToken_">IPropertyStore.RemoveAsync(IEntry, XName, CancellationToken)</a></div>
+              <h5 id="FubarDev_WebDavServer_Props_Store_PropertyStoreBase_RemoveAsync_FubarDev_WebDavServer_FileSystem_IEntry_System_Xml_Linq_XName_System_Threading_CancellationToken__remarks">Remarks</h5>
               <div class="markdown level1 remarks"><p>A <a class="xref" href="FubarDev.WebDavServer.Props.Dead.GetETagProperty.html">GetETagProperty</a> cannot be removed by this function.</p>
 </div>
               

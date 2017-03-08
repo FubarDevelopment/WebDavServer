@@ -272,26 +272,20 @@ this lock was issued and when it expires.</p>
 <p><img src="../images/overview-locking.png" alt="screenshot"></p>
 <h1 id="xmllang-behaviour"><code>xml:lang</code> behaviour</h1>
 <p>The RFC4918 specification, section 4.4 explicitly states that it&#39;s not possible to define the same property
-twice on a single resource, but this would collide with the internationalization using <code>xml:lang</code>. This
-server currently allows the same property multiple times, when one property has a different <code>xml:lang</code>,
-which allows - for example - display names for multiple languages.</p>
+twice on a single resource. This means, that xml:lang isn&#39;t used to provide multi-language translations.
+Instead, it&#39;s just an indicator for the language of the properties value.</p>
 <p>The <code>xml:lang</code> property is handled in the following way:</p>
 <ul>
 <li>Live properties never return an <code>xml:lang</code></li>
-<li>The <code>getetag</code>, <code>getcontenttype</code>, and <code>getcontentlanguage</code> properties never return an <code>xml:lang</code></li>
-<li>The <code>xml:lang</code> attribute of a dead property element has precedence over
-the <code>xml:lang</code> property of the <code>DAV:props</code> element</li>
-<li>There may be more than one dead property with the same name when the dead
-properties have different <code>xml:lang</code> values</li>
-<li>A <code>PROPFIND</code> without an <code>xml:lang</code> returns all localized properties when there is no <code>prop</code> element
-requesting a property with the same name but with a different <code>xml:lang</code></li>
-<li>A <code>PROPPATCH</code> <code>set</code> without an <code>xml:lang</code> updates a property without an <code>xml:lang</code> or - when exactly
-one property with the given name exists - a property for another <code>xml:lang</code>.</li>
-<li>A <code>PROPPATCH</code> <code>remove</code> without an <code>xml:lang</code> removes the property for the exact <code>xml:lang</code> or for all
-languages when no property without an <code>xml:lang</code> attribute exists.</li>
+<li>The <code>getetag</code> property never returns an <code>xml:lang</code></li>
+<li>The <code>getcontenttype</code>, and <code>getcontentlanguage</code> may return an <code>xml:lang</code> even though it doesn&#39;t
+make sense for them</li>
+<li>The <code>xml:lang</code> attribute of a dead property element has precedence over  the <code>xml:lang</code> property
+of the <code>DAV:props</code> element</li>
+<li>A <code>PROPFIND</code> doesn&#39;t use <code>xml:lang</code> at all</li>
+<li>A <code>PROPPATCH</code> <code>set</code> respects the transmitted <code>xml:lang</code></li>
+<li>A <code>PROPPATCH</code> <code>remove</code> doesn&#39;t use <code>xml:lang</code></li>
 </ul>
-<p>The rules above ensure, that a client, which doesn&#39;t know about <code>xml:lang</code> can still access and modify
-properties with an <code>xml:lang</code> attribute.</p>
 
             </article>
           </div>

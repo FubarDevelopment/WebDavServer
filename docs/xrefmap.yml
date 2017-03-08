@@ -982,15 +982,15 @@ references:
   commentId: Overload:FubarDev.WebDavServer.Dispatchers.IWebDavClass.OptionsResponseHeaders
   fullName: FubarDev.WebDavServer.Dispatchers.IWebDavClass.OptionsResponseHeaders
   nameWithType: IWebDavClass.OptionsResponseHeaders
-- uid: FubarDev.WebDavServer.Dispatchers.IWebDavClass.TryCreateDeadProperty(FubarDev.WebDavServer.Props.Store.IPropertyStore,FubarDev.WebDavServer.FileSystem.IEntry,System.Xml.Linq.XName,System.String,FubarDev.WebDavServer.Props.Dead.IDeadProperty@)
-  name: TryCreateDeadProperty(IPropertyStore, IEntry, XName, String, out IDeadProperty)
-  href: api/FubarDev.WebDavServer.Dispatchers.IWebDavClass.html#FubarDev_WebDavServer_Dispatchers_IWebDavClass_TryCreateDeadProperty_FubarDev_WebDavServer_Props_Store_IPropertyStore_FubarDev_WebDavServer_FileSystem_IEntry_System_Xml_Linq_XName_System_String_FubarDev_WebDavServer_Props_Dead_IDeadProperty__
-  commentId: M:FubarDev.WebDavServer.Dispatchers.IWebDavClass.TryCreateDeadProperty(FubarDev.WebDavServer.Props.Store.IPropertyStore,FubarDev.WebDavServer.FileSystem.IEntry,System.Xml.Linq.XName,System.String,FubarDev.WebDavServer.Props.Dead.IDeadProperty@)
-  name.vb: TryCreateDeadProperty(IPropertyStore, IEntry, XName, String, ByRef IDeadProperty)
-  fullName: FubarDev.WebDavServer.Dispatchers.IWebDavClass.TryCreateDeadProperty(FubarDev.WebDavServer.Props.Store.IPropertyStore, FubarDev.WebDavServer.FileSystem.IEntry, System.Xml.Linq.XName, System.String, out FubarDev.WebDavServer.Props.Dead.IDeadProperty)
-  fullName.vb: FubarDev.WebDavServer.Dispatchers.IWebDavClass.TryCreateDeadProperty(FubarDev.WebDavServer.Props.Store.IPropertyStore, FubarDev.WebDavServer.FileSystem.IEntry, System.Xml.Linq.XName, System.String, ByRef FubarDev.WebDavServer.Props.Dead.IDeadProperty)
-  nameWithType: IWebDavClass.TryCreateDeadProperty(IPropertyStore, IEntry, XName, String, out IDeadProperty)
-  nameWithType.vb: IWebDavClass.TryCreateDeadProperty(IPropertyStore, IEntry, XName, String, ByRef IDeadProperty)
+- uid: FubarDev.WebDavServer.Dispatchers.IWebDavClass.TryCreateDeadProperty(FubarDev.WebDavServer.Props.Store.IPropertyStore,FubarDev.WebDavServer.FileSystem.IEntry,System.Xml.Linq.XName,FubarDev.WebDavServer.Props.Dead.IDeadProperty@)
+  name: TryCreateDeadProperty(IPropertyStore, IEntry, XName, out IDeadProperty)
+  href: api/FubarDev.WebDavServer.Dispatchers.IWebDavClass.html#FubarDev_WebDavServer_Dispatchers_IWebDavClass_TryCreateDeadProperty_FubarDev_WebDavServer_Props_Store_IPropertyStore_FubarDev_WebDavServer_FileSystem_IEntry_System_Xml_Linq_XName_FubarDev_WebDavServer_Props_Dead_IDeadProperty__
+  commentId: M:FubarDev.WebDavServer.Dispatchers.IWebDavClass.TryCreateDeadProperty(FubarDev.WebDavServer.Props.Store.IPropertyStore,FubarDev.WebDavServer.FileSystem.IEntry,System.Xml.Linq.XName,FubarDev.WebDavServer.Props.Dead.IDeadProperty@)
+  name.vb: TryCreateDeadProperty(IPropertyStore, IEntry, XName, ByRef IDeadProperty)
+  fullName: FubarDev.WebDavServer.Dispatchers.IWebDavClass.TryCreateDeadProperty(FubarDev.WebDavServer.Props.Store.IPropertyStore, FubarDev.WebDavServer.FileSystem.IEntry, System.Xml.Linq.XName, out FubarDev.WebDavServer.Props.Dead.IDeadProperty)
+  fullName.vb: FubarDev.WebDavServer.Dispatchers.IWebDavClass.TryCreateDeadProperty(FubarDev.WebDavServer.Props.Store.IPropertyStore, FubarDev.WebDavServer.FileSystem.IEntry, System.Xml.Linq.XName, ByRef FubarDev.WebDavServer.Props.Dead.IDeadProperty)
+  nameWithType: IWebDavClass.TryCreateDeadProperty(IPropertyStore, IEntry, XName, out IDeadProperty)
+  nameWithType.vb: IWebDavClass.TryCreateDeadProperty(IPropertyStore, IEntry, XName, ByRef IDeadProperty)
 - uid: FubarDev.WebDavServer.Dispatchers.IWebDavClass.TryCreateDeadProperty*
   name: TryCreateDeadProperty
   href: api/FubarDev.WebDavServer.Dispatchers.IWebDavClass.html#FubarDev_WebDavServer_Dispatchers_IWebDavClass_TryCreateDeadProperty_
@@ -1366,15 +1366,15 @@ references:
   commentId: Overload:FubarDev.WebDavServer.Dispatchers.WebDavDispatcherClass1.PutAsync
   fullName: FubarDev.WebDavServer.Dispatchers.WebDavDispatcherClass1.PutAsync
   nameWithType: WebDavDispatcherClass1.PutAsync
-- uid: FubarDev.WebDavServer.Dispatchers.WebDavDispatcherClass1.TryCreateDeadProperty(FubarDev.WebDavServer.Props.Store.IPropertyStore,FubarDev.WebDavServer.FileSystem.IEntry,System.Xml.Linq.XName,System.String,FubarDev.WebDavServer.Props.Dead.IDeadProperty@)
-  name: TryCreateDeadProperty(IPropertyStore, IEntry, XName, String, out IDeadProperty)
-  href: api/FubarDev.WebDavServer.Dispatchers.WebDavDispatcherClass1.html#FubarDev_WebDavServer_Dispatchers_WebDavDispatcherClass1_TryCreateDeadProperty_FubarDev_WebDavServer_Props_Store_IPropertyStore_FubarDev_WebDavServer_FileSystem_IEntry_System_Xml_Linq_XName_System_String_FubarDev_WebDavServer_Props_Dead_IDeadProperty__
-  commentId: M:FubarDev.WebDavServer.Dispatchers.WebDavDispatcherClass1.TryCreateDeadProperty(FubarDev.WebDavServer.Props.Store.IPropertyStore,FubarDev.WebDavServer.FileSystem.IEntry,System.Xml.Linq.XName,System.String,FubarDev.WebDavServer.Props.Dead.IDeadProperty@)
-  name.vb: TryCreateDeadProperty(IPropertyStore, IEntry, XName, String, ByRef IDeadProperty)
-  fullName: FubarDev.WebDavServer.Dispatchers.WebDavDispatcherClass1.TryCreateDeadProperty(FubarDev.WebDavServer.Props.Store.IPropertyStore, FubarDev.WebDavServer.FileSystem.IEntry, System.Xml.Linq.XName, System.String, out FubarDev.WebDavServer.Props.Dead.IDeadProperty)
-  fullName.vb: FubarDev.WebDavServer.Dispatchers.WebDavDispatcherClass1.TryCreateDeadProperty(FubarDev.WebDavServer.Props.Store.IPropertyStore, FubarDev.WebDavServer.FileSystem.IEntry, System.Xml.Linq.XName, System.String, ByRef FubarDev.WebDavServer.Props.Dead.IDeadProperty)
-  nameWithType: WebDavDispatcherClass1.TryCreateDeadProperty(IPropertyStore, IEntry, XName, String, out IDeadProperty)
-  nameWithType.vb: WebDavDispatcherClass1.TryCreateDeadProperty(IPropertyStore, IEntry, XName, String, ByRef IDeadProperty)
+- uid: FubarDev.WebDavServer.Dispatchers.WebDavDispatcherClass1.TryCreateDeadProperty(FubarDev.WebDavServer.Props.Store.IPropertyStore,FubarDev.WebDavServer.FileSystem.IEntry,System.Xml.Linq.XName,FubarDev.WebDavServer.Props.Dead.IDeadProperty@)
+  name: TryCreateDeadProperty(IPropertyStore, IEntry, XName, out IDeadProperty)
+  href: api/FubarDev.WebDavServer.Dispatchers.WebDavDispatcherClass1.html#FubarDev_WebDavServer_Dispatchers_WebDavDispatcherClass1_TryCreateDeadProperty_FubarDev_WebDavServer_Props_Store_IPropertyStore_FubarDev_WebDavServer_FileSystem_IEntry_System_Xml_Linq_XName_FubarDev_WebDavServer_Props_Dead_IDeadProperty__
+  commentId: M:FubarDev.WebDavServer.Dispatchers.WebDavDispatcherClass1.TryCreateDeadProperty(FubarDev.WebDavServer.Props.Store.IPropertyStore,FubarDev.WebDavServer.FileSystem.IEntry,System.Xml.Linq.XName,FubarDev.WebDavServer.Props.Dead.IDeadProperty@)
+  name.vb: TryCreateDeadProperty(IPropertyStore, IEntry, XName, ByRef IDeadProperty)
+  fullName: FubarDev.WebDavServer.Dispatchers.WebDavDispatcherClass1.TryCreateDeadProperty(FubarDev.WebDavServer.Props.Store.IPropertyStore, FubarDev.WebDavServer.FileSystem.IEntry, System.Xml.Linq.XName, out FubarDev.WebDavServer.Props.Dead.IDeadProperty)
+  fullName.vb: FubarDev.WebDavServer.Dispatchers.WebDavDispatcherClass1.TryCreateDeadProperty(FubarDev.WebDavServer.Props.Store.IPropertyStore, FubarDev.WebDavServer.FileSystem.IEntry, System.Xml.Linq.XName, ByRef FubarDev.WebDavServer.Props.Dead.IDeadProperty)
+  nameWithType: WebDavDispatcherClass1.TryCreateDeadProperty(IPropertyStore, IEntry, XName, out IDeadProperty)
+  nameWithType.vb: WebDavDispatcherClass1.TryCreateDeadProperty(IPropertyStore, IEntry, XName, ByRef IDeadProperty)
 - uid: FubarDev.WebDavServer.Dispatchers.WebDavDispatcherClass1.TryCreateDeadProperty*
   name: TryCreateDeadProperty
   href: api/FubarDev.WebDavServer.Dispatchers.WebDavDispatcherClass1.html#FubarDev_WebDavServer_Dispatchers_WebDavDispatcherClass1_TryCreateDeadProperty_
@@ -1504,15 +1504,15 @@ references:
   commentId: Overload:FubarDev.WebDavServer.Dispatchers.WebDavDispatcherClass2.RefreshLockAsync
   fullName: FubarDev.WebDavServer.Dispatchers.WebDavDispatcherClass2.RefreshLockAsync
   nameWithType: WebDavDispatcherClass2.RefreshLockAsync
-- uid: FubarDev.WebDavServer.Dispatchers.WebDavDispatcherClass2.TryCreateDeadProperty(FubarDev.WebDavServer.Props.Store.IPropertyStore,FubarDev.WebDavServer.FileSystem.IEntry,System.Xml.Linq.XName,System.String,FubarDev.WebDavServer.Props.Dead.IDeadProperty@)
-  name: TryCreateDeadProperty(IPropertyStore, IEntry, XName, String, out IDeadProperty)
-  href: api/FubarDev.WebDavServer.Dispatchers.WebDavDispatcherClass2.html#FubarDev_WebDavServer_Dispatchers_WebDavDispatcherClass2_TryCreateDeadProperty_FubarDev_WebDavServer_Props_Store_IPropertyStore_FubarDev_WebDavServer_FileSystem_IEntry_System_Xml_Linq_XName_System_String_FubarDev_WebDavServer_Props_Dead_IDeadProperty__
-  commentId: M:FubarDev.WebDavServer.Dispatchers.WebDavDispatcherClass2.TryCreateDeadProperty(FubarDev.WebDavServer.Props.Store.IPropertyStore,FubarDev.WebDavServer.FileSystem.IEntry,System.Xml.Linq.XName,System.String,FubarDev.WebDavServer.Props.Dead.IDeadProperty@)
-  name.vb: TryCreateDeadProperty(IPropertyStore, IEntry, XName, String, ByRef IDeadProperty)
-  fullName: FubarDev.WebDavServer.Dispatchers.WebDavDispatcherClass2.TryCreateDeadProperty(FubarDev.WebDavServer.Props.Store.IPropertyStore, FubarDev.WebDavServer.FileSystem.IEntry, System.Xml.Linq.XName, System.String, out FubarDev.WebDavServer.Props.Dead.IDeadProperty)
-  fullName.vb: FubarDev.WebDavServer.Dispatchers.WebDavDispatcherClass2.TryCreateDeadProperty(FubarDev.WebDavServer.Props.Store.IPropertyStore, FubarDev.WebDavServer.FileSystem.IEntry, System.Xml.Linq.XName, System.String, ByRef FubarDev.WebDavServer.Props.Dead.IDeadProperty)
-  nameWithType: WebDavDispatcherClass2.TryCreateDeadProperty(IPropertyStore, IEntry, XName, String, out IDeadProperty)
-  nameWithType.vb: WebDavDispatcherClass2.TryCreateDeadProperty(IPropertyStore, IEntry, XName, String, ByRef IDeadProperty)
+- uid: FubarDev.WebDavServer.Dispatchers.WebDavDispatcherClass2.TryCreateDeadProperty(FubarDev.WebDavServer.Props.Store.IPropertyStore,FubarDev.WebDavServer.FileSystem.IEntry,System.Xml.Linq.XName,FubarDev.WebDavServer.Props.Dead.IDeadProperty@)
+  name: TryCreateDeadProperty(IPropertyStore, IEntry, XName, out IDeadProperty)
+  href: api/FubarDev.WebDavServer.Dispatchers.WebDavDispatcherClass2.html#FubarDev_WebDavServer_Dispatchers_WebDavDispatcherClass2_TryCreateDeadProperty_FubarDev_WebDavServer_Props_Store_IPropertyStore_FubarDev_WebDavServer_FileSystem_IEntry_System_Xml_Linq_XName_FubarDev_WebDavServer_Props_Dead_IDeadProperty__
+  commentId: M:FubarDev.WebDavServer.Dispatchers.WebDavDispatcherClass2.TryCreateDeadProperty(FubarDev.WebDavServer.Props.Store.IPropertyStore,FubarDev.WebDavServer.FileSystem.IEntry,System.Xml.Linq.XName,FubarDev.WebDavServer.Props.Dead.IDeadProperty@)
+  name.vb: TryCreateDeadProperty(IPropertyStore, IEntry, XName, ByRef IDeadProperty)
+  fullName: FubarDev.WebDavServer.Dispatchers.WebDavDispatcherClass2.TryCreateDeadProperty(FubarDev.WebDavServer.Props.Store.IPropertyStore, FubarDev.WebDavServer.FileSystem.IEntry, System.Xml.Linq.XName, out FubarDev.WebDavServer.Props.Dead.IDeadProperty)
+  fullName.vb: FubarDev.WebDavServer.Dispatchers.WebDavDispatcherClass2.TryCreateDeadProperty(FubarDev.WebDavServer.Props.Store.IPropertyStore, FubarDev.WebDavServer.FileSystem.IEntry, System.Xml.Linq.XName, ByRef FubarDev.WebDavServer.Props.Dead.IDeadProperty)
+  nameWithType: WebDavDispatcherClass2.TryCreateDeadProperty(IPropertyStore, IEntry, XName, out IDeadProperty)
+  nameWithType.vb: WebDavDispatcherClass2.TryCreateDeadProperty(IPropertyStore, IEntry, XName, ByRef IDeadProperty)
 - uid: FubarDev.WebDavServer.Dispatchers.WebDavDispatcherClass2.TryCreateDeadProperty*
   name: TryCreateDeadProperty
   href: api/FubarDev.WebDavServer.Dispatchers.WebDavDispatcherClass2.html#FubarDev_WebDavServer_Dispatchers_WebDavDispatcherClass2_TryCreateDeadProperty_
@@ -11846,12 +11846,12 @@ references:
   commentId: M:FubarDev.WebDavServer.Props.Dead.DeadProperty.#ctor(FubarDev.WebDavServer.Props.Store.IPropertyStore,FubarDev.WebDavServer.FileSystem.IEntry,System.Xml.Linq.XElement)
   fullName: FubarDev.WebDavServer.Props.Dead.DeadProperty.DeadProperty(FubarDev.WebDavServer.Props.Store.IPropertyStore, FubarDev.WebDavServer.FileSystem.IEntry, System.Xml.Linq.XElement)
   nameWithType: DeadProperty.DeadProperty(IPropertyStore, IEntry, XElement)
-- uid: FubarDev.WebDavServer.Props.Dead.DeadProperty.#ctor(FubarDev.WebDavServer.Props.Store.IPropertyStore,FubarDev.WebDavServer.FileSystem.IEntry,System.Xml.Linq.XName,System.String)
-  name: DeadProperty(IPropertyStore, IEntry, XName, String)
-  href: api/FubarDev.WebDavServer.Props.Dead.DeadProperty.html#FubarDev_WebDavServer_Props_Dead_DeadProperty__ctor_FubarDev_WebDavServer_Props_Store_IPropertyStore_FubarDev_WebDavServer_FileSystem_IEntry_System_Xml_Linq_XName_System_String_
-  commentId: M:FubarDev.WebDavServer.Props.Dead.DeadProperty.#ctor(FubarDev.WebDavServer.Props.Store.IPropertyStore,FubarDev.WebDavServer.FileSystem.IEntry,System.Xml.Linq.XName,System.String)
-  fullName: FubarDev.WebDavServer.Props.Dead.DeadProperty.DeadProperty(FubarDev.WebDavServer.Props.Store.IPropertyStore, FubarDev.WebDavServer.FileSystem.IEntry, System.Xml.Linq.XName, System.String)
-  nameWithType: DeadProperty.DeadProperty(IPropertyStore, IEntry, XName, String)
+- uid: FubarDev.WebDavServer.Props.Dead.DeadProperty.#ctor(FubarDev.WebDavServer.Props.Store.IPropertyStore,FubarDev.WebDavServer.FileSystem.IEntry,System.Xml.Linq.XName)
+  name: DeadProperty(IPropertyStore, IEntry, XName)
+  href: api/FubarDev.WebDavServer.Props.Dead.DeadProperty.html#FubarDev_WebDavServer_Props_Dead_DeadProperty__ctor_FubarDev_WebDavServer_Props_Store_IPropertyStore_FubarDev_WebDavServer_FileSystem_IEntry_System_Xml_Linq_XName_
+  commentId: M:FubarDev.WebDavServer.Props.Dead.DeadProperty.#ctor(FubarDev.WebDavServer.Props.Store.IPropertyStore,FubarDev.WebDavServer.FileSystem.IEntry,System.Xml.Linq.XName)
+  fullName: FubarDev.WebDavServer.Props.Dead.DeadProperty.DeadProperty(FubarDev.WebDavServer.Props.Store.IPropertyStore, FubarDev.WebDavServer.FileSystem.IEntry, System.Xml.Linq.XName)
+  nameWithType: DeadProperty.DeadProperty(IPropertyStore, IEntry, XName)
 - uid: FubarDev.WebDavServer.Props.Dead.DeadProperty.#ctor*
   name: DeadProperty
   href: api/FubarDev.WebDavServer.Props.Dead.DeadProperty.html#FubarDev_WebDavServer_Props_Dead_DeadProperty__ctor_
@@ -11966,12 +11966,12 @@ references:
   commentId: M:FubarDev.WebDavServer.Props.Dead.DeadPropertyFactory.Create(FubarDev.WebDavServer.Props.Store.IPropertyStore,FubarDev.WebDavServer.FileSystem.IEntry,System.Xml.Linq.XElement)
   fullName: FubarDev.WebDavServer.Props.Dead.DeadPropertyFactory.Create(FubarDev.WebDavServer.Props.Store.IPropertyStore, FubarDev.WebDavServer.FileSystem.IEntry, System.Xml.Linq.XElement)
   nameWithType: DeadPropertyFactory.Create(IPropertyStore, IEntry, XElement)
-- uid: FubarDev.WebDavServer.Props.Dead.DeadPropertyFactory.Create(FubarDev.WebDavServer.Props.Store.IPropertyStore,FubarDev.WebDavServer.FileSystem.IEntry,System.Xml.Linq.XName,System.String)
-  name: Create(IPropertyStore, IEntry, XName, String)
-  href: api/FubarDev.WebDavServer.Props.Dead.DeadPropertyFactory.html#FubarDev_WebDavServer_Props_Dead_DeadPropertyFactory_Create_FubarDev_WebDavServer_Props_Store_IPropertyStore_FubarDev_WebDavServer_FileSystem_IEntry_System_Xml_Linq_XName_System_String_
-  commentId: M:FubarDev.WebDavServer.Props.Dead.DeadPropertyFactory.Create(FubarDev.WebDavServer.Props.Store.IPropertyStore,FubarDev.WebDavServer.FileSystem.IEntry,System.Xml.Linq.XName,System.String)
-  fullName: FubarDev.WebDavServer.Props.Dead.DeadPropertyFactory.Create(FubarDev.WebDavServer.Props.Store.IPropertyStore, FubarDev.WebDavServer.FileSystem.IEntry, System.Xml.Linq.XName, System.String)
-  nameWithType: DeadPropertyFactory.Create(IPropertyStore, IEntry, XName, String)
+- uid: FubarDev.WebDavServer.Props.Dead.DeadPropertyFactory.Create(FubarDev.WebDavServer.Props.Store.IPropertyStore,FubarDev.WebDavServer.FileSystem.IEntry,System.Xml.Linq.XName)
+  name: Create(IPropertyStore, IEntry, XName)
+  href: api/FubarDev.WebDavServer.Props.Dead.DeadPropertyFactory.html#FubarDev_WebDavServer_Props_Dead_DeadPropertyFactory_Create_FubarDev_WebDavServer_Props_Store_IPropertyStore_FubarDev_WebDavServer_FileSystem_IEntry_System_Xml_Linq_XName_
+  commentId: M:FubarDev.WebDavServer.Props.Dead.DeadPropertyFactory.Create(FubarDev.WebDavServer.Props.Store.IPropertyStore,FubarDev.WebDavServer.FileSystem.IEntry,System.Xml.Linq.XName)
+  fullName: FubarDev.WebDavServer.Props.Dead.DeadPropertyFactory.Create(FubarDev.WebDavServer.Props.Store.IPropertyStore, FubarDev.WebDavServer.FileSystem.IEntry, System.Xml.Linq.XName)
+  nameWithType: DeadPropertyFactory.Create(IPropertyStore, IEntry, XName)
 - uid: FubarDev.WebDavServer.Props.Dead.DeadPropertyFactory.Create*
   name: Create
   href: api/FubarDev.WebDavServer.Props.Dead.DeadPropertyFactory.html#FubarDev_WebDavServer_Props_Dead_DeadPropertyFactory_Create_
@@ -12002,15 +12002,15 @@ references:
   commentId: T:FubarDev.WebDavServer.Props.Dead.DisplayNameProperty
   fullName: FubarDev.WebDavServer.Props.Dead.DisplayNameProperty
   nameWithType: DisplayNameProperty
-- uid: FubarDev.WebDavServer.Props.Dead.DisplayNameProperty.#ctor(FubarDev.WebDavServer.FileSystem.IEntry,System.String,FubarDev.WebDavServer.Props.Store.IPropertyStore,System.Boolean,System.Nullable{System.Int32})
-  name: DisplayNameProperty(IEntry, String, IPropertyStore, Boolean, Nullable<Int32>)
-  href: api/FubarDev.WebDavServer.Props.Dead.DisplayNameProperty.html#FubarDev_WebDavServer_Props_Dead_DisplayNameProperty__ctor_FubarDev_WebDavServer_FileSystem_IEntry_System_String_FubarDev_WebDavServer_Props_Store_IPropertyStore_System_Boolean_System_Nullable_System_Int32__
-  commentId: M:FubarDev.WebDavServer.Props.Dead.DisplayNameProperty.#ctor(FubarDev.WebDavServer.FileSystem.IEntry,System.String,FubarDev.WebDavServer.Props.Store.IPropertyStore,System.Boolean,System.Nullable{System.Int32})
-  name.vb: DisplayNameProperty(IEntry, String, IPropertyStore, Boolean, Nullable(Of Int32))
-  fullName: FubarDev.WebDavServer.Props.Dead.DisplayNameProperty.DisplayNameProperty(FubarDev.WebDavServer.FileSystem.IEntry, System.String, FubarDev.WebDavServer.Props.Store.IPropertyStore, System.Boolean, System.Nullable<System.Int32>)
-  fullName.vb: FubarDev.WebDavServer.Props.Dead.DisplayNameProperty.DisplayNameProperty(FubarDev.WebDavServer.FileSystem.IEntry, System.String, FubarDev.WebDavServer.Props.Store.IPropertyStore, System.Boolean, System.Nullable(Of System.Int32))
-  nameWithType: DisplayNameProperty.DisplayNameProperty(IEntry, String, IPropertyStore, Boolean, Nullable<Int32>)
-  nameWithType.vb: DisplayNameProperty.DisplayNameProperty(IEntry, String, IPropertyStore, Boolean, Nullable(Of Int32))
+- uid: FubarDev.WebDavServer.Props.Dead.DisplayNameProperty.#ctor(FubarDev.WebDavServer.FileSystem.IEntry,FubarDev.WebDavServer.Props.Store.IPropertyStore,System.Boolean,System.Nullable{System.Int32})
+  name: DisplayNameProperty(IEntry, IPropertyStore, Boolean, Nullable<Int32>)
+  href: api/FubarDev.WebDavServer.Props.Dead.DisplayNameProperty.html#FubarDev_WebDavServer_Props_Dead_DisplayNameProperty__ctor_FubarDev_WebDavServer_FileSystem_IEntry_FubarDev_WebDavServer_Props_Store_IPropertyStore_System_Boolean_System_Nullable_System_Int32__
+  commentId: M:FubarDev.WebDavServer.Props.Dead.DisplayNameProperty.#ctor(FubarDev.WebDavServer.FileSystem.IEntry,FubarDev.WebDavServer.Props.Store.IPropertyStore,System.Boolean,System.Nullable{System.Int32})
+  name.vb: DisplayNameProperty(IEntry, IPropertyStore, Boolean, Nullable(Of Int32))
+  fullName: FubarDev.WebDavServer.Props.Dead.DisplayNameProperty.DisplayNameProperty(FubarDev.WebDavServer.FileSystem.IEntry, FubarDev.WebDavServer.Props.Store.IPropertyStore, System.Boolean, System.Nullable<System.Int32>)
+  fullName.vb: FubarDev.WebDavServer.Props.Dead.DisplayNameProperty.DisplayNameProperty(FubarDev.WebDavServer.FileSystem.IEntry, FubarDev.WebDavServer.Props.Store.IPropertyStore, System.Boolean, System.Nullable(Of System.Int32))
+  nameWithType: DisplayNameProperty.DisplayNameProperty(IEntry, IPropertyStore, Boolean, Nullable<Int32>)
+  nameWithType.vb: DisplayNameProperty.DisplayNameProperty(IEntry, IPropertyStore, Boolean, Nullable(Of Int32))
 - uid: FubarDev.WebDavServer.Props.Dead.DisplayNameProperty.#ctor*
   name: DisplayNameProperty
   href: api/FubarDev.WebDavServer.Props.Dead.DisplayNameProperty.html#FubarDev_WebDavServer_Props_Dead_DisplayNameProperty__ctor_
@@ -12338,12 +12338,12 @@ references:
   commentId: M:FubarDev.WebDavServer.Props.Dead.IDeadPropertyFactory.Create(FubarDev.WebDavServer.Props.Store.IPropertyStore,FubarDev.WebDavServer.FileSystem.IEntry,System.Xml.Linq.XElement)
   fullName: FubarDev.WebDavServer.Props.Dead.IDeadPropertyFactory.Create(FubarDev.WebDavServer.Props.Store.IPropertyStore, FubarDev.WebDavServer.FileSystem.IEntry, System.Xml.Linq.XElement)
   nameWithType: IDeadPropertyFactory.Create(IPropertyStore, IEntry, XElement)
-- uid: FubarDev.WebDavServer.Props.Dead.IDeadPropertyFactory.Create(FubarDev.WebDavServer.Props.Store.IPropertyStore,FubarDev.WebDavServer.FileSystem.IEntry,System.Xml.Linq.XName,System.String)
-  name: Create(IPropertyStore, IEntry, XName, String)
-  href: api/FubarDev.WebDavServer.Props.Dead.IDeadPropertyFactory.html#FubarDev_WebDavServer_Props_Dead_IDeadPropertyFactory_Create_FubarDev_WebDavServer_Props_Store_IPropertyStore_FubarDev_WebDavServer_FileSystem_IEntry_System_Xml_Linq_XName_System_String_
-  commentId: M:FubarDev.WebDavServer.Props.Dead.IDeadPropertyFactory.Create(FubarDev.WebDavServer.Props.Store.IPropertyStore,FubarDev.WebDavServer.FileSystem.IEntry,System.Xml.Linq.XName,System.String)
-  fullName: FubarDev.WebDavServer.Props.Dead.IDeadPropertyFactory.Create(FubarDev.WebDavServer.Props.Store.IPropertyStore, FubarDev.WebDavServer.FileSystem.IEntry, System.Xml.Linq.XName, System.String)
-  nameWithType: IDeadPropertyFactory.Create(IPropertyStore, IEntry, XName, String)
+- uid: FubarDev.WebDavServer.Props.Dead.IDeadPropertyFactory.Create(FubarDev.WebDavServer.Props.Store.IPropertyStore,FubarDev.WebDavServer.FileSystem.IEntry,System.Xml.Linq.XName)
+  name: Create(IPropertyStore, IEntry, XName)
+  href: api/FubarDev.WebDavServer.Props.Dead.IDeadPropertyFactory.html#FubarDev_WebDavServer_Props_Dead_IDeadPropertyFactory_Create_FubarDev_WebDavServer_Props_Store_IPropertyStore_FubarDev_WebDavServer_FileSystem_IEntry_System_Xml_Linq_XName_
+  commentId: M:FubarDev.WebDavServer.Props.Dead.IDeadPropertyFactory.Create(FubarDev.WebDavServer.Props.Store.IPropertyStore,FubarDev.WebDavServer.FileSystem.IEntry,System.Xml.Linq.XName)
+  fullName: FubarDev.WebDavServer.Props.Dead.IDeadPropertyFactory.Create(FubarDev.WebDavServer.Props.Store.IPropertyStore, FubarDev.WebDavServer.FileSystem.IEntry, System.Xml.Linq.XName)
+  nameWithType: IDeadPropertyFactory.Create(IPropertyStore, IEntry, XName)
 - uid: FubarDev.WebDavServer.Props.Dead.IDeadPropertyFactory.Create*
   name: Create
   href: api/FubarDev.WebDavServer.Props.Dead.IDeadPropertyFactory.html#FubarDev_WebDavServer_Props_Dead_IDeadPropertyFactory_Create_
@@ -12539,12 +12539,12 @@ references:
   commentId: T:FubarDev.WebDavServer.Props.Filters.MissingProperty
   fullName: FubarDev.WebDavServer.Props.Filters.MissingProperty
   nameWithType: MissingProperty
-- uid: FubarDev.WebDavServer.Props.Filters.MissingProperty.#ctor(FubarDev.WebDavServer.Model.WebDavStatusCode,FubarDev.WebDavServer.Props.PropertyKey)
-  name: MissingProperty(WebDavStatusCode, PropertyKey)
-  href: api/FubarDev.WebDavServer.Props.Filters.MissingProperty.html#FubarDev_WebDavServer_Props_Filters_MissingProperty__ctor_FubarDev_WebDavServer_Model_WebDavStatusCode_FubarDev_WebDavServer_Props_PropertyKey_
-  commentId: M:FubarDev.WebDavServer.Props.Filters.MissingProperty.#ctor(FubarDev.WebDavServer.Model.WebDavStatusCode,FubarDev.WebDavServer.Props.PropertyKey)
-  fullName: FubarDev.WebDavServer.Props.Filters.MissingProperty.MissingProperty(FubarDev.WebDavServer.Model.WebDavStatusCode, FubarDev.WebDavServer.Props.PropertyKey)
-  nameWithType: MissingProperty.MissingProperty(WebDavStatusCode, PropertyKey)
+- uid: FubarDev.WebDavServer.Props.Filters.MissingProperty.#ctor(FubarDev.WebDavServer.Model.WebDavStatusCode,System.Xml.Linq.XName)
+  name: MissingProperty(WebDavStatusCode, XName)
+  href: api/FubarDev.WebDavServer.Props.Filters.MissingProperty.html#FubarDev_WebDavServer_Props_Filters_MissingProperty__ctor_FubarDev_WebDavServer_Model_WebDavStatusCode_System_Xml_Linq_XName_
+  commentId: M:FubarDev.WebDavServer.Props.Filters.MissingProperty.#ctor(FubarDev.WebDavServer.Model.WebDavStatusCode,System.Xml.Linq.XName)
+  fullName: FubarDev.WebDavServer.Props.Filters.MissingProperty.MissingProperty(FubarDev.WebDavServer.Model.WebDavStatusCode, System.Xml.Linq.XName)
+  nameWithType: MissingProperty.MissingProperty(WebDavStatusCode, XName)
 - uid: FubarDev.WebDavServer.Props.Filters.MissingProperty.#ctor*
   name: MissingProperty
   href: api/FubarDev.WebDavServer.Props.Filters.MissingProperty.html#FubarDev_WebDavServer_Props_Filters_MissingProperty__ctor_
@@ -13508,174 +13508,6 @@ references:
   commentId: F:FubarDev.WebDavServer.Props.Live.SupportedLockProperty.PropertyName
   fullName: FubarDev.WebDavServer.Props.Live.SupportedLockProperty.PropertyName
   nameWithType: SupportedLockProperty.PropertyName
-- uid: FubarDev.WebDavServer.Props.PropertyKey
-  name: PropertyKey
-  href: api/FubarDev.WebDavServer.Props.PropertyKey.html
-  commentId: T:FubarDev.WebDavServer.Props.PropertyKey
-  fullName: FubarDev.WebDavServer.Props.PropertyKey
-  nameWithType: PropertyKey
-- uid: FubarDev.WebDavServer.Props.PropertyKey.#ctor(FubarDev.WebDavServer.Props.IProperty)
-  name: PropertyKey(IProperty)
-  href: api/FubarDev.WebDavServer.Props.PropertyKey.html#FubarDev_WebDavServer_Props_PropertyKey__ctor_FubarDev_WebDavServer_Props_IProperty_
-  commentId: M:FubarDev.WebDavServer.Props.PropertyKey.#ctor(FubarDev.WebDavServer.Props.IProperty)
-  fullName: FubarDev.WebDavServer.Props.PropertyKey.PropertyKey(FubarDev.WebDavServer.Props.IProperty)
-  nameWithType: PropertyKey.PropertyKey(IProperty)
-- uid: FubarDev.WebDavServer.Props.PropertyKey.#ctor(System.Xml.Linq.XElement)
-  name: PropertyKey(XElement)
-  href: api/FubarDev.WebDavServer.Props.PropertyKey.html#FubarDev_WebDavServer_Props_PropertyKey__ctor_System_Xml_Linq_XElement_
-  commentId: M:FubarDev.WebDavServer.Props.PropertyKey.#ctor(System.Xml.Linq.XElement)
-  fullName: FubarDev.WebDavServer.Props.PropertyKey.PropertyKey(System.Xml.Linq.XElement)
-  nameWithType: PropertyKey.PropertyKey(XElement)
-- uid: FubarDev.WebDavServer.Props.PropertyKey.#ctor(System.Xml.Linq.XName,System.String)
-  name: PropertyKey(XName, String)
-  href: api/FubarDev.WebDavServer.Props.PropertyKey.html#FubarDev_WebDavServer_Props_PropertyKey__ctor_System_Xml_Linq_XName_System_String_
-  commentId: M:FubarDev.WebDavServer.Props.PropertyKey.#ctor(System.Xml.Linq.XName,System.String)
-  fullName: FubarDev.WebDavServer.Props.PropertyKey.PropertyKey(System.Xml.Linq.XName, System.String)
-  nameWithType: PropertyKey.PropertyKey(XName, String)
-- uid: FubarDev.WebDavServer.Props.PropertyKey.#ctor*
-  name: PropertyKey
-  href: api/FubarDev.WebDavServer.Props.PropertyKey.html#FubarDev_WebDavServer_Props_PropertyKey__ctor_
-  commentId: Overload:FubarDev.WebDavServer.Props.PropertyKey.#ctor
-  fullName: FubarDev.WebDavServer.Props.PropertyKey.PropertyKey
-  nameWithType: PropertyKey.PropertyKey
-- uid: FubarDev.WebDavServer.Props.PropertyKey.CreateEmptyElement
-  name: CreateEmptyElement()
-  href: api/FubarDev.WebDavServer.Props.PropertyKey.html#FubarDev_WebDavServer_Props_PropertyKey_CreateEmptyElement
-  commentId: M:FubarDev.WebDavServer.Props.PropertyKey.CreateEmptyElement
-  fullName: FubarDev.WebDavServer.Props.PropertyKey.CreateEmptyElement()
-  nameWithType: PropertyKey.CreateEmptyElement()
-- uid: FubarDev.WebDavServer.Props.PropertyKey.CreateEmptyElement*
-  name: CreateEmptyElement
-  href: api/FubarDev.WebDavServer.Props.PropertyKey.html#FubarDev_WebDavServer_Props_PropertyKey_CreateEmptyElement_
-  commentId: Overload:FubarDev.WebDavServer.Props.PropertyKey.CreateEmptyElement
-  fullName: FubarDev.WebDavServer.Props.PropertyKey.CreateEmptyElement
-  nameWithType: PropertyKey.CreateEmptyElement
-- uid: FubarDev.WebDavServer.Props.PropertyKey.ElementLanguage
-  name: ElementLanguage
-  href: api/FubarDev.WebDavServer.Props.PropertyKey.html#FubarDev_WebDavServer_Props_PropertyKey_ElementLanguage
-  commentId: P:FubarDev.WebDavServer.Props.PropertyKey.ElementLanguage
-  fullName: FubarDev.WebDavServer.Props.PropertyKey.ElementLanguage
-  nameWithType: PropertyKey.ElementLanguage
-- uid: FubarDev.WebDavServer.Props.PropertyKey.ElementLanguage*
-  name: ElementLanguage
-  href: api/FubarDev.WebDavServer.Props.PropertyKey.html#FubarDev_WebDavServer_Props_PropertyKey_ElementLanguage_
-  commentId: Overload:FubarDev.WebDavServer.Props.PropertyKey.ElementLanguage
-  fullName: FubarDev.WebDavServer.Props.PropertyKey.ElementLanguage
-  nameWithType: PropertyKey.ElementLanguage
-- uid: FubarDev.WebDavServer.Props.PropertyKey.Equals(FubarDev.WebDavServer.Props.PropertyKey)
-  name: Equals(PropertyKey)
-  href: api/FubarDev.WebDavServer.Props.PropertyKey.html#FubarDev_WebDavServer_Props_PropertyKey_Equals_FubarDev_WebDavServer_Props_PropertyKey_
-  commentId: M:FubarDev.WebDavServer.Props.PropertyKey.Equals(FubarDev.WebDavServer.Props.PropertyKey)
-  fullName: FubarDev.WebDavServer.Props.PropertyKey.Equals(FubarDev.WebDavServer.Props.PropertyKey)
-  nameWithType: PropertyKey.Equals(PropertyKey)
-- uid: FubarDev.WebDavServer.Props.PropertyKey.Equals(System.Object)
-  name: Equals(Object)
-  href: api/FubarDev.WebDavServer.Props.PropertyKey.html#FubarDev_WebDavServer_Props_PropertyKey_Equals_System_Object_
-  commentId: M:FubarDev.WebDavServer.Props.PropertyKey.Equals(System.Object)
-  fullName: FubarDev.WebDavServer.Props.PropertyKey.Equals(System.Object)
-  nameWithType: PropertyKey.Equals(Object)
-- uid: FubarDev.WebDavServer.Props.PropertyKey.Equals*
-  name: Equals
-  href: api/FubarDev.WebDavServer.Props.PropertyKey.html#FubarDev_WebDavServer_Props_PropertyKey_Equals_
-  commentId: Overload:FubarDev.WebDavServer.Props.PropertyKey.Equals
-  fullName: FubarDev.WebDavServer.Props.PropertyKey.Equals
-  nameWithType: PropertyKey.Equals
-- uid: FubarDev.WebDavServer.Props.PropertyKey.GetHashCode
-  name: GetHashCode()
-  href: api/FubarDev.WebDavServer.Props.PropertyKey.html#FubarDev_WebDavServer_Props_PropertyKey_GetHashCode
-  commentId: M:FubarDev.WebDavServer.Props.PropertyKey.GetHashCode
-  fullName: FubarDev.WebDavServer.Props.PropertyKey.GetHashCode()
-  nameWithType: PropertyKey.GetHashCode()
-- uid: FubarDev.WebDavServer.Props.PropertyKey.GetHashCode*
-  name: GetHashCode
-  href: api/FubarDev.WebDavServer.Props.PropertyKey.html#FubarDev_WebDavServer_Props_PropertyKey_GetHashCode_
-  commentId: Overload:FubarDev.WebDavServer.Props.PropertyKey.GetHashCode
-  fullName: FubarDev.WebDavServer.Props.PropertyKey.GetHashCode
-  nameWithType: PropertyKey.GetHashCode
-- uid: FubarDev.WebDavServer.Props.PropertyKey.Language
-  name: Language
-  href: api/FubarDev.WebDavServer.Props.PropertyKey.html#FubarDev_WebDavServer_Props_PropertyKey_Language
-  commentId: P:FubarDev.WebDavServer.Props.PropertyKey.Language
-  fullName: FubarDev.WebDavServer.Props.PropertyKey.Language
-  nameWithType: PropertyKey.Language
-- uid: FubarDev.WebDavServer.Props.PropertyKey.Language*
-  name: Language
-  href: api/FubarDev.WebDavServer.Props.PropertyKey.html#FubarDev_WebDavServer_Props_PropertyKey_Language_
-  commentId: Overload:FubarDev.WebDavServer.Props.PropertyKey.Language
-  fullName: FubarDev.WebDavServer.Props.PropertyKey.Language
-  nameWithType: PropertyKey.Language
-- uid: FubarDev.WebDavServer.Props.PropertyKey.Name
-  name: Name
-  href: api/FubarDev.WebDavServer.Props.PropertyKey.html#FubarDev_WebDavServer_Props_PropertyKey_Name
-  commentId: P:FubarDev.WebDavServer.Props.PropertyKey.Name
-  fullName: FubarDev.WebDavServer.Props.PropertyKey.Name
-  nameWithType: PropertyKey.Name
-- uid: FubarDev.WebDavServer.Props.PropertyKey.Name*
-  name: Name
-  href: api/FubarDev.WebDavServer.Props.PropertyKey.html#FubarDev_WebDavServer_Props_PropertyKey_Name_
-  commentId: Overload:FubarDev.WebDavServer.Props.PropertyKey.Name
-  fullName: FubarDev.WebDavServer.Props.PropertyKey.Name
-  nameWithType: PropertyKey.Name
-- uid: FubarDev.WebDavServer.Props.PropertyKey.NoLanguage
-  name: NoLanguage
-  href: api/FubarDev.WebDavServer.Props.PropertyKey.html#FubarDev_WebDavServer_Props_PropertyKey_NoLanguage
-  commentId: F:FubarDev.WebDavServer.Props.PropertyKey.NoLanguage
-  fullName: FubarDev.WebDavServer.Props.PropertyKey.NoLanguage
-  nameWithType: PropertyKey.NoLanguage
-- uid: FubarDev.WebDavServer.Props.PropertyKey.ToString
-  name: ToString()
-  href: api/FubarDev.WebDavServer.Props.PropertyKey.html#FubarDev_WebDavServer_Props_PropertyKey_ToString
-  commentId: M:FubarDev.WebDavServer.Props.PropertyKey.ToString
-  fullName: FubarDev.WebDavServer.Props.PropertyKey.ToString()
-  nameWithType: PropertyKey.ToString()
-- uid: FubarDev.WebDavServer.Props.PropertyKey.ToString*
-  name: ToString
-  href: api/FubarDev.WebDavServer.Props.PropertyKey.html#FubarDev_WebDavServer_Props_PropertyKey_ToString_
-  commentId: Overload:FubarDev.WebDavServer.Props.PropertyKey.ToString
-  fullName: FubarDev.WebDavServer.Props.PropertyKey.ToString
-  nameWithType: PropertyKey.ToString
-- uid: FubarDev.WebDavServer.Props.PropertyKeyComparer
-  name: PropertyKeyComparer
-  href: api/FubarDev.WebDavServer.Props.PropertyKeyComparer.html
-  commentId: T:FubarDev.WebDavServer.Props.PropertyKeyComparer
-  fullName: FubarDev.WebDavServer.Props.PropertyKeyComparer
-  nameWithType: PropertyKeyComparer
-- uid: FubarDev.WebDavServer.Props.PropertyKeyComparer.Default
-  name: Default
-  href: api/FubarDev.WebDavServer.Props.PropertyKeyComparer.html#FubarDev_WebDavServer_Props_PropertyKeyComparer_Default
-  commentId: P:FubarDev.WebDavServer.Props.PropertyKeyComparer.Default
-  fullName: FubarDev.WebDavServer.Props.PropertyKeyComparer.Default
-  nameWithType: PropertyKeyComparer.Default
-- uid: FubarDev.WebDavServer.Props.PropertyKeyComparer.Default*
-  name: Default
-  href: api/FubarDev.WebDavServer.Props.PropertyKeyComparer.html#FubarDev_WebDavServer_Props_PropertyKeyComparer_Default_
-  commentId: Overload:FubarDev.WebDavServer.Props.PropertyKeyComparer.Default
-  fullName: FubarDev.WebDavServer.Props.PropertyKeyComparer.Default
-  nameWithType: PropertyKeyComparer.Default
-- uid: FubarDev.WebDavServer.Props.PropertyKeyComparer.Equals(FubarDev.WebDavServer.Props.PropertyKey,FubarDev.WebDavServer.Props.PropertyKey)
-  name: Equals(PropertyKey, PropertyKey)
-  href: api/FubarDev.WebDavServer.Props.PropertyKeyComparer.html#FubarDev_WebDavServer_Props_PropertyKeyComparer_Equals_FubarDev_WebDavServer_Props_PropertyKey_FubarDev_WebDavServer_Props_PropertyKey_
-  commentId: M:FubarDev.WebDavServer.Props.PropertyKeyComparer.Equals(FubarDev.WebDavServer.Props.PropertyKey,FubarDev.WebDavServer.Props.PropertyKey)
-  fullName: FubarDev.WebDavServer.Props.PropertyKeyComparer.Equals(FubarDev.WebDavServer.Props.PropertyKey, FubarDev.WebDavServer.Props.PropertyKey)
-  nameWithType: PropertyKeyComparer.Equals(PropertyKey, PropertyKey)
-- uid: FubarDev.WebDavServer.Props.PropertyKeyComparer.Equals*
-  name: Equals
-  href: api/FubarDev.WebDavServer.Props.PropertyKeyComparer.html#FubarDev_WebDavServer_Props_PropertyKeyComparer_Equals_
-  commentId: Overload:FubarDev.WebDavServer.Props.PropertyKeyComparer.Equals
-  fullName: FubarDev.WebDavServer.Props.PropertyKeyComparer.Equals
-  nameWithType: PropertyKeyComparer.Equals
-- uid: FubarDev.WebDavServer.Props.PropertyKeyComparer.GetHashCode(FubarDev.WebDavServer.Props.PropertyKey)
-  name: GetHashCode(PropertyKey)
-  href: api/FubarDev.WebDavServer.Props.PropertyKeyComparer.html#FubarDev_WebDavServer_Props_PropertyKeyComparer_GetHashCode_FubarDev_WebDavServer_Props_PropertyKey_
-  commentId: M:FubarDev.WebDavServer.Props.PropertyKeyComparer.GetHashCode(FubarDev.WebDavServer.Props.PropertyKey)
-  fullName: FubarDev.WebDavServer.Props.PropertyKeyComparer.GetHashCode(FubarDev.WebDavServer.Props.PropertyKey)
-  nameWithType: PropertyKeyComparer.GetHashCode(PropertyKey)
-- uid: FubarDev.WebDavServer.Props.PropertyKeyComparer.GetHashCode*
-  name: GetHashCode
-  href: api/FubarDev.WebDavServer.Props.PropertyKeyComparer.html#FubarDev_WebDavServer_Props_PropertyKeyComparer_GetHashCode_
-  commentId: Overload:FubarDev.WebDavServer.Props.PropertyKeyComparer.GetHashCode
-  fullName: FubarDev.WebDavServer.Props.PropertyKeyComparer.GetHashCode
-  nameWithType: PropertyKeyComparer.GetHashCode
 - uid: FubarDev.WebDavServer.Props.SetPropertyValueAsyncDelegate`1
   name: SetPropertyValueAsyncDelegate<T>
   href: api/FubarDev.WebDavServer.Props.SetPropertyValueAsyncDelegate-1.html
@@ -13934,18 +13766,6 @@ references:
   commentId: Overload:FubarDev.WebDavServer.Props.Store.IFileSystemPropertyStore.IgnoreEntry
   fullName: FubarDev.WebDavServer.Props.Store.IFileSystemPropertyStore.IgnoreEntry
   nameWithType: IFileSystemPropertyStore.IgnoreEntry
-- uid: FubarDev.WebDavServer.Props.Store.IFileSystemPropertyStore.RootPath
-  name: RootPath
-  href: api/FubarDev.WebDavServer.Props.Store.IFileSystemPropertyStore.html#FubarDev_WebDavServer_Props_Store_IFileSystemPropertyStore_RootPath
-  commentId: P:FubarDev.WebDavServer.Props.Store.IFileSystemPropertyStore.RootPath
-  fullName: FubarDev.WebDavServer.Props.Store.IFileSystemPropertyStore.RootPath
-  nameWithType: IFileSystemPropertyStore.RootPath
-- uid: FubarDev.WebDavServer.Props.Store.IFileSystemPropertyStore.RootPath*
-  name: RootPath
-  href: api/FubarDev.WebDavServer.Props.Store.IFileSystemPropertyStore.html#FubarDev_WebDavServer_Props_Store_IFileSystemPropertyStore_RootPath_
-  commentId: Overload:FubarDev.WebDavServer.Props.Store.IFileSystemPropertyStore.RootPath
-  fullName: FubarDev.WebDavServer.Props.Store.IFileSystemPropertyStore.RootPath
-  nameWithType: IFileSystemPropertyStore.RootPath
 - uid: FubarDev.WebDavServer.Props.Store.InMemory
   name: FubarDev.WebDavServer.Props.Store.InMemory
   href: api/FubarDev.WebDavServer.Props.Store.InMemory.html
@@ -14009,15 +13829,15 @@ references:
   commentId: Overload:FubarDev.WebDavServer.Props.Store.InMemory.InMemoryPropertyStore.GetDeadETagAsync
   fullName: FubarDev.WebDavServer.Props.Store.InMemory.InMemoryPropertyStore.GetDeadETagAsync
   nameWithType: InMemoryPropertyStore.GetDeadETagAsync
-- uid: FubarDev.WebDavServer.Props.Store.InMemory.InMemoryPropertyStore.RemoveAsync(FubarDev.WebDavServer.FileSystem.IEntry,System.Collections.Generic.IEnumerable{FubarDev.WebDavServer.Props.PropertyKey},System.Threading.CancellationToken)
-  name: RemoveAsync(IEntry, IEnumerable<PropertyKey>, CancellationToken)
-  href: api/FubarDev.WebDavServer.Props.Store.InMemory.InMemoryPropertyStore.html#FubarDev_WebDavServer_Props_Store_InMemory_InMemoryPropertyStore_RemoveAsync_FubarDev_WebDavServer_FileSystem_IEntry_System_Collections_Generic_IEnumerable_FubarDev_WebDavServer_Props_PropertyKey__System_Threading_CancellationToken_
-  commentId: M:FubarDev.WebDavServer.Props.Store.InMemory.InMemoryPropertyStore.RemoveAsync(FubarDev.WebDavServer.FileSystem.IEntry,System.Collections.Generic.IEnumerable{FubarDev.WebDavServer.Props.PropertyKey},System.Threading.CancellationToken)
-  name.vb: RemoveAsync(IEntry, IEnumerable(Of PropertyKey), CancellationToken)
-  fullName: FubarDev.WebDavServer.Props.Store.InMemory.InMemoryPropertyStore.RemoveAsync(FubarDev.WebDavServer.FileSystem.IEntry, System.Collections.Generic.IEnumerable<FubarDev.WebDavServer.Props.PropertyKey>, System.Threading.CancellationToken)
-  fullName.vb: FubarDev.WebDavServer.Props.Store.InMemory.InMemoryPropertyStore.RemoveAsync(FubarDev.WebDavServer.FileSystem.IEntry, System.Collections.Generic.IEnumerable(Of FubarDev.WebDavServer.Props.PropertyKey), System.Threading.CancellationToken)
-  nameWithType: InMemoryPropertyStore.RemoveAsync(IEntry, IEnumerable<PropertyKey>, CancellationToken)
-  nameWithType.vb: InMemoryPropertyStore.RemoveAsync(IEntry, IEnumerable(Of PropertyKey), CancellationToken)
+- uid: FubarDev.WebDavServer.Props.Store.InMemory.InMemoryPropertyStore.RemoveAsync(FubarDev.WebDavServer.FileSystem.IEntry,System.Collections.Generic.IEnumerable{System.Xml.Linq.XName},System.Threading.CancellationToken)
+  name: RemoveAsync(IEntry, IEnumerable<XName>, CancellationToken)
+  href: api/FubarDev.WebDavServer.Props.Store.InMemory.InMemoryPropertyStore.html#FubarDev_WebDavServer_Props_Store_InMemory_InMemoryPropertyStore_RemoveAsync_FubarDev_WebDavServer_FileSystem_IEntry_System_Collections_Generic_IEnumerable_System_Xml_Linq_XName__System_Threading_CancellationToken_
+  commentId: M:FubarDev.WebDavServer.Props.Store.InMemory.InMemoryPropertyStore.RemoveAsync(FubarDev.WebDavServer.FileSystem.IEntry,System.Collections.Generic.IEnumerable{System.Xml.Linq.XName},System.Threading.CancellationToken)
+  name.vb: RemoveAsync(IEntry, IEnumerable(Of XName), CancellationToken)
+  fullName: FubarDev.WebDavServer.Props.Store.InMemory.InMemoryPropertyStore.RemoveAsync(FubarDev.WebDavServer.FileSystem.IEntry, System.Collections.Generic.IEnumerable<System.Xml.Linq.XName>, System.Threading.CancellationToken)
+  fullName.vb: FubarDev.WebDavServer.Props.Store.InMemory.InMemoryPropertyStore.RemoveAsync(FubarDev.WebDavServer.FileSystem.IEntry, System.Collections.Generic.IEnumerable(Of System.Xml.Linq.XName), System.Threading.CancellationToken)
+  nameWithType: InMemoryPropertyStore.RemoveAsync(IEntry, IEnumerable<XName>, CancellationToken)
+  nameWithType.vb: InMemoryPropertyStore.RemoveAsync(IEntry, IEnumerable(Of XName), CancellationToken)
 - uid: FubarDev.WebDavServer.Props.Store.InMemory.InMemoryPropertyStore.RemoveAsync(FubarDev.WebDavServer.FileSystem.IEntry,System.Threading.CancellationToken)
   name: RemoveAsync(IEntry, CancellationToken)
   href: api/FubarDev.WebDavServer.Props.Store.InMemory.InMemoryPropertyStore.html#FubarDev_WebDavServer_Props_Store_InMemory_InMemoryPropertyStore_RemoveAsync_FubarDev_WebDavServer_FileSystem_IEntry_System_Threading_CancellationToken_
@@ -14108,12 +13928,12 @@ references:
   commentId: Overload:FubarDev.WebDavServer.Props.Store.IPropertyStore.Cost
   fullName: FubarDev.WebDavServer.Props.Store.IPropertyStore.Cost
   nameWithType: IPropertyStore.Cost
-- uid: FubarDev.WebDavServer.Props.Store.IPropertyStore.Create(FubarDev.WebDavServer.FileSystem.IEntry,System.Xml.Linq.XName,System.String)
-  name: Create(IEntry, XName, String)
-  href: api/FubarDev.WebDavServer.Props.Store.IPropertyStore.html#FubarDev_WebDavServer_Props_Store_IPropertyStore_Create_FubarDev_WebDavServer_FileSystem_IEntry_System_Xml_Linq_XName_System_String_
-  commentId: M:FubarDev.WebDavServer.Props.Store.IPropertyStore.Create(FubarDev.WebDavServer.FileSystem.IEntry,System.Xml.Linq.XName,System.String)
-  fullName: FubarDev.WebDavServer.Props.Store.IPropertyStore.Create(FubarDev.WebDavServer.FileSystem.IEntry, System.Xml.Linq.XName, System.String)
-  nameWithType: IPropertyStore.Create(IEntry, XName, String)
+- uid: FubarDev.WebDavServer.Props.Store.IPropertyStore.Create(FubarDev.WebDavServer.FileSystem.IEntry,System.Xml.Linq.XName)
+  name: Create(IEntry, XName)
+  href: api/FubarDev.WebDavServer.Props.Store.IPropertyStore.html#FubarDev_WebDavServer_Props_Store_IPropertyStore_Create_FubarDev_WebDavServer_FileSystem_IEntry_System_Xml_Linq_XName_
+  commentId: M:FubarDev.WebDavServer.Props.Store.IPropertyStore.Create(FubarDev.WebDavServer.FileSystem.IEntry,System.Xml.Linq.XName)
+  fullName: FubarDev.WebDavServer.Props.Store.IPropertyStore.Create(FubarDev.WebDavServer.FileSystem.IEntry, System.Xml.Linq.XName)
+  nameWithType: IPropertyStore.Create(IEntry, XName)
 - uid: FubarDev.WebDavServer.Props.Store.IPropertyStore.Create*
   name: Create
   href: api/FubarDev.WebDavServer.Props.Store.IPropertyStore.html#FubarDev_WebDavServer_Props_Store_IPropertyStore_Create_
@@ -14168,27 +13988,27 @@ references:
   commentId: Overload:FubarDev.WebDavServer.Props.Store.IPropertyStore.LoadAsync
   fullName: FubarDev.WebDavServer.Props.Store.IPropertyStore.LoadAsync
   nameWithType: IPropertyStore.LoadAsync
-- uid: FubarDev.WebDavServer.Props.Store.IPropertyStore.RemoveAsync(FubarDev.WebDavServer.FileSystem.IEntry,System.Collections.Generic.IEnumerable{FubarDev.WebDavServer.Props.PropertyKey},System.Threading.CancellationToken)
-  name: RemoveAsync(IEntry, IEnumerable<PropertyKey>, CancellationToken)
-  href: api/FubarDev.WebDavServer.Props.Store.IPropertyStore.html#FubarDev_WebDavServer_Props_Store_IPropertyStore_RemoveAsync_FubarDev_WebDavServer_FileSystem_IEntry_System_Collections_Generic_IEnumerable_FubarDev_WebDavServer_Props_PropertyKey__System_Threading_CancellationToken_
-  commentId: M:FubarDev.WebDavServer.Props.Store.IPropertyStore.RemoveAsync(FubarDev.WebDavServer.FileSystem.IEntry,System.Collections.Generic.IEnumerable{FubarDev.WebDavServer.Props.PropertyKey},System.Threading.CancellationToken)
-  name.vb: RemoveAsync(IEntry, IEnumerable(Of PropertyKey), CancellationToken)
-  fullName: FubarDev.WebDavServer.Props.Store.IPropertyStore.RemoveAsync(FubarDev.WebDavServer.FileSystem.IEntry, System.Collections.Generic.IEnumerable<FubarDev.WebDavServer.Props.PropertyKey>, System.Threading.CancellationToken)
-  fullName.vb: FubarDev.WebDavServer.Props.Store.IPropertyStore.RemoveAsync(FubarDev.WebDavServer.FileSystem.IEntry, System.Collections.Generic.IEnumerable(Of FubarDev.WebDavServer.Props.PropertyKey), System.Threading.CancellationToken)
-  nameWithType: IPropertyStore.RemoveAsync(IEntry, IEnumerable<PropertyKey>, CancellationToken)
-  nameWithType.vb: IPropertyStore.RemoveAsync(IEntry, IEnumerable(Of PropertyKey), CancellationToken)
+- uid: FubarDev.WebDavServer.Props.Store.IPropertyStore.RemoveAsync(FubarDev.WebDavServer.FileSystem.IEntry,System.Collections.Generic.IEnumerable{System.Xml.Linq.XName},System.Threading.CancellationToken)
+  name: RemoveAsync(IEntry, IEnumerable<XName>, CancellationToken)
+  href: api/FubarDev.WebDavServer.Props.Store.IPropertyStore.html#FubarDev_WebDavServer_Props_Store_IPropertyStore_RemoveAsync_FubarDev_WebDavServer_FileSystem_IEntry_System_Collections_Generic_IEnumerable_System_Xml_Linq_XName__System_Threading_CancellationToken_
+  commentId: M:FubarDev.WebDavServer.Props.Store.IPropertyStore.RemoveAsync(FubarDev.WebDavServer.FileSystem.IEntry,System.Collections.Generic.IEnumerable{System.Xml.Linq.XName},System.Threading.CancellationToken)
+  name.vb: RemoveAsync(IEntry, IEnumerable(Of XName), CancellationToken)
+  fullName: FubarDev.WebDavServer.Props.Store.IPropertyStore.RemoveAsync(FubarDev.WebDavServer.FileSystem.IEntry, System.Collections.Generic.IEnumerable<System.Xml.Linq.XName>, System.Threading.CancellationToken)
+  fullName.vb: FubarDev.WebDavServer.Props.Store.IPropertyStore.RemoveAsync(FubarDev.WebDavServer.FileSystem.IEntry, System.Collections.Generic.IEnumerable(Of System.Xml.Linq.XName), System.Threading.CancellationToken)
+  nameWithType: IPropertyStore.RemoveAsync(IEntry, IEnumerable<XName>, CancellationToken)
+  nameWithType.vb: IPropertyStore.RemoveAsync(IEntry, IEnumerable(Of XName), CancellationToken)
 - uid: FubarDev.WebDavServer.Props.Store.IPropertyStore.RemoveAsync(FubarDev.WebDavServer.FileSystem.IEntry,System.Threading.CancellationToken)
   name: RemoveAsync(IEntry, CancellationToken)
   href: api/FubarDev.WebDavServer.Props.Store.IPropertyStore.html#FubarDev_WebDavServer_Props_Store_IPropertyStore_RemoveAsync_FubarDev_WebDavServer_FileSystem_IEntry_System_Threading_CancellationToken_
   commentId: M:FubarDev.WebDavServer.Props.Store.IPropertyStore.RemoveAsync(FubarDev.WebDavServer.FileSystem.IEntry,System.Threading.CancellationToken)
   fullName: FubarDev.WebDavServer.Props.Store.IPropertyStore.RemoveAsync(FubarDev.WebDavServer.FileSystem.IEntry, System.Threading.CancellationToken)
   nameWithType: IPropertyStore.RemoveAsync(IEntry, CancellationToken)
-- uid: FubarDev.WebDavServer.Props.Store.IPropertyStore.RemoveAsync(FubarDev.WebDavServer.FileSystem.IEntry,System.Xml.Linq.XName,System.String,System.Threading.CancellationToken)
-  name: RemoveAsync(IEntry, XName, String, CancellationToken)
-  href: api/FubarDev.WebDavServer.Props.Store.IPropertyStore.html#FubarDev_WebDavServer_Props_Store_IPropertyStore_RemoveAsync_FubarDev_WebDavServer_FileSystem_IEntry_System_Xml_Linq_XName_System_String_System_Threading_CancellationToken_
-  commentId: M:FubarDev.WebDavServer.Props.Store.IPropertyStore.RemoveAsync(FubarDev.WebDavServer.FileSystem.IEntry,System.Xml.Linq.XName,System.String,System.Threading.CancellationToken)
-  fullName: FubarDev.WebDavServer.Props.Store.IPropertyStore.RemoveAsync(FubarDev.WebDavServer.FileSystem.IEntry, System.Xml.Linq.XName, System.String, System.Threading.CancellationToken)
-  nameWithType: IPropertyStore.RemoveAsync(IEntry, XName, String, CancellationToken)
+- uid: FubarDev.WebDavServer.Props.Store.IPropertyStore.RemoveAsync(FubarDev.WebDavServer.FileSystem.IEntry,System.Xml.Linq.XName,System.Threading.CancellationToken)
+  name: RemoveAsync(IEntry, XName, CancellationToken)
+  href: api/FubarDev.WebDavServer.Props.Store.IPropertyStore.html#FubarDev_WebDavServer_Props_Store_IPropertyStore_RemoveAsync_FubarDev_WebDavServer_FileSystem_IEntry_System_Xml_Linq_XName_System_Threading_CancellationToken_
+  commentId: M:FubarDev.WebDavServer.Props.Store.IPropertyStore.RemoveAsync(FubarDev.WebDavServer.FileSystem.IEntry,System.Xml.Linq.XName,System.Threading.CancellationToken)
+  fullName: FubarDev.WebDavServer.Props.Store.IPropertyStore.RemoveAsync(FubarDev.WebDavServer.FileSystem.IEntry, System.Xml.Linq.XName, System.Threading.CancellationToken)
+  nameWithType: IPropertyStore.RemoveAsync(IEntry, XName, CancellationToken)
 - uid: FubarDev.WebDavServer.Props.Store.IPropertyStore.RemoveAsync*
   name: RemoveAsync
   href: api/FubarDev.WebDavServer.Props.Store.IPropertyStore.html#FubarDev_WebDavServer_Props_Store_IPropertyStore_RemoveAsync_
@@ -14276,12 +14096,12 @@ references:
   commentId: Overload:FubarDev.WebDavServer.Props.Store.PropertyStoreBase.Cost
   fullName: FubarDev.WebDavServer.Props.Store.PropertyStoreBase.Cost
   nameWithType: PropertyStoreBase.Cost
-- uid: FubarDev.WebDavServer.Props.Store.PropertyStoreBase.Create(FubarDev.WebDavServer.FileSystem.IEntry,System.Xml.Linq.XName,System.String)
-  name: Create(IEntry, XName, String)
-  href: api/FubarDev.WebDavServer.Props.Store.PropertyStoreBase.html#FubarDev_WebDavServer_Props_Store_PropertyStoreBase_Create_FubarDev_WebDavServer_FileSystem_IEntry_System_Xml_Linq_XName_System_String_
-  commentId: M:FubarDev.WebDavServer.Props.Store.PropertyStoreBase.Create(FubarDev.WebDavServer.FileSystem.IEntry,System.Xml.Linq.XName,System.String)
-  fullName: FubarDev.WebDavServer.Props.Store.PropertyStoreBase.Create(FubarDev.WebDavServer.FileSystem.IEntry, System.Xml.Linq.XName, System.String)
-  nameWithType: PropertyStoreBase.Create(IEntry, XName, String)
+- uid: FubarDev.WebDavServer.Props.Store.PropertyStoreBase.Create(FubarDev.WebDavServer.FileSystem.IEntry,System.Xml.Linq.XName)
+  name: Create(IEntry, XName)
+  href: api/FubarDev.WebDavServer.Props.Store.PropertyStoreBase.html#FubarDev_WebDavServer_Props_Store_PropertyStoreBase_Create_FubarDev_WebDavServer_FileSystem_IEntry_System_Xml_Linq_XName_
+  commentId: M:FubarDev.WebDavServer.Props.Store.PropertyStoreBase.Create(FubarDev.WebDavServer.FileSystem.IEntry,System.Xml.Linq.XName)
+  fullName: FubarDev.WebDavServer.Props.Store.PropertyStoreBase.Create(FubarDev.WebDavServer.FileSystem.IEntry, System.Xml.Linq.XName)
+  nameWithType: PropertyStoreBase.Create(IEntry, XName)
 - uid: FubarDev.WebDavServer.Props.Store.PropertyStoreBase.Create*
   name: Create
   href: api/FubarDev.WebDavServer.Props.Store.PropertyStoreBase.html#FubarDev_WebDavServer_Props_Store_PropertyStoreBase_Create_
@@ -14360,27 +14180,27 @@ references:
   commentId: Overload:FubarDev.WebDavServer.Props.Store.PropertyStoreBase.LoadAsync
   fullName: FubarDev.WebDavServer.Props.Store.PropertyStoreBase.LoadAsync
   nameWithType: PropertyStoreBase.LoadAsync
-- uid: FubarDev.WebDavServer.Props.Store.PropertyStoreBase.RemoveAsync(FubarDev.WebDavServer.FileSystem.IEntry,System.Collections.Generic.IEnumerable{FubarDev.WebDavServer.Props.PropertyKey},System.Threading.CancellationToken)
-  name: RemoveAsync(IEntry, IEnumerable<PropertyKey>, CancellationToken)
-  href: api/FubarDev.WebDavServer.Props.Store.PropertyStoreBase.html#FubarDev_WebDavServer_Props_Store_PropertyStoreBase_RemoveAsync_FubarDev_WebDavServer_FileSystem_IEntry_System_Collections_Generic_IEnumerable_FubarDev_WebDavServer_Props_PropertyKey__System_Threading_CancellationToken_
-  commentId: M:FubarDev.WebDavServer.Props.Store.PropertyStoreBase.RemoveAsync(FubarDev.WebDavServer.FileSystem.IEntry,System.Collections.Generic.IEnumerable{FubarDev.WebDavServer.Props.PropertyKey},System.Threading.CancellationToken)
-  name.vb: RemoveAsync(IEntry, IEnumerable(Of PropertyKey), CancellationToken)
-  fullName: FubarDev.WebDavServer.Props.Store.PropertyStoreBase.RemoveAsync(FubarDev.WebDavServer.FileSystem.IEntry, System.Collections.Generic.IEnumerable<FubarDev.WebDavServer.Props.PropertyKey>, System.Threading.CancellationToken)
-  fullName.vb: FubarDev.WebDavServer.Props.Store.PropertyStoreBase.RemoveAsync(FubarDev.WebDavServer.FileSystem.IEntry, System.Collections.Generic.IEnumerable(Of FubarDev.WebDavServer.Props.PropertyKey), System.Threading.CancellationToken)
-  nameWithType: PropertyStoreBase.RemoveAsync(IEntry, IEnumerable<PropertyKey>, CancellationToken)
-  nameWithType.vb: PropertyStoreBase.RemoveAsync(IEntry, IEnumerable(Of PropertyKey), CancellationToken)
+- uid: FubarDev.WebDavServer.Props.Store.PropertyStoreBase.RemoveAsync(FubarDev.WebDavServer.FileSystem.IEntry,System.Collections.Generic.IEnumerable{System.Xml.Linq.XName},System.Threading.CancellationToken)
+  name: RemoveAsync(IEntry, IEnumerable<XName>, CancellationToken)
+  href: api/FubarDev.WebDavServer.Props.Store.PropertyStoreBase.html#FubarDev_WebDavServer_Props_Store_PropertyStoreBase_RemoveAsync_FubarDev_WebDavServer_FileSystem_IEntry_System_Collections_Generic_IEnumerable_System_Xml_Linq_XName__System_Threading_CancellationToken_
+  commentId: M:FubarDev.WebDavServer.Props.Store.PropertyStoreBase.RemoveAsync(FubarDev.WebDavServer.FileSystem.IEntry,System.Collections.Generic.IEnumerable{System.Xml.Linq.XName},System.Threading.CancellationToken)
+  name.vb: RemoveAsync(IEntry, IEnumerable(Of XName), CancellationToken)
+  fullName: FubarDev.WebDavServer.Props.Store.PropertyStoreBase.RemoveAsync(FubarDev.WebDavServer.FileSystem.IEntry, System.Collections.Generic.IEnumerable<System.Xml.Linq.XName>, System.Threading.CancellationToken)
+  fullName.vb: FubarDev.WebDavServer.Props.Store.PropertyStoreBase.RemoveAsync(FubarDev.WebDavServer.FileSystem.IEntry, System.Collections.Generic.IEnumerable(Of System.Xml.Linq.XName), System.Threading.CancellationToken)
+  nameWithType: PropertyStoreBase.RemoveAsync(IEntry, IEnumerable<XName>, CancellationToken)
+  nameWithType.vb: PropertyStoreBase.RemoveAsync(IEntry, IEnumerable(Of XName), CancellationToken)
 - uid: FubarDev.WebDavServer.Props.Store.PropertyStoreBase.RemoveAsync(FubarDev.WebDavServer.FileSystem.IEntry,System.Threading.CancellationToken)
   name: RemoveAsync(IEntry, CancellationToken)
   href: api/FubarDev.WebDavServer.Props.Store.PropertyStoreBase.html#FubarDev_WebDavServer_Props_Store_PropertyStoreBase_RemoveAsync_FubarDev_WebDavServer_FileSystem_IEntry_System_Threading_CancellationToken_
   commentId: M:FubarDev.WebDavServer.Props.Store.PropertyStoreBase.RemoveAsync(FubarDev.WebDavServer.FileSystem.IEntry,System.Threading.CancellationToken)
   fullName: FubarDev.WebDavServer.Props.Store.PropertyStoreBase.RemoveAsync(FubarDev.WebDavServer.FileSystem.IEntry, System.Threading.CancellationToken)
   nameWithType: PropertyStoreBase.RemoveAsync(IEntry, CancellationToken)
-- uid: FubarDev.WebDavServer.Props.Store.PropertyStoreBase.RemoveAsync(FubarDev.WebDavServer.FileSystem.IEntry,System.Xml.Linq.XName,System.String,System.Threading.CancellationToken)
-  name: RemoveAsync(IEntry, XName, String, CancellationToken)
-  href: api/FubarDev.WebDavServer.Props.Store.PropertyStoreBase.html#FubarDev_WebDavServer_Props_Store_PropertyStoreBase_RemoveAsync_FubarDev_WebDavServer_FileSystem_IEntry_System_Xml_Linq_XName_System_String_System_Threading_CancellationToken_
-  commentId: M:FubarDev.WebDavServer.Props.Store.PropertyStoreBase.RemoveAsync(FubarDev.WebDavServer.FileSystem.IEntry,System.Xml.Linq.XName,System.String,System.Threading.CancellationToken)
-  fullName: FubarDev.WebDavServer.Props.Store.PropertyStoreBase.RemoveAsync(FubarDev.WebDavServer.FileSystem.IEntry, System.Xml.Linq.XName, System.String, System.Threading.CancellationToken)
-  nameWithType: PropertyStoreBase.RemoveAsync(IEntry, XName, String, CancellationToken)
+- uid: FubarDev.WebDavServer.Props.Store.PropertyStoreBase.RemoveAsync(FubarDev.WebDavServer.FileSystem.IEntry,System.Xml.Linq.XName,System.Threading.CancellationToken)
+  name: RemoveAsync(IEntry, XName, CancellationToken)
+  href: api/FubarDev.WebDavServer.Props.Store.PropertyStoreBase.html#FubarDev_WebDavServer_Props_Store_PropertyStoreBase_RemoveAsync_FubarDev_WebDavServer_FileSystem_IEntry_System_Xml_Linq_XName_System_Threading_CancellationToken_
+  commentId: M:FubarDev.WebDavServer.Props.Store.PropertyStoreBase.RemoveAsync(FubarDev.WebDavServer.FileSystem.IEntry,System.Xml.Linq.XName,System.Threading.CancellationToken)
+  fullName: FubarDev.WebDavServer.Props.Store.PropertyStoreBase.RemoveAsync(FubarDev.WebDavServer.FileSystem.IEntry, System.Xml.Linq.XName, System.Threading.CancellationToken)
+  nameWithType: PropertyStoreBase.RemoveAsync(IEntry, XName, CancellationToken)
 - uid: FubarDev.WebDavServer.Props.Store.PropertyStoreBase.RemoveAsync*
   name: RemoveAsync
   href: api/FubarDev.WebDavServer.Props.Store.PropertyStoreBase.html#FubarDev_WebDavServer_Props_Store_PropertyStoreBase_RemoveAsync_
@@ -14507,15 +14327,15 @@ references:
   commentId: Overload:FubarDev.WebDavServer.Props.Store.TextFile.TextFilePropertyStore.IgnoreEntry
   fullName: FubarDev.WebDavServer.Props.Store.TextFile.TextFilePropertyStore.IgnoreEntry
   nameWithType: TextFilePropertyStore.IgnoreEntry
-- uid: FubarDev.WebDavServer.Props.Store.TextFile.TextFilePropertyStore.RemoveAsync(FubarDev.WebDavServer.FileSystem.IEntry,System.Collections.Generic.IEnumerable{FubarDev.WebDavServer.Props.PropertyKey},System.Threading.CancellationToken)
-  name: RemoveAsync(IEntry, IEnumerable<PropertyKey>, CancellationToken)
-  href: api/FubarDev.WebDavServer.Props.Store.TextFile.TextFilePropertyStore.html#FubarDev_WebDavServer_Props_Store_TextFile_TextFilePropertyStore_RemoveAsync_FubarDev_WebDavServer_FileSystem_IEntry_System_Collections_Generic_IEnumerable_FubarDev_WebDavServer_Props_PropertyKey__System_Threading_CancellationToken_
-  commentId: M:FubarDev.WebDavServer.Props.Store.TextFile.TextFilePropertyStore.RemoveAsync(FubarDev.WebDavServer.FileSystem.IEntry,System.Collections.Generic.IEnumerable{FubarDev.WebDavServer.Props.PropertyKey},System.Threading.CancellationToken)
-  name.vb: RemoveAsync(IEntry, IEnumerable(Of PropertyKey), CancellationToken)
-  fullName: FubarDev.WebDavServer.Props.Store.TextFile.TextFilePropertyStore.RemoveAsync(FubarDev.WebDavServer.FileSystem.IEntry, System.Collections.Generic.IEnumerable<FubarDev.WebDavServer.Props.PropertyKey>, System.Threading.CancellationToken)
-  fullName.vb: FubarDev.WebDavServer.Props.Store.TextFile.TextFilePropertyStore.RemoveAsync(FubarDev.WebDavServer.FileSystem.IEntry, System.Collections.Generic.IEnumerable(Of FubarDev.WebDavServer.Props.PropertyKey), System.Threading.CancellationToken)
-  nameWithType: TextFilePropertyStore.RemoveAsync(IEntry, IEnumerable<PropertyKey>, CancellationToken)
-  nameWithType.vb: TextFilePropertyStore.RemoveAsync(IEntry, IEnumerable(Of PropertyKey), CancellationToken)
+- uid: FubarDev.WebDavServer.Props.Store.TextFile.TextFilePropertyStore.RemoveAsync(FubarDev.WebDavServer.FileSystem.IEntry,System.Collections.Generic.IEnumerable{System.Xml.Linq.XName},System.Threading.CancellationToken)
+  name: RemoveAsync(IEntry, IEnumerable<XName>, CancellationToken)
+  href: api/FubarDev.WebDavServer.Props.Store.TextFile.TextFilePropertyStore.html#FubarDev_WebDavServer_Props_Store_TextFile_TextFilePropertyStore_RemoveAsync_FubarDev_WebDavServer_FileSystem_IEntry_System_Collections_Generic_IEnumerable_System_Xml_Linq_XName__System_Threading_CancellationToken_
+  commentId: M:FubarDev.WebDavServer.Props.Store.TextFile.TextFilePropertyStore.RemoveAsync(FubarDev.WebDavServer.FileSystem.IEntry,System.Collections.Generic.IEnumerable{System.Xml.Linq.XName},System.Threading.CancellationToken)
+  name.vb: RemoveAsync(IEntry, IEnumerable(Of XName), CancellationToken)
+  fullName: FubarDev.WebDavServer.Props.Store.TextFile.TextFilePropertyStore.RemoveAsync(FubarDev.WebDavServer.FileSystem.IEntry, System.Collections.Generic.IEnumerable<System.Xml.Linq.XName>, System.Threading.CancellationToken)
+  fullName.vb: FubarDev.WebDavServer.Props.Store.TextFile.TextFilePropertyStore.RemoveAsync(FubarDev.WebDavServer.FileSystem.IEntry, System.Collections.Generic.IEnumerable(Of System.Xml.Linq.XName), System.Threading.CancellationToken)
+  nameWithType: TextFilePropertyStore.RemoveAsync(IEntry, IEnumerable<XName>, CancellationToken)
+  nameWithType.vb: TextFilePropertyStore.RemoveAsync(IEntry, IEnumerable(Of XName), CancellationToken)
 - uid: FubarDev.WebDavServer.Props.Store.TextFile.TextFilePropertyStore.RemoveAsync(FubarDev.WebDavServer.FileSystem.IEntry,System.Threading.CancellationToken)
   name: RemoveAsync(IEntry, CancellationToken)
   href: api/FubarDev.WebDavServer.Props.Store.TextFile.TextFilePropertyStore.html#FubarDev_WebDavServer_Props_Store_TextFile_TextFilePropertyStore_RemoveAsync_FubarDev_WebDavServer_FileSystem_IEntry_System_Threading_CancellationToken_
