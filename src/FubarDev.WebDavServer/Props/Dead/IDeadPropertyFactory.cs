@@ -22,10 +22,9 @@ namespace FubarDev.WebDavServer.Props.Dead
         /// <param name="store">The property store to store this property</param>
         /// <param name="entry">The entry to instantiate this property for</param>
         /// <param name="name">The name of the dead property to create</param>
-        /// <param name="language">The language for the property value</param>
         /// <returns>The created dead property instance</returns>
         [NotNull]
-        IDeadProperty Create([NotNull] IPropertyStore store, [NotNull] IEntry entry, [NotNull] XName name, [NotNull] string language);
+        IDeadProperty Create([NotNull] IPropertyStore store, [NotNull] IEntry entry, [NotNull] XName name);
 
         /// <summary>
         /// Creates a new dead property instance

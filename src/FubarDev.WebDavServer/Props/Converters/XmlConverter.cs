@@ -2,6 +2,7 @@
 // Copyright (c) Fubar Development Junker. All rights reserved.
 // </copyright>
 
+using System.Diagnostics;
 using System.Linq;
 using System.Xml.Linq;
 using System.Xml.Serialization;
@@ -29,6 +30,7 @@ namespace FubarDev.WebDavServer.Props.Converters
             var doc = new XDocument();
             using (var writer = doc.CreateWriter())
                 _serializer.Serialize(writer, value);
+            Debug.Assert(doc.Root != null, "doc.Root != null");
             var element = new XElement(name, doc.Root.Elements().Cast<object>().ToArray());
             return element;
         }

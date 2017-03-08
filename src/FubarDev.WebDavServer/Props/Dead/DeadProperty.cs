@@ -4,7 +4,6 @@
 
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Xml.Linq;
@@ -33,13 +32,12 @@ namespace FubarDev.WebDavServer.Props.Dead
         /// <param name="store">The property store for the dead properties</param>
         /// <param name="entry">The file system entry</param>
         /// <param name="name">The XML name of the dead property</param>
-        /// <param name="language">The language for the property value</param>
-        public DeadProperty([NotNull] IPropertyStore store, [NotNull] IEntry entry, [NotNull] XName name, [NotNull] string language)
+        public DeadProperty([NotNull] IPropertyStore store, [NotNull] IEntry entry, [NotNull] XName name)
         {
             Name = name;
             _store = store;
             _entry = entry;
-            Language = language;
+            Language = null;
         }
 
         /// <summary>
@@ -54,7 +52,7 @@ namespace FubarDev.WebDavServer.Props.Dead
             _entry = entry;
             Name = element.Name;
             _cachedValue = element;
-            Language = element.Attribute(XNamespace.Xml + "lang")?.Value ?? PropertyKey.NoLanguage;
+            Language = element.Attribute(XNamespace.Xml + "lang")?.Value;
         }
 
         /// <inheritdoc />
@@ -82,10 +80,7 @@ namespace FubarDev.WebDavServer.Props.Dead
             XElement result;
             if (_cachedValue == null)
             {
-                var elements = await _store.GetAsync(_entry, Name, ct).ConfigureAwait(false);
-                result = elements.FirstOrDefault(x => string.Equals(Language, x.Attribute(XNamespace.Xml + "lang")?.Value ?? PropertyKey.NoLanguage, StringComparison.Ordinal))
-                         ?? elements.FirstOrDefault(x => string.Equals("*", x.Attribute(XNamespace.Xml + "lang")?.Value ?? PropertyKey.NoLanguage, StringComparison.Ordinal))
-                         ?? elements.FirstOrDefault();
+                result = await _store.GetAsync(_entry, Name, ct).ConfigureAwait(false);
             }
             else
             {
@@ -101,7 +96,7 @@ namespace FubarDev.WebDavServer.Props.Dead
         /// <inheritdoc />
         public void Init(XElement initialValue)
         {
-            var lang = initialValue.Attribute(XNamespace.Xml + "lang")?.Value ?? PropertyKey.NoLanguage;
+            var lang = initialValue.Attribute(XNamespace.Xml + "lang")?.Value;
             Language = lang;
             _cachedValue = initialValue;
         }

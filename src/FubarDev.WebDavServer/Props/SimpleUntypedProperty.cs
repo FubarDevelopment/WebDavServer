@@ -23,7 +23,7 @@ namespace FubarDev.WebDavServer.Props
         /// <param name="language">The language for the property value</param>
         /// <param name="cost">The cost to get the properties value</param>
         /// <param name="alternativeNames">The alternative names</param>
-        protected SimpleUntypedProperty([NotNull] XName name, [NotNull] string language, int cost, [NotNull][ItemNotNull] params XName[] alternativeNames)
+        protected SimpleUntypedProperty([NotNull] XName name, [CanBeNull] string language, int cost, [NotNull][ItemNotNull] params XName[] alternativeNames)
         {
             Name = name;
             Cost = cost;

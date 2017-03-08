@@ -26,7 +26,7 @@ namespace FubarDev.WebDavServer.Props
         /// <param name="cost">The cost to get the properties value</param>
         /// <param name="converter">The converter to copy the value to/from an <see cref="XElement"/></param>
         /// <param name="alternativeNames">The alternative names</param>
-        protected SimpleConvertingProperty([NotNull] XName name, [NotNull] string language, int cost, [NotNull] IPropertyConverter<T> converter, params XName[] alternativeNames)
+        protected SimpleConvertingProperty([NotNull] XName name, [CanBeNull] string language, int cost, [NotNull] IPropertyConverter<T> converter, params XName[] alternativeNames)
             : base(name, language, cost, alternativeNames)
         {
             Converter = converter;

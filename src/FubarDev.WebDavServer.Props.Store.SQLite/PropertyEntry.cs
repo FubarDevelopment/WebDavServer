@@ -38,7 +38,6 @@ namespace FubarDev.WebDavServer.Props.Store.SQLite
         /// Gets or sets the XML language identifier
         /// </summary>
         [Column("lang")]
-        [Unique(Name = "unq_idx", Order = 2)]
         public string Language { get; set; }
 
         /// <summary>

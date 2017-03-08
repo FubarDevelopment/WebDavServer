@@ -3,7 +3,6 @@
 // </copyright>
 
 using System;
-using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Xml.Linq;
@@ -49,7 +48,7 @@ namespace FubarDev.WebDavServer.Props.Dead
         /// <param name="defaultContentLanguage">The content language to return when none was specified</param>
         /// <param name="cost">The cost of querying the display names property</param>
         public GetContentLanguageProperty([NotNull] IEntry entry, [NotNull] IPropertyStore store, [NotNull] string defaultContentLanguage = "en", int? cost = null)
-            : base(PropertyName, PropertyKey.NoLanguage, cost ?? store.Cost, null, null, WebDavXml.Dav + "contentlanguage")
+            : base(PropertyName, null, cost ?? store.Cost, null, null, WebDavXml.Dav + "contentlanguage")
         {
             _entry = entry;
             _store = store;
@@ -74,7 +73,7 @@ namespace FubarDev.WebDavServer.Props.Dead
             if (_value != null || _isLoaded)
                 return _value ?? _defaultContentLanguage;
 
-            _value = (await _store.GetAsync(_entry, Name, ct).ConfigureAwait(false)).Select(x => x.Value).FirstOrDefault();
+            _value = (await _store.GetAsync(_entry, Name, ct).ConfigureAwait(false))?.Value;
             _isLoaded = true;
             return _value ?? _defaultContentLanguage;
         }

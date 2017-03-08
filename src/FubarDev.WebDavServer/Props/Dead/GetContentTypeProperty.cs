@@ -3,7 +3,6 @@
 // </copyright>
 
 using System.IO;
-using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Xml.Linq;
@@ -40,7 +39,7 @@ namespace FubarDev.WebDavServer.Props.Dead
         /// <param name="store">The property store to store this property</param>
         /// <param name="cost">The cost of querying the display names property</param>
         public GetContentTypeProperty([NotNull] IEntry entry, [NotNull] IPropertyStore store, int? cost = null)
-            : base(PropertyName, PropertyKey.NoLanguage, cost ?? store.Cost, null, null, WebDavXml.Dav + "contenttype")
+            : base(PropertyName, null, cost ?? store.Cost, null, null, WebDavXml.Dav + "contenttype")
         {
             _entry = entry;
             _store = store;
@@ -52,7 +51,7 @@ namespace FubarDev.WebDavServer.Props.Dead
             if (_value != null)
                 return _value;
 
-            var storedValue = (await _store.GetAsync(_entry, Name, ct).ConfigureAwait(false)).FirstOrDefault();
+            var storedValue = await _store.GetAsync(_entry, Name, ct).ConfigureAwait(false);
             if (storedValue != null)
                 return storedValue.Value;
 

@@ -15,11 +15,9 @@ namespace FubarDev.WebDavServer.Props.Filters
     /// </summary>
     public class PropFilter : IPropertyFilter
     {
-        private readonly ISet<PropertyKey> _selectedProperties;
+        private readonly ISet<XName> _selectedProperties;
 
-        private readonly HashSet<PropertyKey> _requestedProperties;
-
-        private readonly IReadOnlyDictionary<XName, IReadOnlyList<string>> _languagesByNames;
+        private readonly HashSet<XName> _requestedProperties;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="PropFilter"/> class.
@@ -27,11 +25,8 @@ namespace FubarDev.WebDavServer.Props.Filters
         /// <param name="prop">The <see cref="prop"/> element containing the property names</param>
         public PropFilter(prop prop)
         {
-            _requestedProperties = new HashSet<PropertyKey>(prop.Any.Select(x => CreateKey(x, prop.Language)));
-            _languagesByNames = _requestedProperties
-                .GroupBy(x => x.Name)
-                .ToDictionary(x => x.Key, x => (IReadOnlyList<string>)x.Select(y => y.Language).ToList());
-            _selectedProperties = new HashSet<PropertyKey>();
+            _requestedProperties = new HashSet<XName>(prop.Any.Select(x => x.Name));
+            _selectedProperties = new HashSet<XName>();
         }
 
         /// <inheritdoc />
@@ -43,33 +38,21 @@ namespace FubarDev.WebDavServer.Props.Filters
         /// <inheritdoc />
         public bool IsAllowed(IProperty property)
         {
-            if (_requestedProperties.Contains(new PropertyKey(property)))
-                return true;
-            if (!_languagesByNames.TryGetValue(property.Name, out var names))
-                return false;
-            if (names.Count == 1 && names[0] == PropertyKey.NoLanguage)
-                return true;
-            return false;
+            return _requestedProperties.Contains(property.Name);
         }
 
         /// <inheritdoc />
         public void NotifyOfSelection(IProperty property)
         {
-            _selectedProperties.Add(new PropertyKey(property));
+            _selectedProperties.Add(property.Name);
         }
 
         /// <inheritdoc />
         public IEnumerable<MissingProperty> GetMissingProperties()
         {
-            var missingProps = new HashSet<PropertyKey>(_requestedProperties);
+            var missingProps = new HashSet<XName>(_requestedProperties);
             missingProps.ExceptWith(_selectedProperties);
             return missingProps.Select(x => new MissingProperty(WebDavStatusCode.NotFound, x));
-        }
-
-        private PropertyKey CreateKey(XElement element, string defaultLanguage)
-        {
-            var elementLanguage = element.Attribute(XNamespace.Xml + "lang")?.Value ?? defaultLanguage ?? PropertyKey.NoLanguage;
-            return new PropertyKey(element.Name, elementLanguage);
         }
     }
 }

@@ -196,9 +196,6 @@
     <Compile Include="$(MSBuildThisFileDirectory)Props\Live\LockDiscoveryProperty.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Props\Live\ResourceTypeProperty.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Props\Live\SupportedLockProperty.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Props\PropertyKey.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Props\PropertyKeyComparer.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Props\PropertyKeyConverter.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Props\SetPropertyValueAsyncDelegate.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Props\SimpleConvertingProperty.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Props\SimpleTypedProperty.cs" />

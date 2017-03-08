@@ -33,7 +33,7 @@ namespace FubarDev.WebDavServer.Props.Generic
         /// <param name="getValueAsyncFunc">The function to get the property value</param>
         /// <param name="setValueAsyncFunc">The function to set the property value</param>
         /// <param name="alternativeNames">Alternative property names</param>
-        public GenericProperty([NotNull] XName name, [NotNull] string language, int cost, [NotNull] IPropertyConverter<T> converter, GetPropertyValueAsyncDelegate<T> getValueAsyncFunc, SetPropertyValueAsyncDelegate<T> setValueAsyncFunc, params XName[] alternativeNames)
+        public GenericProperty([NotNull] XName name, [CanBeNull] string language, int cost, [NotNull] IPropertyConverter<T> converter, GetPropertyValueAsyncDelegate<T> getValueAsyncFunc, SetPropertyValueAsyncDelegate<T> setValueAsyncFunc, params XName[] alternativeNames)
             : base(name, language, cost, converter, alternativeNames)
         {
             _getValueAsyncFunc = getValueAsyncFunc;

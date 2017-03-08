@@ -107,18 +107,18 @@ namespace FubarDev.WebDavServer.Props.Store.SQLite
         }
 
         /// <inheritdoc />
-        public override Task<IReadOnlyCollection<bool>> RemoveAsync(IEntry entry, IEnumerable<PropertyKey> keys, CancellationToken cancellationToken)
+        public override Task<IReadOnlyCollection<bool>> RemoveAsync(IEntry entry, IEnumerable<XName> keys, CancellationToken cancellationToken)
         {
             var result = new List<bool>();
             var entries = GetAll(entry)
-                .ToDictionary(x => new PropertyKey(x));
+                .ToDictionary(x => x.Name);
             foreach (var key in keys)
             {
                 XElement element;
                 if (!entries.TryGetValue(key, out element))
                     continue;
 
-                if (key.Name == GetETagProperty.PropertyName)
+                if (key == GetETagProperty.PropertyName)
                 {
                     _logger.LogWarning("The ETag property must not be set using the property store.");
                     result.Add(false);
@@ -139,7 +139,7 @@ namespace FubarDev.WebDavServer.Props.Store.SQLite
         /// <inheritdoc />
         protected override Task<EntityTag> GetDeadETagAsync(IEntry entry, CancellationToken cancellationToken)
         {
-            var key = new PropertyKey(GetETagProperty.PropertyName, PropertyKey.NoLanguage);
+            var key = GetETagProperty.PropertyName;
             var prop = _connection
                 .CreateCommand("SELECT * FROM props WHERE id=?", key)
                 .ExecuteQuery<PropertyEntry>()
@@ -150,9 +150,9 @@ namespace FubarDev.WebDavServer.Props.Store.SQLite
                 prop = new PropertyEntry()
                 {
                     Id = CreateId(key, entry),
-                    Language = key.Language,
+                    Language = null,
                     Path = entry.Path.ToString(),
-                    XmlName = key.Name.ToString(),
+                    XmlName = key.ToString(),
                     Value = etag.ToXml().ToString(SaveOptions.OmitDuplicateNamespaces),
                 };
 
@@ -168,13 +168,13 @@ namespace FubarDev.WebDavServer.Props.Store.SQLite
         protected override Task<EntityTag> UpdateDeadETagAsync(IEntry entry, CancellationToken cancellationToken)
         {
             var etag = new EntityTag(false);
-            var key = new PropertyKey(GetETagProperty.PropertyName, PropertyKey.NoLanguage);
+            var key = GetETagProperty.PropertyName;
             var prop = new PropertyEntry()
             {
                 Id = CreateId(key, entry),
-                Language = key.Language,
+                Language = null,
                 Path = entry.Path.ToString(),
-                XmlName = key.Name.ToString(),
+                XmlName = key.ToString(),
                 Value = etag.ToXml().ToString(SaveOptions.OmitDuplicateNamespaces),
             };
 
@@ -182,7 +182,7 @@ namespace FubarDev.WebDavServer.Props.Store.SQLite
             return Task.FromResult(etag);
         }
 
-        private static string CreateId(PropertyKey key, IEntry entry)
+        private static string CreateId(XName key, IEntry entry)
         {
             return $"{key}:{entry.Path}";
         }
@@ -208,13 +208,13 @@ namespace FubarDev.WebDavServer.Props.Store.SQLite
                             continue;
                         }
 
-                        var key = new PropertyKey(element);
+                        var key = element.Name;
                         var item = new PropertyEntry()
                         {
                             Id = CreateId(key, entry),
                             Path = entry.Path.ToString(),
-                            XmlName = key.Name.ToString(),
-                            Language = key.Language,
+                            XmlName = key.ToString(),
+                            Language = element.Attribute(XNamespace.Xml + "lang")?.Value,
                             Value = element.ToString(SaveOptions.OmitDuplicateNamespaces),
                         };
 

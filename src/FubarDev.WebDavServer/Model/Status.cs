@@ -116,14 +116,9 @@ namespace FubarDev.WebDavServer.Model
             if (!Enum.TryParse(code, out webDavStatusCode))
             {
                 HttpStatusCode httpStatusCode;
-                if (!Enum.TryParse(code, out httpStatusCode))
-                {
-                    reasonPhrase = "Unknown status code";
-                }
-                else
-                {
-                    reasonPhrase = httpStatusCode.ToString();
-                }
+                reasonPhrase = !Enum.TryParse(code, out httpStatusCode)
+                    ? "Unknown status code"
+                    : httpStatusCode.ToString();
             }
             else
             {

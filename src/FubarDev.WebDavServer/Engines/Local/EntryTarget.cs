@@ -112,11 +112,11 @@ namespace FubarDev.WebDavServer.Engines.Local
         [ItemNotNull]
         private async Task<IReadOnlyCollection<XName>> SetPropertiesAsync([NotNull][ItemNotNull] IEnumerable<ILiveProperty> properties, CancellationToken cancellationToken)
         {
-            var isPropUsed = new Dictionary<PropertyKey, bool>(PropertyKeyComparer.Default);
-            var propNameToValue = new Dictionary<PropertyKey, XElement>(PropertyKeyComparer.Default);
+            var isPropUsed = new Dictionary<XName, bool>();
+            var propNameToValue = new Dictionary<XName, XElement>();
             foreach (var property in properties)
             {
-                var key = new PropertyKey(property);
+                var key = property.Name;
                 propNameToValue[key] = await property.GetXmlValueAsync(cancellationToken).ConfigureAwait(false);
                 isPropUsed[key] = false;
             }
@@ -130,7 +130,7 @@ namespace FubarDev.WebDavServer.Engines.Local
             {
                 while (await propEnum.MoveNext(cancellationToken).ConfigureAwait(false))
                 {
-                    var key = new PropertyKey(propEnum.Current);
+                    var key = propEnum.Current.Name;
                     isPropUsed[key] = true;
                     var prop = propEnum.Current as IUntypedWriteableProperty;
                     XElement propValue;
@@ -144,7 +144,7 @@ namespace FubarDev.WebDavServer.Engines.Local
             var hasUnsetLiveProperties = isPropUsed.Any(x => !x.Value);
             if (hasUnsetLiveProperties)
             {
-                var unsetPropNames = isPropUsed.Where(x => !x.Value).Select(x => x.Key.Name).ToList();
+                var unsetPropNames = isPropUsed.Where(x => !x.Value).Select(x => x.Key).ToList();
                 return unsetPropNames;
             }
 

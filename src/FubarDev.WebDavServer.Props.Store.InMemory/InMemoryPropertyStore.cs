@@ -23,7 +23,7 @@ namespace FubarDev.WebDavServer.Props.Store.InMemory
     public class InMemoryPropertyStore : PropertyStoreBase
     {
         private readonly ILogger<InMemoryPropertyStore> _logger;
-        private readonly IDictionary<Uri, IDictionary<PropertyKey, XElement>> _properties = new Dictionary<Uri, IDictionary<PropertyKey, XElement>>();
+        private readonly IDictionary<Uri, IDictionary<XName, XElement>> _properties = new Dictionary<Uri, IDictionary<XName, XElement>>();
 
         /// <summary>
         /// Initializes a new instance of the <see cref="InMemoryPropertyStore"/> class.
@@ -76,10 +76,10 @@ namespace FubarDev.WebDavServer.Props.Store.InMemory
         }
 
         /// <inheritdoc />
-        public override Task<IReadOnlyCollection<bool>> RemoveAsync(IEntry entry, IEnumerable<PropertyKey> keys, CancellationToken cancellationToken)
+        public override Task<IReadOnlyCollection<bool>> RemoveAsync(IEntry entry, IEnumerable<XName> keys, CancellationToken cancellationToken)
         {
             var result = new List<bool>();
-            IDictionary<PropertyKey, XElement> properties;
+            IDictionary<XName, XElement> properties;
             if (!_properties.TryGetValue(entry.Path, out properties))
             {
                 result.AddRange(keys.Select(x => false));
@@ -88,14 +88,14 @@ namespace FubarDev.WebDavServer.Props.Store.InMemory
             {
                 foreach (var key in keys)
                 {
-                    if (key.Name == GetETagProperty.PropertyName)
+                    if (key == GetETagProperty.PropertyName)
                     {
                         _logger.LogWarning("The ETag property must not be set using the property store.");
                         result.Add(false);
                     }
                     else
                     {
-                        result.Add(properties.Remove(new PropertyKey(key.Name, key.Language)));
+                        result.Add(properties.Remove(key));
                     }
                 }
 
@@ -110,10 +110,10 @@ namespace FubarDev.WebDavServer.Props.Store.InMemory
         protected override Task<EntityTag> GetDeadETagAsync(IEntry entry, CancellationToken cancellationToken)
         {
             XElement etagElement;
-            IDictionary<PropertyKey, XElement> properties;
+            IDictionary<XName, XElement> properties;
             if (_properties.TryGetValue(entry.Path, out properties))
             {
-                properties.TryGetValue(new PropertyKey(GetETagProperty.PropertyName, PropertyKey.NoLanguage), out etagElement);
+                properties.TryGetValue(GetETagProperty.PropertyName, out etagElement);
             }
             else
             {
@@ -123,9 +123,9 @@ namespace FubarDev.WebDavServer.Props.Store.InMemory
             if (etagElement == null)
             {
                 etagElement = new EntityTag(false).ToXml();
-                _properties.Add(entry.Path, new Dictionary<PropertyKey, XElement>()
+                _properties.Add(entry.Path, new Dictionary<XName, XElement>()
                 {
-                    [new PropertyKey(etagElement)] = etagElement,
+                    [etagElement.Name] = etagElement,
                 });
             }
 
@@ -137,12 +137,12 @@ namespace FubarDev.WebDavServer.Props.Store.InMemory
         {
             var etag = EntityTag.FromXml(null);
             var etagElement = etag.ToXml();
-            var key = new PropertyKey(etagElement);
+            var key = etagElement.Name;
 
-            IDictionary<PropertyKey, XElement> properties;
+            IDictionary<XName, XElement> properties;
             if (!_properties.TryGetValue(entry.Path, out properties))
             {
-                _properties.Add(entry.Path, new Dictionary<PropertyKey, XElement>()
+                _properties.Add(entry.Path, new Dictionary<XName, XElement>()
                 {
                     [key] = etagElement,
                 });
@@ -158,7 +158,7 @@ namespace FubarDev.WebDavServer.Props.Store.InMemory
         private IReadOnlyCollection<XElement> GetAll(IEntry entry)
         {
             IReadOnlyCollection<XElement> result;
-            IDictionary<PropertyKey, XElement> properties;
+            IDictionary<XName, XElement> properties;
             if (!_properties.TryGetValue(entry.Path, out properties))
             {
                 result = new XElement[0];
@@ -173,9 +173,9 @@ namespace FubarDev.WebDavServer.Props.Store.InMemory
 
         private void SetAll(IEntry entry, IEnumerable<XElement> elements)
         {
-            IDictionary<PropertyKey, XElement> properties;
+            IDictionary<XName, XElement> properties;
             if (!_properties.TryGetValue(entry.Path, out properties))
-                _properties.Add(entry.Path, properties = new Dictionary<PropertyKey, XElement>());
+                _properties.Add(entry.Path, properties = new Dictionary<XName, XElement>());
 
             var isEtagEntry = entry is IEntityTagEntry;
             foreach (var element in elements)
@@ -186,7 +186,7 @@ namespace FubarDev.WebDavServer.Props.Store.InMemory
                     continue;
                 }
 
-                properties[new PropertyKey(element)] = element;
+                properties[element.Name] = element;
             }
         }
     }

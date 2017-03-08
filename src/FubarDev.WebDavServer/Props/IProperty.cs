@@ -23,7 +23,7 @@ namespace FubarDev.WebDavServer.Props
         /// <summary>
         /// Gets the language of this property value
         /// </summary>
-        [NotNull]
+        [CanBeNull]
         string Language { get; }
 
         /// <summary>

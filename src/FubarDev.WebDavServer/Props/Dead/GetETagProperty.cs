@@ -55,7 +55,7 @@ namespace FubarDev.WebDavServer.Props.Dead
         public XName Name { get; }
 
         /// <inheritdoc />
-        public string Language { get; } = PropertyKey.NoLanguage;
+        public string Language { get; } = null;
 
         /// <inheritdoc />
         public IReadOnlyCollection<XName> AlternativeNames { get; } = new[] { WebDavXml.Dav + "etag" };

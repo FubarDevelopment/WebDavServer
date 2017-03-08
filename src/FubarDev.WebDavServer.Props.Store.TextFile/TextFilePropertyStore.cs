@@ -28,7 +28,7 @@ namespace FubarDev.WebDavServer.Props.Store.TextFile
     /// </summary>
     public class TextFilePropertyStore : PropertyStoreBase, IFileSystemPropertyStore
     {
-        private static readonly PropertyKey _etagKey = new PropertyKey(GetETagProperty.PropertyName, PropertyKey.NoLanguage);
+        private static readonly XName _etagKey = GetETagProperty.PropertyName;
 
         private readonly Policy<string> _fileReadPolicy;
 
@@ -92,7 +92,7 @@ namespace FubarDev.WebDavServer.Props.Store.TextFile
             if (storeData.Entries.TryGetValue(GetEntryKey(entry), out info))
             {
                 result = info.Attributes
-                    .Where(x => x.Key.Name != GetETagProperty.PropertyName)
+                    .Where(x => x.Key != GetETagProperty.PropertyName)
                     .Select(x => x.Value)
                     .ToList();
             }
@@ -119,7 +119,7 @@ namespace FubarDev.WebDavServer.Props.Store.TextFile
                     continue;
                 }
 
-                info.Attributes[new PropertyKey(element)] = element;
+                info.Attributes[element.Name] = element;
             }
 
             UpdateInfo(entry, info, cancellationToken);
@@ -127,7 +127,7 @@ namespace FubarDev.WebDavServer.Props.Store.TextFile
         }
 
         /// <inheritdoc />
-        public override Task<IReadOnlyCollection<bool>> RemoveAsync(IEntry entry, IEnumerable<PropertyKey> keys, CancellationToken cancellationToken)
+        public override Task<IReadOnlyCollection<bool>> RemoveAsync(IEntry entry, IEnumerable<XName> keys, CancellationToken cancellationToken)
         {
             if (_logger.IsEnabled(LogLevel.Trace))
                 _logger.LogTrace($"Remove properties for {entry.Path}");
@@ -136,15 +136,14 @@ namespace FubarDev.WebDavServer.Props.Store.TextFile
             var result = new List<bool>();
             foreach (var key in keys)
             {
-                if (key.Name == GetETagProperty.PropertyName)
+                if (key == GetETagProperty.PropertyName)
                 {
                     _logger.LogWarning("The ETag property must not be set using the property store.");
                     result.Add(false);
                 }
                 else
                 {
-                    var propKey = new PropertyKey(key.Name, key.Language);
-                    result.Add(info.Attributes.Remove(propKey));
+                    result.Add(info.Attributes.Remove(key));
                 }
             }
 
@@ -338,7 +337,7 @@ namespace FubarDev.WebDavServer.Props.Store.TextFile
 
         private class EntryInfo
         {
-            public IDictionary<PropertyKey, XElement> Attributes { get; } = new Dictionary<PropertyKey, XElement>();
+            public IDictionary<XName, XElement> Attributes { get; } = new Dictionary<XName, XElement>();
         }
     }
 }

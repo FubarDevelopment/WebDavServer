@@ -328,7 +328,7 @@ namespace FubarDev.WebDavServer.Handlers.Impl
                         {
                             prop = new prop()
                             {
-                                Any = item.Value.Select(x => x.CreateEmptyElement()).ToArray(),
+                                Any = item.Value.Select(x => new XElement(x)).ToArray(),
                             },
                             status = new Status(_host.RequestProtocol, item.Key).ToString(),
                         });
@@ -392,7 +392,7 @@ namespace FubarDev.WebDavServer.Handlers.Impl
                         {
                             prop = new prop()
                             {
-                                Any = item.Value.Select(x => x.CreateEmptyElement()).ToArray(),
+                                Any = item.Value.Select(x => new XElement(x)).ToArray(),
                             },
                             status = new Status(_host.RequestProtocol, item.Key).ToString(),
                         });
