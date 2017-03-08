@@ -119,7 +119,7 @@ namespace FubarDev.WebDavServer.FileSystem.SQLite
         private static void CreateDatabaseTables(sqlitenet.SQLiteConnection connection)
         {
             connection.CreateTable<FileData>(sqlitenet.CreateFlags.AllImplicit);
-            var result = connection.CreateTable<FileEntry>(sqlitenet.CreateFlags.AllImplicit);
+            connection.CreateTable<FileEntry>(sqlitenet.CreateFlags.AllImplicit);
             connection.Insert(new FileEntry()
                 {
                     Id = string.Empty,
