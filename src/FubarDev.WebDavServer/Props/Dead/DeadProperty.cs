@@ -4,12 +4,15 @@
 
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Xml.Linq;
 
 using FubarDev.WebDavServer.FileSystem;
 using FubarDev.WebDavServer.Props.Store;
+
+using JetBrains.Annotations;
 
 namespace FubarDev.WebDavServer.Props.Dead
 {
@@ -30,11 +33,13 @@ namespace FubarDev.WebDavServer.Props.Dead
         /// <param name="store">The property store for the dead properties</param>
         /// <param name="entry">The file system entry</param>
         /// <param name="name">The XML name of the dead property</param>
-        public DeadProperty(IPropertyStore store, IEntry entry, XName name)
+        /// <param name="language">The language for the property value</param>
+        public DeadProperty([NotNull] IPropertyStore store, [NotNull] IEntry entry, [NotNull] XName name, [NotNull] string language)
         {
             Name = name;
             _store = store;
             _entry = entry;
+            Language = language;
         }
 
         /// <summary>
@@ -49,10 +54,14 @@ namespace FubarDev.WebDavServer.Props.Dead
             _entry = entry;
             Name = element.Name;
             _cachedValue = element;
+            Language = element.Attribute(XNamespace.Xml + "lang")?.Value ?? PropertyKey.NoLanguage;
         }
 
         /// <inheritdoc />
         public XName Name { get; }
+
+        /// <inheritdoc />
+        public string Language { get; private set; }
 
         /// <inheritdoc />
         public IReadOnlyCollection<XName> AlternativeNames { get; } = new XName[0];
@@ -70,15 +79,30 @@ namespace FubarDev.WebDavServer.Props.Dead
         /// <inheritdoc />
         public async Task<XElement> GetXmlValueAsync(CancellationToken ct)
         {
-            var result = _cachedValue ?? (_cachedValue = await _store.GetAsync(_entry, Name, ct).ConfigureAwait(false));
+            XElement result;
+            if (_cachedValue == null)
+            {
+                var elements = await _store.GetAsync(_entry, Name, ct).ConfigureAwait(false);
+                result = elements.FirstOrDefault(x => string.Equals(Language, x.Attribute(XNamespace.Xml + "lang")?.Value ?? PropertyKey.NoLanguage, StringComparison.Ordinal))
+                         ?? elements.FirstOrDefault(x => string.Equals("*", x.Attribute(XNamespace.Xml + "lang")?.Value ?? PropertyKey.NoLanguage, StringComparison.Ordinal))
+                         ?? elements.FirstOrDefault();
+            }
+            else
+            {
+                result = _cachedValue;
+            }
+
             if (result == null)
                 throw new InvalidOperationException("Cannot get value from uninitialized property");
+
             return result;
         }
 
         /// <inheritdoc />
         public void Init(XElement initialValue)
         {
+            var lang = initialValue.Attribute(XNamespace.Xml + "lang")?.Value ?? PropertyKey.NoLanguage;
+            Language = lang;
             _cachedValue = initialValue;
         }
     }

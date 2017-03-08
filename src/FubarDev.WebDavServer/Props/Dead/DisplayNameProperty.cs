@@ -3,6 +3,7 @@
 // </copyright>
 
 using System.IO;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Xml.Linq;
@@ -11,6 +12,8 @@ using FubarDev.WebDavServer.FileSystem;
 using FubarDev.WebDavServer.Model;
 using FubarDev.WebDavServer.Props.Generic;
 using FubarDev.WebDavServer.Props.Store;
+
+using JetBrains.Annotations;
 
 namespace FubarDev.WebDavServer.Props.Dead
 {
@@ -36,11 +39,12 @@ namespace FubarDev.WebDavServer.Props.Dead
         /// Initializes a new instance of the <see cref="DisplayNameProperty"/> class.
         /// </summary>
         /// <param name="entry">The entry to instantiate this property for</param>
+        /// <param name="language">The language for the property value</param>
         /// <param name="store">The property store to store this property</param>
         /// <param name="hideExtension">Hide the extension from the display name</param>
         /// <param name="cost">The cost of querying the display names property</param>
-        public DisplayNameProperty(IEntry entry, IPropertyStore store, bool hideExtension, int? cost = null)
-            : base(PropertyName, cost ?? store.Cost, null, null)
+        public DisplayNameProperty([NotNull] IEntry entry, [NotNull] string language, [NotNull] IPropertyStore store, bool hideExtension, int? cost = null)
+            : base(PropertyName, language, cost ?? store.Cost, null, null)
         {
             _entry = entry;
             _store = store;
@@ -55,10 +59,10 @@ namespace FubarDev.WebDavServer.Props.Dead
 
             if (_store != null)
             {
-                var storedValue = await _store.GetAsync(_entry, Name, ct).ConfigureAwait(false);
+                var storedValue = (await _store.GetAsync(_entry, Name, ct).ConfigureAwait(false)).Select(x => x.Value).FirstOrDefault();
                 if (storedValue != null)
                 {
-                    return storedValue.Value;
+                    return storedValue;
                 }
             }
 

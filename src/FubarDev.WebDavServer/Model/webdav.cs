@@ -29,7 +29,7 @@ namespace FubarDev.WebDavServer.Model {
         private object[] itemsField;
         
         private ItemsChoiceType1[] itemsElementNameField;
-        
+
         /// <remarks/>
         [System.Xml.Serialization.XmlElementAttribute("allprop", typeof(object))]
         [System.Xml.Serialization.XmlElementAttribute("include", typeof(include))]
@@ -156,9 +156,6 @@ namespace FubarDev.WebDavServer.Model {
     public partial class prop {
         
         private XElement[] anyField;
-
-        [XmlAttribute("xml:lang", DataType = "language")]
-        public string Language { get; set; }
 
         /// <remarks/>
         [System.Xml.Serialization.XmlAnyElementAttribute()]
@@ -579,9 +576,6 @@ namespace FubarDev.WebDavServer.Model {
         
         private prop propField;
 
-        [XmlAttribute("xml:lang", DataType = "language")]
-        public string Language { get; set; }
-
         /// <remarks/>
         public prop prop {
             get {
@@ -601,7 +595,7 @@ namespace FubarDev.WebDavServer.Model {
     public partial class propremove {
         
         private prop propField;
-        
+
         /// <remarks/>
         public prop prop {
             get {
@@ -767,9 +761,6 @@ namespace FubarDev.WebDavServer.Model {
     public partial class propertyupdate {
         
         private object[] itemsField;
-
-        [XmlAttribute("xml:lang", DataType = "language")]
-        public string Language { get; set; }
 
         /// <remarks/>
         [System.Xml.Serialization.XmlElementAttribute("remove", typeof(propremove))]

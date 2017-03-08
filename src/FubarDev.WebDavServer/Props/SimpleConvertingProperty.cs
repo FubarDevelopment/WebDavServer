@@ -22,11 +22,12 @@ namespace FubarDev.WebDavServer.Props
         /// Initializes a new instance of the <see cref="SimpleConvertingProperty{T}"/> class.
         /// </summary>
         /// <param name="name">The property name</param>
+        /// <param name="language">The language for the property value</param>
         /// <param name="cost">The cost to get the properties value</param>
         /// <param name="converter">The converter to copy the value to/from an <see cref="XElement"/></param>
         /// <param name="alternativeNames">The alternative names</param>
-        protected SimpleConvertingProperty([NotNull] XName name, int cost, [NotNull] IPropertyConverter<T> converter, params XName[] alternativeNames)
-            : base(name, cost, alternativeNames)
+        protected SimpleConvertingProperty([NotNull] XName name, [NotNull] string language, int cost, [NotNull] IPropertyConverter<T> converter, params XName[] alternativeNames)
+            : base(name, language, cost, alternativeNames)
         {
             Converter = converter;
         }

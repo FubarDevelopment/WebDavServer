@@ -59,8 +59,9 @@ namespace FubarDev.WebDavServer.Dispatchers
         /// <param name="store">The property store to store this property</param>
         /// <param name="entry">The entry to instantiate this property for</param>
         /// <param name="name">The name of the dead property to create</param>
+        /// <param name="language">The language for the property value</param>
         /// <param name="deadProperty">The created dead property if this function returned <see langword="true"/>.</param>
         /// <returns><see langword="true"/> when this function could handle the creation of the well known dead property with the given <paramref name="name"/></returns>
-        bool TryCreateDeadProperty(IPropertyStore store, IEntry entry, XName name, out IDeadProperty deadProperty);
+        bool TryCreateDeadProperty([NotNull] IPropertyStore store, [NotNull] IEntry entry, [NotNull] XName name, [NotNull] string language, out IDeadProperty deadProperty);
     }
 }

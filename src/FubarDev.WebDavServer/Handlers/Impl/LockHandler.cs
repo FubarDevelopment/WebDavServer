@@ -194,6 +194,7 @@ namespace FubarDev.WebDavServer.Handlers.Impl
             if (result.ErrorResponse != null)
                 return new WebDavResult<error>(WebDavStatusCode.PreconditionFailed, result.ErrorResponse.error);
 
+            Debug.Assert(result.RefreshedLocks != null, "result.RefreshedLocks != null");
             var prop = new prop()
             {
                 Any = result.RefreshedLocks.Select(x => x.ToXElement()).ToArray(),

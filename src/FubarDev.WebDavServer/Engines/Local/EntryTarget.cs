@@ -112,12 +112,13 @@ namespace FubarDev.WebDavServer.Engines.Local
         [ItemNotNull]
         private async Task<IReadOnlyCollection<XName>> SetPropertiesAsync([NotNull][ItemNotNull] IEnumerable<ILiveProperty> properties, CancellationToken cancellationToken)
         {
-            var isPropUsed = new Dictionary<XName, bool>();
-            var propNameToValue = new Dictionary<XName, XElement>();
+            var isPropUsed = new Dictionary<PropertyKey, bool>(PropertyKeyComparer.Default);
+            var propNameToValue = new Dictionary<PropertyKey, XElement>(PropertyKeyComparer.Default);
             foreach (var property in properties)
             {
-                propNameToValue[property.Name] = await property.GetXmlValueAsync(cancellationToken).ConfigureAwait(false);
-                isPropUsed[property.Name] = false;
+                var key = new PropertyKey(property);
+                propNameToValue[key] = await property.GetXmlValueAsync(cancellationToken).ConfigureAwait(false);
+                isPropUsed[key] = false;
             }
 
             if (propNameToValue.Count == 0)
@@ -129,10 +130,11 @@ namespace FubarDev.WebDavServer.Engines.Local
             {
                 while (await propEnum.MoveNext(cancellationToken).ConfigureAwait(false))
                 {
-                    isPropUsed[propEnum.Current.Name] = true;
+                    var key = new PropertyKey(propEnum.Current);
+                    isPropUsed[key] = true;
                     var prop = propEnum.Current as IUntypedWriteableProperty;
                     XElement propValue;
-                    if (prop != null && propNameToValue.TryGetValue(prop.Name, out propValue))
+                    if (prop != null && propNameToValue.TryGetValue(key, out propValue))
                     {
                         await prop.SetXmlValueAsync(propValue, cancellationToken).ConfigureAwait(false);
                     }
@@ -142,7 +144,7 @@ namespace FubarDev.WebDavServer.Engines.Local
             var hasUnsetLiveProperties = isPropUsed.Any(x => !x.Value);
             if (hasUnsetLiveProperties)
             {
-                var unsetPropNames = isPropUsed.Where(x => !x.Value).Select(x => x.Key).ToList();
+                var unsetPropNames = isPropUsed.Where(x => !x.Value).Select(x => x.Key.Name).ToList();
                 return unsetPropNames;
             }
 

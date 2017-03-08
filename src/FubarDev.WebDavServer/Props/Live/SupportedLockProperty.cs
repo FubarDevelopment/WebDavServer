@@ -48,6 +48,9 @@ namespace FubarDev.WebDavServer.Props.Live
         public XName Name { get; }
 
         /// <inheritdoc />
+        public string Language { get; } = PropertyKey.NoLanguage;
+
+        /// <inheritdoc />
         public IReadOnlyCollection<XName> AlternativeNames { get; } = new[] { WebDavXml.Dav + "contentlength" };
 
         /// <inheritdoc />

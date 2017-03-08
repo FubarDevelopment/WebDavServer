@@ -151,6 +151,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)Model\Headers\RangeHeader.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Model\Headers\RangeHeaderItem.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Model\Headers\TimeoutHeader.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Model\prop.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Model\ReponseExtensions.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Model\Status.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Model\webdav.cs" />
@@ -195,6 +196,9 @@
     <Compile Include="$(MSBuildThisFileDirectory)Props\Live\LockDiscoveryProperty.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Props\Live\ResourceTypeProperty.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Props\Live\SupportedLockProperty.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Props\PropertyKey.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Props\PropertyKeyComparer.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Props\PropertyKeyConverter.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Props\SetPropertyValueAsyncDelegate.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Props\SimpleConvertingProperty.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Props\SimpleTypedProperty.cs" />

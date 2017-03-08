@@ -3,6 +3,7 @@
 // </copyright>
 
 using System.IO;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Xml.Linq;
@@ -11,6 +12,8 @@ using FubarDev.WebDavServer.FileSystem;
 using FubarDev.WebDavServer.Model;
 using FubarDev.WebDavServer.Props.Generic;
 using FubarDev.WebDavServer.Props.Store;
+
+using JetBrains.Annotations;
 
 namespace FubarDev.WebDavServer.Props.Dead
 {
@@ -36,8 +39,8 @@ namespace FubarDev.WebDavServer.Props.Dead
         /// <param name="entry">The entry to instantiate this property for</param>
         /// <param name="store">The property store to store this property</param>
         /// <param name="cost">The cost of querying the display names property</param>
-        public GetContentTypeProperty(IEntry entry, IPropertyStore store, int? cost = null)
-            : base(PropertyName, cost ?? store.Cost, null, null, WebDavXml.Dav + "contenttype")
+        public GetContentTypeProperty([NotNull] IEntry entry, [NotNull] IPropertyStore store, int? cost = null)
+            : base(PropertyName, PropertyKey.NoLanguage, cost ?? store.Cost, null, null, WebDavXml.Dav + "contenttype")
         {
             _entry = entry;
             _store = store;
@@ -49,11 +52,9 @@ namespace FubarDev.WebDavServer.Props.Dead
             if (_value != null)
                 return _value;
 
-            var storedValue = await _store.GetAsync(_entry, Name, ct).ConfigureAwait(false);
+            var storedValue = (await _store.GetAsync(_entry, Name, ct).ConfigureAwait(false)).FirstOrDefault();
             if (storedValue != null)
-            {
                 return storedValue.Value;
-            }
 
             var fileExt = Path.GetExtension(_entry.Name);
             if (string.IsNullOrEmpty(fileExt))

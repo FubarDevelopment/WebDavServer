@@ -21,6 +21,12 @@ namespace FubarDev.WebDavServer.Props
         XName Name { get; }
 
         /// <summary>
+        /// Gets the language of this property value
+        /// </summary>
+        [NotNull]
+        string Language { get; }
+
+        /// <summary>
         /// Gets the alternative XML names
         /// </summary>
         [NotNull]

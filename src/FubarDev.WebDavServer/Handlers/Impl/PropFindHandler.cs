@@ -319,7 +319,7 @@ namespace FubarDev.WebDavServer.Handlers.Impl
 
                 var missingProperties = _filters
                     .SelectMany(x => x.GetMissingProperties())
-                    .GroupBy(x => x.StatusCode, x => x.PropertyName)
+                    .GroupBy(x => x.StatusCode, x => x.Key)
                     .ToDictionary(x => x.Key, x => x.Distinct().ToList());
                 foreach (var item in missingProperties)
                 {
@@ -328,7 +328,7 @@ namespace FubarDev.WebDavServer.Handlers.Impl
                         {
                             prop = new prop()
                             {
-                                Any = item.Value.Select(x => new XElement(x)).ToArray(),
+                                Any = item.Value.Select(x => x.CreateEmptyElement()).ToArray(),
                             },
                             status = new Status(_host.RequestProtocol, item.Key).ToString(),
                         });
@@ -383,7 +383,7 @@ namespace FubarDev.WebDavServer.Handlers.Impl
 
                 var missingProperties = _filters
                     .SelectMany(x => x.GetMissingProperties())
-                    .GroupBy(x => x.StatusCode, x => x.PropertyName)
+                    .GroupBy(x => x.StatusCode, x => x.Key)
                     .ToDictionary(x => x.Key, x => x.Distinct().ToList());
                 foreach (var item in missingProperties)
                 {
@@ -392,7 +392,7 @@ namespace FubarDev.WebDavServer.Handlers.Impl
                         {
                             prop = new prop()
                             {
-                                Any = item.Value.Select(x => new XElement(x)).ToArray(),
+                                Any = item.Value.Select(x => x.CreateEmptyElement()).ToArray(),
                             },
                             status = new Status(_host.RequestProtocol, item.Key).ToString(),
                         });

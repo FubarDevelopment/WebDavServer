@@ -3,6 +3,7 @@
 // </copyright>
 
 using System;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Xml.Linq;
@@ -11,6 +12,8 @@ using FubarDev.WebDavServer.FileSystem;
 using FubarDev.WebDavServer.Model;
 using FubarDev.WebDavServer.Props.Generic;
 using FubarDev.WebDavServer.Props.Store;
+
+using JetBrains.Annotations;
 
 namespace FubarDev.WebDavServer.Props.Dead
 {
@@ -24,10 +27,16 @@ namespace FubarDev.WebDavServer.Props.Dead
         /// </summary>
         public static readonly XName PropertyName = WebDavXml.Dav + "getcontentlanguage";
 
+        [NotNull]
         private readonly IEntry _entry;
 
+        [NotNull]
         private readonly IPropertyStore _store;
 
+        [NotNull]
+        private readonly string _defaultContentLanguage;
+
+        [CanBeNull]
         private string _value;
 
         private bool _isLoaded;
@@ -37,12 +46,14 @@ namespace FubarDev.WebDavServer.Props.Dead
         /// </summary>
         /// <param name="entry">The entry to instantiate this property for</param>
         /// <param name="store">The property store to store this property</param>
+        /// <param name="defaultContentLanguage">The content language to return when none was specified</param>
         /// <param name="cost">The cost of querying the display names property</param>
-        public GetContentLanguageProperty(IEntry entry, IPropertyStore store, int? cost = null)
-            : base(PropertyName, cost ?? store.Cost, null, null, WebDavXml.Dav + "contentlanguage")
+        public GetContentLanguageProperty([NotNull] IEntry entry, [NotNull] IPropertyStore store, [NotNull] string defaultContentLanguage = "en", int? cost = null)
+            : base(PropertyName, PropertyKey.NoLanguage, cost ?? store.Cost, null, null, WebDavXml.Dav + "contentlanguage")
         {
             _entry = entry;
             _store = store;
+            _defaultContentLanguage = defaultContentLanguage;
         }
 
         /// <summary>
@@ -61,11 +72,11 @@ namespace FubarDev.WebDavServer.Props.Dead
         public override async Task<string> GetValueAsync(CancellationToken ct)
         {
             if (_value != null || _isLoaded)
-                return _value ?? "en";
+                return _value ?? _defaultContentLanguage;
 
-            _value = (await _store.GetAsync(_entry, Name, ct).ConfigureAwait(false))?.Value;
+            _value = (await _store.GetAsync(_entry, Name, ct).ConfigureAwait(false)).Select(x => x.Value).FirstOrDefault();
             _isLoaded = true;
-            return _value ?? "en";
+            return _value ?? _defaultContentLanguage;
         }
 
         /// <inheritdoc />

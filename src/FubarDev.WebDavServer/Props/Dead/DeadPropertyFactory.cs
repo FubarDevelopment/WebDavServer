@@ -35,22 +35,22 @@ namespace FubarDev.WebDavServer.Props.Dead
         }
 
         /// <inheritdoc />
-        public virtual IDeadProperty Create(IPropertyStore store, IEntry entry, XName name)
+        public virtual IDeadProperty Create(IPropertyStore store, IEntry entry, XName name, string language)
         {
             foreach (var webDavClass in _webDavDispatcher.Value.SupportedClasses)
             {
                 IDeadProperty deadProp;
-                if (webDavClass.TryCreateDeadProperty(store, entry, name, out deadProp))
+                if (webDavClass.TryCreateDeadProperty(store, entry, name, language, out deadProp))
                     return deadProp;
             }
 
-            return new DeadProperty(store, entry, name);
+            return new DeadProperty(store, entry, name, language);
         }
 
         /// <inheritdoc />
         public IDeadProperty Create(IPropertyStore store, IEntry entry, XElement element)
         {
-            var result = Create(store, entry, element.Name);
+            var result = Create(store, entry, element.Name, PropertyKey.NoLanguage);
             result.Init(element);
             return result;
         }

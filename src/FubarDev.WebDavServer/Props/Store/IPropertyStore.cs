@@ -34,8 +34,8 @@ namespace FubarDev.WebDavServer.Props.Store
         /// <returns>The <see cref="XElement"/> for the given dead property</returns>
         /// <remarks>A <see cref="GetETagProperty"/> will not be returned by this function.</remarks>
         [NotNull]
-        [ItemCanBeNull]
-        Task<XElement> GetAsync([NotNull] IEntry entry, [NotNull] XName name, CancellationToken cancellationToken);
+        [ItemNotNull]
+        Task<IReadOnlyCollection<XElement>> GetAsync([NotNull] IEntry entry, [NotNull] XName name, CancellationToken cancellationToken);
 
         /// <summary>
         /// Sets a dead property for the given <paramref name="entry"/> to the given <paramref name="element"/>
@@ -53,11 +53,12 @@ namespace FubarDev.WebDavServer.Props.Store
         /// </summary>
         /// <param name="entry">The entry to remove the dead property with the given <paramref name="name"/> from</param>
         /// <param name="name">The name of the parameter to remove from the <paramref name="entry"/></param>
+        /// <param name="language">The language for the property value</param>
         /// <param name="cancellationToken">The cancellation token</param>
         /// <returns><see langword="true"/> when there was a dead property with the given <paramref name="name"/> that could be removed</returns>
         /// <remarks>A <see cref="GetETagProperty"/> cannot be removed by this function.</remarks>
         [NotNull]
-        Task<bool> RemoveAsync([NotNull] IEntry entry, [NotNull] XName name, CancellationToken cancellationToken);
+        Task<bool> RemoveAsync([NotNull] IEntry entry, [NotNull] XName name, [NotNull] string language, CancellationToken cancellationToken);
 
         /// <summary>
         /// Gets all dead properties for a given <paramref name="entry"/>
@@ -84,15 +85,15 @@ namespace FubarDev.WebDavServer.Props.Store
         /// <summary>
         /// Remove multiple dead properties by its name at once from the given <paramref name="entry"/>
         /// </summary>
-        /// <param name="entry">The entry to remove the given property <paramref name="names"/> from</param>
-        /// <param name="names">The names of the dead properties to remove from the given <paramref name="entry"/></param>
+        /// <param name="entry">The entry to remove the given property <paramref name="keys"/> from</param>
+        /// <param name="keys">The names and languages of the dead properties to remove from the given <paramref name="entry"/></param>
         /// <param name="cancellationToken">The cancellation token</param>
         /// <returns>A collection of booleans where a <see langword="true"/> value indicates that there was a dead property for a given
         /// name that could be removed from the <paramref name="entry"/>. A <see cref="GetETagProperty"/> cannot be removed
         /// by this function.</returns>
         [NotNull]
         [ItemNotNull]
-        Task<IReadOnlyCollection<bool>> RemoveAsync([NotNull] IEntry entry, [NotNull] [ItemNotNull] IEnumerable<XName> names, CancellationToken cancellationToken);
+        Task<IReadOnlyCollection<bool>> RemoveAsync([NotNull] IEntry entry, [NotNull] IEnumerable<(XName Name, string Language)> keys, CancellationToken cancellationToken);
 
         /// <summary>
         /// Remove all dead propertied (including a probably exting <see cref="GetETagProperty"/>) from a given <paramref name="entry"/>
@@ -108,9 +109,10 @@ namespace FubarDev.WebDavServer.Props.Store
         /// </summary>
         /// <param name="entry">The entry to create the dead property with the given <paramref name="name"/> for</param>
         /// <param name="name">The name of the dead property to create for the given <paramref name="entry"/> for</param>
+        /// <param name="language">The language for the property value</param>
         /// <returns>The created dead property with the given <paramref name="name"/> for the given <paramref name="entry"/></returns>
         [NotNull]
-        IDeadProperty Create([NotNull] IEntry entry, [NotNull] XName name);
+        IDeadProperty Create([NotNull] IEntry entry, [NotNull] XName name, [NotNull] string language);
 
         /// <summary>
         /// Loads the dead property with the given <paramref name="name"/> into a <see cref="IDeadProperty"/> implementation
@@ -121,7 +123,7 @@ namespace FubarDev.WebDavServer.Props.Store
         /// <returns>The implementation of the dead property</returns>
         [NotNull]
         [ItemNotNull]
-        Task<IDeadProperty> LoadAsync([NotNull] IEntry entry, [NotNull] XName name, CancellationToken cancellationToken);
+        Task<IReadOnlyCollection<IDeadProperty>> LoadAsync([NotNull] IEntry entry, [NotNull] XName name, CancellationToken cancellationToken);
 
         /// <summary>
         /// Loads all dead properties for a given <paramref name="entry"/> into <see cref="IDeadProperty"/> implementations

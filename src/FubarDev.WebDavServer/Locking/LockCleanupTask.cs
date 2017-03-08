@@ -59,7 +59,7 @@ namespace FubarDev.WebDavServer.Locking
         /// </summary>
         /// <param name="lockManager">The lock manager that created this active lock.</param>
         /// <param name="activeLock">The active lock to track</param>
-        public void Add([NotNull] ILockManager lockManager, [NotNull] IActiveLock activeLock)
+        public void Add(ILockManager lockManager, IActiveLock activeLock)
         {
             if (_logger.IsEnabled(LogLevel.Trace))
                 _logger.LogTrace($"Adding lock {activeLock}");
@@ -90,7 +90,7 @@ namespace FubarDev.WebDavServer.Locking
         /// Removes the active lock so that it isn't tracked any more by this cleanup task.
         /// </summary>
         /// <param name="activeLock">The active lock to remove</param>
-        public void Remove([NotNull] IActiveLock activeLock)
+        public void Remove(IActiveLock activeLock)
         {
             if (_logger.IsEnabled(LogLevel.Trace))
                 _logger.LogTrace($"Try removing lock {activeLock}");

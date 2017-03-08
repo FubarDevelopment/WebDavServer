@@ -33,18 +33,19 @@ namespace FubarDev.WebDavServer.Props.Live
         public ContentLengthProperty(long propValue)
         {
             _propValue = propValue;
-            Cost = 0;
-            Name = PropertyName;
         }
 
         /// <inheritdoc />
-        public XName Name { get; }
+        public XName Name { get; } = PropertyName;
+
+        /// <inheritdoc />
+        public string Language { get; } = PropertyKey.NoLanguage;
 
         /// <inheritdoc />
         public IReadOnlyCollection<XName> AlternativeNames { get; } = new[] { WebDavXml.Dav + "contentlength" };
 
         /// <inheritdoc />
-        public int Cost { get; }
+        public int Cost { get; } = 0;
 
         /// <inheritdoc />
         public Task<bool> IsValidAsync(CancellationToken cancellationToken)

@@ -113,7 +113,7 @@ namespace FubarDev.WebDavServer.Handlers.Impl
                     }
                 }
 
-                var properties = propertiesList.ToDictionary(x => x.Name);
+                var properties = propertiesList.ToDictionary(x => new PropertyKey(x));
                 var changes =
                     await ApplyChangesAsync(targetEntry, properties, request, cancellationToken).ConfigureAwait(false);
                 var hasError = changes.Any(x => !x.IsSuccess);
@@ -186,19 +186,35 @@ namespace FubarDev.WebDavServer.Handlers.Impl
         }
 
         [CanBeNull]
-        private static IUntypedReadableProperty FindProperty([NotNull] IReadOnlyDictionary<XName, IUntypedReadableProperty> properties, [NotNull] XName name)
+        private static IEnumerable<IUntypedReadableProperty> FindProperty([NotNull] IReadOnlyDictionary<PropertyKey, IUntypedReadableProperty> properties, PropertyKey propertyKey, bool returnAllForNoLanguage)
         {
-            IUntypedReadableProperty property;
-            if (properties.TryGetValue(name, out property))
-                return property;
+            var props = FindPropertiesByName(properties, propertyKey.Name)
+                .ToDictionary(x => x.Key, x => x.Property);
 
-            foreach (var readableProperty in properties.Values.Where(x => x.AlternativeNames.Count != 0))
+            IUntypedReadableProperty result;
+            if (props.TryGetValue(propertyKey, out result))
+                return new[] { result };
+
+            if (propertyKey.Language == PropertyKey.NoLanguage)
             {
-                if (readableProperty.AlternativeNames.Any(x => x == name))
-                    return readableProperty;
+                if (returnAllForNoLanguage || props.Count == 1)
+                    return props.Values;
             }
 
-            return null;
+            return props.Where(x => x.Key.Language == PropertyKey.NoLanguage).Select(x => x.Value);
+        }
+
+        [NotNull]
+        private static IEnumerable<(PropertyKey Key, IUntypedReadableProperty Property)> FindPropertiesByName([NotNull] IReadOnlyDictionary<PropertyKey, IUntypedReadableProperty> properties, [NotNull] XName name)
+        {
+            foreach (var item in properties)
+            {
+                var readableProperty = item.Value;
+                if (readableProperty.Name == name)
+                    yield return (item.Key, readableProperty);
+                else if (readableProperty.AlternativeNames.Any(x => x == name))
+                    yield return (new PropertyKey(name, item.Key.Language), readableProperty);
+            }
         }
 
         [NotNull]
@@ -211,7 +227,7 @@ namespace FubarDev.WebDavServer.Handlers.Impl
                 var elements = new List<XElement>();
                 foreach (var changeItem in changesByStatusCode)
                 {
-                    elements.Add(new XElement(changeItem.Name));
+                    elements.Add(changeItem.Key.CreateEmptyElement());
                 }
 
                 var propStat = new propstat()
@@ -230,7 +246,7 @@ namespace FubarDev.WebDavServer.Handlers.Impl
 
         [NotNull]
         [ItemNotNull]
-        private async Task<IReadOnlyCollection<ChangeItem>> RevertChangesAsync([NotNull] IEntry entry, [NotNull][ItemNotNull] IReadOnlyCollection<ChangeItem> changes, [NotNull] Dictionary<XName, IUntypedReadableProperty> properties, CancellationToken cancellationToken)
+        private async Task<IReadOnlyCollection<ChangeItem>> RevertChangesAsync([NotNull] IEntry entry, [NotNull][ItemNotNull] IReadOnlyCollection<ChangeItem> changes, [NotNull] IDictionary<PropertyKey, IUntypedReadableProperty> properties, CancellationToken cancellationToken)
         {
             if (entry.FileSystem.PropertyStore == null || _fileSystem.PropertyStore == null)
                 throw new InvalidOperationException("The property store must be configured");
@@ -244,9 +260,9 @@ namespace FubarDev.WebDavServer.Handlers.Impl
                 {
                     case ChangeStatus.Added:
                         Debug.Assert(entry.FileSystem.PropertyStore != null, "entry.FileSystem.PropertyStore != null");
-                        await entry.FileSystem.PropertyStore.RemoveAsync(entry, changeItem.Name, cancellationToken).ConfigureAwait(false);
-                        newChangeItem = ChangeItem.FailedDependency(changeItem.Name);
-                        properties.Remove(changeItem.Name);
+                        await entry.FileSystem.PropertyStore.RemoveAsync(entry, changeItem.Key.Name, changeItem.Key.ElementLanguage, cancellationToken).ConfigureAwait(false);
+                        newChangeItem = ChangeItem.FailedDependency(changeItem.Key);
+                        properties.Remove(changeItem.Key);
                         break;
                     case ChangeStatus.Modified:
                         Debug.Assert(entry.FileSystem.PropertyStore != null, "entry.FileSystem.PropertyStore != null");
@@ -254,12 +270,12 @@ namespace FubarDev.WebDavServer.Handlers.Impl
                         if (changeItem.OldValue == null)
                             throw new InvalidOperationException("There must be a old value for the item to change");
                         await entry.FileSystem.PropertyStore.SetAsync(entry, changeItem.OldValue, cancellationToken).ConfigureAwait(false);
-                        newChangeItem = ChangeItem.FailedDependency(changeItem.Name);
+                        newChangeItem = ChangeItem.FailedDependency(changeItem.Key);
                         break;
                     case ChangeStatus.Removed:
                         if (changeItem.Property != null)
                         {
-                            properties.Add(changeItem.Name, changeItem.Property);
+                            properties.Add(changeItem.Key, changeItem.Property);
                             Debug.Assert(_fileSystem.PropertyStore != null, "_fileSystem.PropertyStore != null");
                             Debug.Assert(changeItem.OldValue != null, "changeItem.OldValue != null");
                             if (changeItem.OldValue == null)
@@ -267,7 +283,7 @@ namespace FubarDev.WebDavServer.Handlers.Impl
                             await _fileSystem.PropertyStore.SetAsync(entry, changeItem.OldValue, cancellationToken).ConfigureAwait(false);
                         }
 
-                        newChangeItem = ChangeItem.FailedDependency(changeItem.Name);
+                        newChangeItem = ChangeItem.FailedDependency(changeItem.Key);
                         break;
                     case ChangeStatus.Conflict:
                     case ChangeStatus.Failed:
@@ -289,13 +305,12 @@ namespace FubarDev.WebDavServer.Handlers.Impl
 
         [NotNull]
         [ItemNotNull]
-        private async Task<IReadOnlyCollection<ChangeItem>> ApplyChangesAsync([NotNull] IEntry entry, [NotNull] Dictionary<XName, IUntypedReadableProperty> properties, [NotNull] propertyupdate request, CancellationToken cancellationToken)
+        private async Task<IReadOnlyCollection<ChangeItem>> ApplyChangesAsync([NotNull] IEntry entry, [NotNull] Dictionary<PropertyKey, IUntypedReadableProperty> properties, [NotNull] propertyupdate request, CancellationToken cancellationToken)
         {
             var result = new List<ChangeItem>();
             if (request.Items == null)
                 return result;
 
-            var language = request.Language;
             var failed = false;
             foreach (var item in request.Items)
             {
@@ -303,7 +318,7 @@ namespace FubarDev.WebDavServer.Handlers.Impl
                 var set = item as propset;
                 if (set != null)
                 {
-                    changeItems = await ApplySetAsync(entry, properties, set, language, failed, cancellationToken).ConfigureAwait(false);
+                    changeItems = await ApplySetAsync(entry, properties, set, failed, cancellationToken).ConfigureAwait(false);
                 }
                 else
                 {
@@ -321,24 +336,32 @@ namespace FubarDev.WebDavServer.Handlers.Impl
 
         [NotNull]
         [ItemNotNull]
-        private async Task<IReadOnlyCollection<ChangeItem>> ApplyRemoveAsync([NotNull] IEntry entry, [NotNull] IReadOnlyDictionary<XName, IUntypedReadableProperty> properties, [NotNull] propremove remove, bool previouslyFailed, CancellationToken cancellationToken)
+        private async Task<IReadOnlyCollection<ChangeItem>> ApplyRemoveAsync([NotNull] IEntry entry, [NotNull] IReadOnlyDictionary<PropertyKey, IUntypedReadableProperty> properties, [NotNull] propremove remove, bool previouslyFailed, CancellationToken cancellationToken)
         {
             var result = new List<ChangeItem>();
 
             if (remove.prop.Any == null)
                 return result;
 
+            var language = remove.prop.Language;
+
             var failed = previouslyFailed;
             foreach (var element in remove.prop.Any)
             {
+                // Add a parent elements xml:lang to the element
+                var elementLanguage = element.Attribute(XNamespace.Xml + "lang")?.Value;
+                if (string.IsNullOrEmpty(elementLanguage) && !string.IsNullOrEmpty(language))
+                    element.SetAttributeValue(XNamespace.Xml + "lang", language);
+                var propertyKey = new PropertyKey(element.Name, elementLanguage ?? language ?? PropertyKey.NoLanguage);
+
                 if (failed)
                 {
-                    result.Add(ChangeItem.FailedDependency(element.Name));
+                    result.Add(ChangeItem.FailedDependency(propertyKey));
                     continue;
                 }
 
-                var property = FindProperty(properties, element.Name);
-                if (property != null)
+                var foundProperties = FindProperty(properties, propertyKey, true).ToList();
+                foreach (var property in foundProperties)
                 {
                     if (!(property is IUntypedWriteableProperty))
                     {
@@ -364,7 +387,7 @@ namespace FubarDev.WebDavServer.Handlers.Impl
                         try
                         {
                             var oldValue = await property.GetXmlValueAsync(cancellationToken).ConfigureAwait(false);
-                            var success = await entry.FileSystem.PropertyStore.RemoveAsync(entry, element.Name, cancellationToken).ConfigureAwait(false);
+                            var success = await entry.FileSystem.PropertyStore.RemoveAsync(entry, propertyKey.Name, propertyKey.ElementLanguage, cancellationToken).ConfigureAwait(false);
                             if (!success)
                             {
                                 result.Add(ChangeItem.Failed(property, "Couldn't remove property from property store (concurrent access?)"));
@@ -381,9 +404,10 @@ namespace FubarDev.WebDavServer.Handlers.Impl
                         }
                     }
                 }
-                else
+
+                if (foundProperties.Count == 0)
                 {
-                    result.Add(ChangeItem.Removed(element.Name));
+                    result.Add(ChangeItem.Removed(propertyKey));
                 }
             }
 
@@ -392,15 +416,14 @@ namespace FubarDev.WebDavServer.Handlers.Impl
 
         [NotNull]
         [ItemNotNull]
-        private async Task<IReadOnlyCollection<ChangeItem>> ApplySetAsync([NotNull] IEntry entry, [NotNull] Dictionary<XName, IUntypedReadableProperty> properties, [NotNull] propset set, string language, bool previouslyFailed, CancellationToken cancellationToken)
+        private async Task<IReadOnlyCollection<ChangeItem>> ApplySetAsync([NotNull] IEntry entry, [NotNull] Dictionary<PropertyKey, IUntypedReadableProperty> properties, [NotNull] propset set, bool previouslyFailed, CancellationToken cancellationToken)
         {
             var result = new List<ChangeItem>();
 
             if (set.prop.Any == null)
                 return result;
 
-            if (!string.IsNullOrEmpty(set.Language))
-                language = set.Language;
+            var language = set.prop.Language;
 
             var failed = previouslyFailed;
             foreach (var element in set.prop.Any)
@@ -409,15 +432,16 @@ namespace FubarDev.WebDavServer.Handlers.Impl
                 var elementLanguage = element.Attribute(XNamespace.Xml + "lang")?.Value;
                 if (string.IsNullOrEmpty(elementLanguage) && !string.IsNullOrEmpty(language))
                     element.SetAttributeValue(XNamespace.Xml + "lang", language);
+                var propertyKey = new PropertyKey(element);
 
                 if (failed)
                 {
-                    result.Add(ChangeItem.FailedDependency(element.Name));
+                    result.Add(ChangeItem.FailedDependency(propertyKey));
                     continue;
                 }
 
-                var property = FindProperty(properties, element.Name);
-                if (property != null)
+                var foundProperties = FindProperty(properties, propertyKey, false).ToList();
+                foreach (var property in foundProperties)
                 {
                     ChangeItem changeItem;
                     try
@@ -453,7 +477,8 @@ namespace FubarDev.WebDavServer.Handlers.Impl
                     failed = !changeItem.IsSuccess;
                     result.Add(changeItem);
                 }
-                else
+
+                if (foundProperties.Count == 0)
                 {
                     if (entry.FileSystem.PropertyStore == null)
                     {
@@ -463,7 +488,7 @@ namespace FubarDev.WebDavServer.Handlers.Impl
                     else
                     {
                         var newProperty = new DeadProperty(entry.FileSystem.PropertyStore, entry, element);
-                        properties.Add(newProperty.Name, newProperty);
+                        properties.Add(new PropertyKey(newProperty), newProperty);
                         result.Add(ChangeItem.Added(newProperty, element));
                     }
                 }
@@ -477,13 +502,13 @@ namespace FubarDev.WebDavServer.Handlers.Impl
         [SuppressMessage("ReSharper", "UnusedMember.Local", Justification = "Reviewed. Might be used when locking is implemented.")]
         private class ChangeItem
         {
-            private ChangeItem(ChangeStatus status, IUntypedReadableProperty property, XElement newValue, XElement oldValue, [NotNull] XName name, string description)
+            private ChangeItem(ChangeStatus status, IUntypedReadableProperty property, XElement newValue, XElement oldValue, PropertyKey key, string description)
             {
                 Status = status;
                 Property = property;
                 NewValue = newValue;
                 OldValue = oldValue;
-                Name = name;
+                Key = key;
                 Description = description;
             }
 
@@ -498,8 +523,7 @@ namespace FubarDev.WebDavServer.Handlers.Impl
             [CanBeNull]
             public XElement OldValue { get; }
 
-            [NotNull]
-            public XName Name { get; }
+            public PropertyKey Key { get; }
 
             public string Description { get; }
 
@@ -534,47 +558,47 @@ namespace FubarDev.WebDavServer.Handlers.Impl
 
             public static ChangeItem Added(IUntypedReadableProperty property, [NotNull] XElement newValue)
             {
-                return new ChangeItem(ChangeStatus.Added, property, newValue, null, newValue.Name, null);
+                return new ChangeItem(ChangeStatus.Added, property, newValue, null, new PropertyKey(property.Name, property.Language), null);
             }
 
-            public static ChangeItem Modified(IUntypedReadableProperty property, [NotNull] XElement newValue, XElement oldValue)
+            public static ChangeItem Modified(IUntypedReadableProperty property, [NotNull] XElement newValue, [NotNull] XElement oldValue)
             {
-                return new ChangeItem(ChangeStatus.Modified, property, newValue, oldValue, newValue.Name, null);
+                return new ChangeItem(ChangeStatus.Modified, property, newValue, oldValue, new PropertyKey(property.Name, property.Language), null);
             }
 
-            public static ChangeItem Removed([NotNull] IUntypedReadableProperty property, XElement oldValue)
+            public static ChangeItem Removed([NotNull] IUntypedReadableProperty property, [NotNull] XElement oldValue)
             {
-                return new ChangeItem(ChangeStatus.Removed, property, null, oldValue, property.Name, null);
+                return new ChangeItem(ChangeStatus.Removed, property, null, oldValue, new PropertyKey(property.Name, property.Language), null);
             }
 
-            public static ChangeItem Removed([NotNull] XName name)
+            public static ChangeItem Removed(PropertyKey key)
             {
-                return new ChangeItem(ChangeStatus.Removed, null, null, null, name, null);
+                return new ChangeItem(ChangeStatus.Removed, null, null, null, key, null);
             }
 
             public static ChangeItem Failed([NotNull] IUntypedReadableProperty property, string description)
             {
-                return new ChangeItem(ChangeStatus.Failed, property, null, null, property.Name, description);
+                return new ChangeItem(ChangeStatus.Failed, property, null, null, new PropertyKey(property.Name, property.Language), description);
             }
 
             public static ChangeItem Conflict([NotNull] IUntypedReadableProperty property, [NotNull] XElement oldValue, string description)
             {
-                return new ChangeItem(ChangeStatus.Conflict, property, null, oldValue, property.Name, description);
+                return new ChangeItem(ChangeStatus.Conflict, property, null, oldValue, new PropertyKey(property.Name, property.Language), description);
             }
 
-            public static ChangeItem FailedDependency(XName name, string description = "Failed dependency")
+            public static ChangeItem FailedDependency(PropertyKey key, string description = "Failed dependency")
             {
-                return new ChangeItem(ChangeStatus.FailedDependency, null, null, null, name, description);
+                return new ChangeItem(ChangeStatus.FailedDependency, null, null, null, key, description);
             }
 
             public static ChangeItem InsufficientStorage([NotNull] XElement newValue, string description)
             {
-                return new ChangeItem(ChangeStatus.InsufficientStorage, null, newValue, null, newValue.Name, description);
+                return new ChangeItem(ChangeStatus.InsufficientStorage, null, newValue, null, new PropertyKey(newValue), description);
             }
 
             public static ChangeItem ReadOnly([NotNull] IUntypedReadableProperty property, XElement newValue, string description)
             {
-                return new ChangeItem(ChangeStatus.ReadOnlyProperty, property, newValue, null, property.Name, description);
+                return new ChangeItem(ChangeStatus.ReadOnlyProperty, property, newValue, null, new PropertyKey(property), description);
             }
         }
     }

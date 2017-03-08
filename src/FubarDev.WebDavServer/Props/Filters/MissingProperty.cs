@@ -17,11 +17,11 @@ namespace FubarDev.WebDavServer.Props.Filters
         /// Initializes a new instance of the <see cref="MissingProperty"/> class.
         /// </summary>
         /// <param name="statusCode">The status code why this property wasn't selected</param>
-        /// <param name="name">The name of the property that wasn't selected</param>
-        public MissingProperty(WebDavStatusCode statusCode, XName name)
+        /// <param name="propertyKey">The key of the property that wasn't selected</param>
+        public MissingProperty(WebDavStatusCode statusCode, PropertyKey propertyKey)
         {
             StatusCode = statusCode;
-            PropertyName = name;
+            Key = propertyKey;
         }
 
         /// <summary>
@@ -30,8 +30,8 @@ namespace FubarDev.WebDavServer.Props.Filters
         public WebDavStatusCode StatusCode { get; }
 
         /// <summary>
-        /// Gets the name of the property that wasn't selected
+        /// Gets the key of the property that wasn't selected
         /// </summary>
-        public XName PropertyName { get; }
+        public PropertyKey Key { get; }
     }
 }

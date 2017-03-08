@@ -171,7 +171,7 @@ namespace FubarDev.WebDavServer.Dispatchers
             _defaultCreationMap = new Lazy<IReadOnlyDictionary<XName, CreateDeadPropertyDelegate>>(() => CreateDeadPropertiesMap(options?.Value ?? new WebDavDispatcherClass1Options()));
         }
 
-        private delegate IDeadProperty CreateDeadPropertyDelegate(IPropertyStore store, IEntry entry, XName name);
+        private delegate IDeadProperty CreateDeadPropertyDelegate([NotNull] IPropertyStore store, [NotNull] IEntry entry, [NotNull] XName name, [NotNull] string language);
 
         /// <inheritdoc />
         public IEnumerable<string> HttpMethods { get; }
@@ -273,30 +273,38 @@ namespace FubarDev.WebDavServer.Dispatchers
             yield return entry.GetResourceTypeProperty();
             yield return new LastModifiedProperty(entry.LastWriteTimeUtc, entry.SetLastWriteTimeUtcAsync);
             yield return new CreationDateProperty(entry.CreationTimeUtc, entry.SetCreationTimeUtcAsync);
-            yield return _deadPropertyFactory.Create(propStore, entry, DisplayNameProperty.PropertyName);
             yield return new GetETagProperty(entry.FileSystem.PropertyStore, entry);
+
+            if (propStore != null)
+                yield return _deadPropertyFactory.Create(propStore, entry, DisplayNameProperty.PropertyName, PropertyKey.NoLanguage);
 
             var doc = entry as IDocument;
             if (doc != null)
             {
                 yield return new ContentLengthProperty(doc.Length);
-                yield return _deadPropertyFactory
-                    .Create(propStore, entry, GetContentLanguageProperty.PropertyName);
-                yield return _deadPropertyFactory
-                    .Create(propStore, entry, GetContentTypeProperty.PropertyName);
+                if (propStore != null)
+                {
+                    yield return _deadPropertyFactory
+                        .Create(propStore, entry, GetContentLanguageProperty.PropertyName, PropertyKey.NoLanguage);
+                    yield return _deadPropertyFactory
+                        .Create(propStore, entry, GetContentTypeProperty.PropertyName, PropertyKey.NoLanguage);
+                }
             }
             else
             {
                 Debug.Assert(entry is ICollection, "entry is ICollection");
                 yield return new ContentLengthProperty(0L);
-                var contentType = _deadPropertyFactory.Create(propStore, entry, GetContentTypeProperty.PropertyName);
-                contentType.Init(new StringConverter().ToElement(GetContentTypeProperty.PropertyName, Utils.MimeTypesMap.FolderContentType));
-                yield return contentType;
+                if (propStore != null)
+                {
+                    var contentType = _deadPropertyFactory.Create(propStore, entry, GetContentTypeProperty.PropertyName, PropertyKey.NoLanguage);
+                    contentType.Init(new StringConverter().ToElement(GetContentTypeProperty.PropertyName, Utils.MimeTypesMap.FolderContentType));
+                    yield return contentType;
+                }
             }
         }
 
         /// <inheritdoc />
-        public bool TryCreateDeadProperty(IPropertyStore store, IEntry entry, XName name, out IDeadProperty deadProperty)
+        public bool TryCreateDeadProperty(IPropertyStore store, IEntry entry, XName name, string language, out IDeadProperty deadProperty)
         {
             CreateDeadPropertyDelegate createDeadProp;
             if (!_defaultCreationMap.Value.TryGetValue(name, out createDeadProp))
@@ -305,7 +313,7 @@ namespace FubarDev.WebDavServer.Dispatchers
                 return false;
             }
 
-            deadProperty = createDeadProp(store, entry, name);
+            deadProperty = createDeadProp(store, entry, name, language);
             return true;
         }
 
@@ -314,10 +322,10 @@ namespace FubarDev.WebDavServer.Dispatchers
         {
             var result = new Dictionary<XName, CreateDeadPropertyDelegate>()
             {
-                [EntityTag.PropertyName] = (store, entry, name) => new GetETagProperty(store, entry),
-                [DisplayNameProperty.PropertyName] = (store, entry, name) => new DisplayNameProperty(entry, store, options.HideExtensionForDisplayName),
-                [GetContentLanguageProperty.PropertyName] = (store, entry, name) => new GetContentLanguageProperty(entry, store),
-                [GetContentTypeProperty.PropertyName] = (store, entry, name) => new GetContentTypeProperty(entry, store),
+                [EntityTag.PropertyName] = (store, entry, name, language) => new GetETagProperty(store, entry),
+                [DisplayNameProperty.PropertyName] = (store, entry, name, language) => new DisplayNameProperty(entry, language, store, options.HideExtensionForDisplayName),
+                [GetContentLanguageProperty.PropertyName] = (store, entry, name, language) => new GetContentLanguageProperty(entry, store),
+                [GetContentTypeProperty.PropertyName] = (store, entry, name, language) => new GetContentTypeProperty(entry, store),
             };
 
             return result;

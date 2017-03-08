@@ -40,10 +40,10 @@ namespace FubarDev.WebDavServer.Props.Store
         protected IDeadPropertyFactory DeadPropertyFactory { get; }
 
         /// <inheritdoc />
-        public virtual async Task<XElement> GetAsync(IEntry entry, XName name, CancellationToken cancellationToken)
+        public virtual async Task<IReadOnlyCollection<XElement>> GetAsync(IEntry entry, XName name, CancellationToken cancellationToken)
         {
             var elements = await GetAsync(entry, cancellationToken).ConfigureAwait(false);
-            return elements.FirstOrDefault(x => x.Name == name);
+            return elements.Where(x => x.Name == name).ToList();
         }
 
         /// <inheritdoc />
@@ -53,9 +53,9 @@ namespace FubarDev.WebDavServer.Props.Store
         }
 
         /// <inheritdoc />
-        public virtual async Task<bool> RemoveAsync(IEntry entry, XName name, CancellationToken cancellationToken)
+        public virtual async Task<bool> RemoveAsync(IEntry entry, XName name, string language, CancellationToken cancellationToken)
         {
-            return (await RemoveAsync(entry, new[] { name }, cancellationToken).ConfigureAwait(false)).Single();
+            return (await RemoveAsync(entry, new[] { (name, language) }, cancellationToken).ConfigureAwait(false)).Single();
         }
 
         /// <inheritdoc />
@@ -65,35 +65,33 @@ namespace FubarDev.WebDavServer.Props.Store
         public abstract Task SetAsync(IEntry entry, IEnumerable<XElement> properties, CancellationToken cancellationToken);
 
         /// <inheritdoc />
-        public abstract Task<IReadOnlyCollection<bool>> RemoveAsync(IEntry entry, IEnumerable<XName> names, CancellationToken cancellationToken);
+        public abstract Task<IReadOnlyCollection<bool>> RemoveAsync(IEntry entry, IEnumerable<(XName Name, string Language)> keys, CancellationToken cancellationToken);
 
         /// <inheritdoc />
         public virtual async Task RemoveAsync(IEntry entry, CancellationToken cancellationToken)
         {
             var elements = await GetAsync(entry, cancellationToken).ConfigureAwait(false);
-            var names = elements.Where(x => x.Name != GetETagProperty.PropertyName).Select(x => x.Name).ToList();
-            if (elements.Count != names.Count)
+            var keys = elements.Where(x => x.Name != GetETagProperty.PropertyName).Select(x => new PropertyKey(x)).ToList();
+            if (elements.Count != keys.Count)
             {
                 // Has ETag, so force the update of an ETag
                 await UpdateETagAsync(entry, cancellationToken).ConfigureAwait(false);
             }
 
-            await RemoveAsync(entry, names, cancellationToken).ConfigureAwait(false);
+            await RemoveAsync(entry, keys.Select(x => (x.Name, x.ElementLanguage)), cancellationToken).ConfigureAwait(false);
         }
 
         /// <inheritdoc />
-        public IDeadProperty Create(IEntry entry, XName name)
+        public IDeadProperty Create(IEntry entry, XName name, string language)
         {
-            return DeadPropertyFactory.Create(this, entry, name);
+            return DeadPropertyFactory.Create(this, entry, name, language);
         }
 
         /// <inheritdoc />
-        public virtual async Task<IDeadProperty> LoadAsync(IEntry entry, XName name, CancellationToken cancellationToken)
+        public virtual async Task<IReadOnlyCollection<IDeadProperty>> LoadAsync(IEntry entry, XName name, CancellationToken cancellationToken)
         {
             var element = await GetAsync(entry, name, cancellationToken).ConfigureAwait(false);
-            if (element == null)
-                return Create(entry, name);
-            return CreateProperty(entry, element);
+            return element.Select(x => CreateProperty(entry, x)).ToList();
         }
 
         /// <inheritdoc />

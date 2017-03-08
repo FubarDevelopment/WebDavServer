@@ -116,7 +116,6 @@ namespace FubarDev.WebDavServer.Model.Headers
         /// The return value of this function can be parsed using <see cref="Parse(string)"/>.
         /// </remarks>
         /// <returns>The textual representation of this range</returns>
-        [NotNull]
         public override string ToString()
         {
             return $"{Unit}={string.Join(",", RangeItems.Select(x => x.ToString()))}";
@@ -148,7 +147,7 @@ namespace FubarDev.WebDavServer.Model.Headers
         [NotNull]
         public virtual string ToString(RangeHeaderItem rangeItem, long? length)
         {
-            return $"{Unit} {rangeItem}/{(length.HasValue ? length.Value.ToString(CultureInfo.InvariantCulture) : "*")}";
+            return $"{Unit} {rangeItem}/{length?.ToString(CultureInfo.InvariantCulture) ?? "*"}";
         }
 
         /// <summary>

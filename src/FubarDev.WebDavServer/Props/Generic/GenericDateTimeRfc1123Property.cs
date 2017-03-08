@@ -23,7 +23,7 @@ namespace FubarDev.WebDavServer.Props.Generic
         /// <param name="setValueAsyncFunc">The function to set the property value</param>
         /// <param name="alternativeNames">Alternative property names</param>
         public GenericDateTimeRfc1123Property(XName name, int cost, GetPropertyValueAsyncDelegate<DateTime> getValueAsyncFunc, SetPropertyValueAsyncDelegate<DateTime> setValueAsyncFunc, params XName[] alternativeNames)
-            : base(name, cost, new DateTimeRfc1123Converter(), getValueAsyncFunc, setValueAsyncFunc, alternativeNames)
+            : base(name, PropertyKey.NoLanguage, cost, new DateTimeRfc1123Converter(), getValueAsyncFunc, setValueAsyncFunc, alternativeNames)
         {
         }
     }
