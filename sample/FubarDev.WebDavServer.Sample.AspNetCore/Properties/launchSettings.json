@@ -16,7 +16,7 @@
     },
     "FubarDev.WebDavServer.Sample.AspNetCore": {
       "commandName": "Project",
-      "commandLineArgs": "--use-kestrel=true --disable-basic-auth=true --Server:FileSystem=SQLite",
+      "commandLineArgs": "--use-kestrel=true --disable-basic-auth=true --Server:FileSystem=SQLite --Server:PropertyStore=SQLite",
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development"
       },

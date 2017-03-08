@@ -16,6 +16,7 @@ using FubarDev.WebDavServer.FileSystem.SQLite;
 using FubarDev.WebDavServer.Locking;
 using FubarDev.WebDavServer.Locking.InMemory;
 using FubarDev.WebDavServer.Props.Store;
+using FubarDev.WebDavServer.Props.Store.SQLite;
 using FubarDev.WebDavServer.Props.Store.TextFile;
 
 using idunno.Authentication;
@@ -40,6 +41,12 @@ namespace FubarDev.WebDavServer.Sample.AspNetCore
         private enum FileSystemType
         {
             DotNet,
+            SQLite,
+        }
+
+        private enum PropertyStoreType
+        {
+            TextFile,
             SQLite,
         }
 
@@ -69,7 +76,6 @@ namespace FubarDev.WebDavServer.Sample.AspNetCore
                         var hostSection = Configuration.GetSection("Host");
                         hostSection?.Bind(opt);
                     })
-                .AddTransient<IPropertyStoreFactory, TextFilePropertyStoreFactory>()
                 .AddSingleton<ILockManager, InMemoryLockManager>()
                 .AddMvcCore()
                 .AddAuthorization()
@@ -99,6 +105,20 @@ namespace FubarDev.WebDavServer.Sample.AspNetCore
                                 opt.RootPath = Path.Combine(Path.GetTempPath(), "webdav");
                             })
                         .AddSingleton<IFileSystemFactory, SQLiteFileSystemFactory>();
+                    break;
+                default:
+                    throw new NotSupportedException();
+            }
+
+            switch (serverConfig.PropertyStore)
+            {
+                case PropertyStoreType.TextFile:
+                    services
+                        .AddTransient<IPropertyStoreFactory, TextFilePropertyStoreFactory>();
+                    break;
+                case PropertyStoreType.SQLite:
+                    services
+                        .AddTransient<IPropertyStoreFactory, SQLitePropertyStoreFactory>();
                     break;
                 default:
                     throw new NotSupportedException();
@@ -279,6 +299,8 @@ namespace FubarDev.WebDavServer.Sample.AspNetCore
         private class ServerConfiguration
         {
             public FileSystemType FileSystem { get; set; } = FileSystemType.DotNet;
+
+            public PropertyStoreType PropertyStore { get; set; } = PropertyStoreType.TextFile;
         }
     }
 }
