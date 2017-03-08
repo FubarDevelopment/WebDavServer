@@ -120,7 +120,8 @@ namespace FubarDev.WebDavServer.FileSystem.SQLite
         {
             connection.CreateTable<FileData>(sqlitenet.CreateFlags.AllImplicit);
             connection.CreateTable<FileEntry>(sqlitenet.CreateFlags.AllImplicit);
-            connection.Insert(new FileEntry()
+            connection.Insert(
+                new FileEntry()
                 {
                     Id = string.Empty,
                     IsCollection = true,
