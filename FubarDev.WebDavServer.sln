@@ -77,6 +77,8 @@ Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "FubarDev.WebDavServer.FileS
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FubarDev.WebDavServer.FileSystem.SQLite.Doc", "src-doc\FubarDev.WebDavServer.FileSystem.SQLite\FubarDev.WebDavServer.FileSystem.SQLite.Doc.csproj", "{589CAE0D-7AD6-4F5A-A654-68BE9C37F95C}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FubarDev.WebDavServer.Props.Store.SQLite", "src\FubarDev.WebDavServer.Props.Store.SQLite\FubarDev.WebDavServer.Props.Store.SQLite.csproj", "{EF78B933-83EC-42D8-9AD9-CC25CB22BE1A}"
+EndProject
 Global
 	GlobalSection(SharedMSBuildProjectFiles) = preSolution
 		src\FubarDev.WebDavServer.AspNetCore\FubarDev.WebDavServer.AspNetCore.projitems*{02e04b3e-170f-471a-9674-fcbd13f824de}*SharedItemsImports = 4
@@ -177,6 +179,10 @@ Global
 		{589CAE0D-7AD6-4F5A-A654-68BE9C37F95C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{589CAE0D-7AD6-4F5A-A654-68BE9C37F95C}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{589CAE0D-7AD6-4F5A-A654-68BE9C37F95C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{EF78B933-83EC-42D8-9AD9-CC25CB22BE1A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EF78B933-83EC-42D8-9AD9-CC25CB22BE1A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EF78B933-83EC-42D8-9AD9-CC25CB22BE1A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EF78B933-83EC-42D8-9AD9-CC25CB22BE1A}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -213,5 +219,6 @@ Global
 		{07E32B0A-445D-440A-8506-62CEFB23F135} = {9F3C7FF6-8CE2-4AE4-A952-4CFDB5019DCD}
 		{8C0C4713-DD50-4283-8852-C0F99BBE369F} = {4E18F53E-6695-4491-88AC-C369FE90DBC4}
 		{589CAE0D-7AD6-4F5A-A654-68BE9C37F95C} = {5374846F-A7A5-457B-8231-FC1F959523B6}
+		{EF78B933-83EC-42D8-9AD9-CC25CB22BE1A} = {98710C77-F70C-4987-9930-E7A574159953}
 	EndGlobalSection
 EndGlobal

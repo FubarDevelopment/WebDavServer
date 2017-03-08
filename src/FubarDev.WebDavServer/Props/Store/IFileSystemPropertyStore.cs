@@ -12,11 +12,6 @@ namespace FubarDev.WebDavServer.Props.Store
     public interface IFileSystemPropertyStore : IPropertyStore
     {
         /// <summary>
-        /// Gets or sets the root path of the property store
-        /// </summary>
-        string RootPath { get; set; }
-
-        /// <summary>
         /// Determines whether the given <paramref name="entry"/> should be ignored when the client performs a PROPFIND
         /// </summary>
         /// <param name="entry">The entry that needs to be checked if it should be ignored</param>

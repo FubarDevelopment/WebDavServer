@@ -67,7 +67,15 @@ namespace FubarDev.WebDavServer.FileSystem.SQLite
         public static void EnsureDatabaseExists(string dbFileName)
         {
             if (File.Exists(dbFileName))
+            {
+                using (var conn = new sqlitenet.SQLiteConnection(dbFileName))
+                {
+                    CreateDatabaseTables(conn);
+                }
+
                 return;
+            }
+
             CreateDatabase(dbFileName);
         }
 
@@ -81,15 +89,7 @@ namespace FubarDev.WebDavServer.FileSystem.SQLite
                 File.Delete(dbFileName);
             using (var conn = new sqlitenet.SQLiteConnection(dbFileName))
             {
-                conn.CreateTable<FileEntry>(sqlitenet.CreateFlags.AllImplicit);
-                conn.CreateTable<FileData>(sqlitenet.CreateFlags.AllImplicit);
-                conn.Insert(new FileEntry()
-                {
-                    Id = string.Empty,
-                    IsCollection = true,
-                    Name = string.Empty,
-                    Path = string.Empty,
-                });
+                CreateDatabaseTables(conn);
             }
         }
 
@@ -110,6 +110,27 @@ namespace FubarDev.WebDavServer.FileSystem.SQLite
 
             var conn = new sqlitenet.SQLiteConnection(dbFileName);
             return new SQLiteFileSystem(_options, conn, _pathTraversalEngine, _deadPropertyFactory, _lockManager, _propertyStoreFactory);
+        }
+
+        /// <summary>
+        /// Creates the database tables
+        /// </summary>
+        /// <param name="connection">The database connection</param>
+        private static void CreateDatabaseTables(sqlitenet.SQLiteConnection connection)
+        {
+            connection.CreateTable<FileData>(sqlitenet.CreateFlags.AllImplicit);
+            var result = connection.CreateTable<FileEntry>(sqlitenet.CreateFlags.AllImplicit);
+            if (result != 0)
+            {
+                connection.InsertOrReplace(
+                    new FileEntry()
+                    {
+                        Id = string.Empty,
+                        IsCollection = true,
+                        Name = string.Empty,
+                        Path = string.Empty,
+                    });
+            }
         }
     }
 }
