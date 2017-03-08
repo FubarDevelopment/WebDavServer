@@ -55,7 +55,7 @@ namespace FubarDev.WebDavServer.Props.Store
         /// <inheritdoc />
         public virtual async Task<bool> RemoveAsync(IEntry entry, XName name, string language, CancellationToken cancellationToken)
         {
-            return (await RemoveAsync(entry, new[] { (name, language) }, cancellationToken).ConfigureAwait(false)).Single();
+            return (await RemoveAsync(entry, new[] { new PropertyKey(name, language) }, cancellationToken).ConfigureAwait(false)).Single();
         }
 
         /// <inheritdoc />
@@ -65,7 +65,7 @@ namespace FubarDev.WebDavServer.Props.Store
         public abstract Task SetAsync(IEntry entry, IEnumerable<XElement> properties, CancellationToken cancellationToken);
 
         /// <inheritdoc />
-        public abstract Task<IReadOnlyCollection<bool>> RemoveAsync(IEntry entry, IEnumerable<(XName Name, string Language)> keys, CancellationToken cancellationToken);
+        public abstract Task<IReadOnlyCollection<bool>> RemoveAsync(IEntry entry, IEnumerable<PropertyKey> keys, CancellationToken cancellationToken);
 
         /// <inheritdoc />
         public virtual async Task RemoveAsync(IEntry entry, CancellationToken cancellationToken)
@@ -78,7 +78,7 @@ namespace FubarDev.WebDavServer.Props.Store
                 await UpdateETagAsync(entry, cancellationToken).ConfigureAwait(false);
             }
 
-            await RemoveAsync(entry, keys.Select(x => (x.Name, x.ElementLanguage)), cancellationToken).ConfigureAwait(false);
+            await RemoveAsync(entry, keys, cancellationToken).ConfigureAwait(false);
         }
 
         /// <inheritdoc />

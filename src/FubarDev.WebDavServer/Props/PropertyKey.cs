@@ -16,6 +16,9 @@ namespace FubarDev.WebDavServer.Props
     [TypeConverter(typeof(PropertyKeyConverter))]
     public struct PropertyKey : IEquatable<PropertyKey>
     {
+        /// <summary>
+        /// The string that identifies that no <c>xml:lang</c> was defined for a property
+        /// </summary>
         public const string NoLanguage = "*";
 
         /// <summary>

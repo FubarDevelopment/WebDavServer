@@ -93,7 +93,7 @@ namespace FubarDev.WebDavServer.Props.Store
         /// by this function.</returns>
         [NotNull]
         [ItemNotNull]
-        Task<IReadOnlyCollection<bool>> RemoveAsync([NotNull] IEntry entry, [NotNull] IEnumerable<(XName Name, string Language)> keys, CancellationToken cancellationToken);
+        Task<IReadOnlyCollection<bool>> RemoveAsync([NotNull] IEntry entry, [NotNull] IEnumerable<PropertyKey> keys, CancellationToken cancellationToken);
 
         /// <summary>
         /// Remove all dead propertied (including a probably exting <see cref="GetETagProperty"/>) from a given <paramref name="entry"/>

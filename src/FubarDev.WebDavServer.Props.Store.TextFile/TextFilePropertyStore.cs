@@ -127,7 +127,7 @@ namespace FubarDev.WebDavServer.Props.Store.TextFile
         }
 
         /// <inheritdoc />
-        public override Task<IReadOnlyCollection<bool>> RemoveAsync(IEntry entry, IEnumerable<(XName Name, string Language)> keys, CancellationToken cancellationToken)
+        public override Task<IReadOnlyCollection<bool>> RemoveAsync(IEntry entry, IEnumerable<PropertyKey> keys, CancellationToken cancellationToken)
         {
             if (_logger.IsEnabled(LogLevel.Trace))
                 _logger.LogTrace($"Remove properties for {entry.Path}");

@@ -76,7 +76,7 @@ namespace FubarDev.WebDavServer.Props.Store.InMemory
         }
 
         /// <inheritdoc />
-        public override Task<IReadOnlyCollection<bool>> RemoveAsync(IEntry entry, IEnumerable<(XName Name, string Language)> keys, CancellationToken cancellationToken)
+        public override Task<IReadOnlyCollection<bool>> RemoveAsync(IEntry entry, IEnumerable<PropertyKey> keys, CancellationToken cancellationToken)
         {
             var result = new List<bool>();
             IDictionary<PropertyKey, XElement> properties;
