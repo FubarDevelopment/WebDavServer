@@ -148,6 +148,7 @@ namespace DecaTec.WebDav.WebDavArtifacts
             prop.SupportedLock = new SupportedLock();
             prop.QuotaAvailableBytes = string.Empty;
             prop.QuotaUsedBytes = string.Empty;
+            prop.LockDiscovery = new LockDiscovery();
             return prop;
         }
 
@@ -176,6 +177,12 @@ namespace DecaTec.WebDav.WebDavArtifacts
         private SupportedLock supportedLockField;
         private string quotaAvailableBytesField;
         private string quotaUsedBytesField;
+
+        /// <summary>
+        /// Gets or sets the language code
+        /// </summary>
+        [XmlAttribute("xml:lang", DataType = "language")]
+        public string Language { get; set; }
 
         /// <summary>
         /// Gets or sets the CreationDate.
