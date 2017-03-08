@@ -15,7 +15,7 @@ namespace FubarDev.WebDavServer.Props.Store.TextFile
         public int EstimatedCost { get; set; } = 10;
 
         /// <summary>
-        /// Gets or sets the root folder where the properites are stored
+        /// Gets or sets the root folder where the properties are stored
         /// </summary>
         public string RootFolder { get; set; }
 
