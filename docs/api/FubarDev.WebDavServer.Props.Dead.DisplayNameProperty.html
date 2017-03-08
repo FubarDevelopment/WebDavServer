@@ -99,6 +99,9 @@
                   <a class="xref" href="FubarDev.WebDavServer.Props.SimpleUntypedProperty.html#FubarDev_WebDavServer_Props_SimpleUntypedProperty_Name">SimpleUntypedProperty.Name</a>
                 </div>
                 <div>
+                  <a class="xref" href="FubarDev.WebDavServer.Props.SimpleUntypedProperty.html#FubarDev_WebDavServer_Props_SimpleUntypedProperty_Language">SimpleUntypedProperty.Language</a>
+                </div>
+                <div>
                   <a class="xref" href="FubarDev.WebDavServer.Props.SimpleUntypedProperty.html#FubarDev_WebDavServer_Props_SimpleUntypedProperty_AlternativeNames">SimpleUntypedProperty.AlternativeNames</a>
                 </div>
                 <div>
@@ -137,13 +140,13 @@
               
               
               <a id="FubarDev_WebDavServer_Props_Dead_DisplayNameProperty__ctor_" data-uid="FubarDev.WebDavServer.Props.Dead.DisplayNameProperty.#ctor*"></a>
-              <h4 id="FubarDev_WebDavServer_Props_Dead_DisplayNameProperty__ctor_FubarDev_WebDavServer_FileSystem_IEntry_FubarDev_WebDavServer_Props_Store_IPropertyStore_System_Boolean_System_Nullable_System_Int32__" data-uid="FubarDev.WebDavServer.Props.Dead.DisplayNameProperty.#ctor(FubarDev.WebDavServer.FileSystem.IEntry,FubarDev.WebDavServer.Props.Store.IPropertyStore,System.Boolean,System.Nullable{System.Int32})">DisplayNameProperty(IEntry, IPropertyStore, Boolean, Nullable&lt;Int32&gt;)</h4>
+              <h4 id="FubarDev_WebDavServer_Props_Dead_DisplayNameProperty__ctor_FubarDev_WebDavServer_FileSystem_IEntry_System_String_FubarDev_WebDavServer_Props_Store_IPropertyStore_System_Boolean_System_Nullable_System_Int32__" data-uid="FubarDev.WebDavServer.Props.Dead.DisplayNameProperty.#ctor(FubarDev.WebDavServer.FileSystem.IEntry,System.String,FubarDev.WebDavServer.Props.Store.IPropertyStore,System.Boolean,System.Nullable{System.Int32})">DisplayNameProperty(IEntry, String, IPropertyStore, Boolean, Nullable&lt;Int32&gt;)</h4>
               <div class="markdown level1 summary"><p>Initializes a new instance of the <a class="xref" href="FubarDev.WebDavServer.Props.Dead.DisplayNameProperty.html">DisplayNameProperty</a> class.</p>
 </div>
               <div class="markdown level1 conceptual"></div>
               <h5 class="decalaration">Declaration</h5>
               <div class="codewrapper">
-                <pre><code class="lang-csharp hljs">public DisplayNameProperty(IEntry entry, IPropertyStore store, bool hideExtension, int ? cost = null)</code></pre>
+                <pre><code class="lang-csharp hljs">public DisplayNameProperty([NotNull] IEntry entry, [NotNull] string language, [NotNull] IPropertyStore store, bool hideExtension, int ? cost = null)</code></pre>
               </div>
               <h5 class="parameters">Parameters</h5>
               <table class="table table-bordered table-striped table-condensed">
@@ -159,6 +162,12 @@
                     <td><a class="xref" href="FubarDev.WebDavServer.FileSystem.IEntry.html">IEntry</a></td>
                     <td><span class="parametername">entry</span></td>
                     <td><p>The entry to instantiate this property for</p>
+</td>
+                  </tr>
+                  <tr>
+                    <td><a class="xref" href="https://msdn.microsoft.com/en-us/library/system.string(v=vs.110).aspx">String</a></td>
+                    <td><span class="parametername">language</span></td>
+                    <td><p>The language for the property value</p>
 </td>
                   </tr>
                   <tr>

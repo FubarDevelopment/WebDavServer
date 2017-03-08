@@ -99,3 +99,28 @@ The locking functionality consists of the following main parts:
   this lock was issued and when it expires.
 
 ![screenshot](~/images/overview-locking.png)
+
+# `xml:lang` behaviour
+
+The RFC4918 specification, section 4.4 explicitly states that it's not possible to define the same property
+twice on a single resource, but this would collide with the internationalization using `xml:lang`. This
+server currently allows the same property multiple times, when one property has a different `xml:lang`,
+which allows - for example - display names for multiple languages.
+
+The `xml:lang` property is handled in the following way:
+
+* Live properties never return an `xml:lang`
+* The `getetag`, `getcontenttype`, and `getcontentlanguage` properties never return an `xml:lang`
+* The `xml:lang` attribute of a dead property element has precedence over
+  the `xml:lang` property of the `DAV:props` element
+* There may be more than one dead property with the same name when the dead
+  properties have different `xml:lang` values
+* A `PROPFIND` without an `xml:lang` returns all localized properties when there is no `prop` element
+  requesting a property with the same name but with a different `xml:lang`
+* A `PROPPATCH` `set` without an `xml:lang` updates a property without an `xml:lang` or - when exactly
+  one property with the given name exists - a property for another `xml:lang`.
+* A `PROPPATCH` `remove` without an `xml:lang` removes the property for the exact `xml:lang` or for all
+  languages when no property without an `xml:lang` attribute exists.
+
+The rules above ensure, that a client, which doesn't know about `xml:lang` can still access and modify
+properties with an `xml:lang` attribute.

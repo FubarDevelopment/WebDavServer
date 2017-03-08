@@ -155,13 +155,13 @@
               
               
               <a id="FubarDev_WebDavServer_Props_Dead_DeadProperty__ctor_" data-uid="FubarDev.WebDavServer.Props.Dead.DeadProperty.#ctor*"></a>
-              <h4 id="FubarDev_WebDavServer_Props_Dead_DeadProperty__ctor_FubarDev_WebDavServer_Props_Store_IPropertyStore_FubarDev_WebDavServer_FileSystem_IEntry_System_Xml_Linq_XName_" data-uid="FubarDev.WebDavServer.Props.Dead.DeadProperty.#ctor(FubarDev.WebDavServer.Props.Store.IPropertyStore,FubarDev.WebDavServer.FileSystem.IEntry,System.Xml.Linq.XName)">DeadProperty(IPropertyStore, IEntry, XName)</h4>
+              <h4 id="FubarDev_WebDavServer_Props_Dead_DeadProperty__ctor_FubarDev_WebDavServer_Props_Store_IPropertyStore_FubarDev_WebDavServer_FileSystem_IEntry_System_Xml_Linq_XName_System_String_" data-uid="FubarDev.WebDavServer.Props.Dead.DeadProperty.#ctor(FubarDev.WebDavServer.Props.Store.IPropertyStore,FubarDev.WebDavServer.FileSystem.IEntry,System.Xml.Linq.XName,System.String)">DeadProperty(IPropertyStore, IEntry, XName, String)</h4>
               <div class="markdown level1 summary"><p>Initializes a new instance of the <a class="xref" href="FubarDev.WebDavServer.Props.Dead.DeadProperty.html">DeadProperty</a> class.</p>
 </div>
               <div class="markdown level1 conceptual"></div>
               <h5 class="decalaration">Declaration</h5>
               <div class="codewrapper">
-                <pre><code class="lang-csharp hljs">public DeadProperty(IPropertyStore store, IEntry entry, XName name)</code></pre>
+                <pre><code class="lang-csharp hljs">public DeadProperty([NotNull] IPropertyStore store, [NotNull] IEntry entry, [NotNull] XName name, [NotNull] string language)</code></pre>
               </div>
               <h5 class="parameters">Parameters</h5>
               <table class="table table-bordered table-striped table-condensed">
@@ -189,6 +189,12 @@
                     <td><a class="xref" href="https://msdn.microsoft.com/en-us/library/system.xml.linq.xname(v=vs.110).aspx">XName</a></td>
                     <td><span class="parametername">name</span></td>
                     <td><p>The XML name of the dead property</p>
+</td>
+                  </tr>
+                  <tr>
+                    <td><a class="xref" href="https://msdn.microsoft.com/en-us/library/system.string(v=vs.110).aspx">String</a></td>
+                    <td><span class="parametername">language</span></td>
+                    <td><p>The language for the property value</p>
 </td>
                   </tr>
                 </tbody>
@@ -251,6 +257,34 @@
               </table>
               <h5 class="implements">Implements</h5>
                   <div><a class="xref" href="FubarDev.WebDavServer.Props.IUntypedReadableProperty.html#FubarDev_WebDavServer_Props_IUntypedReadableProperty_Cost">IUntypedReadableProperty.Cost</a></div>
+              
+              
+              <a id="FubarDev_WebDavServer_Props_Dead_DeadProperty_Language_" data-uid="FubarDev.WebDavServer.Props.Dead.DeadProperty.Language*"></a>
+              <h4 id="FubarDev_WebDavServer_Props_Dead_DeadProperty_Language" data-uid="FubarDev.WebDavServer.Props.Dead.DeadProperty.Language">Language</h4>
+              <div class="markdown level1 summary"><p>Gets the language of this property value</p>
+</div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public string Language { get; }</code></pre>
+              </div>
+              <h5 class="propertyValue">Property Value</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><a class="xref" href="https://msdn.microsoft.com/en-us/library/system.string(v=vs.110).aspx">String</a></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 class="implements">Implements</h5>
+                  <div><a class="xref" href="FubarDev.WebDavServer.Props.IProperty.html#FubarDev_WebDavServer_Props_IProperty_Language">IProperty.Language</a></div>
               
               
               <a id="FubarDev_WebDavServer_Props_Dead_DeadProperty_Name_" data-uid="FubarDev.WebDavServer.Props.Dead.DeadProperty.Name*"></a>

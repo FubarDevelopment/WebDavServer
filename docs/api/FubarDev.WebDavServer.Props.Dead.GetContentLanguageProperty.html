@@ -99,6 +99,9 @@
                   <a class="xref" href="FubarDev.WebDavServer.Props.SimpleUntypedProperty.html#FubarDev_WebDavServer_Props_SimpleUntypedProperty_Name">SimpleUntypedProperty.Name</a>
                 </div>
                 <div>
+                  <a class="xref" href="FubarDev.WebDavServer.Props.SimpleUntypedProperty.html#FubarDev_WebDavServer_Props_SimpleUntypedProperty_Language">SimpleUntypedProperty.Language</a>
+                </div>
+                <div>
                   <a class="xref" href="FubarDev.WebDavServer.Props.SimpleUntypedProperty.html#FubarDev_WebDavServer_Props_SimpleUntypedProperty_AlternativeNames">SimpleUntypedProperty.AlternativeNames</a>
                 </div>
                 <div>
@@ -137,13 +140,13 @@
               
               
               <a id="FubarDev_WebDavServer_Props_Dead_GetContentLanguageProperty__ctor_" data-uid="FubarDev.WebDavServer.Props.Dead.GetContentLanguageProperty.#ctor*"></a>
-              <h4 id="FubarDev_WebDavServer_Props_Dead_GetContentLanguageProperty__ctor_FubarDev_WebDavServer_FileSystem_IEntry_FubarDev_WebDavServer_Props_Store_IPropertyStore_System_Nullable_System_Int32__" data-uid="FubarDev.WebDavServer.Props.Dead.GetContentLanguageProperty.#ctor(FubarDev.WebDavServer.FileSystem.IEntry,FubarDev.WebDavServer.Props.Store.IPropertyStore,System.Nullable{System.Int32})">GetContentLanguageProperty(IEntry, IPropertyStore, Nullable&lt;Int32&gt;)</h4>
+              <h4 id="FubarDev_WebDavServer_Props_Dead_GetContentLanguageProperty__ctor_FubarDev_WebDavServer_FileSystem_IEntry_FubarDev_WebDavServer_Props_Store_IPropertyStore_System_String_System_Nullable_System_Int32__" data-uid="FubarDev.WebDavServer.Props.Dead.GetContentLanguageProperty.#ctor(FubarDev.WebDavServer.FileSystem.IEntry,FubarDev.WebDavServer.Props.Store.IPropertyStore,System.String,System.Nullable{System.Int32})">GetContentLanguageProperty(IEntry, IPropertyStore, String, Nullable&lt;Int32&gt;)</h4>
               <div class="markdown level1 summary"><p>Initializes a new instance of the <a class="xref" href="FubarDev.WebDavServer.Props.Dead.GetContentLanguageProperty.html">GetContentLanguageProperty</a> class.</p>
 </div>
               <div class="markdown level1 conceptual"></div>
               <h5 class="decalaration">Declaration</h5>
               <div class="codewrapper">
-                <pre><code class="lang-csharp hljs">public GetContentLanguageProperty(IEntry entry, IPropertyStore store, int ? cost = null)</code></pre>
+                <pre><code class="lang-csharp hljs">public GetContentLanguageProperty([NotNull] IEntry entry, [NotNull] IPropertyStore store, [NotNull] string defaultContentLanguage = &quot;en&quot;, int ? cost = null)</code></pre>
               </div>
               <h5 class="parameters">Parameters</h5>
               <table class="table table-bordered table-striped table-condensed">
@@ -165,6 +168,12 @@
                     <td><a class="xref" href="FubarDev.WebDavServer.Props.Store.IPropertyStore.html">IPropertyStore</a></td>
                     <td><span class="parametername">store</span></td>
                     <td><p>The property store to store this property</p>
+</td>
+                  </tr>
+                  <tr>
+                    <td><a class="xref" href="https://msdn.microsoft.com/en-us/library/system.string(v=vs.110).aspx">String</a></td>
+                    <td><span class="parametername">defaultContentLanguage</span></td>
+                    <td><p>The content language to return when none was specified</p>
 </td>
                   </tr>
                   <tr>

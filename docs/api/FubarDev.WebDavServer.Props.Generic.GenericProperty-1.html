@@ -99,6 +99,9 @@
                   <a class="xref" href="FubarDev.WebDavServer.Props.SimpleUntypedProperty.html#FubarDev_WebDavServer_Props_SimpleUntypedProperty_Name">SimpleUntypedProperty.Name</a>
                 </div>
                 <div>
+                  <a class="xref" href="FubarDev.WebDavServer.Props.SimpleUntypedProperty.html#FubarDev_WebDavServer_Props_SimpleUntypedProperty_Language">SimpleUntypedProperty.Language</a>
+                </div>
+                <div>
                   <a class="xref" href="FubarDev.WebDavServer.Props.SimpleUntypedProperty.html#FubarDev_WebDavServer_Props_SimpleUntypedProperty_AlternativeNames">SimpleUntypedProperty.AlternativeNames</a>
                 </div>
                 <div>
@@ -153,13 +156,13 @@
               
               
               <a id="FubarDev_WebDavServer_Props_Generic_GenericProperty_1__ctor_" data-uid="FubarDev.WebDavServer.Props.Generic.GenericProperty`1.#ctor*"></a>
-              <h4 id="FubarDev_WebDavServer_Props_Generic_GenericProperty_1__ctor_System_Xml_Linq_XName_System_Int32_FubarDev_WebDavServer_Props_Converters_IPropertyConverter__0__FubarDev_WebDavServer_Props_GetPropertyValueAsyncDelegate__0__FubarDev_WebDavServer_Props_SetPropertyValueAsyncDelegate__0__System_Xml_Linq_XName___" data-uid="FubarDev.WebDavServer.Props.Generic.GenericProperty`1.#ctor(System.Xml.Linq.XName,System.Int32,FubarDev.WebDavServer.Props.Converters.IPropertyConverter{`0},FubarDev.WebDavServer.Props.GetPropertyValueAsyncDelegate{`0},FubarDev.WebDavServer.Props.SetPropertyValueAsyncDelegate{`0},System.Xml.Linq.XName[])">GenericProperty(XName, Int32, IPropertyConverter&lt;T&gt;, GetPropertyValueAsyncDelegate&lt;T&gt;, SetPropertyValueAsyncDelegate&lt;T&gt;, XName[])</h4>
+              <h4 id="FubarDev_WebDavServer_Props_Generic_GenericProperty_1__ctor_System_Xml_Linq_XName_System_String_System_Int32_FubarDev_WebDavServer_Props_Converters_IPropertyConverter__0__FubarDev_WebDavServer_Props_GetPropertyValueAsyncDelegate__0__FubarDev_WebDavServer_Props_SetPropertyValueAsyncDelegate__0__System_Xml_Linq_XName___" data-uid="FubarDev.WebDavServer.Props.Generic.GenericProperty`1.#ctor(System.Xml.Linq.XName,System.String,System.Int32,FubarDev.WebDavServer.Props.Converters.IPropertyConverter{`0},FubarDev.WebDavServer.Props.GetPropertyValueAsyncDelegate{`0},FubarDev.WebDavServer.Props.SetPropertyValueAsyncDelegate{`0},System.Xml.Linq.XName[])">GenericProperty(XName, String, Int32, IPropertyConverter&lt;T&gt;, GetPropertyValueAsyncDelegate&lt;T&gt;, SetPropertyValueAsyncDelegate&lt;T&gt;, XName[])</h4>
               <div class="markdown level1 summary"><p>Initializes a new instance of the <a class="xref" href="FubarDev.WebDavServer.Props.Generic.GenericProperty-1.html">GenericProperty&lt;T&gt;</a> class.</p>
 </div>
               <div class="markdown level1 conceptual"></div>
               <h5 class="decalaration">Declaration</h5>
               <div class="codewrapper">
-                <pre><code class="lang-csharp hljs">public GenericProperty(XName name, int cost, IPropertyConverter&lt;T&gt; converter, GetPropertyValueAsyncDelegate&lt;T&gt; getValueAsyncFunc, SetPropertyValueAsyncDelegate&lt;T&gt; setValueAsyncFunc, params XName[] alternativeNames)</code></pre>
+                <pre><code class="lang-csharp hljs">public GenericProperty([NotNull] XName name, [NotNull] string language, int cost, [NotNull] IPropertyConverter&lt;T&gt; converter, GetPropertyValueAsyncDelegate&lt;T&gt; getValueAsyncFunc, SetPropertyValueAsyncDelegate&lt;T&gt; setValueAsyncFunc, params XName[] alternativeNames)</code></pre>
               </div>
               <h5 class="parameters">Parameters</h5>
               <table class="table table-bordered table-striped table-condensed">
@@ -175,6 +178,12 @@
                     <td><a class="xref" href="https://msdn.microsoft.com/en-us/library/system.xml.linq.xname(v=vs.110).aspx">XName</a></td>
                     <td><span class="parametername">name</span></td>
                     <td><p>The property name</p>
+</td>
+                  </tr>
+                  <tr>
+                    <td><a class="xref" href="https://msdn.microsoft.com/en-us/library/system.string(v=vs.110).aspx">String</a></td>
+                    <td><span class="parametername">language</span></td>
+                    <td><p>The language for the property value</p>
 </td>
                   </tr>
                   <tr>

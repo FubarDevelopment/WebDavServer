@@ -5,10 +5,10 @@
   <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-    <title>Class LockCleanupTask
+    <title>Class PropertyKeyComparer
    </title>
     <meta name="viewport" content="width=device-width">
-    <meta name="title" content="Class LockCleanupTask
+    <meta name="title" content="Class PropertyKeyComparer
    ">
     <meta name="generator" content="docfx 2.13.1.0">
     
@@ -69,15 +69,15 @@
             <article class="content wrap" id="_content">
               
               
-              <h1 id="FubarDev_WebDavServer_Locking_LockCleanupTask" data-uid="FubarDev.WebDavServer.Locking.LockCleanupTask">Class LockCleanupTask
+              <h1 id="FubarDev_WebDavServer_Props_PropertyKeyComparer" data-uid="FubarDev.WebDavServer.Props.PropertyKeyComparer">Class PropertyKeyComparer
               </h1>
-              <div class="markdown level0 summary"><p>A background task that removes expired locks</p>
+              <div class="markdown level0 summary"><p>Comparer for the <a class="xref" href="FubarDev.WebDavServer.Props.PropertyKey.html">PropertyKey</a></p>
 </div>
               <div class="markdown level0 conceptual"></div>
               <div class="inheritance">
                 <h5>Inheritance</h5>
                   <div class="level0"><a class="xref" href="https://msdn.microsoft.com/en-us/library/system.object(v=vs.110).aspx">Object</a></div>
-                  <div class="level1"><span class="xref">LockCleanupTask</span></div>
+                  <div class="level1"><span class="xref">PropertyKeyComparer</span></div>
               </div>
               <div class="inheritedMembers">
                 <h5>Inherited Members</h5>
@@ -103,46 +103,37 @@
                   <a class="xref" href="https://msdn.microsoft.com/en-us/library/57ctke0a(v=vs.110).aspx">Object.MemberwiseClone()</a>
                 </div>
               </div>
-              <h6><strong>Namespace</strong>:FubarDev.WebDavServer.Locking</h6>
+              <h6><strong>Namespace</strong>:FubarDev.WebDavServer.Props</h6>
               <h6><strong>Assembly</strong>:FubarDev.WebDavServer.dll</h6>
-              <h5 id="FubarDev_WebDavServer_Locking_LockCleanupTask_syntax">Syntax</h5>
+              <h5 id="FubarDev_WebDavServer_Props_PropertyKeyComparer_syntax">Syntax</h5>
               <div class="codewrapper">
-                <pre><code class="lang-csharp hljs">public class LockCleanupTask : ILockCleanupTask, IDisposable</code></pre>
+                <pre><code class="lang-csharp hljs">public class PropertyKeyComparer : IEqualityComparer&lt;PropertyKey&gt;</code></pre>
               </div>
-              <h3 id="constructors">Constructors
+              <h3 id="properties">Properties
               </h3>
               
               
-              <a id="FubarDev_WebDavServer_Locking_LockCleanupTask__ctor_" data-uid="FubarDev.WebDavServer.Locking.LockCleanupTask.#ctor*"></a>
-              <h4 id="FubarDev_WebDavServer_Locking_LockCleanupTask__ctor_FubarDev_WebDavServer_ISystemClock_Microsoft_Extensions_Logging_ILogger_FubarDev_WebDavServer_Locking_LockCleanupTask__" data-uid="FubarDev.WebDavServer.Locking.LockCleanupTask.#ctor(FubarDev.WebDavServer.ISystemClock,Microsoft.Extensions.Logging.ILogger{FubarDev.WebDavServer.Locking.LockCleanupTask})">LockCleanupTask(ISystemClock, ILogger&lt;LockCleanupTask&gt;)</h4>
-              <div class="markdown level1 summary"><p>Initializes a new instance of the <a class="xref" href="FubarDev.WebDavServer.Locking.LockCleanupTask.html">LockCleanupTask</a> class.</p>
+              <a id="FubarDev_WebDavServer_Props_PropertyKeyComparer_Default_" data-uid="FubarDev.WebDavServer.Props.PropertyKeyComparer.Default*"></a>
+              <h4 id="FubarDev_WebDavServer_Props_PropertyKeyComparer_Default" data-uid="FubarDev.WebDavServer.Props.PropertyKeyComparer.Default">Default</h4>
+              <div class="markdown level1 summary"><p>Gets the default <a class="xref" href="FubarDev.WebDavServer.Props.PropertyKey.html">PropertyKey</a> comparer</p>
 </div>
               <div class="markdown level1 conceptual"></div>
               <h5 class="decalaration">Declaration</h5>
               <div class="codewrapper">
-                <pre><code class="lang-csharp hljs">public LockCleanupTask([NotNull] ISystemClock systemClock, [NotNull] ILogger&lt;LockCleanupTask&gt; logger)</code></pre>
+                <pre><code class="lang-csharp hljs">public static PropertyKeyComparer Default { get; }</code></pre>
               </div>
-              <h5 class="parameters">Parameters</h5>
+              <h5 class="propertyValue">Property Value</h5>
               <table class="table table-bordered table-striped table-condensed">
                 <thead>
                   <tr>
                     <th>Type</th>
-                    <th>Name</th>
                     <th>Description</th>
                   </tr>
                 </thead>
                 <tbody>
                   <tr>
-                    <td><a class="xref" href="FubarDev.WebDavServer.ISystemClock.html">ISystemClock</a></td>
-                    <td><span class="parametername">systemClock</span></td>
-                    <td><p>The system clock</p>
-</td>
-                  </tr>
-                  <tr>
-                    <td><span class="xref">Microsoft.Extensions.Logging.ILogger</span>&lt;<a class="xref" href="FubarDev.WebDavServer.Locking.LockCleanupTask.html">LockCleanupTask</a>&gt;</td>
-                    <td><span class="parametername">logger</span></td>
-                    <td><p>The logger for the cleanup task</p>
-</td>
+                    <td><a class="xref" href="FubarDev.WebDavServer.Props.PropertyKeyComparer.html">PropertyKeyComparer</a></td>
+                    <td></td>
                   </tr>
                 </tbody>
               </table>
@@ -150,63 +141,13 @@
               </h3>
               
               
-              <a id="FubarDev_WebDavServer_Locking_LockCleanupTask_Add_" data-uid="FubarDev.WebDavServer.Locking.LockCleanupTask.Add*"></a>
-              <h4 id="FubarDev_WebDavServer_Locking_LockCleanupTask_Add_FubarDev_WebDavServer_Locking_ILockManager_FubarDev_WebDavServer_Locking_IActiveLock_" data-uid="FubarDev.WebDavServer.Locking.LockCleanupTask.Add(FubarDev.WebDavServer.Locking.ILockManager,FubarDev.WebDavServer.Locking.IActiveLock)">Add(ILockManager, IActiveLock)</h4>
-              <div class="markdown level1 summary"><p>Adds a lock to be tracked by this cleanup task.</p>
-</div>
-              <div class="markdown level1 conceptual"></div>
-              <h5 class="decalaration">Declaration</h5>
-              <div class="codewrapper">
-                <pre><code class="lang-csharp hljs">public void Add(ILockManager lockManager, IActiveLock activeLock)</code></pre>
-              </div>
-              <h5 class="parameters">Parameters</h5>
-              <table class="table table-bordered table-striped table-condensed">
-                <thead>
-                  <tr>
-                    <th>Type</th>
-                    <th>Name</th>
-                    <th>Description</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr>
-                    <td><a class="xref" href="FubarDev.WebDavServer.Locking.ILockManager.html">ILockManager</a></td>
-                    <td><span class="parametername">lockManager</span></td>
-                    <td><p>The lock manager that created this active lock.</p>
-</td>
-                  </tr>
-                  <tr>
-                    <td><a class="xref" href="FubarDev.WebDavServer.Locking.IActiveLock.html">IActiveLock</a></td>
-                    <td><span class="parametername">activeLock</span></td>
-                    <td><p>The active lock to track</p>
-</td>
-                  </tr>
-                </tbody>
-              </table>
-              <h5 class="implements">Implements</h5>
-                  <div><a class="xref" href="FubarDev.WebDavServer.Locking.ILockCleanupTask.html#FubarDev_WebDavServer_Locking_ILockCleanupTask_Add_FubarDev_WebDavServer_Locking_ILockManager_FubarDev_WebDavServer_Locking_IActiveLock_">ILockCleanupTask.Add(ILockManager, IActiveLock)</a></div>
-              
-              
-              <a id="FubarDev_WebDavServer_Locking_LockCleanupTask_Dispose_" data-uid="FubarDev.WebDavServer.Locking.LockCleanupTask.Dispose*"></a>
-              <h4 id="FubarDev_WebDavServer_Locking_LockCleanupTask_Dispose" data-uid="FubarDev.WebDavServer.Locking.LockCleanupTask.Dispose">Dispose()</h4>
+              <a id="FubarDev_WebDavServer_Props_PropertyKeyComparer_Equals_" data-uid="FubarDev.WebDavServer.Props.PropertyKeyComparer.Equals*"></a>
+              <h4 id="FubarDev_WebDavServer_Props_PropertyKeyComparer_Equals_FubarDev_WebDavServer_Props_PropertyKey_FubarDev_WebDavServer_Props_PropertyKey_" data-uid="FubarDev.WebDavServer.Props.PropertyKeyComparer.Equals(FubarDev.WebDavServer.Props.PropertyKey,FubarDev.WebDavServer.Props.PropertyKey)">Equals(PropertyKey, PropertyKey)</h4>
               <div class="markdown level1 summary"></div>
               <div class="markdown level1 conceptual"></div>
               <h5 class="decalaration">Declaration</h5>
               <div class="codewrapper">
-                <pre><code class="lang-csharp hljs">public void Dispose()</code></pre>
-              </div>
-              <h5 class="implements">Implements</h5>
-                  <div><a class="xref" href="https://msdn.microsoft.com/en-us/library/es4s3w1d(v=vs.110).aspx">IDisposable.Dispose()</a></div>
-              
-              
-              <a id="FubarDev_WebDavServer_Locking_LockCleanupTask_Remove_" data-uid="FubarDev.WebDavServer.Locking.LockCleanupTask.Remove*"></a>
-              <h4 id="FubarDev_WebDavServer_Locking_LockCleanupTask_Remove_FubarDev_WebDavServer_Locking_IActiveLock_" data-uid="FubarDev.WebDavServer.Locking.LockCleanupTask.Remove(FubarDev.WebDavServer.Locking.IActiveLock)">Remove(IActiveLock)</h4>
-              <div class="markdown level1 summary"><p>Removes the active lock so that it isn&#39;t tracked any more by this cleanup task.</p>
-</div>
-              <div class="markdown level1 conceptual"></div>
-              <h5 class="decalaration">Declaration</h5>
-              <div class="codewrapper">
-                <pre><code class="lang-csharp hljs">public void Remove(IActiveLock activeLock)</code></pre>
+                <pre><code class="lang-csharp hljs">public bool Equals(PropertyKey x, PropertyKey y)</code></pre>
               </div>
               <h5 class="parameters">Parameters</h5>
               <table class="table table-bordered table-striped table-condensed">
@@ -219,15 +160,78 @@
                 </thead>
                 <tbody>
                   <tr>
-                    <td><a class="xref" href="FubarDev.WebDavServer.Locking.IActiveLock.html">IActiveLock</a></td>
-                    <td><span class="parametername">activeLock</span></td>
-                    <td><p>The active lock to remove</p>
-</td>
+                    <td><a class="xref" href="FubarDev.WebDavServer.Props.PropertyKey.html">PropertyKey</a></td>
+                    <td><span class="parametername">x</span></td>
+                    <td></td>
+                  </tr>
+                  <tr>
+                    <td><a class="xref" href="FubarDev.WebDavServer.Props.PropertyKey.html">PropertyKey</a></td>
+                    <td><span class="parametername">y</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 class="returns">Returns</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><a class="xref" href="https://msdn.microsoft.com/en-us/library/system.boolean(v=vs.110).aspx">Boolean</a></td>
+                    <td></td>
                   </tr>
                 </tbody>
               </table>
               <h5 class="implements">Implements</h5>
-                  <div><a class="xref" href="FubarDev.WebDavServer.Locking.ILockCleanupTask.html#FubarDev_WebDavServer_Locking_ILockCleanupTask_Remove_FubarDev_WebDavServer_Locking_IActiveLock_">ILockCleanupTask.Remove(IActiveLock)</a></div>
+                  <div><a class="xref" href="https://msdn.microsoft.com/en-us/library/ms132154(v=vs.110).aspx">IEqualityComparer&lt;T&gt;.Equals(T, T)</a></div>
+              
+              
+              <a id="FubarDev_WebDavServer_Props_PropertyKeyComparer_GetHashCode_" data-uid="FubarDev.WebDavServer.Props.PropertyKeyComparer.GetHashCode*"></a>
+              <h4 id="FubarDev_WebDavServer_Props_PropertyKeyComparer_GetHashCode_FubarDev_WebDavServer_Props_PropertyKey_" data-uid="FubarDev.WebDavServer.Props.PropertyKeyComparer.GetHashCode(FubarDev.WebDavServer.Props.PropertyKey)">GetHashCode(PropertyKey)</h4>
+              <div class="markdown level1 summary"></div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public int GetHashCode(PropertyKey obj)</code></pre>
+              </div>
+              <h5 class="parameters">Parameters</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Name</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><a class="xref" href="FubarDev.WebDavServer.Props.PropertyKey.html">PropertyKey</a></td>
+                    <td><span class="parametername">obj</span></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 class="returns">Returns</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><a class="xref" href="https://msdn.microsoft.com/en-us/library/system.int32(v=vs.110).aspx">Int32</a></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 class="implements">Implements</h5>
+                  <div><a class="xref" href="https://msdn.microsoft.com/en-us/library/ms132155(v=vs.110).aspx">IEqualityComparer&lt;T&gt;.GetHashCode(T)</a></div>
                         </article>
           </div>
           
