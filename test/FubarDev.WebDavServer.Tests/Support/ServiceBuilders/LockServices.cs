@@ -24,7 +24,7 @@ namespace FubarDev.WebDavServer.Tests.Support.ServiceBuilders
             {
                 opt.Rounding = new DefaultLockTimeRounding(DefaultLockTimeRoundingMode.OneHundredMilliseconds);
             });
-            serviceCollection.AddTransient<LockCleanupTask>();
+            serviceCollection.AddTransient<ILockCleanupTask, LockCleanupTask>();
             serviceCollection.AddTransient<ILockManager, InMemoryLockManager>();
             ServiceProvider = serviceCollection.BuildServiceProvider();
 
