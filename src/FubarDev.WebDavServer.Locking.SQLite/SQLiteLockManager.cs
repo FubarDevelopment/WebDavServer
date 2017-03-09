@@ -36,7 +36,7 @@ namespace FubarDev.WebDavServer.Locking.SQLite
         /// <param name="logger">The logger</param>
         public SQLiteLockManager(
             [NotNull] IOptions<SQLiteLockManagerOptions> sqliteOptions,
-            [NotNull] LockCleanupTask cleanupTask,
+            [NotNull] ILockCleanupTask cleanupTask,
             [NotNull] ISystemClock systemClock,
             [NotNull] ILogger<SQLiteLockManager> logger)
             : base(cleanupTask, systemClock, logger, sqliteOptions.Value)

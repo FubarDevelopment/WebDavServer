@@ -32,7 +32,7 @@ namespace FubarDev.WebDavServer.Locking
         private static readonly Uri _baseUrl = new Uri("http://localhost/");
 
         [NotNull]
-        private readonly LockCleanupTask _cleanupTask;
+        private readonly ILockCleanupTask _cleanupTask;
 
         [NotNull]
         private readonly ISystemClock _systemClock;
@@ -50,7 +50,7 @@ namespace FubarDev.WebDavServer.Locking
         /// <param name="systemClock">The system clock interface</param>
         /// <param name="logger">The logger</param>
         /// <param name="options">The options of the lock manager</param>
-        protected LockManagerBase([NotNull] LockCleanupTask cleanupTask, [NotNull] ISystemClock systemClock, [NotNull] ILogger logger, [CanBeNull] ILockManagerOptions options = null)
+        protected LockManagerBase([NotNull] ILockCleanupTask cleanupTask, [NotNull] ISystemClock systemClock, [NotNull] ILogger logger, [CanBeNull] ILockManagerOptions options = null)
         {
             _rounding = options?.Rounding ?? new DefaultLockTimeRounding(DefaultLockTimeRoundingMode.OneSecond);
             _cleanupTask = cleanupTask;

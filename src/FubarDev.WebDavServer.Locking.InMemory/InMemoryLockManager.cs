@@ -31,7 +31,7 @@ namespace FubarDev.WebDavServer.Locking.InMemory
         /// <param name="cleanupTask">The clean-up task for expired locks</param>
         /// <param name="systemClock">The system clock interface</param>
         /// <param name="logger">The logger</param>
-        public InMemoryLockManager(IOptions<InMemoryLockManagerOptions> options, LockCleanupTask cleanupTask, ISystemClock systemClock, ILogger<InMemoryLockManager> logger)
+        public InMemoryLockManager(IOptions<InMemoryLockManagerOptions> options, ILockCleanupTask cleanupTask, ISystemClock systemClock, ILogger<InMemoryLockManager> logger)
             : base(cleanupTask, systemClock, logger, options.Value)
         {
         }
