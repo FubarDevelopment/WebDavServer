@@ -15,6 +15,7 @@ using FubarDev.WebDavServer.FileSystem.DotNet;
 using FubarDev.WebDavServer.FileSystem.SQLite;
 using FubarDev.WebDavServer.Locking;
 using FubarDev.WebDavServer.Locking.InMemory;
+using FubarDev.WebDavServer.Locking.SQLite;
 using FubarDev.WebDavServer.Props.Store;
 using FubarDev.WebDavServer.Props.Store.SQLite;
 using FubarDev.WebDavServer.Props.Store.TextFile;
@@ -50,6 +51,12 @@ namespace FubarDev.WebDavServer.Sample.AspNetCore
             SQLite,
         }
 
+        private enum LockManagerType
+        {
+            InMemory,
+            SQLite,
+        }
+
         public Startup(IHostingEnvironment env)
         {
             var builder = new ConfigurationBuilder()
@@ -76,7 +83,6 @@ namespace FubarDev.WebDavServer.Sample.AspNetCore
                         var hostSection = Configuration.GetSection("Host");
                         hostSection?.Bind(opt);
                     })
-                .AddSingleton<ILockManager, InMemoryLockManager>()
                 .AddMvcCore()
                 .AddAuthorization()
                 .AddWebDav();
@@ -119,6 +125,25 @@ namespace FubarDev.WebDavServer.Sample.AspNetCore
                 case PropertyStoreType.SQLite:
                     services
                         .AddTransient<IPropertyStoreFactory, SQLitePropertyStoreFactory>();
+                    break;
+                default:
+                    throw new NotSupportedException();
+            }
+
+            switch (serverConfig.LockManager)
+            {
+                case LockManagerType.InMemory:
+                    services
+                        .AddTransient<ILockManager, InMemoryLockManager>();
+                    break;
+                case LockManagerType.SQLite:
+                    services
+                        .AddTransient<ILockManager, SQLiteLockManager>()
+                        .Configure<SQLiteLockManagerOptions>(
+                            cfg =>
+                            {
+                                cfg.DatabaseFileName = Path.Combine(Path.GetTempPath(), "webdav", "locks.db");
+                            });
                     break;
                 default:
                     throw new NotSupportedException();
@@ -301,6 +326,8 @@ namespace FubarDev.WebDavServer.Sample.AspNetCore
             public FileSystemType FileSystem { get; set; } = FileSystemType.DotNet;
 
             public PropertyStoreType PropertyStore { get; set; } = PropertyStoreType.TextFile;
+
+            public LockManagerType LockManager { get; set; } = LockManagerType.InMemory;
         }
     }
 }
