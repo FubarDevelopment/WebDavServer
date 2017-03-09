@@ -75,7 +75,6 @@ namespace FubarDev.WebDavServer.Sample.AspNetCore
         public void ConfigureServices(IServiceCollection services)
         {
             services
-                .AddOptions()
                 .AddAuthentication()
                 .Configure<WebDavHostOptions>(
                     opt =>
