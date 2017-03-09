@@ -17,7 +17,6 @@ using FubarDev.WebDavServer.Model.Headers;
 using JetBrains.Annotations;
 
 using Microsoft.Extensions.Logging;
-using Microsoft.Extensions.Options;
 
 namespace FubarDev.WebDavServer.Locking
 {
@@ -32,25 +31,28 @@ namespace FubarDev.WebDavServer.Locking
     {
         private static readonly Uri _baseUrl = new Uri("http://localhost/");
 
+        [NotNull]
         private readonly LockCleanupTask _cleanupTask;
 
+        [NotNull]
         private readonly ISystemClock _systemClock;
 
+        [NotNull]
         private readonly ILogger _logger;
 
+        [NotNull]
         private readonly ILockTimeRounding _rounding;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="LockManagerBase"/> class.
         /// </summary>
-        /// <param name="options">The options of the lock manager</param>
         /// <param name="cleanupTask">The clean-up task for expired locks</param>
         /// <param name="systemClock">The system clock interface</param>
         /// <param name="logger">The logger</param>
-        protected LockManagerBase(IOptions<LockManagerOptions> options, LockCleanupTask cleanupTask, ISystemClock systemClock, ILogger logger)
+        /// <param name="options">The options of the lock manager</param>
+        protected LockManagerBase([NotNull] LockCleanupTask cleanupTask, [NotNull] ISystemClock systemClock, [NotNull] ILogger logger, [CanBeNull] ILockManagerOptions options = null)
         {
-            var opt = options?.Value ?? new LockManagerOptions();
-            _rounding = opt.Rounding ?? new DefaultLockTimeRounding(DefaultLockTimeRoundingMode.OneSecond);
+            _rounding = options?.Rounding ?? new DefaultLockTimeRounding(DefaultLockTimeRoundingMode.OneSecond);
             _cleanupTask = cleanupTask;
             _systemClock = systemClock;
             _logger = logger;
@@ -82,7 +84,7 @@ namespace FubarDev.WebDavServer.Locking
             /// <returns>The collection of all active locks</returns>
             [NotNull]
             [ItemNotNull]
-            Task<IReadOnlyCollection<ActiveLock>> GetActiveLocksAsync(CancellationToken cancellationToken);
+            Task<IReadOnlyCollection<IActiveLock>> GetActiveLocksAsync(CancellationToken cancellationToken);
 
             /// <summary>
             /// Adds a new active lock
@@ -91,7 +93,7 @@ namespace FubarDev.WebDavServer.Locking
             /// <param name="cancellationToken">The cancellation token</param>
             /// <returns><see langword="true"/> when adding the lock succeeded</returns>
             [NotNull]
-            Task<bool> AddAsync([NotNull] ActiveLock activeLock, CancellationToken cancellationToken);
+            Task<bool> AddAsync([NotNull] IActiveLock activeLock, CancellationToken cancellationToken);
 
             /// <summary>
             /// Updates the active lock
@@ -100,7 +102,7 @@ namespace FubarDev.WebDavServer.Locking
             /// <param name="cancellationToken">The cancellation token</param>
             /// <returns><see langword="true"/> when the lock was updatet, <see langword="false"/> when the lock was added instead</returns>
             [NotNull]
-            Task<bool> UpdateAsync([NotNull] ActiveLock activeLock, CancellationToken cancellationToken);
+            Task<bool> UpdateAsync([NotNull] IActiveLock activeLock, CancellationToken cancellationToken);
 
             /// <summary>
             /// Removes an active lock with the given <paramref name="stateToken"/>
@@ -119,7 +121,7 @@ namespace FubarDev.WebDavServer.Locking
             /// <returns>The active lock for the state token</returns>
             [NotNull]
             [ItemCanBeNull]
-            Task<ActiveLock> GetAsync([NotNull] string stateToken, CancellationToken cancellationToken);
+            Task<IActiveLock> GetAsync([NotNull] string stateToken, CancellationToken cancellationToken);
 
             /// <summary>
             /// Commits the changes made during the transaction
@@ -269,7 +271,7 @@ namespace FubarDev.WebDavServer.Locking
                     var foundLock = pathInfo.TokenToLock.Where(x => ifHeaderList.IsMatch(pathInfo.EntityTag, new[] { x.Key })).Select(x => x.Value).SingleOrDefault();
                     if (foundLock != null)
                     {
-                        var refreshedLock = foundLock.Refresh(_rounding.Round(_systemClock.UtcNow), _rounding.Round(timeout));
+                        var refreshedLock = Refresh(foundLock, _rounding.Round(_systemClock.UtcNow), _rounding.Round(timeout));
 
                         // Remove old lock from clean-up task
                         _cleanupTask.Remove(foundLock);
@@ -322,7 +324,7 @@ namespace FubarDev.WebDavServer.Locking
         /// <inheritdoc />
         public async Task<LockReleaseStatus> ReleaseAsync(string path, Uri stateToken, CancellationToken cancellationToken)
         {
-            ActiveLock activeLock;
+            IActiveLock activeLock;
             using (var transaction = await BeginTransactionAsync(cancellationToken).ConfigureAwait(false))
             {
                 activeLock = await transaction.GetAsync(stateToken.OriginalString, cancellationToken).ConfigureAwait(false);
@@ -356,7 +358,7 @@ namespace FubarDev.WebDavServer.Locking
             using (var transaction = await BeginTransactionAsync(cancellationToken).ConfigureAwait(false))
             {
                 var locks = await transaction.GetActiveLocksAsync(cancellationToken).ConfigureAwait(false);
-                return locks.Select(x => (IActiveLock)x);
+                return locks;
             }
         }
 
@@ -421,6 +423,28 @@ namespace FubarDev.WebDavServer.Locking
                     .ToList());
         }
 
+        /// <summary>
+        /// Returns a new active lock whose new expiration date/time is recalculated using <paramref name="lastRefresh"/> and <paramref name="timeout"/>.
+        /// </summary>
+        /// <param name="activeLock">The active lock to refresh</param>
+        /// <param name="lastRefresh">The date/time of the last refresh</param>
+        /// <param name="timeout">The new timeout to apply to the lock</param>
+        /// <returns>The new (refreshed) active lock</returns>
+        [Pure]
+        private static ActiveLock Refresh(IActiveLock activeLock, DateTime lastRefresh, TimeSpan timeout)
+        {
+            return new ActiveLock(
+                activeLock.Path,
+                activeLock.Href,
+                activeLock.Recursive,
+                activeLock.GetOwner(),
+                LockAccessType.Parse(activeLock.AccessType),
+                LockShareMode.Parse(activeLock.ShareMode),
+                timeout,
+                activeLock.Issued,
+                lastRefresh);
+        }
+
 #if USE_VARIANT_1
         [NotNull]
         [ItemCanBeNull]
@@ -482,7 +506,7 @@ namespace FubarDev.WebDavServer.Locking
                     if (pathInfo.ActiveLocks == null)
                     {
                         var destinationUrl = BuildUrl(ifHeaderList.Path.OriginalString);
-                        var entryLocks = Find(destinationUrl, false).GetLocks().Cast<ActiveLock>().ToList();
+                        var entryLocks = Find(destinationUrl, false).GetLocks().ToList();
                         pathInfo.ActiveLocks = entryLocks;
                         pathInfo.TokenToLock = entryLocks.ToDictionary(x => new Uri(x.StateToken, UriKind.RelativeOrAbsolute));
                         pathInfo.LockTokens = pathInfo.TokenToLock.Keys.ToList();
@@ -510,12 +534,12 @@ namespace FubarDev.WebDavServer.Locking
         {
             var lockRequirementUrl = BuildUrl(lockRequirements.Path);
 
-            IReadOnlyCollection<ActiveLock> affectingLocks;
+            IReadOnlyCollection<IActiveLock> affectingLocks;
             using (var transaction = await BeginTransactionAsync(cancellationToken).ConfigureAwait(false))
             {
                 var locks = await transaction.GetActiveLocksAsync(cancellationToken).ConfigureAwait(false);
                 var lockStatus = Find(locks, lockRequirementUrl, false, true);
-                affectingLocks = lockStatus.ParentLocks.Concat(lockStatus.ReferenceLocks).Cast<ActiveLock>().ToList();
+                affectingLocks = lockStatus.ParentLocks.Concat(lockStatus.ReferenceLocks).ToList();
             }
 
             // Get all If header lists together with all relevant active locks
@@ -528,8 +552,8 @@ namespace FubarDev.WebDavServer.Locking
                  let foundLocks = list.RequiresStateToken
                      ? Find(affectingLocks, listUrl, compareResult == LockCompareResult.LeftIsParent, true)
                      : LockStatus.Empty
-                 let locksForIfConditions = foundLocks.GetLocks().Cast<ActiveLock>().ToList()
-                 select Tuple.Create<IfHeaderList, IReadOnlyCollection<ActiveLock>>(list, locksForIfConditions))
+                 let locksForIfConditions = foundLocks.GetLocks().ToList()
+                 select Tuple.Create<IfHeaderList, IReadOnlyCollection<IActiveLock>>(list, locksForIfConditions))
                 .ToDictionary(x => x.Item1, x => x.Item2);
 
             // List of matches between path info and if header lists
@@ -549,7 +573,7 @@ namespace FubarDev.WebDavServer.Locking
                     {
                         ActiveLocks = matchingIfListItem.Value,
                         TokenToLock = matchingIfListItem
-                            .Value.ToDictionary(x => new Uri(x.StateToken, UriKind.RelativeOrAbsolute)),
+                            .Value.ToDictionary(x => new Uri(x.StateToken, UriKind.RelativeOrAbsolute), x => x),
                     };
                     pathInfo.LockTokens = pathInfo.TokenToLock.Keys.ToList();
                     pathToInfo.Add(ifHeaderList.Path, pathInfo);
@@ -641,7 +665,7 @@ namespace FubarDev.WebDavServer.Locking
 
             public IReadOnlyCollection<IActiveLock> ActiveLocks { get; set; }
 
-            public IDictionary<Uri, ActiveLock> TokenToLock { get; set; }
+            public IDictionary<Uri, IActiveLock> TokenToLock { get; set; }
 
             public IReadOnlyCollection<Uri> LockTokens { get; set; }
         }

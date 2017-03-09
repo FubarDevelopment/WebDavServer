@@ -24,7 +24,7 @@ namespace FubarDev.WebDavServer.Tests.Support.ServiceBuilders
             var serviceCollection = new ServiceCollection()
                 .AddOptions()
                 .AddLogging()
-                .Configure<LockManagerOptions>(opt =>
+                .Configure<InMemoryLockManagerOptions>(opt =>
                 {
                     opt.Rounding = new DefaultLockTimeRounding(DefaultLockTimeRoundingMode.OneHundredMilliseconds);
                 })

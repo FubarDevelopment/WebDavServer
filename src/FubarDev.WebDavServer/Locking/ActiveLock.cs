@@ -18,14 +18,14 @@ namespace FubarDev.WebDavServer.Locking
     /// The <see cref="ILockManager"/> implementation might use a different implementation
     /// of an <see cref="IActiveLock"/>.
     /// </remarks>
-    public class ActiveLock : Lock, IActiveLock
+    internal class ActiveLock : Lock, IActiveLock
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="ActiveLock"/> class.
         /// </summary>
         /// <param name="l">The lock to create this active lock from</param>
         /// <param name="issued">The date/time when this lock was issued</param>
-        public ActiveLock([NotNull] ILock l, DateTime issued)
+        internal ActiveLock([NotNull] ILock l, DateTime issued)
             : this(
                 l.Path,
                 l.Href,
@@ -45,7 +45,7 @@ namespace FubarDev.WebDavServer.Locking
         /// <param name="l">The lock to create this active lock from</param>
         /// <param name="issued">The date/time when this lock was issued</param>
         /// <param name="timeout">Override the timeout from the original lock (to enforce rounding)</param>
-        public ActiveLock([NotNull] ILock l, DateTime issued, TimeSpan timeout)
+        internal ActiveLock([NotNull] ILock l, DateTime issued, TimeSpan timeout)
             : this(
                 l.Path,
                 l.Href,
@@ -71,7 +71,7 @@ namespace FubarDev.WebDavServer.Locking
         /// <param name="timeout">The lock timeout</param>
         /// <param name="issued">The date/time when this lock was issued</param>
         /// <param name="lastRefresh">The date/time of the last refresh</param>
-        private ActiveLock(
+        internal ActiveLock(
             [NotNull] string path,
             [NotNull] string href,
             bool recursive,
@@ -112,27 +112,6 @@ namespace FubarDev.WebDavServer.Locking
         public override string ToString()
         {
             return $"Path={Path} [Href={Href}, Recursive={Recursive}, AccessType={AccessType}, ShareMode={ShareMode}, Timeout={Timeout}, Owner={Owner}, StateToken={StateToken}, Issued={Issued:O}, LastRefresh={LastRefresh:O}, Expiration={Expiration:O}]";
-        }
-
-        /// <summary>
-        /// Returns a new active lock whose new expiration date/time is recalculated using <paramref name="lastRefresh"/> and <paramref name="timeout"/>.
-        /// </summary>
-        /// <param name="lastRefresh">The date/time of the last refresh</param>
-        /// <param name="timeout">The new timeout to apply to the lock</param>
-        /// <returns>The new (refreshed) active lock</returns>
-        [Pure]
-        public ActiveLock Refresh(DateTime lastRefresh, TimeSpan timeout)
-        {
-            return new ActiveLock(
-                Path,
-                Href,
-                Recursive,
-                Owner,
-                LockAccessType.Parse(AccessType),
-                LockShareMode.Parse(ShareMode),
-                timeout,
-                Issued,
-                lastRefresh);
         }
     }
 }

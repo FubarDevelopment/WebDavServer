@@ -20,7 +20,7 @@ namespace FubarDev.WebDavServer.Tests.Support.ServiceBuilders
             serviceCollection.AddOptions();
             serviceCollection.AddLogging();
             serviceCollection.AddScoped<ISystemClock, TestSystemClock>();
-            serviceCollection.Configure<LockManagerOptions>(opt =>
+            serviceCollection.Configure<InMemoryLockManagerOptions>(opt =>
             {
                 opt.Rounding = new DefaultLockTimeRounding(DefaultLockTimeRoundingMode.OneHundredMilliseconds);
             });

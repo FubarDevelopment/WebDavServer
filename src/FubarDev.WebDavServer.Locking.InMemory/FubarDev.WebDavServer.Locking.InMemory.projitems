@@ -10,5 +10,6 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="$(MSBuildThisFileDirectory)InMemoryLockManager.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)InMemoryLockManagerOptions.cs" />
   </ItemGroup>
 </Project>

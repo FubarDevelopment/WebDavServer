@@ -120,6 +120,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)Locking\ILock.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Locking\ILockCleanupTask.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Locking\ILockManager.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Locking\ILockManagerOptions.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Locking\ILockTimeRounding.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Locking\ImplicitLock.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Locking\ITimeoutPolicy.cs" />
@@ -128,7 +129,6 @@
     <Compile Include="$(MSBuildThisFileDirectory)Locking\LockCleanupTask.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Locking\LockEventArgs.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Locking\LockManagerBase.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Locking\LockManagerOptions.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Locking\LockRefreshResult.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Locking\LockReleaseStatus.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Locking\LockResult.cs" />

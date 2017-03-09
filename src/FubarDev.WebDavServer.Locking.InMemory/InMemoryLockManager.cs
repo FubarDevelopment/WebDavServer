@@ -22,7 +22,7 @@ namespace FubarDev.WebDavServer.Locking.InMemory
     {
         private readonly SemaphoreSlim _semaphore = new SemaphoreSlim(1);
 
-        private IImmutableDictionary<string, ActiveLock> _locks = ImmutableDictionary<string, ActiveLock>.Empty;
+        private IImmutableDictionary<string, IActiveLock> _locks = ImmutableDictionary<string, IActiveLock>.Empty;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="InMemoryLockManager"/> class.
@@ -31,8 +31,8 @@ namespace FubarDev.WebDavServer.Locking.InMemory
         /// <param name="cleanupTask">The clean-up task for expired locks</param>
         /// <param name="systemClock">The system clock interface</param>
         /// <param name="logger">The logger</param>
-        public InMemoryLockManager(IOptions<LockManagerOptions> options, LockCleanupTask cleanupTask, ISystemClock systemClock, ILogger<InMemoryLockManager> logger)
-            : base(options, cleanupTask, systemClock, logger)
+        public InMemoryLockManager(IOptions<InMemoryLockManagerOptions> options, LockCleanupTask cleanupTask, ISystemClock systemClock, ILogger<InMemoryLockManager> logger)
+            : base(cleanupTask, systemClock, logger, options.Value)
         {
         }
 
@@ -47,7 +47,7 @@ namespace FubarDev.WebDavServer.Locking.InMemory
             [NotNull]
             private readonly InMemoryLockManager _lockManager;
 
-            private IImmutableDictionary<string, ActiveLock> _locks;
+            private IImmutableDictionary<string, IActiveLock> _locks;
 
             /// <summary>
             /// Initializes a new instance of the <see cref="InMemoryTransaction"/> class.
@@ -60,13 +60,13 @@ namespace FubarDev.WebDavServer.Locking.InMemory
             }
 
             /// <inheritdoc />
-            public Task<IReadOnlyCollection<ActiveLock>> GetActiveLocksAsync(CancellationToken cancellationToken)
+            public Task<IReadOnlyCollection<IActiveLock>> GetActiveLocksAsync(CancellationToken cancellationToken)
             {
-                return Task.FromResult<IReadOnlyCollection<ActiveLock>>(_locks.Values.ToList());
+                return Task.FromResult<IReadOnlyCollection<IActiveLock>>(_locks.Values.ToList());
             }
 
             /// <inheritdoc />
-            public Task<bool> AddAsync(ActiveLock activeLock, CancellationToken cancellationToken)
+            public Task<bool> AddAsync(IActiveLock activeLock, CancellationToken cancellationToken)
             {
                 if (_locks.ContainsKey(activeLock.StateToken))
                     return Task.FromResult(false);
@@ -75,7 +75,7 @@ namespace FubarDev.WebDavServer.Locking.InMemory
             }
 
             /// <inheritdoc />
-            public Task<bool> UpdateAsync(ActiveLock activeLock, CancellationToken cancellationToken)
+            public Task<bool> UpdateAsync(IActiveLock activeLock, CancellationToken cancellationToken)
             {
                 var hadKey = _locks.ContainsKey(activeLock.StateToken);
                 if (hadKey)
@@ -94,7 +94,7 @@ namespace FubarDev.WebDavServer.Locking.InMemory
             }
 
             /// <inheritdoc />
-            public Task<ActiveLock> GetAsync(string stateToken, CancellationToken cancellationToken)
+            public Task<IActiveLock> GetAsync(string stateToken, CancellationToken cancellationToken)
             {
                 _locks.TryGetValue(stateToken, out var activeLock);
                 return Task.FromResult(activeLock);
