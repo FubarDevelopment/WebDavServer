@@ -8045,6 +8045,24 @@ references:
   commentId: Overload:FubarDev.WebDavServer.Locking.ILockManager.ReleaseAsync
   fullName: FubarDev.WebDavServer.Locking.ILockManager.ReleaseAsync
   nameWithType: ILockManager.ReleaseAsync
+- uid: FubarDev.WebDavServer.Locking.ILockManagerOptions
+  name: ILockManagerOptions
+  href: api/FubarDev.WebDavServer.Locking.ILockManagerOptions.html
+  commentId: T:FubarDev.WebDavServer.Locking.ILockManagerOptions
+  fullName: FubarDev.WebDavServer.Locking.ILockManagerOptions
+  nameWithType: ILockManagerOptions
+- uid: FubarDev.WebDavServer.Locking.ILockManagerOptions.Rounding
+  name: Rounding
+  href: api/FubarDev.WebDavServer.Locking.ILockManagerOptions.html#FubarDev_WebDavServer_Locking_ILockManagerOptions_Rounding
+  commentId: P:FubarDev.WebDavServer.Locking.ILockManagerOptions.Rounding
+  fullName: FubarDev.WebDavServer.Locking.ILockManagerOptions.Rounding
+  nameWithType: ILockManagerOptions.Rounding
+- uid: FubarDev.WebDavServer.Locking.ILockManagerOptions.Rounding*
+  name: Rounding
+  href: api/FubarDev.WebDavServer.Locking.ILockManagerOptions.html#FubarDev_WebDavServer_Locking_ILockManagerOptions_Rounding_
+  commentId: Overload:FubarDev.WebDavServer.Locking.ILockManagerOptions.Rounding
+  fullName: FubarDev.WebDavServer.Locking.ILockManagerOptions.Rounding
+  nameWithType: ILockManagerOptions.Rounding
 - uid: FubarDev.WebDavServer.Locking.ILockTimeRounding
   name: ILockTimeRounding
   href: api/FubarDev.WebDavServer.Locking.ILockTimeRounding.html
@@ -8186,144 +8204,51 @@ references:
   commentId: T:FubarDev.WebDavServer.Locking.InMemory.InMemoryLockManager
   fullName: FubarDev.WebDavServer.Locking.InMemory.InMemoryLockManager
   nameWithType: InMemoryLockManager
-- uid: FubarDev.WebDavServer.Locking.InMemory.InMemoryLockManager.#ctor(Microsoft.Extensions.Options.IOptions{FubarDev.WebDavServer.Locking.LockManagerOptions},FubarDev.WebDavServer.Locking.LockCleanupTask,FubarDev.WebDavServer.ISystemClock,Microsoft.Extensions.Logging.ILogger{FubarDev.WebDavServer.Locking.InMemory.InMemoryLockManager})
-  name: InMemoryLockManager(IOptions<LockManagerOptions>, LockCleanupTask, ISystemClock, ILogger<InMemoryLockManager>)
-  href: api/FubarDev.WebDavServer.Locking.InMemory.InMemoryLockManager.html#FubarDev_WebDavServer_Locking_InMemory_InMemoryLockManager__ctor_Microsoft_Extensions_Options_IOptions_FubarDev_WebDavServer_Locking_LockManagerOptions__FubarDev_WebDavServer_Locking_LockCleanupTask_FubarDev_WebDavServer_ISystemClock_Microsoft_Extensions_Logging_ILogger_FubarDev_WebDavServer_Locking_InMemory_InMemoryLockManager__
-  commentId: M:FubarDev.WebDavServer.Locking.InMemory.InMemoryLockManager.#ctor(Microsoft.Extensions.Options.IOptions{FubarDev.WebDavServer.Locking.LockManagerOptions},FubarDev.WebDavServer.Locking.LockCleanupTask,FubarDev.WebDavServer.ISystemClock,Microsoft.Extensions.Logging.ILogger{FubarDev.WebDavServer.Locking.InMemory.InMemoryLockManager})
-  name.vb: InMemoryLockManager(IOptions(Of LockManagerOptions), LockCleanupTask, ISystemClock, ILogger(Of InMemoryLockManager))
-  fullName: FubarDev.WebDavServer.Locking.InMemory.InMemoryLockManager.InMemoryLockManager(Microsoft.Extensions.Options.IOptions<FubarDev.WebDavServer.Locking.LockManagerOptions>, FubarDev.WebDavServer.Locking.LockCleanupTask, FubarDev.WebDavServer.ISystemClock, Microsoft.Extensions.Logging.ILogger<FubarDev.WebDavServer.Locking.InMemory.InMemoryLockManager>)
-  fullName.vb: FubarDev.WebDavServer.Locking.InMemory.InMemoryLockManager.InMemoryLockManager(Microsoft.Extensions.Options.IOptions(Of FubarDev.WebDavServer.Locking.LockManagerOptions), FubarDev.WebDavServer.Locking.LockCleanupTask, FubarDev.WebDavServer.ISystemClock, Microsoft.Extensions.Logging.ILogger(Of FubarDev.WebDavServer.Locking.InMemory.InMemoryLockManager))
-  nameWithType: InMemoryLockManager.InMemoryLockManager(IOptions<LockManagerOptions>, LockCleanupTask, ISystemClock, ILogger<InMemoryLockManager>)
-  nameWithType.vb: InMemoryLockManager.InMemoryLockManager(IOptions(Of LockManagerOptions), LockCleanupTask, ISystemClock, ILogger(Of InMemoryLockManager))
+- uid: FubarDev.WebDavServer.Locking.InMemory.InMemoryLockManager.#ctor(Microsoft.Extensions.Options.IOptions{FubarDev.WebDavServer.Locking.InMemory.InMemoryLockManagerOptions},FubarDev.WebDavServer.Locking.ILockCleanupTask,FubarDev.WebDavServer.ISystemClock,Microsoft.Extensions.Logging.ILogger{FubarDev.WebDavServer.Locking.InMemory.InMemoryLockManager})
+  name: InMemoryLockManager(IOptions<InMemoryLockManagerOptions>, ILockCleanupTask, ISystemClock, ILogger<InMemoryLockManager>)
+  href: api/FubarDev.WebDavServer.Locking.InMemory.InMemoryLockManager.html#FubarDev_WebDavServer_Locking_InMemory_InMemoryLockManager__ctor_Microsoft_Extensions_Options_IOptions_FubarDev_WebDavServer_Locking_InMemory_InMemoryLockManagerOptions__FubarDev_WebDavServer_Locking_ILockCleanupTask_FubarDev_WebDavServer_ISystemClock_Microsoft_Extensions_Logging_ILogger_FubarDev_WebDavServer_Locking_InMemory_InMemoryLockManager__
+  commentId: M:FubarDev.WebDavServer.Locking.InMemory.InMemoryLockManager.#ctor(Microsoft.Extensions.Options.IOptions{FubarDev.WebDavServer.Locking.InMemory.InMemoryLockManagerOptions},FubarDev.WebDavServer.Locking.ILockCleanupTask,FubarDev.WebDavServer.ISystemClock,Microsoft.Extensions.Logging.ILogger{FubarDev.WebDavServer.Locking.InMemory.InMemoryLockManager})
+  name.vb: InMemoryLockManager(IOptions(Of InMemoryLockManagerOptions), ILockCleanupTask, ISystemClock, ILogger(Of InMemoryLockManager))
+  fullName: FubarDev.WebDavServer.Locking.InMemory.InMemoryLockManager.InMemoryLockManager(Microsoft.Extensions.Options.IOptions<FubarDev.WebDavServer.Locking.InMemory.InMemoryLockManagerOptions>, FubarDev.WebDavServer.Locking.ILockCleanupTask, FubarDev.WebDavServer.ISystemClock, Microsoft.Extensions.Logging.ILogger<FubarDev.WebDavServer.Locking.InMemory.InMemoryLockManager>)
+  fullName.vb: FubarDev.WebDavServer.Locking.InMemory.InMemoryLockManager.InMemoryLockManager(Microsoft.Extensions.Options.IOptions(Of FubarDev.WebDavServer.Locking.InMemory.InMemoryLockManagerOptions), FubarDev.WebDavServer.Locking.ILockCleanupTask, FubarDev.WebDavServer.ISystemClock, Microsoft.Extensions.Logging.ILogger(Of FubarDev.WebDavServer.Locking.InMemory.InMemoryLockManager))
+  nameWithType: InMemoryLockManager.InMemoryLockManager(IOptions<InMemoryLockManagerOptions>, ILockCleanupTask, ISystemClock, ILogger<InMemoryLockManager>)
+  nameWithType.vb: InMemoryLockManager.InMemoryLockManager(IOptions(Of InMemoryLockManagerOptions), ILockCleanupTask, ISystemClock, ILogger(Of InMemoryLockManager))
 - uid: FubarDev.WebDavServer.Locking.InMemory.InMemoryLockManager.#ctor*
   name: InMemoryLockManager
   href: api/FubarDev.WebDavServer.Locking.InMemory.InMemoryLockManager.html#FubarDev_WebDavServer_Locking_InMemory_InMemoryLockManager__ctor_
   commentId: Overload:FubarDev.WebDavServer.Locking.InMemory.InMemoryLockManager.#ctor
   fullName: FubarDev.WebDavServer.Locking.InMemory.InMemoryLockManager.InMemoryLockManager
   nameWithType: InMemoryLockManager.InMemoryLockManager
-- uid: FubarDev.WebDavServer.Locking.InMemory.InMemoryLockManager.Cost
-  name: Cost
-  href: api/FubarDev.WebDavServer.Locking.InMemory.InMemoryLockManager.html#FubarDev_WebDavServer_Locking_InMemory_InMemoryLockManager_Cost
-  commentId: P:FubarDev.WebDavServer.Locking.InMemory.InMemoryLockManager.Cost
-  fullName: FubarDev.WebDavServer.Locking.InMemory.InMemoryLockManager.Cost
-  nameWithType: InMemoryLockManager.Cost
-- uid: FubarDev.WebDavServer.Locking.InMemory.InMemoryLockManager.Cost*
-  name: Cost
-  href: api/FubarDev.WebDavServer.Locking.InMemory.InMemoryLockManager.html#FubarDev_WebDavServer_Locking_InMemory_InMemoryLockManager_Cost_
-  commentId: Overload:FubarDev.WebDavServer.Locking.InMemory.InMemoryLockManager.Cost
-  fullName: FubarDev.WebDavServer.Locking.InMemory.InMemoryLockManager.Cost
-  nameWithType: InMemoryLockManager.Cost
-- uid: FubarDev.WebDavServer.Locking.InMemory.InMemoryLockManager.GetAffectedLocksAsync(System.String,System.Boolean,System.Boolean,System.Threading.CancellationToken)
-  name: GetAffectedLocksAsync(String, Boolean, Boolean, CancellationToken)
-  href: api/FubarDev.WebDavServer.Locking.InMemory.InMemoryLockManager.html#FubarDev_WebDavServer_Locking_InMemory_InMemoryLockManager_GetAffectedLocksAsync_System_String_System_Boolean_System_Boolean_System_Threading_CancellationToken_
-  commentId: M:FubarDev.WebDavServer.Locking.InMemory.InMemoryLockManager.GetAffectedLocksAsync(System.String,System.Boolean,System.Boolean,System.Threading.CancellationToken)
-  fullName: FubarDev.WebDavServer.Locking.InMemory.InMemoryLockManager.GetAffectedLocksAsync(System.String, System.Boolean, System.Boolean, System.Threading.CancellationToken)
-  nameWithType: InMemoryLockManager.GetAffectedLocksAsync(String, Boolean, Boolean, CancellationToken)
-- uid: FubarDev.WebDavServer.Locking.InMemory.InMemoryLockManager.GetAffectedLocksAsync*
-  name: GetAffectedLocksAsync
-  href: api/FubarDev.WebDavServer.Locking.InMemory.InMemoryLockManager.html#FubarDev_WebDavServer_Locking_InMemory_InMemoryLockManager_GetAffectedLocksAsync_
-  commentId: Overload:FubarDev.WebDavServer.Locking.InMemory.InMemoryLockManager.GetAffectedLocksAsync
-  fullName: FubarDev.WebDavServer.Locking.InMemory.InMemoryLockManager.GetAffectedLocksAsync
-  nameWithType: InMemoryLockManager.GetAffectedLocksAsync
-- uid: FubarDev.WebDavServer.Locking.InMemory.InMemoryLockManager.GetLocksAsync(System.Threading.CancellationToken)
-  name: GetLocksAsync(CancellationToken)
-  href: api/FubarDev.WebDavServer.Locking.InMemory.InMemoryLockManager.html#FubarDev_WebDavServer_Locking_InMemory_InMemoryLockManager_GetLocksAsync_System_Threading_CancellationToken_
-  commentId: M:FubarDev.WebDavServer.Locking.InMemory.InMemoryLockManager.GetLocksAsync(System.Threading.CancellationToken)
-  fullName: FubarDev.WebDavServer.Locking.InMemory.InMemoryLockManager.GetLocksAsync(System.Threading.CancellationToken)
-  nameWithType: InMemoryLockManager.GetLocksAsync(CancellationToken)
-- uid: FubarDev.WebDavServer.Locking.InMemory.InMemoryLockManager.GetLocksAsync*
-  name: GetLocksAsync
-  href: api/FubarDev.WebDavServer.Locking.InMemory.InMemoryLockManager.html#FubarDev_WebDavServer_Locking_InMemory_InMemoryLockManager_GetLocksAsync_
-  commentId: Overload:FubarDev.WebDavServer.Locking.InMemory.InMemoryLockManager.GetLocksAsync
-  fullName: FubarDev.WebDavServer.Locking.InMemory.InMemoryLockManager.GetLocksAsync
-  nameWithType: InMemoryLockManager.GetLocksAsync
-- uid: FubarDev.WebDavServer.Locking.InMemory.InMemoryLockManager.LockAdded
-  name: LockAdded
-  href: api/FubarDev.WebDavServer.Locking.InMemory.InMemoryLockManager.html#FubarDev_WebDavServer_Locking_InMemory_InMemoryLockManager_LockAdded
-  commentId: E:FubarDev.WebDavServer.Locking.InMemory.InMemoryLockManager.LockAdded
-  fullName: FubarDev.WebDavServer.Locking.InMemory.InMemoryLockManager.LockAdded
-  nameWithType: InMemoryLockManager.LockAdded
-- uid: FubarDev.WebDavServer.Locking.InMemory.InMemoryLockManager.LockAsync(FubarDev.WebDavServer.Locking.ILock,System.Threading.CancellationToken)
-  name: LockAsync(ILock, CancellationToken)
-  href: api/FubarDev.WebDavServer.Locking.InMemory.InMemoryLockManager.html#FubarDev_WebDavServer_Locking_InMemory_InMemoryLockManager_LockAsync_FubarDev_WebDavServer_Locking_ILock_System_Threading_CancellationToken_
-  commentId: M:FubarDev.WebDavServer.Locking.InMemory.InMemoryLockManager.LockAsync(FubarDev.WebDavServer.Locking.ILock,System.Threading.CancellationToken)
-  fullName: FubarDev.WebDavServer.Locking.InMemory.InMemoryLockManager.LockAsync(FubarDev.WebDavServer.Locking.ILock, System.Threading.CancellationToken)
-  nameWithType: InMemoryLockManager.LockAsync(ILock, CancellationToken)
-- uid: FubarDev.WebDavServer.Locking.InMemory.InMemoryLockManager.LockAsync*
-  name: LockAsync
-  href: api/FubarDev.WebDavServer.Locking.InMemory.InMemoryLockManager.html#FubarDev_WebDavServer_Locking_InMemory_InMemoryLockManager_LockAsync_
-  commentId: Overload:FubarDev.WebDavServer.Locking.InMemory.InMemoryLockManager.LockAsync
-  fullName: FubarDev.WebDavServer.Locking.InMemory.InMemoryLockManager.LockAsync
-  nameWithType: InMemoryLockManager.LockAsync
-- uid: FubarDev.WebDavServer.Locking.InMemory.InMemoryLockManager.LockImplicitAsync(FubarDev.WebDavServer.FileSystem.IFileSystem,System.Collections.Generic.IReadOnlyCollection{FubarDev.WebDavServer.Model.Headers.IfHeaderList},FubarDev.WebDavServer.Locking.ILock,System.Threading.CancellationToken)
-  name: LockImplicitAsync(IFileSystem, IReadOnlyCollection<IfHeaderList>, ILock, CancellationToken)
-  href: api/FubarDev.WebDavServer.Locking.InMemory.InMemoryLockManager.html#FubarDev_WebDavServer_Locking_InMemory_InMemoryLockManager_LockImplicitAsync_FubarDev_WebDavServer_FileSystem_IFileSystem_System_Collections_Generic_IReadOnlyCollection_FubarDev_WebDavServer_Model_Headers_IfHeaderList__FubarDev_WebDavServer_Locking_ILock_System_Threading_CancellationToken_
-  commentId: M:FubarDev.WebDavServer.Locking.InMemory.InMemoryLockManager.LockImplicitAsync(FubarDev.WebDavServer.FileSystem.IFileSystem,System.Collections.Generic.IReadOnlyCollection{FubarDev.WebDavServer.Model.Headers.IfHeaderList},FubarDev.WebDavServer.Locking.ILock,System.Threading.CancellationToken)
-  name.vb: LockImplicitAsync(IFileSystem, IReadOnlyCollection(Of IfHeaderList), ILock, CancellationToken)
-  fullName: FubarDev.WebDavServer.Locking.InMemory.InMemoryLockManager.LockImplicitAsync(FubarDev.WebDavServer.FileSystem.IFileSystem, System.Collections.Generic.IReadOnlyCollection<FubarDev.WebDavServer.Model.Headers.IfHeaderList>, FubarDev.WebDavServer.Locking.ILock, System.Threading.CancellationToken)
-  fullName.vb: FubarDev.WebDavServer.Locking.InMemory.InMemoryLockManager.LockImplicitAsync(FubarDev.WebDavServer.FileSystem.IFileSystem, System.Collections.Generic.IReadOnlyCollection(Of FubarDev.WebDavServer.Model.Headers.IfHeaderList), FubarDev.WebDavServer.Locking.ILock, System.Threading.CancellationToken)
-  nameWithType: InMemoryLockManager.LockImplicitAsync(IFileSystem, IReadOnlyCollection<IfHeaderList>, ILock, CancellationToken)
-  nameWithType.vb: InMemoryLockManager.LockImplicitAsync(IFileSystem, IReadOnlyCollection(Of IfHeaderList), ILock, CancellationToken)
-- uid: FubarDev.WebDavServer.Locking.InMemory.InMemoryLockManager.LockImplicitAsync*
-  name: LockImplicitAsync
-  href: api/FubarDev.WebDavServer.Locking.InMemory.InMemoryLockManager.html#FubarDev_WebDavServer_Locking_InMemory_InMemoryLockManager_LockImplicitAsync_
-  commentId: Overload:FubarDev.WebDavServer.Locking.InMemory.InMemoryLockManager.LockImplicitAsync
-  fullName: FubarDev.WebDavServer.Locking.InMemory.InMemoryLockManager.LockImplicitAsync
-  nameWithType: InMemoryLockManager.LockImplicitAsync
-- uid: FubarDev.WebDavServer.Locking.InMemory.InMemoryLockManager.LockReleased
-  name: LockReleased
-  href: api/FubarDev.WebDavServer.Locking.InMemory.InMemoryLockManager.html#FubarDev_WebDavServer_Locking_InMemory_InMemoryLockManager_LockReleased
-  commentId: E:FubarDev.WebDavServer.Locking.InMemory.InMemoryLockManager.LockReleased
-  fullName: FubarDev.WebDavServer.Locking.InMemory.InMemoryLockManager.LockReleased
-  nameWithType: InMemoryLockManager.LockReleased
-- uid: FubarDev.WebDavServer.Locking.InMemory.InMemoryLockManager.OnLockAdded(FubarDev.WebDavServer.Locking.IActiveLock)
-  name: OnLockAdded(IActiveLock)
-  href: api/FubarDev.WebDavServer.Locking.InMemory.InMemoryLockManager.html#FubarDev_WebDavServer_Locking_InMemory_InMemoryLockManager_OnLockAdded_FubarDev_WebDavServer_Locking_IActiveLock_
-  commentId: M:FubarDev.WebDavServer.Locking.InMemory.InMemoryLockManager.OnLockAdded(FubarDev.WebDavServer.Locking.IActiveLock)
-  fullName: FubarDev.WebDavServer.Locking.InMemory.InMemoryLockManager.OnLockAdded(FubarDev.WebDavServer.Locking.IActiveLock)
-  nameWithType: InMemoryLockManager.OnLockAdded(IActiveLock)
-- uid: FubarDev.WebDavServer.Locking.InMemory.InMemoryLockManager.OnLockAdded*
-  name: OnLockAdded
-  href: api/FubarDev.WebDavServer.Locking.InMemory.InMemoryLockManager.html#FubarDev_WebDavServer_Locking_InMemory_InMemoryLockManager_OnLockAdded_
-  commentId: Overload:FubarDev.WebDavServer.Locking.InMemory.InMemoryLockManager.OnLockAdded
-  fullName: FubarDev.WebDavServer.Locking.InMemory.InMemoryLockManager.OnLockAdded
-  nameWithType: InMemoryLockManager.OnLockAdded
-- uid: FubarDev.WebDavServer.Locking.InMemory.InMemoryLockManager.OnLockReleased(FubarDev.WebDavServer.Locking.IActiveLock)
-  name: OnLockReleased(IActiveLock)
-  href: api/FubarDev.WebDavServer.Locking.InMemory.InMemoryLockManager.html#FubarDev_WebDavServer_Locking_InMemory_InMemoryLockManager_OnLockReleased_FubarDev_WebDavServer_Locking_IActiveLock_
-  commentId: M:FubarDev.WebDavServer.Locking.InMemory.InMemoryLockManager.OnLockReleased(FubarDev.WebDavServer.Locking.IActiveLock)
-  fullName: FubarDev.WebDavServer.Locking.InMemory.InMemoryLockManager.OnLockReleased(FubarDev.WebDavServer.Locking.IActiveLock)
-  nameWithType: InMemoryLockManager.OnLockReleased(IActiveLock)
-- uid: FubarDev.WebDavServer.Locking.InMemory.InMemoryLockManager.OnLockReleased*
-  name: OnLockReleased
-  href: api/FubarDev.WebDavServer.Locking.InMemory.InMemoryLockManager.html#FubarDev_WebDavServer_Locking_InMemory_InMemoryLockManager_OnLockReleased_
-  commentId: Overload:FubarDev.WebDavServer.Locking.InMemory.InMemoryLockManager.OnLockReleased
-  fullName: FubarDev.WebDavServer.Locking.InMemory.InMemoryLockManager.OnLockReleased
-  nameWithType: InMemoryLockManager.OnLockReleased
-- uid: FubarDev.WebDavServer.Locking.InMemory.InMemoryLockManager.RefreshLockAsync(FubarDev.WebDavServer.FileSystem.IFileSystem,FubarDev.WebDavServer.Model.Headers.IfHeader,System.TimeSpan,System.Threading.CancellationToken)
-  name: RefreshLockAsync(IFileSystem, IfHeader, TimeSpan, CancellationToken)
-  href: api/FubarDev.WebDavServer.Locking.InMemory.InMemoryLockManager.html#FubarDev_WebDavServer_Locking_InMemory_InMemoryLockManager_RefreshLockAsync_FubarDev_WebDavServer_FileSystem_IFileSystem_FubarDev_WebDavServer_Model_Headers_IfHeader_System_TimeSpan_System_Threading_CancellationToken_
-  commentId: M:FubarDev.WebDavServer.Locking.InMemory.InMemoryLockManager.RefreshLockAsync(FubarDev.WebDavServer.FileSystem.IFileSystem,FubarDev.WebDavServer.Model.Headers.IfHeader,System.TimeSpan,System.Threading.CancellationToken)
-  fullName: FubarDev.WebDavServer.Locking.InMemory.InMemoryLockManager.RefreshLockAsync(FubarDev.WebDavServer.FileSystem.IFileSystem, FubarDev.WebDavServer.Model.Headers.IfHeader, System.TimeSpan, System.Threading.CancellationToken)
-  nameWithType: InMemoryLockManager.RefreshLockAsync(IFileSystem, IfHeader, TimeSpan, CancellationToken)
-- uid: FubarDev.WebDavServer.Locking.InMemory.InMemoryLockManager.RefreshLockAsync*
-  name: RefreshLockAsync
-  href: api/FubarDev.WebDavServer.Locking.InMemory.InMemoryLockManager.html#FubarDev_WebDavServer_Locking_InMemory_InMemoryLockManager_RefreshLockAsync_
-  commentId: Overload:FubarDev.WebDavServer.Locking.InMemory.InMemoryLockManager.RefreshLockAsync
-  fullName: FubarDev.WebDavServer.Locking.InMemory.InMemoryLockManager.RefreshLockAsync
-  nameWithType: InMemoryLockManager.RefreshLockAsync
-- uid: FubarDev.WebDavServer.Locking.InMemory.InMemoryLockManager.ReleaseAsync(System.String,System.Uri,System.Threading.CancellationToken)
-  name: ReleaseAsync(String, Uri, CancellationToken)
-  href: api/FubarDev.WebDavServer.Locking.InMemory.InMemoryLockManager.html#FubarDev_WebDavServer_Locking_InMemory_InMemoryLockManager_ReleaseAsync_System_String_System_Uri_System_Threading_CancellationToken_
-  commentId: M:FubarDev.WebDavServer.Locking.InMemory.InMemoryLockManager.ReleaseAsync(System.String,System.Uri,System.Threading.CancellationToken)
-  fullName: FubarDev.WebDavServer.Locking.InMemory.InMemoryLockManager.ReleaseAsync(System.String, System.Uri, System.Threading.CancellationToken)
-  nameWithType: InMemoryLockManager.ReleaseAsync(String, Uri, CancellationToken)
-- uid: FubarDev.WebDavServer.Locking.InMemory.InMemoryLockManager.ReleaseAsync*
-  name: ReleaseAsync
-  href: api/FubarDev.WebDavServer.Locking.InMemory.InMemoryLockManager.html#FubarDev_WebDavServer_Locking_InMemory_InMemoryLockManager_ReleaseAsync_
-  commentId: Overload:FubarDev.WebDavServer.Locking.InMemory.InMemoryLockManager.ReleaseAsync
-  fullName: FubarDev.WebDavServer.Locking.InMemory.InMemoryLockManager.ReleaseAsync
-  nameWithType: InMemoryLockManager.ReleaseAsync
+- uid: FubarDev.WebDavServer.Locking.InMemory.InMemoryLockManager.BeginTransactionAsync(System.Threading.CancellationToken)
+  name: BeginTransactionAsync(CancellationToken)
+  href: api/FubarDev.WebDavServer.Locking.InMemory.InMemoryLockManager.html#FubarDev_WebDavServer_Locking_InMemory_InMemoryLockManager_BeginTransactionAsync_System_Threading_CancellationToken_
+  commentId: M:FubarDev.WebDavServer.Locking.InMemory.InMemoryLockManager.BeginTransactionAsync(System.Threading.CancellationToken)
+  fullName: FubarDev.WebDavServer.Locking.InMemory.InMemoryLockManager.BeginTransactionAsync(System.Threading.CancellationToken)
+  nameWithType: InMemoryLockManager.BeginTransactionAsync(CancellationToken)
+- uid: FubarDev.WebDavServer.Locking.InMemory.InMemoryLockManager.BeginTransactionAsync*
+  name: BeginTransactionAsync
+  href: api/FubarDev.WebDavServer.Locking.InMemory.InMemoryLockManager.html#FubarDev_WebDavServer_Locking_InMemory_InMemoryLockManager_BeginTransactionAsync_
+  commentId: Overload:FubarDev.WebDavServer.Locking.InMemory.InMemoryLockManager.BeginTransactionAsync
+  fullName: FubarDev.WebDavServer.Locking.InMemory.InMemoryLockManager.BeginTransactionAsync
+  nameWithType: InMemoryLockManager.BeginTransactionAsync
+- uid: FubarDev.WebDavServer.Locking.InMemory.InMemoryLockManagerOptions
+  name: InMemoryLockManagerOptions
+  href: api/FubarDev.WebDavServer.Locking.InMemory.InMemoryLockManagerOptions.html
+  commentId: T:FubarDev.WebDavServer.Locking.InMemory.InMemoryLockManagerOptions
+  fullName: FubarDev.WebDavServer.Locking.InMemory.InMemoryLockManagerOptions
+  nameWithType: InMemoryLockManagerOptions
+- uid: FubarDev.WebDavServer.Locking.InMemory.InMemoryLockManagerOptions.Rounding
+  name: Rounding
+  href: api/FubarDev.WebDavServer.Locking.InMemory.InMemoryLockManagerOptions.html#FubarDev_WebDavServer_Locking_InMemory_InMemoryLockManagerOptions_Rounding
+  commentId: P:FubarDev.WebDavServer.Locking.InMemory.InMemoryLockManagerOptions.Rounding
+  fullName: FubarDev.WebDavServer.Locking.InMemory.InMemoryLockManagerOptions.Rounding
+  nameWithType: InMemoryLockManagerOptions.Rounding
+- uid: FubarDev.WebDavServer.Locking.InMemory.InMemoryLockManagerOptions.Rounding*
+  name: Rounding
+  href: api/FubarDev.WebDavServer.Locking.InMemory.InMemoryLockManagerOptions.html#FubarDev_WebDavServer_Locking_InMemory_InMemoryLockManagerOptions_Rounding_
+  commentId: Overload:FubarDev.WebDavServer.Locking.InMemory.InMemoryLockManagerOptions.Rounding
+  fullName: FubarDev.WebDavServer.Locking.InMemory.InMemoryLockManagerOptions.Rounding
+  nameWithType: InMemoryLockManagerOptions.Rounding
 - uid: FubarDev.WebDavServer.Locking.ITimeoutPolicy
   name: ITimeoutPolicy
   href: api/FubarDev.WebDavServer.Locking.ITimeoutPolicy.html
@@ -8672,6 +8597,249 @@ references:
   commentId: Overload:FubarDev.WebDavServer.Locking.LockEventArgs.Lock
   fullName: FubarDev.WebDavServer.Locking.LockEventArgs.Lock
   nameWithType: LockEventArgs.Lock
+- uid: FubarDev.WebDavServer.Locking.LockManagerBase
+  name: LockManagerBase
+  href: api/FubarDev.WebDavServer.Locking.LockManagerBase.html
+  commentId: T:FubarDev.WebDavServer.Locking.LockManagerBase
+  fullName: FubarDev.WebDavServer.Locking.LockManagerBase
+  nameWithType: LockManagerBase
+- uid: FubarDev.WebDavServer.Locking.LockManagerBase.#ctor(FubarDev.WebDavServer.Locking.ILockCleanupTask,FubarDev.WebDavServer.ISystemClock,Microsoft.Extensions.Logging.ILogger,FubarDev.WebDavServer.Locking.ILockManagerOptions)
+  name: LockManagerBase(ILockCleanupTask, ISystemClock, ILogger, ILockManagerOptions)
+  href: api/FubarDev.WebDavServer.Locking.LockManagerBase.html#FubarDev_WebDavServer_Locking_LockManagerBase__ctor_FubarDev_WebDavServer_Locking_ILockCleanupTask_FubarDev_WebDavServer_ISystemClock_Microsoft_Extensions_Logging_ILogger_FubarDev_WebDavServer_Locking_ILockManagerOptions_
+  commentId: M:FubarDev.WebDavServer.Locking.LockManagerBase.#ctor(FubarDev.WebDavServer.Locking.ILockCleanupTask,FubarDev.WebDavServer.ISystemClock,Microsoft.Extensions.Logging.ILogger,FubarDev.WebDavServer.Locking.ILockManagerOptions)
+  fullName: FubarDev.WebDavServer.Locking.LockManagerBase.LockManagerBase(FubarDev.WebDavServer.Locking.ILockCleanupTask, FubarDev.WebDavServer.ISystemClock, Microsoft.Extensions.Logging.ILogger, FubarDev.WebDavServer.Locking.ILockManagerOptions)
+  nameWithType: LockManagerBase.LockManagerBase(ILockCleanupTask, ISystemClock, ILogger, ILockManagerOptions)
+- uid: FubarDev.WebDavServer.Locking.LockManagerBase.#ctor*
+  name: LockManagerBase
+  href: api/FubarDev.WebDavServer.Locking.LockManagerBase.html#FubarDev_WebDavServer_Locking_LockManagerBase__ctor_
+  commentId: Overload:FubarDev.WebDavServer.Locking.LockManagerBase.#ctor
+  fullName: FubarDev.WebDavServer.Locking.LockManagerBase.LockManagerBase
+  nameWithType: LockManagerBase.LockManagerBase
+- uid: FubarDev.WebDavServer.Locking.LockManagerBase.BeginTransactionAsync(System.Threading.CancellationToken)
+  name: BeginTransactionAsync(CancellationToken)
+  href: api/FubarDev.WebDavServer.Locking.LockManagerBase.html#FubarDev_WebDavServer_Locking_LockManagerBase_BeginTransactionAsync_System_Threading_CancellationToken_
+  commentId: M:FubarDev.WebDavServer.Locking.LockManagerBase.BeginTransactionAsync(System.Threading.CancellationToken)
+  fullName: FubarDev.WebDavServer.Locking.LockManagerBase.BeginTransactionAsync(System.Threading.CancellationToken)
+  nameWithType: LockManagerBase.BeginTransactionAsync(CancellationToken)
+- uid: FubarDev.WebDavServer.Locking.LockManagerBase.BeginTransactionAsync*
+  name: BeginTransactionAsync
+  href: api/FubarDev.WebDavServer.Locking.LockManagerBase.html#FubarDev_WebDavServer_Locking_LockManagerBase_BeginTransactionAsync_
+  commentId: Overload:FubarDev.WebDavServer.Locking.LockManagerBase.BeginTransactionAsync
+  fullName: FubarDev.WebDavServer.Locking.LockManagerBase.BeginTransactionAsync
+  nameWithType: LockManagerBase.BeginTransactionAsync
+- uid: FubarDev.WebDavServer.Locking.LockManagerBase.Cost
+  name: Cost
+  href: api/FubarDev.WebDavServer.Locking.LockManagerBase.html#FubarDev_WebDavServer_Locking_LockManagerBase_Cost
+  commentId: P:FubarDev.WebDavServer.Locking.LockManagerBase.Cost
+  fullName: FubarDev.WebDavServer.Locking.LockManagerBase.Cost
+  nameWithType: LockManagerBase.Cost
+- uid: FubarDev.WebDavServer.Locking.LockManagerBase.Cost*
+  name: Cost
+  href: api/FubarDev.WebDavServer.Locking.LockManagerBase.html#FubarDev_WebDavServer_Locking_LockManagerBase_Cost_
+  commentId: Overload:FubarDev.WebDavServer.Locking.LockManagerBase.Cost
+  fullName: FubarDev.WebDavServer.Locking.LockManagerBase.Cost
+  nameWithType: LockManagerBase.Cost
+- uid: FubarDev.WebDavServer.Locking.LockManagerBase.GetAffectedLocksAsync(System.String,System.Boolean,System.Boolean,System.Threading.CancellationToken)
+  name: GetAffectedLocksAsync(String, Boolean, Boolean, CancellationToken)
+  href: api/FubarDev.WebDavServer.Locking.LockManagerBase.html#FubarDev_WebDavServer_Locking_LockManagerBase_GetAffectedLocksAsync_System_String_System_Boolean_System_Boolean_System_Threading_CancellationToken_
+  commentId: M:FubarDev.WebDavServer.Locking.LockManagerBase.GetAffectedLocksAsync(System.String,System.Boolean,System.Boolean,System.Threading.CancellationToken)
+  fullName: FubarDev.WebDavServer.Locking.LockManagerBase.GetAffectedLocksAsync(System.String, System.Boolean, System.Boolean, System.Threading.CancellationToken)
+  nameWithType: LockManagerBase.GetAffectedLocksAsync(String, Boolean, Boolean, CancellationToken)
+- uid: FubarDev.WebDavServer.Locking.LockManagerBase.GetAffectedLocksAsync*
+  name: GetAffectedLocksAsync
+  href: api/FubarDev.WebDavServer.Locking.LockManagerBase.html#FubarDev_WebDavServer_Locking_LockManagerBase_GetAffectedLocksAsync_
+  commentId: Overload:FubarDev.WebDavServer.Locking.LockManagerBase.GetAffectedLocksAsync
+  fullName: FubarDev.WebDavServer.Locking.LockManagerBase.GetAffectedLocksAsync
+  nameWithType: LockManagerBase.GetAffectedLocksAsync
+- uid: FubarDev.WebDavServer.Locking.LockManagerBase.GetLocksAsync(System.Threading.CancellationToken)
+  name: GetLocksAsync(CancellationToken)
+  href: api/FubarDev.WebDavServer.Locking.LockManagerBase.html#FubarDev_WebDavServer_Locking_LockManagerBase_GetLocksAsync_System_Threading_CancellationToken_
+  commentId: M:FubarDev.WebDavServer.Locking.LockManagerBase.GetLocksAsync(System.Threading.CancellationToken)
+  fullName: FubarDev.WebDavServer.Locking.LockManagerBase.GetLocksAsync(System.Threading.CancellationToken)
+  nameWithType: LockManagerBase.GetLocksAsync(CancellationToken)
+- uid: FubarDev.WebDavServer.Locking.LockManagerBase.GetLocksAsync*
+  name: GetLocksAsync
+  href: api/FubarDev.WebDavServer.Locking.LockManagerBase.html#FubarDev_WebDavServer_Locking_LockManagerBase_GetLocksAsync_
+  commentId: Overload:FubarDev.WebDavServer.Locking.LockManagerBase.GetLocksAsync
+  fullName: FubarDev.WebDavServer.Locking.LockManagerBase.GetLocksAsync
+  nameWithType: LockManagerBase.GetLocksAsync
+- uid: FubarDev.WebDavServer.Locking.LockManagerBase.ILockManagerTransaction
+  name: LockManagerBase.ILockManagerTransaction
+  href: api/FubarDev.WebDavServer.Locking.LockManagerBase.ILockManagerTransaction.html
+  commentId: T:FubarDev.WebDavServer.Locking.LockManagerBase.ILockManagerTransaction
+  fullName: FubarDev.WebDavServer.Locking.LockManagerBase.ILockManagerTransaction
+  nameWithType: LockManagerBase.ILockManagerTransaction
+- uid: FubarDev.WebDavServer.Locking.LockManagerBase.ILockManagerTransaction.AddAsync(FubarDev.WebDavServer.Locking.IActiveLock,System.Threading.CancellationToken)
+  name: AddAsync(IActiveLock, CancellationToken)
+  href: api/FubarDev.WebDavServer.Locking.LockManagerBase.ILockManagerTransaction.html#FubarDev_WebDavServer_Locking_LockManagerBase_ILockManagerTransaction_AddAsync_FubarDev_WebDavServer_Locking_IActiveLock_System_Threading_CancellationToken_
+  commentId: M:FubarDev.WebDavServer.Locking.LockManagerBase.ILockManagerTransaction.AddAsync(FubarDev.WebDavServer.Locking.IActiveLock,System.Threading.CancellationToken)
+  fullName: FubarDev.WebDavServer.Locking.LockManagerBase.ILockManagerTransaction.AddAsync(FubarDev.WebDavServer.Locking.IActiveLock, System.Threading.CancellationToken)
+  nameWithType: LockManagerBase.ILockManagerTransaction.AddAsync(IActiveLock, CancellationToken)
+- uid: FubarDev.WebDavServer.Locking.LockManagerBase.ILockManagerTransaction.AddAsync*
+  name: AddAsync
+  href: api/FubarDev.WebDavServer.Locking.LockManagerBase.ILockManagerTransaction.html#FubarDev_WebDavServer_Locking_LockManagerBase_ILockManagerTransaction_AddAsync_
+  commentId: Overload:FubarDev.WebDavServer.Locking.LockManagerBase.ILockManagerTransaction.AddAsync
+  fullName: FubarDev.WebDavServer.Locking.LockManagerBase.ILockManagerTransaction.AddAsync
+  nameWithType: LockManagerBase.ILockManagerTransaction.AddAsync
+- uid: FubarDev.WebDavServer.Locking.LockManagerBase.ILockManagerTransaction.CommitAsync(System.Threading.CancellationToken)
+  name: CommitAsync(CancellationToken)
+  href: api/FubarDev.WebDavServer.Locking.LockManagerBase.ILockManagerTransaction.html#FubarDev_WebDavServer_Locking_LockManagerBase_ILockManagerTransaction_CommitAsync_System_Threading_CancellationToken_
+  commentId: M:FubarDev.WebDavServer.Locking.LockManagerBase.ILockManagerTransaction.CommitAsync(System.Threading.CancellationToken)
+  fullName: FubarDev.WebDavServer.Locking.LockManagerBase.ILockManagerTransaction.CommitAsync(System.Threading.CancellationToken)
+  nameWithType: LockManagerBase.ILockManagerTransaction.CommitAsync(CancellationToken)
+- uid: FubarDev.WebDavServer.Locking.LockManagerBase.ILockManagerTransaction.CommitAsync*
+  name: CommitAsync
+  href: api/FubarDev.WebDavServer.Locking.LockManagerBase.ILockManagerTransaction.html#FubarDev_WebDavServer_Locking_LockManagerBase_ILockManagerTransaction_CommitAsync_
+  commentId: Overload:FubarDev.WebDavServer.Locking.LockManagerBase.ILockManagerTransaction.CommitAsync
+  fullName: FubarDev.WebDavServer.Locking.LockManagerBase.ILockManagerTransaction.CommitAsync
+  nameWithType: LockManagerBase.ILockManagerTransaction.CommitAsync
+- uid: FubarDev.WebDavServer.Locking.LockManagerBase.ILockManagerTransaction.GetActiveLocksAsync(System.Threading.CancellationToken)
+  name: GetActiveLocksAsync(CancellationToken)
+  href: api/FubarDev.WebDavServer.Locking.LockManagerBase.ILockManagerTransaction.html#FubarDev_WebDavServer_Locking_LockManagerBase_ILockManagerTransaction_GetActiveLocksAsync_System_Threading_CancellationToken_
+  commentId: M:FubarDev.WebDavServer.Locking.LockManagerBase.ILockManagerTransaction.GetActiveLocksAsync(System.Threading.CancellationToken)
+  fullName: FubarDev.WebDavServer.Locking.LockManagerBase.ILockManagerTransaction.GetActiveLocksAsync(System.Threading.CancellationToken)
+  nameWithType: LockManagerBase.ILockManagerTransaction.GetActiveLocksAsync(CancellationToken)
+- uid: FubarDev.WebDavServer.Locking.LockManagerBase.ILockManagerTransaction.GetActiveLocksAsync*
+  name: GetActiveLocksAsync
+  href: api/FubarDev.WebDavServer.Locking.LockManagerBase.ILockManagerTransaction.html#FubarDev_WebDavServer_Locking_LockManagerBase_ILockManagerTransaction_GetActiveLocksAsync_
+  commentId: Overload:FubarDev.WebDavServer.Locking.LockManagerBase.ILockManagerTransaction.GetActiveLocksAsync
+  fullName: FubarDev.WebDavServer.Locking.LockManagerBase.ILockManagerTransaction.GetActiveLocksAsync
+  nameWithType: LockManagerBase.ILockManagerTransaction.GetActiveLocksAsync
+- uid: FubarDev.WebDavServer.Locking.LockManagerBase.ILockManagerTransaction.GetAsync(System.String,System.Threading.CancellationToken)
+  name: GetAsync(String, CancellationToken)
+  href: api/FubarDev.WebDavServer.Locking.LockManagerBase.ILockManagerTransaction.html#FubarDev_WebDavServer_Locking_LockManagerBase_ILockManagerTransaction_GetAsync_System_String_System_Threading_CancellationToken_
+  commentId: M:FubarDev.WebDavServer.Locking.LockManagerBase.ILockManagerTransaction.GetAsync(System.String,System.Threading.CancellationToken)
+  fullName: FubarDev.WebDavServer.Locking.LockManagerBase.ILockManagerTransaction.GetAsync(System.String, System.Threading.CancellationToken)
+  nameWithType: LockManagerBase.ILockManagerTransaction.GetAsync(String, CancellationToken)
+- uid: FubarDev.WebDavServer.Locking.LockManagerBase.ILockManagerTransaction.GetAsync*
+  name: GetAsync
+  href: api/FubarDev.WebDavServer.Locking.LockManagerBase.ILockManagerTransaction.html#FubarDev_WebDavServer_Locking_LockManagerBase_ILockManagerTransaction_GetAsync_
+  commentId: Overload:FubarDev.WebDavServer.Locking.LockManagerBase.ILockManagerTransaction.GetAsync
+  fullName: FubarDev.WebDavServer.Locking.LockManagerBase.ILockManagerTransaction.GetAsync
+  nameWithType: LockManagerBase.ILockManagerTransaction.GetAsync
+- uid: FubarDev.WebDavServer.Locking.LockManagerBase.ILockManagerTransaction.RemoveAsync(System.String,System.Threading.CancellationToken)
+  name: RemoveAsync(String, CancellationToken)
+  href: api/FubarDev.WebDavServer.Locking.LockManagerBase.ILockManagerTransaction.html#FubarDev_WebDavServer_Locking_LockManagerBase_ILockManagerTransaction_RemoveAsync_System_String_System_Threading_CancellationToken_
+  commentId: M:FubarDev.WebDavServer.Locking.LockManagerBase.ILockManagerTransaction.RemoveAsync(System.String,System.Threading.CancellationToken)
+  fullName: FubarDev.WebDavServer.Locking.LockManagerBase.ILockManagerTransaction.RemoveAsync(System.String, System.Threading.CancellationToken)
+  nameWithType: LockManagerBase.ILockManagerTransaction.RemoveAsync(String, CancellationToken)
+- uid: FubarDev.WebDavServer.Locking.LockManagerBase.ILockManagerTransaction.RemoveAsync*
+  name: RemoveAsync
+  href: api/FubarDev.WebDavServer.Locking.LockManagerBase.ILockManagerTransaction.html#FubarDev_WebDavServer_Locking_LockManagerBase_ILockManagerTransaction_RemoveAsync_
+  commentId: Overload:FubarDev.WebDavServer.Locking.LockManagerBase.ILockManagerTransaction.RemoveAsync
+  fullName: FubarDev.WebDavServer.Locking.LockManagerBase.ILockManagerTransaction.RemoveAsync
+  nameWithType: LockManagerBase.ILockManagerTransaction.RemoveAsync
+- uid: FubarDev.WebDavServer.Locking.LockManagerBase.ILockManagerTransaction.UpdateAsync(FubarDev.WebDavServer.Locking.IActiveLock,System.Threading.CancellationToken)
+  name: UpdateAsync(IActiveLock, CancellationToken)
+  href: api/FubarDev.WebDavServer.Locking.LockManagerBase.ILockManagerTransaction.html#FubarDev_WebDavServer_Locking_LockManagerBase_ILockManagerTransaction_UpdateAsync_FubarDev_WebDavServer_Locking_IActiveLock_System_Threading_CancellationToken_
+  commentId: M:FubarDev.WebDavServer.Locking.LockManagerBase.ILockManagerTransaction.UpdateAsync(FubarDev.WebDavServer.Locking.IActiveLock,System.Threading.CancellationToken)
+  fullName: FubarDev.WebDavServer.Locking.LockManagerBase.ILockManagerTransaction.UpdateAsync(FubarDev.WebDavServer.Locking.IActiveLock, System.Threading.CancellationToken)
+  nameWithType: LockManagerBase.ILockManagerTransaction.UpdateAsync(IActiveLock, CancellationToken)
+- uid: FubarDev.WebDavServer.Locking.LockManagerBase.ILockManagerTransaction.UpdateAsync*
+  name: UpdateAsync
+  href: api/FubarDev.WebDavServer.Locking.LockManagerBase.ILockManagerTransaction.html#FubarDev_WebDavServer_Locking_LockManagerBase_ILockManagerTransaction_UpdateAsync_
+  commentId: Overload:FubarDev.WebDavServer.Locking.LockManagerBase.ILockManagerTransaction.UpdateAsync
+  fullName: FubarDev.WebDavServer.Locking.LockManagerBase.ILockManagerTransaction.UpdateAsync
+  nameWithType: LockManagerBase.ILockManagerTransaction.UpdateAsync
+- uid: FubarDev.WebDavServer.Locking.LockManagerBase.LockAdded
+  name: LockAdded
+  href: api/FubarDev.WebDavServer.Locking.LockManagerBase.html#FubarDev_WebDavServer_Locking_LockManagerBase_LockAdded
+  commentId: E:FubarDev.WebDavServer.Locking.LockManagerBase.LockAdded
+  fullName: FubarDev.WebDavServer.Locking.LockManagerBase.LockAdded
+  nameWithType: LockManagerBase.LockAdded
+- uid: FubarDev.WebDavServer.Locking.LockManagerBase.LockAsync(FubarDev.WebDavServer.Locking.ILock,System.Threading.CancellationToken)
+  name: LockAsync(ILock, CancellationToken)
+  href: api/FubarDev.WebDavServer.Locking.LockManagerBase.html#FubarDev_WebDavServer_Locking_LockManagerBase_LockAsync_FubarDev_WebDavServer_Locking_ILock_System_Threading_CancellationToken_
+  commentId: M:FubarDev.WebDavServer.Locking.LockManagerBase.LockAsync(FubarDev.WebDavServer.Locking.ILock,System.Threading.CancellationToken)
+  fullName: FubarDev.WebDavServer.Locking.LockManagerBase.LockAsync(FubarDev.WebDavServer.Locking.ILock, System.Threading.CancellationToken)
+  nameWithType: LockManagerBase.LockAsync(ILock, CancellationToken)
+- uid: FubarDev.WebDavServer.Locking.LockManagerBase.LockAsync*
+  name: LockAsync
+  href: api/FubarDev.WebDavServer.Locking.LockManagerBase.html#FubarDev_WebDavServer_Locking_LockManagerBase_LockAsync_
+  commentId: Overload:FubarDev.WebDavServer.Locking.LockManagerBase.LockAsync
+  fullName: FubarDev.WebDavServer.Locking.LockManagerBase.LockAsync
+  nameWithType: LockManagerBase.LockAsync
+- uid: FubarDev.WebDavServer.Locking.LockManagerBase.LockCleanupTask
+  name: LockCleanupTask
+  href: api/FubarDev.WebDavServer.Locking.LockManagerBase.html#FubarDev_WebDavServer_Locking_LockManagerBase_LockCleanupTask
+  commentId: P:FubarDev.WebDavServer.Locking.LockManagerBase.LockCleanupTask
+  fullName: FubarDev.WebDavServer.Locking.LockManagerBase.LockCleanupTask
+  nameWithType: LockManagerBase.LockCleanupTask
+- uid: FubarDev.WebDavServer.Locking.LockManagerBase.LockCleanupTask*
+  name: LockCleanupTask
+  href: api/FubarDev.WebDavServer.Locking.LockManagerBase.html#FubarDev_WebDavServer_Locking_LockManagerBase_LockCleanupTask_
+  commentId: Overload:FubarDev.WebDavServer.Locking.LockManagerBase.LockCleanupTask
+  fullName: FubarDev.WebDavServer.Locking.LockManagerBase.LockCleanupTask
+  nameWithType: LockManagerBase.LockCleanupTask
+- uid: FubarDev.WebDavServer.Locking.LockManagerBase.LockImplicitAsync(FubarDev.WebDavServer.FileSystem.IFileSystem,System.Collections.Generic.IReadOnlyCollection{FubarDev.WebDavServer.Model.Headers.IfHeaderList},FubarDev.WebDavServer.Locking.ILock,System.Threading.CancellationToken)
+  name: LockImplicitAsync(IFileSystem, IReadOnlyCollection<IfHeaderList>, ILock, CancellationToken)
+  href: api/FubarDev.WebDavServer.Locking.LockManagerBase.html#FubarDev_WebDavServer_Locking_LockManagerBase_LockImplicitAsync_FubarDev_WebDavServer_FileSystem_IFileSystem_System_Collections_Generic_IReadOnlyCollection_FubarDev_WebDavServer_Model_Headers_IfHeaderList__FubarDev_WebDavServer_Locking_ILock_System_Threading_CancellationToken_
+  commentId: M:FubarDev.WebDavServer.Locking.LockManagerBase.LockImplicitAsync(FubarDev.WebDavServer.FileSystem.IFileSystem,System.Collections.Generic.IReadOnlyCollection{FubarDev.WebDavServer.Model.Headers.IfHeaderList},FubarDev.WebDavServer.Locking.ILock,System.Threading.CancellationToken)
+  name.vb: LockImplicitAsync(IFileSystem, IReadOnlyCollection(Of IfHeaderList), ILock, CancellationToken)
+  fullName: FubarDev.WebDavServer.Locking.LockManagerBase.LockImplicitAsync(FubarDev.WebDavServer.FileSystem.IFileSystem, System.Collections.Generic.IReadOnlyCollection<FubarDev.WebDavServer.Model.Headers.IfHeaderList>, FubarDev.WebDavServer.Locking.ILock, System.Threading.CancellationToken)
+  fullName.vb: FubarDev.WebDavServer.Locking.LockManagerBase.LockImplicitAsync(FubarDev.WebDavServer.FileSystem.IFileSystem, System.Collections.Generic.IReadOnlyCollection(Of FubarDev.WebDavServer.Model.Headers.IfHeaderList), FubarDev.WebDavServer.Locking.ILock, System.Threading.CancellationToken)
+  nameWithType: LockManagerBase.LockImplicitAsync(IFileSystem, IReadOnlyCollection<IfHeaderList>, ILock, CancellationToken)
+  nameWithType.vb: LockManagerBase.LockImplicitAsync(IFileSystem, IReadOnlyCollection(Of IfHeaderList), ILock, CancellationToken)
+- uid: FubarDev.WebDavServer.Locking.LockManagerBase.LockImplicitAsync*
+  name: LockImplicitAsync
+  href: api/FubarDev.WebDavServer.Locking.LockManagerBase.html#FubarDev_WebDavServer_Locking_LockManagerBase_LockImplicitAsync_
+  commentId: Overload:FubarDev.WebDavServer.Locking.LockManagerBase.LockImplicitAsync
+  fullName: FubarDev.WebDavServer.Locking.LockManagerBase.LockImplicitAsync
+  nameWithType: LockManagerBase.LockImplicitAsync
+- uid: FubarDev.WebDavServer.Locking.LockManagerBase.LockReleased
+  name: LockReleased
+  href: api/FubarDev.WebDavServer.Locking.LockManagerBase.html#FubarDev_WebDavServer_Locking_LockManagerBase_LockReleased
+  commentId: E:FubarDev.WebDavServer.Locking.LockManagerBase.LockReleased
+  fullName: FubarDev.WebDavServer.Locking.LockManagerBase.LockReleased
+  nameWithType: LockManagerBase.LockReleased
+- uid: FubarDev.WebDavServer.Locking.LockManagerBase.OnLockAdded(FubarDev.WebDavServer.Locking.IActiveLock)
+  name: OnLockAdded(IActiveLock)
+  href: api/FubarDev.WebDavServer.Locking.LockManagerBase.html#FubarDev_WebDavServer_Locking_LockManagerBase_OnLockAdded_FubarDev_WebDavServer_Locking_IActiveLock_
+  commentId: M:FubarDev.WebDavServer.Locking.LockManagerBase.OnLockAdded(FubarDev.WebDavServer.Locking.IActiveLock)
+  fullName: FubarDev.WebDavServer.Locking.LockManagerBase.OnLockAdded(FubarDev.WebDavServer.Locking.IActiveLock)
+  nameWithType: LockManagerBase.OnLockAdded(IActiveLock)
+- uid: FubarDev.WebDavServer.Locking.LockManagerBase.OnLockAdded*
+  name: OnLockAdded
+  href: api/FubarDev.WebDavServer.Locking.LockManagerBase.html#FubarDev_WebDavServer_Locking_LockManagerBase_OnLockAdded_
+  commentId: Overload:FubarDev.WebDavServer.Locking.LockManagerBase.OnLockAdded
+  fullName: FubarDev.WebDavServer.Locking.LockManagerBase.OnLockAdded
+  nameWithType: LockManagerBase.OnLockAdded
+- uid: FubarDev.WebDavServer.Locking.LockManagerBase.OnLockReleased(FubarDev.WebDavServer.Locking.IActiveLock)
+  name: OnLockReleased(IActiveLock)
+  href: api/FubarDev.WebDavServer.Locking.LockManagerBase.html#FubarDev_WebDavServer_Locking_LockManagerBase_OnLockReleased_FubarDev_WebDavServer_Locking_IActiveLock_
+  commentId: M:FubarDev.WebDavServer.Locking.LockManagerBase.OnLockReleased(FubarDev.WebDavServer.Locking.IActiveLock)
+  fullName: FubarDev.WebDavServer.Locking.LockManagerBase.OnLockReleased(FubarDev.WebDavServer.Locking.IActiveLock)
+  nameWithType: LockManagerBase.OnLockReleased(IActiveLock)
+- uid: FubarDev.WebDavServer.Locking.LockManagerBase.OnLockReleased*
+  name: OnLockReleased
+  href: api/FubarDev.WebDavServer.Locking.LockManagerBase.html#FubarDev_WebDavServer_Locking_LockManagerBase_OnLockReleased_
+  commentId: Overload:FubarDev.WebDavServer.Locking.LockManagerBase.OnLockReleased
+  fullName: FubarDev.WebDavServer.Locking.LockManagerBase.OnLockReleased
+  nameWithType: LockManagerBase.OnLockReleased
+- uid: FubarDev.WebDavServer.Locking.LockManagerBase.RefreshLockAsync(FubarDev.WebDavServer.FileSystem.IFileSystem,FubarDev.WebDavServer.Model.Headers.IfHeader,System.TimeSpan,System.Threading.CancellationToken)
+  name: RefreshLockAsync(IFileSystem, IfHeader, TimeSpan, CancellationToken)
+  href: api/FubarDev.WebDavServer.Locking.LockManagerBase.html#FubarDev_WebDavServer_Locking_LockManagerBase_RefreshLockAsync_FubarDev_WebDavServer_FileSystem_IFileSystem_FubarDev_WebDavServer_Model_Headers_IfHeader_System_TimeSpan_System_Threading_CancellationToken_
+  commentId: M:FubarDev.WebDavServer.Locking.LockManagerBase.RefreshLockAsync(FubarDev.WebDavServer.FileSystem.IFileSystem,FubarDev.WebDavServer.Model.Headers.IfHeader,System.TimeSpan,System.Threading.CancellationToken)
+  fullName: FubarDev.WebDavServer.Locking.LockManagerBase.RefreshLockAsync(FubarDev.WebDavServer.FileSystem.IFileSystem, FubarDev.WebDavServer.Model.Headers.IfHeader, System.TimeSpan, System.Threading.CancellationToken)
+  nameWithType: LockManagerBase.RefreshLockAsync(IFileSystem, IfHeader, TimeSpan, CancellationToken)
+- uid: FubarDev.WebDavServer.Locking.LockManagerBase.RefreshLockAsync*
+  name: RefreshLockAsync
+  href: api/FubarDev.WebDavServer.Locking.LockManagerBase.html#FubarDev_WebDavServer_Locking_LockManagerBase_RefreshLockAsync_
+  commentId: Overload:FubarDev.WebDavServer.Locking.LockManagerBase.RefreshLockAsync
+  fullName: FubarDev.WebDavServer.Locking.LockManagerBase.RefreshLockAsync
+  nameWithType: LockManagerBase.RefreshLockAsync
+- uid: FubarDev.WebDavServer.Locking.LockManagerBase.ReleaseAsync(System.String,System.Uri,System.Threading.CancellationToken)
+  name: ReleaseAsync(String, Uri, CancellationToken)
+  href: api/FubarDev.WebDavServer.Locking.LockManagerBase.html#FubarDev_WebDavServer_Locking_LockManagerBase_ReleaseAsync_System_String_System_Uri_System_Threading_CancellationToken_
+  commentId: M:FubarDev.WebDavServer.Locking.LockManagerBase.ReleaseAsync(System.String,System.Uri,System.Threading.CancellationToken)
+  fullName: FubarDev.WebDavServer.Locking.LockManagerBase.ReleaseAsync(System.String, System.Uri, System.Threading.CancellationToken)
+  nameWithType: LockManagerBase.ReleaseAsync(String, Uri, CancellationToken)
+- uid: FubarDev.WebDavServer.Locking.LockManagerBase.ReleaseAsync*
+  name: ReleaseAsync
+  href: api/FubarDev.WebDavServer.Locking.LockManagerBase.html#FubarDev_WebDavServer_Locking_LockManagerBase_ReleaseAsync_
+  commentId: Overload:FubarDev.WebDavServer.Locking.LockManagerBase.ReleaseAsync
+  fullName: FubarDev.WebDavServer.Locking.LockManagerBase.ReleaseAsync
+  nameWithType: LockManagerBase.ReleaseAsync
 - uid: FubarDev.WebDavServer.Locking.LockManagerOptions
   name: LockManagerOptions
   href: api/FubarDev.WebDavServer.Locking.LockManagerOptions.html
@@ -9038,6 +9206,99 @@ references:
   commentId: Overload:FubarDev.WebDavServer.Locking.LockStatus.ReferenceLocks
   fullName: FubarDev.WebDavServer.Locking.LockStatus.ReferenceLocks
   nameWithType: LockStatus.ReferenceLocks
+- uid: FubarDev.WebDavServer.Locking.SQLite
+  name: FubarDev.WebDavServer.Locking.SQLite
+  href: api/FubarDev.WebDavServer.Locking.SQLite.html
+  commentId: N:FubarDev.WebDavServer.Locking.SQLite
+  fullName: FubarDev.WebDavServer.Locking.SQLite
+  nameWithType: FubarDev.WebDavServer.Locking.SQLite
+- uid: FubarDev.WebDavServer.Locking.SQLite.SQLiteLockManager
+  name: SQLiteLockManager
+  href: api/FubarDev.WebDavServer.Locking.SQLite.SQLiteLockManager.html
+  commentId: T:FubarDev.WebDavServer.Locking.SQLite.SQLiteLockManager
+  fullName: FubarDev.WebDavServer.Locking.SQLite.SQLiteLockManager
+  nameWithType: SQLiteLockManager
+- uid: FubarDev.WebDavServer.Locking.SQLite.SQLiteLockManager.#ctor(Microsoft.Extensions.Options.IOptions{FubarDev.WebDavServer.Locking.SQLite.SQLiteLockManagerOptions},FubarDev.WebDavServer.Locking.ILockCleanupTask,FubarDev.WebDavServer.ISystemClock,Microsoft.Extensions.Logging.ILogger{FubarDev.WebDavServer.Locking.SQLite.SQLiteLockManager})
+  name: SQLiteLockManager(IOptions<SQLiteLockManagerOptions>, ILockCleanupTask, ISystemClock, ILogger<SQLiteLockManager>)
+  href: api/FubarDev.WebDavServer.Locking.SQLite.SQLiteLockManager.html#FubarDev_WebDavServer_Locking_SQLite_SQLiteLockManager__ctor_Microsoft_Extensions_Options_IOptions_FubarDev_WebDavServer_Locking_SQLite_SQLiteLockManagerOptions__FubarDev_WebDavServer_Locking_ILockCleanupTask_FubarDev_WebDavServer_ISystemClock_Microsoft_Extensions_Logging_ILogger_FubarDev_WebDavServer_Locking_SQLite_SQLiteLockManager__
+  commentId: M:FubarDev.WebDavServer.Locking.SQLite.SQLiteLockManager.#ctor(Microsoft.Extensions.Options.IOptions{FubarDev.WebDavServer.Locking.SQLite.SQLiteLockManagerOptions},FubarDev.WebDavServer.Locking.ILockCleanupTask,FubarDev.WebDavServer.ISystemClock,Microsoft.Extensions.Logging.ILogger{FubarDev.WebDavServer.Locking.SQLite.SQLiteLockManager})
+  name.vb: SQLiteLockManager(IOptions(Of SQLiteLockManagerOptions), ILockCleanupTask, ISystemClock, ILogger(Of SQLiteLockManager))
+  fullName: FubarDev.WebDavServer.Locking.SQLite.SQLiteLockManager.SQLiteLockManager(Microsoft.Extensions.Options.IOptions<FubarDev.WebDavServer.Locking.SQLite.SQLiteLockManagerOptions>, FubarDev.WebDavServer.Locking.ILockCleanupTask, FubarDev.WebDavServer.ISystemClock, Microsoft.Extensions.Logging.ILogger<FubarDev.WebDavServer.Locking.SQLite.SQLiteLockManager>)
+  fullName.vb: FubarDev.WebDavServer.Locking.SQLite.SQLiteLockManager.SQLiteLockManager(Microsoft.Extensions.Options.IOptions(Of FubarDev.WebDavServer.Locking.SQLite.SQLiteLockManagerOptions), FubarDev.WebDavServer.Locking.ILockCleanupTask, FubarDev.WebDavServer.ISystemClock, Microsoft.Extensions.Logging.ILogger(Of FubarDev.WebDavServer.Locking.SQLite.SQLiteLockManager))
+  nameWithType: SQLiteLockManager.SQLiteLockManager(IOptions<SQLiteLockManagerOptions>, ILockCleanupTask, ISystemClock, ILogger<SQLiteLockManager>)
+  nameWithType.vb: SQLiteLockManager.SQLiteLockManager(IOptions(Of SQLiteLockManagerOptions), ILockCleanupTask, ISystemClock, ILogger(Of SQLiteLockManager))
+- uid: FubarDev.WebDavServer.Locking.SQLite.SQLiteLockManager.#ctor*
+  name: SQLiteLockManager
+  href: api/FubarDev.WebDavServer.Locking.SQLite.SQLiteLockManager.html#FubarDev_WebDavServer_Locking_SQLite_SQLiteLockManager__ctor_
+  commentId: Overload:FubarDev.WebDavServer.Locking.SQLite.SQLiteLockManager.#ctor
+  fullName: FubarDev.WebDavServer.Locking.SQLite.SQLiteLockManager.SQLiteLockManager
+  nameWithType: SQLiteLockManager.SQLiteLockManager
+- uid: FubarDev.WebDavServer.Locking.SQLite.SQLiteLockManager.BeginTransactionAsync(System.Threading.CancellationToken)
+  name: BeginTransactionAsync(CancellationToken)
+  href: api/FubarDev.WebDavServer.Locking.SQLite.SQLiteLockManager.html#FubarDev_WebDavServer_Locking_SQLite_SQLiteLockManager_BeginTransactionAsync_System_Threading_CancellationToken_
+  commentId: M:FubarDev.WebDavServer.Locking.SQLite.SQLiteLockManager.BeginTransactionAsync(System.Threading.CancellationToken)
+  fullName: FubarDev.WebDavServer.Locking.SQLite.SQLiteLockManager.BeginTransactionAsync(System.Threading.CancellationToken)
+  nameWithType: SQLiteLockManager.BeginTransactionAsync(CancellationToken)
+- uid: FubarDev.WebDavServer.Locking.SQLite.SQLiteLockManager.BeginTransactionAsync*
+  name: BeginTransactionAsync
+  href: api/FubarDev.WebDavServer.Locking.SQLite.SQLiteLockManager.html#FubarDev_WebDavServer_Locking_SQLite_SQLiteLockManager_BeginTransactionAsync_
+  commentId: Overload:FubarDev.WebDavServer.Locking.SQLite.SQLiteLockManager.BeginTransactionAsync
+  fullName: FubarDev.WebDavServer.Locking.SQLite.SQLiteLockManager.BeginTransactionAsync
+  nameWithType: SQLiteLockManager.BeginTransactionAsync
+- uid: FubarDev.WebDavServer.Locking.SQLite.SQLiteLockManager.CreateDatabase(System.String)
+  name: CreateDatabase(String)
+  href: api/FubarDev.WebDavServer.Locking.SQLite.SQLiteLockManager.html#FubarDev_WebDavServer_Locking_SQLite_SQLiteLockManager_CreateDatabase_System_String_
+  commentId: M:FubarDev.WebDavServer.Locking.SQLite.SQLiteLockManager.CreateDatabase(System.String)
+  fullName: FubarDev.WebDavServer.Locking.SQLite.SQLiteLockManager.CreateDatabase(System.String)
+  nameWithType: SQLiteLockManager.CreateDatabase(String)
+- uid: FubarDev.WebDavServer.Locking.SQLite.SQLiteLockManager.CreateDatabase*
+  name: CreateDatabase
+  href: api/FubarDev.WebDavServer.Locking.SQLite.SQLiteLockManager.html#FubarDev_WebDavServer_Locking_SQLite_SQLiteLockManager_CreateDatabase_
+  commentId: Overload:FubarDev.WebDavServer.Locking.SQLite.SQLiteLockManager.CreateDatabase
+  fullName: FubarDev.WebDavServer.Locking.SQLite.SQLiteLockManager.CreateDatabase
+  nameWithType: SQLiteLockManager.CreateDatabase
+- uid: FubarDev.WebDavServer.Locking.SQLite.SQLiteLockManager.EnsureDatabaseExists(System.String)
+  name: EnsureDatabaseExists(String)
+  href: api/FubarDev.WebDavServer.Locking.SQLite.SQLiteLockManager.html#FubarDev_WebDavServer_Locking_SQLite_SQLiteLockManager_EnsureDatabaseExists_System_String_
+  commentId: M:FubarDev.WebDavServer.Locking.SQLite.SQLiteLockManager.EnsureDatabaseExists(System.String)
+  fullName: FubarDev.WebDavServer.Locking.SQLite.SQLiteLockManager.EnsureDatabaseExists(System.String)
+  nameWithType: SQLiteLockManager.EnsureDatabaseExists(String)
+- uid: FubarDev.WebDavServer.Locking.SQLite.SQLiteLockManager.EnsureDatabaseExists*
+  name: EnsureDatabaseExists
+  href: api/FubarDev.WebDavServer.Locking.SQLite.SQLiteLockManager.html#FubarDev_WebDavServer_Locking_SQLite_SQLiteLockManager_EnsureDatabaseExists_
+  commentId: Overload:FubarDev.WebDavServer.Locking.SQLite.SQLiteLockManager.EnsureDatabaseExists
+  fullName: FubarDev.WebDavServer.Locking.SQLite.SQLiteLockManager.EnsureDatabaseExists
+  nameWithType: SQLiteLockManager.EnsureDatabaseExists
+- uid: FubarDev.WebDavServer.Locking.SQLite.SQLiteLockManagerOptions
+  name: SQLiteLockManagerOptions
+  href: api/FubarDev.WebDavServer.Locking.SQLite.SQLiteLockManagerOptions.html
+  commentId: T:FubarDev.WebDavServer.Locking.SQLite.SQLiteLockManagerOptions
+  fullName: FubarDev.WebDavServer.Locking.SQLite.SQLiteLockManagerOptions
+  nameWithType: SQLiteLockManagerOptions
+- uid: FubarDev.WebDavServer.Locking.SQLite.SQLiteLockManagerOptions.DatabaseFileName
+  name: DatabaseFileName
+  href: api/FubarDev.WebDavServer.Locking.SQLite.SQLiteLockManagerOptions.html#FubarDev_WebDavServer_Locking_SQLite_SQLiteLockManagerOptions_DatabaseFileName
+  commentId: P:FubarDev.WebDavServer.Locking.SQLite.SQLiteLockManagerOptions.DatabaseFileName
+  fullName: FubarDev.WebDavServer.Locking.SQLite.SQLiteLockManagerOptions.DatabaseFileName
+  nameWithType: SQLiteLockManagerOptions.DatabaseFileName
+- uid: FubarDev.WebDavServer.Locking.SQLite.SQLiteLockManagerOptions.DatabaseFileName*
+  name: DatabaseFileName
+  href: api/FubarDev.WebDavServer.Locking.SQLite.SQLiteLockManagerOptions.html#FubarDev_WebDavServer_Locking_SQLite_SQLiteLockManagerOptions_DatabaseFileName_
+  commentId: Overload:FubarDev.WebDavServer.Locking.SQLite.SQLiteLockManagerOptions.DatabaseFileName
+  fullName: FubarDev.WebDavServer.Locking.SQLite.SQLiteLockManagerOptions.DatabaseFileName
+  nameWithType: SQLiteLockManagerOptions.DatabaseFileName
+- uid: FubarDev.WebDavServer.Locking.SQLite.SQLiteLockManagerOptions.Rounding
+  name: Rounding
+  href: api/FubarDev.WebDavServer.Locking.SQLite.SQLiteLockManagerOptions.html#FubarDev_WebDavServer_Locking_SQLite_SQLiteLockManagerOptions_Rounding
+  commentId: P:FubarDev.WebDavServer.Locking.SQLite.SQLiteLockManagerOptions.Rounding
+  fullName: FubarDev.WebDavServer.Locking.SQLite.SQLiteLockManagerOptions.Rounding
+  nameWithType: SQLiteLockManagerOptions.Rounding
+- uid: FubarDev.WebDavServer.Locking.SQLite.SQLiteLockManagerOptions.Rounding*
+  name: Rounding
+  href: api/FubarDev.WebDavServer.Locking.SQLite.SQLiteLockManagerOptions.html#FubarDev_WebDavServer_Locking_SQLite_SQLiteLockManagerOptions_Rounding_
+  commentId: Overload:FubarDev.WebDavServer.Locking.SQLite.SQLiteLockManagerOptions.Rounding
+  fullName: FubarDev.WebDavServer.Locking.SQLite.SQLiteLockManagerOptions.Rounding
+  nameWithType: SQLiteLockManagerOptions.Rounding
 - uid: FubarDev.WebDavServer.Model
   name: FubarDev.WebDavServer.Model
   href: api/FubarDev.WebDavServer.Model.html
@@ -13508,6 +13769,174 @@ references:
   commentId: F:FubarDev.WebDavServer.Props.Live.SupportedLockProperty.PropertyName
   fullName: FubarDev.WebDavServer.Props.Live.SupportedLockProperty.PropertyName
   nameWithType: SupportedLockProperty.PropertyName
+- uid: FubarDev.WebDavServer.Props.PropertyKey
+  name: PropertyKey
+  href: api/FubarDev.WebDavServer.Props.PropertyKey.html
+  commentId: T:FubarDev.WebDavServer.Props.PropertyKey
+  fullName: FubarDev.WebDavServer.Props.PropertyKey
+  nameWithType: PropertyKey
+- uid: FubarDev.WebDavServer.Props.PropertyKey.#ctor(FubarDev.WebDavServer.Props.IProperty)
+  name: PropertyKey(IProperty)
+  href: api/FubarDev.WebDavServer.Props.PropertyKey.html#FubarDev_WebDavServer_Props_PropertyKey__ctor_FubarDev_WebDavServer_Props_IProperty_
+  commentId: M:FubarDev.WebDavServer.Props.PropertyKey.#ctor(FubarDev.WebDavServer.Props.IProperty)
+  fullName: FubarDev.WebDavServer.Props.PropertyKey.PropertyKey(FubarDev.WebDavServer.Props.IProperty)
+  nameWithType: PropertyKey.PropertyKey(IProperty)
+- uid: FubarDev.WebDavServer.Props.PropertyKey.#ctor(System.Xml.Linq.XElement)
+  name: PropertyKey(XElement)
+  href: api/FubarDev.WebDavServer.Props.PropertyKey.html#FubarDev_WebDavServer_Props_PropertyKey__ctor_System_Xml_Linq_XElement_
+  commentId: M:FubarDev.WebDavServer.Props.PropertyKey.#ctor(System.Xml.Linq.XElement)
+  fullName: FubarDev.WebDavServer.Props.PropertyKey.PropertyKey(System.Xml.Linq.XElement)
+  nameWithType: PropertyKey.PropertyKey(XElement)
+- uid: FubarDev.WebDavServer.Props.PropertyKey.#ctor(System.Xml.Linq.XName,System.String)
+  name: PropertyKey(XName, String)
+  href: api/FubarDev.WebDavServer.Props.PropertyKey.html#FubarDev_WebDavServer_Props_PropertyKey__ctor_System_Xml_Linq_XName_System_String_
+  commentId: M:FubarDev.WebDavServer.Props.PropertyKey.#ctor(System.Xml.Linq.XName,System.String)
+  fullName: FubarDev.WebDavServer.Props.PropertyKey.PropertyKey(System.Xml.Linq.XName, System.String)
+  nameWithType: PropertyKey.PropertyKey(XName, String)
+- uid: FubarDev.WebDavServer.Props.PropertyKey.#ctor*
+  name: PropertyKey
+  href: api/FubarDev.WebDavServer.Props.PropertyKey.html#FubarDev_WebDavServer_Props_PropertyKey__ctor_
+  commentId: Overload:FubarDev.WebDavServer.Props.PropertyKey.#ctor
+  fullName: FubarDev.WebDavServer.Props.PropertyKey.PropertyKey
+  nameWithType: PropertyKey.PropertyKey
+- uid: FubarDev.WebDavServer.Props.PropertyKey.CreateEmptyElement
+  name: CreateEmptyElement()
+  href: api/FubarDev.WebDavServer.Props.PropertyKey.html#FubarDev_WebDavServer_Props_PropertyKey_CreateEmptyElement
+  commentId: M:FubarDev.WebDavServer.Props.PropertyKey.CreateEmptyElement
+  fullName: FubarDev.WebDavServer.Props.PropertyKey.CreateEmptyElement()
+  nameWithType: PropertyKey.CreateEmptyElement()
+- uid: FubarDev.WebDavServer.Props.PropertyKey.CreateEmptyElement*
+  name: CreateEmptyElement
+  href: api/FubarDev.WebDavServer.Props.PropertyKey.html#FubarDev_WebDavServer_Props_PropertyKey_CreateEmptyElement_
+  commentId: Overload:FubarDev.WebDavServer.Props.PropertyKey.CreateEmptyElement
+  fullName: FubarDev.WebDavServer.Props.PropertyKey.CreateEmptyElement
+  nameWithType: PropertyKey.CreateEmptyElement
+- uid: FubarDev.WebDavServer.Props.PropertyKey.ElementLanguage
+  name: ElementLanguage
+  href: api/FubarDev.WebDavServer.Props.PropertyKey.html#FubarDev_WebDavServer_Props_PropertyKey_ElementLanguage
+  commentId: P:FubarDev.WebDavServer.Props.PropertyKey.ElementLanguage
+  fullName: FubarDev.WebDavServer.Props.PropertyKey.ElementLanguage
+  nameWithType: PropertyKey.ElementLanguage
+- uid: FubarDev.WebDavServer.Props.PropertyKey.ElementLanguage*
+  name: ElementLanguage
+  href: api/FubarDev.WebDavServer.Props.PropertyKey.html#FubarDev_WebDavServer_Props_PropertyKey_ElementLanguage_
+  commentId: Overload:FubarDev.WebDavServer.Props.PropertyKey.ElementLanguage
+  fullName: FubarDev.WebDavServer.Props.PropertyKey.ElementLanguage
+  nameWithType: PropertyKey.ElementLanguage
+- uid: FubarDev.WebDavServer.Props.PropertyKey.Equals(FubarDev.WebDavServer.Props.PropertyKey)
+  name: Equals(PropertyKey)
+  href: api/FubarDev.WebDavServer.Props.PropertyKey.html#FubarDev_WebDavServer_Props_PropertyKey_Equals_FubarDev_WebDavServer_Props_PropertyKey_
+  commentId: M:FubarDev.WebDavServer.Props.PropertyKey.Equals(FubarDev.WebDavServer.Props.PropertyKey)
+  fullName: FubarDev.WebDavServer.Props.PropertyKey.Equals(FubarDev.WebDavServer.Props.PropertyKey)
+  nameWithType: PropertyKey.Equals(PropertyKey)
+- uid: FubarDev.WebDavServer.Props.PropertyKey.Equals(System.Object)
+  name: Equals(Object)
+  href: api/FubarDev.WebDavServer.Props.PropertyKey.html#FubarDev_WebDavServer_Props_PropertyKey_Equals_System_Object_
+  commentId: M:FubarDev.WebDavServer.Props.PropertyKey.Equals(System.Object)
+  fullName: FubarDev.WebDavServer.Props.PropertyKey.Equals(System.Object)
+  nameWithType: PropertyKey.Equals(Object)
+- uid: FubarDev.WebDavServer.Props.PropertyKey.Equals*
+  name: Equals
+  href: api/FubarDev.WebDavServer.Props.PropertyKey.html#FubarDev_WebDavServer_Props_PropertyKey_Equals_
+  commentId: Overload:FubarDev.WebDavServer.Props.PropertyKey.Equals
+  fullName: FubarDev.WebDavServer.Props.PropertyKey.Equals
+  nameWithType: PropertyKey.Equals
+- uid: FubarDev.WebDavServer.Props.PropertyKey.GetHashCode
+  name: GetHashCode()
+  href: api/FubarDev.WebDavServer.Props.PropertyKey.html#FubarDev_WebDavServer_Props_PropertyKey_GetHashCode
+  commentId: M:FubarDev.WebDavServer.Props.PropertyKey.GetHashCode
+  fullName: FubarDev.WebDavServer.Props.PropertyKey.GetHashCode()
+  nameWithType: PropertyKey.GetHashCode()
+- uid: FubarDev.WebDavServer.Props.PropertyKey.GetHashCode*
+  name: GetHashCode
+  href: api/FubarDev.WebDavServer.Props.PropertyKey.html#FubarDev_WebDavServer_Props_PropertyKey_GetHashCode_
+  commentId: Overload:FubarDev.WebDavServer.Props.PropertyKey.GetHashCode
+  fullName: FubarDev.WebDavServer.Props.PropertyKey.GetHashCode
+  nameWithType: PropertyKey.GetHashCode
+- uid: FubarDev.WebDavServer.Props.PropertyKey.Language
+  name: Language
+  href: api/FubarDev.WebDavServer.Props.PropertyKey.html#FubarDev_WebDavServer_Props_PropertyKey_Language
+  commentId: P:FubarDev.WebDavServer.Props.PropertyKey.Language
+  fullName: FubarDev.WebDavServer.Props.PropertyKey.Language
+  nameWithType: PropertyKey.Language
+- uid: FubarDev.WebDavServer.Props.PropertyKey.Language*
+  name: Language
+  href: api/FubarDev.WebDavServer.Props.PropertyKey.html#FubarDev_WebDavServer_Props_PropertyKey_Language_
+  commentId: Overload:FubarDev.WebDavServer.Props.PropertyKey.Language
+  fullName: FubarDev.WebDavServer.Props.PropertyKey.Language
+  nameWithType: PropertyKey.Language
+- uid: FubarDev.WebDavServer.Props.PropertyKey.Name
+  name: Name
+  href: api/FubarDev.WebDavServer.Props.PropertyKey.html#FubarDev_WebDavServer_Props_PropertyKey_Name
+  commentId: P:FubarDev.WebDavServer.Props.PropertyKey.Name
+  fullName: FubarDev.WebDavServer.Props.PropertyKey.Name
+  nameWithType: PropertyKey.Name
+- uid: FubarDev.WebDavServer.Props.PropertyKey.Name*
+  name: Name
+  href: api/FubarDev.WebDavServer.Props.PropertyKey.html#FubarDev_WebDavServer_Props_PropertyKey_Name_
+  commentId: Overload:FubarDev.WebDavServer.Props.PropertyKey.Name
+  fullName: FubarDev.WebDavServer.Props.PropertyKey.Name
+  nameWithType: PropertyKey.Name
+- uid: FubarDev.WebDavServer.Props.PropertyKey.NoLanguage
+  name: NoLanguage
+  href: api/FubarDev.WebDavServer.Props.PropertyKey.html#FubarDev_WebDavServer_Props_PropertyKey_NoLanguage
+  commentId: F:FubarDev.WebDavServer.Props.PropertyKey.NoLanguage
+  fullName: FubarDev.WebDavServer.Props.PropertyKey.NoLanguage
+  nameWithType: PropertyKey.NoLanguage
+- uid: FubarDev.WebDavServer.Props.PropertyKey.ToString
+  name: ToString()
+  href: api/FubarDev.WebDavServer.Props.PropertyKey.html#FubarDev_WebDavServer_Props_PropertyKey_ToString
+  commentId: M:FubarDev.WebDavServer.Props.PropertyKey.ToString
+  fullName: FubarDev.WebDavServer.Props.PropertyKey.ToString()
+  nameWithType: PropertyKey.ToString()
+- uid: FubarDev.WebDavServer.Props.PropertyKey.ToString*
+  name: ToString
+  href: api/FubarDev.WebDavServer.Props.PropertyKey.html#FubarDev_WebDavServer_Props_PropertyKey_ToString_
+  commentId: Overload:FubarDev.WebDavServer.Props.PropertyKey.ToString
+  fullName: FubarDev.WebDavServer.Props.PropertyKey.ToString
+  nameWithType: PropertyKey.ToString
+- uid: FubarDev.WebDavServer.Props.PropertyKeyComparer
+  name: PropertyKeyComparer
+  href: api/FubarDev.WebDavServer.Props.PropertyKeyComparer.html
+  commentId: T:FubarDev.WebDavServer.Props.PropertyKeyComparer
+  fullName: FubarDev.WebDavServer.Props.PropertyKeyComparer
+  nameWithType: PropertyKeyComparer
+- uid: FubarDev.WebDavServer.Props.PropertyKeyComparer.Default
+  name: Default
+  href: api/FubarDev.WebDavServer.Props.PropertyKeyComparer.html#FubarDev_WebDavServer_Props_PropertyKeyComparer_Default
+  commentId: P:FubarDev.WebDavServer.Props.PropertyKeyComparer.Default
+  fullName: FubarDev.WebDavServer.Props.PropertyKeyComparer.Default
+  nameWithType: PropertyKeyComparer.Default
+- uid: FubarDev.WebDavServer.Props.PropertyKeyComparer.Default*
+  name: Default
+  href: api/FubarDev.WebDavServer.Props.PropertyKeyComparer.html#FubarDev_WebDavServer_Props_PropertyKeyComparer_Default_
+  commentId: Overload:FubarDev.WebDavServer.Props.PropertyKeyComparer.Default
+  fullName: FubarDev.WebDavServer.Props.PropertyKeyComparer.Default
+  nameWithType: PropertyKeyComparer.Default
+- uid: FubarDev.WebDavServer.Props.PropertyKeyComparer.Equals(FubarDev.WebDavServer.Props.PropertyKey,FubarDev.WebDavServer.Props.PropertyKey)
+  name: Equals(PropertyKey, PropertyKey)
+  href: api/FubarDev.WebDavServer.Props.PropertyKeyComparer.html#FubarDev_WebDavServer_Props_PropertyKeyComparer_Equals_FubarDev_WebDavServer_Props_PropertyKey_FubarDev_WebDavServer_Props_PropertyKey_
+  commentId: M:FubarDev.WebDavServer.Props.PropertyKeyComparer.Equals(FubarDev.WebDavServer.Props.PropertyKey,FubarDev.WebDavServer.Props.PropertyKey)
+  fullName: FubarDev.WebDavServer.Props.PropertyKeyComparer.Equals(FubarDev.WebDavServer.Props.PropertyKey, FubarDev.WebDavServer.Props.PropertyKey)
+  nameWithType: PropertyKeyComparer.Equals(PropertyKey, PropertyKey)
+- uid: FubarDev.WebDavServer.Props.PropertyKeyComparer.Equals*
+  name: Equals
+  href: api/FubarDev.WebDavServer.Props.PropertyKeyComparer.html#FubarDev_WebDavServer_Props_PropertyKeyComparer_Equals_
+  commentId: Overload:FubarDev.WebDavServer.Props.PropertyKeyComparer.Equals
+  fullName: FubarDev.WebDavServer.Props.PropertyKeyComparer.Equals
+  nameWithType: PropertyKeyComparer.Equals
+- uid: FubarDev.WebDavServer.Props.PropertyKeyComparer.GetHashCode(FubarDev.WebDavServer.Props.PropertyKey)
+  name: GetHashCode(PropertyKey)
+  href: api/FubarDev.WebDavServer.Props.PropertyKeyComparer.html#FubarDev_WebDavServer_Props_PropertyKeyComparer_GetHashCode_FubarDev_WebDavServer_Props_PropertyKey_
+  commentId: M:FubarDev.WebDavServer.Props.PropertyKeyComparer.GetHashCode(FubarDev.WebDavServer.Props.PropertyKey)
+  fullName: FubarDev.WebDavServer.Props.PropertyKeyComparer.GetHashCode(FubarDev.WebDavServer.Props.PropertyKey)
+  nameWithType: PropertyKeyComparer.GetHashCode(PropertyKey)
+- uid: FubarDev.WebDavServer.Props.PropertyKeyComparer.GetHashCode*
+  name: GetHashCode
+  href: api/FubarDev.WebDavServer.Props.PropertyKeyComparer.html#FubarDev_WebDavServer_Props_PropertyKeyComparer_GetHashCode_
+  commentId: Overload:FubarDev.WebDavServer.Props.PropertyKeyComparer.GetHashCode
+  fullName: FubarDev.WebDavServer.Props.PropertyKeyComparer.GetHashCode
+  nameWithType: PropertyKeyComparer.GetHashCode
 - uid: FubarDev.WebDavServer.Props.SetPropertyValueAsyncDelegate`1
   name: SetPropertyValueAsyncDelegate<T>
   href: api/FubarDev.WebDavServer.Props.SetPropertyValueAsyncDelegate-1.html
@@ -14252,6 +14681,204 @@ references:
   commentId: Overload:FubarDev.WebDavServer.Props.Store.PropertyStoreBase.UpdateETagAsync
   fullName: FubarDev.WebDavServer.Props.Store.PropertyStoreBase.UpdateETagAsync
   nameWithType: PropertyStoreBase.UpdateETagAsync
+- uid: FubarDev.WebDavServer.Props.Store.SQLite
+  name: FubarDev.WebDavServer.Props.Store.SQLite
+  href: api/FubarDev.WebDavServer.Props.Store.SQLite.html
+  commentId: N:FubarDev.WebDavServer.Props.Store.SQLite
+  fullName: FubarDev.WebDavServer.Props.Store.SQLite
+  nameWithType: FubarDev.WebDavServer.Props.Store.SQLite
+- uid: FubarDev.WebDavServer.Props.Store.SQLite.SQLitePropertyStore
+  name: SQLitePropertyStore
+  href: api/FubarDev.WebDavServer.Props.Store.SQLite.SQLitePropertyStore.html
+  commentId: T:FubarDev.WebDavServer.Props.Store.SQLite.SQLitePropertyStore
+  fullName: FubarDev.WebDavServer.Props.Store.SQLite.SQLitePropertyStore
+  nameWithType: SQLitePropertyStore
+- uid: FubarDev.WebDavServer.Props.Store.SQLite.SQLitePropertyStore.#ctor(FubarDev.WebDavServer.Props.Dead.IDeadPropertyFactory,System.String,Microsoft.Extensions.Options.IOptions{FubarDev.WebDavServer.Props.Store.SQLite.SQLitePropertyStoreOptions},Microsoft.Extensions.Logging.ILogger{FubarDev.WebDavServer.Props.Store.SQLite.SQLitePropertyStore})
+  name: SQLitePropertyStore(IDeadPropertyFactory, String, IOptions<SQLitePropertyStoreOptions>, ILogger<SQLitePropertyStore>)
+  href: api/FubarDev.WebDavServer.Props.Store.SQLite.SQLitePropertyStore.html#FubarDev_WebDavServer_Props_Store_SQLite_SQLitePropertyStore__ctor_FubarDev_WebDavServer_Props_Dead_IDeadPropertyFactory_System_String_Microsoft_Extensions_Options_IOptions_FubarDev_WebDavServer_Props_Store_SQLite_SQLitePropertyStoreOptions__Microsoft_Extensions_Logging_ILogger_FubarDev_WebDavServer_Props_Store_SQLite_SQLitePropertyStore__
+  commentId: M:FubarDev.WebDavServer.Props.Store.SQLite.SQLitePropertyStore.#ctor(FubarDev.WebDavServer.Props.Dead.IDeadPropertyFactory,System.String,Microsoft.Extensions.Options.IOptions{FubarDev.WebDavServer.Props.Store.SQLite.SQLitePropertyStoreOptions},Microsoft.Extensions.Logging.ILogger{FubarDev.WebDavServer.Props.Store.SQLite.SQLitePropertyStore})
+  name.vb: SQLitePropertyStore(IDeadPropertyFactory, String, IOptions(Of SQLitePropertyStoreOptions), ILogger(Of SQLitePropertyStore))
+  fullName: FubarDev.WebDavServer.Props.Store.SQLite.SQLitePropertyStore.SQLitePropertyStore(FubarDev.WebDavServer.Props.Dead.IDeadPropertyFactory, System.String, Microsoft.Extensions.Options.IOptions<FubarDev.WebDavServer.Props.Store.SQLite.SQLitePropertyStoreOptions>, Microsoft.Extensions.Logging.ILogger<FubarDev.WebDavServer.Props.Store.SQLite.SQLitePropertyStore>)
+  fullName.vb: FubarDev.WebDavServer.Props.Store.SQLite.SQLitePropertyStore.SQLitePropertyStore(FubarDev.WebDavServer.Props.Dead.IDeadPropertyFactory, System.String, Microsoft.Extensions.Options.IOptions(Of FubarDev.WebDavServer.Props.Store.SQLite.SQLitePropertyStoreOptions), Microsoft.Extensions.Logging.ILogger(Of FubarDev.WebDavServer.Props.Store.SQLite.SQLitePropertyStore))
+  nameWithType: SQLitePropertyStore.SQLitePropertyStore(IDeadPropertyFactory, String, IOptions<SQLitePropertyStoreOptions>, ILogger<SQLitePropertyStore>)
+  nameWithType.vb: SQLitePropertyStore.SQLitePropertyStore(IDeadPropertyFactory, String, IOptions(Of SQLitePropertyStoreOptions), ILogger(Of SQLitePropertyStore))
+- uid: FubarDev.WebDavServer.Props.Store.SQLite.SQLitePropertyStore.#ctor*
+  name: SQLitePropertyStore
+  href: api/FubarDev.WebDavServer.Props.Store.SQLite.SQLitePropertyStore.html#FubarDev_WebDavServer_Props_Store_SQLite_SQLitePropertyStore__ctor_
+  commentId: Overload:FubarDev.WebDavServer.Props.Store.SQLite.SQLitePropertyStore.#ctor
+  fullName: FubarDev.WebDavServer.Props.Store.SQLite.SQLitePropertyStore.SQLitePropertyStore
+  nameWithType: SQLitePropertyStore.SQLitePropertyStore
+- uid: FubarDev.WebDavServer.Props.Store.SQLite.SQLitePropertyStore.Cost
+  name: Cost
+  href: api/FubarDev.WebDavServer.Props.Store.SQLite.SQLitePropertyStore.html#FubarDev_WebDavServer_Props_Store_SQLite_SQLitePropertyStore_Cost
+  commentId: P:FubarDev.WebDavServer.Props.Store.SQLite.SQLitePropertyStore.Cost
+  fullName: FubarDev.WebDavServer.Props.Store.SQLite.SQLitePropertyStore.Cost
+  nameWithType: SQLitePropertyStore.Cost
+- uid: FubarDev.WebDavServer.Props.Store.SQLite.SQLitePropertyStore.Cost*
+  name: Cost
+  href: api/FubarDev.WebDavServer.Props.Store.SQLite.SQLitePropertyStore.html#FubarDev_WebDavServer_Props_Store_SQLite_SQLitePropertyStore_Cost_
+  commentId: Overload:FubarDev.WebDavServer.Props.Store.SQLite.SQLitePropertyStore.Cost
+  fullName: FubarDev.WebDavServer.Props.Store.SQLite.SQLitePropertyStore.Cost
+  nameWithType: SQLitePropertyStore.Cost
+- uid: FubarDev.WebDavServer.Props.Store.SQLite.SQLitePropertyStore.GetAsync(FubarDev.WebDavServer.FileSystem.IEntry,System.Threading.CancellationToken)
+  name: GetAsync(IEntry, CancellationToken)
+  href: api/FubarDev.WebDavServer.Props.Store.SQLite.SQLitePropertyStore.html#FubarDev_WebDavServer_Props_Store_SQLite_SQLitePropertyStore_GetAsync_FubarDev_WebDavServer_FileSystem_IEntry_System_Threading_CancellationToken_
+  commentId: M:FubarDev.WebDavServer.Props.Store.SQLite.SQLitePropertyStore.GetAsync(FubarDev.WebDavServer.FileSystem.IEntry,System.Threading.CancellationToken)
+  fullName: FubarDev.WebDavServer.Props.Store.SQLite.SQLitePropertyStore.GetAsync(FubarDev.WebDavServer.FileSystem.IEntry, System.Threading.CancellationToken)
+  nameWithType: SQLitePropertyStore.GetAsync(IEntry, CancellationToken)
+- uid: FubarDev.WebDavServer.Props.Store.SQLite.SQLitePropertyStore.GetAsync*
+  name: GetAsync
+  href: api/FubarDev.WebDavServer.Props.Store.SQLite.SQLitePropertyStore.html#FubarDev_WebDavServer_Props_Store_SQLite_SQLitePropertyStore_GetAsync_
+  commentId: Overload:FubarDev.WebDavServer.Props.Store.SQLite.SQLitePropertyStore.GetAsync
+  fullName: FubarDev.WebDavServer.Props.Store.SQLite.SQLitePropertyStore.GetAsync
+  nameWithType: SQLitePropertyStore.GetAsync
+- uid: FubarDev.WebDavServer.Props.Store.SQLite.SQLitePropertyStore.GetDeadETagAsync(FubarDev.WebDavServer.FileSystem.IEntry,System.Threading.CancellationToken)
+  name: GetDeadETagAsync(IEntry, CancellationToken)
+  href: api/FubarDev.WebDavServer.Props.Store.SQLite.SQLitePropertyStore.html#FubarDev_WebDavServer_Props_Store_SQLite_SQLitePropertyStore_GetDeadETagAsync_FubarDev_WebDavServer_FileSystem_IEntry_System_Threading_CancellationToken_
+  commentId: M:FubarDev.WebDavServer.Props.Store.SQLite.SQLitePropertyStore.GetDeadETagAsync(FubarDev.WebDavServer.FileSystem.IEntry,System.Threading.CancellationToken)
+  fullName: FubarDev.WebDavServer.Props.Store.SQLite.SQLitePropertyStore.GetDeadETagAsync(FubarDev.WebDavServer.FileSystem.IEntry, System.Threading.CancellationToken)
+  nameWithType: SQLitePropertyStore.GetDeadETagAsync(IEntry, CancellationToken)
+- uid: FubarDev.WebDavServer.Props.Store.SQLite.SQLitePropertyStore.GetDeadETagAsync*
+  name: GetDeadETagAsync
+  href: api/FubarDev.WebDavServer.Props.Store.SQLite.SQLitePropertyStore.html#FubarDev_WebDavServer_Props_Store_SQLite_SQLitePropertyStore_GetDeadETagAsync_
+  commentId: Overload:FubarDev.WebDavServer.Props.Store.SQLite.SQLitePropertyStore.GetDeadETagAsync
+  fullName: FubarDev.WebDavServer.Props.Store.SQLite.SQLitePropertyStore.GetDeadETagAsync
+  nameWithType: SQLitePropertyStore.GetDeadETagAsync
+- uid: FubarDev.WebDavServer.Props.Store.SQLite.SQLitePropertyStore.IgnoreEntry(FubarDev.WebDavServer.FileSystem.IEntry)
+  name: IgnoreEntry(IEntry)
+  href: api/FubarDev.WebDavServer.Props.Store.SQLite.SQLitePropertyStore.html#FubarDev_WebDavServer_Props_Store_SQLite_SQLitePropertyStore_IgnoreEntry_FubarDev_WebDavServer_FileSystem_IEntry_
+  commentId: M:FubarDev.WebDavServer.Props.Store.SQLite.SQLitePropertyStore.IgnoreEntry(FubarDev.WebDavServer.FileSystem.IEntry)
+  fullName: FubarDev.WebDavServer.Props.Store.SQLite.SQLitePropertyStore.IgnoreEntry(FubarDev.WebDavServer.FileSystem.IEntry)
+  nameWithType: SQLitePropertyStore.IgnoreEntry(IEntry)
+- uid: FubarDev.WebDavServer.Props.Store.SQLite.SQLitePropertyStore.IgnoreEntry*
+  name: IgnoreEntry
+  href: api/FubarDev.WebDavServer.Props.Store.SQLite.SQLitePropertyStore.html#FubarDev_WebDavServer_Props_Store_SQLite_SQLitePropertyStore_IgnoreEntry_
+  commentId: Overload:FubarDev.WebDavServer.Props.Store.SQLite.SQLitePropertyStore.IgnoreEntry
+  fullName: FubarDev.WebDavServer.Props.Store.SQLite.SQLitePropertyStore.IgnoreEntry
+  nameWithType: SQLitePropertyStore.IgnoreEntry
+- uid: FubarDev.WebDavServer.Props.Store.SQLite.SQLitePropertyStore.RemoveAsync(FubarDev.WebDavServer.FileSystem.IEntry,System.Collections.Generic.IEnumerable{System.Xml.Linq.XName},System.Threading.CancellationToken)
+  name: RemoveAsync(IEntry, IEnumerable<XName>, CancellationToken)
+  href: api/FubarDev.WebDavServer.Props.Store.SQLite.SQLitePropertyStore.html#FubarDev_WebDavServer_Props_Store_SQLite_SQLitePropertyStore_RemoveAsync_FubarDev_WebDavServer_FileSystem_IEntry_System_Collections_Generic_IEnumerable_System_Xml_Linq_XName__System_Threading_CancellationToken_
+  commentId: M:FubarDev.WebDavServer.Props.Store.SQLite.SQLitePropertyStore.RemoveAsync(FubarDev.WebDavServer.FileSystem.IEntry,System.Collections.Generic.IEnumerable{System.Xml.Linq.XName},System.Threading.CancellationToken)
+  name.vb: RemoveAsync(IEntry, IEnumerable(Of XName), CancellationToken)
+  fullName: FubarDev.WebDavServer.Props.Store.SQLite.SQLitePropertyStore.RemoveAsync(FubarDev.WebDavServer.FileSystem.IEntry, System.Collections.Generic.IEnumerable<System.Xml.Linq.XName>, System.Threading.CancellationToken)
+  fullName.vb: FubarDev.WebDavServer.Props.Store.SQLite.SQLitePropertyStore.RemoveAsync(FubarDev.WebDavServer.FileSystem.IEntry, System.Collections.Generic.IEnumerable(Of System.Xml.Linq.XName), System.Threading.CancellationToken)
+  nameWithType: SQLitePropertyStore.RemoveAsync(IEntry, IEnumerable<XName>, CancellationToken)
+  nameWithType.vb: SQLitePropertyStore.RemoveAsync(IEntry, IEnumerable(Of XName), CancellationToken)
+- uid: FubarDev.WebDavServer.Props.Store.SQLite.SQLitePropertyStore.RemoveAsync(FubarDev.WebDavServer.FileSystem.IEntry,System.Threading.CancellationToken)
+  name: RemoveAsync(IEntry, CancellationToken)
+  href: api/FubarDev.WebDavServer.Props.Store.SQLite.SQLitePropertyStore.html#FubarDev_WebDavServer_Props_Store_SQLite_SQLitePropertyStore_RemoveAsync_FubarDev_WebDavServer_FileSystem_IEntry_System_Threading_CancellationToken_
+  commentId: M:FubarDev.WebDavServer.Props.Store.SQLite.SQLitePropertyStore.RemoveAsync(FubarDev.WebDavServer.FileSystem.IEntry,System.Threading.CancellationToken)
+  fullName: FubarDev.WebDavServer.Props.Store.SQLite.SQLitePropertyStore.RemoveAsync(FubarDev.WebDavServer.FileSystem.IEntry, System.Threading.CancellationToken)
+  nameWithType: SQLitePropertyStore.RemoveAsync(IEntry, CancellationToken)
+- uid: FubarDev.WebDavServer.Props.Store.SQLite.SQLitePropertyStore.RemoveAsync*
+  name: RemoveAsync
+  href: api/FubarDev.WebDavServer.Props.Store.SQLite.SQLitePropertyStore.html#FubarDev_WebDavServer_Props_Store_SQLite_SQLitePropertyStore_RemoveAsync_
+  commentId: Overload:FubarDev.WebDavServer.Props.Store.SQLite.SQLitePropertyStore.RemoveAsync
+  fullName: FubarDev.WebDavServer.Props.Store.SQLite.SQLitePropertyStore.RemoveAsync
+  nameWithType: SQLitePropertyStore.RemoveAsync
+- uid: FubarDev.WebDavServer.Props.Store.SQLite.SQLitePropertyStore.SetAsync(FubarDev.WebDavServer.FileSystem.IEntry,System.Collections.Generic.IEnumerable{System.Xml.Linq.XElement},System.Threading.CancellationToken)
+  name: SetAsync(IEntry, IEnumerable<XElement>, CancellationToken)
+  href: api/FubarDev.WebDavServer.Props.Store.SQLite.SQLitePropertyStore.html#FubarDev_WebDavServer_Props_Store_SQLite_SQLitePropertyStore_SetAsync_FubarDev_WebDavServer_FileSystem_IEntry_System_Collections_Generic_IEnumerable_System_Xml_Linq_XElement__System_Threading_CancellationToken_
+  commentId: M:FubarDev.WebDavServer.Props.Store.SQLite.SQLitePropertyStore.SetAsync(FubarDev.WebDavServer.FileSystem.IEntry,System.Collections.Generic.IEnumerable{System.Xml.Linq.XElement},System.Threading.CancellationToken)
+  name.vb: SetAsync(IEntry, IEnumerable(Of XElement), CancellationToken)
+  fullName: FubarDev.WebDavServer.Props.Store.SQLite.SQLitePropertyStore.SetAsync(FubarDev.WebDavServer.FileSystem.IEntry, System.Collections.Generic.IEnumerable<System.Xml.Linq.XElement>, System.Threading.CancellationToken)
+  fullName.vb: FubarDev.WebDavServer.Props.Store.SQLite.SQLitePropertyStore.SetAsync(FubarDev.WebDavServer.FileSystem.IEntry, System.Collections.Generic.IEnumerable(Of System.Xml.Linq.XElement), System.Threading.CancellationToken)
+  nameWithType: SQLitePropertyStore.SetAsync(IEntry, IEnumerable<XElement>, CancellationToken)
+  nameWithType.vb: SQLitePropertyStore.SetAsync(IEntry, IEnumerable(Of XElement), CancellationToken)
+- uid: FubarDev.WebDavServer.Props.Store.SQLite.SQLitePropertyStore.SetAsync*
+  name: SetAsync
+  href: api/FubarDev.WebDavServer.Props.Store.SQLite.SQLitePropertyStore.html#FubarDev_WebDavServer_Props_Store_SQLite_SQLitePropertyStore_SetAsync_
+  commentId: Overload:FubarDev.WebDavServer.Props.Store.SQLite.SQLitePropertyStore.SetAsync
+  fullName: FubarDev.WebDavServer.Props.Store.SQLite.SQLitePropertyStore.SetAsync
+  nameWithType: SQLitePropertyStore.SetAsync
+- uid: FubarDev.WebDavServer.Props.Store.SQLite.SQLitePropertyStore.UpdateDeadETagAsync(FubarDev.WebDavServer.FileSystem.IEntry,System.Threading.CancellationToken)
+  name: UpdateDeadETagAsync(IEntry, CancellationToken)
+  href: api/FubarDev.WebDavServer.Props.Store.SQLite.SQLitePropertyStore.html#FubarDev_WebDavServer_Props_Store_SQLite_SQLitePropertyStore_UpdateDeadETagAsync_FubarDev_WebDavServer_FileSystem_IEntry_System_Threading_CancellationToken_
+  commentId: M:FubarDev.WebDavServer.Props.Store.SQLite.SQLitePropertyStore.UpdateDeadETagAsync(FubarDev.WebDavServer.FileSystem.IEntry,System.Threading.CancellationToken)
+  fullName: FubarDev.WebDavServer.Props.Store.SQLite.SQLitePropertyStore.UpdateDeadETagAsync(FubarDev.WebDavServer.FileSystem.IEntry, System.Threading.CancellationToken)
+  nameWithType: SQLitePropertyStore.UpdateDeadETagAsync(IEntry, CancellationToken)
+- uid: FubarDev.WebDavServer.Props.Store.SQLite.SQLitePropertyStore.UpdateDeadETagAsync*
+  name: UpdateDeadETagAsync
+  href: api/FubarDev.WebDavServer.Props.Store.SQLite.SQLitePropertyStore.html#FubarDev_WebDavServer_Props_Store_SQLite_SQLitePropertyStore_UpdateDeadETagAsync_
+  commentId: Overload:FubarDev.WebDavServer.Props.Store.SQLite.SQLitePropertyStore.UpdateDeadETagAsync
+  fullName: FubarDev.WebDavServer.Props.Store.SQLite.SQLitePropertyStore.UpdateDeadETagAsync
+  nameWithType: SQLitePropertyStore.UpdateDeadETagAsync
+- uid: FubarDev.WebDavServer.Props.Store.SQLite.SQLitePropertyStoreFactory
+  name: SQLitePropertyStoreFactory
+  href: api/FubarDev.WebDavServer.Props.Store.SQLite.SQLitePropertyStoreFactory.html
+  commentId: T:FubarDev.WebDavServer.Props.Store.SQLite.SQLitePropertyStoreFactory
+  fullName: FubarDev.WebDavServer.Props.Store.SQLite.SQLitePropertyStoreFactory
+  nameWithType: SQLitePropertyStoreFactory
+- uid: FubarDev.WebDavServer.Props.Store.SQLite.SQLitePropertyStoreFactory.#ctor(FubarDev.WebDavServer.IWebDavContext,Microsoft.Extensions.Logging.ILogger{FubarDev.WebDavServer.Props.Store.SQLite.SQLitePropertyStore},FubarDev.WebDavServer.Props.Dead.IDeadPropertyFactory,Microsoft.Extensions.Options.IOptions{FubarDev.WebDavServer.Props.Store.SQLite.SQLitePropertyStoreOptions})
+  name: SQLitePropertyStoreFactory(IWebDavContext, ILogger<SQLitePropertyStore>, IDeadPropertyFactory, IOptions<SQLitePropertyStoreOptions>)
+  href: api/FubarDev.WebDavServer.Props.Store.SQLite.SQLitePropertyStoreFactory.html#FubarDev_WebDavServer_Props_Store_SQLite_SQLitePropertyStoreFactory__ctor_FubarDev_WebDavServer_IWebDavContext_Microsoft_Extensions_Logging_ILogger_FubarDev_WebDavServer_Props_Store_SQLite_SQLitePropertyStore__FubarDev_WebDavServer_Props_Dead_IDeadPropertyFactory_Microsoft_Extensions_Options_IOptions_FubarDev_WebDavServer_Props_Store_SQLite_SQLitePropertyStoreOptions__
+  commentId: M:FubarDev.WebDavServer.Props.Store.SQLite.SQLitePropertyStoreFactory.#ctor(FubarDev.WebDavServer.IWebDavContext,Microsoft.Extensions.Logging.ILogger{FubarDev.WebDavServer.Props.Store.SQLite.SQLitePropertyStore},FubarDev.WebDavServer.Props.Dead.IDeadPropertyFactory,Microsoft.Extensions.Options.IOptions{FubarDev.WebDavServer.Props.Store.SQLite.SQLitePropertyStoreOptions})
+  name.vb: SQLitePropertyStoreFactory(IWebDavContext, ILogger(Of SQLitePropertyStore), IDeadPropertyFactory, IOptions(Of SQLitePropertyStoreOptions))
+  fullName: FubarDev.WebDavServer.Props.Store.SQLite.SQLitePropertyStoreFactory.SQLitePropertyStoreFactory(FubarDev.WebDavServer.IWebDavContext, Microsoft.Extensions.Logging.ILogger<FubarDev.WebDavServer.Props.Store.SQLite.SQLitePropertyStore>, FubarDev.WebDavServer.Props.Dead.IDeadPropertyFactory, Microsoft.Extensions.Options.IOptions<FubarDev.WebDavServer.Props.Store.SQLite.SQLitePropertyStoreOptions>)
+  fullName.vb: FubarDev.WebDavServer.Props.Store.SQLite.SQLitePropertyStoreFactory.SQLitePropertyStoreFactory(FubarDev.WebDavServer.IWebDavContext, Microsoft.Extensions.Logging.ILogger(Of FubarDev.WebDavServer.Props.Store.SQLite.SQLitePropertyStore), FubarDev.WebDavServer.Props.Dead.IDeadPropertyFactory, Microsoft.Extensions.Options.IOptions(Of FubarDev.WebDavServer.Props.Store.SQLite.SQLitePropertyStoreOptions))
+  nameWithType: SQLitePropertyStoreFactory.SQLitePropertyStoreFactory(IWebDavContext, ILogger<SQLitePropertyStore>, IDeadPropertyFactory, IOptions<SQLitePropertyStoreOptions>)
+  nameWithType.vb: SQLitePropertyStoreFactory.SQLitePropertyStoreFactory(IWebDavContext, ILogger(Of SQLitePropertyStore), IDeadPropertyFactory, IOptions(Of SQLitePropertyStoreOptions))
+- uid: FubarDev.WebDavServer.Props.Store.SQLite.SQLitePropertyStoreFactory.#ctor*
+  name: SQLitePropertyStoreFactory
+  href: api/FubarDev.WebDavServer.Props.Store.SQLite.SQLitePropertyStoreFactory.html#FubarDev_WebDavServer_Props_Store_SQLite_SQLitePropertyStoreFactory__ctor_
+  commentId: Overload:FubarDev.WebDavServer.Props.Store.SQLite.SQLitePropertyStoreFactory.#ctor
+  fullName: FubarDev.WebDavServer.Props.Store.SQLite.SQLitePropertyStoreFactory.SQLitePropertyStoreFactory
+  nameWithType: SQLitePropertyStoreFactory.SQLitePropertyStoreFactory
+- uid: FubarDev.WebDavServer.Props.Store.SQLite.SQLitePropertyStoreFactory.Create(FubarDev.WebDavServer.FileSystem.IFileSystem)
+  name: Create(IFileSystem)
+  href: api/FubarDev.WebDavServer.Props.Store.SQLite.SQLitePropertyStoreFactory.html#FubarDev_WebDavServer_Props_Store_SQLite_SQLitePropertyStoreFactory_Create_FubarDev_WebDavServer_FileSystem_IFileSystem_
+  commentId: M:FubarDev.WebDavServer.Props.Store.SQLite.SQLitePropertyStoreFactory.Create(FubarDev.WebDavServer.FileSystem.IFileSystem)
+  fullName: FubarDev.WebDavServer.Props.Store.SQLite.SQLitePropertyStoreFactory.Create(FubarDev.WebDavServer.FileSystem.IFileSystem)
+  nameWithType: SQLitePropertyStoreFactory.Create(IFileSystem)
+- uid: FubarDev.WebDavServer.Props.Store.SQLite.SQLitePropertyStoreFactory.Create*
+  name: Create
+  href: api/FubarDev.WebDavServer.Props.Store.SQLite.SQLitePropertyStoreFactory.html#FubarDev_WebDavServer_Props_Store_SQLite_SQLitePropertyStoreFactory_Create_
+  commentId: Overload:FubarDev.WebDavServer.Props.Store.SQLite.SQLitePropertyStoreFactory.Create
+  fullName: FubarDev.WebDavServer.Props.Store.SQLite.SQLitePropertyStoreFactory.Create
+  nameWithType: SQLitePropertyStoreFactory.Create
+- uid: FubarDev.WebDavServer.Props.Store.SQLite.SQLitePropertyStoreFactory.CreateDatabase(System.String)
+  name: CreateDatabase(String)
+  href: api/FubarDev.WebDavServer.Props.Store.SQLite.SQLitePropertyStoreFactory.html#FubarDev_WebDavServer_Props_Store_SQLite_SQLitePropertyStoreFactory_CreateDatabase_System_String_
+  commentId: M:FubarDev.WebDavServer.Props.Store.SQLite.SQLitePropertyStoreFactory.CreateDatabase(System.String)
+  fullName: FubarDev.WebDavServer.Props.Store.SQLite.SQLitePropertyStoreFactory.CreateDatabase(System.String)
+  nameWithType: SQLitePropertyStoreFactory.CreateDatabase(String)
+- uid: FubarDev.WebDavServer.Props.Store.SQLite.SQLitePropertyStoreFactory.CreateDatabase*
+  name: CreateDatabase
+  href: api/FubarDev.WebDavServer.Props.Store.SQLite.SQLitePropertyStoreFactory.html#FubarDev_WebDavServer_Props_Store_SQLite_SQLitePropertyStoreFactory_CreateDatabase_
+  commentId: Overload:FubarDev.WebDavServer.Props.Store.SQLite.SQLitePropertyStoreFactory.CreateDatabase
+  fullName: FubarDev.WebDavServer.Props.Store.SQLite.SQLitePropertyStoreFactory.CreateDatabase
+  nameWithType: SQLitePropertyStoreFactory.CreateDatabase
+- uid: FubarDev.WebDavServer.Props.Store.SQLite.SQLitePropertyStoreFactory.EnsureDatabaseExists(System.String)
+  name: EnsureDatabaseExists(String)
+  href: api/FubarDev.WebDavServer.Props.Store.SQLite.SQLitePropertyStoreFactory.html#FubarDev_WebDavServer_Props_Store_SQLite_SQLitePropertyStoreFactory_EnsureDatabaseExists_System_String_
+  commentId: M:FubarDev.WebDavServer.Props.Store.SQLite.SQLitePropertyStoreFactory.EnsureDatabaseExists(System.String)
+  fullName: FubarDev.WebDavServer.Props.Store.SQLite.SQLitePropertyStoreFactory.EnsureDatabaseExists(System.String)
+  nameWithType: SQLitePropertyStoreFactory.EnsureDatabaseExists(String)
+- uid: FubarDev.WebDavServer.Props.Store.SQLite.SQLitePropertyStoreFactory.EnsureDatabaseExists*
+  name: EnsureDatabaseExists
+  href: api/FubarDev.WebDavServer.Props.Store.SQLite.SQLitePropertyStoreFactory.html#FubarDev_WebDavServer_Props_Store_SQLite_SQLitePropertyStoreFactory_EnsureDatabaseExists_
+  commentId: Overload:FubarDev.WebDavServer.Props.Store.SQLite.SQLitePropertyStoreFactory.EnsureDatabaseExists
+  fullName: FubarDev.WebDavServer.Props.Store.SQLite.SQLitePropertyStoreFactory.EnsureDatabaseExists
+  nameWithType: SQLitePropertyStoreFactory.EnsureDatabaseExists
+- uid: FubarDev.WebDavServer.Props.Store.SQLite.SQLitePropertyStoreOptions
+  name: SQLitePropertyStoreOptions
+  href: api/FubarDev.WebDavServer.Props.Store.SQLite.SQLitePropertyStoreOptions.html
+  commentId: T:FubarDev.WebDavServer.Props.Store.SQLite.SQLitePropertyStoreOptions
+  fullName: FubarDev.WebDavServer.Props.Store.SQLite.SQLitePropertyStoreOptions
+  nameWithType: SQLitePropertyStoreOptions
+- uid: FubarDev.WebDavServer.Props.Store.SQLite.SQLitePropertyStoreOptions.EstimatedCost
+  name: EstimatedCost
+  href: api/FubarDev.WebDavServer.Props.Store.SQLite.SQLitePropertyStoreOptions.html#FubarDev_WebDavServer_Props_Store_SQLite_SQLitePropertyStoreOptions_EstimatedCost
+  commentId: P:FubarDev.WebDavServer.Props.Store.SQLite.SQLitePropertyStoreOptions.EstimatedCost
+  fullName: FubarDev.WebDavServer.Props.Store.SQLite.SQLitePropertyStoreOptions.EstimatedCost
+  nameWithType: SQLitePropertyStoreOptions.EstimatedCost
+- uid: FubarDev.WebDavServer.Props.Store.SQLite.SQLitePropertyStoreOptions.EstimatedCost*
+  name: EstimatedCost
+  href: api/FubarDev.WebDavServer.Props.Store.SQLite.SQLitePropertyStoreOptions.html#FubarDev_WebDavServer_Props_Store_SQLite_SQLitePropertyStoreOptions_EstimatedCost_
+  commentId: Overload:FubarDev.WebDavServer.Props.Store.SQLite.SQLitePropertyStoreOptions.EstimatedCost
+  fullName: FubarDev.WebDavServer.Props.Store.SQLite.SQLitePropertyStoreOptions.EstimatedCost
+  nameWithType: SQLitePropertyStoreOptions.EstimatedCost
 - uid: FubarDev.WebDavServer.Props.Store.TextFile
   name: FubarDev.WebDavServer.Props.Store.TextFile
   href: api/FubarDev.WebDavServer.Props.Store.TextFile.html

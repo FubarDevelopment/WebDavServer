@@ -5,10 +5,10 @@
   <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-    <title>Class InMemoryLockManager
+    <title>Class SQLiteLockManager
    </title>
     <meta name="viewport" content="width=device-width">
-    <meta name="title" content="Class InMemoryLockManager
+    <meta name="title" content="Class SQLiteLockManager
    ">
     <meta name="generator" content="docfx 2.13.1.0">
     
@@ -69,16 +69,16 @@
             <article class="content wrap" id="_content">
               
               
-              <h1 id="FubarDev_WebDavServer_Locking_InMemory_InMemoryLockManager" data-uid="FubarDev.WebDavServer.Locking.InMemory.InMemoryLockManager">Class InMemoryLockManager
+              <h1 id="FubarDev_WebDavServer_Locking_SQLite_SQLiteLockManager" data-uid="FubarDev.WebDavServer.Locking.SQLite.SQLiteLockManager">Class SQLiteLockManager
               </h1>
-              <div class="markdown level0 summary"><p>An in-memory implementation of a lock manager</p>
+              <div class="markdown level0 summary"><p>An implementation of <a class="xref" href="FubarDev.WebDavServer.Locking.ILockManager.html">ILockManager</a> that uses SQLite</p>
 </div>
               <div class="markdown level0 conceptual"></div>
               <div class="inheritance">
                 <h5>Inheritance</h5>
                   <div class="level0"><a class="xref" href="https://msdn.microsoft.com/en-us/library/system.object(v=vs.110).aspx">Object</a></div>
                   <div class="level1"><a class="xref" href="FubarDev.WebDavServer.Locking.LockManagerBase.html">LockManagerBase</a></div>
-                  <div class="level2"><span class="xref">InMemoryLockManager</span></div>
+                  <div class="level2"><span class="xref">SQLiteLockManager</span></div>
               </div>
               <div class="inheritedMembers">
                 <h5>Inherited Members</h5>
@@ -140,24 +140,24 @@
                   <a class="xref" href="https://msdn.microsoft.com/en-us/library/57ctke0a(v=vs.110).aspx">Object.MemberwiseClone()</a>
                 </div>
               </div>
-              <h6><strong>Namespace</strong>:FubarDev.WebDavServer.Locking.InMemory</h6>
-              <h6><strong>Assembly</strong>:FubarDev.WebDavServer.Locking.InMemory.dll</h6>
-              <h5 id="FubarDev_WebDavServer_Locking_InMemory_InMemoryLockManager_syntax">Syntax</h5>
+              <h6><strong>Namespace</strong>:FubarDev.WebDavServer.Locking.SQLite</h6>
+              <h6><strong>Assembly</strong>:FubarDev.WebDavServer.Locking.SQLite.dll</h6>
+              <h5 id="FubarDev_WebDavServer_Locking_SQLite_SQLiteLockManager_syntax">Syntax</h5>
               <div class="codewrapper">
-                <pre><code class="lang-csharp hljs">public class InMemoryLockManager : LockManagerBase, ILockManager</code></pre>
+                <pre><code class="lang-csharp hljs">public class SQLiteLockManager : LockManagerBase, ILockManager</code></pre>
               </div>
               <h3 id="constructors">Constructors
               </h3>
               
               
-              <a id="FubarDev_WebDavServer_Locking_InMemory_InMemoryLockManager__ctor_" data-uid="FubarDev.WebDavServer.Locking.InMemory.InMemoryLockManager.#ctor*"></a>
-              <h4 id="FubarDev_WebDavServer_Locking_InMemory_InMemoryLockManager__ctor_Microsoft_Extensions_Options_IOptions_FubarDev_WebDavServer_Locking_InMemory_InMemoryLockManagerOptions__FubarDev_WebDavServer_Locking_ILockCleanupTask_FubarDev_WebDavServer_ISystemClock_Microsoft_Extensions_Logging_ILogger_FubarDev_WebDavServer_Locking_InMemory_InMemoryLockManager__" data-uid="FubarDev.WebDavServer.Locking.InMemory.InMemoryLockManager.#ctor(Microsoft.Extensions.Options.IOptions{FubarDev.WebDavServer.Locking.InMemory.InMemoryLockManagerOptions},FubarDev.WebDavServer.Locking.ILockCleanupTask,FubarDev.WebDavServer.ISystemClock,Microsoft.Extensions.Logging.ILogger{FubarDev.WebDavServer.Locking.InMemory.InMemoryLockManager})">InMemoryLockManager(IOptions&lt;InMemoryLockManagerOptions&gt;, ILockCleanupTask, ISystemClock, ILogger&lt;InMemoryLockManager&gt;)</h4>
-              <div class="markdown level1 summary"><p>Initializes a new instance of the <a class="xref" href="FubarDev.WebDavServer.Locking.InMemory.InMemoryLockManager.html">InMemoryLockManager</a> class.</p>
+              <a id="FubarDev_WebDavServer_Locking_SQLite_SQLiteLockManager__ctor_" data-uid="FubarDev.WebDavServer.Locking.SQLite.SQLiteLockManager.#ctor*"></a>
+              <h4 id="FubarDev_WebDavServer_Locking_SQLite_SQLiteLockManager__ctor_Microsoft_Extensions_Options_IOptions_FubarDev_WebDavServer_Locking_SQLite_SQLiteLockManagerOptions__FubarDev_WebDavServer_Locking_ILockCleanupTask_FubarDev_WebDavServer_ISystemClock_Microsoft_Extensions_Logging_ILogger_FubarDev_WebDavServer_Locking_SQLite_SQLiteLockManager__" data-uid="FubarDev.WebDavServer.Locking.SQLite.SQLiteLockManager.#ctor(Microsoft.Extensions.Options.IOptions{FubarDev.WebDavServer.Locking.SQLite.SQLiteLockManagerOptions},FubarDev.WebDavServer.Locking.ILockCleanupTask,FubarDev.WebDavServer.ISystemClock,Microsoft.Extensions.Logging.ILogger{FubarDev.WebDavServer.Locking.SQLite.SQLiteLockManager})">SQLiteLockManager(IOptions&lt;SQLiteLockManagerOptions&gt;, ILockCleanupTask, ISystemClock, ILogger&lt;SQLiteLockManager&gt;)</h4>
+              <div class="markdown level1 summary"><p>Initializes a new instance of the <a class="xref" href="FubarDev.WebDavServer.Locking.SQLite.SQLiteLockManager.html">SQLiteLockManager</a> class.</p>
 </div>
               <div class="markdown level1 conceptual"></div>
               <h5 class="decalaration">Declaration</h5>
               <div class="codewrapper">
-                <pre><code class="lang-csharp hljs">public InMemoryLockManager(IOptions&lt;InMemoryLockManagerOptions&gt; options, ILockCleanupTask cleanupTask, ISystemClock systemClock, ILogger&lt;InMemoryLockManager&gt; logger)</code></pre>
+                <pre><code class="lang-csharp hljs">public SQLiteLockManager([NotNull] IOptions&lt;SQLiteLockManagerOptions&gt; sqliteOptions, [NotNull] ILockCleanupTask cleanupTask, [NotNull] ISystemClock systemClock, [NotNull] ILogger&lt;SQLiteLockManager&gt; logger)</code></pre>
               </div>
               <h5 class="parameters">Parameters</h5>
               <table class="table table-bordered table-striped table-condensed">
@@ -170,9 +170,9 @@
                 </thead>
                 <tbody>
                   <tr>
-                    <td><span class="xref">Microsoft.Extensions.Options.IOptions</span>&lt;<a class="xref" href="FubarDev.WebDavServer.Locking.InMemory.InMemoryLockManagerOptions.html">InMemoryLockManagerOptions</a>&gt;</td>
-                    <td><span class="parametername">options</span></td>
-                    <td><p>The options of the lock manager</p>
+                    <td><span class="xref">Microsoft.Extensions.Options.IOptions</span>&lt;<a class="xref" href="FubarDev.WebDavServer.Locking.SQLite.SQLiteLockManagerOptions.html">SQLiteLockManagerOptions</a>&gt;</td>
+                    <td><span class="parametername">sqliteOptions</span></td>
+                    <td><p>The SQLite options</p>
 </td>
                   </tr>
                   <tr>
@@ -188,7 +188,7 @@
 </td>
                   </tr>
                   <tr>
-                    <td><span class="xref">Microsoft.Extensions.Logging.ILogger</span>&lt;<a class="xref" href="FubarDev.WebDavServer.Locking.InMemory.InMemoryLockManager.html">InMemoryLockManager</a>&gt;</td>
+                    <td><span class="xref">Microsoft.Extensions.Logging.ILogger</span>&lt;<a class="xref" href="FubarDev.WebDavServer.Locking.SQLite.SQLiteLockManager.html">SQLiteLockManager</a>&gt;</td>
                     <td><span class="parametername">logger</span></td>
                     <td><p>The logger</p>
 </td>
@@ -199,8 +199,8 @@
               </h3>
               
               
-              <a id="FubarDev_WebDavServer_Locking_InMemory_InMemoryLockManager_BeginTransactionAsync_" data-uid="FubarDev.WebDavServer.Locking.InMemory.InMemoryLockManager.BeginTransactionAsync*"></a>
-              <h4 id="FubarDev_WebDavServer_Locking_InMemory_InMemoryLockManager_BeginTransactionAsync_System_Threading_CancellationToken_" data-uid="FubarDev.WebDavServer.Locking.InMemory.InMemoryLockManager.BeginTransactionAsync(System.Threading.CancellationToken)">BeginTransactionAsync(CancellationToken)</h4>
+              <a id="FubarDev_WebDavServer_Locking_SQLite_SQLiteLockManager_BeginTransactionAsync_" data-uid="FubarDev.WebDavServer.Locking.SQLite.SQLiteLockManager.BeginTransactionAsync*"></a>
+              <h4 id="FubarDev_WebDavServer_Locking_SQLite_SQLiteLockManager_BeginTransactionAsync_System_Threading_CancellationToken_" data-uid="FubarDev.WebDavServer.Locking.SQLite.SQLiteLockManager.BeginTransactionAsync(System.Threading.CancellationToken)">BeginTransactionAsync(CancellationToken)</h4>
               <div class="markdown level1 summary"><p>Begins a new transaction</p>
 </div>
               <div class="markdown level1 conceptual"></div>
@@ -244,6 +244,64 @@
               </table>
               <h5 class="overrides">Overrides</h5>
               <div><a class="xref" href="FubarDev.WebDavServer.Locking.LockManagerBase.html#FubarDev_WebDavServer_Locking_LockManagerBase_BeginTransactionAsync_System_Threading_CancellationToken_">LockManagerBase.BeginTransactionAsync(CancellationToken)</a></div>
+              
+              
+              <a id="FubarDev_WebDavServer_Locking_SQLite_SQLiteLockManager_CreateDatabase_" data-uid="FubarDev.WebDavServer.Locking.SQLite.SQLiteLockManager.CreateDatabase*"></a>
+              <h4 id="FubarDev_WebDavServer_Locking_SQLite_SQLiteLockManager_CreateDatabase_System_String_" data-uid="FubarDev.WebDavServer.Locking.SQLite.SQLiteLockManager.CreateDatabase(System.String)">CreateDatabase(String)</h4>
+              <div class="markdown level1 summary"><p>Creates a new database</p>
+</div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public static void CreateDatabase(string dbFileName)</code></pre>
+              </div>
+              <h5 class="parameters">Parameters</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Name</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><a class="xref" href="https://msdn.microsoft.com/en-us/library/system.string(v=vs.110).aspx">String</a></td>
+                    <td><span class="parametername">dbFileName</span></td>
+                    <td><p>The file name of the database</p>
+</td>
+                  </tr>
+                </tbody>
+              </table>
+              
+              
+              <a id="FubarDev_WebDavServer_Locking_SQLite_SQLiteLockManager_EnsureDatabaseExists_" data-uid="FubarDev.WebDavServer.Locking.SQLite.SQLiteLockManager.EnsureDatabaseExists*"></a>
+              <h4 id="FubarDev_WebDavServer_Locking_SQLite_SQLiteLockManager_EnsureDatabaseExists_System_String_" data-uid="FubarDev.WebDavServer.Locking.SQLite.SQLiteLockManager.EnsureDatabaseExists(System.String)">EnsureDatabaseExists(String)</h4>
+              <div class="markdown level1 summary"><p>Ensures that a database with the given file name exists.</p>
+</div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public static void EnsureDatabaseExists(string dbFileName)</code></pre>
+              </div>
+              <h5 class="parameters">Parameters</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Name</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><a class="xref" href="https://msdn.microsoft.com/en-us/library/system.string(v=vs.110).aspx">String</a></td>
+                    <td><span class="parametername">dbFileName</span></td>
+                    <td><p>The file name of the database</p>
+</td>
+                  </tr>
+                </tbody>
+              </table>
                         </article>
           </div>
           
