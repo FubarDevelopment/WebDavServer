@@ -1,0 +1,17 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <MSBuildAllProjects>$(MSBuildAllProjects);$(MSBuildThisFileFullPath)</MSBuildAllProjects>
+    <HasSharedItems>true</HasSharedItems>
+    <SharedGUID>ec8650b9-fd94-4b0e-92db-895bda6c942e</SharedGUID>
+  </PropertyGroup>
+  <PropertyGroup Label="Configuration">
+    <Import_RootNamespace>FubarDev.WebDavServer.Props.Store.SQLite</Import_RootNamespace>
+  </PropertyGroup>
+  <ItemGroup>
+    <Compile Include="$(MSBuildThisFileDirectory)PropertyEntry.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)SQLitePropertyStore.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)SQLitePropertyStoreFactory.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)SQLitePropertyStoreOptions.cs" />
+  </ItemGroup>
+</Project>
