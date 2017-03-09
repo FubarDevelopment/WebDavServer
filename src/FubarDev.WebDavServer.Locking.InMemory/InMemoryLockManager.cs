@@ -36,6 +36,7 @@ namespace FubarDev.WebDavServer.Locking.InMemory
         {
         }
 
+        /// <inheritdoc />
         protected override async Task<ILockManagerTransaction> BeginTransactionAsync(CancellationToken cancellationToken)
         {
             await _semaphore.WaitAsync(cancellationToken).ConfigureAwait(false);

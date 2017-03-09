@@ -84,6 +84,7 @@ namespace FubarDev.WebDavServer.Locking.SQLite
             }
         }
 
+        /// <inheritdoc />
         protected override Task<ILockManagerTransaction> BeginTransactionAsync(CancellationToken cancellationToken)
         {
             if (!_initialized)
