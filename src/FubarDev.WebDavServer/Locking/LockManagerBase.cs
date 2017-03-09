@@ -135,6 +135,12 @@ namespace FubarDev.WebDavServer.Locking
         /// <inheritdoc />
         public int Cost { get; } = 0;
 
+        /// <summary>
+        /// Gets the lock cleanup task
+        /// </summary>
+        [NotNull]
+        protected ILockCleanupTask LockCleanupTask => _cleanupTask;
+
         /// <inheritdoc />
         public async Task<LockResult> LockAsync(ILock l, CancellationToken cancellationToken)
         {

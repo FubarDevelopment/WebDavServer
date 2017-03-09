@@ -27,6 +27,10 @@ namespace FubarDev.WebDavServer.Locking.SQLite
         [NotNull]
         private readonly sqlitenet.SQLiteConnection _connection;
 
+        private readonly object _initSync = new object();
+
+        private volatile bool _initialized;
+
         /// <summary>
         /// Initializes a new instance of the <see cref="SQLiteLockManager"/> class.
         /// </summary>
@@ -82,6 +86,25 @@ namespace FubarDev.WebDavServer.Locking.SQLite
 
         protected override Task<ILockManagerTransaction> BeginTransactionAsync(CancellationToken cancellationToken)
         {
+            if (!_initialized)
+            {
+                lock (_initSync)
+                {
+                    if (!_initialized)
+                    {
+                        // Load all active locks and add them to the cleanup task.
+                        // This ensures that locks still do expire.
+                        var activeLocks = _connection.Table<ActiveLockEntry>().ToList();
+                        foreach (var activeLock in activeLocks)
+                        {
+                            LockCleanupTask.Add(this, activeLock);
+                        }
+
+                        _initialized = true;
+                    }
+                }
+            }
+
             _connection.BeginTransaction();
             return Task.FromResult<ILockManagerTransaction>(new SQLiteLockManagerTransaction(_connection));
         }
