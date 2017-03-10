@@ -7454,102 +7454,6 @@ references:
   commentId: N:FubarDev.WebDavServer.Locking
   fullName: FubarDev.WebDavServer.Locking
   nameWithType: FubarDev.WebDavServer.Locking
-- uid: FubarDev.WebDavServer.Locking.ActiveLock
-  name: ActiveLock
-  href: api/FubarDev.WebDavServer.Locking.ActiveLock.html
-  commentId: T:FubarDev.WebDavServer.Locking.ActiveLock
-  fullName: FubarDev.WebDavServer.Locking.ActiveLock
-  nameWithType: ActiveLock
-- uid: FubarDev.WebDavServer.Locking.ActiveLock.#ctor(FubarDev.WebDavServer.Locking.ILock,System.DateTime)
-  name: ActiveLock(ILock, DateTime)
-  href: api/FubarDev.WebDavServer.Locking.ActiveLock.html#FubarDev_WebDavServer_Locking_ActiveLock__ctor_FubarDev_WebDavServer_Locking_ILock_System_DateTime_
-  commentId: M:FubarDev.WebDavServer.Locking.ActiveLock.#ctor(FubarDev.WebDavServer.Locking.ILock,System.DateTime)
-  fullName: FubarDev.WebDavServer.Locking.ActiveLock.ActiveLock(FubarDev.WebDavServer.Locking.ILock, System.DateTime)
-  nameWithType: ActiveLock.ActiveLock(ILock, DateTime)
-- uid: FubarDev.WebDavServer.Locking.ActiveLock.#ctor(FubarDev.WebDavServer.Locking.ILock,System.DateTime,System.TimeSpan)
-  name: ActiveLock(ILock, DateTime, TimeSpan)
-  href: api/FubarDev.WebDavServer.Locking.ActiveLock.html#FubarDev_WebDavServer_Locking_ActiveLock__ctor_FubarDev_WebDavServer_Locking_ILock_System_DateTime_System_TimeSpan_
-  commentId: M:FubarDev.WebDavServer.Locking.ActiveLock.#ctor(FubarDev.WebDavServer.Locking.ILock,System.DateTime,System.TimeSpan)
-  fullName: FubarDev.WebDavServer.Locking.ActiveLock.ActiveLock(FubarDev.WebDavServer.Locking.ILock, System.DateTime, System.TimeSpan)
-  nameWithType: ActiveLock.ActiveLock(ILock, DateTime, TimeSpan)
-- uid: FubarDev.WebDavServer.Locking.ActiveLock.#ctor*
-  name: ActiveLock
-  href: api/FubarDev.WebDavServer.Locking.ActiveLock.html#FubarDev_WebDavServer_Locking_ActiveLock__ctor_
-  commentId: Overload:FubarDev.WebDavServer.Locking.ActiveLock.#ctor
-  fullName: FubarDev.WebDavServer.Locking.ActiveLock.ActiveLock
-  nameWithType: ActiveLock.ActiveLock
-- uid: FubarDev.WebDavServer.Locking.ActiveLock.Expiration
-  name: Expiration
-  href: api/FubarDev.WebDavServer.Locking.ActiveLock.html#FubarDev_WebDavServer_Locking_ActiveLock_Expiration
-  commentId: P:FubarDev.WebDavServer.Locking.ActiveLock.Expiration
-  fullName: FubarDev.WebDavServer.Locking.ActiveLock.Expiration
-  nameWithType: ActiveLock.Expiration
-- uid: FubarDev.WebDavServer.Locking.ActiveLock.Expiration*
-  name: Expiration
-  href: api/FubarDev.WebDavServer.Locking.ActiveLock.html#FubarDev_WebDavServer_Locking_ActiveLock_Expiration_
-  commentId: Overload:FubarDev.WebDavServer.Locking.ActiveLock.Expiration
-  fullName: FubarDev.WebDavServer.Locking.ActiveLock.Expiration
-  nameWithType: ActiveLock.Expiration
-- uid: FubarDev.WebDavServer.Locking.ActiveLock.Issued
-  name: Issued
-  href: api/FubarDev.WebDavServer.Locking.ActiveLock.html#FubarDev_WebDavServer_Locking_ActiveLock_Issued
-  commentId: P:FubarDev.WebDavServer.Locking.ActiveLock.Issued
-  fullName: FubarDev.WebDavServer.Locking.ActiveLock.Issued
-  nameWithType: ActiveLock.Issued
-- uid: FubarDev.WebDavServer.Locking.ActiveLock.Issued*
-  name: Issued
-  href: api/FubarDev.WebDavServer.Locking.ActiveLock.html#FubarDev_WebDavServer_Locking_ActiveLock_Issued_
-  commentId: Overload:FubarDev.WebDavServer.Locking.ActiveLock.Issued
-  fullName: FubarDev.WebDavServer.Locking.ActiveLock.Issued
-  nameWithType: ActiveLock.Issued
-- uid: FubarDev.WebDavServer.Locking.ActiveLock.LastRefresh
-  name: LastRefresh
-  href: api/FubarDev.WebDavServer.Locking.ActiveLock.html#FubarDev_WebDavServer_Locking_ActiveLock_LastRefresh
-  commentId: P:FubarDev.WebDavServer.Locking.ActiveLock.LastRefresh
-  fullName: FubarDev.WebDavServer.Locking.ActiveLock.LastRefresh
-  nameWithType: ActiveLock.LastRefresh
-- uid: FubarDev.WebDavServer.Locking.ActiveLock.LastRefresh*
-  name: LastRefresh
-  href: api/FubarDev.WebDavServer.Locking.ActiveLock.html#FubarDev_WebDavServer_Locking_ActiveLock_LastRefresh_
-  commentId: Overload:FubarDev.WebDavServer.Locking.ActiveLock.LastRefresh
-  fullName: FubarDev.WebDavServer.Locking.ActiveLock.LastRefresh
-  nameWithType: ActiveLock.LastRefresh
-- uid: FubarDev.WebDavServer.Locking.ActiveLock.Refresh(System.DateTime,System.TimeSpan)
-  name: Refresh(DateTime, TimeSpan)
-  href: api/FubarDev.WebDavServer.Locking.ActiveLock.html#FubarDev_WebDavServer_Locking_ActiveLock_Refresh_System_DateTime_System_TimeSpan_
-  commentId: M:FubarDev.WebDavServer.Locking.ActiveLock.Refresh(System.DateTime,System.TimeSpan)
-  fullName: FubarDev.WebDavServer.Locking.ActiveLock.Refresh(System.DateTime, System.TimeSpan)
-  nameWithType: ActiveLock.Refresh(DateTime, TimeSpan)
-- uid: FubarDev.WebDavServer.Locking.ActiveLock.Refresh*
-  name: Refresh
-  href: api/FubarDev.WebDavServer.Locking.ActiveLock.html#FubarDev_WebDavServer_Locking_ActiveLock_Refresh_
-  commentId: Overload:FubarDev.WebDavServer.Locking.ActiveLock.Refresh
-  fullName: FubarDev.WebDavServer.Locking.ActiveLock.Refresh
-  nameWithType: ActiveLock.Refresh
-- uid: FubarDev.WebDavServer.Locking.ActiveLock.StateToken
-  name: StateToken
-  href: api/FubarDev.WebDavServer.Locking.ActiveLock.html#FubarDev_WebDavServer_Locking_ActiveLock_StateToken
-  commentId: P:FubarDev.WebDavServer.Locking.ActiveLock.StateToken
-  fullName: FubarDev.WebDavServer.Locking.ActiveLock.StateToken
-  nameWithType: ActiveLock.StateToken
-- uid: FubarDev.WebDavServer.Locking.ActiveLock.StateToken*
-  name: StateToken
-  href: api/FubarDev.WebDavServer.Locking.ActiveLock.html#FubarDev_WebDavServer_Locking_ActiveLock_StateToken_
-  commentId: Overload:FubarDev.WebDavServer.Locking.ActiveLock.StateToken
-  fullName: FubarDev.WebDavServer.Locking.ActiveLock.StateToken
-  nameWithType: ActiveLock.StateToken
-- uid: FubarDev.WebDavServer.Locking.ActiveLock.ToString
-  name: ToString()
-  href: api/FubarDev.WebDavServer.Locking.ActiveLock.html#FubarDev_WebDavServer_Locking_ActiveLock_ToString
-  commentId: M:FubarDev.WebDavServer.Locking.ActiveLock.ToString
-  fullName: FubarDev.WebDavServer.Locking.ActiveLock.ToString()
-  nameWithType: ActiveLock.ToString()
-- uid: FubarDev.WebDavServer.Locking.ActiveLock.ToString*
-  name: ToString
-  href: api/FubarDev.WebDavServer.Locking.ActiveLock.html#FubarDev_WebDavServer_Locking_ActiveLock_ToString_
-  commentId: Overload:FubarDev.WebDavServer.Locking.ActiveLock.ToString
-  fullName: FubarDev.WebDavServer.Locking.ActiveLock.ToString
-  nameWithType: ActiveLock.ToString
 - uid: FubarDev.WebDavServer.Locking.ActiveLockExtensions
   name: ActiveLockExtensions
   href: api/FubarDev.WebDavServer.Locking.ActiveLockExtensions.html
@@ -8840,36 +8744,6 @@ references:
   commentId: Overload:FubarDev.WebDavServer.Locking.LockManagerBase.ReleaseAsync
   fullName: FubarDev.WebDavServer.Locking.LockManagerBase.ReleaseAsync
   nameWithType: LockManagerBase.ReleaseAsync
-- uid: FubarDev.WebDavServer.Locking.LockManagerOptions
-  name: LockManagerOptions
-  href: api/FubarDev.WebDavServer.Locking.LockManagerOptions.html
-  commentId: T:FubarDev.WebDavServer.Locking.LockManagerOptions
-  fullName: FubarDev.WebDavServer.Locking.LockManagerOptions
-  nameWithType: LockManagerOptions
-- uid: FubarDev.WebDavServer.Locking.LockManagerOptions.#ctor
-  name: LockManagerOptions()
-  href: api/FubarDev.WebDavServer.Locking.LockManagerOptions.html#FubarDev_WebDavServer_Locking_LockManagerOptions__ctor
-  commentId: M:FubarDev.WebDavServer.Locking.LockManagerOptions.#ctor
-  fullName: FubarDev.WebDavServer.Locking.LockManagerOptions.LockManagerOptions()
-  nameWithType: LockManagerOptions.LockManagerOptions()
-- uid: FubarDev.WebDavServer.Locking.LockManagerOptions.#ctor*
-  name: LockManagerOptions
-  href: api/FubarDev.WebDavServer.Locking.LockManagerOptions.html#FubarDev_WebDavServer_Locking_LockManagerOptions__ctor_
-  commentId: Overload:FubarDev.WebDavServer.Locking.LockManagerOptions.#ctor
-  fullName: FubarDev.WebDavServer.Locking.LockManagerOptions.LockManagerOptions
-  nameWithType: LockManagerOptions.LockManagerOptions
-- uid: FubarDev.WebDavServer.Locking.LockManagerOptions.Rounding
-  name: Rounding
-  href: api/FubarDev.WebDavServer.Locking.LockManagerOptions.html#FubarDev_WebDavServer_Locking_LockManagerOptions_Rounding
-  commentId: P:FubarDev.WebDavServer.Locking.LockManagerOptions.Rounding
-  fullName: FubarDev.WebDavServer.Locking.LockManagerOptions.Rounding
-  nameWithType: LockManagerOptions.Rounding
-- uid: FubarDev.WebDavServer.Locking.LockManagerOptions.Rounding*
-  name: Rounding
-  href: api/FubarDev.WebDavServer.Locking.LockManagerOptions.html#FubarDev_WebDavServer_Locking_LockManagerOptions_Rounding_
-  commentId: Overload:FubarDev.WebDavServer.Locking.LockManagerOptions.Rounding
-  fullName: FubarDev.WebDavServer.Locking.LockManagerOptions.Rounding
-  nameWithType: LockManagerOptions.Rounding
 - uid: FubarDev.WebDavServer.Locking.LockRefreshResult
   name: LockRefreshResult
   href: api/FubarDev.WebDavServer.Locking.LockRefreshResult.html
@@ -12167,6 +12041,18 @@ references:
   commentId: Overload:FubarDev.WebDavServer.Props.Dead.DeadProperty.Init
   fullName: FubarDev.WebDavServer.Props.Dead.DeadProperty.Init
   nameWithType: DeadProperty.Init
+- uid: FubarDev.WebDavServer.Props.Dead.DeadProperty.IsDefaultValue(System.Xml.Linq.XElement)
+  name: IsDefaultValue(XElement)
+  href: api/FubarDev.WebDavServer.Props.Dead.DeadProperty.html#FubarDev_WebDavServer_Props_Dead_DeadProperty_IsDefaultValue_System_Xml_Linq_XElement_
+  commentId: M:FubarDev.WebDavServer.Props.Dead.DeadProperty.IsDefaultValue(System.Xml.Linq.XElement)
+  fullName: FubarDev.WebDavServer.Props.Dead.DeadProperty.IsDefaultValue(System.Xml.Linq.XElement)
+  nameWithType: DeadProperty.IsDefaultValue(XElement)
+- uid: FubarDev.WebDavServer.Props.Dead.DeadProperty.IsDefaultValue*
+  name: IsDefaultValue
+  href: api/FubarDev.WebDavServer.Props.Dead.DeadProperty.html#FubarDev_WebDavServer_Props_Dead_DeadProperty_IsDefaultValue_
+  commentId: Overload:FubarDev.WebDavServer.Props.Dead.DeadProperty.IsDefaultValue
+  fullName: FubarDev.WebDavServer.Props.Dead.DeadProperty.IsDefaultValue
+  nameWithType: DeadProperty.IsDefaultValue
 - uid: FubarDev.WebDavServer.Props.Dead.DeadProperty.Language
   name: Language
   href: api/FubarDev.WebDavServer.Props.Dead.DeadProperty.html#FubarDev_WebDavServer_Props_Dead_DeadProperty_Language
@@ -12239,24 +12125,6 @@ references:
   commentId: Overload:FubarDev.WebDavServer.Props.Dead.DeadPropertyFactory.Create
   fullName: FubarDev.WebDavServer.Props.Dead.DeadPropertyFactory.Create
   nameWithType: DeadPropertyFactory.Create
-- uid: FubarDev.WebDavServer.Props.Dead.DeadPropertyFactoryOptions
-  name: DeadPropertyFactoryOptions
-  href: api/FubarDev.WebDavServer.Props.Dead.DeadPropertyFactoryOptions.html
-  commentId: T:FubarDev.WebDavServer.Props.Dead.DeadPropertyFactoryOptions
-  fullName: FubarDev.WebDavServer.Props.Dead.DeadPropertyFactoryOptions
-  nameWithType: DeadPropertyFactoryOptions
-- uid: FubarDev.WebDavServer.Props.Dead.DeadPropertyFactoryOptions.HideExtensionForDisplayName
-  name: HideExtensionForDisplayName
-  href: api/FubarDev.WebDavServer.Props.Dead.DeadPropertyFactoryOptions.html#FubarDev_WebDavServer_Props_Dead_DeadPropertyFactoryOptions_HideExtensionForDisplayName
-  commentId: P:FubarDev.WebDavServer.Props.Dead.DeadPropertyFactoryOptions.HideExtensionForDisplayName
-  fullName: FubarDev.WebDavServer.Props.Dead.DeadPropertyFactoryOptions.HideExtensionForDisplayName
-  nameWithType: DeadPropertyFactoryOptions.HideExtensionForDisplayName
-- uid: FubarDev.WebDavServer.Props.Dead.DeadPropertyFactoryOptions.HideExtensionForDisplayName*
-  name: HideExtensionForDisplayName
-  href: api/FubarDev.WebDavServer.Props.Dead.DeadPropertyFactoryOptions.html#FubarDev_WebDavServer_Props_Dead_DeadPropertyFactoryOptions_HideExtensionForDisplayName_
-  commentId: Overload:FubarDev.WebDavServer.Props.Dead.DeadPropertyFactoryOptions.HideExtensionForDisplayName
-  fullName: FubarDev.WebDavServer.Props.Dead.DeadPropertyFactoryOptions.HideExtensionForDisplayName
-  nameWithType: DeadPropertyFactoryOptions.HideExtensionForDisplayName
 - uid: FubarDev.WebDavServer.Props.Dead.DisplayNameProperty
   name: DisplayNameProperty
   href: api/FubarDev.WebDavServer.Props.Dead.DisplayNameProperty.html
@@ -12302,6 +12170,18 @@ references:
   commentId: Overload:FubarDev.WebDavServer.Props.Dead.DisplayNameProperty.Init
   fullName: FubarDev.WebDavServer.Props.Dead.DisplayNameProperty.Init
   nameWithType: DisplayNameProperty.Init
+- uid: FubarDev.WebDavServer.Props.Dead.DisplayNameProperty.IsDefaultValue(System.Xml.Linq.XElement)
+  name: IsDefaultValue(XElement)
+  href: api/FubarDev.WebDavServer.Props.Dead.DisplayNameProperty.html#FubarDev_WebDavServer_Props_Dead_DisplayNameProperty_IsDefaultValue_System_Xml_Linq_XElement_
+  commentId: M:FubarDev.WebDavServer.Props.Dead.DisplayNameProperty.IsDefaultValue(System.Xml.Linq.XElement)
+  fullName: FubarDev.WebDavServer.Props.Dead.DisplayNameProperty.IsDefaultValue(System.Xml.Linq.XElement)
+  nameWithType: DisplayNameProperty.IsDefaultValue(XElement)
+- uid: FubarDev.WebDavServer.Props.Dead.DisplayNameProperty.IsDefaultValue*
+  name: IsDefaultValue
+  href: api/FubarDev.WebDavServer.Props.Dead.DisplayNameProperty.html#FubarDev_WebDavServer_Props_Dead_DisplayNameProperty_IsDefaultValue_
+  commentId: Overload:FubarDev.WebDavServer.Props.Dead.DisplayNameProperty.IsDefaultValue
+  fullName: FubarDev.WebDavServer.Props.Dead.DisplayNameProperty.IsDefaultValue
+  nameWithType: DisplayNameProperty.IsDefaultValue
 - uid: FubarDev.WebDavServer.Props.Dead.DisplayNameProperty.PropertyName
   name: PropertyName
   href: api/FubarDev.WebDavServer.Props.Dead.DisplayNameProperty.html#FubarDev_WebDavServer_Props_Dead_DisplayNameProperty_PropertyName
@@ -12365,6 +12245,18 @@ references:
   commentId: Overload:FubarDev.WebDavServer.Props.Dead.GetContentLanguageProperty.Init
   fullName: FubarDev.WebDavServer.Props.Dead.GetContentLanguageProperty.Init
   nameWithType: GetContentLanguageProperty.Init
+- uid: FubarDev.WebDavServer.Props.Dead.GetContentLanguageProperty.IsDefaultValue(System.Xml.Linq.XElement)
+  name: IsDefaultValue(XElement)
+  href: api/FubarDev.WebDavServer.Props.Dead.GetContentLanguageProperty.html#FubarDev_WebDavServer_Props_Dead_GetContentLanguageProperty_IsDefaultValue_System_Xml_Linq_XElement_
+  commentId: M:FubarDev.WebDavServer.Props.Dead.GetContentLanguageProperty.IsDefaultValue(System.Xml.Linq.XElement)
+  fullName: FubarDev.WebDavServer.Props.Dead.GetContentLanguageProperty.IsDefaultValue(System.Xml.Linq.XElement)
+  nameWithType: GetContentLanguageProperty.IsDefaultValue(XElement)
+- uid: FubarDev.WebDavServer.Props.Dead.GetContentLanguageProperty.IsDefaultValue*
+  name: IsDefaultValue
+  href: api/FubarDev.WebDavServer.Props.Dead.GetContentLanguageProperty.html#FubarDev_WebDavServer_Props_Dead_GetContentLanguageProperty_IsDefaultValue_
+  commentId: Overload:FubarDev.WebDavServer.Props.Dead.GetContentLanguageProperty.IsDefaultValue
+  fullName: FubarDev.WebDavServer.Props.Dead.GetContentLanguageProperty.IsDefaultValue
+  nameWithType: GetContentLanguageProperty.IsDefaultValue
 - uid: FubarDev.WebDavServer.Props.Dead.GetContentLanguageProperty.PropertyName
   name: PropertyName
   href: api/FubarDev.WebDavServer.Props.Dead.GetContentLanguageProperty.html#FubarDev_WebDavServer_Props_Dead_GetContentLanguageProperty_PropertyName
@@ -12440,6 +12332,18 @@ references:
   commentId: Overload:FubarDev.WebDavServer.Props.Dead.GetContentTypeProperty.Init
   fullName: FubarDev.WebDavServer.Props.Dead.GetContentTypeProperty.Init
   nameWithType: GetContentTypeProperty.Init
+- uid: FubarDev.WebDavServer.Props.Dead.GetContentTypeProperty.IsDefaultValue(System.Xml.Linq.XElement)
+  name: IsDefaultValue(XElement)
+  href: api/FubarDev.WebDavServer.Props.Dead.GetContentTypeProperty.html#FubarDev_WebDavServer_Props_Dead_GetContentTypeProperty_IsDefaultValue_System_Xml_Linq_XElement_
+  commentId: M:FubarDev.WebDavServer.Props.Dead.GetContentTypeProperty.IsDefaultValue(System.Xml.Linq.XElement)
+  fullName: FubarDev.WebDavServer.Props.Dead.GetContentTypeProperty.IsDefaultValue(System.Xml.Linq.XElement)
+  nameWithType: GetContentTypeProperty.IsDefaultValue(XElement)
+- uid: FubarDev.WebDavServer.Props.Dead.GetContentTypeProperty.IsDefaultValue*
+  name: IsDefaultValue
+  href: api/FubarDev.WebDavServer.Props.Dead.GetContentTypeProperty.html#FubarDev_WebDavServer_Props_Dead_GetContentTypeProperty_IsDefaultValue_
+  commentId: Overload:FubarDev.WebDavServer.Props.Dead.GetContentTypeProperty.IsDefaultValue
+  fullName: FubarDev.WebDavServer.Props.Dead.GetContentTypeProperty.IsDefaultValue
+  nameWithType: GetContentTypeProperty.IsDefaultValue
 - uid: FubarDev.WebDavServer.Props.Dead.GetContentTypeProperty.PropertyName
   name: PropertyName
   href: api/FubarDev.WebDavServer.Props.Dead.GetContentTypeProperty.html#FubarDev_WebDavServer_Props_Dead_GetContentTypeProperty_PropertyName
@@ -12551,6 +12455,18 @@ references:
   commentId: Overload:FubarDev.WebDavServer.Props.Dead.GetETagProperty.Init
   fullName: FubarDev.WebDavServer.Props.Dead.GetETagProperty.Init
   nameWithType: GetETagProperty.Init
+- uid: FubarDev.WebDavServer.Props.Dead.GetETagProperty.IsDefaultValue(System.Xml.Linq.XElement)
+  name: IsDefaultValue(XElement)
+  href: api/FubarDev.WebDavServer.Props.Dead.GetETagProperty.html#FubarDev_WebDavServer_Props_Dead_GetETagProperty_IsDefaultValue_System_Xml_Linq_XElement_
+  commentId: M:FubarDev.WebDavServer.Props.Dead.GetETagProperty.IsDefaultValue(System.Xml.Linq.XElement)
+  fullName: FubarDev.WebDavServer.Props.Dead.GetETagProperty.IsDefaultValue(System.Xml.Linq.XElement)
+  nameWithType: GetETagProperty.IsDefaultValue(XElement)
+- uid: FubarDev.WebDavServer.Props.Dead.GetETagProperty.IsDefaultValue*
+  name: IsDefaultValue
+  href: api/FubarDev.WebDavServer.Props.Dead.GetETagProperty.html#FubarDev_WebDavServer_Props_Dead_GetETagProperty_IsDefaultValue_
+  commentId: Overload:FubarDev.WebDavServer.Props.Dead.GetETagProperty.IsDefaultValue
+  fullName: FubarDev.WebDavServer.Props.Dead.GetETagProperty.IsDefaultValue
+  nameWithType: GetETagProperty.IsDefaultValue
 - uid: FubarDev.WebDavServer.Props.Dead.GetETagProperty.Language
   name: Language
   href: api/FubarDev.WebDavServer.Props.Dead.GetETagProperty.html#FubarDev_WebDavServer_Props_Dead_GetETagProperty_Language
@@ -12587,6 +12503,18 @@ references:
   commentId: T:FubarDev.WebDavServer.Props.Dead.IDeadProperty
   fullName: FubarDev.WebDavServer.Props.Dead.IDeadProperty
   nameWithType: IDeadProperty
+- uid: FubarDev.WebDavServer.Props.Dead.IDeadProperty.IsDefaultValue(System.Xml.Linq.XElement)
+  name: IsDefaultValue(XElement)
+  href: api/FubarDev.WebDavServer.Props.Dead.IDeadProperty.html#FubarDev_WebDavServer_Props_Dead_IDeadProperty_IsDefaultValue_System_Xml_Linq_XElement_
+  commentId: M:FubarDev.WebDavServer.Props.Dead.IDeadProperty.IsDefaultValue(System.Xml.Linq.XElement)
+  fullName: FubarDev.WebDavServer.Props.Dead.IDeadProperty.IsDefaultValue(System.Xml.Linq.XElement)
+  nameWithType: IDeadProperty.IsDefaultValue(XElement)
+- uid: FubarDev.WebDavServer.Props.Dead.IDeadProperty.IsDefaultValue*
+  name: IsDefaultValue
+  href: api/FubarDev.WebDavServer.Props.Dead.IDeadProperty.html#FubarDev_WebDavServer_Props_Dead_IDeadProperty_IsDefaultValue_
+  commentId: Overload:FubarDev.WebDavServer.Props.Dead.IDeadProperty.IsDefaultValue
+  fullName: FubarDev.WebDavServer.Props.Dead.IDeadProperty.IsDefaultValue
+  nameWithType: IDeadProperty.IsDefaultValue
 - uid: FubarDev.WebDavServer.Props.Dead.IDeadPropertyFactory
   name: IDeadPropertyFactory
   href: api/FubarDev.WebDavServer.Props.Dead.IDeadPropertyFactory.html
@@ -13769,174 +13697,6 @@ references:
   commentId: F:FubarDev.WebDavServer.Props.Live.SupportedLockProperty.PropertyName
   fullName: FubarDev.WebDavServer.Props.Live.SupportedLockProperty.PropertyName
   nameWithType: SupportedLockProperty.PropertyName
-- uid: FubarDev.WebDavServer.Props.PropertyKey
-  name: PropertyKey
-  href: api/FubarDev.WebDavServer.Props.PropertyKey.html
-  commentId: T:FubarDev.WebDavServer.Props.PropertyKey
-  fullName: FubarDev.WebDavServer.Props.PropertyKey
-  nameWithType: PropertyKey
-- uid: FubarDev.WebDavServer.Props.PropertyKey.#ctor(FubarDev.WebDavServer.Props.IProperty)
-  name: PropertyKey(IProperty)
-  href: api/FubarDev.WebDavServer.Props.PropertyKey.html#FubarDev_WebDavServer_Props_PropertyKey__ctor_FubarDev_WebDavServer_Props_IProperty_
-  commentId: M:FubarDev.WebDavServer.Props.PropertyKey.#ctor(FubarDev.WebDavServer.Props.IProperty)
-  fullName: FubarDev.WebDavServer.Props.PropertyKey.PropertyKey(FubarDev.WebDavServer.Props.IProperty)
-  nameWithType: PropertyKey.PropertyKey(IProperty)
-- uid: FubarDev.WebDavServer.Props.PropertyKey.#ctor(System.Xml.Linq.XElement)
-  name: PropertyKey(XElement)
-  href: api/FubarDev.WebDavServer.Props.PropertyKey.html#FubarDev_WebDavServer_Props_PropertyKey__ctor_System_Xml_Linq_XElement_
-  commentId: M:FubarDev.WebDavServer.Props.PropertyKey.#ctor(System.Xml.Linq.XElement)
-  fullName: FubarDev.WebDavServer.Props.PropertyKey.PropertyKey(System.Xml.Linq.XElement)
-  nameWithType: PropertyKey.PropertyKey(XElement)
-- uid: FubarDev.WebDavServer.Props.PropertyKey.#ctor(System.Xml.Linq.XName,System.String)
-  name: PropertyKey(XName, String)
-  href: api/FubarDev.WebDavServer.Props.PropertyKey.html#FubarDev_WebDavServer_Props_PropertyKey__ctor_System_Xml_Linq_XName_System_String_
-  commentId: M:FubarDev.WebDavServer.Props.PropertyKey.#ctor(System.Xml.Linq.XName,System.String)
-  fullName: FubarDev.WebDavServer.Props.PropertyKey.PropertyKey(System.Xml.Linq.XName, System.String)
-  nameWithType: PropertyKey.PropertyKey(XName, String)
-- uid: FubarDev.WebDavServer.Props.PropertyKey.#ctor*
-  name: PropertyKey
-  href: api/FubarDev.WebDavServer.Props.PropertyKey.html#FubarDev_WebDavServer_Props_PropertyKey__ctor_
-  commentId: Overload:FubarDev.WebDavServer.Props.PropertyKey.#ctor
-  fullName: FubarDev.WebDavServer.Props.PropertyKey.PropertyKey
-  nameWithType: PropertyKey.PropertyKey
-- uid: FubarDev.WebDavServer.Props.PropertyKey.CreateEmptyElement
-  name: CreateEmptyElement()
-  href: api/FubarDev.WebDavServer.Props.PropertyKey.html#FubarDev_WebDavServer_Props_PropertyKey_CreateEmptyElement
-  commentId: M:FubarDev.WebDavServer.Props.PropertyKey.CreateEmptyElement
-  fullName: FubarDev.WebDavServer.Props.PropertyKey.CreateEmptyElement()
-  nameWithType: PropertyKey.CreateEmptyElement()
-- uid: FubarDev.WebDavServer.Props.PropertyKey.CreateEmptyElement*
-  name: CreateEmptyElement
-  href: api/FubarDev.WebDavServer.Props.PropertyKey.html#FubarDev_WebDavServer_Props_PropertyKey_CreateEmptyElement_
-  commentId: Overload:FubarDev.WebDavServer.Props.PropertyKey.CreateEmptyElement
-  fullName: FubarDev.WebDavServer.Props.PropertyKey.CreateEmptyElement
-  nameWithType: PropertyKey.CreateEmptyElement
-- uid: FubarDev.WebDavServer.Props.PropertyKey.ElementLanguage
-  name: ElementLanguage
-  href: api/FubarDev.WebDavServer.Props.PropertyKey.html#FubarDev_WebDavServer_Props_PropertyKey_ElementLanguage
-  commentId: P:FubarDev.WebDavServer.Props.PropertyKey.ElementLanguage
-  fullName: FubarDev.WebDavServer.Props.PropertyKey.ElementLanguage
-  nameWithType: PropertyKey.ElementLanguage
-- uid: FubarDev.WebDavServer.Props.PropertyKey.ElementLanguage*
-  name: ElementLanguage
-  href: api/FubarDev.WebDavServer.Props.PropertyKey.html#FubarDev_WebDavServer_Props_PropertyKey_ElementLanguage_
-  commentId: Overload:FubarDev.WebDavServer.Props.PropertyKey.ElementLanguage
-  fullName: FubarDev.WebDavServer.Props.PropertyKey.ElementLanguage
-  nameWithType: PropertyKey.ElementLanguage
-- uid: FubarDev.WebDavServer.Props.PropertyKey.Equals(FubarDev.WebDavServer.Props.PropertyKey)
-  name: Equals(PropertyKey)
-  href: api/FubarDev.WebDavServer.Props.PropertyKey.html#FubarDev_WebDavServer_Props_PropertyKey_Equals_FubarDev_WebDavServer_Props_PropertyKey_
-  commentId: M:FubarDev.WebDavServer.Props.PropertyKey.Equals(FubarDev.WebDavServer.Props.PropertyKey)
-  fullName: FubarDev.WebDavServer.Props.PropertyKey.Equals(FubarDev.WebDavServer.Props.PropertyKey)
-  nameWithType: PropertyKey.Equals(PropertyKey)
-- uid: FubarDev.WebDavServer.Props.PropertyKey.Equals(System.Object)
-  name: Equals(Object)
-  href: api/FubarDev.WebDavServer.Props.PropertyKey.html#FubarDev_WebDavServer_Props_PropertyKey_Equals_System_Object_
-  commentId: M:FubarDev.WebDavServer.Props.PropertyKey.Equals(System.Object)
-  fullName: FubarDev.WebDavServer.Props.PropertyKey.Equals(System.Object)
-  nameWithType: PropertyKey.Equals(Object)
-- uid: FubarDev.WebDavServer.Props.PropertyKey.Equals*
-  name: Equals
-  href: api/FubarDev.WebDavServer.Props.PropertyKey.html#FubarDev_WebDavServer_Props_PropertyKey_Equals_
-  commentId: Overload:FubarDev.WebDavServer.Props.PropertyKey.Equals
-  fullName: FubarDev.WebDavServer.Props.PropertyKey.Equals
-  nameWithType: PropertyKey.Equals
-- uid: FubarDev.WebDavServer.Props.PropertyKey.GetHashCode
-  name: GetHashCode()
-  href: api/FubarDev.WebDavServer.Props.PropertyKey.html#FubarDev_WebDavServer_Props_PropertyKey_GetHashCode
-  commentId: M:FubarDev.WebDavServer.Props.PropertyKey.GetHashCode
-  fullName: FubarDev.WebDavServer.Props.PropertyKey.GetHashCode()
-  nameWithType: PropertyKey.GetHashCode()
-- uid: FubarDev.WebDavServer.Props.PropertyKey.GetHashCode*
-  name: GetHashCode
-  href: api/FubarDev.WebDavServer.Props.PropertyKey.html#FubarDev_WebDavServer_Props_PropertyKey_GetHashCode_
-  commentId: Overload:FubarDev.WebDavServer.Props.PropertyKey.GetHashCode
-  fullName: FubarDev.WebDavServer.Props.PropertyKey.GetHashCode
-  nameWithType: PropertyKey.GetHashCode
-- uid: FubarDev.WebDavServer.Props.PropertyKey.Language
-  name: Language
-  href: api/FubarDev.WebDavServer.Props.PropertyKey.html#FubarDev_WebDavServer_Props_PropertyKey_Language
-  commentId: P:FubarDev.WebDavServer.Props.PropertyKey.Language
-  fullName: FubarDev.WebDavServer.Props.PropertyKey.Language
-  nameWithType: PropertyKey.Language
-- uid: FubarDev.WebDavServer.Props.PropertyKey.Language*
-  name: Language
-  href: api/FubarDev.WebDavServer.Props.PropertyKey.html#FubarDev_WebDavServer_Props_PropertyKey_Language_
-  commentId: Overload:FubarDev.WebDavServer.Props.PropertyKey.Language
-  fullName: FubarDev.WebDavServer.Props.PropertyKey.Language
-  nameWithType: PropertyKey.Language
-- uid: FubarDev.WebDavServer.Props.PropertyKey.Name
-  name: Name
-  href: api/FubarDev.WebDavServer.Props.PropertyKey.html#FubarDev_WebDavServer_Props_PropertyKey_Name
-  commentId: P:FubarDev.WebDavServer.Props.PropertyKey.Name
-  fullName: FubarDev.WebDavServer.Props.PropertyKey.Name
-  nameWithType: PropertyKey.Name
-- uid: FubarDev.WebDavServer.Props.PropertyKey.Name*
-  name: Name
-  href: api/FubarDev.WebDavServer.Props.PropertyKey.html#FubarDev_WebDavServer_Props_PropertyKey_Name_
-  commentId: Overload:FubarDev.WebDavServer.Props.PropertyKey.Name
-  fullName: FubarDev.WebDavServer.Props.PropertyKey.Name
-  nameWithType: PropertyKey.Name
-- uid: FubarDev.WebDavServer.Props.PropertyKey.NoLanguage
-  name: NoLanguage
-  href: api/FubarDev.WebDavServer.Props.PropertyKey.html#FubarDev_WebDavServer_Props_PropertyKey_NoLanguage
-  commentId: F:FubarDev.WebDavServer.Props.PropertyKey.NoLanguage
-  fullName: FubarDev.WebDavServer.Props.PropertyKey.NoLanguage
-  nameWithType: PropertyKey.NoLanguage
-- uid: FubarDev.WebDavServer.Props.PropertyKey.ToString
-  name: ToString()
-  href: api/FubarDev.WebDavServer.Props.PropertyKey.html#FubarDev_WebDavServer_Props_PropertyKey_ToString
-  commentId: M:FubarDev.WebDavServer.Props.PropertyKey.ToString
-  fullName: FubarDev.WebDavServer.Props.PropertyKey.ToString()
-  nameWithType: PropertyKey.ToString()
-- uid: FubarDev.WebDavServer.Props.PropertyKey.ToString*
-  name: ToString
-  href: api/FubarDev.WebDavServer.Props.PropertyKey.html#FubarDev_WebDavServer_Props_PropertyKey_ToString_
-  commentId: Overload:FubarDev.WebDavServer.Props.PropertyKey.ToString
-  fullName: FubarDev.WebDavServer.Props.PropertyKey.ToString
-  nameWithType: PropertyKey.ToString
-- uid: FubarDev.WebDavServer.Props.PropertyKeyComparer
-  name: PropertyKeyComparer
-  href: api/FubarDev.WebDavServer.Props.PropertyKeyComparer.html
-  commentId: T:FubarDev.WebDavServer.Props.PropertyKeyComparer
-  fullName: FubarDev.WebDavServer.Props.PropertyKeyComparer
-  nameWithType: PropertyKeyComparer
-- uid: FubarDev.WebDavServer.Props.PropertyKeyComparer.Default
-  name: Default
-  href: api/FubarDev.WebDavServer.Props.PropertyKeyComparer.html#FubarDev_WebDavServer_Props_PropertyKeyComparer_Default
-  commentId: P:FubarDev.WebDavServer.Props.PropertyKeyComparer.Default
-  fullName: FubarDev.WebDavServer.Props.PropertyKeyComparer.Default
-  nameWithType: PropertyKeyComparer.Default
-- uid: FubarDev.WebDavServer.Props.PropertyKeyComparer.Default*
-  name: Default
-  href: api/FubarDev.WebDavServer.Props.PropertyKeyComparer.html#FubarDev_WebDavServer_Props_PropertyKeyComparer_Default_
-  commentId: Overload:FubarDev.WebDavServer.Props.PropertyKeyComparer.Default
-  fullName: FubarDev.WebDavServer.Props.PropertyKeyComparer.Default
-  nameWithType: PropertyKeyComparer.Default
-- uid: FubarDev.WebDavServer.Props.PropertyKeyComparer.Equals(FubarDev.WebDavServer.Props.PropertyKey,FubarDev.WebDavServer.Props.PropertyKey)
-  name: Equals(PropertyKey, PropertyKey)
-  href: api/FubarDev.WebDavServer.Props.PropertyKeyComparer.html#FubarDev_WebDavServer_Props_PropertyKeyComparer_Equals_FubarDev_WebDavServer_Props_PropertyKey_FubarDev_WebDavServer_Props_PropertyKey_
-  commentId: M:FubarDev.WebDavServer.Props.PropertyKeyComparer.Equals(FubarDev.WebDavServer.Props.PropertyKey,FubarDev.WebDavServer.Props.PropertyKey)
-  fullName: FubarDev.WebDavServer.Props.PropertyKeyComparer.Equals(FubarDev.WebDavServer.Props.PropertyKey, FubarDev.WebDavServer.Props.PropertyKey)
-  nameWithType: PropertyKeyComparer.Equals(PropertyKey, PropertyKey)
-- uid: FubarDev.WebDavServer.Props.PropertyKeyComparer.Equals*
-  name: Equals
-  href: api/FubarDev.WebDavServer.Props.PropertyKeyComparer.html#FubarDev_WebDavServer_Props_PropertyKeyComparer_Equals_
-  commentId: Overload:FubarDev.WebDavServer.Props.PropertyKeyComparer.Equals
-  fullName: FubarDev.WebDavServer.Props.PropertyKeyComparer.Equals
-  nameWithType: PropertyKeyComparer.Equals
-- uid: FubarDev.WebDavServer.Props.PropertyKeyComparer.GetHashCode(FubarDev.WebDavServer.Props.PropertyKey)
-  name: GetHashCode(PropertyKey)
-  href: api/FubarDev.WebDavServer.Props.PropertyKeyComparer.html#FubarDev_WebDavServer_Props_PropertyKeyComparer_GetHashCode_FubarDev_WebDavServer_Props_PropertyKey_
-  commentId: M:FubarDev.WebDavServer.Props.PropertyKeyComparer.GetHashCode(FubarDev.WebDavServer.Props.PropertyKey)
-  fullName: FubarDev.WebDavServer.Props.PropertyKeyComparer.GetHashCode(FubarDev.WebDavServer.Props.PropertyKey)
-  nameWithType: PropertyKeyComparer.GetHashCode(PropertyKey)
-- uid: FubarDev.WebDavServer.Props.PropertyKeyComparer.GetHashCode*
-  name: GetHashCode
-  href: api/FubarDev.WebDavServer.Props.PropertyKeyComparer.html#FubarDev_WebDavServer_Props_PropertyKeyComparer_GetHashCode_
-  commentId: Overload:FubarDev.WebDavServer.Props.PropertyKeyComparer.GetHashCode
-  fullName: FubarDev.WebDavServer.Props.PropertyKeyComparer.GetHashCode
-  nameWithType: PropertyKeyComparer.GetHashCode
 - uid: FubarDev.WebDavServer.Props.SetPropertyValueAsyncDelegate`1
   name: SetPropertyValueAsyncDelegate<T>
   href: api/FubarDev.WebDavServer.Props.SetPropertyValueAsyncDelegate-1.html

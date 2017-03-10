@@ -257,15 +257,15 @@ and stored.</p>
 </li>
 <li><p><a class="xref" href="../api/FubarDev.WebDavServer.Locking.ILock.html">ILock</a></p>
 <p>This is the base interface for all lock related information. It&#39;s implemented by both the
-<a class="xref" href="../api/FubarDev.WebDavServer.Locking.Lock.html">Lock</a> and <a class="xref" href="../api/FubarDev.WebDavServer.Locking.ActiveLock.html">ActiveLock</a>
+<a class="xref" href="../api/FubarDev.WebDavServer.Locking.Lock.html">Lock</a> and <a class="xref" href="../api/FubarDev.WebDavServer.Locking.IActiveLock.html">IActiveLock</a>
 classes.</p>
 </li>
 <li><p><a class="xref" href="../api/FubarDev.WebDavServer.Locking.Lock.html">Lock</a></p>
 <p>This is the class that contains all information about a lock that the caller wants to create.
 It&#39;s created by a <code>LOCK</code> request or any other request that creates an implicit lock.</p>
 </li>
-<li><p><a class="xref" href="../api/FubarDev.WebDavServer.Locking.ActiveLock.html">ActiveLock</a></p>
-<p>This class contains all information about an active lock, like e.g. the state token, the time
+<li><p><a class="xref" href="../api/FubarDev.WebDavServer.Locking.IActiveLock.html">IActiveLock</a></p>
+<p>This interface contains all information about an active lock, like e.g. the state token, the time
 this lock was issued and when it expires.</p>
 </li>
 </ul>
