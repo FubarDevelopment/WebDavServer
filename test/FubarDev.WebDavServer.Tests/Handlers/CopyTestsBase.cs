@@ -29,8 +29,8 @@ namespace FubarDev.WebDavServer.Tests.Handlers
         protected CopyTestsBase(RecursiveProcessingMode processingMode, params XName[] propertiesToIgnore)
             : base(processingMode)
         {
-            _propsToIgnoreDocument = propertiesToIgnore.Union(new[] { LockDiscoveryProperty.PropertyName }).ToArray();
-            _propsToIgnoreCollection = propertiesToIgnore.Union(new[] { LockDiscoveryProperty.PropertyName, GetETagProperty.PropertyName }).ToArray();
+            _propsToIgnoreDocument = propertiesToIgnore.Union(new[] { LockDiscoveryProperty.PropertyName, DisplayNameProperty.PropertyName }).ToArray();
+            _propsToIgnoreCollection = propertiesToIgnore.Union(new[] { LockDiscoveryProperty.PropertyName, DisplayNameProperty.PropertyName, GetETagProperty.PropertyName }).ToArray();
             Dispatcher = ServiceProvider.GetRequiredService<IWebDavDispatcher>();
         }
 
