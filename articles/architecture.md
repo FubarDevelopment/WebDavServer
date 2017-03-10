@@ -85,7 +85,7 @@ The locking functionality consists of the following main parts:
 * [ILock](xref:FubarDev.WebDavServer.Locking.ILock)
 
   This is the base interface for all lock related information. It's implemented by both the
-  [Lock](xref:FubarDev.WebDavServer.Locking.Lock) and [ActiveLock](xref:FubarDev.WebDavServer.Locking.ActiveLock)
+  [Lock](xref:FubarDev.WebDavServer.Locking.Lock) and [IActiveLock](xref:FubarDev.WebDavServer.Locking.IActiveLock)
   classes.
 
 * [Lock](xref:FubarDev.WebDavServer.Locking.Lock)
@@ -93,9 +93,9 @@ The locking functionality consists of the following main parts:
   This is the class that contains all information about a lock that the caller wants to create.
   It's created by a `LOCK` request or any other request that creates an implicit lock.
 
-* [ActiveLock](xref:FubarDev.WebDavServer.Locking.ActiveLock)
+* [IActiveLock](xref:FubarDev.WebDavServer.Locking.IActiveLock)
 
-  This class contains all information about an active lock, like e.g. the state token, the time
+  This interface contains all information about an active lock, like e.g. the state token, the time
   this lock was issued and when it expires.
 
 ![screenshot](~/images/overview-locking.png)
