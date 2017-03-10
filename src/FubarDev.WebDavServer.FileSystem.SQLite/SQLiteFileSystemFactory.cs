@@ -2,6 +2,7 @@
 // Copyright (c) Fubar Development Junker. All rights reserved.
 // </copyright>
 
+using System.Diagnostics;
 using System.IO;
 using System.Security.Principal;
 
@@ -87,6 +88,9 @@ namespace FubarDev.WebDavServer.FileSystem.SQLite
         {
             if (File.Exists(dbFileName))
                 File.Delete(dbFileName);
+            var dbFileFolder = Path.GetDirectoryName(dbFileName);
+            Debug.Assert(dbFileFolder != null, "dbFileFolder != null");
+            Directory.CreateDirectory(dbFileFolder);
             using (var conn = new sqlitenet.SQLiteConnection(dbFileName))
             {
                 CreateDatabaseTables(conn);
