@@ -94,6 +94,12 @@ namespace FubarDev.WebDavServer.Props.Dead
         }
 
         /// <inheritdoc />
+        public bool IsDefaultValue(XElement element)
+        {
+            return false;
+        }
+
+        /// <inheritdoc />
         public void Init(XElement initialValue)
         {
             var lang = initialValue.Attribute(XNamespace.Xml + "lang")?.Value;

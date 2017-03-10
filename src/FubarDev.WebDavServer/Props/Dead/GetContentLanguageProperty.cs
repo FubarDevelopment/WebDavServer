@@ -97,5 +97,11 @@ namespace FubarDev.WebDavServer.Props.Dead
         {
             _value = Converter.FromElement(initialValue);
         }
+
+        /// <inheritdoc />
+        public bool IsDefaultValue(XElement element)
+        {
+            return false;
+        }
     }
 }

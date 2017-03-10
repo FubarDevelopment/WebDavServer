@@ -102,7 +102,9 @@ namespace FubarDev.WebDavServer.Engines.Local
             var elements = new List<XElement>();
             foreach (var property in properties)
             {
-                elements.Add(await property.GetXmlValueAsync(cancellationToken).ConfigureAwait(false));
+                var propValue = await property.GetXmlValueAsync(cancellationToken).ConfigureAwait(false);
+                if (!property.IsDefaultValue(propValue))
+                    elements.Add(propValue);
             }
 
             await propertyStore.SetAsync(_entry, elements, cancellationToken).ConfigureAwait(false);

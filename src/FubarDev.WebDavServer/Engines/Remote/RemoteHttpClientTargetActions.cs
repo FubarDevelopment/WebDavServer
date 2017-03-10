@@ -20,6 +20,7 @@ using FubarDev.WebDavServer.FileSystem;
 using FubarDev.WebDavServer.Model;
 using FubarDev.WebDavServer.Model.Headers;
 using FubarDev.WebDavServer.Props;
+using FubarDev.WebDavServer.Props.Dead;
 
 using JetBrains.Annotations;
 
@@ -454,7 +455,9 @@ namespace FubarDev.WebDavServer.Engines.Remote
             foreach (var property in properties)
             {
                 var element = await property.GetXmlValueAsync(cancellationToken).ConfigureAwait(false);
-                elements.Add(element);
+                var deadProp = property as IDeadProperty;
+                if (deadProp == null || !deadProp.IsDefaultValue(element))
+                    elements.Add(element);
             }
 
             var requestData = new propertyupdate()

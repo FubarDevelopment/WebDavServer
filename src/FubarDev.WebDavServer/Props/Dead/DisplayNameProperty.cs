@@ -65,7 +65,7 @@ namespace FubarDev.WebDavServer.Props.Dead
                 }
             }
 
-            var newName = _value = _hideExtension ? Path.GetFileNameWithoutExtension(_entry.Name) : _entry.Name;
+            var newName = _value = GetDefaultName();
             return newName;
         }
 
@@ -81,6 +81,18 @@ namespace FubarDev.WebDavServer.Props.Dead
         public void Init(XElement initialValue)
         {
             _value = Converter.FromElement(initialValue);
+        }
+
+        /// <inheritdoc />
+        public bool IsDefaultValue(XElement element)
+        {
+            return element == null
+                   || (!element.HasAttributes && Converter.FromElement(element) == GetDefaultName());
+        }
+
+        private string GetDefaultName()
+        {
+            return _hideExtension ? Path.GetFileNameWithoutExtension(_entry.Name) : _entry.Name;
         }
     }
 }

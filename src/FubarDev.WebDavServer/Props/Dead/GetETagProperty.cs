@@ -103,5 +103,11 @@ namespace FubarDev.WebDavServer.Props.Dead
         {
             return Converter.FromElement(await GetXmlValueAsync(ct).ConfigureAwait(false));
         }
+
+        /// <inheritdoc />
+        public bool IsDefaultValue(XElement element)
+        {
+            return false;
+        }
     }
 }
