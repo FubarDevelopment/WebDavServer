@@ -71,17 +71,75 @@
 own sanity, you should derive your implementation from <a class="xref" href="../api/FubarDev.WebDavServer.Locking.LockManagerBase.html">LockManagerBase</a>.</p>
 <p>The <a class="xref" href="../api/FubarDev.WebDavServer.Locking.LockManagerBase.html">LockManagerBase</a> class
 already implements the core functionality and uses a notion of a transaction
-that must be used to store and retrieve the active locks.</p>
+that must be used to store and retrieve the active locks. No lock can be modified
+until the transaction was either committed or rolled back (by disposing without
+committing).</p>
 <p>For this guide, we implement a lock manager that stores the active locks in files in a special directory.</p>
+<p>You can find the repository for this <a href="https://github.com/FubarDevelopment/WebDavServer-TextFileLockManager">project on GitHub</a>.</p>
 <h1 id="create-a-new-class">Create a new class</h1>
 <p>First, you have to create a new class derived from <a class="xref" href="../api/FubarDev.WebDavServer.Locking.LockManagerBase.html">LockManagerBase</a>. It needs to implement the
 <code>BeginTransactionAsync</code> method.</p>
 <p>We don&#39;t have a database that supports transactions, so we have to use a semaphore
-to restrict concurrent access to the file system.</p>
+to restrict concurrent access to the file system. Another solution might be using
+a lock file, which is overkill for this example.</p>
+<h1 id="storage">Storage</h1>
+<p>The file used to store the locks should be configured using an options class. This class should implement the
+<a class="xref" href="../api/FubarDev.WebDavServer.Locking.ILockManagerOptions.html">ILockManagerOptions</a> interface to avoid multiple
+options classes for the lock manager. A sufficient way to initialize the <a class="xref" href="../api/FubarDev.WebDavServer.Locking.ILockManagerOptions.html#FubarDev_WebDavServer_Locking_ILockManagerOptions_Rounding">Rounding</a>
+property is to create a new instance of <a class="xref" href="../api/FubarDev.WebDavServer.Locking.DefaultLockTimeRounding.html">DefaultLockTimeRounding</a> with
+<a class="xref" href="../api/FubarDev.WebDavServer.Locking.DefaultLockTimeRoundingMode.html#FubarDev_WebDavServer_Locking_DefaultLockTimeRoundingMode_OneSecond">DefaultLockTimeRoundingMode.OneSecond</a> as constructor
+parameter.</p>
+<h1 id="constructor">Constructor</h1>
+<p>The constructor should take a parameter of type <code>IOptions&lt;TextFileLockManagerOptions&gt;</code> and we pass its <code>Value</code> to the base
+class.</p>
 <h1 id="synchronization">Synchronization</h1>
 <p>For the synchronization, we use a <a class="xref" href="https://msdn.microsoft.com/en-us/library/system.threading.semaphoreslim(v=vs.110).aspx">SemaphoreSlim</a> and create it with an initial count of 1. In the <code>BeginTransactionAsync</code> method, we first have to call <a class="xref" href="https://msdn.microsoft.com/en-us/library/hh462805(v=vs.110).aspx">SemaphoreSlim.WaitAsync</a> and then we have to call <code>Release</code> on the semaphore in the <code>Dispose</code> method of our <code>ILockManagerTransaction</code> implementation.</p>
+<h1 id="file-format">File format</h1>
+<p>We just use a simple JSON file because we usually don&#39;t have many active locks and reading and writing a whole
+file doesn&#39;t cause a huge performance penalty.</p>
+<h2 id="structure">Structure</h2>
+<p>The structure of the file is just a list of objects that implement the <a class="xref" href="../api/FubarDev.WebDavServer.Locking.IActiveLock.html">IActiveLock</a> interface,
+but it also has to implement every property with a setter and an additional <code>Owner</code> property.</p>
+<h2 id="load-locks-after-restart">Load locks after restart</h2>
+<p>We have to load all active locks when we first open a transaction. Those locks must be passed to the lock cleanup task to
+ensure that the locks will be released when they expire.</p>
 <h1 id="implement-the-tranaction-interface">Implement the tranaction interface</h1>
-<p>Now we need to implement the transaction interface <a class="xref" href="../api/FubarDev.WebDavServer.Locking.LockManagerBase.ILockManagerTransaction.html">LockManagerBase.ILockManagerTransaction</a>.</p>
+<p>Now we need to implement the transaction interface <a class="xref" href="../api/FubarDev.WebDavServer.Locking.LockManagerBase.ILockManagerTransaction.html">LockManagerBase.ILockManagerTransaction</a>.
+The transaction interface consists of the following parts:</p>
+<ul>
+<li><p><a href="xref:FubarDev.WebDavServer.Locking.LockManagerBase.ILockManagerTransaction.GetActiveLocksAsync">ILockManagerTransaction.GetActiveLocksAsync</a></p>
+<p>This function is used to get all active locks.</p>
+</li>
+<li><p><a href="xref:FubarDev.WebDavServer.Locking.LockManagerBase.ILockManagerTransaction.AddAsync">ILockManagerTransaction.AddAsync</a></p>
+<p>Adds a new active lock.</p>
+</li>
+<li><p><a href="xref:FubarDev.WebDavServer.Locking.LockManagerBase.ILockManagerTransaction.UpdateAsync">ILockManagerTransaction.UpdateAsync</a></p>
+<p>Updates a new active lock.</p>
+</li>
+<li><p><a href="xref:FubarDev.WebDavServer.Locking.LockManagerBase.ILockManagerTransaction.RemoveAsync">ILockManagerTransaction.RemoveAsync</a></p>
+<p>Removes an active lock.</p>
+</li>
+<li><p><a href="xref:FubarDev.WebDavServer.Locking.LockManagerBase.ILockManagerTransaction.GetAsync">ILockManagerTransaction.GetAsync</a></p>
+<p>Gets an active lock by its state token.</p>
+</li>
+<li><p><a href="xref:FubarDev.WebDavServer.Locking.LockManagerBase.ILockManagerTransaction.CommitAsync">ILockManagerTransaction.CommitAsync</a></p>
+<p>Commits all changes made during the transaction.</p>
+</li>
+</ul>
+<h2 id="getactivelocksasync">GetActiveLocksAsync</h2>
+<p>This function just returns every row in the table holding the active locks.</p>
+<h2 id="idisposable-implementation">IDisposable implementation</h2>
+<p>This interface also inherits from <a class="xref" href="https://msdn.microsoft.com/en-us/library/system.idisposable(v=vs.110).aspx">IDisposable</a>. It depends on the state of the transaction
+what happens when the <code>Dispose</code> function is called:</p>
+<ul>
+<li><code>CommitAsync</code> called before <code>Dispose</code> results in a disposable of the resources.</li>
+<li><code>Dispose</code> <strong>without</strong> a <code>CommitAsync</code> results in a rollback and a disposable of the resources.</li>
+</ul>
+<h1 id="summary">Summary</h1>
+<p>The easiest way to implement a lock manager is to use a database that already supports transactions, but almost everything
+can be used to store the transactions. The most important thing is the synchronized access to the locks. It is also
+very important, that the <code>BeginTransaction</code> method blocks the caller until it&#39;s safe to update the locks.</p>
+<p>For databases like MongoDB, a <a href="https://docs.mongodb.com/manual/tutorial/perform-two-phase-commits/">two-phase commit</a> is encouraged.</p>
 
             </article>
           </div>
