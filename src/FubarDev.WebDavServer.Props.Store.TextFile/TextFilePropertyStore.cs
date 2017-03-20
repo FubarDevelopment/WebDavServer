@@ -71,7 +71,9 @@ namespace FubarDev.WebDavServer.Props.Store.TextFile
         /// <inheritdoc />
         public override int Cost => _options.EstimatedCost;
 
-        /// <inheritdoc />
+        /// <summary>
+        /// Gets or sets the root folder where the JSON file with the properties gets stored.
+        /// </summary>
         public string RootPath { get; set; }
 
         /// <inheritdoc />
