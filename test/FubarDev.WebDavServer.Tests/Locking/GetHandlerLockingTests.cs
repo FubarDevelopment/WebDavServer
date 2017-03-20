@@ -37,7 +37,7 @@ namespace FubarDev.WebDavServer.Tests.Locking
                     Assert.Equal("/test1.txt", activeLock.LockRoot.Href);
                     Assert.Equal(WebDavDepthHeaderValue.Zero.ToString(), activeLock.Depth, StringComparer.OrdinalIgnoreCase);
                     Assert.IsType<Exclusive>(activeLock.LockScope.Item);
-                    Assert.Null(activeLock.Owner);
+                    Assert.Null(activeLock.OwnerRaw);
                     Assert.Equal(WebDavTimeoutHeaderValue.CreateInfiniteWebDavTimeout().ToString(), activeLock.Timeout, StringComparer.OrdinalIgnoreCase);
                     Assert.NotNull(activeLock.LockToken?.Href);
                     Assert.True(Uri.IsWellFormedUriString(activeLock.LockToken.Href, UriKind.RelativeOrAbsolute));

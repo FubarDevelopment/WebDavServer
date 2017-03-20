@@ -2,14 +2,14 @@
 // Copyright (c) Fubar Development Junker. All rights reserved.
 // </copyright>
 
-using System.Linq;
+using System.Net.Http;
 using System.Threading.Tasks;
-using System.Xml;
 using System.Xml.Linq;
-using System.Xml.XPath;
 
 using DecaTec.WebDav;
 using DecaTec.WebDav.WebDavArtifacts;
+
+using FubarDev.WebDavServer.Model;
 
 using Xunit;
 
@@ -35,23 +35,23 @@ namespace FubarDev.WebDavServer.Tests.XmlLang
                 }).ConfigureAwait(false);
             findResult.EnsureSuccessStatusCode();
 
-            var findStatus = await WebDavResponseContentParser.ParseMultistatusResponseContentAsync(findResult.Content).ConfigureAwait(false);
-            var creationDateProp = findStatus.Response[0].Items.OfType<Propstat>().Where(x => x.Prop.CreationDateSpecified).Select(x => x.Prop).Single();
-            creationDateProp.Language = "en";
+            var findStatus = await Read(findResult.Content);
+            var creationDateProp = findStatus.Root?.Element(WebDavXml.Dav + "response")?.Element(WebDavXml.Dav + "propstat")?.Element(WebDavXml.Dav + "prop")?.Element(WebDavXml.Dav + "creationdate");
+            Assert.NotNull(creationDateProp);
+            creationDateProp.SetAttributeValue(XNamespace.Xml + "lang", "en");
 
-            var patchResult = await Client.PropPatchAsync(
-                string.Empty,
-                new PropertyUpdate()
-                {
-                    Items = new object[]
-                    {
-                        new Set()
-                        {
-                            Prop = creationDateProp,
-                        },
-                        new Remove(),
-                    },
-                }).ConfigureAwait(false);
+            var patchDoc = new XDocument(
+                new XElement(
+                    WebDavXml.Dav + "propertyupdate",
+                    new XElement(
+                        WebDavXml.Dav + "set",
+                        creationDateProp)));
+
+            var patchResult = await Client
+                                  .PropPatchAsync(
+                                      string.Empty,
+                                      patchDoc.ToString(SaveOptions.OmitDuplicateNamespaces))
+                                  .ConfigureAwait(false);
             patchResult.EnsureSuccessStatusCode();
 
             var findResult2 = await Client.PropFindAsync(
@@ -63,9 +63,10 @@ namespace FubarDev.WebDavServer.Tests.XmlLang
                 }).ConfigureAwait(false);
             findResult.EnsureSuccessStatusCode();
 
-            var findStatus2 = await WebDavResponseContentParser.ParseMultistatusResponseContentAsync(findResult2.Content).ConfigureAwait(false);
-            var creationDateProp2 = findStatus2.Response[0].Items.OfType<Propstat>().Where(x => x.Prop.CreationDateSpecified).Select(x => x.Prop).Single();
-            Assert.Null(creationDateProp2.Language);
+            var findStatus2 = await Read(findResult2.Content);
+            var creationDateProp2 = findStatus2.Root?.Element(WebDavXml.Dav + "response")?.Element(WebDavXml.Dav + "propstat")?.Element(WebDavXml.Dav + "prop")?.Element(WebDavXml.Dav + "creationdate");
+            Assert.NotNull(creationDateProp2);
+            Assert.Null(creationDateProp2.Attribute(XNamespace.Xml + "lang"));
         }
 
         [Fact]
@@ -85,23 +86,23 @@ namespace FubarDev.WebDavServer.Tests.XmlLang
                 }).ConfigureAwait(false);
             findResult.EnsureSuccessStatusCode();
 
-            var findStatus = await WebDavResponseContentParser.ParseMultistatusResponseContentAsync(findResult.Content).ConfigureAwait(false);
-            var displayName = findStatus.Response[0].Items.OfType<Propstat>().Select(x => x.Prop).Single();
-            displayName.Language = "en";
+            var findStatus = await Read(findResult.Content);
+            var displayNameProp = findStatus.Root?.Element(WebDavXml.Dav + "response")?.Element(WebDavXml.Dav + "propstat")?.Element(WebDavXml.Dav + "prop")?.Element(WebDavXml.Dav + "displayname");
+            Assert.NotNull(displayNameProp);
+            displayNameProp.SetAttributeValue(XNamespace.Xml + "lang", "en");
 
-            var patchResult = await Client.PropPatchAsync(
-                string.Empty,
-                new PropertyUpdate()
-                {
-                    Items = new object[]
-                    {
-                        new Set()
-                        {
-                            Prop = displayName,
-                        },
-                        new Remove(),
-                    },
-                }).ConfigureAwait(false);
+            var patchDoc = new XDocument(
+                new XElement(
+                    WebDavXml.Dav + "propertyupdate",
+                    new XElement(
+                        WebDavXml.Dav + "set",
+                        displayNameProp)));
+
+            var patchResult = await Client
+                                  .PropPatchAsync(
+                                      string.Empty,
+                                      patchDoc.ToString(SaveOptions.OmitDuplicateNamespaces))
+                                  .ConfigureAwait(false);
             patchResult.EnsureSuccessStatusCode();
 
             var findResult2 = await Client.PropFindAsync(
@@ -113,14 +114,16 @@ namespace FubarDev.WebDavServer.Tests.XmlLang
                 }).ConfigureAwait(false);
             findResult.EnsureSuccessStatusCode();
 
-            using (var s = await findResult2.Content.ReadAsStreamAsync().ConfigureAwait(false))
-            {
-                var doc = XDocument.Load(s);
-                var nsmgr = new XmlNamespaceManager(new NameTable());
-                nsmgr.AddNamespace("D", "DAV:");
-                var displaynameElement = doc.XPathSelectElements("/D:multistatus/D:response/D:propstat/D:prop/D:displayname", nsmgr).Single();
-                Assert.Equal("en", displaynameElement.Attribute(XNamespace.Xml + "lang")?.Value);
-            }
+            var findStatus2 = await Read(findResult2.Content);
+            var displayNameProp2 = findStatus2.Root?.Element(WebDavXml.Dav + "response")?.Element(WebDavXml.Dav + "propstat")?.Element(WebDavXml.Dav + "prop")?.Element(WebDavXml.Dav + "displayname");
+            Assert.NotNull(displayNameProp2);
+            Assert.Null(displayNameProp2.Attribute(XNamespace.Xml + "lang"));
+        }
+
+        private async Task<XDocument> Read(HttpContent content)
+        {
+            using (var stream = await content.ReadAsStreamAsync().ConfigureAwait(false))
+                return XDocument.Load(stream);
         }
     }
 }

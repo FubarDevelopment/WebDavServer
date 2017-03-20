@@ -41,7 +41,7 @@ namespace FubarDev.WebDavServer.Tests.Locking
                     Assert.Equal("/", activeLock.LockRoot.Href);
                     Assert.Equal(WebDavDepthHeaderValue.Infinity.ToString(), activeLock.Depth, StringComparer.OrdinalIgnoreCase);
                     Assert.IsType<Exclusive>(activeLock.LockScope.Item);
-                    Assert.Null(activeLock.Owner);
+                    Assert.Null(activeLock.OwnerRaw);
                     Assert.Equal(WebDavTimeoutHeaderValue.CreateInfiniteWebDavTimeout().ToString(), activeLock.Timeout, StringComparer.OrdinalIgnoreCase);
                     Assert.NotNull(activeLock.LockToken?.Href);
                     Assert.True(Uri.IsWellFormedUriString(activeLock.LockToken.Href, UriKind.RelativeOrAbsolute));
@@ -69,7 +69,7 @@ namespace FubarDev.WebDavServer.Tests.Locking
                     Assert.Equal("/", activeLock.LockRoot.Href);
                     Assert.Equal(WebDavDepthHeaderValue.Infinity.ToString(), activeLock.Depth, StringComparer.OrdinalIgnoreCase);
                     Assert.IsType<Exclusive>(activeLock.LockScope.Item);
-                    Assert.Null(activeLock.Owner);
+                    Assert.Null(activeLock.OwnerRaw);
                     Assert.Equal(WebDavTimeoutHeaderValue.CreateWebDavTimeout(TimeSpan.FromSeconds(1)).ToString(), activeLock.Timeout, StringComparer.OrdinalIgnoreCase);
                     Assert.NotNull(activeLock.LockToken?.Href);
                     Assert.True(Uri.IsWellFormedUriString(activeLock.LockToken.Href, UriKind.RelativeOrAbsolute));
@@ -87,7 +87,7 @@ namespace FubarDev.WebDavServer.Tests.Locking
                     {
                         LockScope = LockScope.CreateExclusiveLockScope(),
                         LockType = LockType.CreateWriteLockType(),
-                        Owner = new XElement("{DAV:}owner", "principal"),
+                        OwnerRaw = new XElement("{DAV:}owner", "principal"),
                     })
                 .ConfigureAwait(false);
             var prop = await WebDavResponseContentParser.ParsePropResponseContentAsync(response.EnsureSuccessStatusCode().Content).ConfigureAwait(false);
@@ -98,7 +98,7 @@ namespace FubarDev.WebDavServer.Tests.Locking
                     Assert.Equal("/", activeLock.LockRoot.Href);
                     Assert.Equal(WebDavDepthHeaderValue.Infinity.ToString(), activeLock.Depth, StringComparer.OrdinalIgnoreCase);
                     Assert.IsType<Exclusive>(activeLock.LockScope.Item);
-                    Assert.Equal("<owner xmlns=\"DAV:\">principal</owner>", activeLock.Owner.ToString(SaveOptions.DisableFormatting));
+                    Assert.Equal("<owner xmlns=\"DAV:\">principal</owner>", activeLock.OwnerRaw.ToString(SaveOptions.DisableFormatting));
                     Assert.Equal(WebDavTimeoutHeaderValue.CreateInfiniteWebDavTimeout().ToString(), activeLock.Timeout, StringComparer.OrdinalIgnoreCase);
                     Assert.NotNull(activeLock.LockToken?.Href);
                     Assert.True(Uri.IsWellFormedUriString(activeLock.LockToken.Href, UriKind.RelativeOrAbsolute));
@@ -116,7 +116,7 @@ namespace FubarDev.WebDavServer.Tests.Locking
                     {
                         LockScope = LockScope.CreateExclusiveLockScope(),
                         LockType = LockType.CreateWriteLockType(),
-                        Owner = new XElement("{DAV:}owner", new XElement("{DAV:}href", "http://localhost/uri-owner")),
+                        OwnerRaw = new XElement("{DAV:}owner", new XElement("{DAV:}href", "http://localhost/uri-owner")),
                     })
                 .ConfigureAwait(false);
             var prop = await WebDavResponseContentParser.ParsePropResponseContentAsync(response.EnsureSuccessStatusCode().Content).ConfigureAwait(false);
@@ -127,7 +127,7 @@ namespace FubarDev.WebDavServer.Tests.Locking
                     Assert.Equal("/", activeLock.LockRoot.Href);
                     Assert.Equal(WebDavDepthHeaderValue.Infinity.ToString(), activeLock.Depth, StringComparer.OrdinalIgnoreCase);
                     Assert.IsType<Exclusive>(activeLock.LockScope.Item);
-                    Assert.Equal("<owner xmlns=\"DAV:\"><href>http://localhost/uri-owner</href></owner>", activeLock.Owner.ToString(SaveOptions.DisableFormatting));
+                    Assert.Equal("<owner xmlns=\"DAV:\"><href>http://localhost/uri-owner</href></owner>", activeLock.OwnerRaw.ToString(SaveOptions.DisableFormatting));
                     Assert.Equal(WebDavTimeoutHeaderValue.CreateInfiniteWebDavTimeout().ToString(), activeLock.Timeout, StringComparer.OrdinalIgnoreCase);
                     Assert.NotNull(activeLock.LockToken?.Href);
                     Assert.True(Uri.IsWellFormedUriString(activeLock.LockToken.Href, UriKind.RelativeOrAbsolute));
@@ -145,7 +145,7 @@ namespace FubarDev.WebDavServer.Tests.Locking
                     {
                         LockScope = LockScope.CreateExclusiveLockScope(),
                         LockType = LockType.CreateWriteLockType(),
-                        Owner = new XElement("{DAV:}owner", new XAttribute("attr", "attr-value")),
+                        OwnerRaw = new XElement("{DAV:}owner", new XAttribute("attr", "attr-value")),
                     })
                 .ConfigureAwait(false);
             var prop = await WebDavResponseContentParser.ParsePropResponseContentAsync(response.EnsureSuccessStatusCode().Content).ConfigureAwait(false);
@@ -157,7 +157,7 @@ namespace FubarDev.WebDavServer.Tests.Locking
                     Assert.Equal("/", activeLock.LockRoot.Href);
                     Assert.Equal(WebDavDepthHeaderValue.Infinity.ToString(), activeLock.Depth, StringComparer.OrdinalIgnoreCase);
                     Assert.IsType<Exclusive>(activeLock.LockScope.Item);
-                    Assert.Equal("<owner attr=\"attr-value\" xmlns=\"DAV:\" />", activeLock.Owner.ToString(SaveOptions.DisableFormatting));
+                    Assert.Equal("<owner attr=\"attr-value\" xmlns=\"DAV:\" />", activeLock.OwnerRaw.ToString(SaveOptions.DisableFormatting));
                     Assert.Equal(WebDavTimeoutHeaderValue.CreateInfiniteWebDavTimeout().ToString(), activeLock.Timeout, StringComparer.OrdinalIgnoreCase);
                     Assert.NotNull(activeLock.LockToken?.Href);
                     Assert.True(Uri.IsWellFormedUriString(activeLock.LockToken.Href, UriKind.RelativeOrAbsolute));
@@ -213,7 +213,7 @@ namespace FubarDev.WebDavServer.Tests.Locking
                                     Assert.Equal("/", activeLock.LockRoot.Href);
                                     Assert.Equal(WebDavDepthHeaderValue.Infinity.ToString(), activeLock.Depth, StringComparer.OrdinalIgnoreCase);
                                     Assert.IsType<Exclusive>(activeLock.LockScope.Item);
-                                    Assert.Null(activeLock.Owner);
+                                    Assert.Null(activeLock.OwnerRaw);
                                     Assert.Equal(WebDavTimeoutHeaderValue.CreateInfiniteWebDavTimeout().ToString(), activeLock.Timeout, StringComparer.OrdinalIgnoreCase);
                                     Assert.NotNull(activeLock.LockToken?.Href);
                                     Assert.True(Uri.IsWellFormedUriString(activeLock.LockToken.Href, UriKind.RelativeOrAbsolute));
@@ -287,7 +287,7 @@ namespace FubarDev.WebDavServer.Tests.Locking
                     Assert.Equal("/test1.txt", activeLock.LockRoot.Href);
                     Assert.Equal(WebDavDepthHeaderValue.Zero.ToString(), activeLock.Depth, StringComparer.OrdinalIgnoreCase);
                     Assert.IsType<Exclusive>(activeLock.LockScope.Item);
-                    Assert.Null(activeLock.Owner);
+                    Assert.Null(activeLock.OwnerRaw);
                     Assert.Equal(WebDavTimeoutHeaderValue.CreateInfiniteWebDavTimeout().ToString(), activeLock.Timeout, StringComparer.OrdinalIgnoreCase);
                     Assert.NotNull(activeLock.LockToken?.Href);
                     Assert.True(Uri.IsWellFormedUriString(activeLock.LockToken.Href, UriKind.RelativeOrAbsolute));
