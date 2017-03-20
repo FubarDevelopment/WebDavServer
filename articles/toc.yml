@@ -4,3 +4,9 @@
   href: architecture.md
 - name: Getting started
   href: getting-started.md
+- name: Custom file system
+  href: custom-fs.md
+- name: Custom property store
+  href: custom-ps.md
+- name: Custom lock manager
+  href: custom-lm.md

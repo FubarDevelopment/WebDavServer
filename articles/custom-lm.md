@@ -60,27 +60,27 @@ ensure that the locks will be released when they expire.
 Now we need to implement the transaction interface [LockManagerBase.ILockManagerTransaction](xref:FubarDev.WebDavServer.Locking.LockManagerBase.ILockManagerTransaction).
 The transaction interface consists of the following parts:
 
-* [ILockManagerTransaction.GetActiveLocksAsync](xref:FubarDev.WebDavServer.Locking.LockManagerBase.ILockManagerTransaction.GetActiveLocksAsync)
+* [ILockManagerTransaction.GetActiveLocksAsync](xref:FubarDev.WebDavServer.Locking.LockManagerBase.ILockManagerTransaction.GetActiveLocksAsync(System.Threading.CancellationToken))
 
   This function is used to get all active locks.
 
-* [ILockManagerTransaction.AddAsync](xref:FubarDev.WebDavServer.Locking.LockManagerBase.ILockManagerTransaction.AddAsync)
+* [ILockManagerTransaction.AddAsync](xref:FubarDev.WebDavServer.Locking.LockManagerBase.ILockManagerTransaction.AddAsync(FubarDev.WebDavServer.Locking.IActiveLock,System.Threading.CancellationToken))
 
   Adds a new active lock.
 
-* [ILockManagerTransaction.UpdateAsync](xref:FubarDev.WebDavServer.Locking.LockManagerBase.ILockManagerTransaction.UpdateAsync)
+* [ILockManagerTransaction.UpdateAsync](xref:FubarDev.WebDavServer.Locking.LockManagerBase.ILockManagerTransaction.UpdateAsync(FubarDev.WebDavServer.Locking.IActiveLock,System.Threading.CancellationToken))
 
   Updates a new active lock.
 
-* [ILockManagerTransaction.RemoveAsync](xref:FubarDev.WebDavServer.Locking.LockManagerBase.ILockManagerTransaction.RemoveAsync)
+* [ILockManagerTransaction.RemoveAsync](xref:FubarDev.WebDavServer.Locking.LockManagerBase.ILockManagerTransaction.RemoveAsync(System.String,System.Threading.CancellationToken))
 
   Removes an active lock.
 
-* [ILockManagerTransaction.GetAsync](xref:FubarDev.WebDavServer.Locking.LockManagerBase.ILockManagerTransaction.GetAsync)
+* [ILockManagerTransaction.GetAsync](xref:FubarDev.WebDavServer.Locking.LockManagerBase.ILockManagerTransaction.GetAsync(System.String,System.Threading.CancellationToken))
 
   Gets an active lock by its state token.
 
-* [ILockManagerTransaction.CommitAsync](xref:FubarDev.WebDavServer.Locking.LockManagerBase.ILockManagerTransaction.CommitAsync)
+* [ILockManagerTransaction.CommitAsync](xref:FubarDev.WebDavServer.Locking.LockManagerBase.ILockManagerTransaction.CommitAsync(System.Threading.CancellationToken))
 
   Commits all changes made during the transaction.
 

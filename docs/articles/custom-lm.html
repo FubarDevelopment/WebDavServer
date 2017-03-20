@@ -107,22 +107,22 @@ ensure that the locks will be released when they expire.</p>
 <p>Now we need to implement the transaction interface <a class="xref" href="../api/FubarDev.WebDavServer.Locking.LockManagerBase.ILockManagerTransaction.html">LockManagerBase.ILockManagerTransaction</a>.
 The transaction interface consists of the following parts:</p>
 <ul>
-<li><p><a href="xref:FubarDev.WebDavServer.Locking.LockManagerBase.ILockManagerTransaction.GetActiveLocksAsync">ILockManagerTransaction.GetActiveLocksAsync</a></p>
+<li><p><a class="xref" href="../api/FubarDev.WebDavServer.Locking.LockManagerBase.ILockManagerTransaction.html#FubarDev_WebDavServer_Locking_LockManagerBase_ILockManagerTransaction_GetActiveLocksAsync_System_Threading_CancellationToken_">ILockManagerTransaction.GetActiveLocksAsync</a></p>
 <p>This function is used to get all active locks.</p>
 </li>
-<li><p><a href="xref:FubarDev.WebDavServer.Locking.LockManagerBase.ILockManagerTransaction.AddAsync">ILockManagerTransaction.AddAsync</a></p>
+<li><p><a class="xref" href="../api/FubarDev.WebDavServer.Locking.LockManagerBase.ILockManagerTransaction.html#FubarDev_WebDavServer_Locking_LockManagerBase_ILockManagerTransaction_AddAsync_FubarDev_WebDavServer_Locking_IActiveLock_System_Threading_CancellationToken_">ILockManagerTransaction.AddAsync</a></p>
 <p>Adds a new active lock.</p>
 </li>
-<li><p><a href="xref:FubarDev.WebDavServer.Locking.LockManagerBase.ILockManagerTransaction.UpdateAsync">ILockManagerTransaction.UpdateAsync</a></p>
+<li><p><a class="xref" href="../api/FubarDev.WebDavServer.Locking.LockManagerBase.ILockManagerTransaction.html#FubarDev_WebDavServer_Locking_LockManagerBase_ILockManagerTransaction_UpdateAsync_FubarDev_WebDavServer_Locking_IActiveLock_System_Threading_CancellationToken_">ILockManagerTransaction.UpdateAsync</a></p>
 <p>Updates a new active lock.</p>
 </li>
-<li><p><a href="xref:FubarDev.WebDavServer.Locking.LockManagerBase.ILockManagerTransaction.RemoveAsync">ILockManagerTransaction.RemoveAsync</a></p>
+<li><p><a class="xref" href="../api/FubarDev.WebDavServer.Locking.LockManagerBase.ILockManagerTransaction.html#FubarDev_WebDavServer_Locking_LockManagerBase_ILockManagerTransaction_RemoveAsync_System_String_System_Threading_CancellationToken_">ILockManagerTransaction.RemoveAsync</a></p>
 <p>Removes an active lock.</p>
 </li>
-<li><p><a href="xref:FubarDev.WebDavServer.Locking.LockManagerBase.ILockManagerTransaction.GetAsync">ILockManagerTransaction.GetAsync</a></p>
+<li><p><a class="xref" href="../api/FubarDev.WebDavServer.Locking.LockManagerBase.ILockManagerTransaction.html#FubarDev_WebDavServer_Locking_LockManagerBase_ILockManagerTransaction_GetAsync_System_String_System_Threading_CancellationToken_">ILockManagerTransaction.GetAsync</a></p>
 <p>Gets an active lock by its state token.</p>
 </li>
-<li><p><a href="xref:FubarDev.WebDavServer.Locking.LockManagerBase.ILockManagerTransaction.CommitAsync">ILockManagerTransaction.CommitAsync</a></p>
+<li><p><a class="xref" href="../api/FubarDev.WebDavServer.Locking.LockManagerBase.ILockManagerTransaction.html#FubarDev_WebDavServer_Locking_LockManagerBase_ILockManagerTransaction_CommitAsync_System_Threading_CancellationToken_">ILockManagerTransaction.CommitAsync</a></p>
 <p>Commits all changes made during the transaction.</p>
 </li>
 </ul>
