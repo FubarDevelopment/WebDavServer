@@ -38,7 +38,8 @@ class.
 
 # Synchronization
 
-For the synchronization, we use a [SemaphoreSlim](xref:System.Threading.SemaphoreSlim) and create it with an initial count of 1. In the `BeginTransactionAsync` method, we first have to call [SemaphoreSlim.WaitAsync](xref:System.Threading.SemaphoreSlim.WaitAsync) and then we have to call `Release` on the semaphore in the `Dispose` method of our `ILockManagerTransaction` implementation.
+For the synchronization, we use a [SemaphoreSlim](xref:System.Threading.SemaphoreSlim) and create it with an initial count of 1. In the `BeginTransactionAsync` method, we first have to call [SemaphoreSlim.WaitAsync](xref:System.Threading.SemaphoreSlim.WaitAsync) and then we have to call `Release` on the semaphore in the `Dispose` method of our `ILockManagerTransaction` implementation. For a cluster of WebDAV servers using the
+same lock file, one may use a lock file to synchronize access.
 
 # File format
 
