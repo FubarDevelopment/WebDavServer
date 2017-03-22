@@ -56,18 +56,24 @@ but it also has to implement every property with a setter and an additional `Own
 We have to load all active locks when we first open a transaction. Those locks must be passed to the lock cleanup task to
 ensure that the locks will be released when they expire.
 
-# Implement the tranaction interface
+# Implement the transaction interface
 
 Now we need to implement the transaction interface [LockManagerBase.ILockManagerTransaction](xref:FubarDev.WebDavServer.Locking.LockManagerBase.ILockManagerTransaction).
+
+In the new transaction class, we load the JSON file during construction and save the JSON file in the [ILockManagerTransaction.CommitAsync](xref:FubarDev.WebDavServer.Locking.LockManagerBase.ILockManagerTransaction.CommitAsync(System.Threading.CancellationToken)) method.
+
+## Transaction interface methods
+
 The transaction interface consists of the following parts:
 
 * [ILockManagerTransaction.GetActiveLocksAsync](xref:FubarDev.WebDavServer.Locking.LockManagerBase.ILockManagerTransaction.GetActiveLocksAsync(System.Threading.CancellationToken))
 
-  This function is used to get all active locks.
+  This function is used to get all active locks. We just cast the values of the dicitonary to
+  an [IActiveLock](xref:FubarDev.WebDavServer.Locking.IActiveLock) and return those as a list.
 
 * [ILockManagerTransaction.AddAsync](xref:FubarDev.WebDavServer.Locking.LockManagerBase.ILockManagerTransaction.AddAsync(FubarDev.WebDavServer.Locking.IActiveLock,System.Threading.CancellationToken))
 
-  Adds a new active lock.
+  Adds a new active lock. We're just adding the lock to the dictionary.
 
 * [ILockManagerTransaction.UpdateAsync](xref:FubarDev.WebDavServer.Locking.LockManagerBase.ILockManagerTransaction.UpdateAsync(FubarDev.WebDavServer.Locking.IActiveLock,System.Threading.CancellationToken))
 
@@ -83,7 +89,7 @@ The transaction interface consists of the following parts:
 
 * [ILockManagerTransaction.CommitAsync](xref:FubarDev.WebDavServer.Locking.LockManagerBase.ILockManagerTransaction.CommitAsync(System.Threading.CancellationToken))
 
-  Commits all changes made during the transaction.
+  Commits all changes made during the transaction. In our implementation, we'll just save the locks as JSON file.
 
 ## GetActiveLocksAsync
 
