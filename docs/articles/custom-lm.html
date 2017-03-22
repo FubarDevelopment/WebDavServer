@@ -93,7 +93,8 @@ parameter.</p>
 <p>The constructor should take a parameter of type <code>IOptions&lt;TextFileLockManagerOptions&gt;</code> and we pass its <code>Value</code> to the base
 class.</p>
 <h1 id="synchronization">Synchronization</h1>
-<p>For the synchronization, we use a <a class="xref" href="https://msdn.microsoft.com/en-us/library/system.threading.semaphoreslim(v=vs.110).aspx">SemaphoreSlim</a> and create it with an initial count of 1. In the <code>BeginTransactionAsync</code> method, we first have to call <a class="xref" href="https://msdn.microsoft.com/en-us/library/hh462805(v=vs.110).aspx">SemaphoreSlim.WaitAsync</a> and then we have to call <code>Release</code> on the semaphore in the <code>Dispose</code> method of our <code>ILockManagerTransaction</code> implementation.</p>
+<p>For the synchronization, we use a <a class="xref" href="https://msdn.microsoft.com/en-us/library/system.threading.semaphoreslim(v=vs.110).aspx">SemaphoreSlim</a> and create it with an initial count of 1. In the <code>BeginTransactionAsync</code> method, we first have to call <a class="xref" href="https://msdn.microsoft.com/en-us/library/hh462805(v=vs.110).aspx">SemaphoreSlim.WaitAsync</a> and then we have to call <code>Release</code> on the semaphore in the <code>Dispose</code> method of our <code>ILockManagerTransaction</code> implementation. For a cluster of WebDAV servers using the
+same lock file, one may use a lock file to synchronize access.</p>
 <h1 id="file-format">File format</h1>
 <p>We just use a simple JSON file because we usually don&#39;t have many active locks and reading and writing a whole
 file doesn&#39;t cause a huge performance penalty.</p>
@@ -103,15 +104,18 @@ but it also has to implement every property with a setter and an additional <cod
 <h2 id="load-locks-after-restart">Load locks after restart</h2>
 <p>We have to load all active locks when we first open a transaction. Those locks must be passed to the lock cleanup task to
 ensure that the locks will be released when they expire.</p>
-<h1 id="implement-the-tranaction-interface">Implement the tranaction interface</h1>
-<p>Now we need to implement the transaction interface <a class="xref" href="../api/FubarDev.WebDavServer.Locking.LockManagerBase.ILockManagerTransaction.html">LockManagerBase.ILockManagerTransaction</a>.
-The transaction interface consists of the following parts:</p>
+<h1 id="implement-the-transaction-interface">Implement the transaction interface</h1>
+<p>Now we need to implement the transaction interface <a class="xref" href="../api/FubarDev.WebDavServer.Locking.LockManagerBase.ILockManagerTransaction.html">LockManagerBase.ILockManagerTransaction</a>.</p>
+<p>In the new transaction class, we load the JSON file during construction and save the JSON file in the <a class="xref" href="../api/FubarDev.WebDavServer.Locking.LockManagerBase.ILockManagerTransaction.html#FubarDev_WebDavServer_Locking_LockManagerBase_ILockManagerTransaction_CommitAsync_System_Threading_CancellationToken_">ILockManagerTransaction.CommitAsync</a> method.</p>
+<h2 id="transaction-interface-methods">Transaction interface methods</h2>
+<p>The transaction interface consists of the following parts:</p>
 <ul>
 <li><p><a class="xref" href="../api/FubarDev.WebDavServer.Locking.LockManagerBase.ILockManagerTransaction.html#FubarDev_WebDavServer_Locking_LockManagerBase_ILockManagerTransaction_GetActiveLocksAsync_System_Threading_CancellationToken_">ILockManagerTransaction.GetActiveLocksAsync</a></p>
-<p>This function is used to get all active locks.</p>
+<p>This function is used to get all active locks. We just cast the values of the dicitonary to
+an <a class="xref" href="../api/FubarDev.WebDavServer.Locking.IActiveLock.html">IActiveLock</a> and return those as a list.</p>
 </li>
 <li><p><a class="xref" href="../api/FubarDev.WebDavServer.Locking.LockManagerBase.ILockManagerTransaction.html#FubarDev_WebDavServer_Locking_LockManagerBase_ILockManagerTransaction_AddAsync_FubarDev_WebDavServer_Locking_IActiveLock_System_Threading_CancellationToken_">ILockManagerTransaction.AddAsync</a></p>
-<p>Adds a new active lock.</p>
+<p>Adds a new active lock. We&#39;re just adding the lock to the dictionary.</p>
 </li>
 <li><p><a class="xref" href="../api/FubarDev.WebDavServer.Locking.LockManagerBase.ILockManagerTransaction.html#FubarDev_WebDavServer_Locking_LockManagerBase_ILockManagerTransaction_UpdateAsync_FubarDev_WebDavServer_Locking_IActiveLock_System_Threading_CancellationToken_">ILockManagerTransaction.UpdateAsync</a></p>
 <p>Updates a new active lock.</p>
@@ -123,7 +127,7 @@ The transaction interface consists of the following parts:</p>
 <p>Gets an active lock by its state token.</p>
 </li>
 <li><p><a class="xref" href="../api/FubarDev.WebDavServer.Locking.LockManagerBase.ILockManagerTransaction.html#FubarDev_WebDavServer_Locking_LockManagerBase_ILockManagerTransaction_CommitAsync_System_Threading_CancellationToken_">ILockManagerTransaction.CommitAsync</a></p>
-<p>Commits all changes made during the transaction.</p>
+<p>Commits all changes made during the transaction. In our implementation, we&#39;ll just save the locks as JSON file.</p>
 </li>
 </ul>
 <h2 id="getactivelocksasync">GetActiveLocksAsync</h2>
