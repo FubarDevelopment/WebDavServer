@@ -95,6 +95,7 @@ class.</p>
 <h1 id="synchronization">Synchronization</h1>
 <p>For the synchronization, we use a <a class="xref" href="https://msdn.microsoft.com/en-us/library/system.threading.semaphoreslim(v=vs.110).aspx">SemaphoreSlim</a> and create it with an initial count of 1. In the <code>BeginTransactionAsync</code> method, we first have to call <a class="xref" href="https://msdn.microsoft.com/en-us/library/hh462805(v=vs.110).aspx">SemaphoreSlim.WaitAsync</a> and then we have to call <code>Release</code> on the semaphore in the <code>Dispose</code> method of our <code>ILockManagerTransaction</code> implementation. For a cluster of WebDAV servers using the
 same lock file, one may use a lock file to synchronize access.</p>
+<p>You can find the changes in <a href="https://github.com/FubarDevelopment/WebDavServer-TextFileLockManager/commit/961319aba341423bee39e7968385c91d58771511">this GIT commit</a>.</p>
 <h1 id="file-format">File format</h1>
 <p>We just use a simple JSON file because we usually don&#39;t have many active locks and reading and writing a whole
 file doesn&#39;t cause a huge performance penalty.</p>
@@ -102,23 +103,22 @@ file doesn&#39;t cause a huge performance penalty.</p>
 <p>The structure of the file is just a list of objects that implement the <a class="xref" href="../api/FubarDev.WebDavServer.Locking.IActiveLock.html">IActiveLock</a> interface,
 but it also has to implement every property with a setter and an additional <code>Owner</code> property.</p>
 <h2 id="load-locks-after-restart">Load locks after restart</h2>
-<p>We have to load all active locks when we first open a transaction. Those locks must be passed to the lock cleanup task to
-ensure that the locks will be released when they expire.</p>
+<p>We have to load all active locks when we first open a transaction. Those locks must be passed to the lock cleanup task to ensure that the locks will be released when they expire. The implementation can be found in <a href="https://github.com/FubarDevelopment/WebDavServer-TextFileLockManager/commit/c22785f7783da79741c92149022a85a42053f47f">this GIT commit</a>.</p>
 <h1 id="implement-the-transaction-interface">Implement the transaction interface</h1>
 <p>Now we need to implement the transaction interface <a class="xref" href="../api/FubarDev.WebDavServer.Locking.LockManagerBase.ILockManagerTransaction.html">LockManagerBase.ILockManagerTransaction</a>.</p>
 <p>In the new transaction class, we load the JSON file during construction and save the JSON file in the <a class="xref" href="../api/FubarDev.WebDavServer.Locking.LockManagerBase.ILockManagerTransaction.html#FubarDev_WebDavServer_Locking_LockManagerBase_ILockManagerTransaction_CommitAsync_System_Threading_CancellationToken_">ILockManagerTransaction.CommitAsync</a> method.</p>
+<p>The lock needs to be converted to an internal representation using the AutoMapper.</p>
 <h2 id="transaction-interface-methods">Transaction interface methods</h2>
 <p>The transaction interface consists of the following parts:</p>
 <ul>
 <li><p><a class="xref" href="../api/FubarDev.WebDavServer.Locking.LockManagerBase.ILockManagerTransaction.html#FubarDev_WebDavServer_Locking_LockManagerBase_ILockManagerTransaction_GetActiveLocksAsync_System_Threading_CancellationToken_">ILockManagerTransaction.GetActiveLocksAsync</a></p>
-<p>This function is used to get all active locks. We just cast the values of the dicitonary to
-an <a class="xref" href="../api/FubarDev.WebDavServer.Locking.IActiveLock.html">IActiveLock</a> and return those as a list.</p>
+<p>This function is used to get all active locks. We just cast the values of the dicitonary to  an <a class="xref" href="../api/FubarDev.WebDavServer.Locking.IActiveLock.html">IActiveLock</a> and return those as a list. A sample implementation can be found in <a href="https://github.com/FubarDevelopment/WebDavServer-TextFileLockManager/commit/117137a82e167d82df5888c48a3d3d843a1868c2">this GIT commit</a>.</p>
 </li>
 <li><p><a class="xref" href="../api/FubarDev.WebDavServer.Locking.LockManagerBase.ILockManagerTransaction.html#FubarDev_WebDavServer_Locking_LockManagerBase_ILockManagerTransaction_AddAsync_FubarDev_WebDavServer_Locking_IActiveLock_System_Threading_CancellationToken_">ILockManagerTransaction.AddAsync</a></p>
-<p>Adds a new active lock. We&#39;re just adding the lock to the dictionary.</p>
+<p>Adds a new active lock. We&#39;re just adding the lock to the dictionary. An example implementation (with tests) can be found <a href="https://github.com/FubarDevelopment/WebDavServer-TextFileLockManager/commit/254e91583c0c21f2b4a4d3e5694ac3094921ea6f">on GitHub</a>.</p>
 </li>
 <li><p><a class="xref" href="../api/FubarDev.WebDavServer.Locking.LockManagerBase.ILockManagerTransaction.html#FubarDev_WebDavServer_Locking_LockManagerBase_ILockManagerTransaction_UpdateAsync_FubarDev_WebDavServer_Locking_IActiveLock_System_Threading_CancellationToken_">ILockManagerTransaction.UpdateAsync</a></p>
-<p>Updates a new active lock.</p>
+<p>Updates an active lock. This is done when the lock was refreshed. The implementation for this example can be found <a href="https://github.com/FubarDevelopment/WebDavServer-TextFileLockManager/commit/fa64422266779354f05f5e20f072cc133fb8fe20">on GitHub</a>.</p>
 </li>
 <li><p><a class="xref" href="../api/FubarDev.WebDavServer.Locking.LockManagerBase.ILockManagerTransaction.html#FubarDev_WebDavServer_Locking_LockManagerBase_ILockManagerTransaction_RemoveAsync_System_String_System_Threading_CancellationToken_">ILockManagerTransaction.RemoveAsync</a></p>
 <p>Removes an active lock.</p>
@@ -130,6 +130,7 @@ an <a class="xref" href="../api/FubarDev.WebDavServer.Locking.IActiveLock.html">
 <p>Commits all changes made during the transaction. In our implementation, we&#39;ll just save the locks as JSON file.</p>
 </li>
 </ul>
+<p>The implementation for <code>RemoveAsync</code> and <code>GetAsync</code> can be found in <a href="https://github.com/FubarDevelopment/WebDavServer-TextFileLockManager/commit/30cbf50d170a6ace1868a00aea0ff3716861f727">this GitHub commit</a>.</p>
 <h2 id="getactivelocksasync">GetActiveLocksAsync</h2>
 <p>This function just returns every row in the table holding the active locks.</p>
 <h2 id="idisposable-implementation">IDisposable implementation</h2>

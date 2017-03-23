@@ -93,6 +93,8 @@ The transaction interface consists of the following parts:
 
   Commits all changes made during the transaction. In our implementation, we'll just save the locks as JSON file.
 
+The implementation for `RemoveAsync` and `GetAsync` can be found in [this GitHub commit](https://github.com/FubarDevelopment/WebDavServer-TextFileLockManager/commit/30cbf50d170a6ace1868a00aea0ff3716861f727).
+
 ## GetActiveLocksAsync
 
 This function just returns every row in the table holding the active locks.
