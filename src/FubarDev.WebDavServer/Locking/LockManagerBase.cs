@@ -118,7 +118,7 @@ namespace FubarDev.WebDavServer.Locking
             /// </summary>
             /// <param name="stateToken">The state token to search for</param>
             /// <param name="cancellationToken">The cancellation token</param>
-            /// <returns>The active lock for the state token</returns>
+            /// <returns>The active lock for the state token or <see langword="null"/> when the lock wasn't found</returns>
             [NotNull]
             [ItemCanBeNull]
             Task<IActiveLock> GetAsync([NotNull] string stateToken, CancellationToken cancellationToken);
