@@ -54,7 +54,7 @@ namespace FubarDev.WebDavServer.FileSystem.SQLite
 
             var coll = entry as ICollection;
             if (coll != null)
-                return coll.GetMountTargetEntryAsync(SQLiteFileSystem.MountPointProvider);
+                return coll.GetMountTargetEntryAsync(SQLiteFileSystem);
 
             return Task.FromResult(entry);
         }
@@ -71,7 +71,7 @@ namespace FubarDev.WebDavServer.FileSystem.SQLite
                 var entry = CreateEntry(info);
                 var coll = entry as ICollection;
                 if (coll != null)
-                    entry = await coll.GetMountTargetEntryAsync(SQLiteFileSystem.MountPointProvider);
+                    entry = await coll.GetMountTargetEntryAsync(SQLiteFileSystem);
                 result.Add(entry);
             }
 

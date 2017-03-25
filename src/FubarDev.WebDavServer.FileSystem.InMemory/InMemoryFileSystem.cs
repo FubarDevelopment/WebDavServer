@@ -3,6 +3,7 @@
 // </copyright>
 
 using System;
+using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -18,9 +19,11 @@ namespace FubarDev.WebDavServer.FileSystem.InMemory
     /// <summary>
     /// An in-memory file system implementation
     /// </summary>
-    public class InMemoryFileSystem : IFileSystem
+    public class InMemoryFileSystem : IFileSystem, IMountPointManager
     {
         private readonly PathTraversalEngine _pathTraversalEngine;
+
+        private readonly Dictionary<Uri, IFileSystem> _mountPoints = new Dictionary<Uri, IFileSystem>();
 
         /// <summary>
         /// Initializes a new instance of the <see cref="InMemoryFileSystem"/> class.
@@ -29,7 +32,6 @@ namespace FubarDev.WebDavServer.FileSystem.InMemory
         /// <param name="pathTraversalEngine">The engine to traverse paths</param>
         /// <param name="systemClock">Interface for the access to the systems clock</param>
         /// <param name="deadPropertyFactory">A factory for dead properties</param>
-        /// <param name="mountPointProvider">The mount point provider</param>
         /// <param name="lockManager">The global lock manager</param>
         /// <param name="propertyStoreFactory">The store for dead properties</param>
         public InMemoryFileSystem(
@@ -37,13 +39,11 @@ namespace FubarDev.WebDavServer.FileSystem.InMemory
             [NotNull] PathTraversalEngine pathTraversalEngine,
             [NotNull] ISystemClock systemClock,
             [NotNull] IDeadPropertyFactory deadPropertyFactory,
-            [NotNull] IMountPointProvider mountPointProvider,
             ILockManager lockManager = null,
             IPropertyStoreFactory propertyStoreFactory = null)
         {
             SystemClock = systemClock;
             DeadPropertyFactory = deadPropertyFactory;
-            MountPointProvider = mountPointProvider;
             LockManager = lockManager;
             _pathTraversalEngine = pathTraversalEngine;
             var rootPath = mountPoint?.Path ?? new Uri(string.Empty, UriKind.Relative);
@@ -68,12 +68,6 @@ namespace FubarDev.WebDavServer.FileSystem.InMemory
         /// </summary>
         public IDeadPropertyFactory DeadPropertyFactory { get; }
 
-        /// <summary>
-        /// Gets the mount point manager
-        /// </summary>
-        [NotNull]
-        public IMountPointProvider MountPointProvider { get; }
-
         /// <inheritdoc />
         public AsyncLazy<ICollection> Root { get; }
 
@@ -92,9 +86,30 @@ namespace FubarDev.WebDavServer.FileSystem.InMemory
         public bool IsReadOnly { get; set; }
 
         /// <inheritdoc />
+        public IEnumerable<Uri> MountPoints => _mountPoints.Keys;
+
+        /// <inheritdoc />
         public Task<SelectionResult> SelectAsync(string path, CancellationToken ct)
         {
             return _pathTraversalEngine.TraverseAsync(this, path, ct);
+        }
+
+        /// <inheritdoc />
+        public bool TryGetMountPoint(Uri path, out IFileSystem destination)
+        {
+            return _mountPoints.TryGetValue(path, out destination);
+        }
+
+        /// <inheritdoc />
+        public void Mount(Uri source, IFileSystem destination)
+        {
+            _mountPoints.Add(source, destination);
+        }
+
+        /// <inheritdoc />
+        public void Unmount(Uri source)
+        {
+            _mountPoints.Remove(source);
         }
     }
 }

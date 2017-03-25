@@ -28,9 +28,6 @@ namespace FubarDev.WebDavServer.FileSystem.DotNet
         [NotNull]
         private readonly IDeadPropertyFactory _deadPropertyFactory;
 
-        [NotNull]
-        private readonly IMountPointProvider _mountPointProvider;
-
         [CanBeNull]
         private readonly IPropertyStoreFactory _propertyStoreFactory;
 
@@ -46,20 +43,17 @@ namespace FubarDev.WebDavServer.FileSystem.DotNet
         /// <param name="options">The options for this file system</param>
         /// <param name="pathTraversalEngine">The engine to traverse paths</param>
         /// <param name="deadPropertyFactory">A factory for dead properties</param>
-        /// <param name="mountPointProvider">The mount point provider</param>
         /// <param name="propertyStoreFactory">The store for dead properties</param>
         /// <param name="lockManager">The global lock manager</param>
         public DotNetFileSystemFactory(
             [NotNull] IOptions<DotNetFileSystemOptions> options,
             [NotNull] PathTraversalEngine pathTraversalEngine,
             [NotNull] IDeadPropertyFactory deadPropertyFactory,
-            [NotNull] IMountPointProvider mountPointProvider,
             IPropertyStoreFactory propertyStoreFactory = null,
             ILockManager lockManager = null)
         {
             _pathTraversalEngine = pathTraversalEngine;
             _deadPropertyFactory = deadPropertyFactory;
-            _mountPointProvider = mountPointProvider;
             _propertyStoreFactory = propertyStoreFactory;
             _lockManager = lockManager;
             _options = options.Value;
@@ -75,7 +69,7 @@ namespace FubarDev.WebDavServer.FileSystem.DotNet
 
             Directory.CreateDirectory(rootFileSystemPath);
 
-            return new DotNetFileSystem(_options, mountPoint, rootFileSystemPath, _pathTraversalEngine, _deadPropertyFactory, _mountPointProvider, _lockManager, _propertyStoreFactory);
+            return new DotNetFileSystem(_options, mountPoint, rootFileSystemPath, _pathTraversalEngine, _deadPropertyFactory, _lockManager, _propertyStoreFactory);
         }
     }
 }

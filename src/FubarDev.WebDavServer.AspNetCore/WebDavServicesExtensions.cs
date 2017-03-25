@@ -58,13 +58,6 @@ namespace Microsoft.Extensions.DependencyInjection
             services.TryAddSingleton<ISystemClock, SystemClock>();
             services.TryAddSingleton<ITimeoutPolicy, DefaultTimeoutPolicy>();
             services.TryAddScoped<IWebDavContext, WebDavContext>();
-            services.TryAddScoped<IMountPointManager, DefaultMountPointManager>();
-            services.TryAddScoped<IMountPointProvider>(
-                sp =>
-                {
-                    var mgnr = sp.GetRequiredService<IMountPointManager>();
-                    return mgnr;
-                });
             services.TryAddSingleton<ILockCleanupTask, LockCleanupTask>();
             services
                 .AddOptions()

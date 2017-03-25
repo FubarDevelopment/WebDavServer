@@ -32,9 +32,6 @@ namespace FubarDev.WebDavServer.FileSystem.SQLite
         [NotNull]
         private readonly IDeadPropertyFactory _deadPropertyFactory;
 
-        [NotNull]
-        private readonly IMountPointProvider _mountPointProvider;
-
         [CanBeNull]
         private readonly IPropertyStoreFactory _propertyStoreFactory;
 
@@ -50,20 +47,17 @@ namespace FubarDev.WebDavServer.FileSystem.SQLite
         /// <param name="options">The options for this file system</param>
         /// <param name="pathTraversalEngine">The engine to traverse paths</param>
         /// <param name="deadPropertyFactory">A factory for dead properties</param>
-        /// <param name="mountPointProvider">The mount point manager</param>
         /// <param name="propertyStoreFactory">The store for dead properties</param>
         /// <param name="lockManager">The global lock manager</param>
         public SQLiteFileSystemFactory(
             [NotNull] IOptions<SQLiteFileSystemOptions> options,
             [NotNull] PathTraversalEngine pathTraversalEngine,
             [NotNull] IDeadPropertyFactory deadPropertyFactory,
-            [NotNull] IMountPointProvider mountPointProvider,
             [CanBeNull] IPropertyStoreFactory propertyStoreFactory = null,
             [CanBeNull] ILockManager lockManager = null)
         {
             _pathTraversalEngine = pathTraversalEngine;
             _deadPropertyFactory = deadPropertyFactory;
-            _mountPointProvider = mountPointProvider;
             _propertyStoreFactory = propertyStoreFactory;
             _lockManager = lockManager;
             _options = options.Value;
@@ -121,7 +115,7 @@ namespace FubarDev.WebDavServer.FileSystem.SQLite
             EnsureDatabaseExists(dbFileName);
 
             var conn = new sqlitenet.SQLiteConnection(dbFileName);
-            return new SQLiteFileSystem(_options, mountPoint, conn, _pathTraversalEngine, _deadPropertyFactory, _mountPointProvider, _lockManager, _propertyStoreFactory);
+            return new SQLiteFileSystem(_options, mountPoint, conn, _pathTraversalEngine, _deadPropertyFactory, _lockManager, _propertyStoreFactory);
         }
 
         /// <summary>

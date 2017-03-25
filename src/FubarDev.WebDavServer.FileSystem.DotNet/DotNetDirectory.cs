@@ -68,7 +68,7 @@ namespace FubarDev.WebDavServer.FileSystem.DotNet
 
             var coll = entry as ICollection;
             if (coll != null)
-                return coll.GetMountTargetEntryAsync(DotNetFileSystem.MountPointProvider);
+                return coll.GetMountTargetEntryAsync(DotNetFileSystem);
 
             return Task.FromResult(entry);
         }
@@ -86,7 +86,7 @@ namespace FubarDev.WebDavServer.FileSystem.DotNet
                 {
                     var coll = entry as ICollection;
                     if (coll != null)
-                        entry = await coll.GetMountTargetAsync(DotNetFileSystem.MountPointProvider);
+                        entry = await coll.GetMountTargetAsync(DotNetFileSystem);
 
                     result.Add(entry);
                 }

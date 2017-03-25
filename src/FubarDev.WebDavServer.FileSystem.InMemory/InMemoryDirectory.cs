@@ -71,7 +71,7 @@ namespace FubarDev.WebDavServer.FileSystem.InMemory
 
             var coll = entry as ICollection;
             if (coll != null)
-                return coll.GetMountTargetEntryAsync(InMemoryFileSystem.MountPointProvider);
+                return coll.GetMountTargetEntryAsync(InMemoryFileSystem);
 
             return Task.FromResult<IEntry>(entry);
         }
@@ -85,7 +85,7 @@ namespace FubarDev.WebDavServer.FileSystem.InMemory
                 var coll = child as ICollection;
                 if (coll != null)
                 {
-                    result.Add(await coll.GetMountTargetAsync(InMemoryFileSystem.MountPointProvider).ConfigureAwait(false));
+                    result.Add(await coll.GetMountTargetAsync(InMemoryFileSystem).ConfigureAwait(false));
                 }
                 else
                 {

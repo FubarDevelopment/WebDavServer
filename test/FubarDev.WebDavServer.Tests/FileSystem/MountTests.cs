@@ -135,10 +135,9 @@ namespace FubarDev.WebDavServer.Tests.FileSystem
                 [NotNull] PathTraversalEngine pathTraversalEngine,
                 [NotNull] ISystemClock systemClock,
                 [NotNull] IDeadPropertyFactory deadPropertyFactory,
-                [NotNull] IMountPointProvider mountPointProvider,
                 ILockManager lockManager = null,
                 IPropertyStoreFactory propertyStoreFactory = null)
-                : base(pathTraversalEngine, systemClock, deadPropertyFactory, mountPointProvider, lockManager, propertyStoreFactory)
+                : base(pathTraversalEngine, systemClock, deadPropertyFactory, lockManager, propertyStoreFactory)
             {
                 _serviceProvider = serviceProvider;
             }
@@ -156,8 +155,7 @@ namespace FubarDev.WebDavServer.Tests.FileSystem
                 testMountPointFileSystem.RootCollection.CreateDocument("test.txt").Data = new MemoryStream(Encoding.UTF8.GetBytes("Hello!"));
 
                 // Add mount point
-                var mountPointManager = _serviceProvider.GetRequiredService<IMountPointManager>();
-                mountPointManager.Mount(testMountPoint.Path, testMountPointFileSystem);
+                fileSystem.Mount(testMountPoint.Path, testMountPointFileSystem);
 
                 // Make the root file system read-only
                 fileSystem.IsReadOnly = true;

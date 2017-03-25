@@ -12,8 +12,13 @@ namespace FubarDev.WebDavServer.FileSystem.Mount
     /// <summary>
     /// Base interface that allows querying the mount points
     /// </summary>
-    public interface IMountPointProvider : IReadOnlyCollection<Uri>
+    public interface IMountPointProvider
     {
+        /// <summary>
+        /// Gets all mount points
+        /// </summary>
+        IEnumerable<Uri> MountPoints { get; }
+
         /// <summary>
         /// Try to get a mount point for a given path
         /// </summary>

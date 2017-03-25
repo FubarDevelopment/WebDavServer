@@ -64,8 +64,6 @@
     <Compile Include="$(MSBuildThisFileDirectory)FileSystem\IFileSystemFactory.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)FileSystem\ILocalFileSystem.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)FileSystem\IRecusiveChildrenCollector.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)FileSystem\Mount\DefaultMountPoint.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)FileSystem\Mount\DefaultMountPointManager.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)FileSystem\Mount\IMountPointManager.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)FileSystem\Mount\IMountPointProvider.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)FileSystem\PathTraversalEngine.cs" />

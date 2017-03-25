@@ -3,6 +3,7 @@
 // </copyright>
 
 using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Threading;
@@ -22,13 +23,15 @@ namespace FubarDev.WebDavServer.FileSystem.SQLite
     /// <summary>
     /// The <see cref="ILocalFileSystem"/> implementation using an SQLite database
     /// </summary>
-    public class SQLiteFileSystem : ILocalFileSystem, IDisposable
+    public class SQLiteFileSystem : ILocalFileSystem, IDisposable, IMountPointManager
     {
         [NotNull]
         private readonly db::SQLiteConnection _connection;
 
         [NotNull]
         private readonly PathTraversalEngine _pathTraversalEngine;
+
+        private readonly Dictionary<Uri, IFileSystem> _mountPoints = new Dictionary<Uri, IFileSystem>();
 
         /// <summary>
         /// Initializes a new instance of the <see cref="SQLiteFileSystem"/> class.
@@ -38,7 +41,6 @@ namespace FubarDev.WebDavServer.FileSystem.SQLite
         /// <param name="connection">The SQLite database connection</param>
         /// <param name="pathTraversalEngine">The engine to traverse paths</param>
         /// <param name="deadPropertyFactory">A factory for dead properties</param>
-        /// <param name="mountPointProvider">The mount point manager</param>
         /// <param name="lockManager">The global lock manager</param>
         /// <param name="propertyStoreFactory">The store for dead properties</param>
         public SQLiteFileSystem(
@@ -47,14 +49,12 @@ namespace FubarDev.WebDavServer.FileSystem.SQLite
             [NotNull] db::SQLiteConnection connection,
             [NotNull] PathTraversalEngine pathTraversalEngine,
             [NotNull] IDeadPropertyFactory deadPropertyFactory,
-            [NotNull] IMountPointProvider mountPointProvider,
             [CanBeNull] ILockManager lockManager = null,
             [CanBeNull] IPropertyStoreFactory propertyStoreFactory = null)
         {
             RootDirectoryPath = Path.GetDirectoryName(connection.DatabasePath);
             LockManager = lockManager;
             DeadPropertyFactory = deadPropertyFactory;
-            MountPointProvider = mountPointProvider;
             _connection = connection;
             _pathTraversalEngine = pathTraversalEngine;
             Options = options;
@@ -74,12 +74,6 @@ namespace FubarDev.WebDavServer.FileSystem.SQLite
         /// Gets the factory for dead properties
         /// </summary>
         public IDeadPropertyFactory DeadPropertyFactory { get; }
-
-        /// <summary>
-        /// Gets the mount point manager
-        /// </summary>
-        [NotNull]
-        public IMountPointProvider MountPointProvider { get; }
 
         /// <summary>
         /// Gets the SQLite DB connection
@@ -105,9 +99,30 @@ namespace FubarDev.WebDavServer.FileSystem.SQLite
         public bool HasSubfolders { get; } = false;
 
         /// <inheritdoc />
+        public IEnumerable<Uri> MountPoints => _mountPoints.Keys;
+
+        /// <inheritdoc />
         public Task<SelectionResult> SelectAsync(string path, CancellationToken ct)
         {
             return _pathTraversalEngine.TraverseAsync(this, path, ct);
+        }
+
+        /// <inheritdoc />
+        public bool TryGetMountPoint(Uri path, out IFileSystem destination)
+        {
+            return _mountPoints.TryGetValue(path, out destination);
+        }
+
+        /// <inheritdoc />
+        public void Mount(Uri source, IFileSystem destination)
+        {
+            _mountPoints.Add(source, destination);
+        }
+
+        /// <inheritdoc />
+        public void Unmount(Uri source)
+        {
+            _mountPoints.Remove(source);
         }
 
         /// <inheritdoc />
