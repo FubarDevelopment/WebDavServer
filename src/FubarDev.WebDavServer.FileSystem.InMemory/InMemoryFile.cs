@@ -54,6 +54,9 @@ namespace FubarDev.WebDavServer.FileSystem.InMemory
         /// <inheritdoc />
         public override async Task<DeleteResult> DeleteAsync(CancellationToken cancellationToken)
         {
+            if (InMemoryFileSystem.IsReadOnly)
+                throw new UnauthorizedAccessException("Failed to modify a read-only file system");
+
             if (InMemoryParent == null)
                 throw new InvalidOperationException("The document must belong to a collection");
 
@@ -80,6 +83,9 @@ namespace FubarDev.WebDavServer.FileSystem.InMemory
         /// <inheritdoc />
         public Task<Stream> CreateAsync(CancellationToken cancellationToken)
         {
+            if (InMemoryFileSystem.IsReadOnly)
+                throw new UnauthorizedAccessException("Failed to modify a read-only file system");
+
             return Task.FromResult<Stream>(_data = new MyMemoryStream(this));
         }
 
@@ -114,6 +120,9 @@ namespace FubarDev.WebDavServer.FileSystem.InMemory
         /// <inheritdoc />
         public async Task<IDocument> MoveToAsync(ICollection collection, string name, CancellationToken cancellationToken)
         {
+            if (InMemoryFileSystem.IsReadOnly)
+                throw new UnauthorizedAccessException("Failed to modify a read-only file system");
+
             var sourcePropStore = FileSystem.PropertyStore;
             var destPropStore = collection.FileSystem.PropertyStore;
 

@@ -36,6 +36,9 @@ namespace FubarDev.WebDavServer.FileSystem.InMemory
         /// <inheritdoc />
         public override async Task<DeleteResult> DeleteAsync(CancellationToken cancellationToken)
         {
+            if (InMemoryFileSystem.IsReadOnly)
+                throw new UnauthorizedAccessException("Failed to modify a read-only file system");
+
             if (InMemoryParent == null)
                 throw new InvalidOperationException("The collection must belong to a collection");
 
@@ -70,6 +73,8 @@ namespace FubarDev.WebDavServer.FileSystem.InMemory
         /// <inheritdoc />
         public Task<IDocument> CreateDocumentAsync(string name, CancellationToken ct)
         {
+            if (InMemoryFileSystem.IsReadOnly)
+                throw new UnauthorizedAccessException("Failed to modify a read-only file system");
             if (_children.ContainsKey(name))
                 throw new IOException("Document or collection with the same name already exists");
             var newItem = new InMemoryFile(InMemoryFileSystem, this, Path.Append(name, false), name);
@@ -81,6 +86,8 @@ namespace FubarDev.WebDavServer.FileSystem.InMemory
         /// <inheritdoc />
         public Task<ICollection> CreateCollectionAsync(string name, CancellationToken ct)
         {
+            if (InMemoryFileSystem.IsReadOnly)
+                throw new UnauthorizedAccessException("Failed to modify a read-only file system");
             if (_children.ContainsKey(name))
                 throw new IOException("Document or collection with the same name already exists");
             var newItem = new InMemoryDirectory(InMemoryFileSystem, this, Path.AppendDirectory(name), name);
@@ -91,6 +98,8 @@ namespace FubarDev.WebDavServer.FileSystem.InMemory
 
         internal bool Remove(string name)
         {
+            if (InMemoryFileSystem.IsReadOnly)
+                throw new UnauthorizedAccessException("Failed to modify a read-only file system");
             return _children.Remove(name);
         }
     }

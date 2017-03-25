@@ -14,5 +14,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)InMemoryFile.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)InMemoryFileSystem.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)InMemoryFileSystemFactory.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)InMemoryFileSystemInitializationEventArgs.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)InMemoryFileSystemOptions.cs" />
   </ItemGroup>
 </Project>

@@ -60,6 +60,11 @@ namespace FubarDev.WebDavServer.FileSystem.InMemory
         /// <inheritdoc />
         public bool SupportsRangedRead { get; } = true;
 
+        /// <summary>
+        /// Gets or sets a value indicating whether the file system is read-only.
+        /// </summary>
+        public bool IsReadOnly { get; set; }
+
         /// <inheritdoc />
         public Task<SelectionResult> SelectAsync(string path, CancellationToken ct)
         {

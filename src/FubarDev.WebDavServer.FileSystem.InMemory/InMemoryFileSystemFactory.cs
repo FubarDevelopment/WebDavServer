@@ -13,6 +13,8 @@ using FubarDev.WebDavServer.Utils;
 
 using JetBrains.Annotations;
 
+using Microsoft.Extensions.Options;
+
 namespace FubarDev.WebDavServer.FileSystem.InMemory
 {
     /// <summary>
@@ -38,16 +40,21 @@ namespace FubarDev.WebDavServer.FileSystem.InMemory
         [CanBeNull]
         private readonly IPropertyStoreFactory _propertyStoreFactory;
 
+        [NotNull]
+        private readonly InMemoryFileSystemOptions _options;
+
         /// <summary>
         /// Initializes a new instance of the <see cref="InMemoryFileSystemFactory"/> class.
         /// </summary>
+        /// <param name="options">The options for the in-memory file system</param>
         /// <param name="pathTraversalEngine">The engine to traverse paths</param>
         /// <param name="systemClock">Interface for the access to the systems clock</param>
         /// <param name="deadPropertyFactory">A factory for dead properties</param>
         /// <param name="lockManager">The global lock manager</param>
         /// <param name="propertyStoreFactory">The store for dead properties</param>
-        public InMemoryFileSystemFactory(PathTraversalEngine pathTraversalEngine, ISystemClock systemClock, IDeadPropertyFactory deadPropertyFactory, ILockManager lockManager = null, IPropertyStoreFactory propertyStoreFactory = null)
+        public InMemoryFileSystemFactory(IOptions<InMemoryFileSystemOptions> options, PathTraversalEngine pathTraversalEngine, ISystemClock systemClock, IDeadPropertyFactory deadPropertyFactory, ILockManager lockManager = null, IPropertyStoreFactory propertyStoreFactory = null)
         {
+            _options = options.Value ?? new InMemoryFileSystemOptions();
             _pathTraversalEngine = pathTraversalEngine;
             _systemClock = systemClock;
             _deadPropertyFactory = deadPropertyFactory;
@@ -66,7 +73,17 @@ namespace FubarDev.WebDavServer.FileSystem.InMemory
             if (!_fileSystems.TryGetValue(userName, out fileSystem))
             {
                 fileSystem = new InMemoryFileSystem(_pathTraversalEngine, _systemClock, _deadPropertyFactory, _lockManager, _propertyStoreFactory);
+                var eventArgs = new InMemoryFileSystemInitializationEventArgs(fileSystem, principal);
+                _options.OnInitialize(this, eventArgs);
+                fileSystem.IsReadOnly = eventArgs.IsReadOnly;
                 _fileSystems.Add(userName, fileSystem);
+            }
+            else
+            {
+                fileSystem.IsReadOnly = false;
+                var eventArgs = new InMemoryFileSystemInitializationEventArgs(fileSystem, principal);
+                _options.OnUpdate(this, eventArgs);
+                fileSystem.IsReadOnly = eventArgs.IsReadOnly;
             }
 
             return fileSystem;
