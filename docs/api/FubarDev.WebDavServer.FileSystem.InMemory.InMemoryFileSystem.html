@@ -107,20 +107,20 @@
               <h6><strong>Assembly</strong>:FubarDev.WebDavServer.FileSystem.InMemory.dll</h6>
               <h5 id="FubarDev_WebDavServer_FileSystem_InMemory_InMemoryFileSystem_syntax">Syntax</h5>
               <div class="codewrapper">
-                <pre><code class="lang-csharp hljs">public class InMemoryFileSystem : IFileSystem</code></pre>
+                <pre><code class="lang-csharp hljs">public class InMemoryFileSystem : IFileSystem, IMountPointManager, IMountPointProvider</code></pre>
               </div>
               <h3 id="constructors">Constructors
               </h3>
               
               
               <a id="FubarDev_WebDavServer_FileSystem_InMemory_InMemoryFileSystem__ctor_" data-uid="FubarDev.WebDavServer.FileSystem.InMemory.InMemoryFileSystem.#ctor*"></a>
-              <h4 id="FubarDev_WebDavServer_FileSystem_InMemory_InMemoryFileSystem__ctor_FubarDev_WebDavServer_FileSystem_ICollection_FubarDev_WebDavServer_FileSystem_PathTraversalEngine_FubarDev_WebDavServer_ISystemClock_FubarDev_WebDavServer_Props_Dead_IDeadPropertyFactory_FubarDev_WebDavServer_FileSystem_Mount_IMountPointProvider_FubarDev_WebDavServer_Locking_ILockManager_FubarDev_WebDavServer_Props_Store_IPropertyStoreFactory_" data-uid="FubarDev.WebDavServer.FileSystem.InMemory.InMemoryFileSystem.#ctor(FubarDev.WebDavServer.FileSystem.ICollection,FubarDev.WebDavServer.FileSystem.PathTraversalEngine,FubarDev.WebDavServer.ISystemClock,FubarDev.WebDavServer.Props.Dead.IDeadPropertyFactory,FubarDev.WebDavServer.FileSystem.Mount.IMountPointProvider,FubarDev.WebDavServer.Locking.ILockManager,FubarDev.WebDavServer.Props.Store.IPropertyStoreFactory)">InMemoryFileSystem(ICollection, PathTraversalEngine, ISystemClock, IDeadPropertyFactory, IMountPointProvider, ILockManager, IPropertyStoreFactory)</h4>
+              <h4 id="FubarDev_WebDavServer_FileSystem_InMemory_InMemoryFileSystem__ctor_FubarDev_WebDavServer_FileSystem_ICollection_FubarDev_WebDavServer_FileSystem_PathTraversalEngine_FubarDev_WebDavServer_ISystemClock_FubarDev_WebDavServer_Props_Dead_IDeadPropertyFactory_FubarDev_WebDavServer_Locking_ILockManager_FubarDev_WebDavServer_Props_Store_IPropertyStoreFactory_" data-uid="FubarDev.WebDavServer.FileSystem.InMemory.InMemoryFileSystem.#ctor(FubarDev.WebDavServer.FileSystem.ICollection,FubarDev.WebDavServer.FileSystem.PathTraversalEngine,FubarDev.WebDavServer.ISystemClock,FubarDev.WebDavServer.Props.Dead.IDeadPropertyFactory,FubarDev.WebDavServer.Locking.ILockManager,FubarDev.WebDavServer.Props.Store.IPropertyStoreFactory)">InMemoryFileSystem(ICollection, PathTraversalEngine, ISystemClock, IDeadPropertyFactory, ILockManager, IPropertyStoreFactory)</h4>
               <div class="markdown level1 summary"><p>Initializes a new instance of the <a class="xref" href="FubarDev.WebDavServer.FileSystem.InMemory.InMemoryFileSystem.html">InMemoryFileSystem</a> class.</p>
 </div>
               <div class="markdown level1 conceptual"></div>
               <h5 class="decalaration">Declaration</h5>
               <div class="codewrapper">
-                <pre><code class="lang-csharp hljs">public InMemoryFileSystem([CanBeNull] ICollection mountPoint, [NotNull] PathTraversalEngine pathTraversalEngine, [NotNull] ISystemClock systemClock, [NotNull] IDeadPropertyFactory deadPropertyFactory, [NotNull] IMountPointProvider mountPointProvider, ILockManager lockManager = null, IPropertyStoreFactory propertyStoreFactory = null)</code></pre>
+                <pre><code class="lang-csharp hljs">public InMemoryFileSystem([CanBeNull] ICollection mountPoint, [NotNull] PathTraversalEngine pathTraversalEngine, [NotNull] ISystemClock systemClock, [NotNull] IDeadPropertyFactory deadPropertyFactory, ILockManager lockManager = null, IPropertyStoreFactory propertyStoreFactory = null)</code></pre>
               </div>
               <h5 class="parameters">Parameters</h5>
               <table class="table table-bordered table-striped table-condensed">
@@ -154,12 +154,6 @@
                     <td><a class="xref" href="FubarDev.WebDavServer.Props.Dead.IDeadPropertyFactory.html">IDeadPropertyFactory</a></td>
                     <td><span class="parametername">deadPropertyFactory</span></td>
                     <td><p>A factory for dead properties</p>
-</td>
-                  </tr>
-                  <tr>
-                    <td><a class="xref" href="FubarDev.WebDavServer.FileSystem.Mount.IMountPointProvider.html">IMountPointProvider</a></td>
-                    <td><span class="parametername">mountPointProvider</span></td>
-                    <td><p>The mount point provider</p>
 </td>
                   </tr>
                   <tr>
@@ -260,15 +254,14 @@
                   <div><a class="xref" href="FubarDev.WebDavServer.FileSystem.IFileSystem.html#FubarDev_WebDavServer_FileSystem_IFileSystem_LockManager">IFileSystem.LockManager</a></div>
               
               
-              <a id="FubarDev_WebDavServer_FileSystem_InMemory_InMemoryFileSystem_MountPointProvider_" data-uid="FubarDev.WebDavServer.FileSystem.InMemory.InMemoryFileSystem.MountPointProvider*"></a>
-              <h4 id="FubarDev_WebDavServer_FileSystem_InMemory_InMemoryFileSystem_MountPointProvider" data-uid="FubarDev.WebDavServer.FileSystem.InMemory.InMemoryFileSystem.MountPointProvider">MountPointProvider</h4>
-              <div class="markdown level1 summary"><p>Gets the mount point manager</p>
+              <a id="FubarDev_WebDavServer_FileSystem_InMemory_InMemoryFileSystem_MountPoints_" data-uid="FubarDev.WebDavServer.FileSystem.InMemory.InMemoryFileSystem.MountPoints*"></a>
+              <h4 id="FubarDev_WebDavServer_FileSystem_InMemory_InMemoryFileSystem_MountPoints" data-uid="FubarDev.WebDavServer.FileSystem.InMemory.InMemoryFileSystem.MountPoints">MountPoints</h4>
+              <div class="markdown level1 summary"><p>Gets all mount points</p>
 </div>
               <div class="markdown level1 conceptual"></div>
               <h5 class="decalaration">Declaration</h5>
               <div class="codewrapper">
-                <pre><code class="lang-csharp hljs">[NotNull]
-public IMountPointProvider MountPointProvider { get; }</code></pre>
+                <pre><code class="lang-csharp hljs">public IEnumerable&lt;Uri&gt; MountPoints { get; }</code></pre>
               </div>
               <h5 class="propertyValue">Property Value</h5>
               <table class="table table-bordered table-striped table-condensed">
@@ -280,11 +273,13 @@ public IMountPointProvider MountPointProvider { get; }</code></pre>
                 </thead>
                 <tbody>
                   <tr>
-                    <td><a class="xref" href="FubarDev.WebDavServer.FileSystem.Mount.IMountPointProvider.html">IMountPointProvider</a></td>
+                    <td><a class="xref" href="https://msdn.microsoft.com/en-us/library/9eekhta0(v=vs.110).aspx">IEnumerable</a>&lt;<a class="xref" href="https://msdn.microsoft.com/en-us/library/system.uri(v=vs.110).aspx">Uri</a>&gt;</td>
                     <td></td>
                   </tr>
                 </tbody>
               </table>
+              <h5 class="implements">Implements</h5>
+                  <div><a class="xref" href="FubarDev.WebDavServer.FileSystem.Mount.IMountPointProvider.html#FubarDev_WebDavServer_FileSystem_Mount_IMountPointProvider_MountPoints">IMountPointProvider.MountPoints</a></div>
               
               
               <a id="FubarDev_WebDavServer_FileSystem_InMemory_InMemoryFileSystem_PropertyStore_" data-uid="FubarDev.WebDavServer.FileSystem.InMemory.InMemoryFileSystem.PropertyStore*"></a>
@@ -426,6 +421,43 @@ public InMemoryDirectory RootCollection { get; }</code></pre>
               </h3>
               
               
+              <a id="FubarDev_WebDavServer_FileSystem_InMemory_InMemoryFileSystem_Mount_" data-uid="FubarDev.WebDavServer.FileSystem.InMemory.InMemoryFileSystem.Mount*"></a>
+              <h4 id="FubarDev_WebDavServer_FileSystem_InMemory_InMemoryFileSystem_Mount_System_Uri_FubarDev_WebDavServer_FileSystem_IFileSystem_" data-uid="FubarDev.WebDavServer.FileSystem.InMemory.InMemoryFileSystem.Mount(System.Uri,FubarDev.WebDavServer.FileSystem.IFileSystem)">Mount(Uri, IFileSystem)</h4>
+              <div class="markdown level1 summary"><p>Mount a <span class="paramref">source</span> to a <span class="paramref">destination</span></p>
+</div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public void Mount(Uri source, IFileSystem destination)</code></pre>
+              </div>
+              <h5 class="parameters">Parameters</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Name</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><a class="xref" href="https://msdn.microsoft.com/en-us/library/system.uri(v=vs.110).aspx">Uri</a></td>
+                    <td><span class="parametername">source</span></td>
+                    <td><p>The source path</p>
+</td>
+                  </tr>
+                  <tr>
+                    <td><a class="xref" href="FubarDev.WebDavServer.FileSystem.IFileSystem.html">IFileSystem</a></td>
+                    <td><span class="parametername">destination</span></td>
+                    <td><p>The destination file system</p>
+</td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 class="implements">Implements</h5>
+                  <div><a class="xref" href="FubarDev.WebDavServer.FileSystem.Mount.IMountPointManager.html#FubarDev_WebDavServer_FileSystem_Mount_IMountPointManager_Mount_System_Uri_FubarDev_WebDavServer_FileSystem_IFileSystem_">IMountPointManager.Mount(Uri, IFileSystem)</a></div>
+              
+              
               <a id="FubarDev_WebDavServer_FileSystem_InMemory_InMemoryFileSystem_SelectAsync_" data-uid="FubarDev.WebDavServer.FileSystem.InMemory.InMemoryFileSystem.SelectAsync*"></a>
               <h4 id="FubarDev_WebDavServer_FileSystem_InMemory_InMemoryFileSystem_SelectAsync_System_String_System_Threading_CancellationToken_" data-uid="FubarDev.WebDavServer.FileSystem.InMemory.InMemoryFileSystem.SelectAsync(System.String,System.Threading.CancellationToken)">SelectAsync(String, CancellationToken)</h4>
               <div class="markdown level1 summary"><p>Finds an entry for a given path</p>
@@ -477,6 +509,90 @@ public InMemoryDirectory RootCollection { get; }</code></pre>
               </table>
               <h5 class="implements">Implements</h5>
                   <div><a class="xref" href="FubarDev.WebDavServer.FileSystem.IFileSystem.html#FubarDev_WebDavServer_FileSystem_IFileSystem_SelectAsync_System_String_System_Threading_CancellationToken_">IFileSystem.SelectAsync(String, CancellationToken)</a></div>
+              
+              
+              <a id="FubarDev_WebDavServer_FileSystem_InMemory_InMemoryFileSystem_TryGetMountPoint_" data-uid="FubarDev.WebDavServer.FileSystem.InMemory.InMemoryFileSystem.TryGetMountPoint*"></a>
+              <h4 id="FubarDev_WebDavServer_FileSystem_InMemory_InMemoryFileSystem_TryGetMountPoint_System_Uri_FubarDev_WebDavServer_FileSystem_IFileSystem__" data-uid="FubarDev.WebDavServer.FileSystem.InMemory.InMemoryFileSystem.TryGetMountPoint(System.Uri,FubarDev.WebDavServer.FileSystem.IFileSystem@)">TryGetMountPoint(Uri, out IFileSystem)</h4>
+              <div class="markdown level1 summary"><p>Try to get a mount point for a given path</p>
+</div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public bool TryGetMountPoint(Uri path, out IFileSystem destination)</code></pre>
+              </div>
+              <h5 class="parameters">Parameters</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Name</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><a class="xref" href="https://msdn.microsoft.com/en-us/library/system.uri(v=vs.110).aspx">Uri</a></td>
+                    <td><span class="parametername">path</span></td>
+                    <td><p>The path to get the destination file system for</p>
+</td>
+                  </tr>
+                  <tr>
+                    <td><a class="xref" href="FubarDev.WebDavServer.FileSystem.IFileSystem.html">IFileSystem</a></td>
+                    <td><span class="parametername">destination</span></td>
+                    <td><p>The destination file system</p>
+</td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 class="returns">Returns</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><a class="xref" href="https://msdn.microsoft.com/en-us/library/system.boolean(v=vs.110).aspx">Boolean</a></td>
+                    <td><p><span class="xref">true</span> when there is a destination file system for a <span class="paramref">path</span></p>
+</td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 class="implements">Implements</h5>
+                  <div><a class="xref" href="FubarDev.WebDavServer.FileSystem.Mount.IMountPointProvider.html#FubarDev_WebDavServer_FileSystem_Mount_IMountPointProvider_TryGetMountPoint_System_Uri_FubarDev_WebDavServer_FileSystem_IFileSystem__">IMountPointProvider.TryGetMountPoint(Uri, out IFileSystem)</a></div>
+              
+              
+              <a id="FubarDev_WebDavServer_FileSystem_InMemory_InMemoryFileSystem_Unmount_" data-uid="FubarDev.WebDavServer.FileSystem.InMemory.InMemoryFileSystem.Unmount*"></a>
+              <h4 id="FubarDev_WebDavServer_FileSystem_InMemory_InMemoryFileSystem_Unmount_System_Uri_" data-uid="FubarDev.WebDavServer.FileSystem.InMemory.InMemoryFileSystem.Unmount(System.Uri)">Unmount(Uri)</h4>
+              <div class="markdown level1 summary"><p>Removes a mount from the <span class="paramref">source</span></p>
+</div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public void Unmount(Uri source)</code></pre>
+              </div>
+              <h5 class="parameters">Parameters</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Name</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><a class="xref" href="https://msdn.microsoft.com/en-us/library/system.uri(v=vs.110).aspx">Uri</a></td>
+                    <td><span class="parametername">source</span></td>
+                    <td><p>The source path</p>
+</td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 class="implements">Implements</h5>
+                  <div><a class="xref" href="FubarDev.WebDavServer.FileSystem.Mount.IMountPointManager.html#FubarDev_WebDavServer_FileSystem_Mount_IMountPointManager_Unmount_System_Uri_">IMountPointManager.Unmount(Uri)</a></div>
                         </article>
           </div>
           
