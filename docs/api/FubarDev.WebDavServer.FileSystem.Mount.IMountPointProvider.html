@@ -5,10 +5,10 @@
   <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-    <title>Interface IFileSystemFactory
+    <title>Interface IMountPointProvider
    </title>
     <meta name="viewport" content="width=device-width">
-    <meta name="title" content="Interface IFileSystemFactory
+    <meta name="title" content="Interface IMountPointProvider
    ">
     <meta name="generator" content="docfx 2.13.1.0">
     
@@ -69,30 +69,38 @@
             <article class="content wrap" id="_content">
               
               
-              <h1 id="FubarDev_WebDavServer_FileSystem_IFileSystemFactory" data-uid="FubarDev.WebDavServer.FileSystem.IFileSystemFactory">Interface IFileSystemFactory
+              <h1 id="FubarDev_WebDavServer_FileSystem_Mount_IMountPointProvider" data-uid="FubarDev.WebDavServer.FileSystem.Mount.IMountPointProvider">Interface IMountPointProvider
               </h1>
-              <div class="markdown level0 summary"><p>The file system factory</p>
+              <div class="markdown level0 summary"><p>Base interface that allows querying the mount points</p>
 </div>
               <div class="markdown level0 conceptual"></div>
-              <h6><strong>Namespace</strong>:FubarDev.WebDavServer.FileSystem</h6>
+              <div class="inheritedMembers">
+                <h5>Inherited Members</h5>
+                <div>
+                  <a class="xref" href="https://msdn.microsoft.com/en-us/library/hh881496(v=vs.110).aspx">IReadOnlyCollection&lt;Uri&gt;.Count</a>
+                </div>
+                <div>
+                  <a class="xref" href="https://msdn.microsoft.com/en-us/library/s793z9y2(v=vs.110).aspx">IEnumerable&lt;Uri&gt;.GetEnumerator()</a>
+                </div>
+              </div>
+              <h6><strong>Namespace</strong>:FubarDev.WebDavServer.FileSystem.Mount</h6>
               <h6><strong>Assembly</strong>:FubarDev.WebDavServer.dll</h6>
-              <h5 id="FubarDev_WebDavServer_FileSystem_IFileSystemFactory_syntax">Syntax</h5>
+              <h5 id="FubarDev_WebDavServer_FileSystem_Mount_IMountPointProvider_syntax">Syntax</h5>
               <div class="codewrapper">
-                <pre><code class="lang-csharp hljs">public interface IFileSystemFactory</code></pre>
+                <pre><code class="lang-csharp hljs">public interface IMountPointProvider : IReadOnlyCollection&lt;Uri&gt;, IEnumerable&lt;Uri&gt;, IEnumerable</code></pre>
               </div>
               <h3 id="methods">Methods
               </h3>
               
               
-              <a id="FubarDev_WebDavServer_FileSystem_IFileSystemFactory_CreateFileSystem_" data-uid="FubarDev.WebDavServer.FileSystem.IFileSystemFactory.CreateFileSystem*"></a>
-              <h4 id="FubarDev_WebDavServer_FileSystem_IFileSystemFactory_CreateFileSystem_FubarDev_WebDavServer_FileSystem_ICollection_System_Security_Principal_IPrincipal_" data-uid="FubarDev.WebDavServer.FileSystem.IFileSystemFactory.CreateFileSystem(FubarDev.WebDavServer.FileSystem.ICollection,System.Security.Principal.IPrincipal)">CreateFileSystem(ICollection, IPrincipal)</h4>
-              <div class="markdown level1 summary"><p>Gets the <a class="xref" href="FubarDev.WebDavServer.FileSystem.IFileSystem.html">IFileSystem</a> instance for the given <span class="paramref">principal</span></p>
+              <a id="FubarDev_WebDavServer_FileSystem_Mount_IMountPointProvider_TryGetMountPoint_" data-uid="FubarDev.WebDavServer.FileSystem.Mount.IMountPointProvider.TryGetMountPoint*"></a>
+              <h4 id="FubarDev_WebDavServer_FileSystem_Mount_IMountPointProvider_TryGetMountPoint_System_Uri_FubarDev_WebDavServer_FileSystem_IFileSystem__" data-uid="FubarDev.WebDavServer.FileSystem.Mount.IMountPointProvider.TryGetMountPoint(System.Uri,FubarDev.WebDavServer.FileSystem.IFileSystem@)">TryGetMountPoint(Uri, out IFileSystem)</h4>
+              <div class="markdown level1 summary"><p>Try to get a mount point for a given path</p>
 </div>
               <div class="markdown level1 conceptual"></div>
               <h5 class="decalaration">Declaration</h5>
               <div class="codewrapper">
-                <pre><code class="lang-csharp hljs">[NotNull]
-IFileSystem CreateFileSystem([CanBeNull] ICollection mountPoint, [NotNull] IPrincipal principal)</code></pre>
+                <pre><code class="lang-csharp hljs">bool TryGetMountPoint([NotNull] Uri path, out IFileSystem destination)</code></pre>
               </div>
               <h5 class="parameters">Parameters</h5>
               <table class="table table-bordered table-striped table-condensed">
@@ -105,15 +113,15 @@ IFileSystem CreateFileSystem([CanBeNull] ICollection mountPoint, [NotNull] IPrin
                 </thead>
                 <tbody>
                   <tr>
-                    <td><a class="xref" href="FubarDev.WebDavServer.FileSystem.ICollection.html">ICollection</a></td>
-                    <td><span class="parametername">mountPoint</span></td>
-                    <td><p>The mount point where this file system should be included</p>
+                    <td><a class="xref" href="https://msdn.microsoft.com/en-us/library/system.uri(v=vs.110).aspx">Uri</a></td>
+                    <td><span class="parametername">path</span></td>
+                    <td><p>The path to get the destination file system for</p>
 </td>
                   </tr>
                   <tr>
-                    <td><a class="xref" href="https://msdn.microsoft.com/en-us/library/system.security.principal.iprincipal(v=vs.110).aspx">IPrincipal</a></td>
-                    <td><span class="parametername">principal</span></td>
-                    <td><p>The current principal to get the <a class="xref" href="FubarDev.WebDavServer.FileSystem.IFileSystem.html">IFileSystem</a> instance for</p>
+                    <td><a class="xref" href="FubarDev.WebDavServer.FileSystem.IFileSystem.html">IFileSystem</a></td>
+                    <td><span class="parametername">destination</span></td>
+                    <td><p>The destination file system</p>
 </td>
                   </tr>
                 </tbody>
@@ -128,8 +136,8 @@ IFileSystem CreateFileSystem([CanBeNull] ICollection mountPoint, [NotNull] IPrin
                 </thead>
                 <tbody>
                   <tr>
-                    <td><a class="xref" href="FubarDev.WebDavServer.FileSystem.IFileSystem.html">IFileSystem</a></td>
-                    <td><p>The <a class="xref" href="FubarDev.WebDavServer.FileSystem.IFileSystem.html">IFileSystem</a> instance for the <span class="paramref">principal</span></p>
+                    <td><a class="xref" href="https://msdn.microsoft.com/en-us/library/system.boolean(v=vs.110).aspx">Boolean</a></td>
+                    <td><p><span class="xref">true</span> when there is a destination file system for a <span class="paramref">path</span></p>
 </td>
                   </tr>
                 </tbody>

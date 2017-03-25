@@ -116,13 +116,13 @@
               
               
               <a id="FubarDev_WebDavServer_FileSystem_InMemory_InMemoryEntry__ctor_" data-uid="FubarDev.WebDavServer.FileSystem.InMemory.InMemoryEntry.#ctor*"></a>
-              <h4 id="FubarDev_WebDavServer_FileSystem_InMemory_InMemoryEntry__ctor_FubarDev_WebDavServer_FileSystem_InMemory_InMemoryFileSystem_FubarDev_WebDavServer_FileSystem_InMemory_InMemoryDirectory_System_Uri_System_String_" data-uid="FubarDev.WebDavServer.FileSystem.InMemory.InMemoryEntry.#ctor(FubarDev.WebDavServer.FileSystem.InMemory.InMemoryFileSystem,FubarDev.WebDavServer.FileSystem.InMemory.InMemoryDirectory,System.Uri,System.String)">InMemoryEntry(InMemoryFileSystem, InMemoryDirectory, Uri, String)</h4>
+              <h4 id="FubarDev_WebDavServer_FileSystem_InMemory_InMemoryEntry__ctor_FubarDev_WebDavServer_FileSystem_InMemory_InMemoryFileSystem_FubarDev_WebDavServer_FileSystem_ICollection_System_Uri_System_String_" data-uid="FubarDev.WebDavServer.FileSystem.InMemory.InMemoryEntry.#ctor(FubarDev.WebDavServer.FileSystem.InMemory.InMemoryFileSystem,FubarDev.WebDavServer.FileSystem.ICollection,System.Uri,System.String)">InMemoryEntry(InMemoryFileSystem, ICollection, Uri, String)</h4>
               <div class="markdown level1 summary"><p>Initializes a new instance of the <a class="xref" href="FubarDev.WebDavServer.FileSystem.InMemory.InMemoryEntry.html">InMemoryEntry</a> class.</p>
 </div>
               <div class="markdown level1 conceptual"></div>
               <h5 class="decalaration">Declaration</h5>
               <div class="codewrapper">
-                <pre><code class="lang-csharp hljs">protected InMemoryEntry(InMemoryFileSystem fileSystem, InMemoryDirectory parent, Uri path, string name)</code></pre>
+                <pre><code class="lang-csharp hljs">protected InMemoryEntry(InMemoryFileSystem fileSystem, ICollection parent, Uri path, string name)</code></pre>
               </div>
               <h5 class="parameters">Parameters</h5>
               <table class="table table-bordered table-striped table-condensed">
@@ -141,7 +141,7 @@
 </td>
                   </tr>
                   <tr>
-                    <td><a class="xref" href="FubarDev.WebDavServer.FileSystem.InMemory.InMemoryDirectory.html">InMemoryDirectory</a></td>
+                    <td><a class="xref" href="FubarDev.WebDavServer.FileSystem.ICollection.html">ICollection</a></td>
                     <td><span class="parametername">parent</span></td>
                     <td><p>The parent collection</p>
 </td>
@@ -415,34 +415,6 @@ protected InMemoryDirectory InMemoryParent { get; }</code></pre>
               </table>
               <h5 class="implements">Implements</h5>
                   <div><a class="xref" href="FubarDev.WebDavServer.FileSystem.IEntry.html#FubarDev_WebDavServer_FileSystem_IEntry_Path">IEntry.Path</a></div>
-              
-              
-              <a id="FubarDev_WebDavServer_FileSystem_InMemory_InMemoryEntry_RootFileSystem_" data-uid="FubarDev.WebDavServer.FileSystem.InMemory.InMemoryEntry.RootFileSystem*"></a>
-              <h4 id="FubarDev_WebDavServer_FileSystem_InMemory_InMemoryEntry_RootFileSystem" data-uid="FubarDev.WebDavServer.FileSystem.InMemory.InMemoryEntry.RootFileSystem">RootFileSystem</h4>
-              <div class="markdown level1 summary"><p>Gets the root file system of the user</p>
-</div>
-              <div class="markdown level1 conceptual"></div>
-              <h5 class="decalaration">Declaration</h5>
-              <div class="codewrapper">
-                <pre><code class="lang-csharp hljs">public IFileSystem RootFileSystem { get; }</code></pre>
-              </div>
-              <h5 class="propertyValue">Property Value</h5>
-              <table class="table table-bordered table-striped table-condensed">
-                <thead>
-                  <tr>
-                    <th>Type</th>
-                    <th>Description</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr>
-                    <td><a class="xref" href="FubarDev.WebDavServer.FileSystem.IFileSystem.html">IFileSystem</a></td>
-                    <td></td>
-                  </tr>
-                </tbody>
-              </table>
-              <h5 class="implements">Implements</h5>
-                  <div><a class="xref" href="FubarDev.WebDavServer.FileSystem.IEntry.html#FubarDev_WebDavServer_FileSystem_IEntry_RootFileSystem">IEntry.RootFileSystem</a></div>
               <h3 id="methods">Methods
               </h3>
               

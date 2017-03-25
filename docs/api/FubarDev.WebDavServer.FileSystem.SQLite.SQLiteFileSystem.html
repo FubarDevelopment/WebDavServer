@@ -114,13 +114,13 @@
               
               
               <a id="FubarDev_WebDavServer_FileSystem_SQLite_SQLiteFileSystem__ctor_" data-uid="FubarDev.WebDavServer.FileSystem.SQLite.SQLiteFileSystem.#ctor*"></a>
-              <h4 id="FubarDev_WebDavServer_FileSystem_SQLite_SQLiteFileSystem__ctor_FubarDev_WebDavServer_FileSystem_SQLite_SQLiteFileSystemOptions_SQLite_SQLiteConnection_FubarDev_WebDavServer_FileSystem_PathTraversalEngine_FubarDev_WebDavServer_Props_Dead_IDeadPropertyFactory_FubarDev_WebDavServer_Locking_ILockManager_FubarDev_WebDavServer_Props_Store_IPropertyStoreFactory_" data-uid="FubarDev.WebDavServer.FileSystem.SQLite.SQLiteFileSystem.#ctor(FubarDev.WebDavServer.FileSystem.SQLite.SQLiteFileSystemOptions,SQLite.SQLiteConnection,FubarDev.WebDavServer.FileSystem.PathTraversalEngine,FubarDev.WebDavServer.Props.Dead.IDeadPropertyFactory,FubarDev.WebDavServer.Locking.ILockManager,FubarDev.WebDavServer.Props.Store.IPropertyStoreFactory)">SQLiteFileSystem(SQLiteFileSystemOptions, SQLiteConnection, PathTraversalEngine, IDeadPropertyFactory, ILockManager, IPropertyStoreFactory)</h4>
+              <h4 id="FubarDev_WebDavServer_FileSystem_SQLite_SQLiteFileSystem__ctor_FubarDev_WebDavServer_FileSystem_SQLite_SQLiteFileSystemOptions_FubarDev_WebDavServer_FileSystem_ICollection_SQLite_SQLiteConnection_FubarDev_WebDavServer_FileSystem_PathTraversalEngine_FubarDev_WebDavServer_Props_Dead_IDeadPropertyFactory_FubarDev_WebDavServer_FileSystem_Mount_IMountPointProvider_FubarDev_WebDavServer_Locking_ILockManager_FubarDev_WebDavServer_Props_Store_IPropertyStoreFactory_" data-uid="FubarDev.WebDavServer.FileSystem.SQLite.SQLiteFileSystem.#ctor(FubarDev.WebDavServer.FileSystem.SQLite.SQLiteFileSystemOptions,FubarDev.WebDavServer.FileSystem.ICollection,SQLite.SQLiteConnection,FubarDev.WebDavServer.FileSystem.PathTraversalEngine,FubarDev.WebDavServer.Props.Dead.IDeadPropertyFactory,FubarDev.WebDavServer.FileSystem.Mount.IMountPointProvider,FubarDev.WebDavServer.Locking.ILockManager,FubarDev.WebDavServer.Props.Store.IPropertyStoreFactory)">SQLiteFileSystem(SQLiteFileSystemOptions, ICollection, SQLiteConnection, PathTraversalEngine, IDeadPropertyFactory, IMountPointProvider, ILockManager, IPropertyStoreFactory)</h4>
               <div class="markdown level1 summary"><p>Initializes a new instance of the <a class="xref" href="FubarDev.WebDavServer.FileSystem.SQLite.SQLiteFileSystem.html">SQLiteFileSystem</a> class.</p>
 </div>
               <div class="markdown level1 conceptual"></div>
               <h5 class="decalaration">Declaration</h5>
               <div class="codewrapper">
-                <pre><code class="lang-csharp hljs">public SQLiteFileSystem([NotNull] SQLiteFileSystemOptions options, [NotNull] SQLiteConnection connection, [NotNull] PathTraversalEngine pathTraversalEngine, [NotNull] IDeadPropertyFactory deadPropertyFactory, [CanBeNull] ILockManager lockManager = null, [CanBeNull] IPropertyStoreFactory propertyStoreFactory = null)</code></pre>
+                <pre><code class="lang-csharp hljs">public SQLiteFileSystem([NotNull] SQLiteFileSystemOptions options, [CanBeNull] ICollection mountPoint, [NotNull] SQLiteConnection connection, [NotNull] PathTraversalEngine pathTraversalEngine, [NotNull] IDeadPropertyFactory deadPropertyFactory, [NotNull] IMountPointProvider mountPointProvider, [CanBeNull] ILockManager lockManager = null, [CanBeNull] IPropertyStoreFactory propertyStoreFactory = null)</code></pre>
               </div>
               <h5 class="parameters">Parameters</h5>
               <table class="table table-bordered table-striped table-condensed">
@@ -139,6 +139,12 @@
 </td>
                   </tr>
                   <tr>
+                    <td><a class="xref" href="FubarDev.WebDavServer.FileSystem.ICollection.html">ICollection</a></td>
+                    <td><span class="parametername">mountPoint</span></td>
+                    <td><p>The mount point where this file system should be included</p>
+</td>
+                  </tr>
+                  <tr>
                     <td><span class="xref">SQLite.SQLiteConnection</span></td>
                     <td><span class="parametername">connection</span></td>
                     <td><p>The SQLite database connection</p>
@@ -154,6 +160,12 @@
                     <td><a class="xref" href="FubarDev.WebDavServer.Props.Dead.IDeadPropertyFactory.html">IDeadPropertyFactory</a></td>
                     <td><span class="parametername">deadPropertyFactory</span></td>
                     <td><p>A factory for dead properties</p>
+</td>
+                  </tr>
+                  <tr>
+                    <td><a class="xref" href="FubarDev.WebDavServer.FileSystem.Mount.IMountPointProvider.html">IMountPointProvider</a></td>
+                    <td><span class="parametername">mountPointProvider</span></td>
+                    <td><p>The mount point manager</p>
 </td>
                   </tr>
                   <tr>
@@ -280,6 +292,33 @@
               </table>
               <h5 class="implements">Implements</h5>
                   <div><a class="xref" href="FubarDev.WebDavServer.FileSystem.IFileSystem.html#FubarDev_WebDavServer_FileSystem_IFileSystem_LockManager">IFileSystem.LockManager</a></div>
+              
+              
+              <a id="FubarDev_WebDavServer_FileSystem_SQLite_SQLiteFileSystem_MountPointProvider_" data-uid="FubarDev.WebDavServer.FileSystem.SQLite.SQLiteFileSystem.MountPointProvider*"></a>
+              <h4 id="FubarDev_WebDavServer_FileSystem_SQLite_SQLiteFileSystem_MountPointProvider" data-uid="FubarDev.WebDavServer.FileSystem.SQLite.SQLiteFileSystem.MountPointProvider">MountPointProvider</h4>
+              <div class="markdown level1 summary"><p>Gets the mount point manager</p>
+</div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">[NotNull]
+public IMountPointProvider MountPointProvider { get; }</code></pre>
+              </div>
+              <h5 class="propertyValue">Property Value</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><a class="xref" href="FubarDev.WebDavServer.FileSystem.Mount.IMountPointProvider.html">IMountPointProvider</a></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
               
               
               <a id="FubarDev_WebDavServer_FileSystem_SQLite_SQLiteFileSystem_Options_" data-uid="FubarDev.WebDavServer.FileSystem.SQLite.SQLiteFileSystem.Options*"></a>

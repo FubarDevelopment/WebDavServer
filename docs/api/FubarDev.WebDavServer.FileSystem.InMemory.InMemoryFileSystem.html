@@ -114,13 +114,13 @@
               
               
               <a id="FubarDev_WebDavServer_FileSystem_InMemory_InMemoryFileSystem__ctor_" data-uid="FubarDev.WebDavServer.FileSystem.InMemory.InMemoryFileSystem.#ctor*"></a>
-              <h4 id="FubarDev_WebDavServer_FileSystem_InMemory_InMemoryFileSystem__ctor_FubarDev_WebDavServer_FileSystem_PathTraversalEngine_FubarDev_WebDavServer_ISystemClock_FubarDev_WebDavServer_Props_Dead_IDeadPropertyFactory_FubarDev_WebDavServer_Locking_ILockManager_FubarDev_WebDavServer_Props_Store_IPropertyStoreFactory_" data-uid="FubarDev.WebDavServer.FileSystem.InMemory.InMemoryFileSystem.#ctor(FubarDev.WebDavServer.FileSystem.PathTraversalEngine,FubarDev.WebDavServer.ISystemClock,FubarDev.WebDavServer.Props.Dead.IDeadPropertyFactory,FubarDev.WebDavServer.Locking.ILockManager,FubarDev.WebDavServer.Props.Store.IPropertyStoreFactory)">InMemoryFileSystem(PathTraversalEngine, ISystemClock, IDeadPropertyFactory, ILockManager, IPropertyStoreFactory)</h4>
+              <h4 id="FubarDev_WebDavServer_FileSystem_InMemory_InMemoryFileSystem__ctor_FubarDev_WebDavServer_FileSystem_ICollection_FubarDev_WebDavServer_FileSystem_PathTraversalEngine_FubarDev_WebDavServer_ISystemClock_FubarDev_WebDavServer_Props_Dead_IDeadPropertyFactory_FubarDev_WebDavServer_FileSystem_Mount_IMountPointProvider_FubarDev_WebDavServer_Locking_ILockManager_FubarDev_WebDavServer_Props_Store_IPropertyStoreFactory_" data-uid="FubarDev.WebDavServer.FileSystem.InMemory.InMemoryFileSystem.#ctor(FubarDev.WebDavServer.FileSystem.ICollection,FubarDev.WebDavServer.FileSystem.PathTraversalEngine,FubarDev.WebDavServer.ISystemClock,FubarDev.WebDavServer.Props.Dead.IDeadPropertyFactory,FubarDev.WebDavServer.FileSystem.Mount.IMountPointProvider,FubarDev.WebDavServer.Locking.ILockManager,FubarDev.WebDavServer.Props.Store.IPropertyStoreFactory)">InMemoryFileSystem(ICollection, PathTraversalEngine, ISystemClock, IDeadPropertyFactory, IMountPointProvider, ILockManager, IPropertyStoreFactory)</h4>
               <div class="markdown level1 summary"><p>Initializes a new instance of the <a class="xref" href="FubarDev.WebDavServer.FileSystem.InMemory.InMemoryFileSystem.html">InMemoryFileSystem</a> class.</p>
 </div>
               <div class="markdown level1 conceptual"></div>
               <h5 class="decalaration">Declaration</h5>
               <div class="codewrapper">
-                <pre><code class="lang-csharp hljs">public InMemoryFileSystem(PathTraversalEngine pathTraversalEngine, ISystemClock systemClock, IDeadPropertyFactory deadPropertyFactory, ILockManager lockManager = null, IPropertyStoreFactory propertyStoreFactory = null)</code></pre>
+                <pre><code class="lang-csharp hljs">public InMemoryFileSystem([CanBeNull] ICollection mountPoint, [NotNull] PathTraversalEngine pathTraversalEngine, [NotNull] ISystemClock systemClock, [NotNull] IDeadPropertyFactory deadPropertyFactory, [NotNull] IMountPointProvider mountPointProvider, ILockManager lockManager = null, IPropertyStoreFactory propertyStoreFactory = null)</code></pre>
               </div>
               <h5 class="parameters">Parameters</h5>
               <table class="table table-bordered table-striped table-condensed">
@@ -132,6 +132,12 @@
                   </tr>
                 </thead>
                 <tbody>
+                  <tr>
+                    <td><a class="xref" href="FubarDev.WebDavServer.FileSystem.ICollection.html">ICollection</a></td>
+                    <td><span class="parametername">mountPoint</span></td>
+                    <td><p>The mount point where this file system should be included</p>
+</td>
+                  </tr>
                   <tr>
                     <td><a class="xref" href="FubarDev.WebDavServer.FileSystem.PathTraversalEngine.html">PathTraversalEngine</a></td>
                     <td><span class="parametername">pathTraversalEngine</span></td>
@@ -148,6 +154,12 @@
                     <td><a class="xref" href="FubarDev.WebDavServer.Props.Dead.IDeadPropertyFactory.html">IDeadPropertyFactory</a></td>
                     <td><span class="parametername">deadPropertyFactory</span></td>
                     <td><p>A factory for dead properties</p>
+</td>
+                  </tr>
+                  <tr>
+                    <td><a class="xref" href="FubarDev.WebDavServer.FileSystem.Mount.IMountPointProvider.html">IMountPointProvider</a></td>
+                    <td><span class="parametername">mountPointProvider</span></td>
+                    <td><p>The mount point provider</p>
 </td>
                   </tr>
                   <tr>
@@ -194,6 +206,32 @@
               </table>
               
               
+              <a id="FubarDev_WebDavServer_FileSystem_InMemory_InMemoryFileSystem_IsReadOnly_" data-uid="FubarDev.WebDavServer.FileSystem.InMemory.InMemoryFileSystem.IsReadOnly*"></a>
+              <h4 id="FubarDev_WebDavServer_FileSystem_InMemory_InMemoryFileSystem_IsReadOnly" data-uid="FubarDev.WebDavServer.FileSystem.InMemory.InMemoryFileSystem.IsReadOnly">IsReadOnly</h4>
+              <div class="markdown level1 summary"><p>Gets or sets a value indicating whether the file system is read-only.</p>
+</div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">public bool IsReadOnly { get; set; }</code></pre>
+              </div>
+              <h5 class="propertyValue">Property Value</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><a class="xref" href="https://msdn.microsoft.com/en-us/library/system.boolean(v=vs.110).aspx">Boolean</a></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              
+              
               <a id="FubarDev_WebDavServer_FileSystem_InMemory_InMemoryFileSystem_LockManager_" data-uid="FubarDev.WebDavServer.FileSystem.InMemory.InMemoryFileSystem.LockManager*"></a>
               <h4 id="FubarDev_WebDavServer_FileSystem_InMemory_InMemoryFileSystem_LockManager" data-uid="FubarDev.WebDavServer.FileSystem.InMemory.InMemoryFileSystem.LockManager">LockManager</h4>
               <div class="markdown level1 summary"><p>Gets the global lock manager</p>
@@ -220,6 +258,33 @@
               </table>
               <h5 class="implements">Implements</h5>
                   <div><a class="xref" href="FubarDev.WebDavServer.FileSystem.IFileSystem.html#FubarDev_WebDavServer_FileSystem_IFileSystem_LockManager">IFileSystem.LockManager</a></div>
+              
+              
+              <a id="FubarDev_WebDavServer_FileSystem_InMemory_InMemoryFileSystem_MountPointProvider_" data-uid="FubarDev.WebDavServer.FileSystem.InMemory.InMemoryFileSystem.MountPointProvider*"></a>
+              <h4 id="FubarDev_WebDavServer_FileSystem_InMemory_InMemoryFileSystem_MountPointProvider" data-uid="FubarDev.WebDavServer.FileSystem.InMemory.InMemoryFileSystem.MountPointProvider">MountPointProvider</h4>
+              <div class="markdown level1 summary"><p>Gets the mount point manager</p>
+</div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">[NotNull]
+public IMountPointProvider MountPointProvider { get; }</code></pre>
+              </div>
+              <h5 class="propertyValue">Property Value</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><a class="xref" href="FubarDev.WebDavServer.FileSystem.Mount.IMountPointProvider.html">IMountPointProvider</a></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
               
               
               <a id="FubarDev_WebDavServer_FileSystem_InMemory_InMemoryFileSystem_PropertyStore_" data-uid="FubarDev.WebDavServer.FileSystem.InMemory.InMemoryFileSystem.PropertyStore*"></a>
@@ -276,6 +341,33 @@
               </table>
               <h5 class="implements">Implements</h5>
                   <div><a class="xref" href="FubarDev.WebDavServer.FileSystem.IFileSystem.html#FubarDev_WebDavServer_FileSystem_IFileSystem_Root">IFileSystem.Root</a></div>
+              
+              
+              <a id="FubarDev_WebDavServer_FileSystem_InMemory_InMemoryFileSystem_RootCollection_" data-uid="FubarDev.WebDavServer.FileSystem.InMemory.InMemoryFileSystem.RootCollection*"></a>
+              <h4 id="FubarDev_WebDavServer_FileSystem_InMemory_InMemoryFileSystem_RootCollection" data-uid="FubarDev.WebDavServer.FileSystem.InMemory.InMemoryFileSystem.RootCollection">RootCollection</h4>
+              <div class="markdown level1 summary"><p>Gets the root collection</p>
+</div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">[NotNull]
+public InMemoryDirectory RootCollection { get; }</code></pre>
+              </div>
+              <h5 class="propertyValue">Property Value</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><a class="xref" href="FubarDev.WebDavServer.FileSystem.InMemory.InMemoryDirectory.html">InMemoryDirectory</a></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
               
               
               <a id="FubarDev_WebDavServer_FileSystem_InMemory_InMemoryFileSystem_SupportsRangedRead_" data-uid="FubarDev.WebDavServer.FileSystem.InMemory.InMemoryFileSystem.SupportsRangedRead*"></a>

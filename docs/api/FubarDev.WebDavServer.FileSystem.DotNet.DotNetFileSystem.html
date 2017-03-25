@@ -114,13 +114,13 @@
               
               
               <a id="FubarDev_WebDavServer_FileSystem_DotNet_DotNetFileSystem__ctor_" data-uid="FubarDev.WebDavServer.FileSystem.DotNet.DotNetFileSystem.#ctor*"></a>
-              <h4 id="FubarDev_WebDavServer_FileSystem_DotNet_DotNetFileSystem__ctor_FubarDev_WebDavServer_FileSystem_DotNet_DotNetFileSystemOptions_System_String_FubarDev_WebDavServer_FileSystem_PathTraversalEngine_FubarDev_WebDavServer_Props_Dead_IDeadPropertyFactory_FubarDev_WebDavServer_Locking_ILockManager_FubarDev_WebDavServer_Props_Store_IPropertyStoreFactory_" data-uid="FubarDev.WebDavServer.FileSystem.DotNet.DotNetFileSystem.#ctor(FubarDev.WebDavServer.FileSystem.DotNet.DotNetFileSystemOptions,System.String,FubarDev.WebDavServer.FileSystem.PathTraversalEngine,FubarDev.WebDavServer.Props.Dead.IDeadPropertyFactory,FubarDev.WebDavServer.Locking.ILockManager,FubarDev.WebDavServer.Props.Store.IPropertyStoreFactory)">DotNetFileSystem(DotNetFileSystemOptions, String, PathTraversalEngine, IDeadPropertyFactory, ILockManager, IPropertyStoreFactory)</h4>
+              <h4 id="FubarDev_WebDavServer_FileSystem_DotNet_DotNetFileSystem__ctor_FubarDev_WebDavServer_FileSystem_DotNet_DotNetFileSystemOptions_FubarDev_WebDavServer_FileSystem_ICollection_System_String_FubarDev_WebDavServer_FileSystem_PathTraversalEngine_FubarDev_WebDavServer_Props_Dead_IDeadPropertyFactory_FubarDev_WebDavServer_FileSystem_Mount_IMountPointProvider_FubarDev_WebDavServer_Locking_ILockManager_FubarDev_WebDavServer_Props_Store_IPropertyStoreFactory_" data-uid="FubarDev.WebDavServer.FileSystem.DotNet.DotNetFileSystem.#ctor(FubarDev.WebDavServer.FileSystem.DotNet.DotNetFileSystemOptions,FubarDev.WebDavServer.FileSystem.ICollection,System.String,FubarDev.WebDavServer.FileSystem.PathTraversalEngine,FubarDev.WebDavServer.Props.Dead.IDeadPropertyFactory,FubarDev.WebDavServer.FileSystem.Mount.IMountPointProvider,FubarDev.WebDavServer.Locking.ILockManager,FubarDev.WebDavServer.Props.Store.IPropertyStoreFactory)">DotNetFileSystem(DotNetFileSystemOptions, ICollection, String, PathTraversalEngine, IDeadPropertyFactory, IMountPointProvider, ILockManager, IPropertyStoreFactory)</h4>
               <div class="markdown level1 summary"><p>Initializes a new instance of the <a class="xref" href="FubarDev.WebDavServer.FileSystem.DotNet.DotNetFileSystem.html">DotNetFileSystem</a> class.</p>
 </div>
               <div class="markdown level1 conceptual"></div>
               <h5 class="decalaration">Declaration</h5>
               <div class="codewrapper">
-                <pre><code class="lang-csharp hljs">public DotNetFileSystem(DotNetFileSystemOptions options, string rootFolder, PathTraversalEngine pathTraversalEngine, IDeadPropertyFactory deadPropertyFactory, ILockManager lockManager = null, IPropertyStoreFactory propertyStoreFactory = null)</code></pre>
+                <pre><code class="lang-csharp hljs">public DotNetFileSystem([NotNull] DotNetFileSystemOptions options, [CanBeNull] ICollection mountPoint, [NotNull] string rootFolder, [NotNull] PathTraversalEngine pathTraversalEngine, [NotNull] IDeadPropertyFactory deadPropertyFactory, [NotNull] IMountPointProvider mountPointProvider, ILockManager lockManager = null, IPropertyStoreFactory propertyStoreFactory = null)</code></pre>
               </div>
               <h5 class="parameters">Parameters</h5>
               <table class="table table-bordered table-striped table-condensed">
@@ -139,6 +139,12 @@
 </td>
                   </tr>
                   <tr>
+                    <td><a class="xref" href="FubarDev.WebDavServer.FileSystem.ICollection.html">ICollection</a></td>
+                    <td><span class="parametername">mountPoint</span></td>
+                    <td><p>The mount point where this file system should be included</p>
+</td>
+                  </tr>
+                  <tr>
                     <td><a class="xref" href="https://msdn.microsoft.com/en-us/library/system.string(v=vs.110).aspx">String</a></td>
                     <td><span class="parametername">rootFolder</span></td>
                     <td><p>The root folder</p>
@@ -154,6 +160,12 @@
                     <td><a class="xref" href="FubarDev.WebDavServer.Props.Dead.IDeadPropertyFactory.html">IDeadPropertyFactory</a></td>
                     <td><span class="parametername">deadPropertyFactory</span></td>
                     <td><p>A factory for dead properties</p>
+</td>
+                  </tr>
+                  <tr>
+                    <td><a class="xref" href="FubarDev.WebDavServer.FileSystem.Mount.IMountPointProvider.html">IMountPointProvider</a></td>
+                    <td><span class="parametername">mountPointProvider</span></td>
+                    <td><p>The mount point provider</p>
 </td>
                   </tr>
                   <tr>
@@ -254,6 +266,33 @@
               </table>
               <h5 class="implements">Implements</h5>
                   <div><a class="xref" href="FubarDev.WebDavServer.FileSystem.IFileSystem.html#FubarDev_WebDavServer_FileSystem_IFileSystem_LockManager">IFileSystem.LockManager</a></div>
+              
+              
+              <a id="FubarDev_WebDavServer_FileSystem_DotNet_DotNetFileSystem_MountPointProvider_" data-uid="FubarDev.WebDavServer.FileSystem.DotNet.DotNetFileSystem.MountPointProvider*"></a>
+              <h4 id="FubarDev_WebDavServer_FileSystem_DotNet_DotNetFileSystem_MountPointProvider" data-uid="FubarDev.WebDavServer.FileSystem.DotNet.DotNetFileSystem.MountPointProvider">MountPointProvider</h4>
+              <div class="markdown level1 summary"><p>Gets the mount point manager</p>
+</div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">[NotNull]
+public IMountPointProvider MountPointProvider { get; }</code></pre>
+              </div>
+              <h5 class="propertyValue">Property Value</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><a class="xref" href="FubarDev.WebDavServer.FileSystem.Mount.IMountPointProvider.html">IMountPointProvider</a></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
               
               
               <a id="FubarDev_WebDavServer_FileSystem_DotNet_DotNetFileSystem_Options_" data-uid="FubarDev.WebDavServer.FileSystem.DotNet.DotNetFileSystem.Options*"></a>

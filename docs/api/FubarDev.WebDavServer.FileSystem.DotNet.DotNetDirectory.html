@@ -92,9 +92,6 @@
                   <a class="xref" href="FubarDev.WebDavServer.FileSystem.DotNet.DotNetEntry.html#FubarDev_WebDavServer_FileSystem_DotNet_DotNetEntry_Name">DotNetEntry.Name</a>
                 </div>
                 <div>
-                  <a class="xref" href="FubarDev.WebDavServer.FileSystem.DotNet.DotNetEntry.html#FubarDev_WebDavServer_FileSystem_DotNet_DotNetEntry_RootFileSystem">DotNetEntry.RootFileSystem</a>
-                </div>
-                <div>
                   <a class="xref" href="FubarDev.WebDavServer.FileSystem.DotNet.DotNetEntry.html#FubarDev_WebDavServer_FileSystem_DotNet_DotNetEntry_FileSystem">DotNetEntry.FileSystem</a>
                 </div>
                 <div>
@@ -148,13 +145,13 @@
               
               
               <a id="FubarDev_WebDavServer_FileSystem_DotNet_DotNetDirectory__ctor_" data-uid="FubarDev.WebDavServer.FileSystem.DotNet.DotNetDirectory.#ctor*"></a>
-              <h4 id="FubarDev_WebDavServer_FileSystem_DotNet_DotNetDirectory__ctor_FubarDev_WebDavServer_FileSystem_DotNet_DotNetFileSystem_FubarDev_WebDavServer_FileSystem_DotNet_DotNetDirectory_System_IO_DirectoryInfo_System_Uri_" data-uid="FubarDev.WebDavServer.FileSystem.DotNet.DotNetDirectory.#ctor(FubarDev.WebDavServer.FileSystem.DotNet.DotNetFileSystem,FubarDev.WebDavServer.FileSystem.DotNet.DotNetDirectory,System.IO.DirectoryInfo,System.Uri)">DotNetDirectory(DotNetFileSystem, DotNetDirectory, DirectoryInfo, Uri)</h4>
+              <h4 id="FubarDev_WebDavServer_FileSystem_DotNet_DotNetDirectory__ctor_FubarDev_WebDavServer_FileSystem_DotNet_DotNetFileSystem_FubarDev_WebDavServer_FileSystem_ICollection_System_IO_DirectoryInfo_System_Uri_System_String_System_Boolean_" data-uid="FubarDev.WebDavServer.FileSystem.DotNet.DotNetDirectory.#ctor(FubarDev.WebDavServer.FileSystem.DotNet.DotNetFileSystem,FubarDev.WebDavServer.FileSystem.ICollection,System.IO.DirectoryInfo,System.Uri,System.String,System.Boolean)">DotNetDirectory(DotNetFileSystem, ICollection, DirectoryInfo, Uri, String, Boolean)</h4>
               <div class="markdown level1 summary"><p>Initializes a new instance of the <a class="xref" href="FubarDev.WebDavServer.FileSystem.DotNet.DotNetDirectory.html">DotNetDirectory</a> class.</p>
 </div>
               <div class="markdown level1 conceptual"></div>
               <h5 class="decalaration">Declaration</h5>
               <div class="codewrapper">
-                <pre><code class="lang-csharp hljs">public DotNetDirectory(DotNetFileSystem fileSystem, DotNetDirectory parent, DirectoryInfo info, Uri path)</code></pre>
+                <pre><code class="lang-csharp hljs">public DotNetDirectory([NotNull] DotNetFileSystem fileSystem, [NotNull] ICollection parent, [NotNull] DirectoryInfo info, [NotNull] Uri path, [CanBeNull] string name, bool isRoot = false)</code></pre>
               </div>
               <h5 class="parameters">Parameters</h5>
               <table class="table table-bordered table-striped table-condensed">
@@ -173,7 +170,7 @@
 </td>
                   </tr>
                   <tr>
-                    <td><a class="xref" href="FubarDev.WebDavServer.FileSystem.DotNet.DotNetDirectory.html">DotNetDirectory</a></td>
+                    <td><a class="xref" href="FubarDev.WebDavServer.FileSystem.ICollection.html">ICollection</a></td>
                     <td><span class="parametername">parent</span></td>
                     <td><p>The parent collection</p>
 </td>
@@ -188,6 +185,18 @@
                     <td><a class="xref" href="https://msdn.microsoft.com/en-us/library/system.uri(v=vs.110).aspx">Uri</a></td>
                     <td><span class="parametername">path</span></td>
                     <td><p>The root-relative path of this collection</p>
+</td>
+                  </tr>
+                  <tr>
+                    <td><a class="xref" href="https://msdn.microsoft.com/en-us/library/system.string(v=vs.110).aspx">String</a></td>
+                    <td><span class="parametername">name</span></td>
+                    <td><p>The entry name (<span class="xref">null</span> when <a class="xref" href="https://msdn.microsoft.com/en-us/library/bbxw83zf(v=vs.110).aspx">Name</a> of <a class="xref" href="FubarDev.WebDavServer.FileSystem.DotNet.DotNetEntry.html#FubarDev_WebDavServer_FileSystem_DotNet_DotNetEntry_Info">Info</a> should be used)</p>
+</td>
+                  </tr>
+                  <tr>
+                    <td><a class="xref" href="https://msdn.microsoft.com/en-us/library/system.boolean(v=vs.110).aspx">Boolean</a></td>
+                    <td><span class="parametername">isRoot</span></td>
+                    <td><p>Is this the file systems root directory?</p>
 </td>
                   </tr>
                 </tbody>
