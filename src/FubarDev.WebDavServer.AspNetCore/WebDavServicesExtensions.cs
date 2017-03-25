@@ -76,11 +76,7 @@ namespace Microsoft.Extensions.DependencyInjection
                 {
                     var factory = sp.GetRequiredService<IFileSystemFactory>();
                     var context = sp.GetRequiredService<IWebDavContext>();
-
-                    // The root file system always uses an empty URI
-                    var rootPath = new Uri(string.Empty, UriKind.Relative);
-
-                    return factory.CreateFileSystem(rootPath, context.User);
+                    return factory.CreateFileSystem(null, context.User);
                 });
             return services;
         }

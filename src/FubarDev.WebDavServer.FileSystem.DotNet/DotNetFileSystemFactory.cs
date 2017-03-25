@@ -54,7 +54,7 @@ namespace FubarDev.WebDavServer.FileSystem.DotNet
         }
 
         /// <inheritdoc />
-        public IFileSystem CreateFileSystem(Uri rootPath, IPrincipal principal)
+        public IFileSystem CreateFileSystem(ICollection mountPoint, IPrincipal principal)
         {
             var rootFileSystemPath = Utils.SystemInfo.GetUserHomePath(
                 principal,
@@ -63,7 +63,7 @@ namespace FubarDev.WebDavServer.FileSystem.DotNet
 
             Directory.CreateDirectory(rootFileSystemPath);
 
-            return new DotNetFileSystem(_options, rootPath, rootFileSystemPath, _pathTraversalEngine, _deadPropertyFactory, _lockManager, _propertyStoreFactory);
+            return new DotNetFileSystem(_options, mountPoint, rootFileSystemPath, _pathTraversalEngine, _deadPropertyFactory, _lockManager, _propertyStoreFactory);
         }
     }
 }

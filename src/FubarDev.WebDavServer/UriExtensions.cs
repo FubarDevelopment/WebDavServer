@@ -71,6 +71,8 @@ namespace FubarDev.WebDavServer
         public static string GetName(this Uri url)
         {
             var s = url.OriginalString;
+            if (string.IsNullOrEmpty(s))
+                return string.Empty;
             var searchStartPos = s.EndsWith("/") ? s.Length - 2 : s.Length - 1;
             var slashIndex = s.LastIndexOf("/", searchStartPos, StringComparison.Ordinal);
             var length = searchStartPos - slashIndex;

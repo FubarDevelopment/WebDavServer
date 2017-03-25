@@ -27,8 +27,9 @@ namespace FubarDev.WebDavServer.FileSystem.DotNet
         /// <param name="parent">The parent collection</param>
         /// <param name="info">The directory information</param>
         /// <param name="path">The root-relative path of this collection</param>
-        public DotNetDirectory(DotNetFileSystem fileSystem, DotNetDirectory parent, DirectoryInfo info, Uri path)
-            : base(fileSystem, parent, info, path)
+        /// <param name="name">The entry name (<see langword="null"/> when <see cref="FileSystemInfo.Name"/> of <see cref="DotNetEntry.Info"/> should be used)</param>
+        public DotNetDirectory(DotNetFileSystem fileSystem, DotNetDirectory parent, DirectoryInfo info, Uri path, string name)
+            : base(fileSystem, parent, info, path, name)
         {
             _fileSystemPropertyStore = fileSystem.PropertyStore as IFileSystemPropertyStore;
             DirectoryInfo = info;
@@ -123,7 +124,7 @@ namespace FubarDev.WebDavServer.FileSystem.DotNet
                 return new DotNetFile(DotNetFileSystem, this, fileInfo, Path.Append(fileInfo.Name, false));
 
             var dirInfo = (DirectoryInfo)fsInfo;
-            return new DotNetDirectory(DotNetFileSystem, this, dirInfo, Path.AppendDirectory(dirInfo.Name));
+            return new DotNetDirectory(DotNetFileSystem, this, dirInfo, Path.AppendDirectory(dirInfo.Name), null);
         }
     }
 }

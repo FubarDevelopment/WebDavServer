@@ -99,7 +99,7 @@ namespace FubarDev.WebDavServer.FileSystem.SQLite
         }
 
         /// <inheritdoc />
-        public IFileSystem CreateFileSystem(Uri rootPath, IPrincipal principal)
+        public IFileSystem CreateFileSystem(ICollection mountPoint, IPrincipal principal)
         {
             var userHomePath = Utils.SystemInfo.GetUserHomePath(
                 principal,
@@ -114,7 +114,7 @@ namespace FubarDev.WebDavServer.FileSystem.SQLite
             EnsureDatabaseExists(dbFileName);
 
             var conn = new sqlitenet.SQLiteConnection(dbFileName);
-            return new SQLiteFileSystem(_options, rootPath, conn, _pathTraversalEngine, _deadPropertyFactory, _lockManager, _propertyStoreFactory);
+            return new SQLiteFileSystem(_options, mountPoint, conn, _pathTraversalEngine, _deadPropertyFactory, _lockManager, _propertyStoreFactory);
         }
 
         /// <summary>

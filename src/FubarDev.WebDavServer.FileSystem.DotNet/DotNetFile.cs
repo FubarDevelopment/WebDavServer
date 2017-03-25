@@ -26,7 +26,7 @@ namespace FubarDev.WebDavServer.FileSystem.DotNet
         /// <param name="info">The file information</param>
         /// <param name="path">The root-relative path of this document</param>
         public DotNetFile(DotNetFileSystem fileSystem, DotNetDirectory parent, FileInfo info, Uri path)
-            : base(fileSystem, parent, info, path)
+            : base(fileSystem, parent, info, path, null)
         {
             FileInfo = info;
         }

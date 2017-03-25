@@ -27,7 +27,7 @@ namespace FubarDev.WebDavServer.FileSystem.SQLite
         /// <param name="info">The file information</param>
         /// <param name="path">The root-relative path of this document</param>
         public SQLiteDocument(SQLiteFileSystem fileSystem, SQLiteCollection parent, FileEntry info, Uri path)
-            : base(fileSystem, parent, info, path)
+            : base(fileSystem, parent, info, path, null)
         {
         }
 

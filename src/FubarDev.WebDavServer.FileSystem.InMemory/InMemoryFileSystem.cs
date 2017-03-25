@@ -10,6 +10,8 @@ using FubarDev.WebDavServer.Locking;
 using FubarDev.WebDavServer.Props.Dead;
 using FubarDev.WebDavServer.Props.Store;
 
+using JetBrains.Annotations;
+
 namespace FubarDev.WebDavServer.FileSystem.InMemory
 {
     /// <summary>
@@ -22,19 +24,20 @@ namespace FubarDev.WebDavServer.FileSystem.InMemory
         /// <summary>
         /// Initializes a new instance of the <see cref="InMemoryFileSystem"/> class.
         /// </summary>
-        /// <param name="rootPath">The root path</param>
+        /// <param name="mountPoint">The mount point where this file system should be included</param>
         /// <param name="pathTraversalEngine">The engine to traverse paths</param>
         /// <param name="systemClock">Interface for the access to the systems clock</param>
         /// <param name="deadPropertyFactory">A factory for dead properties</param>
         /// <param name="lockManager">The global lock manager</param>
         /// <param name="propertyStoreFactory">The store for dead properties</param>
-        public InMemoryFileSystem(Uri rootPath, PathTraversalEngine pathTraversalEngine, ISystemClock systemClock, IDeadPropertyFactory deadPropertyFactory, ILockManager lockManager = null, IPropertyStoreFactory propertyStoreFactory = null)
+        public InMemoryFileSystem([CanBeNull] ICollection mountPoint, PathTraversalEngine pathTraversalEngine, ISystemClock systemClock, IDeadPropertyFactory deadPropertyFactory, ILockManager lockManager = null, IPropertyStoreFactory propertyStoreFactory = null)
         {
             SystemClock = systemClock;
             DeadPropertyFactory = deadPropertyFactory;
             LockManager = lockManager;
             _pathTraversalEngine = pathTraversalEngine;
-            var rootDir = new InMemoryDirectory(this, null, rootPath, string.Empty);
+            var rootPath = mountPoint?.Path ?? new Uri(string.Empty, UriKind.Relative);
+            var rootDir = new InMemoryDirectory(this, null, rootPath, mountPoint?.Name ?? rootPath.GetName());
             Root = new AsyncLazy<ICollection>(() => Task.FromResult<ICollection>(rootDir));
             PropertyStore = propertyStoreFactory?.Create(this);
         }

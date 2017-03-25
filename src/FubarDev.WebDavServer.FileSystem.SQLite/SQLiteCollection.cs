@@ -10,6 +10,8 @@ using System.Threading.Tasks;
 
 using FubarDev.WebDavServer.Model;
 
+using JetBrains.Annotations;
+
 namespace FubarDev.WebDavServer.FileSystem.SQLite
 {
     /// <summary>
@@ -24,8 +26,9 @@ namespace FubarDev.WebDavServer.FileSystem.SQLite
         /// <param name="parent">The parent collection</param>
         /// <param name="info">The directory information</param>
         /// <param name="path">The root-relative path of this collection</param>
-        public SQLiteCollection(SQLiteFileSystem fileSystem, SQLiteCollection parent, FileEntry info, Uri path)
-            : base(fileSystem, parent, info, path)
+        /// <param name="name">The entry name (<see langword="null"/> when <see cref="FileEntry.Name"/> of <see cref="SQLiteEntry.Info"/> should be used)</param>
+        public SQLiteCollection(SQLiteFileSystem fileSystem, SQLiteCollection parent, FileEntry info, Uri path, [CanBeNull] string name)
+            : base(fileSystem, parent, info, path, name)
         {
         }
 
@@ -126,7 +129,7 @@ namespace FubarDev.WebDavServer.FileSystem.SQLite
             if (!entry.IsCollection)
                 return new SQLiteDocument(SQLiteFileSystem, this, entry, Path.Append(entry.Name, false));
 
-            return new SQLiteCollection(SQLiteFileSystem, this, entry, Path.AppendDirectory(entry.Name));
+            return new SQLiteCollection(SQLiteFileSystem, this, entry, Path.AppendDirectory(entry.Name), null);
         }
     }
 }

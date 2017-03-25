@@ -9,6 +9,8 @@ using System.Threading.Tasks;
 
 using FubarDev.WebDavServer.Model.Headers;
 
+using JetBrains.Annotations;
+
 using SQLite;
 
 namespace FubarDev.WebDavServer.FileSystem.SQLite
@@ -27,13 +29,15 @@ namespace FubarDev.WebDavServer.FileSystem.SQLite
         /// <param name="parent">The parent collection</param>
         /// <param name="info">The file system information</param>
         /// <param name="path">The root-relative path of this entry</param>
-        protected SQLiteEntry(SQLiteFileSystem fileSystem, SQLiteCollection parent, FileEntry info, Uri path)
+        /// <param name="name">The entry name (<see langword="null"/> when <see cref="FileEntry.Name"/> of <see cref="SQLiteEntry.Info"/> should be used)</param>
+        protected SQLiteEntry(SQLiteFileSystem fileSystem, SQLiteCollection parent, FileEntry info, Uri path, [CanBeNull] string name)
         {
             _parent = parent;
             Info = info;
             SQLiteFileSystem = fileSystem;
             Path = path;
             ETag = EntityTag.Parse(Info.ETag).Single();
+            Name = name ?? info.Name;
         }
 
         /// <summary>
@@ -52,7 +56,7 @@ namespace FubarDev.WebDavServer.FileSystem.SQLite
         public SQLiteConnection Connection => SQLiteFileSystem.Connection;
 
         /// <inheritdoc />
-        public string Name => Info.Name;
+        public string Name { get; }
 
         /// <inheritdoc />
         public IFileSystem FileSystem => SQLiteFileSystem;

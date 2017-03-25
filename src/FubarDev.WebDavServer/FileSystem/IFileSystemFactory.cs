@@ -17,10 +17,10 @@ namespace FubarDev.WebDavServer.FileSystem
         /// <summary>
         /// Gets the <see cref="IFileSystem"/> instance for the given <paramref name="principal"/>
         /// </summary>
-        /// <param name="rootPath">The root path of the file system (this is required for the <see cref="Mount.IMountPointManager"/> support)</param>
+        /// <param name="mountPoint">The mount point where this file system should be included</param>
         /// <param name="principal">The current principal to get the <see cref="IFileSystem"/> instance for</param>
         /// <returns>The <see cref="IFileSystem"/> instance for the <paramref name="principal"/></returns>
         [NotNull]
-        IFileSystem CreateFileSystem([NotNull] Uri rootPath, [NotNull] IPrincipal principal);
+        IFileSystem CreateFileSystem([CanBeNull] ICollection mountPoint, [NotNull] IPrincipal principal);
     }
 }
