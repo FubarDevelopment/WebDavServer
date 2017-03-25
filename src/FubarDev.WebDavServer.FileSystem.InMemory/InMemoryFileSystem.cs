@@ -6,6 +6,7 @@ using System;
 using System.Threading;
 using System.Threading.Tasks;
 
+using FubarDev.WebDavServer.FileSystem.Mount;
 using FubarDev.WebDavServer.Locking;
 using FubarDev.WebDavServer.Props.Dead;
 using FubarDev.WebDavServer.Props.Store;
@@ -28,19 +29,34 @@ namespace FubarDev.WebDavServer.FileSystem.InMemory
         /// <param name="pathTraversalEngine">The engine to traverse paths</param>
         /// <param name="systemClock">Interface for the access to the systems clock</param>
         /// <param name="deadPropertyFactory">A factory for dead properties</param>
+        /// <param name="mountPointProvider">The mount point provider</param>
         /// <param name="lockManager">The global lock manager</param>
         /// <param name="propertyStoreFactory">The store for dead properties</param>
-        public InMemoryFileSystem([CanBeNull] ICollection mountPoint, PathTraversalEngine pathTraversalEngine, ISystemClock systemClock, IDeadPropertyFactory deadPropertyFactory, ILockManager lockManager = null, IPropertyStoreFactory propertyStoreFactory = null)
+        public InMemoryFileSystem(
+            [CanBeNull] ICollection mountPoint,
+            [NotNull] PathTraversalEngine pathTraversalEngine,
+            [NotNull] ISystemClock systemClock,
+            [NotNull] IDeadPropertyFactory deadPropertyFactory,
+            [NotNull] IMountPointProvider mountPointProvider,
+            ILockManager lockManager = null,
+            IPropertyStoreFactory propertyStoreFactory = null)
         {
             SystemClock = systemClock;
             DeadPropertyFactory = deadPropertyFactory;
+            MountPointProvider = mountPointProvider;
             LockManager = lockManager;
             _pathTraversalEngine = pathTraversalEngine;
             var rootPath = mountPoint?.Path ?? new Uri(string.Empty, UriKind.Relative);
-            var rootDir = new InMemoryDirectory(this, null, rootPath, mountPoint?.Name ?? rootPath.GetName());
-            Root = new AsyncLazy<ICollection>(() => Task.FromResult<ICollection>(rootDir));
+            RootCollection = new InMemoryDirectory(this, mountPoint, rootPath, mountPoint?.Name ?? rootPath.GetName(), true);
+            Root = new AsyncLazy<ICollection>(() => Task.FromResult<ICollection>(RootCollection));
             PropertyStore = propertyStoreFactory?.Create(this);
         }
+
+        /// <summary>
+        /// Gets the root collection
+        /// </summary>
+        [NotNull]
+        public InMemoryDirectory RootCollection { get; }
 
         /// <summary>
         /// Gets the systems clock
@@ -51,6 +67,12 @@ namespace FubarDev.WebDavServer.FileSystem.InMemory
         /// Gets the factory for dead properties
         /// </summary>
         public IDeadPropertyFactory DeadPropertyFactory { get; }
+
+        /// <summary>
+        /// Gets the mount point manager
+        /// </summary>
+        [NotNull]
+        public IMountPointProvider MountPointProvider { get; }
 
         /// <inheritdoc />
         public AsyncLazy<ICollection> Root { get; }

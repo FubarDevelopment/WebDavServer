@@ -19,6 +19,8 @@ namespace FubarDev.WebDavServer.FileSystem.SQLite
     /// </summary>
     internal class SQLiteCollection : SQLiteEntry, ICollection, IRecusiveChildrenCollector
     {
+        private readonly bool _isRoot;
+
         /// <summary>
         /// Initializes a new instance of the <see cref="SQLiteCollection"/> class.
         /// </summary>
@@ -27,9 +29,17 @@ namespace FubarDev.WebDavServer.FileSystem.SQLite
         /// <param name="info">The directory information</param>
         /// <param name="path">The root-relative path of this collection</param>
         /// <param name="name">The entry name (<see langword="null"/> when <see cref="FileEntry.Name"/> of <see cref="SQLiteEntry.Info"/> should be used)</param>
-        public SQLiteCollection(SQLiteFileSystem fileSystem, SQLiteCollection parent, FileEntry info, Uri path, [CanBeNull] string name)
+        /// <param name="isRoot">Is this the file systems root directory?</param>
+        public SQLiteCollection(
+            SQLiteFileSystem fileSystem,
+            ICollection parent,
+            FileEntry info,
+            Uri path,
+            [CanBeNull] string name,
+            bool isRoot = false)
             : base(fileSystem, parent, info, path, name)
         {
+            _isRoot = isRoot;
         }
 
         /// <inheritdoc />
@@ -40,11 +50,17 @@ namespace FubarDev.WebDavServer.FileSystem.SQLite
             if (childEntry == null)
                 return Task.FromResult<IEntry>(null);
 
-            return Task.FromResult(CreateEntry(childEntry));
+            var entry = CreateEntry(childEntry);
+
+            var coll = entry as ICollection;
+            if (coll != null)
+                return coll.GetMountTargetEntryAsync(SQLiteFileSystem.MountPointProvider);
+
+            return Task.FromResult(entry);
         }
 
         /// <inheritdoc />
-        public Task<IReadOnlyCollection<IEntry>> GetChildrenAsync(CancellationToken ct)
+        public async Task<IReadOnlyCollection<IEntry>> GetChildrenAsync(CancellationToken ct)
         {
             var result = new List<IEntry>();
             var path = Path.OriginalString.ToLowerInvariant();
@@ -53,10 +69,13 @@ namespace FubarDev.WebDavServer.FileSystem.SQLite
             {
                 ct.ThrowIfCancellationRequested();
                 var entry = CreateEntry(info);
+                var coll = entry as ICollection;
+                if (coll != null)
+                    entry = await coll.GetMountTargetEntryAsync(SQLiteFileSystem.MountPointProvider);
                 result.Add(entry);
             }
 
-            return Task.FromResult<IReadOnlyCollection<IEntry>>(result);
+            return result;
         }
 
         /// <inheritdoc />
@@ -92,6 +111,9 @@ namespace FubarDev.WebDavServer.FileSystem.SQLite
         /// <inheritdoc />
         public override async Task<DeleteResult> DeleteAsync(CancellationToken cancellationToken)
         {
+            if (_isRoot)
+                throw new UnauthorizedAccessException("Cannot remove the file systems root collection");
+
             var propStore = FileSystem.PropertyStore;
             if (propStore != null)
                 await propStore.RemoveAsync(this, cancellationToken).ConfigureAwait(false);

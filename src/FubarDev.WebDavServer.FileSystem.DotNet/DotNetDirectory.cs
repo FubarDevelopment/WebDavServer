@@ -11,6 +11,8 @@ using System.Threading.Tasks;
 using FubarDev.WebDavServer.Model;
 using FubarDev.WebDavServer.Props.Store;
 
+using JetBrains.Annotations;
+
 namespace FubarDev.WebDavServer.FileSystem.DotNet
 {
     /// <summary>
@@ -20,6 +22,8 @@ namespace FubarDev.WebDavServer.FileSystem.DotNet
     {
         private readonly IFileSystemPropertyStore _fileSystemPropertyStore;
 
+        private readonly bool _isRoot;
+
         /// <summary>
         /// Initializes a new instance of the <see cref="DotNetDirectory"/> class.
         /// </summary>
@@ -28,9 +32,17 @@ namespace FubarDev.WebDavServer.FileSystem.DotNet
         /// <param name="info">The directory information</param>
         /// <param name="path">The root-relative path of this collection</param>
         /// <param name="name">The entry name (<see langword="null"/> when <see cref="FileSystemInfo.Name"/> of <see cref="DotNetEntry.Info"/> should be used)</param>
-        public DotNetDirectory(DotNetFileSystem fileSystem, DotNetDirectory parent, DirectoryInfo info, Uri path, string name)
+        /// <param name="isRoot">Is this the file systems root directory?</param>
+        public DotNetDirectory(
+            [NotNull] DotNetFileSystem fileSystem,
+            [NotNull] ICollection parent,
+            [NotNull] DirectoryInfo info,
+            [NotNull] Uri path,
+            [CanBeNull] string name,
+            bool isRoot = false)
             : base(fileSystem, parent, info, path, name)
         {
+            _isRoot = isRoot;
             _fileSystemPropertyStore = fileSystem.PropertyStore as IFileSystemPropertyStore;
             DirectoryInfo = info;
         }
@@ -50,13 +62,19 @@ namespace FubarDev.WebDavServer.FileSystem.DotNet
                 item = new DirectoryInfo(newPath);
 
             if (!item.Exists)
-                return Task.FromResult<IEntry>(null);
+                return null;
 
-            return Task.FromResult(CreateEntry(item));
+            var entry = CreateEntry(item);
+
+            var coll = entry as ICollection;
+            if (coll != null)
+                return coll.GetMountTargetEntryAsync(DotNetFileSystem.MountPointProvider);
+
+            return Task.FromResult(entry);
         }
 
         /// <inheritdoc />
-        public Task<IReadOnlyCollection<IEntry>> GetChildrenAsync(CancellationToken ct)
+        public async Task<IReadOnlyCollection<IEntry>> GetChildrenAsync(CancellationToken ct)
         {
             var result = new List<IEntry>();
             foreach (var info in DirectoryInfo.EnumerateFileSystemInfos())
@@ -65,10 +83,16 @@ namespace FubarDev.WebDavServer.FileSystem.DotNet
                 var entry = CreateEntry(info);
                 var ignoreEntry = _fileSystemPropertyStore?.IgnoreEntry(entry) ?? false;
                 if (!ignoreEntry)
+                {
+                    var coll = entry as ICollection;
+                    if (coll != null)
+                        entry = await coll.GetMountTargetAsync(DotNetFileSystem.MountPointProvider);
+
                     result.Add(entry);
+                }
             }
 
-            return Task.FromResult<IReadOnlyCollection<IEntry>>(result);
+            return result;
         }
 
         /// <inheritdoc />
@@ -102,6 +126,9 @@ namespace FubarDev.WebDavServer.FileSystem.DotNet
         /// <inheritdoc />
         public override async Task<DeleteResult> DeleteAsync(CancellationToken cancellationToken)
         {
+            if (_isRoot)
+                throw new UnauthorizedAccessException("Cannot remove the file systems root collection");
+
             var propStore = FileSystem.PropertyStore;
             if (propStore != null)
                 await propStore.RemoveAsync(this, cancellationToken).ConfigureAwait(false);
@@ -124,7 +151,8 @@ namespace FubarDev.WebDavServer.FileSystem.DotNet
                 return new DotNetFile(DotNetFileSystem, this, fileInfo, Path.Append(fileInfo.Name, false));
 
             var dirInfo = (DirectoryInfo)fsInfo;
-            return new DotNetDirectory(DotNetFileSystem, this, dirInfo, Path.AppendDirectory(dirInfo.Name), null);
+            var dirPath = Path.AppendDirectory(dirInfo.Name);
+            return new DotNetDirectory(DotNetFileSystem, this, dirInfo, dirPath, null);
         }
     }
 }

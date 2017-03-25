@@ -8,6 +8,7 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 
+using FubarDev.WebDavServer.FileSystem.Mount;
 using FubarDev.WebDavServer.Locking;
 using FubarDev.WebDavServer.Props.Dead;
 using FubarDev.WebDavServer.Props.Store;
@@ -37,6 +38,7 @@ namespace FubarDev.WebDavServer.FileSystem.SQLite
         /// <param name="connection">The SQLite database connection</param>
         /// <param name="pathTraversalEngine">The engine to traverse paths</param>
         /// <param name="deadPropertyFactory">A factory for dead properties</param>
+        /// <param name="mountPointProvider">The mount point manager</param>
         /// <param name="lockManager">The global lock manager</param>
         /// <param name="propertyStoreFactory">The store for dead properties</param>
         public SQLiteFileSystem(
@@ -45,19 +47,21 @@ namespace FubarDev.WebDavServer.FileSystem.SQLite
             [NotNull] db::SQLiteConnection connection,
             [NotNull] PathTraversalEngine pathTraversalEngine,
             [NotNull] IDeadPropertyFactory deadPropertyFactory,
+            [NotNull] IMountPointProvider mountPointProvider,
             [CanBeNull] ILockManager lockManager = null,
             [CanBeNull] IPropertyStoreFactory propertyStoreFactory = null)
         {
             RootDirectoryPath = Path.GetDirectoryName(connection.DatabasePath);
             LockManager = lockManager;
             DeadPropertyFactory = deadPropertyFactory;
+            MountPointProvider = mountPointProvider;
             _connection = connection;
             _pathTraversalEngine = pathTraversalEngine;
             Options = options;
             PropertyStore = propertyStoreFactory?.Create(this);
             var rootEntry = connection.Table<FileEntry>().Where(x => x.Id == string.Empty).ToList().Single();
             var rootPath = mountPoint?.Path ?? new Uri(string.Empty, UriKind.Relative);
-            var rootDir = new SQLiteCollection(this, null, rootEntry, rootPath, mountPoint?.Name ?? rootPath.GetName());
+            var rootDir = new SQLiteCollection(this, mountPoint, rootEntry, rootPath, mountPoint?.Name ?? rootPath.GetName(), true);
             Root = new AsyncLazy<ICollection>(() => Task.FromResult<ICollection>(rootDir));
         }
 
@@ -70,6 +74,12 @@ namespace FubarDev.WebDavServer.FileSystem.SQLite
         /// Gets the factory for dead properties
         /// </summary>
         public IDeadPropertyFactory DeadPropertyFactory { get; }
+
+        /// <summary>
+        /// Gets the mount point manager
+        /// </summary>
+        [NotNull]
+        public IMountPointProvider MountPointProvider { get; }
 
         /// <summary>
         /// Gets the SQLite DB connection

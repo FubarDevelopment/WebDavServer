@@ -7,6 +7,8 @@ using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
 
+using FubarDev.WebDavServer.FileSystem.Mount;
+
 using JetBrains.Annotations;
 
 namespace FubarDev.WebDavServer.FileSystem
@@ -16,6 +18,34 @@ namespace FubarDev.WebDavServer.FileSystem
     /// </summary>
     public static class CollectionExtensions
     {
+        /// <summary>
+        /// Returns the target if the collection is a mount point or the collection itself
+        /// </summary>
+        /// <param name="collection">The collection to found the mount destination for</param>
+        /// <param name="mountPointProvider">The mount point provider</param>
+        /// <returns>The <paramref name="collection"/> or the destination collection if a mount point existed</returns>
+        public static async Task<ICollection> GetMountTargetAsync([NotNull] this ICollection collection, [CanBeNull] IMountPointProvider mountPointProvider)
+        {
+            IFileSystem fileSystem;
+            if (mountPointProvider != null && mountPointProvider.TryGetMountPoint(collection.Path, out fileSystem))
+                return await fileSystem.Root;
+            return collection;
+        }
+
+        /// <summary>
+        /// Returns the target if the collection is a mount point or the collection itself
+        /// </summary>
+        /// <param name="collection">The collection to found the mount destination for</param>
+        /// <param name="mountPointProvider">The mount point provider</param>
+        /// <returns>The <paramref name="collection"/> or the destination collection if a mount point existed</returns>
+        public static async Task<IEntry> GetMountTargetEntryAsync([NotNull] this ICollection collection, [CanBeNull] IMountPointProvider mountPointProvider)
+        {
+            IFileSystem fileSystem;
+            if (mountPointProvider != null && mountPointProvider.TryGetMountPoint(collection.Path, out fileSystem))
+                return await fileSystem.Root;
+            return collection;
+        }
+
         /// <summary>
         /// Gets all entries of a collection recursively
         /// </summary>

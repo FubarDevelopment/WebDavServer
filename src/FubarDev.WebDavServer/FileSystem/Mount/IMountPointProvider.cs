@@ -1,0 +1,25 @@
+﻿// <copyright file="IMountPointProvider.cs" company="Fubar Development Junker">
+// Copyright (c) Fubar Development Junker. All rights reserved.
+// </copyright>
+
+using System;
+using System.Collections.Generic;
+
+using JetBrains.Annotations;
+
+namespace FubarDev.WebDavServer.FileSystem.Mount
+{
+    /// <summary>
+    /// Base interface that allows querying the mount points
+    /// </summary>
+    public interface IMountPointProvider : IReadOnlyCollection<Uri>
+    {
+        /// <summary>
+        /// Try to get a mount point for a given path
+        /// </summary>
+        /// <param name="path">The path to get the destination file system for</param>
+        /// <param name="destination">The destination file system</param>
+        /// <returns><see langword="true"/> when there is a destination file system for a <paramref name="path"/></returns>
+        bool TryGetMountPoint([NotNull] Uri path, out IFileSystem destination);
+    }
+}

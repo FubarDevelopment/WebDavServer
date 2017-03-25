@@ -20,8 +20,6 @@ namespace FubarDev.WebDavServer.FileSystem.InMemory
     /// </summary>
     public class InMemoryFile : InMemoryEntry, IDocument
     {
-        private MemoryStream _data;
-
         /// <summary>
         /// Initializes a new instance of the <see cref="InMemoryFile"/> class.
         /// </summary>
@@ -29,7 +27,7 @@ namespace FubarDev.WebDavServer.FileSystem.InMemory
         /// <param name="parent">The parent collection</param>
         /// <param name="path">The root-relative path of this document</param>
         /// <param name="name">The name of this document</param>
-        public InMemoryFile(InMemoryFileSystem fileSystem, InMemoryDirectory parent, Uri path, string name)
+        public InMemoryFile(InMemoryFileSystem fileSystem, ICollection parent, Uri path, string name)
             : this(fileSystem, parent, path, name, new byte[0])
         {
         }
@@ -42,14 +40,19 @@ namespace FubarDev.WebDavServer.FileSystem.InMemory
         /// <param name="path">The root-relative path of this document</param>
         /// <param name="name">The name of this document</param>
         /// <param name="data">The initial data of this document</param>
-        public InMemoryFile(InMemoryFileSystem fileSystem, InMemoryDirectory parent, Uri path, string name, byte[] data)
+        public InMemoryFile(InMemoryFileSystem fileSystem, ICollection parent, Uri path, string name, byte[] data)
             : base(fileSystem, parent, path, name)
         {
-            _data = new MemoryStream(data);
+            Data = new MemoryStream(data);
         }
 
         /// <inheritdoc />
-        public long Length => _data.Length;
+        public long Length => Data.Length;
+
+        /// <summary>
+        /// Gets or sets the underlying data
+        /// </summary>
+        public MemoryStream Data { get; set; }
 
         /// <inheritdoc />
         public override async Task<DeleteResult> DeleteAsync(CancellationToken cancellationToken)
@@ -77,7 +80,7 @@ namespace FubarDev.WebDavServer.FileSystem.InMemory
         /// <inheritdoc />
         public Task<Stream> OpenReadAsync(CancellationToken cancellationToken)
         {
-            return Task.FromResult<Stream>(new MemoryStream(_data.ToArray()));
+            return Task.FromResult<Stream>(new MemoryStream(Data.ToArray()));
         }
 
         /// <inheritdoc />
@@ -86,7 +89,7 @@ namespace FubarDev.WebDavServer.FileSystem.InMemory
             if (InMemoryFileSystem.IsReadOnly)
                 throw new UnauthorizedAccessException("Failed to modify a read-only file system");
 
-            return Task.FromResult<Stream>(_data = new MyMemoryStream(this));
+            return Task.FromResult<Stream>(Data = new MyMemoryStream(this));
         }
 
         /// <inheritdoc />
@@ -96,7 +99,7 @@ namespace FubarDev.WebDavServer.FileSystem.InMemory
             coll.Remove(name);
 
             var doc = (InMemoryFile)await coll.CreateDocumentAsync(name, cancellationToken).ConfigureAwait(false);
-            doc._data = new MemoryStream(_data.ToArray());
+            doc.Data = new MemoryStream(Data.ToArray());
             doc.CreationTimeUtc = CreationTimeUtc;
             doc.LastWriteTimeUtc = LastWriteTimeUtc;
             doc.ETag = ETag;
@@ -138,7 +141,7 @@ namespace FubarDev.WebDavServer.FileSystem.InMemory
 
             var coll = (InMemoryDirectory)collection;
             var doc = (InMemoryFile)await coll.CreateDocumentAsync(name, cancellationToken).ConfigureAwait(false);
-            doc._data = new MemoryStream(_data.ToArray());
+            doc.Data = new MemoryStream(Data.ToArray());
             doc.CreationTimeUtc = CreationTimeUtc;
             doc.LastWriteTimeUtc = LastWriteTimeUtc;
             doc.ETag = ETag;
@@ -174,7 +177,7 @@ namespace FubarDev.WebDavServer.FileSystem.InMemory
             {
                 if (disposing)
                 {
-                    _file._data = new MemoryStream(ToArray());
+                    _file.Data = new MemoryStream(ToArray());
                     _file.ETag = new EntityTag(false);
                 }
 

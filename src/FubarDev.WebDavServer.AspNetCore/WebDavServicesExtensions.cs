@@ -12,6 +12,7 @@ using FubarDev.WebDavServer.AspNetCore.Formatters.Internal;
 using FubarDev.WebDavServer.Dispatchers;
 using FubarDev.WebDavServer.Engines.Remote;
 using FubarDev.WebDavServer.FileSystem;
+using FubarDev.WebDavServer.FileSystem.Mount;
 using FubarDev.WebDavServer.Formatters;
 using FubarDev.WebDavServer.Handlers;
 using FubarDev.WebDavServer.Locking;
@@ -57,6 +58,13 @@ namespace Microsoft.Extensions.DependencyInjection
             services.TryAddSingleton<ISystemClock, SystemClock>();
             services.TryAddSingleton<ITimeoutPolicy, DefaultTimeoutPolicy>();
             services.TryAddScoped<IWebDavContext, WebDavContext>();
+            services.TryAddScoped<IMountPointManager, DefaultMountPointManager>();
+            services.TryAddScoped<IMountPointProvider>(
+                sp =>
+                {
+                    var mgnr = sp.GetRequiredService<IMountPointManager>();
+                    return mgnr;
+                });
             services.TryAddSingleton<ILockCleanupTask, LockCleanupTask>();
             services
                 .AddOptions()

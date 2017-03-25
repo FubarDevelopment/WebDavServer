@@ -16,8 +16,6 @@ namespace FubarDev.WebDavServer.FileSystem.DotNet
     /// </summary>
     public abstract class DotNetEntry : IEntry
     {
-        private readonly DotNetDirectory _parent;
-
         /// <summary>
         /// Initializes a new instance of the <see cref="DotNetEntry"/> class.
         /// </summary>
@@ -26,9 +24,9 @@ namespace FubarDev.WebDavServer.FileSystem.DotNet
         /// <param name="info">The file system information</param>
         /// <param name="path">The root-relative path of this entry</param>
         /// <param name="name">The entry name (<see langword="null"/> when <see cref="FileSystemInfo.Name"/> of <see cref="Info"/> should be used)</param>
-        protected DotNetEntry(DotNetFileSystem fileSystem, DotNetDirectory parent, FileSystemInfo info, Uri path, [CanBeNull] string name)
+        protected DotNetEntry(DotNetFileSystem fileSystem, ICollection parent, FileSystemInfo info, Uri path, [CanBeNull] string name)
         {
-            _parent = parent;
+            Parent = parent;
             Info = info;
             DotNetFileSystem = fileSystem;
             Path = path;
@@ -52,7 +50,7 @@ namespace FubarDev.WebDavServer.FileSystem.DotNet
         public IFileSystem FileSystem => DotNetFileSystem;
 
         /// <inheritdoc />
-        public ICollection Parent => _parent;
+        public ICollection Parent { get; }
 
         /// <inheritdoc />
         public Uri Path { get; }

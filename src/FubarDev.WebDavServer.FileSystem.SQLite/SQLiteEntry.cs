@@ -20,8 +20,6 @@ namespace FubarDev.WebDavServer.FileSystem.SQLite
     /// </summary>
     internal abstract class SQLiteEntry : IEntry, IEntityTagEntry
     {
-        private readonly SQLiteCollection _parent;
-
         /// <summary>
         /// Initializes a new instance of the <see cref="SQLiteEntry"/> class.
         /// </summary>
@@ -30,9 +28,9 @@ namespace FubarDev.WebDavServer.FileSystem.SQLite
         /// <param name="info">The file system information</param>
         /// <param name="path">The root-relative path of this entry</param>
         /// <param name="name">The entry name (<see langword="null"/> when <see cref="FileEntry.Name"/> of <see cref="SQLiteEntry.Info"/> should be used)</param>
-        protected SQLiteEntry(SQLiteFileSystem fileSystem, SQLiteCollection parent, FileEntry info, Uri path, [CanBeNull] string name)
+        protected SQLiteEntry(SQLiteFileSystem fileSystem, ICollection parent, FileEntry info, Uri path, [CanBeNull] string name)
         {
-            _parent = parent;
+            Parent = parent;
             Info = info;
             SQLiteFileSystem = fileSystem;
             Path = path;
@@ -62,7 +60,7 @@ namespace FubarDev.WebDavServer.FileSystem.SQLite
         public IFileSystem FileSystem => SQLiteFileSystem;
 
         /// <inheritdoc />
-        public ICollection Parent => _parent;
+        public ICollection Parent { get; }
 
         /// <inheritdoc />
         public Uri Path { get; }

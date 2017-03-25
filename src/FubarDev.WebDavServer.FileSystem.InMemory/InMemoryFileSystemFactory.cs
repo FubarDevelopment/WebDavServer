@@ -6,6 +6,7 @@ using System;
 using System.Collections.Generic;
 using System.Security.Principal;
 
+using FubarDev.WebDavServer.FileSystem.Mount;
 using FubarDev.WebDavServer.Locking;
 using FubarDev.WebDavServer.Props.Dead;
 using FubarDev.WebDavServer.Props.Store;
@@ -23,7 +24,7 @@ namespace FubarDev.WebDavServer.FileSystem.InMemory
     public class InMemoryFileSystemFactory : IFileSystemFactory
     {
         [NotNull]
-        private readonly Dictionary<string, InMemoryFileSystem> _fileSystems = new Dictionary<string, InMemoryFileSystem>(StringComparer.OrdinalIgnoreCase);
+        private readonly Dictionary<FileSystemKey, InMemoryFileSystem> _fileSystems = new Dictionary<FileSystemKey, InMemoryFileSystem>();
 
         [NotNull]
         private readonly PathTraversalEngine _pathTraversalEngine;
@@ -34,30 +35,36 @@ namespace FubarDev.WebDavServer.FileSystem.InMemory
         [NotNull]
         private readonly IDeadPropertyFactory _deadPropertyFactory;
 
+        [NotNull]
+        private readonly IMountPointProvider _mountPointProvider;
+
         [CanBeNull]
         private readonly ILockManager _lockManager;
 
         [CanBeNull]
         private readonly IPropertyStoreFactory _propertyStoreFactory;
 
-        [NotNull]
-        private readonly InMemoryFileSystemOptions _options;
-
         /// <summary>
         /// Initializes a new instance of the <see cref="InMemoryFileSystemFactory"/> class.
         /// </summary>
-        /// <param name="options">The options for the in-memory file system</param>
         /// <param name="pathTraversalEngine">The engine to traverse paths</param>
         /// <param name="systemClock">Interface for the access to the systems clock</param>
         /// <param name="deadPropertyFactory">A factory for dead properties</param>
+        /// <param name="mountPointProvider">The mount point provider</param>
         /// <param name="lockManager">The global lock manager</param>
         /// <param name="propertyStoreFactory">The store for dead properties</param>
-        public InMemoryFileSystemFactory(IOptions<InMemoryFileSystemOptions> options, PathTraversalEngine pathTraversalEngine, ISystemClock systemClock, IDeadPropertyFactory deadPropertyFactory, ILockManager lockManager = null, IPropertyStoreFactory propertyStoreFactory = null)
+        public InMemoryFileSystemFactory(
+            [NotNull] PathTraversalEngine pathTraversalEngine,
+            [NotNull] ISystemClock systemClock,
+            [NotNull] IDeadPropertyFactory deadPropertyFactory,
+            [NotNull] IMountPointProvider mountPointProvider,
+            ILockManager lockManager = null,
+            IPropertyStoreFactory propertyStoreFactory = null)
         {
-            _options = options.Value ?? new InMemoryFileSystemOptions();
             _pathTraversalEngine = pathTraversalEngine;
             _systemClock = systemClock;
             _deadPropertyFactory = deadPropertyFactory;
+            _mountPointProvider = mountPointProvider;
             _lockManager = lockManager;
             _propertyStoreFactory = propertyStoreFactory;
         }
@@ -69,24 +76,83 @@ namespace FubarDev.WebDavServer.FileSystem.InMemory
                 ? principal.Identity.Name
                 : string.Empty;
 
+            var key = new FileSystemKey(userName, mountPoint?.Path.OriginalString ?? string.Empty);
             InMemoryFileSystem fileSystem;
-            if (!_fileSystems.TryGetValue(userName, out fileSystem))
+            if (!_fileSystems.TryGetValue(key, out fileSystem))
             {
-                fileSystem = new InMemoryFileSystem(mountPoint, _pathTraversalEngine, _systemClock, _deadPropertyFactory, _lockManager, _propertyStoreFactory);
-                var eventArgs = new InMemoryFileSystemInitializationEventArgs(fileSystem, principal);
-                _options.OnInitialize(this, eventArgs);
-                fileSystem.IsReadOnly = eventArgs.IsReadOnly;
-                _fileSystems.Add(userName, fileSystem);
+                fileSystem = new InMemoryFileSystem(mountPoint, _pathTraversalEngine, _systemClock, _deadPropertyFactory, _mountPointProvider, _lockManager, _propertyStoreFactory);
+                _fileSystems.Add(key, fileSystem);
+                InitializeFileSystem(mountPoint, principal, fileSystem);
             }
             else
             {
-                fileSystem.IsReadOnly = false;
-                var eventArgs = new InMemoryFileSystemInitializationEventArgs(fileSystem, principal);
-                _options.OnUpdate(this, eventArgs);
-                fileSystem.IsReadOnly = eventArgs.IsReadOnly;
+                UpdateFileSystem(mountPoint, principal, fileSystem);
             }
 
             return fileSystem;
+        }
+
+        /// <summary>
+        /// Called when file system will be initialized
+        /// </summary>
+        /// <param name="mountPoint">The mount point</param>
+        /// <param name="principal">The principal the file system was created for</param>
+        /// <param name="fileSystem">The created file system</param>
+        protected virtual void InitializeFileSystem([CanBeNull] ICollection mountPoint, [NotNull] IPrincipal principal, [NotNull] InMemoryFileSystem fileSystem)
+        {
+        }
+
+        /// <summary>
+        /// Called when the file system will be updated
+        /// </summary>
+        /// <param name="mountPoint">The mount point</param>
+        /// <param name="principal">The principal the file system was created for</param>
+        /// <param name="fileSystem">The created file system</param>
+        protected virtual void UpdateFileSystem([CanBeNull] ICollection mountPoint, [NotNull] IPrincipal principal, [NotNull] InMemoryFileSystem fileSystem)
+        {
+        }
+
+        private class FileSystemKey : IEquatable<FileSystemKey>
+        {
+            private static readonly IEqualityComparer<string> _comparer = StringComparer.OrdinalIgnoreCase;
+
+            private readonly string _userName;
+
+            private readonly string _mountPoint;
+
+            public FileSystemKey(string userName, string mountPoint)
+            {
+                _userName = userName;
+                _mountPoint = mountPoint;
+            }
+
+            public bool Equals(FileSystemKey other)
+            {
+                if (ReferenceEquals(null, other))
+                    return false;
+                if (ReferenceEquals(this, other))
+                    return true;
+                return _comparer.Equals(_userName, other._userName) && _comparer.Equals(_mountPoint, other._mountPoint);
+            }
+
+            public override bool Equals(object obj)
+            {
+                if (ReferenceEquals(null, obj))
+                    return false;
+                if (ReferenceEquals(this, obj))
+                    return true;
+                if (obj.GetType() != GetType())
+                    return false;
+                return Equals((FileSystemKey)obj);
+            }
+
+            public override int GetHashCode()
+            {
+                unchecked
+                {
+                    return ((_userName != null ? _comparer.GetHashCode(_userName) : 0) * 397) ^ (_mountPoint != null ? _comparer.GetHashCode(_mountPoint) : 0);
+                }
+            }
         }
     }
 }

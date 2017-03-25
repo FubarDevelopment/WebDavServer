@@ -7,6 +7,7 @@ using System.IO;
 using System.Threading;
 using System.Threading.Tasks;
 
+using FubarDev.WebDavServer.FileSystem.Mount;
 using FubarDev.WebDavServer.Locking;
 using FubarDev.WebDavServer.Props.Dead;
 using FubarDev.WebDavServer.Props.Store;
@@ -30,18 +31,28 @@ namespace FubarDev.WebDavServer.FileSystem.DotNet
         /// <param name="rootFolder">The root folder</param>
         /// <param name="pathTraversalEngine">The engine to traverse paths</param>
         /// <param name="deadPropertyFactory">A factory for dead properties</param>
+        /// <param name="mountPointProvider">The mount point provider</param>
         /// <param name="lockManager">The global lock manager</param>
         /// <param name="propertyStoreFactory">The store for dead properties</param>
-        public DotNetFileSystem(DotNetFileSystemOptions options, [CanBeNull] ICollection mountPoint, string rootFolder, PathTraversalEngine pathTraversalEngine, IDeadPropertyFactory deadPropertyFactory, ILockManager lockManager = null, IPropertyStoreFactory propertyStoreFactory = null)
+        public DotNetFileSystem(
+            [NotNull] DotNetFileSystemOptions options,
+            [CanBeNull] ICollection mountPoint,
+            [NotNull] string rootFolder,
+            [NotNull] PathTraversalEngine pathTraversalEngine,
+            [NotNull] IDeadPropertyFactory deadPropertyFactory,
+            [NotNull] IMountPointProvider mountPointProvider,
+            ILockManager lockManager = null,
+            IPropertyStoreFactory propertyStoreFactory = null)
         {
             LockManager = lockManager;
             RootDirectoryPath = rootFolder;
             DeadPropertyFactory = deadPropertyFactory;
+            MountPointProvider = mountPointProvider;
             _pathTraversalEngine = pathTraversalEngine;
             Options = options;
             PropertyStore = propertyStoreFactory?.Create(this);
             var rootPath = mountPoint?.Path ?? new Uri(string.Empty, UriKind.Relative);
-            var rootDir = new DotNetDirectory(this, null, new DirectoryInfo(rootFolder), rootPath, mountPoint?.Name ?? rootPath.GetName());
+            var rootDir = new DotNetDirectory(this, mountPoint, new DirectoryInfo(rootFolder), rootPath, mountPoint?.Name ?? rootPath.GetName(), true);
             Root = new AsyncLazy<ICollection>(() => Task.FromResult<ICollection>(rootDir));
         }
 
@@ -55,6 +66,12 @@ namespace FubarDev.WebDavServer.FileSystem.DotNet
         /// Gets the factory for dead properties
         /// </summary>
         public IDeadPropertyFactory DeadPropertyFactory { get; }
+
+        /// <summary>
+        /// Gets the mount point manager
+        /// </summary>
+        [NotNull]
+        public IMountPointProvider MountPointProvider { get; }
 
         /// <inheritdoc />
         public AsyncLazy<ICollection> Root { get; }

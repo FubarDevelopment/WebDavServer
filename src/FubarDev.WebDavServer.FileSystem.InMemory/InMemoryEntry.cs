@@ -17,7 +17,7 @@ namespace FubarDev.WebDavServer.FileSystem.InMemory
     /// </summary>
     public abstract class InMemoryEntry : IEntry, IEntityTagEntry
     {
-        private readonly InMemoryDirectory _parent;
+        private readonly ICollection _parent;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="InMemoryEntry"/> class.
@@ -26,7 +26,7 @@ namespace FubarDev.WebDavServer.FileSystem.InMemory
         /// <param name="parent">The parent collection</param>
         /// <param name="path">The root-relative path of this entry</param>
         /// <param name="name">The name of the entry</param>
-        protected InMemoryEntry(InMemoryFileSystem fileSystem, InMemoryDirectory parent, Uri path, string name)
+        protected InMemoryEntry(InMemoryFileSystem fileSystem, ICollection parent, Uri path, string name)
         {
             _parent = parent;
             Name = name;
@@ -66,7 +66,7 @@ namespace FubarDev.WebDavServer.FileSystem.InMemory
         /// Gets the parent collection
         /// </summary>
         [CanBeNull]
-        protected InMemoryDirectory InMemoryParent => _parent;
+        protected InMemoryDirectory InMemoryParent => _parent as InMemoryDirectory;
 
         /// <inheritdoc />
         public Task<EntityTag> UpdateETagAsync(CancellationToken cancellationToken)
