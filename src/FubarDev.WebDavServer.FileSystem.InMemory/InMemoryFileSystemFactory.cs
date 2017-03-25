@@ -63,7 +63,7 @@ namespace FubarDev.WebDavServer.FileSystem.InMemory
         }
 
         /// <inheritdoc />
-        public IFileSystem CreateFileSystem(IPrincipal principal)
+        public IFileSystem CreateFileSystem(Uri rootPath, IPrincipal principal)
         {
             var userName = !principal.Identity.IsAnonymous()
                 ? principal.Identity.Name
@@ -72,7 +72,7 @@ namespace FubarDev.WebDavServer.FileSystem.InMemory
             InMemoryFileSystem fileSystem;
             if (!_fileSystems.TryGetValue(userName, out fileSystem))
             {
-                fileSystem = new InMemoryFileSystem(_pathTraversalEngine, _systemClock, _deadPropertyFactory, _lockManager, _propertyStoreFactory);
+                fileSystem = new InMemoryFileSystem(rootPath, _pathTraversalEngine, _systemClock, _deadPropertyFactory, _lockManager, _propertyStoreFactory);
                 var eventArgs = new InMemoryFileSystemInitializationEventArgs(fileSystem, principal);
                 _options.OnInitialize(this, eventArgs);
                 fileSystem.IsReadOnly = eventArgs.IsReadOnly;

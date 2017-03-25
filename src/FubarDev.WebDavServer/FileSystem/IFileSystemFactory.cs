@@ -2,7 +2,10 @@
 // Copyright (c) Fubar Development Junker. All rights reserved.
 // </copyright>
 
+using System;
 using System.Security.Principal;
+
+using JetBrains.Annotations;
 
 namespace FubarDev.WebDavServer.FileSystem
 {
@@ -14,8 +17,10 @@ namespace FubarDev.WebDavServer.FileSystem
         /// <summary>
         /// Gets the <see cref="IFileSystem"/> instance for the given <paramref name="principal"/>
         /// </summary>
+        /// <param name="rootPath">The root path of the file system (this is required for the <see cref="Mount.IMountPointManager"/> support)</param>
         /// <param name="principal">The current principal to get the <see cref="IFileSystem"/> instance for</param>
         /// <returns>The <see cref="IFileSystem"/> instance for the <paramref name="principal"/></returns>
-        IFileSystem CreateFileSystem(IPrincipal principal);
+        [NotNull]
+        IFileSystem CreateFileSystem([NotNull] Uri rootPath, [NotNull] IPrincipal principal);
     }
 }

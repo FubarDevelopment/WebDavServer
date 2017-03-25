@@ -33,6 +33,7 @@ namespace FubarDev.WebDavServer.FileSystem.SQLite
         /// Initializes a new instance of the <see cref="SQLiteFileSystem"/> class.
         /// </summary>
         /// <param name="options">The options for this file system</param>
+        /// <param name="rootPath">The path of the root collection</param>
         /// <param name="connection">The SQLite database connection</param>
         /// <param name="pathTraversalEngine">The engine to traverse paths</param>
         /// <param name="deadPropertyFactory">A factory for dead properties</param>
@@ -40,6 +41,7 @@ namespace FubarDev.WebDavServer.FileSystem.SQLite
         /// <param name="propertyStoreFactory">The store for dead properties</param>
         public SQLiteFileSystem(
             [NotNull] SQLiteFileSystemOptions options,
+            [NotNull] Uri rootPath,
             [NotNull] db::SQLiteConnection connection,
             [NotNull] PathTraversalEngine pathTraversalEngine,
             [NotNull] IDeadPropertyFactory deadPropertyFactory,
@@ -54,7 +56,7 @@ namespace FubarDev.WebDavServer.FileSystem.SQLite
             Options = options;
             PropertyStore = propertyStoreFactory?.Create(this);
             var rootEntry = connection.Table<FileEntry>().Where(x => x.Id == string.Empty).ToList().Single();
-            var rootDir = new SQLiteCollection(this, null, rootEntry, new Uri(string.Empty, UriKind.Relative));
+            var rootDir = new SQLiteCollection(this, null, rootEntry, rootPath);
             Root = new AsyncLazy<ICollection>(() => Task.FromResult<ICollection>(rootDir));
         }
 

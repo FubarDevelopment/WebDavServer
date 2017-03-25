@@ -2,6 +2,7 @@
 // Copyright (c) Fubar Development Junker. All rights reserved.
 // </copyright>
 
+using System;
 using System.IO;
 using System.Security.Principal;
 
@@ -53,16 +54,16 @@ namespace FubarDev.WebDavServer.FileSystem.DotNet
         }
 
         /// <inheritdoc />
-        public IFileSystem CreateFileSystem(IPrincipal principal)
+        public IFileSystem CreateFileSystem(Uri rootPath, IPrincipal principal)
         {
-            var rootPath = Utils.SystemInfo.GetUserHomePath(
+            var rootFileSystemPath = Utils.SystemInfo.GetUserHomePath(
                 principal,
                 homePath: _options.RootPath,
                 anonymousUserName: _options.AnonymousUserName);
 
-            Directory.CreateDirectory(rootPath);
+            Directory.CreateDirectory(rootFileSystemPath);
 
-            return new DotNetFileSystem(_options, rootPath, _pathTraversalEngine, _deadPropertyFactory, _lockManager, _propertyStoreFactory);
+            return new DotNetFileSystem(_options, rootPath, rootFileSystemPath, _pathTraversalEngine, _deadPropertyFactory, _lockManager, _propertyStoreFactory);
         }
     }
 }

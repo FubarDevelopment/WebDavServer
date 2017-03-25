@@ -2,6 +2,7 @@
 // Copyright (c) Fubar Development Junker. All rights reserved.
 // </copyright>
 
+using System;
 using System.Diagnostics;
 using System.IO;
 using System.Security.Principal;
@@ -98,7 +99,7 @@ namespace FubarDev.WebDavServer.FileSystem.SQLite
         }
 
         /// <inheritdoc />
-        public IFileSystem CreateFileSystem(IPrincipal principal)
+        public IFileSystem CreateFileSystem(Uri rootPath, IPrincipal principal)
         {
             var userHomePath = Utils.SystemInfo.GetUserHomePath(
                 principal,
@@ -113,7 +114,7 @@ namespace FubarDev.WebDavServer.FileSystem.SQLite
             EnsureDatabaseExists(dbFileName);
 
             var conn = new sqlitenet.SQLiteConnection(dbFileName);
-            return new SQLiteFileSystem(_options, conn, _pathTraversalEngine, _deadPropertyFactory, _lockManager, _propertyStoreFactory);
+            return new SQLiteFileSystem(_options, rootPath, conn, _pathTraversalEngine, _deadPropertyFactory, _lockManager, _propertyStoreFactory);
         }
 
         /// <summary>

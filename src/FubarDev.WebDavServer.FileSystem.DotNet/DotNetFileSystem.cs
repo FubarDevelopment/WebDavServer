@@ -24,12 +24,13 @@ namespace FubarDev.WebDavServer.FileSystem.DotNet
         /// Initializes a new instance of the <see cref="DotNetFileSystem"/> class.
         /// </summary>
         /// <param name="options">The options for this file system</param>
+        /// <param name="rootPath">The path of the root collection</param>
         /// <param name="rootFolder">The root folder</param>
         /// <param name="pathTraversalEngine">The engine to traverse paths</param>
         /// <param name="deadPropertyFactory">A factory for dead properties</param>
         /// <param name="lockManager">The global lock manager</param>
         /// <param name="propertyStoreFactory">The store for dead properties</param>
-        public DotNetFileSystem(DotNetFileSystemOptions options, string rootFolder, PathTraversalEngine pathTraversalEngine, IDeadPropertyFactory deadPropertyFactory, ILockManager lockManager = null, IPropertyStoreFactory propertyStoreFactory = null)
+        public DotNetFileSystem(DotNetFileSystemOptions options, Uri rootPath, string rootFolder, PathTraversalEngine pathTraversalEngine, IDeadPropertyFactory deadPropertyFactory, ILockManager lockManager = null, IPropertyStoreFactory propertyStoreFactory = null)
         {
             LockManager = lockManager;
             RootDirectoryPath = rootFolder;
@@ -37,7 +38,7 @@ namespace FubarDev.WebDavServer.FileSystem.DotNet
             _pathTraversalEngine = pathTraversalEngine;
             Options = options;
             PropertyStore = propertyStoreFactory?.Create(this);
-            var rootDir = new DotNetDirectory(this, null, new DirectoryInfo(rootFolder), new Uri(string.Empty, UriKind.Relative));
+            var rootDir = new DotNetDirectory(this, null, new DirectoryInfo(rootFolder), rootPath);
             Root = new AsyncLazy<ICollection>(() => Task.FromResult<ICollection>(rootDir));
         }
 

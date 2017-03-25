@@ -2,6 +2,8 @@
 // Copyright (c) Fubar Development Junker. All rights reserved.
 // </copyright>
 
+using System;
+
 using FubarDev.WebDavServer;
 using FubarDev.WebDavServer.AspNetCore;
 using FubarDev.WebDavServer.AspNetCore.Filters;
@@ -74,7 +76,11 @@ namespace Microsoft.Extensions.DependencyInjection
                 {
                     var factory = sp.GetRequiredService<IFileSystemFactory>();
                     var context = sp.GetRequiredService<IWebDavContext>();
-                    return factory.CreateFileSystem(context.User);
+
+                    // The root file system always uses an empty URI
+                    var rootPath = new Uri(string.Empty, UriKind.Relative);
+
+                    return factory.CreateFileSystem(rootPath, context.User);
                 });
             return services;
         }
