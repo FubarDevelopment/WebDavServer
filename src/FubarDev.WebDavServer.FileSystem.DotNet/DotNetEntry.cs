@@ -45,9 +45,6 @@ namespace FubarDev.WebDavServer.FileSystem.DotNet
         public string Name => Info.Name;
 
         /// <inheritdoc />
-        public IFileSystem RootFileSystem => DotNetFileSystem;
-
-        /// <inheritdoc />
         public IFileSystem FileSystem => DotNetFileSystem;
 
         /// <inheritdoc />

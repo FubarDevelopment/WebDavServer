@@ -55,9 +55,6 @@ namespace FubarDev.WebDavServer.FileSystem.SQLite
         public string Name => Info.Name;
 
         /// <inheritdoc />
-        public IFileSystem RootFileSystem => SQLiteFileSystem;
-
-        /// <inheritdoc />
         public IFileSystem FileSystem => SQLiteFileSystem;
 
         /// <inheritdoc />

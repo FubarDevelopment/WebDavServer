@@ -22,12 +22,6 @@ namespace FubarDev.WebDavServer.FileSystem
         string Name { get; }
 
         /// <summary>
-        /// Gets the root file system of the user
-        /// </summary>
-        [NotNull]
-        IFileSystem RootFileSystem { get; }
-
-        /// <summary>
         /// Gets the file system of this entry
         /// </summary>
         [NotNull]

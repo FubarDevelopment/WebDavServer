@@ -30,16 +30,13 @@ namespace FubarDev.WebDavServer.FileSystem.InMemory
         {
             _parent = parent;
             Name = name;
-            RootFileSystem = FileSystem = InMemoryFileSystem = fileSystem;
+            FileSystem = InMemoryFileSystem = fileSystem;
             Path = path;
             CreationTimeUtc = LastWriteTimeUtc = DateTime.UtcNow;
         }
 
         /// <inheritdoc />
         public string Name { get; }
-
-        /// <inheritdoc />
-        public IFileSystem RootFileSystem { get; }
 
         /// <inheritdoc />
         public IFileSystem FileSystem { get; }
@@ -74,6 +71,9 @@ namespace FubarDev.WebDavServer.FileSystem.InMemory
         /// <inheritdoc />
         public Task<EntityTag> UpdateETagAsync(CancellationToken cancellationToken)
         {
+            if (InMemoryFileSystem.IsReadOnly)
+                throw new UnauthorizedAccessException("Failed to modify a read-only file system");
+
             return Task.FromResult(ETag = new EntityTag(false));
         }
 
@@ -83,6 +83,9 @@ namespace FubarDev.WebDavServer.FileSystem.InMemory
         /// <inheritdoc />
         public Task SetLastWriteTimeUtcAsync(DateTime lastWriteTime, CancellationToken cancellationToken)
         {
+            if (InMemoryFileSystem.IsReadOnly)
+                throw new UnauthorizedAccessException("Failed to modify a read-only file system");
+
             LastWriteTimeUtc = lastWriteTime;
             return Task.FromResult(0);
         }
@@ -90,6 +93,9 @@ namespace FubarDev.WebDavServer.FileSystem.InMemory
         /// <inheritdoc />
         public Task SetCreationTimeUtcAsync(DateTime creationTime, CancellationToken cancellationToken)
         {
+            if (InMemoryFileSystem.IsReadOnly)
+                throw new UnauthorizedAccessException("Failed to modify a read-only file system");
+
             CreationTimeUtc = creationTime;
             return Task.FromResult(0);
         }
