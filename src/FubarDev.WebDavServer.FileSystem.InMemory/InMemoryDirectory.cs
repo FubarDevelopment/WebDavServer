@@ -17,7 +17,7 @@ namespace FubarDev.WebDavServer.FileSystem.InMemory
     /// <summary>
     /// An in-memory implementation of a WebDAV collection
     /// </summary>
-    public class InMemoryDirectory : InMemoryEntry, ICollection
+    public class InMemoryDirectory : InMemoryEntry, ICollection, IRecusiveChildrenCollector
     {
         private readonly Dictionary<string, InMemoryEntry> _children = new Dictionary<string, InMemoryEntry>(StringComparer.OrdinalIgnoreCase);
 
@@ -94,6 +94,12 @@ namespace FubarDev.WebDavServer.FileSystem.InMemory
             _children.Add(newItem.Name, newItem);
             ETag = new EntityTag(false);
             return Task.FromResult<ICollection>(newItem);
+        }
+
+        /// <inheritdoc />
+        public IAsyncEnumerable<IEntry> GetEntries(int maxDepth)
+        {
+            return this.EnumerateEntries(maxDepth);
         }
 
         internal bool Remove(string name)
