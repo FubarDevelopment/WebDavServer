@@ -100,7 +100,7 @@ namespace FubarDev.WebDavServer.FileSystem.SQLite
         }
 
         /// <inheritdoc />
-        public IFileSystem CreateFileSystem(ICollection mountPoint, IPrincipal principal)
+        public virtual IFileSystem CreateFileSystem(ICollection mountPoint, IPrincipal principal)
         {
             var userHomePath = Utils.SystemInfo.GetUserHomePath(
                 principal,

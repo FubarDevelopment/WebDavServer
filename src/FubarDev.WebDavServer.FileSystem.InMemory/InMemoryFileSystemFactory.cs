@@ -64,7 +64,7 @@ namespace FubarDev.WebDavServer.FileSystem.InMemory
         }
 
         /// <inheritdoc />
-        public IFileSystem CreateFileSystem(ICollection mountPoint, IPrincipal principal)
+        public virtual IFileSystem CreateFileSystem(ICollection mountPoint, IPrincipal principal)
         {
             var userName = !principal.Identity.IsAnonymous()
                 ? principal.Identity.Name

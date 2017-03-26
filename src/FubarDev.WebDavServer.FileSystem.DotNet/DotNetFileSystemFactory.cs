@@ -60,7 +60,7 @@ namespace FubarDev.WebDavServer.FileSystem.DotNet
         }
 
         /// <inheritdoc />
-        public IFileSystem CreateFileSystem(ICollection mountPoint, IPrincipal principal)
+        public virtual IFileSystem CreateFileSystem(ICollection mountPoint, IPrincipal principal)
         {
             var rootFileSystemPath = Utils.SystemInfo.GetUserHomePath(
                 principal,
