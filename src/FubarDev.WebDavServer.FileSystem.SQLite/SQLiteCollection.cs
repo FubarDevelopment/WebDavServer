@@ -31,10 +31,10 @@ namespace FubarDev.WebDavServer.FileSystem.SQLite
         /// <param name="name">The entry name (<see langword="null"/> when <see cref="FileEntry.Name"/> of <see cref="SQLiteEntry.Info"/> should be used)</param>
         /// <param name="isRoot">Is this the file systems root directory?</param>
         public SQLiteCollection(
-            SQLiteFileSystem fileSystem,
-            ICollection parent,
-            FileEntry info,
-            Uri path,
+            [NotNull] SQLiteFileSystem fileSystem,
+            [CanBeNull] ICollection parent,
+            [NotNull] FileEntry info,
+            [NotNull] Uri path,
             [CanBeNull] string name,
             bool isRoot = false)
             : base(fileSystem, parent, info, path, name)
