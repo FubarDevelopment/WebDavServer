@@ -14,8 +14,10 @@ Path                                              | Description
 `src/FubarDev.WebDavServer.FileSystem.InMemory`   | A file system for the WebDAV server storing all data in memory only
 `src/FubarDev.WebDavServer.FileSystem.SQLite`     | A file system for the WebDAV server storing all data in a SQLite database
 `src/FubarDev.WebDavServer.Locking.InMemory`      | A [ILockManager](xref:FubarDev.WebDavServer.Locking.ILockManager) implementation that holds its locks only in memory
+`src/FubarDev.WebDavServer.Locking.SQLite`        | An `ILockManager` implementation that holds its locks only in an SQLite database
 `src/FubarDev.WebDavServer.Props.Store.InMemory`  | A property store implementation that holds all dead properties in memory only
 `src/FubarDev.WebDavServer.Props.Store.TextFile`  | A property store implementation that stores the dead properties in a JSON text file
+`src/FubarDev.WebDavServer.Props.Store.SQLite`    | A property store implementation that stores the dead properties in an SQLite database
 `src-doc`                                         | Project files for docfx
 `test`                                            | Test projects
 `third-party`                                     | Third party library

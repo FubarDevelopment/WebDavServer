@@ -23,12 +23,12 @@ There are also typed versions of this interface and some basic implementations f
 Type                                                                    | Converter                                                                                         | Default implementation
 ------------------------------------------------------------------------|---------------------------------------------------------------------------------------------------|------------
 [String](xref:System.String)                                            | [StringConverter](xref:FubarDev.WebDavServer.Props.Converters.StringConverter)                    | [GenericStringProperty](xref:FubarDev.WebDavServer.Props.Generic.GenericStringProperty)
-[long (Int64)](xref:System.Int64)                                       | [LongConverter](xref:FubarDev.WebDavServer.Props.Converters.LongConverter)                        | No implementation, derive from [SimpleTypedProperty](xref:FubarDev.WebDavServer.Props.SimpleTypedProperty)
+[long (Int64)](xref:System.Int64)                                       | [LongConverter](xref:FubarDev.WebDavServer.Props.Converters.LongConverter)                        | No implementation, derive from [SimpleTypedProperty<T>](xref:FubarDev.WebDavServer.Props.SimpleTypedProperty`1)
 [DateTime](xref:System.DateTime)                                        | [DateTimeRfc1123Converter](xref:FubarDev.WebDavServer.Props.Converters.DateTimeRfc1123Converter)  | [GenericDateTimeRfc1123Property](xref:FubarDev.WebDavServer.Props.Generic.GenericDateTimeRfc1123Property)
 [ETag (EntityTag)](xref:FubarDev.WebDavServer.Model.Headers.EntityTag)  | [EntityTagConverter](xref:FubarDev.WebDavServer.Props.Converters.EntityTagConverter)              | [GetETagProperty](xref:FubarDev.WebDavServer.Props.Dead.GetETagProperty)
-[Object (Xml)](xref:System.Object)                                      | [XmlConverter](xref:FubarDev.WebDavServer.Props.Converters.XmlConverter)                          | No implementation, derive from [SimpleTypedProperty](xref:FubarDev.WebDavServer.Props.SimpleTypedProperty)
+[Object (Xml)](xref:System.Object)                                      | [XmlConverter<T>](xref:FubarDev.WebDavServer.Props.Converters.XmlConverter`1)                          | No implementation, derive from [SimpleTypedProperty<T>](xref:FubarDev.WebDavServer.Props.SimpleTypedProperty`1)
 
-When you use [SimpleTypedProperty](xref:FubarDev.WebDavServer.Props.SimpleTypedProperty), then you also have to ensure that you preservere the `xml:lang` attribute. You can access its value using the [SimpleUntypedProperty.Language](xref:FubarDev.WebDavServer.Props.SimpleUntypedProperty.Language) property.
+When you use [SimpleTypedProperty<T>](xref:FubarDev.WebDavServer.Props.SimpleTypedProperty`1), then you also have to ensure that you preservere the `xml:lang` attribute. You can access its value using the [SimpleUntypedProperty.Language](xref:FubarDev.WebDavServer.Props.SimpleUntypedProperty.Language) property.
 
 # Property store
 
@@ -50,3 +50,24 @@ The factory is quite simple and consists of the following parts:
 * Creation of a [SQLitePropertyStore](xref:FubarDev.WebDavServer.Props.Store.SQLite.SQLitePropertyStore)
 
 Both steps are done in the [SQLitePropertyStoreFactory.Create(FubarDev.WebDavServer.FileSystem.IFileSystem)](xref:FubarDev.WebDavServer.Props.Store.SQLite.SQLitePropertyStoreFactory.Create(FubarDev.WebDavServer.FileSystem.IFileSystem)) function.
+
+## Property store
+
+We store the properties in a database file which might exist in the directories exposed to the user. To avoid showing the database file when a user lists a collection, we also implement the [IFileSystemPropertyStore](xref:FubarDev.WebDavServer.Props.Store.IFileSystemPropertyStore) and return true in the [SQLitePropertyStore.IgnoreEntry](xref:FubarDev.WebDavServer.Props.Store.SQLite.SQLitePropertyStore.IgnoreEntry(FubarDev.WebDavServer.FileSystem.IEntry)) function when there is a file in the root directory with the same name as the database file.
+
+### Functions to implement
+
+For the basic implemetation, we only have to implement a couple of functions, like:
+
+* [PropertyStoreBase.GetAsync](xref:FubarDev.WebDavServer.Props.Store.PropertyStoreBase.GetAsync(FubarDev.WebDavServer.FileSystem.IEntry,System.Threading.CancellationToken))
+* [PropertyStoreBase.SetAsync](xref:FubarDev.WebDavServer.Props.Store.PropertyStoreBase.SetAsync(FubarDev.WebDavServer.FileSystem.IEntry,System.Collections.Generic.IEnumerable{System.Xml.Linq.XElement},System.Threading.CancellationToken))
+* [PropertyStoreBase.RemoveAsync](xref:FubarDev.WebDavServer.Props.Store.PropertyStoreBase.RemoveAsync(FubarDev.WebDavServer.FileSystem.IEntry,System.Threading.CancellationToken))
+* [PropertyStoreBase.RemoveAsync](xref:FubarDev.WebDavServer.Props.Store.PropertyStoreBase.RemoveAsync(FubarDev.WebDavServer.FileSystem.IEntry,System.Collections.Generic.IEnumerable{System.Xml.Linq.XName},System.Threading.CancellationToken))
+* [PropertyStoreBase.GetDeadETagAsync](xref:FubarDev.WebDavServer.Props.Store.PropertyStoreBase.GetDeadETagAsync(FubarDev.WebDavServer.FileSystem.IEntry,System.Threading.CancellationToken))
+* [PropertyStoreBase.UpdateDeadETagAsync](xref:FubarDev.WebDavServer.Props.Store.PropertyStoreBase.UpdateDeadETagAsync(FubarDev.WebDavServer.FileSystem.IEntry,System.Threading.CancellationToken))
+
+The functions `GetDeadETagAsync` and `UpdateDeadETagAsync` are only called when the file system itself doesn't support entity tags. A file system that supports entity tags must implement the [IEntityTagEntry](xref:FubarDev.WebDavServer.FileSystem.IEntityTagEntry).
+
+### Entity Tag property handling
+
+The entity tags must not be modifiable by [PropertyStoreBase.RemoveAsync(IEntry, IEnumerable<XName>, CancellationToken)](xref:FubarDev.WebDavServer.Props.Store.PropertyStoreBase.RemoveAsync(FubarDev.WebDavServer.FileSystem.IEntry,System.Collections.Generic.IEnumerable{System.Xml.Linq.XName},System.Threading.CancellationToken)) and [PropertyStoreBase.SetAsync](xref:FubarDev.WebDavServer.Props.Store.PropertyStoreBase.SetAsync(FubarDev.WebDavServer.FileSystem.IEntry,System.Collections.Generic.IEnumerable{System.Xml.Linq.XElement},System.Threading.CancellationToken)). When the user tries this, then the property store implementation should silently ignore this (`SetAsync`) or should return false (`RemoveAsync`).
