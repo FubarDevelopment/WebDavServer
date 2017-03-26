@@ -11,10 +11,8 @@ using System.Threading.Tasks;
 
 using FubarDev.WebDavServer.FileSystem;
 using FubarDev.WebDavServer.FileSystem.InMemory;
-using FubarDev.WebDavServer.FileSystem.Mount;
 using FubarDev.WebDavServer.Locking;
 using FubarDev.WebDavServer.Locking.InMemory;
-using FubarDev.WebDavServer.Props.Dead;
 using FubarDev.WebDavServer.Props.Store;
 using FubarDev.WebDavServer.Props.Store.InMemory;
 using FubarDev.WebDavServer.Tests.Support;
@@ -134,10 +132,9 @@ namespace FubarDev.WebDavServer.Tests.FileSystem
                 [NotNull] IServiceProvider serviceProvider,
                 [NotNull] PathTraversalEngine pathTraversalEngine,
                 [NotNull] ISystemClock systemClock,
-                [NotNull] IDeadPropertyFactory deadPropertyFactory,
                 ILockManager lockManager = null,
                 IPropertyStoreFactory propertyStoreFactory = null)
-                : base(pathTraversalEngine, systemClock, deadPropertyFactory, lockManager, propertyStoreFactory)
+                : base(pathTraversalEngine, systemClock, lockManager, propertyStoreFactory)
             {
                 _serviceProvider = serviceProvider;
             }

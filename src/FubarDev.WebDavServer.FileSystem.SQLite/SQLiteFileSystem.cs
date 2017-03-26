@@ -11,7 +11,6 @@ using System.Threading.Tasks;
 
 using FubarDev.WebDavServer.FileSystem.Mount;
 using FubarDev.WebDavServer.Locking;
-using FubarDev.WebDavServer.Props.Dead;
 using FubarDev.WebDavServer.Props.Store;
 
 using JetBrains.Annotations;
@@ -40,7 +39,6 @@ namespace FubarDev.WebDavServer.FileSystem.SQLite
         /// <param name="mountPoint">The mount point where this file system should be included</param>
         /// <param name="connection">The SQLite database connection</param>
         /// <param name="pathTraversalEngine">The engine to traverse paths</param>
-        /// <param name="deadPropertyFactory">A factory for dead properties</param>
         /// <param name="lockManager">The global lock manager</param>
         /// <param name="propertyStoreFactory">The store for dead properties</param>
         public SQLiteFileSystem(
@@ -48,13 +46,11 @@ namespace FubarDev.WebDavServer.FileSystem.SQLite
             [CanBeNull] ICollection mountPoint,
             [NotNull] db::SQLiteConnection connection,
             [NotNull] PathTraversalEngine pathTraversalEngine,
-            [NotNull] IDeadPropertyFactory deadPropertyFactory,
             [CanBeNull] ILockManager lockManager = null,
             [CanBeNull] IPropertyStoreFactory propertyStoreFactory = null)
         {
             RootDirectoryPath = Path.GetDirectoryName(connection.DatabasePath);
             LockManager = lockManager;
-            DeadPropertyFactory = deadPropertyFactory;
             _connection = connection;
             _pathTraversalEngine = pathTraversalEngine;
             Options = options;
@@ -69,11 +65,6 @@ namespace FubarDev.WebDavServer.FileSystem.SQLite
         /// Gets the file systems options
         /// </summary>
         public SQLiteFileSystemOptions Options { get; }
-
-        /// <summary>
-        /// Gets the factory for dead properties
-        /// </summary>
-        public IDeadPropertyFactory DeadPropertyFactory { get; }
 
         /// <summary>
         /// Gets the SQLite DB connection

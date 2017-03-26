@@ -9,7 +9,6 @@ using System.Threading.Tasks;
 
 using FubarDev.WebDavServer.FileSystem.Mount;
 using FubarDev.WebDavServer.Locking;
-using FubarDev.WebDavServer.Props.Dead;
 using FubarDev.WebDavServer.Props.Store;
 
 using JetBrains.Annotations;
@@ -31,19 +30,16 @@ namespace FubarDev.WebDavServer.FileSystem.InMemory
         /// <param name="mountPoint">The mount point where this file system should be included</param>
         /// <param name="pathTraversalEngine">The engine to traverse paths</param>
         /// <param name="systemClock">Interface for the access to the systems clock</param>
-        /// <param name="deadPropertyFactory">A factory for dead properties</param>
         /// <param name="lockManager">The global lock manager</param>
         /// <param name="propertyStoreFactory">The store for dead properties</param>
         public InMemoryFileSystem(
             [CanBeNull] ICollection mountPoint,
             [NotNull] PathTraversalEngine pathTraversalEngine,
             [NotNull] ISystemClock systemClock,
-            [NotNull] IDeadPropertyFactory deadPropertyFactory,
             ILockManager lockManager = null,
             IPropertyStoreFactory propertyStoreFactory = null)
         {
             SystemClock = systemClock;
-            DeadPropertyFactory = deadPropertyFactory;
             LockManager = lockManager;
             _pathTraversalEngine = pathTraversalEngine;
             var rootPath = mountPoint?.Path ?? new Uri(string.Empty, UriKind.Relative);
@@ -62,11 +58,6 @@ namespace FubarDev.WebDavServer.FileSystem.InMemory
         /// Gets the systems clock
         /// </summary>
         public ISystemClock SystemClock { get; }
-
-        /// <summary>
-        /// Gets the factory for dead properties
-        /// </summary>
-        public IDeadPropertyFactory DeadPropertyFactory { get; }
 
         /// <inheritdoc />
         public AsyncLazy<ICollection> Root { get; }

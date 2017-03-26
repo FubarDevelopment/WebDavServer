@@ -6,15 +6,11 @@ using System;
 using System.Collections.Generic;
 using System.Security.Principal;
 
-using FubarDev.WebDavServer.FileSystem.Mount;
 using FubarDev.WebDavServer.Locking;
-using FubarDev.WebDavServer.Props.Dead;
 using FubarDev.WebDavServer.Props.Store;
 using FubarDev.WebDavServer.Utils;
 
 using JetBrains.Annotations;
-
-using Microsoft.Extensions.Options;
 
 namespace FubarDev.WebDavServer.FileSystem.InMemory
 {
@@ -32,9 +28,6 @@ namespace FubarDev.WebDavServer.FileSystem.InMemory
         [NotNull]
         private readonly ISystemClock _systemClock;
 
-        [NotNull]
-        private readonly IDeadPropertyFactory _deadPropertyFactory;
-
         [CanBeNull]
         private readonly ILockManager _lockManager;
 
@@ -46,19 +39,16 @@ namespace FubarDev.WebDavServer.FileSystem.InMemory
         /// </summary>
         /// <param name="pathTraversalEngine">The engine to traverse paths</param>
         /// <param name="systemClock">Interface for the access to the systems clock</param>
-        /// <param name="deadPropertyFactory">A factory for dead properties</param>
         /// <param name="lockManager">The global lock manager</param>
         /// <param name="propertyStoreFactory">The store for dead properties</param>
         public InMemoryFileSystemFactory(
             [NotNull] PathTraversalEngine pathTraversalEngine,
             [NotNull] ISystemClock systemClock,
-            [NotNull] IDeadPropertyFactory deadPropertyFactory,
             ILockManager lockManager = null,
             IPropertyStoreFactory propertyStoreFactory = null)
         {
             _pathTraversalEngine = pathTraversalEngine;
             _systemClock = systemClock;
-            _deadPropertyFactory = deadPropertyFactory;
             _lockManager = lockManager;
             _propertyStoreFactory = propertyStoreFactory;
         }
@@ -74,7 +64,7 @@ namespace FubarDev.WebDavServer.FileSystem.InMemory
             InMemoryFileSystem fileSystem;
             if (!_fileSystems.TryGetValue(key, out fileSystem))
             {
-                fileSystem = new InMemoryFileSystem(mountPoint, _pathTraversalEngine, _systemClock, _deadPropertyFactory, _lockManager, _propertyStoreFactory);
+                fileSystem = new InMemoryFileSystem(mountPoint, _pathTraversalEngine, _systemClock, _lockManager, _propertyStoreFactory);
                 _fileSystems.Add(key, fileSystem);
                 InitializeFileSystem(mountPoint, principal, fileSystem);
             }

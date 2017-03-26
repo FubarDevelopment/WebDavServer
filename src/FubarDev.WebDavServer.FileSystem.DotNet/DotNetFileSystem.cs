@@ -10,7 +10,6 @@ using System.Threading.Tasks;
 
 using FubarDev.WebDavServer.FileSystem.Mount;
 using FubarDev.WebDavServer.Locking;
-using FubarDev.WebDavServer.Props.Dead;
 using FubarDev.WebDavServer.Props.Store;
 
 using JetBrains.Annotations;
@@ -33,7 +32,6 @@ namespace FubarDev.WebDavServer.FileSystem.DotNet
         /// <param name="mountPoint">The mount point where this file system should be included</param>
         /// <param name="rootFolder">The root folder</param>
         /// <param name="pathTraversalEngine">The engine to traverse paths</param>
-        /// <param name="deadPropertyFactory">A factory for dead properties</param>
         /// <param name="lockManager">The global lock manager</param>
         /// <param name="propertyStoreFactory">The store for dead properties</param>
         public DotNetFileSystem(
@@ -41,13 +39,11 @@ namespace FubarDev.WebDavServer.FileSystem.DotNet
             [CanBeNull] ICollection mountPoint,
             [NotNull] string rootFolder,
             [NotNull] PathTraversalEngine pathTraversalEngine,
-            [NotNull] IDeadPropertyFactory deadPropertyFactory,
             ILockManager lockManager = null,
             IPropertyStoreFactory propertyStoreFactory = null)
         {
             LockManager = lockManager;
             RootDirectoryPath = rootFolder;
-            DeadPropertyFactory = deadPropertyFactory;
             _pathTraversalEngine = pathTraversalEngine;
             Options = options;
             PropertyStore = propertyStoreFactory?.Create(this);
@@ -61,11 +57,6 @@ namespace FubarDev.WebDavServer.FileSystem.DotNet
 
         /// <inheritdoc />
         public bool HasSubfolders { get; } = true;
-
-        /// <summary>
-        /// Gets the factory for dead properties
-        /// </summary>
-        public IDeadPropertyFactory DeadPropertyFactory { get; }
 
         /// <inheritdoc />
         public AsyncLazy<ICollection> Root { get; }

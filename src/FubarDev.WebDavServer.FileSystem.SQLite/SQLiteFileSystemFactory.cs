@@ -2,14 +2,11 @@
 // Copyright (c) Fubar Development Junker. All rights reserved.
 // </copyright>
 
-using System;
 using System.Diagnostics;
 using System.IO;
 using System.Security.Principal;
 
-using FubarDev.WebDavServer.FileSystem.Mount;
 using FubarDev.WebDavServer.Locking;
-using FubarDev.WebDavServer.Props.Dead;
 using FubarDev.WebDavServer.Props.Store;
 
 using JetBrains.Annotations;
@@ -29,9 +26,6 @@ namespace FubarDev.WebDavServer.FileSystem.SQLite
         [NotNull]
         private readonly PathTraversalEngine _pathTraversalEngine;
 
-        [NotNull]
-        private readonly IDeadPropertyFactory _deadPropertyFactory;
-
         [CanBeNull]
         private readonly IPropertyStoreFactory _propertyStoreFactory;
 
@@ -46,18 +40,15 @@ namespace FubarDev.WebDavServer.FileSystem.SQLite
         /// </summary>
         /// <param name="options">The options for this file system</param>
         /// <param name="pathTraversalEngine">The engine to traverse paths</param>
-        /// <param name="deadPropertyFactory">A factory for dead properties</param>
         /// <param name="propertyStoreFactory">The store for dead properties</param>
         /// <param name="lockManager">The global lock manager</param>
         public SQLiteFileSystemFactory(
             [NotNull] IOptions<SQLiteFileSystemOptions> options,
             [NotNull] PathTraversalEngine pathTraversalEngine,
-            [NotNull] IDeadPropertyFactory deadPropertyFactory,
             [CanBeNull] IPropertyStoreFactory propertyStoreFactory = null,
             [CanBeNull] ILockManager lockManager = null)
         {
             _pathTraversalEngine = pathTraversalEngine;
-            _deadPropertyFactory = deadPropertyFactory;
             _propertyStoreFactory = propertyStoreFactory;
             _lockManager = lockManager;
             _options = options.Value;
@@ -108,6 +99,7 @@ namespace FubarDev.WebDavServer.FileSystem.SQLite
                 anonymousUserName: "anonymous");
 
             var dbDir = Path.GetDirectoryName(userHomePath);
+            Debug.Assert(dbDir != null, "dbDir != null");
             var dbName = Path.GetFileName(userHomePath) + ".db";
             var dbFileName = Path.Combine(dbDir, dbName);
 
@@ -115,7 +107,7 @@ namespace FubarDev.WebDavServer.FileSystem.SQLite
             EnsureDatabaseExists(dbFileName);
 
             var conn = new sqlitenet.SQLiteConnection(dbFileName);
-            return new SQLiteFileSystem(_options, mountPoint, conn, _pathTraversalEngine, _deadPropertyFactory, _lockManager, _propertyStoreFactory);
+            return new SQLiteFileSystem(_options, mountPoint, conn, _pathTraversalEngine, _lockManager, _propertyStoreFactory);
         }
 
         /// <summary>
