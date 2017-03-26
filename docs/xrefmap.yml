@@ -4190,30 +4190,18 @@ references:
   commentId: T:FubarDev.WebDavServer.FileSystem.DotNet.DotNetFileSystem
   fullName: FubarDev.WebDavServer.FileSystem.DotNet.DotNetFileSystem
   nameWithType: DotNetFileSystem
-- uid: FubarDev.WebDavServer.FileSystem.DotNet.DotNetFileSystem.#ctor(FubarDev.WebDavServer.FileSystem.DotNet.DotNetFileSystemOptions,FubarDev.WebDavServer.FileSystem.ICollection,System.String,FubarDev.WebDavServer.FileSystem.PathTraversalEngine,FubarDev.WebDavServer.Props.Dead.IDeadPropertyFactory,FubarDev.WebDavServer.Locking.ILockManager,FubarDev.WebDavServer.Props.Store.IPropertyStoreFactory)
-  name: DotNetFileSystem(DotNetFileSystemOptions, ICollection, String, PathTraversalEngine, IDeadPropertyFactory, ILockManager, IPropertyStoreFactory)
-  href: api/FubarDev.WebDavServer.FileSystem.DotNet.DotNetFileSystem.html#FubarDev_WebDavServer_FileSystem_DotNet_DotNetFileSystem__ctor_FubarDev_WebDavServer_FileSystem_DotNet_DotNetFileSystemOptions_FubarDev_WebDavServer_FileSystem_ICollection_System_String_FubarDev_WebDavServer_FileSystem_PathTraversalEngine_FubarDev_WebDavServer_Props_Dead_IDeadPropertyFactory_FubarDev_WebDavServer_Locking_ILockManager_FubarDev_WebDavServer_Props_Store_IPropertyStoreFactory_
-  commentId: M:FubarDev.WebDavServer.FileSystem.DotNet.DotNetFileSystem.#ctor(FubarDev.WebDavServer.FileSystem.DotNet.DotNetFileSystemOptions,FubarDev.WebDavServer.FileSystem.ICollection,System.String,FubarDev.WebDavServer.FileSystem.PathTraversalEngine,FubarDev.WebDavServer.Props.Dead.IDeadPropertyFactory,FubarDev.WebDavServer.Locking.ILockManager,FubarDev.WebDavServer.Props.Store.IPropertyStoreFactory)
-  fullName: FubarDev.WebDavServer.FileSystem.DotNet.DotNetFileSystem.DotNetFileSystem(FubarDev.WebDavServer.FileSystem.DotNet.DotNetFileSystemOptions, FubarDev.WebDavServer.FileSystem.ICollection, System.String, FubarDev.WebDavServer.FileSystem.PathTraversalEngine, FubarDev.WebDavServer.Props.Dead.IDeadPropertyFactory, FubarDev.WebDavServer.Locking.ILockManager, FubarDev.WebDavServer.Props.Store.IPropertyStoreFactory)
-  nameWithType: DotNetFileSystem.DotNetFileSystem(DotNetFileSystemOptions, ICollection, String, PathTraversalEngine, IDeadPropertyFactory, ILockManager, IPropertyStoreFactory)
+- uid: FubarDev.WebDavServer.FileSystem.DotNet.DotNetFileSystem.#ctor(FubarDev.WebDavServer.FileSystem.DotNet.DotNetFileSystemOptions,FubarDev.WebDavServer.FileSystem.ICollection,System.String,FubarDev.WebDavServer.FileSystem.PathTraversalEngine,FubarDev.WebDavServer.Locking.ILockManager,FubarDev.WebDavServer.Props.Store.IPropertyStoreFactory)
+  name: DotNetFileSystem(DotNetFileSystemOptions, ICollection, String, PathTraversalEngine, ILockManager, IPropertyStoreFactory)
+  href: api/FubarDev.WebDavServer.FileSystem.DotNet.DotNetFileSystem.html#FubarDev_WebDavServer_FileSystem_DotNet_DotNetFileSystem__ctor_FubarDev_WebDavServer_FileSystem_DotNet_DotNetFileSystemOptions_FubarDev_WebDavServer_FileSystem_ICollection_System_String_FubarDev_WebDavServer_FileSystem_PathTraversalEngine_FubarDev_WebDavServer_Locking_ILockManager_FubarDev_WebDavServer_Props_Store_IPropertyStoreFactory_
+  commentId: M:FubarDev.WebDavServer.FileSystem.DotNet.DotNetFileSystem.#ctor(FubarDev.WebDavServer.FileSystem.DotNet.DotNetFileSystemOptions,FubarDev.WebDavServer.FileSystem.ICollection,System.String,FubarDev.WebDavServer.FileSystem.PathTraversalEngine,FubarDev.WebDavServer.Locking.ILockManager,FubarDev.WebDavServer.Props.Store.IPropertyStoreFactory)
+  fullName: FubarDev.WebDavServer.FileSystem.DotNet.DotNetFileSystem.DotNetFileSystem(FubarDev.WebDavServer.FileSystem.DotNet.DotNetFileSystemOptions, FubarDev.WebDavServer.FileSystem.ICollection, System.String, FubarDev.WebDavServer.FileSystem.PathTraversalEngine, FubarDev.WebDavServer.Locking.ILockManager, FubarDev.WebDavServer.Props.Store.IPropertyStoreFactory)
+  nameWithType: DotNetFileSystem.DotNetFileSystem(DotNetFileSystemOptions, ICollection, String, PathTraversalEngine, ILockManager, IPropertyStoreFactory)
 - uid: FubarDev.WebDavServer.FileSystem.DotNet.DotNetFileSystem.#ctor*
   name: DotNetFileSystem
   href: api/FubarDev.WebDavServer.FileSystem.DotNet.DotNetFileSystem.html#FubarDev_WebDavServer_FileSystem_DotNet_DotNetFileSystem__ctor_
   commentId: Overload:FubarDev.WebDavServer.FileSystem.DotNet.DotNetFileSystem.#ctor
   fullName: FubarDev.WebDavServer.FileSystem.DotNet.DotNetFileSystem.DotNetFileSystem
   nameWithType: DotNetFileSystem.DotNetFileSystem
-- uid: FubarDev.WebDavServer.FileSystem.DotNet.DotNetFileSystem.DeadPropertyFactory
-  name: DeadPropertyFactory
-  href: api/FubarDev.WebDavServer.FileSystem.DotNet.DotNetFileSystem.html#FubarDev_WebDavServer_FileSystem_DotNet_DotNetFileSystem_DeadPropertyFactory
-  commentId: P:FubarDev.WebDavServer.FileSystem.DotNet.DotNetFileSystem.DeadPropertyFactory
-  fullName: FubarDev.WebDavServer.FileSystem.DotNet.DotNetFileSystem.DeadPropertyFactory
-  nameWithType: DotNetFileSystem.DeadPropertyFactory
-- uid: FubarDev.WebDavServer.FileSystem.DotNet.DotNetFileSystem.DeadPropertyFactory*
-  name: DeadPropertyFactory
-  href: api/FubarDev.WebDavServer.FileSystem.DotNet.DotNetFileSystem.html#FubarDev_WebDavServer_FileSystem_DotNet_DotNetFileSystem_DeadPropertyFactory_
-  commentId: Overload:FubarDev.WebDavServer.FileSystem.DotNet.DotNetFileSystem.DeadPropertyFactory
-  fullName: FubarDev.WebDavServer.FileSystem.DotNet.DotNetFileSystem.DeadPropertyFactory
-  nameWithType: DotNetFileSystem.DeadPropertyFactory
 - uid: FubarDev.WebDavServer.FileSystem.DotNet.DotNetFileSystem.HasSubfolders
   name: HasSubfolders
   href: api/FubarDev.WebDavServer.FileSystem.DotNet.DotNetFileSystem.html#FubarDev_WebDavServer_FileSystem_DotNet_DotNetFileSystem_HasSubfolders
@@ -4367,15 +4355,15 @@ references:
   commentId: T:FubarDev.WebDavServer.FileSystem.DotNet.DotNetFileSystemFactory
   fullName: FubarDev.WebDavServer.FileSystem.DotNet.DotNetFileSystemFactory
   nameWithType: DotNetFileSystemFactory
-- uid: FubarDev.WebDavServer.FileSystem.DotNet.DotNetFileSystemFactory.#ctor(Microsoft.Extensions.Options.IOptions{FubarDev.WebDavServer.FileSystem.DotNet.DotNetFileSystemOptions},FubarDev.WebDavServer.FileSystem.PathTraversalEngine,FubarDev.WebDavServer.Props.Dead.IDeadPropertyFactory,FubarDev.WebDavServer.Props.Store.IPropertyStoreFactory,FubarDev.WebDavServer.Locking.ILockManager)
-  name: DotNetFileSystemFactory(IOptions<DotNetFileSystemOptions>, PathTraversalEngine, IDeadPropertyFactory, IPropertyStoreFactory, ILockManager)
-  href: api/FubarDev.WebDavServer.FileSystem.DotNet.DotNetFileSystemFactory.html#FubarDev_WebDavServer_FileSystem_DotNet_DotNetFileSystemFactory__ctor_Microsoft_Extensions_Options_IOptions_FubarDev_WebDavServer_FileSystem_DotNet_DotNetFileSystemOptions__FubarDev_WebDavServer_FileSystem_PathTraversalEngine_FubarDev_WebDavServer_Props_Dead_IDeadPropertyFactory_FubarDev_WebDavServer_Props_Store_IPropertyStoreFactory_FubarDev_WebDavServer_Locking_ILockManager_
-  commentId: M:FubarDev.WebDavServer.FileSystem.DotNet.DotNetFileSystemFactory.#ctor(Microsoft.Extensions.Options.IOptions{FubarDev.WebDavServer.FileSystem.DotNet.DotNetFileSystemOptions},FubarDev.WebDavServer.FileSystem.PathTraversalEngine,FubarDev.WebDavServer.Props.Dead.IDeadPropertyFactory,FubarDev.WebDavServer.Props.Store.IPropertyStoreFactory,FubarDev.WebDavServer.Locking.ILockManager)
-  name.vb: DotNetFileSystemFactory(IOptions(Of DotNetFileSystemOptions), PathTraversalEngine, IDeadPropertyFactory, IPropertyStoreFactory, ILockManager)
-  fullName: FubarDev.WebDavServer.FileSystem.DotNet.DotNetFileSystemFactory.DotNetFileSystemFactory(Microsoft.Extensions.Options.IOptions<FubarDev.WebDavServer.FileSystem.DotNet.DotNetFileSystemOptions>, FubarDev.WebDavServer.FileSystem.PathTraversalEngine, FubarDev.WebDavServer.Props.Dead.IDeadPropertyFactory, FubarDev.WebDavServer.Props.Store.IPropertyStoreFactory, FubarDev.WebDavServer.Locking.ILockManager)
-  fullName.vb: FubarDev.WebDavServer.FileSystem.DotNet.DotNetFileSystemFactory.DotNetFileSystemFactory(Microsoft.Extensions.Options.IOptions(Of FubarDev.WebDavServer.FileSystem.DotNet.DotNetFileSystemOptions), FubarDev.WebDavServer.FileSystem.PathTraversalEngine, FubarDev.WebDavServer.Props.Dead.IDeadPropertyFactory, FubarDev.WebDavServer.Props.Store.IPropertyStoreFactory, FubarDev.WebDavServer.Locking.ILockManager)
-  nameWithType: DotNetFileSystemFactory.DotNetFileSystemFactory(IOptions<DotNetFileSystemOptions>, PathTraversalEngine, IDeadPropertyFactory, IPropertyStoreFactory, ILockManager)
-  nameWithType.vb: DotNetFileSystemFactory.DotNetFileSystemFactory(IOptions(Of DotNetFileSystemOptions), PathTraversalEngine, IDeadPropertyFactory, IPropertyStoreFactory, ILockManager)
+- uid: FubarDev.WebDavServer.FileSystem.DotNet.DotNetFileSystemFactory.#ctor(Microsoft.Extensions.Options.IOptions{FubarDev.WebDavServer.FileSystem.DotNet.DotNetFileSystemOptions},FubarDev.WebDavServer.FileSystem.PathTraversalEngine,FubarDev.WebDavServer.Props.Store.IPropertyStoreFactory,FubarDev.WebDavServer.Locking.ILockManager)
+  name: DotNetFileSystemFactory(IOptions<DotNetFileSystemOptions>, PathTraversalEngine, IPropertyStoreFactory, ILockManager)
+  href: api/FubarDev.WebDavServer.FileSystem.DotNet.DotNetFileSystemFactory.html#FubarDev_WebDavServer_FileSystem_DotNet_DotNetFileSystemFactory__ctor_Microsoft_Extensions_Options_IOptions_FubarDev_WebDavServer_FileSystem_DotNet_DotNetFileSystemOptions__FubarDev_WebDavServer_FileSystem_PathTraversalEngine_FubarDev_WebDavServer_Props_Store_IPropertyStoreFactory_FubarDev_WebDavServer_Locking_ILockManager_
+  commentId: M:FubarDev.WebDavServer.FileSystem.DotNet.DotNetFileSystemFactory.#ctor(Microsoft.Extensions.Options.IOptions{FubarDev.WebDavServer.FileSystem.DotNet.DotNetFileSystemOptions},FubarDev.WebDavServer.FileSystem.PathTraversalEngine,FubarDev.WebDavServer.Props.Store.IPropertyStoreFactory,FubarDev.WebDavServer.Locking.ILockManager)
+  name.vb: DotNetFileSystemFactory(IOptions(Of DotNetFileSystemOptions), PathTraversalEngine, IPropertyStoreFactory, ILockManager)
+  fullName: FubarDev.WebDavServer.FileSystem.DotNet.DotNetFileSystemFactory.DotNetFileSystemFactory(Microsoft.Extensions.Options.IOptions<FubarDev.WebDavServer.FileSystem.DotNet.DotNetFileSystemOptions>, FubarDev.WebDavServer.FileSystem.PathTraversalEngine, FubarDev.WebDavServer.Props.Store.IPropertyStoreFactory, FubarDev.WebDavServer.Locking.ILockManager)
+  fullName.vb: FubarDev.WebDavServer.FileSystem.DotNet.DotNetFileSystemFactory.DotNetFileSystemFactory(Microsoft.Extensions.Options.IOptions(Of FubarDev.WebDavServer.FileSystem.DotNet.DotNetFileSystemOptions), FubarDev.WebDavServer.FileSystem.PathTraversalEngine, FubarDev.WebDavServer.Props.Store.IPropertyStoreFactory, FubarDev.WebDavServer.Locking.ILockManager)
+  nameWithType: DotNetFileSystemFactory.DotNetFileSystemFactory(IOptions<DotNetFileSystemOptions>, PathTraversalEngine, IPropertyStoreFactory, ILockManager)
+  nameWithType.vb: DotNetFileSystemFactory.DotNetFileSystemFactory(IOptions(Of DotNetFileSystemOptions), PathTraversalEngine, IPropertyStoreFactory, ILockManager)
 - uid: FubarDev.WebDavServer.FileSystem.DotNet.DotNetFileSystemFactory.#ctor*
   name: DotNetFileSystemFactory
   href: api/FubarDev.WebDavServer.FileSystem.DotNet.DotNetFileSystemFactory.html#FubarDev_WebDavServer_FileSystem_DotNet_DotNetFileSystemFactory__ctor_
@@ -5324,30 +5312,18 @@ references:
   commentId: T:FubarDev.WebDavServer.FileSystem.InMemory.InMemoryFileSystem
   fullName: FubarDev.WebDavServer.FileSystem.InMemory.InMemoryFileSystem
   nameWithType: InMemoryFileSystem
-- uid: FubarDev.WebDavServer.FileSystem.InMemory.InMemoryFileSystem.#ctor(FubarDev.WebDavServer.FileSystem.ICollection,FubarDev.WebDavServer.FileSystem.PathTraversalEngine,FubarDev.WebDavServer.ISystemClock,FubarDev.WebDavServer.Props.Dead.IDeadPropertyFactory,FubarDev.WebDavServer.Locking.ILockManager,FubarDev.WebDavServer.Props.Store.IPropertyStoreFactory)
-  name: InMemoryFileSystem(ICollection, PathTraversalEngine, ISystemClock, IDeadPropertyFactory, ILockManager, IPropertyStoreFactory)
-  href: api/FubarDev.WebDavServer.FileSystem.InMemory.InMemoryFileSystem.html#FubarDev_WebDavServer_FileSystem_InMemory_InMemoryFileSystem__ctor_FubarDev_WebDavServer_FileSystem_ICollection_FubarDev_WebDavServer_FileSystem_PathTraversalEngine_FubarDev_WebDavServer_ISystemClock_FubarDev_WebDavServer_Props_Dead_IDeadPropertyFactory_FubarDev_WebDavServer_Locking_ILockManager_FubarDev_WebDavServer_Props_Store_IPropertyStoreFactory_
-  commentId: M:FubarDev.WebDavServer.FileSystem.InMemory.InMemoryFileSystem.#ctor(FubarDev.WebDavServer.FileSystem.ICollection,FubarDev.WebDavServer.FileSystem.PathTraversalEngine,FubarDev.WebDavServer.ISystemClock,FubarDev.WebDavServer.Props.Dead.IDeadPropertyFactory,FubarDev.WebDavServer.Locking.ILockManager,FubarDev.WebDavServer.Props.Store.IPropertyStoreFactory)
-  fullName: FubarDev.WebDavServer.FileSystem.InMemory.InMemoryFileSystem.InMemoryFileSystem(FubarDev.WebDavServer.FileSystem.ICollection, FubarDev.WebDavServer.FileSystem.PathTraversalEngine, FubarDev.WebDavServer.ISystemClock, FubarDev.WebDavServer.Props.Dead.IDeadPropertyFactory, FubarDev.WebDavServer.Locking.ILockManager, FubarDev.WebDavServer.Props.Store.IPropertyStoreFactory)
-  nameWithType: InMemoryFileSystem.InMemoryFileSystem(ICollection, PathTraversalEngine, ISystemClock, IDeadPropertyFactory, ILockManager, IPropertyStoreFactory)
+- uid: FubarDev.WebDavServer.FileSystem.InMemory.InMemoryFileSystem.#ctor(FubarDev.WebDavServer.FileSystem.ICollection,FubarDev.WebDavServer.FileSystem.PathTraversalEngine,FubarDev.WebDavServer.ISystemClock,FubarDev.WebDavServer.Locking.ILockManager,FubarDev.WebDavServer.Props.Store.IPropertyStoreFactory)
+  name: InMemoryFileSystem(ICollection, PathTraversalEngine, ISystemClock, ILockManager, IPropertyStoreFactory)
+  href: api/FubarDev.WebDavServer.FileSystem.InMemory.InMemoryFileSystem.html#FubarDev_WebDavServer_FileSystem_InMemory_InMemoryFileSystem__ctor_FubarDev_WebDavServer_FileSystem_ICollection_FubarDev_WebDavServer_FileSystem_PathTraversalEngine_FubarDev_WebDavServer_ISystemClock_FubarDev_WebDavServer_Locking_ILockManager_FubarDev_WebDavServer_Props_Store_IPropertyStoreFactory_
+  commentId: M:FubarDev.WebDavServer.FileSystem.InMemory.InMemoryFileSystem.#ctor(FubarDev.WebDavServer.FileSystem.ICollection,FubarDev.WebDavServer.FileSystem.PathTraversalEngine,FubarDev.WebDavServer.ISystemClock,FubarDev.WebDavServer.Locking.ILockManager,FubarDev.WebDavServer.Props.Store.IPropertyStoreFactory)
+  fullName: FubarDev.WebDavServer.FileSystem.InMemory.InMemoryFileSystem.InMemoryFileSystem(FubarDev.WebDavServer.FileSystem.ICollection, FubarDev.WebDavServer.FileSystem.PathTraversalEngine, FubarDev.WebDavServer.ISystemClock, FubarDev.WebDavServer.Locking.ILockManager, FubarDev.WebDavServer.Props.Store.IPropertyStoreFactory)
+  nameWithType: InMemoryFileSystem.InMemoryFileSystem(ICollection, PathTraversalEngine, ISystemClock, ILockManager, IPropertyStoreFactory)
 - uid: FubarDev.WebDavServer.FileSystem.InMemory.InMemoryFileSystem.#ctor*
   name: InMemoryFileSystem
   href: api/FubarDev.WebDavServer.FileSystem.InMemory.InMemoryFileSystem.html#FubarDev_WebDavServer_FileSystem_InMemory_InMemoryFileSystem__ctor_
   commentId: Overload:FubarDev.WebDavServer.FileSystem.InMemory.InMemoryFileSystem.#ctor
   fullName: FubarDev.WebDavServer.FileSystem.InMemory.InMemoryFileSystem.InMemoryFileSystem
   nameWithType: InMemoryFileSystem.InMemoryFileSystem
-- uid: FubarDev.WebDavServer.FileSystem.InMemory.InMemoryFileSystem.DeadPropertyFactory
-  name: DeadPropertyFactory
-  href: api/FubarDev.WebDavServer.FileSystem.InMemory.InMemoryFileSystem.html#FubarDev_WebDavServer_FileSystem_InMemory_InMemoryFileSystem_DeadPropertyFactory
-  commentId: P:FubarDev.WebDavServer.FileSystem.InMemory.InMemoryFileSystem.DeadPropertyFactory
-  fullName: FubarDev.WebDavServer.FileSystem.InMemory.InMemoryFileSystem.DeadPropertyFactory
-  nameWithType: InMemoryFileSystem.DeadPropertyFactory
-- uid: FubarDev.WebDavServer.FileSystem.InMemory.InMemoryFileSystem.DeadPropertyFactory*
-  name: DeadPropertyFactory
-  href: api/FubarDev.WebDavServer.FileSystem.InMemory.InMemoryFileSystem.html#FubarDev_WebDavServer_FileSystem_InMemory_InMemoryFileSystem_DeadPropertyFactory_
-  commentId: Overload:FubarDev.WebDavServer.FileSystem.InMemory.InMemoryFileSystem.DeadPropertyFactory
-  fullName: FubarDev.WebDavServer.FileSystem.InMemory.InMemoryFileSystem.DeadPropertyFactory
-  nameWithType: InMemoryFileSystem.DeadPropertyFactory
 - uid: FubarDev.WebDavServer.FileSystem.InMemory.InMemoryFileSystem.IsReadOnly
   name: IsReadOnly
   href: api/FubarDev.WebDavServer.FileSystem.InMemory.InMemoryFileSystem.html#FubarDev_WebDavServer_FileSystem_InMemory_InMemoryFileSystem_IsReadOnly
@@ -5501,12 +5477,12 @@ references:
   commentId: T:FubarDev.WebDavServer.FileSystem.InMemory.InMemoryFileSystemFactory
   fullName: FubarDev.WebDavServer.FileSystem.InMemory.InMemoryFileSystemFactory
   nameWithType: InMemoryFileSystemFactory
-- uid: FubarDev.WebDavServer.FileSystem.InMemory.InMemoryFileSystemFactory.#ctor(FubarDev.WebDavServer.FileSystem.PathTraversalEngine,FubarDev.WebDavServer.ISystemClock,FubarDev.WebDavServer.Props.Dead.IDeadPropertyFactory,FubarDev.WebDavServer.Locking.ILockManager,FubarDev.WebDavServer.Props.Store.IPropertyStoreFactory)
-  name: InMemoryFileSystemFactory(PathTraversalEngine, ISystemClock, IDeadPropertyFactory, ILockManager, IPropertyStoreFactory)
-  href: api/FubarDev.WebDavServer.FileSystem.InMemory.InMemoryFileSystemFactory.html#FubarDev_WebDavServer_FileSystem_InMemory_InMemoryFileSystemFactory__ctor_FubarDev_WebDavServer_FileSystem_PathTraversalEngine_FubarDev_WebDavServer_ISystemClock_FubarDev_WebDavServer_Props_Dead_IDeadPropertyFactory_FubarDev_WebDavServer_Locking_ILockManager_FubarDev_WebDavServer_Props_Store_IPropertyStoreFactory_
-  commentId: M:FubarDev.WebDavServer.FileSystem.InMemory.InMemoryFileSystemFactory.#ctor(FubarDev.WebDavServer.FileSystem.PathTraversalEngine,FubarDev.WebDavServer.ISystemClock,FubarDev.WebDavServer.Props.Dead.IDeadPropertyFactory,FubarDev.WebDavServer.Locking.ILockManager,FubarDev.WebDavServer.Props.Store.IPropertyStoreFactory)
-  fullName: FubarDev.WebDavServer.FileSystem.InMemory.InMemoryFileSystemFactory.InMemoryFileSystemFactory(FubarDev.WebDavServer.FileSystem.PathTraversalEngine, FubarDev.WebDavServer.ISystemClock, FubarDev.WebDavServer.Props.Dead.IDeadPropertyFactory, FubarDev.WebDavServer.Locking.ILockManager, FubarDev.WebDavServer.Props.Store.IPropertyStoreFactory)
-  nameWithType: InMemoryFileSystemFactory.InMemoryFileSystemFactory(PathTraversalEngine, ISystemClock, IDeadPropertyFactory, ILockManager, IPropertyStoreFactory)
+- uid: FubarDev.WebDavServer.FileSystem.InMemory.InMemoryFileSystemFactory.#ctor(FubarDev.WebDavServer.FileSystem.PathTraversalEngine,FubarDev.WebDavServer.ISystemClock,FubarDev.WebDavServer.Locking.ILockManager,FubarDev.WebDavServer.Props.Store.IPropertyStoreFactory)
+  name: InMemoryFileSystemFactory(PathTraversalEngine, ISystemClock, ILockManager, IPropertyStoreFactory)
+  href: api/FubarDev.WebDavServer.FileSystem.InMemory.InMemoryFileSystemFactory.html#FubarDev_WebDavServer_FileSystem_InMemory_InMemoryFileSystemFactory__ctor_FubarDev_WebDavServer_FileSystem_PathTraversalEngine_FubarDev_WebDavServer_ISystemClock_FubarDev_WebDavServer_Locking_ILockManager_FubarDev_WebDavServer_Props_Store_IPropertyStoreFactory_
+  commentId: M:FubarDev.WebDavServer.FileSystem.InMemory.InMemoryFileSystemFactory.#ctor(FubarDev.WebDavServer.FileSystem.PathTraversalEngine,FubarDev.WebDavServer.ISystemClock,FubarDev.WebDavServer.Locking.ILockManager,FubarDev.WebDavServer.Props.Store.IPropertyStoreFactory)
+  fullName: FubarDev.WebDavServer.FileSystem.InMemory.InMemoryFileSystemFactory.InMemoryFileSystemFactory(FubarDev.WebDavServer.FileSystem.PathTraversalEngine, FubarDev.WebDavServer.ISystemClock, FubarDev.WebDavServer.Locking.ILockManager, FubarDev.WebDavServer.Props.Store.IPropertyStoreFactory)
+  nameWithType: InMemoryFileSystemFactory.InMemoryFileSystemFactory(PathTraversalEngine, ISystemClock, ILockManager, IPropertyStoreFactory)
 - uid: FubarDev.WebDavServer.FileSystem.InMemory.InMemoryFileSystemFactory.#ctor*
   name: InMemoryFileSystemFactory
   href: api/FubarDev.WebDavServer.FileSystem.InMemory.InMemoryFileSystemFactory.html#FubarDev_WebDavServer_FileSystem_InMemory_InMemoryFileSystemFactory__ctor_
@@ -5573,91 +5549,6 @@ references:
   commentId: N:FubarDev.WebDavServer.FileSystem.Mount
   fullName: FubarDev.WebDavServer.FileSystem.Mount
   nameWithType: FubarDev.WebDavServer.FileSystem.Mount
-- uid: FubarDev.WebDavServer.FileSystem.Mount.DefaultMountPointManager
-  name: DefaultMountPointManager
-  href: api/FubarDev.WebDavServer.FileSystem.Mount.DefaultMountPointManager.html
-  commentId: T:FubarDev.WebDavServer.FileSystem.Mount.DefaultMountPointManager
-  fullName: FubarDev.WebDavServer.FileSystem.Mount.DefaultMountPointManager
-  nameWithType: DefaultMountPointManager
-- uid: FubarDev.WebDavServer.FileSystem.Mount.DefaultMountPointManager.Count
-  name: Count
-  href: api/FubarDev.WebDavServer.FileSystem.Mount.DefaultMountPointManager.html#FubarDev_WebDavServer_FileSystem_Mount_DefaultMountPointManager_Count
-  commentId: P:FubarDev.WebDavServer.FileSystem.Mount.DefaultMountPointManager.Count
-  fullName: FubarDev.WebDavServer.FileSystem.Mount.DefaultMountPointManager.Count
-  nameWithType: DefaultMountPointManager.Count
-- uid: FubarDev.WebDavServer.FileSystem.Mount.DefaultMountPointManager.Count*
-  name: Count
-  href: api/FubarDev.WebDavServer.FileSystem.Mount.DefaultMountPointManager.html#FubarDev_WebDavServer_FileSystem_Mount_DefaultMountPointManager_Count_
-  commentId: Overload:FubarDev.WebDavServer.FileSystem.Mount.DefaultMountPointManager.Count
-  fullName: FubarDev.WebDavServer.FileSystem.Mount.DefaultMountPointManager.Count
-  nameWithType: DefaultMountPointManager.Count
-- uid: FubarDev.WebDavServer.FileSystem.Mount.DefaultMountPointManager.GetEnumerator
-  name: GetEnumerator()
-  href: api/FubarDev.WebDavServer.FileSystem.Mount.DefaultMountPointManager.html#FubarDev_WebDavServer_FileSystem_Mount_DefaultMountPointManager_GetEnumerator
-  commentId: M:FubarDev.WebDavServer.FileSystem.Mount.DefaultMountPointManager.GetEnumerator
-  fullName: FubarDev.WebDavServer.FileSystem.Mount.DefaultMountPointManager.GetEnumerator()
-  nameWithType: DefaultMountPointManager.GetEnumerator()
-- uid: FubarDev.WebDavServer.FileSystem.Mount.DefaultMountPointManager.GetEnumerator*
-  name: GetEnumerator
-  href: api/FubarDev.WebDavServer.FileSystem.Mount.DefaultMountPointManager.html#FubarDev_WebDavServer_FileSystem_Mount_DefaultMountPointManager_GetEnumerator_
-  commentId: Overload:FubarDev.WebDavServer.FileSystem.Mount.DefaultMountPointManager.GetEnumerator
-  fullName: FubarDev.WebDavServer.FileSystem.Mount.DefaultMountPointManager.GetEnumerator
-  nameWithType: DefaultMountPointManager.GetEnumerator
-- uid: FubarDev.WebDavServer.FileSystem.Mount.DefaultMountPointManager.Mount(System.Uri,FubarDev.WebDavServer.FileSystem.IFileSystem)
-  name: Mount(Uri, IFileSystem)
-  href: api/FubarDev.WebDavServer.FileSystem.Mount.DefaultMountPointManager.html#FubarDev_WebDavServer_FileSystem_Mount_DefaultMountPointManager_Mount_System_Uri_FubarDev_WebDavServer_FileSystem_IFileSystem_
-  commentId: M:FubarDev.WebDavServer.FileSystem.Mount.DefaultMountPointManager.Mount(System.Uri,FubarDev.WebDavServer.FileSystem.IFileSystem)
-  fullName: FubarDev.WebDavServer.FileSystem.Mount.DefaultMountPointManager.Mount(System.Uri, FubarDev.WebDavServer.FileSystem.IFileSystem)
-  nameWithType: DefaultMountPointManager.Mount(Uri, IFileSystem)
-- uid: FubarDev.WebDavServer.FileSystem.Mount.DefaultMountPointManager.Mount*
-  name: Mount
-  href: api/FubarDev.WebDavServer.FileSystem.Mount.DefaultMountPointManager.html#FubarDev_WebDavServer_FileSystem_Mount_DefaultMountPointManager_Mount_
-  commentId: Overload:FubarDev.WebDavServer.FileSystem.Mount.DefaultMountPointManager.Mount
-  fullName: FubarDev.WebDavServer.FileSystem.Mount.DefaultMountPointManager.Mount
-  nameWithType: DefaultMountPointManager.Mount
-- uid: FubarDev.WebDavServer.FileSystem.Mount.DefaultMountPointManager.System#Collections#IEnumerable#GetEnumerator
-  name: IEnumerable.GetEnumerator()
-  href: api/FubarDev.WebDavServer.FileSystem.Mount.DefaultMountPointManager.html#FubarDev_WebDavServer_FileSystem_Mount_DefaultMountPointManager_System_Collections_IEnumerable_GetEnumerator
-  commentId: M:FubarDev.WebDavServer.FileSystem.Mount.DefaultMountPointManager.System#Collections#IEnumerable#GetEnumerator
-  name.vb: System.Collections.IEnumerable.GetEnumerator()
-  fullName: FubarDev.WebDavServer.FileSystem.Mount.DefaultMountPointManager.System.Collections.IEnumerable.GetEnumerator()
-  nameWithType: DefaultMountPointManager.IEnumerable.GetEnumerator()
-  nameWithType.vb: DefaultMountPointManager.System.Collections.IEnumerable.GetEnumerator()
-- uid: FubarDev.WebDavServer.FileSystem.Mount.DefaultMountPointManager.System#Collections#IEnumerable#GetEnumerator*
-  name: IEnumerable.GetEnumerator
-  href: api/FubarDev.WebDavServer.FileSystem.Mount.DefaultMountPointManager.html#FubarDev_WebDavServer_FileSystem_Mount_DefaultMountPointManager_System_Collections_IEnumerable_GetEnumerator_
-  commentId: Overload:FubarDev.WebDavServer.FileSystem.Mount.DefaultMountPointManager.System#Collections#IEnumerable#GetEnumerator
-  name.vb: System.Collections.IEnumerable.GetEnumerator
-  fullName: FubarDev.WebDavServer.FileSystem.Mount.DefaultMountPointManager.System.Collections.IEnumerable.GetEnumerator
-  nameWithType: DefaultMountPointManager.IEnumerable.GetEnumerator
-  nameWithType.vb: DefaultMountPointManager.System.Collections.IEnumerable.GetEnumerator
-- uid: FubarDev.WebDavServer.FileSystem.Mount.DefaultMountPointManager.TryGetMountPoint(System.Uri,FubarDev.WebDavServer.FileSystem.IFileSystem@)
-  name: TryGetMountPoint(Uri, out IFileSystem)
-  href: api/FubarDev.WebDavServer.FileSystem.Mount.DefaultMountPointManager.html#FubarDev_WebDavServer_FileSystem_Mount_DefaultMountPointManager_TryGetMountPoint_System_Uri_FubarDev_WebDavServer_FileSystem_IFileSystem__
-  commentId: M:FubarDev.WebDavServer.FileSystem.Mount.DefaultMountPointManager.TryGetMountPoint(System.Uri,FubarDev.WebDavServer.FileSystem.IFileSystem@)
-  name.vb: TryGetMountPoint(Uri, ByRef IFileSystem)
-  fullName: FubarDev.WebDavServer.FileSystem.Mount.DefaultMountPointManager.TryGetMountPoint(System.Uri, out FubarDev.WebDavServer.FileSystem.IFileSystem)
-  fullName.vb: FubarDev.WebDavServer.FileSystem.Mount.DefaultMountPointManager.TryGetMountPoint(System.Uri, ByRef FubarDev.WebDavServer.FileSystem.IFileSystem)
-  nameWithType: DefaultMountPointManager.TryGetMountPoint(Uri, out IFileSystem)
-  nameWithType.vb: DefaultMountPointManager.TryGetMountPoint(Uri, ByRef IFileSystem)
-- uid: FubarDev.WebDavServer.FileSystem.Mount.DefaultMountPointManager.TryGetMountPoint*
-  name: TryGetMountPoint
-  href: api/FubarDev.WebDavServer.FileSystem.Mount.DefaultMountPointManager.html#FubarDev_WebDavServer_FileSystem_Mount_DefaultMountPointManager_TryGetMountPoint_
-  commentId: Overload:FubarDev.WebDavServer.FileSystem.Mount.DefaultMountPointManager.TryGetMountPoint
-  fullName: FubarDev.WebDavServer.FileSystem.Mount.DefaultMountPointManager.TryGetMountPoint
-  nameWithType: DefaultMountPointManager.TryGetMountPoint
-- uid: FubarDev.WebDavServer.FileSystem.Mount.DefaultMountPointManager.Unmount(System.Uri)
-  name: Unmount(Uri)
-  href: api/FubarDev.WebDavServer.FileSystem.Mount.DefaultMountPointManager.html#FubarDev_WebDavServer_FileSystem_Mount_DefaultMountPointManager_Unmount_System_Uri_
-  commentId: M:FubarDev.WebDavServer.FileSystem.Mount.DefaultMountPointManager.Unmount(System.Uri)
-  fullName: FubarDev.WebDavServer.FileSystem.Mount.DefaultMountPointManager.Unmount(System.Uri)
-  nameWithType: DefaultMountPointManager.Unmount(Uri)
-- uid: FubarDev.WebDavServer.FileSystem.Mount.DefaultMountPointManager.Unmount*
-  name: Unmount
-  href: api/FubarDev.WebDavServer.FileSystem.Mount.DefaultMountPointManager.html#FubarDev_WebDavServer_FileSystem_Mount_DefaultMountPointManager_Unmount_
-  commentId: Overload:FubarDev.WebDavServer.FileSystem.Mount.DefaultMountPointManager.Unmount
-  fullName: FubarDev.WebDavServer.FileSystem.Mount.DefaultMountPointManager.Unmount
-  nameWithType: DefaultMountPointManager.Unmount
 - uid: FubarDev.WebDavServer.FileSystem.Mount.IMountPointManager
   name: IMountPointManager
   href: api/FubarDev.WebDavServer.FileSystem.Mount.IMountPointManager.html
@@ -5952,12 +5843,12 @@ references:
   commentId: T:FubarDev.WebDavServer.FileSystem.SQLite.SQLiteFileSystem
   fullName: FubarDev.WebDavServer.FileSystem.SQLite.SQLiteFileSystem
   nameWithType: SQLiteFileSystem
-- uid: FubarDev.WebDavServer.FileSystem.SQLite.SQLiteFileSystem.#ctor(FubarDev.WebDavServer.FileSystem.SQLite.SQLiteFileSystemOptions,FubarDev.WebDavServer.FileSystem.ICollection,SQLite.SQLiteConnection,FubarDev.WebDavServer.FileSystem.PathTraversalEngine,FubarDev.WebDavServer.Props.Dead.IDeadPropertyFactory,FubarDev.WebDavServer.Locking.ILockManager,FubarDev.WebDavServer.Props.Store.IPropertyStoreFactory)
-  name: SQLiteFileSystem(SQLiteFileSystemOptions, ICollection, SQLiteConnection, PathTraversalEngine, IDeadPropertyFactory, ILockManager, IPropertyStoreFactory)
-  href: api/FubarDev.WebDavServer.FileSystem.SQLite.SQLiteFileSystem.html#FubarDev_WebDavServer_FileSystem_SQLite_SQLiteFileSystem__ctor_FubarDev_WebDavServer_FileSystem_SQLite_SQLiteFileSystemOptions_FubarDev_WebDavServer_FileSystem_ICollection_SQLite_SQLiteConnection_FubarDev_WebDavServer_FileSystem_PathTraversalEngine_FubarDev_WebDavServer_Props_Dead_IDeadPropertyFactory_FubarDev_WebDavServer_Locking_ILockManager_FubarDev_WebDavServer_Props_Store_IPropertyStoreFactory_
-  commentId: M:FubarDev.WebDavServer.FileSystem.SQLite.SQLiteFileSystem.#ctor(FubarDev.WebDavServer.FileSystem.SQLite.SQLiteFileSystemOptions,FubarDev.WebDavServer.FileSystem.ICollection,SQLite.SQLiteConnection,FubarDev.WebDavServer.FileSystem.PathTraversalEngine,FubarDev.WebDavServer.Props.Dead.IDeadPropertyFactory,FubarDev.WebDavServer.Locking.ILockManager,FubarDev.WebDavServer.Props.Store.IPropertyStoreFactory)
-  fullName: FubarDev.WebDavServer.FileSystem.SQLite.SQLiteFileSystem.SQLiteFileSystem(FubarDev.WebDavServer.FileSystem.SQLite.SQLiteFileSystemOptions, FubarDev.WebDavServer.FileSystem.ICollection, SQLite.SQLiteConnection, FubarDev.WebDavServer.FileSystem.PathTraversalEngine, FubarDev.WebDavServer.Props.Dead.IDeadPropertyFactory, FubarDev.WebDavServer.Locking.ILockManager, FubarDev.WebDavServer.Props.Store.IPropertyStoreFactory)
-  nameWithType: SQLiteFileSystem.SQLiteFileSystem(SQLiteFileSystemOptions, ICollection, SQLiteConnection, PathTraversalEngine, IDeadPropertyFactory, ILockManager, IPropertyStoreFactory)
+- uid: FubarDev.WebDavServer.FileSystem.SQLite.SQLiteFileSystem.#ctor(FubarDev.WebDavServer.FileSystem.SQLite.SQLiteFileSystemOptions,FubarDev.WebDavServer.FileSystem.ICollection,SQLite.SQLiteConnection,FubarDev.WebDavServer.FileSystem.PathTraversalEngine,FubarDev.WebDavServer.Locking.ILockManager,FubarDev.WebDavServer.Props.Store.IPropertyStoreFactory)
+  name: SQLiteFileSystem(SQLiteFileSystemOptions, ICollection, SQLiteConnection, PathTraversalEngine, ILockManager, IPropertyStoreFactory)
+  href: api/FubarDev.WebDavServer.FileSystem.SQLite.SQLiteFileSystem.html#FubarDev_WebDavServer_FileSystem_SQLite_SQLiteFileSystem__ctor_FubarDev_WebDavServer_FileSystem_SQLite_SQLiteFileSystemOptions_FubarDev_WebDavServer_FileSystem_ICollection_SQLite_SQLiteConnection_FubarDev_WebDavServer_FileSystem_PathTraversalEngine_FubarDev_WebDavServer_Locking_ILockManager_FubarDev_WebDavServer_Props_Store_IPropertyStoreFactory_
+  commentId: M:FubarDev.WebDavServer.FileSystem.SQLite.SQLiteFileSystem.#ctor(FubarDev.WebDavServer.FileSystem.SQLite.SQLiteFileSystemOptions,FubarDev.WebDavServer.FileSystem.ICollection,SQLite.SQLiteConnection,FubarDev.WebDavServer.FileSystem.PathTraversalEngine,FubarDev.WebDavServer.Locking.ILockManager,FubarDev.WebDavServer.Props.Store.IPropertyStoreFactory)
+  fullName: FubarDev.WebDavServer.FileSystem.SQLite.SQLiteFileSystem.SQLiteFileSystem(FubarDev.WebDavServer.FileSystem.SQLite.SQLiteFileSystemOptions, FubarDev.WebDavServer.FileSystem.ICollection, SQLite.SQLiteConnection, FubarDev.WebDavServer.FileSystem.PathTraversalEngine, FubarDev.WebDavServer.Locking.ILockManager, FubarDev.WebDavServer.Props.Store.IPropertyStoreFactory)
+  nameWithType: SQLiteFileSystem.SQLiteFileSystem(SQLiteFileSystemOptions, ICollection, SQLiteConnection, PathTraversalEngine, ILockManager, IPropertyStoreFactory)
 - uid: FubarDev.WebDavServer.FileSystem.SQLite.SQLiteFileSystem.#ctor*
   name: SQLiteFileSystem
   href: api/FubarDev.WebDavServer.FileSystem.SQLite.SQLiteFileSystem.html#FubarDev_WebDavServer_FileSystem_SQLite_SQLiteFileSystem__ctor_
@@ -5976,18 +5867,6 @@ references:
   commentId: Overload:FubarDev.WebDavServer.FileSystem.SQLite.SQLiteFileSystem.Connection
   fullName: FubarDev.WebDavServer.FileSystem.SQLite.SQLiteFileSystem.Connection
   nameWithType: SQLiteFileSystem.Connection
-- uid: FubarDev.WebDavServer.FileSystem.SQLite.SQLiteFileSystem.DeadPropertyFactory
-  name: DeadPropertyFactory
-  href: api/FubarDev.WebDavServer.FileSystem.SQLite.SQLiteFileSystem.html#FubarDev_WebDavServer_FileSystem_SQLite_SQLiteFileSystem_DeadPropertyFactory
-  commentId: P:FubarDev.WebDavServer.FileSystem.SQLite.SQLiteFileSystem.DeadPropertyFactory
-  fullName: FubarDev.WebDavServer.FileSystem.SQLite.SQLiteFileSystem.DeadPropertyFactory
-  nameWithType: SQLiteFileSystem.DeadPropertyFactory
-- uid: FubarDev.WebDavServer.FileSystem.SQLite.SQLiteFileSystem.DeadPropertyFactory*
-  name: DeadPropertyFactory
-  href: api/FubarDev.WebDavServer.FileSystem.SQLite.SQLiteFileSystem.html#FubarDev_WebDavServer_FileSystem_SQLite_SQLiteFileSystem_DeadPropertyFactory_
-  commentId: Overload:FubarDev.WebDavServer.FileSystem.SQLite.SQLiteFileSystem.DeadPropertyFactory
-  fullName: FubarDev.WebDavServer.FileSystem.SQLite.SQLiteFileSystem.DeadPropertyFactory
-  nameWithType: SQLiteFileSystem.DeadPropertyFactory
 - uid: FubarDev.WebDavServer.FileSystem.SQLite.SQLiteFileSystem.Dispose
   name: Dispose()
   href: api/FubarDev.WebDavServer.FileSystem.SQLite.SQLiteFileSystem.html#FubarDev_WebDavServer_FileSystem_SQLite_SQLiteFileSystem_Dispose
@@ -6189,15 +6068,15 @@ references:
   commentId: T:FubarDev.WebDavServer.FileSystem.SQLite.SQLiteFileSystemFactory
   fullName: FubarDev.WebDavServer.FileSystem.SQLite.SQLiteFileSystemFactory
   nameWithType: SQLiteFileSystemFactory
-- uid: FubarDev.WebDavServer.FileSystem.SQLite.SQLiteFileSystemFactory.#ctor(Microsoft.Extensions.Options.IOptions{FubarDev.WebDavServer.FileSystem.SQLite.SQLiteFileSystemOptions},FubarDev.WebDavServer.FileSystem.PathTraversalEngine,FubarDev.WebDavServer.Props.Dead.IDeadPropertyFactory,FubarDev.WebDavServer.Props.Store.IPropertyStoreFactory,FubarDev.WebDavServer.Locking.ILockManager)
-  name: SQLiteFileSystemFactory(IOptions<SQLiteFileSystemOptions>, PathTraversalEngine, IDeadPropertyFactory, IPropertyStoreFactory, ILockManager)
-  href: api/FubarDev.WebDavServer.FileSystem.SQLite.SQLiteFileSystemFactory.html#FubarDev_WebDavServer_FileSystem_SQLite_SQLiteFileSystemFactory__ctor_Microsoft_Extensions_Options_IOptions_FubarDev_WebDavServer_FileSystem_SQLite_SQLiteFileSystemOptions__FubarDev_WebDavServer_FileSystem_PathTraversalEngine_FubarDev_WebDavServer_Props_Dead_IDeadPropertyFactory_FubarDev_WebDavServer_Props_Store_IPropertyStoreFactory_FubarDev_WebDavServer_Locking_ILockManager_
-  commentId: M:FubarDev.WebDavServer.FileSystem.SQLite.SQLiteFileSystemFactory.#ctor(Microsoft.Extensions.Options.IOptions{FubarDev.WebDavServer.FileSystem.SQLite.SQLiteFileSystemOptions},FubarDev.WebDavServer.FileSystem.PathTraversalEngine,FubarDev.WebDavServer.Props.Dead.IDeadPropertyFactory,FubarDev.WebDavServer.Props.Store.IPropertyStoreFactory,FubarDev.WebDavServer.Locking.ILockManager)
-  name.vb: SQLiteFileSystemFactory(IOptions(Of SQLiteFileSystemOptions), PathTraversalEngine, IDeadPropertyFactory, IPropertyStoreFactory, ILockManager)
-  fullName: FubarDev.WebDavServer.FileSystem.SQLite.SQLiteFileSystemFactory.SQLiteFileSystemFactory(Microsoft.Extensions.Options.IOptions<FubarDev.WebDavServer.FileSystem.SQLite.SQLiteFileSystemOptions>, FubarDev.WebDavServer.FileSystem.PathTraversalEngine, FubarDev.WebDavServer.Props.Dead.IDeadPropertyFactory, FubarDev.WebDavServer.Props.Store.IPropertyStoreFactory, FubarDev.WebDavServer.Locking.ILockManager)
-  fullName.vb: FubarDev.WebDavServer.FileSystem.SQLite.SQLiteFileSystemFactory.SQLiteFileSystemFactory(Microsoft.Extensions.Options.IOptions(Of FubarDev.WebDavServer.FileSystem.SQLite.SQLiteFileSystemOptions), FubarDev.WebDavServer.FileSystem.PathTraversalEngine, FubarDev.WebDavServer.Props.Dead.IDeadPropertyFactory, FubarDev.WebDavServer.Props.Store.IPropertyStoreFactory, FubarDev.WebDavServer.Locking.ILockManager)
-  nameWithType: SQLiteFileSystemFactory.SQLiteFileSystemFactory(IOptions<SQLiteFileSystemOptions>, PathTraversalEngine, IDeadPropertyFactory, IPropertyStoreFactory, ILockManager)
-  nameWithType.vb: SQLiteFileSystemFactory.SQLiteFileSystemFactory(IOptions(Of SQLiteFileSystemOptions), PathTraversalEngine, IDeadPropertyFactory, IPropertyStoreFactory, ILockManager)
+- uid: FubarDev.WebDavServer.FileSystem.SQLite.SQLiteFileSystemFactory.#ctor(Microsoft.Extensions.Options.IOptions{FubarDev.WebDavServer.FileSystem.SQLite.SQLiteFileSystemOptions},FubarDev.WebDavServer.FileSystem.PathTraversalEngine,FubarDev.WebDavServer.Props.Store.IPropertyStoreFactory,FubarDev.WebDavServer.Locking.ILockManager)
+  name: SQLiteFileSystemFactory(IOptions<SQLiteFileSystemOptions>, PathTraversalEngine, IPropertyStoreFactory, ILockManager)
+  href: api/FubarDev.WebDavServer.FileSystem.SQLite.SQLiteFileSystemFactory.html#FubarDev_WebDavServer_FileSystem_SQLite_SQLiteFileSystemFactory__ctor_Microsoft_Extensions_Options_IOptions_FubarDev_WebDavServer_FileSystem_SQLite_SQLiteFileSystemOptions__FubarDev_WebDavServer_FileSystem_PathTraversalEngine_FubarDev_WebDavServer_Props_Store_IPropertyStoreFactory_FubarDev_WebDavServer_Locking_ILockManager_
+  commentId: M:FubarDev.WebDavServer.FileSystem.SQLite.SQLiteFileSystemFactory.#ctor(Microsoft.Extensions.Options.IOptions{FubarDev.WebDavServer.FileSystem.SQLite.SQLiteFileSystemOptions},FubarDev.WebDavServer.FileSystem.PathTraversalEngine,FubarDev.WebDavServer.Props.Store.IPropertyStoreFactory,FubarDev.WebDavServer.Locking.ILockManager)
+  name.vb: SQLiteFileSystemFactory(IOptions(Of SQLiteFileSystemOptions), PathTraversalEngine, IPropertyStoreFactory, ILockManager)
+  fullName: FubarDev.WebDavServer.FileSystem.SQLite.SQLiteFileSystemFactory.SQLiteFileSystemFactory(Microsoft.Extensions.Options.IOptions<FubarDev.WebDavServer.FileSystem.SQLite.SQLiteFileSystemOptions>, FubarDev.WebDavServer.FileSystem.PathTraversalEngine, FubarDev.WebDavServer.Props.Store.IPropertyStoreFactory, FubarDev.WebDavServer.Locking.ILockManager)
+  fullName.vb: FubarDev.WebDavServer.FileSystem.SQLite.SQLiteFileSystemFactory.SQLiteFileSystemFactory(Microsoft.Extensions.Options.IOptions(Of FubarDev.WebDavServer.FileSystem.SQLite.SQLiteFileSystemOptions), FubarDev.WebDavServer.FileSystem.PathTraversalEngine, FubarDev.WebDavServer.Props.Store.IPropertyStoreFactory, FubarDev.WebDavServer.Locking.ILockManager)
+  nameWithType: SQLiteFileSystemFactory.SQLiteFileSystemFactory(IOptions<SQLiteFileSystemOptions>, PathTraversalEngine, IPropertyStoreFactory, ILockManager)
+  nameWithType.vb: SQLiteFileSystemFactory.SQLiteFileSystemFactory(IOptions(Of SQLiteFileSystemOptions), PathTraversalEngine, IPropertyStoreFactory, ILockManager)
 - uid: FubarDev.WebDavServer.FileSystem.SQLite.SQLiteFileSystemFactory.#ctor*
   name: SQLiteFileSystemFactory
   href: api/FubarDev.WebDavServer.FileSystem.SQLite.SQLiteFileSystemFactory.html#FubarDev_WebDavServer_FileSystem_SQLite_SQLiteFileSystemFactory__ctor_

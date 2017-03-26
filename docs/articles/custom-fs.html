@@ -67,7 +67,44 @@
             <article class="content wrap" id="_content" data-uid="">
               <h1 id="how-to-develop-your-own-file-system">How to develop your own file system</h1>
               
-<p><strong>TODO</strong></p>
+<p>The implementation of a file system consists of the following parts as can be seen in the following picture:</p>
+<p><img src="../images/overview-filesystem.png" alt="screenshot"></p>
+<p>The order in which a file system gets implemented should be:</p>
+<ol>
+<li>The <a class="xref" href="../api/FubarDev.WebDavServer.FileSystem.IFileSystemFactory.html">IFileSystemFactory</a></li>
+<li>The <a class="xref" href="../api/FubarDev.WebDavServer.FileSystem.IFileSystem.html">IFileSystem</a></li>
+<li>The <a class="xref" href="../api/FubarDev.WebDavServer.FileSystem.ICollection.html">ICollection</a></li>
+<li>The <a class="xref" href="../api/FubarDev.WebDavServer.FileSystem.IDocument.html">IDocument</a></li>
+</ol>
+<p>The <a class="xref" href="../api/FubarDev.WebDavServer.FileSystem.IEntry.html">IEntry</a> is the base for both the <code>ICollection</code> and <code>IDocument</code>. It depends on the underlying data source and the developers preferences if there should be a base class for <code>IEntry</code> or if the shared functionality should be implemented separately for both <code>ICollection</code> and <code>IDocument</code>.</p>
+<p>Due to the limitation of the dependency injection frameworks it&#39;s not possible to use <code>async</code>/<code>await</code> during the resolve operation of a DI container, which is the main reason that <a class="xref" href="../api/FubarDev.WebDavServer.FileSystem.IFileSystem.html#FubarDev_WebDavServer_FileSystem_IFileSystem_Root">IFileSystem.Root</a> is an <a class="xref" href="../api/FubarDev.WebDavServer.AsyncLazy-1.html">AsyncLazy</a> for the root collection. This allows the lazy loading of the root collection at a later time.</p>
+<h1 id="ifilesystemfactory">IFileSystemFactory</h1>
+<p>The <a class="xref" href="../api/FubarDev.WebDavServer.FileSystem.IFileSystemFactory.html">IFileSystemFactory</a> should be kept very simple. It usually takes the same parameters as its <a class="xref" href="../api/FubarDev.WebDavServer.FileSystem.IFileSystem.html">IFileSystem</a> implementation, because those parameters must be passed to the <code>IFileSystem</code> implementation.</p>
+<p>The implementation usually requires implementations of:</p>
+<ul>
+<li><a class="xref" href="../api/FubarDev.WebDavServer.FileSystem.PathTraversalEngine.html">PathTraversalEngine</a></li>
+<li><a class="xref" href="../api/FubarDev.WebDavServer.Props.Store.IPropertyStoreFactory.html">IPropertyStoreFactory</a></li>
+<li><a class="xref" href="../api/FubarDev.WebDavServer.Locking.ILockManager.html">ILockManager</a></li>
+</ul>
+<h1 id="ifilesystem">IFileSystem</h1>
+<p>The file system provides the following information:</p>
+<ul>
+<li>The root <a class="xref" href="../api/FubarDev.WebDavServer.FileSystem.ICollection.html">ICollection</a></li>
+<li>The <a class="xref" href="../api/FubarDev.WebDavServer.Props.Store.IPropertyStore.html">IPropertyStore</a></li>
+<li>The <a class="xref" href="../api/FubarDev.WebDavServer.Locking.ILockManager.html">ILockManager</a></li>
+</ul>
+<p>The <a class="xref" href="../api/FubarDev.WebDavServer.FileSystem.PathTraversalEngine.html">PathTraversalEngine</a> is used to implement the <a class="xref" href="../api/FubarDev.WebDavServer.FileSystem.IFileSystem.html#FubarDev_WebDavServer_FileSystem_IFileSystem_SelectAsync_">IFileSystem.SelectAsync</a> function.</p>
+<h2 id="ilocalfilesystem">ILocalFileSystem</h2>
+<p>A file system might optionally implement the <a class="xref" href="../api/FubarDev.WebDavServer.FileSystem.ILocalFileSystem.html">ILocalFileSystem</a> interface. This interface can be used to determine the path where the file system is mapped to.</p>
+<h2 id="imountpointmanager">IMountPointManager</h2>
+<p>This interface enables mount point support. It enables scenarios where the in-memory file system is used to provide a virtual read-only file system where the collections point to other file systems.</p>
+<p>An example can be found in the unit tests.</p>
+<h1 id="icollection">ICollection</h1>
+<p>A collection maps to a file system directory and is used to determine or create its child elements (either collections or documents).</p>
+<h1 id="idocument">IDocument</h1>
+<p>The document maps to a file in a file system and is mainly used to read or write its content and to copy or move the file (within the same file system).</p>
+<h1 id="ientry">IEntry</h1>
+<p>The base interface of <code>ICollection</code> and <code>IDocument</code> provides common information shared between a document and a collection, like its name, parent, creation date, etc...</p>
 
             </article>
           </div>

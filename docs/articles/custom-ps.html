@@ -67,7 +67,81 @@
             <article class="content wrap" id="_content" data-uid="">
               <h1 id="how-to-develop-your-own-property-store">How to develop your own property store</h1>
               
-<p><strong>TODO</strong></p>
+<p>WebDAV knows two kinds of properties: Live and Dead properties. The live properties are what is usually returned by the file system (calculated or determined live) and dead properties are stored 1:1 for the next retrieval. Everything that is not a live property is automatically a dead property. A special case is the entity tag handling which is handled using the property store (for dead properties), but might still be a live property.</p>
+<p>The architectural overview of properties can be seen in the following picture:</p>
+<p><img src="../images/overview-properties.png" alt="screenshot"></p>
+<h1 id="properties">Properties</h1>
+<p>Before we start implementing a property store, we first have to understand the properties.</p>
+<h2 id="interfaces">Interfaces</h2>
+<p>The basic interface is <a class="xref" href="../api/FubarDev.WebDavServer.Props.IProperty.html">IProperty</a> which is shared between dead (<a class="xref" href="../api/FubarDev.WebDavServer.Props.Dead.IDeadProperty.html">IDeadProperty</a>) and live (<a class="xref" href="../api/FubarDev.WebDavServer.Props.Live.ILiveProperty.html">ILiveProperty</a>).</p>
+<p>A readable property must implement <a class="xref" href="../api/FubarDev.WebDavServer.Props.IUntypedReadableProperty.html">IUntypedReadableProperty</a> while a writeable property must also implement <a class="xref" href="../api/FubarDev.WebDavServer.Props.IUntypedWriteableProperty.html">IUntypedWriteableProperty</a>. In WebDAV, all properties are represented as an XML element and those interfaces are used to access the property as raw XML element.</p>
+<h2 id="typed-properties">Typed properties</h2>
+<p>There are also typed versions of this interface and some basic implementations for the following types:</p>
+<table>
+<thead>
+<tr>
+<th>Type</th>
+<th>Converter</th>
+<th>Default implementation</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><a class="xref" href="https://msdn.microsoft.com/en-us/library/system.string(v=vs.110).aspx">String</a></td>
+<td><a class="xref" href="../api/FubarDev.WebDavServer.Props.Converters.StringConverter.html">StringConverter</a></td>
+<td><a class="xref" href="../api/FubarDev.WebDavServer.Props.Generic.GenericStringProperty.html">GenericStringProperty</a></td>
+</tr>
+<tr>
+<td><a class="xref" href="https://msdn.microsoft.com/en-us/library/system.int64(v=vs.110).aspx">long (Int64)</a></td>
+<td><a class="xref" href="../api/FubarDev.WebDavServer.Props.Converters.LongConverter.html">LongConverter</a></td>
+<td>No implementation, derive from <a class="xref" href="../api/FubarDev.WebDavServer.Props.SimpleTypedProperty-1.html">SimpleTypedProperty</a></td>
+</tr>
+<tr>
+<td><a class="xref" href="https://msdn.microsoft.com/en-us/library/system.datetime(v=vs.110).aspx">DateTime</a></td>
+<td><a class="xref" href="../api/FubarDev.WebDavServer.Props.Converters.DateTimeRfc1123Converter.html">DateTimeRfc1123Converter</a></td>
+<td><a class="xref" href="../api/FubarDev.WebDavServer.Props.Generic.GenericDateTimeRfc1123Property.html">GenericDateTimeRfc1123Property</a></td>
+</tr>
+<tr>
+<td><a class="xref" href="../api/FubarDev.WebDavServer.Model.Headers.EntityTag.html">ETag (EntityTag)</a></td>
+<td><a class="xref" href="../api/FubarDev.WebDavServer.Props.Converters.EntityTagConverter.html">EntityTagConverter</a></td>
+<td><a class="xref" href="../api/FubarDev.WebDavServer.Props.Dead.GetETagProperty.html">GetETagProperty</a></td>
+</tr>
+<tr>
+<td><a class="xref" href="https://msdn.microsoft.com/en-us/library/system.object(v=vs.110).aspx">Object (Xml)</a></td>
+<td><a class="xref" href="../api/FubarDev.WebDavServer.Props.Converters.XmlConverter-1.html">XmlConverter</a></td>
+<td>No implementation, derive from <a class="xref" href="../api/FubarDev.WebDavServer.Props.SimpleTypedProperty-1.html">SimpleTypedProperty</a></td>
+</tr>
+</tbody>
+</table>
+<p>When you use <a class="xref" href="../api/FubarDev.WebDavServer.Props.SimpleTypedProperty-1.html">SimpleTypedProperty</a>, then you also have to ensure that you preservere the <code>xml:lang</code> attribute. You can access its value using the <a class="xref" href="../api/FubarDev.WebDavServer.Props.SimpleUntypedProperty.html#FubarDev_WebDavServer_Props_SimpleUntypedProperty_Language">SimpleUntypedProperty.Language</a> property.</p>
+<h1 id="property-store">Property store</h1>
+<p>A property store only stores dead properties. The entity tags must nut be stored by the property store when the file system supports entity tags natively. Instead, it should pass the entity tags to the file system entry.</p>
+<h2 id="interfaces-1">Interfaces</h2>
+<p>The most important interfaces are <a class="xref" href="../api/FubarDev.WebDavServer.Props.Store.IPropertyStoreFactory.html">IPropertyStoreFactory</a> and <a class="xref" href="../api/FubarDev.WebDavServer.Props.Store.IPropertyStore.html">IPropertyStore</a>. The factory is used to create a <code>IPropertyStore</code> instance for a given <a class="xref" href="../api/FubarDev.WebDavServer.FileSystem.IFileSystem.html">IFileSystem</a>.</p>
+<h1 id="example-implementation">Example implementation</h1>
+<p>In this example, we&#39;ll show you how to implement a property store using SQLite. You can simplify the implementation of a property store by using <a class="xref" href="../api/FubarDev.WebDavServer.Props.Store.PropertyStoreBase.html">PropertyStoreBase</a>.</p>
+<h2 id="factory">Factory</h2>
+<p>The factory is quite simple and consists of the following parts:</p>
+<ul>
+<li>Initialization of the store (DB creation, Table creation)</li>
+<li>Creation of a <a class="xref" href="../api/FubarDev.WebDavServer.Props.Store.SQLite.SQLitePropertyStore.html">SQLitePropertyStore</a></li>
+</ul>
+<p>Both steps are done in the <a class="xref" href="../api/FubarDev.WebDavServer.Props.Store.SQLite.SQLitePropertyStoreFactory.html#FubarDev_WebDavServer_Props_Store_SQLite_SQLitePropertyStoreFactory_Create_FubarDev_WebDavServer_FileSystem_IFileSystem_">SQLitePropertyStoreFactory.Create(FubarDev.WebDavServer.FileSystem.IFileSystem)</a> function.</p>
+<h2 id="property-store-1">Property store</h2>
+<p>We store the properties in a database file which might exist in the directories exposed to the user. To avoid showing the database file when a user lists a collection, we also implement the <a class="xref" href="../api/FubarDev.WebDavServer.Props.Store.IFileSystemPropertyStore.html">IFileSystemPropertyStore</a> and return true in the <a class="xref" href="../api/FubarDev.WebDavServer.Props.Store.SQLite.SQLitePropertyStore.html#FubarDev_WebDavServer_Props_Store_SQLite_SQLitePropertyStore_IgnoreEntry_FubarDev_WebDavServer_FileSystem_IEntry_">SQLitePropertyStore.IgnoreEntry</a> function when there is a file in the root directory with the same name as the database file.</p>
+<h3 id="functions-to-implement">Functions to implement</h3>
+<p>For the basic implemetation, we only have to implement a couple of functions, like:</p>
+<ul>
+<li><a class="xref" href="../api/FubarDev.WebDavServer.Props.Store.PropertyStoreBase.html#FubarDev_WebDavServer_Props_Store_PropertyStoreBase_GetAsync_FubarDev_WebDavServer_FileSystem_IEntry_System_Threading_CancellationToken_">PropertyStoreBase.GetAsync</a></li>
+<li><a class="xref" href="../api/FubarDev.WebDavServer.Props.Store.PropertyStoreBase.html#FubarDev_WebDavServer_Props_Store_PropertyStoreBase_SetAsync_FubarDev_WebDavServer_FileSystem_IEntry_System_Collections_Generic_IEnumerable_System_Xml_Linq_XElement__System_Threading_CancellationToken_">PropertyStoreBase.SetAsync</a></li>
+<li><a class="xref" href="../api/FubarDev.WebDavServer.Props.Store.PropertyStoreBase.html#FubarDev_WebDavServer_Props_Store_PropertyStoreBase_RemoveAsync_FubarDev_WebDavServer_FileSystem_IEntry_System_Threading_CancellationToken_">PropertyStoreBase.RemoveAsync</a></li>
+<li><a class="xref" href="../api/FubarDev.WebDavServer.Props.Store.PropertyStoreBase.html#FubarDev_WebDavServer_Props_Store_PropertyStoreBase_RemoveAsync_FubarDev_WebDavServer_FileSystem_IEntry_System_Collections_Generic_IEnumerable_System_Xml_Linq_XName__System_Threading_CancellationToken_">PropertyStoreBase.RemoveAsync</a></li>
+<li><a class="xref" href="../api/FubarDev.WebDavServer.Props.Store.PropertyStoreBase.html#FubarDev_WebDavServer_Props_Store_PropertyStoreBase_GetDeadETagAsync_FubarDev_WebDavServer_FileSystem_IEntry_System_Threading_CancellationToken_">PropertyStoreBase.GetDeadETagAsync</a></li>
+<li><a class="xref" href="../api/FubarDev.WebDavServer.Props.Store.PropertyStoreBase.html#FubarDev_WebDavServer_Props_Store_PropertyStoreBase_UpdateDeadETagAsync_FubarDev_WebDavServer_FileSystem_IEntry_System_Threading_CancellationToken_">PropertyStoreBase.UpdateDeadETagAsync</a></li>
+</ul>
+<p>The functions <code>GetDeadETagAsync</code> and <code>UpdateDeadETagAsync</code> are only called when the file system itself doesn&#39;t support entity tags. A file system that supports entity tags must implement the <a class="xref" href="../api/FubarDev.WebDavServer.FileSystem.IEntityTagEntry.html">IEntityTagEntry</a>.</p>
+<h3 id="entity-tag-property-handling">Entity Tag property handling</h3>
+<p>The entity tags must not be modifiable by <a class="xref" href="../api/FubarDev.WebDavServer.Props.Store.PropertyStoreBase.html#FubarDev_WebDavServer_Props_Store_PropertyStoreBase_RemoveAsync_FubarDev_WebDavServer_FileSystem_IEntry_System_Collections_Generic_IEnumerable_System_Xml_Linq_XName__System_Threading_CancellationToken_">PropertyStoreBase.RemoveAsync(IEntry, IEnumerable, CancellationToken)</a> and <a class="xref" href="../api/FubarDev.WebDavServer.Props.Store.PropertyStoreBase.html#FubarDev_WebDavServer_Props_Store_PropertyStoreBase_SetAsync_FubarDev_WebDavServer_FileSystem_IEntry_System_Collections_Generic_IEnumerable_System_Xml_Linq_XElement__System_Threading_CancellationToken_">PropertyStoreBase.SetAsync</a>. When the user tries this, then the property store implementation should silently ignore this (<code>SetAsync</code>) or should return false (<code>RemoveAsync</code>).</p>
 
             </article>
           </div>
