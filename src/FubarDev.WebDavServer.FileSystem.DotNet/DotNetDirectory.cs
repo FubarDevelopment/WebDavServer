@@ -35,7 +35,7 @@ namespace FubarDev.WebDavServer.FileSystem.DotNet
         /// <param name="isRoot">Is this the file systems root directory?</param>
         public DotNetDirectory(
             [NotNull] DotNetFileSystem fileSystem,
-            [NotNull] ICollection parent,
+            [CanBeNull] ICollection parent,
             [NotNull] DirectoryInfo info,
             [NotNull] Uri path,
             [CanBeNull] string name,
@@ -62,7 +62,7 @@ namespace FubarDev.WebDavServer.FileSystem.DotNet
                 item = new DirectoryInfo(newPath);
 
             if (!item.Exists)
-                return null;
+                return Task.FromResult<IEntry>(null);
 
             var entry = CreateEntry(item);
 
