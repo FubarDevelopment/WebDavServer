@@ -32,8 +32,12 @@ namespace FubarDev.WebDavServer.FileSystem.InMemory
         /// <param name="path">The root-relative path of this collection</param>
         /// <param name="name">The name of the collection</param>
         /// <param name="isRoot">Is this the file systems root directory?</param>
-        public InMemoryDirectory([NotNull] InMemoryFileSystem fileSystem, [CanBeNull] ICollection parent,
-            [NotNull] Uri path, [NotNull] string name, bool isRoot = false)
+        public InMemoryDirectory(
+            [NotNull] InMemoryFileSystem fileSystem,
+            [CanBeNull] ICollection parent,
+            [NotNull] Uri path,
+            [NotNull] string name,
+            bool isRoot = false)
             : base(fileSystem, parent, path, name)
         {
             _isRoot = isRoot;
