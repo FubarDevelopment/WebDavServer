@@ -12,7 +12,6 @@ using FubarDev.WebDavServer.AspNetCore.Formatters.Internal;
 using FubarDev.WebDavServer.Dispatchers;
 using FubarDev.WebDavServer.Engines.Remote;
 using FubarDev.WebDavServer.FileSystem;
-using FubarDev.WebDavServer.FileSystem.Mount;
 using FubarDev.WebDavServer.Formatters;
 using FubarDev.WebDavServer.Handlers;
 using FubarDev.WebDavServer.Locking;

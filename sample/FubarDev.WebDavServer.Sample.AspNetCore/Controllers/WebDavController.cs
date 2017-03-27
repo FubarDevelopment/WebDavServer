@@ -2,7 +2,6 @@
 
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Authorization;
 using Microsoft.Extensions.Logging;
 
 namespace FubarDev.WebDavServer.Sample.AspNetCore.Controllers

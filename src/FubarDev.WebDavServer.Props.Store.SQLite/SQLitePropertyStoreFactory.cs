@@ -107,7 +107,7 @@ namespace FubarDev.WebDavServer.Props.Store.SQLite
             }
             else
             {
-                var userHomePath = Utils.SystemInfo.GetUserHomePath(_webDavContext.User);
+                var userHomePath = SystemInfo.GetUserHomePath(_webDavContext.User);
                 dbPath = Path.Combine(userHomePath, ".webdav", "properties.db");
             }
 

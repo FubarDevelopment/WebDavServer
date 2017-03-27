@@ -2,7 +2,6 @@
 // Copyright (c) Fubar Development Junker. All rights reserved.
 // </copyright>
 
-using FubarDev.WebDavServer.Model;
 using FubarDev.WebDavServer.Model.Headers;
 
 using Xunit;

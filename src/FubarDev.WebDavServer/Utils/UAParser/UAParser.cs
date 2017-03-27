@@ -53,19 +53,20 @@ namespace FubarDev.WebDavServer.Utils.UAParser
         /// <summary>
         /// Returns true if the device is likely to be a spider or a bot device
         /// </summary>
-        public bool IsSpider { get { return "Spider".Equals(Family, StringComparison.OrdinalIgnoreCase); } }
+        public bool IsSpider => "Spider".Equals(Family, StringComparison.OrdinalIgnoreCase);
+
         /// <summary>
         ///The brand of the device 
         /// </summary>
-        public string Brand { get; private set; }
+        public string Brand { get; }
         /// <summary>
         /// The family of the device, if available
         /// </summary>
-        public string Family { get; private set; }
+        public string Family { get; }
         /// <summary>
         /// The model of the device, if available
         /// </summary>
-        public string Model { get; private set; }
+        public string Model { get; }
 
         /// <summary>
         /// A readable description of the device
@@ -97,23 +98,23 @@ namespace FubarDev.WebDavServer.Utils.UAParser
         /// <summary>
         /// The familiy of the OS
         /// </summary>
-        public string Family     { get; private set; }
+        public string Family     { get; }
         /// <summary>
         /// The major version of the OS, if available
         /// </summary>
-        public string Major      { get; private set; }
+        public string Major      { get; }
         /// <summary>
         /// The minor version of the OS, if available
         /// </summary>
-        public string Minor      { get; private set; }
+        public string Minor      { get; }
         /// <summary>
         /// The patch version of the OS, if available
         /// </summary>
-        public string Patch      { get; private set; }
+        public string Patch      { get; }
         /// <summary>
         /// The minor patch version of the OS, if available
         /// </summary>
-        public string PatchMinor { get; private set; }
+        public string PatchMinor { get; }
         /// <summary>
         /// A readable description of the OS
         /// </summary>
@@ -144,19 +145,19 @@ namespace FubarDev.WebDavServer.Utils.UAParser
         /// <summary>
         /// The family of user agent
         /// </summary>
-        public string Family { get; private set; }
+        public string Family { get; }
         /// <summary>
         /// Major version of the user agent, if available
         /// </summary>
-        public string Major  { get; private set; }
+        public string Major  { get; }
         /// <summary>
         /// Minor version of the user agent, if available
         /// </summary>
-        public string Minor  { get; private set; }
+        public string Minor  { get; }
         /// <summary>
         /// Patch version of the user agent, if available
         /// </summary>
-        public string Patch  { get; private set; }
+        public string Patch  { get; }
 
         /// <summary>
         /// The user agent as a readbale string
@@ -213,28 +214,28 @@ namespace FubarDev.WebDavServer.Utils.UAParser
         /// <summary>
         /// The user agent string, the input for the UAParser
         /// </summary>
-        public string String { get; private set; }
+        public string String { get; }
         // ReSharper disable once InconsistentNaming
         /// <summary>
         /// The OS parsed from the user agent string
         /// </summary>
         // ReSharper disable once InconsistentNaming
-        public OS OS { get; private set; }
+        public OS OS { get; }
 
         /// <summary>
         /// The Device parsed from the user agent string
         /// </summary>
-        public Device Device { get; private set; }
+        public Device Device { get; }
         /// <summary>
         /// The User Agent parsed from the user agent string
         /// </summary>
-        public UserAgent UserAgent { get { return UA; } }
+        public UserAgent UserAgent => UA;
 
         // ReSharper disable once InconsistentNaming
         /// <summary>
         /// The User Agent parsed from the user agent string
         /// </summary>
-        public UserAgent UA { get; private set; }
+        public UserAgent UA { get; }
 
         /// <summary>
         /// Constructs an instance of the ClientInfo with results of the user agent string parsing 
@@ -253,7 +254,7 @@ namespace FubarDev.WebDavServer.Utils.UAParser
         /// <returns></returns>
         public override string ToString()
         {
-            return string.Format("{0} {1} {2}", OS, Device, UA);
+            return $"{OS} {Device} {UA}";
         }
     }
 
@@ -340,7 +341,7 @@ namespace FubarDev.WebDavServer.Utils.UAParser
 
         static Func<string, TResult> CreateParser<T, TResult>(IEnumerable<Func<string, T>> parsers, T defaultValue, Func<T, TResult> selector) where T : class
         {
-            parsers = parsers != null ? parsers.ToArray() : Enumerable.Empty<Func<string, T>>();
+            parsers = parsers?.ToArray() ?? Enumerable.Empty<Func<string, T>>();
             return ua => selector(parsers.Select(p => p(ua)).FirstOrDefault(m => m != null) ?? defaultValue);
         }
 
@@ -381,7 +382,7 @@ namespace FubarDev.WebDavServer.Utils.UAParser
             {
                 var pattern = indexer("regex");
                 if (pattern == null)
-                    throw new Exception(String.Format("{0} is missing regular expression specification.", key));
+                    throw new Exception($"{key} is missing regular expression specification.");
 
                 // Some expressions in the regex.yaml file causes parsing errors 
                 // in .NET such as the \_ token so need to alter them before 
@@ -443,9 +444,9 @@ namespace FubarDev.WebDavServer.Utils.UAParser
                      : Replace(replacement);
             }
 
-            private static readonly string[] AllTokens = new string[]
+            private static readonly string[] _allTokens =
             {
-                "$1","$2","$3","$4","$5","$6","$7","$8","$91",
+                "$1", "$2", "$3", "$4", "$5", "$6", "$7", "$8", "$9",
             };
             
             static Func<Match, IEnumerator<int>, string> ReplaceAll(
@@ -454,12 +455,9 @@ namespace FubarDev.WebDavServer.Utils.UAParser
                 if (replacement == null)
                     return Select();
 
-                Func<string, string, string, string> replaceFunction = (replacementString, matchedGroup, token) =>
-                {
-                    return matchedGroup != null
-                        ? replacementString.ReplaceFirstOccurence(token, matchedGroup)
-                        : replacementString;
-                };
+                Func<string, string, string, string> replaceFunction = (replacementString, matchedGroup, token) => matchedGroup != null
+                    ? replacementString.ReplaceFirstOccurence(token, matchedGroup)
+                    : replacementString;
 
                 return (m, num) =>
                 {
@@ -467,10 +465,10 @@ namespace FubarDev.WebDavServer.Utils.UAParser
                     if (finalString.Contains("$"))
                     {
                         var groups = m.Groups;
-                        for (int i = 0; i < AllTokens.Length; i++)
+                        for (int i = 0; i < _allTokens.Length; i++)
                         {
                             int tokenNumber = i + 1;
-                            string token = AllTokens[i];
+                            string token = _allTokens[i];
                             Group group;
                             if (finalString.Contains(token))
                             {
@@ -515,7 +513,7 @@ namespace FubarDev.WebDavServer.Utils.UAParser
             {
                 for (var state = initial; ; state = next(state))
                     yield return state;
-                // ReSharper disable once FunctionNeverReturns
+                // ReSharper disable once IteratorNeverReturns
             }
         }
     }
@@ -541,7 +539,7 @@ namespace FubarDev.WebDavServer.Utils.UAParser
     {
         public static string ReplaceFirstOccurence(this string input, string search, string replacement)
         {
-            if (input == null) throw new ArgumentNullException("input");
+            if (input == null) throw new ArgumentNullException(nameof(input));
             var index = input.IndexOf(search, StringComparison.Ordinal);
             return index >= 0
                  ? input.Substring(0, index) + replacement + input.Substring(index + search.Length)
@@ -553,7 +551,7 @@ namespace FubarDev.WebDavServer.Utils.UAParser
     {
         public static TValue Find<TKey, TValue>(this IDictionary<TKey, TValue> dictionary, TKey key)
         {
-            if (dictionary == null) throw new ArgumentNullException("dictionary");
+            if (dictionary == null) throw new ArgumentNullException(nameof(dictionary));
             TValue result;
             return dictionary.TryGetValue(key, out result) ? result : default(TValue);
         }
@@ -568,35 +566,35 @@ namespace FubarDev.WebDavServer.Utils.UAParser
     {
         internal class Mapping
         {
-            private Dictionary<string, string> m_lastEntry;
+            private Dictionary<string, string> _lastEntry;
 
             public Mapping()
             {
                 Sequences = new List<Dictionary<string, string>>();
             }
 
-            public List<Dictionary<string, string>> Sequences { get; private set; }
+            public List<Dictionary<string, string>> Sequences { get; }
 
             public void BeginSequence()
             {
-                m_lastEntry = new Dictionary<string, string>();
-                Sequences.Add(m_lastEntry);
+                _lastEntry = new Dictionary<string, string>();
+                Sequences.Add(_lastEntry);
             }
 
             public void AddToSequence(string key, string value)
             {
-                m_lastEntry[key] = value;
+                _lastEntry[key] = value;
             }
         }
 
-        private readonly Dictionary<string, Mapping> m_mappings = new Dictionary<string, Mapping>();
+        private readonly Dictionary<string, Mapping> _mappings = new Dictionary<string, Mapping>();
 
         public MinimalYamlParser(string yamlString)
         {
             ReadIntoMappingModel(yamlString);
         }
 
-        internal IDictionary<string, Mapping> Mappings { get { return m_mappings; } }
+        internal IDictionary<string, Mapping> Mappings => _mappings;
 
         private void ReadIntoMappingModel(string yamlInputString)
         {
@@ -621,7 +619,7 @@ namespace FubarDev.WebDavServer.Utils.UAParser
                         throw new ArgumentException("YamlParsing: Expecting mapping entry to contain a ':', at line " + lineCount);
                     string name = line.Substring(0, indexOfMappingColon).Trim();
                     activeMapping = new Mapping();
-                    m_mappings.Add(name, activeMapping);
+                    _mappings.Add(name, activeMapping);
                     continue;
                 }
 
@@ -658,7 +656,7 @@ namespace FubarDev.WebDavServer.Utils.UAParser
         public IEnumerable<Dictionary<string, string>> ReadMapping(string mappingName)
         {
             Mapping mapping;
-            if (m_mappings.TryGetValue(mappingName, out mapping))
+            if (_mappings.TryGetValue(mappingName, out mapping))
             {
                 foreach (var s in mapping.Sequences)
                 {

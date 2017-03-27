@@ -10,6 +10,8 @@ using System.Threading.Tasks;
 
 using FubarDev.WebDavServer.Model;
 
+using JetBrains.Annotations;
+
 using SQLitePCL;
 
 namespace FubarDev.WebDavServer.FileSystem.SQLite
@@ -136,9 +138,10 @@ namespace FubarDev.WebDavServer.FileSystem.SQLite
             return newDoc;
         }
 
+        // ReSharper disable once ClassNeverInstantiated.Local
         private class RowIdTemp
         {
-            public long RowId { get; set; }
+            public long RowId { get; [UsedImplicitly] set; }
         }
     }
 }
