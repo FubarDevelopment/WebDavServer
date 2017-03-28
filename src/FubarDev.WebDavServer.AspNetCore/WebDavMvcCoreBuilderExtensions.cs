@@ -17,9 +17,18 @@ namespace FubarDev.WebDavServer.AspNetCore
         /// <remarks>
         /// The user must still add the following services:
         /// <list type="bullet">
-        /// <item><see cref="FileSystem.IFileSystemFactory"/></item>
-        /// <item><see cref="Props.Store.IPropertyStoreFactory"/></item>
-        /// <item><see cref="Locking.ILockManager"/></item>
+        /// <item>
+        ///     <term><see cref="FileSystem.IFileSystemFactory"/></term>
+        ///     <description>The file system factory</description>
+        /// </item>
+        /// <item>
+        ///     <term><see cref="Props.Store.IPropertyStoreFactory"/></term>
+        ///     <description>The property store factory</description>
+        /// </item>
+        /// <item>
+        ///     <term><see cref="Locking.ILockManager"/></term>
+        ///     <description>The lock manager</description>
+        /// </item>
         /// </list>
         /// </remarks>
         /// <param name="builder">The <see cref="IMvcCoreBuilder"/></param>

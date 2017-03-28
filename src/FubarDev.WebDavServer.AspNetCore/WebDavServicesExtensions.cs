@@ -38,9 +38,18 @@ namespace Microsoft.Extensions.DependencyInjection
         /// <remarks>
         /// The user must still add the following services:
         /// <list type="bullet">
-        /// <item><see cref="IFileSystemFactory"/></item>
-        /// <item><see cref="FubarDev.WebDavServer.Props.Store.IPropertyStoreFactory"/></item>
-        /// <item><see cref="ILockManager"/></item>
+        /// <item>
+        ///     <term><see cref="IFileSystemFactory"/></term>
+        ///     <description>The file system factory</description>
+        /// </item>
+        /// <item>
+        ///     <term><see cref="FubarDev.WebDavServer.Props.Store.IPropertyStoreFactory"/></term>
+        ///     <description>The property store factory</description>
+        /// </item>
+        /// <item>
+        ///     <term><see cref="ILockManager"/></term>
+        ///     <description>The lock manager</description>
+        /// </item>
         /// </list>
         /// </remarks>
         /// <param name="services">The service collection to add the WebDAV services to</param>
