@@ -130,7 +130,7 @@ namespace FubarDev.WebDavServer.Tests.FileSystem
 
             public MyVirtualRootFileSystemFactory(
                 [NotNull] IServiceProvider serviceProvider,
-                [NotNull] PathTraversalEngine pathTraversalEngine,
+                [NotNull] IPathTraversalEngine pathTraversalEngine,
                 [NotNull] ISystemClock systemClock,
                 ILockManager lockManager = null,
                 IPropertyStoreFactory propertyStoreFactory = null)

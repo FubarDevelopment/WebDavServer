@@ -23,7 +23,7 @@ namespace FubarDev.WebDavServer.FileSystem.InMemory
         private readonly Dictionary<FileSystemKey, InMemoryFileSystem> _fileSystems = new Dictionary<FileSystemKey, InMemoryFileSystem>();
 
         [NotNull]
-        private readonly PathTraversalEngine _pathTraversalEngine;
+        private readonly IPathTraversalEngine _pathTraversalEngine;
 
         [NotNull]
         private readonly ISystemClock _systemClock;
@@ -42,7 +42,7 @@ namespace FubarDev.WebDavServer.FileSystem.InMemory
         /// <param name="lockManager">The global lock manager</param>
         /// <param name="propertyStoreFactory">The store for dead properties</param>
         public InMemoryFileSystemFactory(
-            [NotNull] PathTraversalEngine pathTraversalEngine,
+            [NotNull] IPathTraversalEngine pathTraversalEngine,
             [NotNull] ISystemClock systemClock,
             ILockManager lockManager = null,
             IPropertyStoreFactory propertyStoreFactory = null)

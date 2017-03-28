@@ -67,12 +67,12 @@ namespace Microsoft.Extensions.DependencyInjection
             services.TryAddSingleton<ITimeoutPolicy, DefaultTimeoutPolicy>();
             services.TryAddScoped<IWebDavContext, WebDavContext>();
             services.TryAddSingleton<ILockCleanupTask, LockCleanupTask>();
+            services.TryAddSingleton<IPathTraversalEngine, PathTraversalEngine>();
             services
                 .AddOptions()
                 .AddScoped<IWebDavDispatcher, WebDavServer>()
                 .AddSingleton<WebDavExceptionFilter>()
                 .AddScoped<IWebDavOutputFormatter, WebDavXmlOutputFormatter>()
-                .AddSingleton<PathTraversalEngine>()
                 .AddSingleton<LockCleanupTask>();
             services.Scan(
                 scan => scan

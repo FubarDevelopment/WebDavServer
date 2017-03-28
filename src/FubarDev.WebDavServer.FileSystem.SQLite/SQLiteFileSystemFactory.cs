@@ -24,7 +24,7 @@ namespace FubarDev.WebDavServer.FileSystem.SQLite
     public class SQLiteFileSystemFactory : IFileSystemFactory
     {
         [NotNull]
-        private readonly PathTraversalEngine _pathTraversalEngine;
+        private readonly IPathTraversalEngine _pathTraversalEngine;
 
         [CanBeNull]
         private readonly IPropertyStoreFactory _propertyStoreFactory;
@@ -44,7 +44,7 @@ namespace FubarDev.WebDavServer.FileSystem.SQLite
         /// <param name="lockManager">The global lock manager</param>
         public SQLiteFileSystemFactory(
             [NotNull] IOptions<SQLiteFileSystemOptions> options,
-            [NotNull] PathTraversalEngine pathTraversalEngine,
+            [NotNull] IPathTraversalEngine pathTraversalEngine,
             [CanBeNull] IPropertyStoreFactory propertyStoreFactory = null,
             [CanBeNull] ILockManager lockManager = null)
         {

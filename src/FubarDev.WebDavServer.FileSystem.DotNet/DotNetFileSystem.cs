@@ -21,7 +21,7 @@ namespace FubarDev.WebDavServer.FileSystem.DotNet
     /// </summary>
     public class DotNetFileSystem : ILocalFileSystem, IMountPointManager
     {
-        private readonly PathTraversalEngine _pathTraversalEngine;
+        private readonly IPathTraversalEngine _pathTraversalEngine;
 
         private readonly Dictionary<Uri, IFileSystem> _mountPoints = new Dictionary<Uri, IFileSystem>();
 
@@ -38,7 +38,7 @@ namespace FubarDev.WebDavServer.FileSystem.DotNet
             [NotNull] DotNetFileSystemOptions options,
             [CanBeNull] ICollection mountPoint,
             [NotNull] string rootFolder,
-            [NotNull] PathTraversalEngine pathTraversalEngine,
+            [NotNull] IPathTraversalEngine pathTraversalEngine,
             ILockManager lockManager = null,
             IPropertyStoreFactory propertyStoreFactory = null)
         {

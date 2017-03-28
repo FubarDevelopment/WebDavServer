@@ -63,6 +63,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)FileSystem\IFileSystem.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)FileSystem\IFileSystemFactory.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)FileSystem\ILocalFileSystem.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)FileSystem\IPathTraversalEngine.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)FileSystem\IRecusiveChildrenCollector.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)FileSystem\Mount\IMountPointManager.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)FileSystem\Mount\IMountPointProvider.cs" />

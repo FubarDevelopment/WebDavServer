@@ -20,7 +20,7 @@ namespace FubarDev.WebDavServer.FileSystem.DotNet
     public class DotNetFileSystemFactory : IFileSystemFactory
     {
         [NotNull]
-        private readonly PathTraversalEngine _pathTraversalEngine;
+        private readonly IPathTraversalEngine _pathTraversalEngine;
 
         [CanBeNull]
         private readonly IPropertyStoreFactory _propertyStoreFactory;
@@ -40,7 +40,7 @@ namespace FubarDev.WebDavServer.FileSystem.DotNet
         /// <param name="lockManager">The global lock manager</param>
         public DotNetFileSystemFactory(
             [NotNull] IOptions<DotNetFileSystemOptions> options,
-            [NotNull] PathTraversalEngine pathTraversalEngine,
+            [NotNull] IPathTraversalEngine pathTraversalEngine,
             IPropertyStoreFactory propertyStoreFactory = null,
             ILockManager lockManager = null)
         {

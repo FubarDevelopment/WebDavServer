@@ -28,7 +28,7 @@ namespace FubarDev.WebDavServer.FileSystem.SQLite
         private readonly db::SQLiteConnection _connection;
 
         [NotNull]
-        private readonly PathTraversalEngine _pathTraversalEngine;
+        private readonly IPathTraversalEngine _pathTraversalEngine;
 
         private readonly Dictionary<Uri, IFileSystem> _mountPoints = new Dictionary<Uri, IFileSystem>();
 
@@ -45,7 +45,7 @@ namespace FubarDev.WebDavServer.FileSystem.SQLite
             [NotNull] SQLiteFileSystemOptions options,
             [CanBeNull] ICollection mountPoint,
             [NotNull] db::SQLiteConnection connection,
-            [NotNull] PathTraversalEngine pathTraversalEngine,
+            [NotNull] IPathTraversalEngine pathTraversalEngine,
             [CanBeNull] ILockManager lockManager = null,
             [CanBeNull] IPropertyStoreFactory propertyStoreFactory = null)
         {

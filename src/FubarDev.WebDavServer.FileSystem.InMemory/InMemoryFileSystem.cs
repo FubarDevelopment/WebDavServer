@@ -20,7 +20,7 @@ namespace FubarDev.WebDavServer.FileSystem.InMemory
     /// </summary>
     public class InMemoryFileSystem : IFileSystem, IMountPointManager
     {
-        private readonly PathTraversalEngine _pathTraversalEngine;
+        private readonly IPathTraversalEngine _pathTraversalEngine;
 
         private readonly Dictionary<Uri, IFileSystem> _mountPoints = new Dictionary<Uri, IFileSystem>();
 
@@ -34,7 +34,7 @@ namespace FubarDev.WebDavServer.FileSystem.InMemory
         /// <param name="propertyStoreFactory">The store for dead properties</param>
         public InMemoryFileSystem(
             [CanBeNull] ICollection mountPoint,
-            [NotNull] PathTraversalEngine pathTraversalEngine,
+            [NotNull] IPathTraversalEngine pathTraversalEngine,
             [NotNull] ISystemClock systemClock,
             ILockManager lockManager = null,
             IPropertyStoreFactory propertyStoreFactory = null)
