@@ -60,11 +60,28 @@ We store the properties in a database file which might exist in the directories 
 For the basic implemetation, we only have to implement a couple of functions, like:
 
 * [PropertyStoreBase.GetAsync](xref:FubarDev.WebDavServer.Props.Store.PropertyStoreBase.GetAsync(FubarDev.WebDavServer.FileSystem.IEntry,System.Threading.CancellationToken))
+
+  This function returns all dead properties except entity tags. Those entity tags must be returned by the `GetDeadETagAsync` function instead.
+
 * [PropertyStoreBase.SetAsync](xref:FubarDev.WebDavServer.Props.Store.PropertyStoreBase.SetAsync(FubarDev.WebDavServer.FileSystem.IEntry,System.Collections.Generic.IEnumerable{System.Xml.Linq.XElement},System.Threading.CancellationToken))
-* [PropertyStoreBase.RemoveAsync](xref:FubarDev.WebDavServer.Props.Store.PropertyStoreBase.RemoveAsync(FubarDev.WebDavServer.FileSystem.IEntry,System.Threading.CancellationToken))
-* [PropertyStoreBase.RemoveAsync](xref:FubarDev.WebDavServer.Props.Store.PropertyStoreBase.RemoveAsync(FubarDev.WebDavServer.FileSystem.IEntry,System.Collections.Generic.IEnumerable{System.Xml.Linq.XName},System.Threading.CancellationToken))
+
+  This function sets all properties according to the passed elements except the entity tags. The entity tags can never be set - only updated/recreated - using the `UpdateDeadETagAsync` function.
+
+* [PropertyStoreBase.RemoveAsync(IEntry,CancellationToken)](xref:FubarDev.WebDavServer.Props.Store.PropertyStoreBase.RemoveAsync(FubarDev.WebDavServer.FileSystem.IEntry,System.Threading.CancellationToken))
+
+  This function removes all dead properties for a given file system entry. It **must** also remove stored entity tags and all dead properties for all child entries.
+
+* [PropertyStoreBase.RemoveAsync(IEntry,IEnumerable&lt;XName&gt;,CancellationToken)](xref:FubarDev.WebDavServer.Props.Store.PropertyStoreBase.RemoveAsync(FubarDev.WebDavServer.FileSystem.IEntry,System.Collections.Generic.IEnumerable{System.Xml.Linq.XName},System.Threading.CancellationToken))
+
+  This function removes the specified dead properties. It **must not** remove the stored entity tags!
+
 * [PropertyStoreBase.GetDeadETagAsync](xref:FubarDev.WebDavServer.Props.Store.PropertyStoreBase.GetDeadETagAsync(FubarDev.WebDavServer.FileSystem.IEntry,System.Threading.CancellationToken))
+
+  This function gets the entity tag for an entry when the file system of the entity tag doesn't support entity tags natively.
+
 * [PropertyStoreBase.UpdateDeadETagAsync](xref:FubarDev.WebDavServer.Props.Store.PropertyStoreBase.UpdateDeadETagAsync(FubarDev.WebDavServer.FileSystem.IEntry,System.Threading.CancellationToken))
+
+  This function ensures that the entity tag of an entry gets updated (regenerated). This is manually triggered when a file system entry gets changed and the file system doesn't have native support for entity tags.
 
 The functions `GetDeadETagAsync` and `UpdateDeadETagAsync` are only called when the file system itself doesn't support entity tags. A file system that supports entity tags must implement the [IEntityTagEntry](xref:FubarDev.WebDavServer.FileSystem.IEntityTagEntry).
 
