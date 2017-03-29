@@ -1,6 +1,40 @@
 ﻿<SolutionConfiguration>
   <Settings>
     <AllowParallelTestExecution>True</AllowParallelTestExecution>
+    <MetricsExclusionList>
+      <Value>AsyncLazy.cs:src\FubarDev.WebDavServer\FubarDev.WebDavServer.csproj:netstandard1.3</Value>
+      <Value>src\FubarDev.WebDavServer\FubarDev.WebDavServer.csproj:net451</Value>
+      <Value>src\FubarDev.WebDavServer\FubarDev.WebDavServer.shproj</Value>
+      <Value>src\FubarDev.WebDavServer.AspNetCore\FubarDev.WebDavServer.AspNetCore.csproj:net451</Value>
+      <Value>src\FubarDev.WebDavServer.AspNetCore\FubarDev.WebDavServer.AspNetCore.shproj</Value>
+      <Value>src-doc\FubarDev.WebDavServer.AspNetCore\FubarDev.WebDavServer.AspNetCore.Doc.csproj</Value>
+      <Value>src-doc\FubarDev.WebDavServer\FubarDev.WebDavServer.Doc.csproj</Value>
+      <Value>src-doc\FubarDev.WebDavServer.FileSystem.DotNet\FubarDev.WebDavServer.FileSystem.DotNet.Doc.csproj</Value>
+      <Value>src-doc\FubarDev.WebDavServer.FileSystem.InMemory\FubarDev.WebDavServer.FileSystem.InMemory.Doc.csproj</Value>
+      <Value>src-doc\FubarDev.WebDavServer.FileSystem.SQLite\FubarDev.WebDavServer.FileSystem.SQLite.Doc.csproj</Value>
+      <Value>src-doc\FubarDev.WebDavServer.Locking.InMemory\FubarDev.WebDavServer.Locking.InMemory.Doc.csproj</Value>
+      <Value>src-doc\FubarDev.WebDavServer.Locking.SQLite.Doc\FubarDev.WebDavServer.Locking.SQLite.Doc.csproj</Value>
+      <Value>src-doc\FubarDev.WebDavServer.Props.Store.InMemory\FubarDev.WebDavServer.Props.Store.InMemory.Doc.csproj</Value>
+      <Value>src-doc\FubarDev.WebDavServer.Props.Store.SQLite.Doc\FubarDev.WebDavServer.Props.Store.SQLite.Doc.csproj</Value>
+      <Value>src-doc\FubarDev.WebDavServer.Props.Store.TextFile\FubarDev.WebDavServer.Props.Store.TextFile.Doc.csproj</Value>
+      <Value>sample\FubarDev.WebDavServer.Sample.AspNetCore\FubarDev.WebDavServer.Sample.AspNetCore.csproj:netcoreapp1.1</Value>
+      <Value>src\FubarDev.WebDavServer.Props.Store.TextFile\FubarDev.WebDavServer.Props.Store.TextFile.shproj</Value>
+      <Value>src\FubarDev.WebDavServer.Props.Store.TextFile\FubarDev.WebDavServer.Props.Store.TextFile.csproj:net451</Value>
+      <Value>src\FubarDev.WebDavServer.Props.Store.SQLite\FubarDev.WebDavServer.Props.Store.SQLite.shproj</Value>
+      <Value>src\FubarDev.WebDavServer.Props.Store.SQLite\FubarDev.WebDavServer.Props.Store.SQLite.csproj:net451</Value>
+      <Value>src\FubarDev.WebDavServer.Props.Store.InMemory\FubarDev.WebDavServer.Props.Store.InMemory.shproj</Value>
+      <Value>src\FubarDev.WebDavServer.Props.Store.InMemory\FubarDev.WebDavServer.Props.Store.InMemory.csproj:net451</Value>
+      <Value>src\FubarDev.WebDavServer.Locking.SQLite\FubarDev.WebDavServer.Locking.SQLite.shproj</Value>
+      <Value>src\FubarDev.WebDavServer.Locking.SQLite\FubarDev.WebDavServer.Locking.SQLite.csproj:net451</Value>
+      <Value>src\FubarDev.WebDavServer.Locking.InMemory\FubarDev.WebDavServer.Locking.InMemory.shproj</Value>
+      <Value>src\FubarDev.WebDavServer.Locking.InMemory\FubarDev.WebDavServer.Locking.InMemory.csproj:net451</Value>
+      <Value>src\FubarDev.WebDavServer.FileSystem.SQLite\FubarDev.WebDavServer.FileSystem.SQLite.shproj</Value>
+      <Value>src\FubarDev.WebDavServer.FileSystem.SQLite\FubarDev.WebDavServer.FileSystem.SQLite.csproj:net451</Value>
+      <Value>src\FubarDev.WebDavServer.FileSystem.InMemory\FubarDev.WebDavServer.FileSystem.InMemory.shproj</Value>
+      <Value>src\FubarDev.WebDavServer.FileSystem.InMemory\FubarDev.WebDavServer.FileSystem.InMemory.csproj:net451</Value>
+      <Value>src\FubarDev.WebDavServer.FileSystem.DotNet\FubarDev.WebDavServer.FileSystem.DotNet.shproj</Value>
+      <Value>src\FubarDev.WebDavServer.FileSystem.DotNet\FubarDev.WebDavServer.FileSystem.DotNet.csproj:net451</Value>
+    </MetricsExclusionList>
     <SolutionConfigured>True</SolutionConfigured>
   </Settings>
 </SolutionConfiguration>
