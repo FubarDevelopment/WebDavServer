@@ -264,3 +264,4 @@ __pycache__/
 /**/DROP/
 /**/TEMP/
 _site
+*.ncrunchproject
