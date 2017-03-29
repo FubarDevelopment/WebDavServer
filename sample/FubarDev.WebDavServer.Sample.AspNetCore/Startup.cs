@@ -5,6 +5,7 @@ using System.Diagnostics.CodeAnalysis;
 using System.IO;
 using System.Linq;
 using System.Security.Claims;
+using System.Security.Principal;
 using System.Text.Encodings.Web;
 using System.Threading.Tasks;
 
@@ -181,6 +182,11 @@ namespace FubarDev.WebDavServer.Sample.AspNetCore
 
             app.UseMiddleware<RequestLogMiddleware>();
 
+            if (!Program.IsKestrel)
+            {
+                app.UseMiddleware<ImpersonationMiddleware>();
+            }
+
             app.UseForwardedHeaders(new ForwardedHeadersOptions()
             {
                 ForwardedHeaders = ForwardedHeaders.XForwardedFor | ForwardedHeaders.XForwardedProto
@@ -279,6 +285,37 @@ namespace FubarDev.WebDavServer.Sample.AspNetCore
                 AutomaticChallenge = true;
                 AutomaticAuthenticate = true;
                 AuthenticationScheme = "Anonymous";
+            }
+        }
+
+        // ReSharper disable once ClassNeverInstantiated.Local
+        private class ImpersonationMiddleware
+        {
+            private readonly RequestDelegate _next;
+
+            public ImpersonationMiddleware(RequestDelegate next)
+            {
+                _next = next;
+            }
+
+            // ReSharper disable once UnusedMember.Local
+            public async Task Invoke(HttpContext context)
+            {
+                var identity = context.User.Identity as WindowsIdentity;
+                if (identity == null || !identity.IsAuthenticated)
+                {
+                    await _next(context);
+                }
+                else
+                {
+                    await WindowsIdentity.RunImpersonated(
+                        identity.AccessToken,
+                        async () =>
+                        {
+                            await _next(context);
+                        });
+                    
+                }
             }
         }
 
