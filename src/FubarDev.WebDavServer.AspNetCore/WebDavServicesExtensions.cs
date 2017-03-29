@@ -16,6 +16,7 @@ using FubarDev.WebDavServer.Formatters;
 using FubarDev.WebDavServer.Handlers;
 using FubarDev.WebDavServer.Locking;
 using FubarDev.WebDavServer.Props.Dead;
+using FubarDev.WebDavServer.Props.Store;
 
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -80,12 +81,19 @@ namespace Microsoft.Extensions.DependencyInjection
                     .AddClasses(classes => classes.AssignableToAny(typeof(IHandler), typeof(IWebDavClass)))
                     .AsImplementedInterfaces()
                     .WithTransientLifetime());
-            services.AddTransient(
+            services.AddScoped(
                 sp =>
                 {
                     var factory = sp.GetRequiredService<IFileSystemFactory>();
                     var context = sp.GetRequiredService<IWebDavContext>();
                     return factory.CreateFileSystem(null, context.User);
+                });
+            services.AddScoped(
+                sp =>
+                {
+                    var factory = sp.GetRequiredService<IPropertyStoreFactory>();
+                    var fileSystem = sp.GetRequiredService<IFileSystem>();
+                    return factory.Create(fileSystem);
                 });
             return services;
         }
