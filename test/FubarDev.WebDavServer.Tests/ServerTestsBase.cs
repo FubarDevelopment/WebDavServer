@@ -4,6 +4,7 @@
 
 using System;
 using System.Net.Http;
+using System.Reflection;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -103,6 +104,7 @@ namespace FubarDev.WebDavServer.Tests
                 })
                 .AddSingleton<ILockManager, InMemoryLockManager>()
                 .AddMvcCore()
+                .AddApplicationPart(typeof(TestWebDavController).GetTypeInfo().Assembly)
                 .AddWebDav();
         }
 
