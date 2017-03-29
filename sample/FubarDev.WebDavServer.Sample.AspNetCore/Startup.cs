@@ -120,11 +120,11 @@ namespace FubarDev.WebDavServer.Sample.AspNetCore
             {
                 case PropertyStoreType.TextFile:
                     services
-                        .AddTransient<IPropertyStoreFactory, TextFilePropertyStoreFactory>();
+                        .AddScoped<IPropertyStoreFactory, TextFilePropertyStoreFactory>();
                     break;
                 case PropertyStoreType.SQLite:
                     services
-                        .AddTransient<IPropertyStoreFactory, SQLitePropertyStoreFactory>();
+                        .AddScoped<IPropertyStoreFactory, SQLitePropertyStoreFactory>();
                     break;
                 default:
                     throw new NotSupportedException();
@@ -134,11 +134,11 @@ namespace FubarDev.WebDavServer.Sample.AspNetCore
             {
                 case LockManagerType.InMemory:
                     services
-                        .AddTransient<ILockManager, InMemoryLockManager>();
+                        .AddSingleton<ILockManager, InMemoryLockManager>();
                     break;
                 case LockManagerType.SQLite:
                     services
-                        .AddTransient<ILockManager, SQLiteLockManager>()
+                        .AddSingleton<ILockManager, SQLiteLockManager>()
                         .Configure<SQLiteLockManagerOptions>(
                             cfg =>
                             {
@@ -314,7 +314,6 @@ namespace FubarDev.WebDavServer.Sample.AspNetCore
                         {
                             await _next(context);
                         });
-                    
                 }
             }
         }
