@@ -265,3 +265,4 @@ __pycache__/
 /**/TEMP/
 _site
 *.ncrunchproject
+/cov-int
