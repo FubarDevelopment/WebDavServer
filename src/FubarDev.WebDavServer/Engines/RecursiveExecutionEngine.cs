@@ -95,10 +95,7 @@ namespace FubarDev.WebDavServer.Engines
                 _logger.LogTrace($"Perform operation on document {sourceUrl} with missing target {target.DestinationUrl}.");
             try
             {
-                var properties = await source.GetProperties(_handler.Dispatcher)
-                    .OfType<IUntypedWriteableProperty>()
-                    .ToList(cancellationToken)
-                    .ConfigureAwait(false);
+                var properties = await GetWriteableProperties(source, cancellationToken).ConfigureAwait(false);
 
                 var newDoc = await _handler.ExecuteAsync(source, target, cancellationToken).ConfigureAwait(false);
 
@@ -168,7 +165,7 @@ namespace FubarDev.WebDavServer.Engines
             if (_logger.IsEnabled(LogLevel.Trace))
                 _logger.LogTrace($"Perform operation on document {sourceUrl} with existing target {target.DestinationUrl}.");
 
-            var properties = await source.GetProperties(_handler.Dispatcher).OfType<IUntypedWriteableProperty>().ToList(cancellationToken).ConfigureAwait(false);
+            var properties = await GetWriteableProperties(source, cancellationToken).ConfigureAwait(false);
 
             var docActionResult = await _handler.ExecuteAsync(source, target, cancellationToken).ConfigureAwait(false);
             if (docActionResult.IsFailure)
@@ -187,6 +184,22 @@ namespace FubarDev.WebDavServer.Engines
             return new ActionResult(ActionStatus.Overwritten, target);
         }
 
+        private async Task<List<IUntypedWriteableProperty>> GetWriteableProperties(IEntry entry, CancellationToken cancellationToken)
+        {
+            var properties = new List<IUntypedWriteableProperty>();
+            using (var propsEnum = entry.GetProperties(_handler.Dispatcher).GetEnumerator())
+            {
+                while (await propsEnum.MoveNext(cancellationToken).ConfigureAwait(false))
+                {
+                    var prop = propsEnum.Current as IUntypedWriteableProperty;
+                    if (prop != null)
+                        properties.Add(prop);
+                }
+            }
+
+            return properties;
+        }
+
         private async Task<CollectionActionResult> ExecuteAsync(
             Uri sourceUrl,
             ICollectionNode sourceNode,
@@ -196,7 +209,7 @@ namespace FubarDev.WebDavServer.Engines
             if (_logger.IsEnabled(LogLevel.Trace))
                 _logger.LogTrace($"Collect properties for operation on collection {sourceUrl} and create target {target.DestinationUrl}.");
 
-            var properties = await sourceNode.Collection.GetProperties(_handler.Dispatcher).OfType<IUntypedWriteableProperty>().ToList(cancellationToken).ConfigureAwait(false);
+            var properties = await GetWriteableProperties(sourceNode.Collection, cancellationToken).ConfigureAwait(false);
 
             TCollection newColl;
             try
@@ -247,7 +260,7 @@ namespace FubarDev.WebDavServer.Engines
             if (_logger.IsEnabled(LogLevel.Trace))
                 _logger.LogTrace($"Collect properties for operation on collection {sourceUrl} with existing target {target.DestinationUrl}.");
 
-            var properties = await sourceNode.Collection.GetProperties(_handler.Dispatcher).OfType<IUntypedWriteableProperty>().ToList(cancellationToken).ConfigureAwait(false);
+            var properties = await GetWriteableProperties(sourceNode.Collection, cancellationToken).ConfigureAwait(false);
             return await ExecuteAsync(sourceUrl, sourceNode, target, properties, cancellationToken).ConfigureAwait(false);
         }
 
@@ -267,7 +280,7 @@ namespace FubarDev.WebDavServer.Engines
             var subNodeProperties = new Dictionary<string, IReadOnlyCollection<IUntypedWriteableProperty>>();
             foreach (var childNode in sourceNode.Nodes)
             {
-                var subProperties = await childNode.Collection.GetProperties(_handler.Dispatcher).OfType<IUntypedWriteableProperty>().ToList(cancellationToken).ConfigureAwait(false);
+                var subProperties = await GetWriteableProperties(childNode.Collection, cancellationToken).ConfigureAwait(false);
                 subNodeProperties.Add(childNode.Name, subProperties);
             }
 
