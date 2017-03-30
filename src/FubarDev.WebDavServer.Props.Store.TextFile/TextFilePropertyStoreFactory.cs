@@ -63,16 +63,23 @@ namespace FubarDev.WebDavServer.Props.Store.TextFile
                     return new TextFilePropertyStore(
                         _options,
                         _deadPropertyFactory,
-                        localFs.RootDirectoryPath,
+                        rootPath,
                         true,
                         $"{userName}.json",
                         _logger);
                 }
             }
-            else
+            else if (string.IsNullOrEmpty(_options.RootFolder))
             {
                 var userHomePath = Utils.SystemInfo.GetUserHomePath(_webDavContext.User);
                 rootPath = Path.Combine(userHomePath, ".webdav");
+            }
+            else
+            {
+                var userName = _webDavContext.User.Identity.IsAuthenticated
+                                   ? _webDavContext.User.Identity.Name
+                                   : "anonymous";
+                rootPath = Path.Combine(_options.RootFolder, userName);
             }
 
             Directory.CreateDirectory(rootPath);
