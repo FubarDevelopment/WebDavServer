@@ -211,7 +211,7 @@ namespace FubarDev.WebDavServer.FileSystem
                         else
                         {
                             Current = null;
-                            _entries?.Dispose();
+                            _entries.Dispose();
                             _entries = null;
                             resultFound = _collections.Count == 0;
                         }
