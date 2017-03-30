@@ -49,30 +49,30 @@ namespace FubarDev.WebDavServer.Props.Store.TextFile
         /// <inheritdoc />
         public IPropertyStore Create(IFileSystem fileSystem)
         {
+            string fileName = ".properties";
+            bool storeInRoot;
             string rootPath;
             ILocalFileSystem localFs;
             if (_options.StoreInTargetFileSystem && (localFs = fileSystem as ILocalFileSystem) != null)
             {
                 rootPath = localFs.RootDirectoryPath;
-                var storeInRoot = !localFs.HasSubfolders;
+                storeInRoot = !localFs.HasSubfolders;
                 if (storeInRoot)
                 {
                     var userName = _webDavContext.User.Identity.IsAuthenticated
                         ? _webDavContext.User.Identity.Name
                         : "anonymous";
-                    return new TextFilePropertyStore(
-                        _options,
-                        _deadPropertyFactory,
-                        rootPath,
-                        true,
-                        $"{userName}.json",
-                        _logger);
+                    var p = userName.IndexOf('\\');
+                    if (p != -1)
+                        userName = userName.Substring(p + 1);
+                    fileName = $"{userName}.json";
                 }
             }
             else if (string.IsNullOrEmpty(_options.RootFolder))
             {
                 var userHomePath = Utils.SystemInfo.GetUserHomePath(_webDavContext.User);
                 rootPath = Path.Combine(userHomePath, ".webdav");
+                storeInRoot = true;
             }
             else
             {
@@ -80,11 +80,12 @@ namespace FubarDev.WebDavServer.Props.Store.TextFile
                                    ? _webDavContext.User.Identity.Name
                                    : "anonymous";
                 rootPath = Path.Combine(_options.RootFolder, userName);
+                storeInRoot = true;
             }
 
             Directory.CreateDirectory(rootPath);
 
-            return new TextFilePropertyStore(_options, _deadPropertyFactory, rootPath, false, ".properties", _logger);
+            return new TextFilePropertyStore(_options, _deadPropertyFactory, rootPath, storeInRoot, fileName, _logger);
         }
     }
 }
