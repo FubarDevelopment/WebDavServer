@@ -28,6 +28,8 @@ namespace FubarDev.WebDavServer.Locking.SQLite
         [NotNull]
         private readonly sqlitenet.SQLiteConnection _connection;
 
+        private readonly SemaphoreSlim _semaphore = new SemaphoreSlim(1);
+
         private readonly object _initSync = new object();
 
         private volatile bool _initialized;
@@ -89,7 +91,7 @@ namespace FubarDev.WebDavServer.Locking.SQLite
         }
 
         /// <inheritdoc />
-        protected override Task<ILockManagerTransaction> BeginTransactionAsync(CancellationToken cancellationToken)
+        protected override async Task<ILockManagerTransaction> BeginTransactionAsync(CancellationToken cancellationToken)
         {
             if (!_initialized)
             {
@@ -110,8 +112,9 @@ namespace FubarDev.WebDavServer.Locking.SQLite
                 }
             }
 
+            await _semaphore.WaitAsync(cancellationToken);
             _connection.BeginTransaction();
-            return Task.FromResult<ILockManagerTransaction>(new SQLiteLockManagerTransaction(_connection));
+            return new SQLiteLockManagerTransaction(_connection, _semaphore);
         }
 
         /// <summary>
@@ -128,11 +131,15 @@ namespace FubarDev.WebDavServer.Locking.SQLite
             [NotNull]
             private readonly sqlitenet.SQLiteConnection _connection;
 
+            [NotNull]
+            private readonly SemaphoreSlim _semaphore;
+
             private bool _committed;
 
-            public SQLiteLockManagerTransaction([NotNull] sqlitenet.SQLiteConnection connection)
+            public SQLiteLockManagerTransaction([NotNull] sqlitenet.SQLiteConnection connection, [NotNull] SemaphoreSlim semaphore)
             {
                 _connection = connection;
+                _semaphore = semaphore;
             }
 
             public Task<IReadOnlyCollection<IActiveLock>> GetActiveLocksAsync(CancellationToken cancellationToken)
@@ -178,6 +185,7 @@ namespace FubarDev.WebDavServer.Locking.SQLite
             {
                 if (!_committed)
                     _connection.Rollback();
+                _semaphore.Release();
             }
 
             private ActiveLockEntry ToEntry(IActiveLock activeLock)

@@ -8,6 +8,7 @@ using System.Threading;
 using System.Threading.Tasks;
 
 using FubarDev.WebDavServer.FileSystem;
+using FubarDev.WebDavServer.FileSystem.InMemory;
 using FubarDev.WebDavServer.Props.Dead;
 using FubarDev.WebDavServer.Props.Store;
 using FubarDev.WebDavServer.Tests.Support.ServiceBuilders;
@@ -20,11 +21,11 @@ using Xunit;
 
 namespace FubarDev.WebDavServer.Tests.PropertyStore
 {
-    public class InMemoryPropTests : IClassFixture<FileSystemServices>, IDisposable
+    public class InMemoryPropTests : IClassFixture<FileSystemServices<InMemoryFileSystemFactory>>, IDisposable
     {
         private readonly IServiceScope _serviceScope;
 
-        public InMemoryPropTests(FileSystemServices fsServices)
+        public InMemoryPropTests(FileSystemServices<InMemoryFileSystemFactory> fsServices)
         {
             var serviceScopeFactory = fsServices.ServiceProvider.GetRequiredService<IServiceScopeFactory>();
             _serviceScope = serviceScopeFactory.CreateScope();

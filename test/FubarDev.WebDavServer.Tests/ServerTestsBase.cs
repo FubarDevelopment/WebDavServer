@@ -4,6 +4,7 @@
 
 using System;
 using System.Net.Http;
+using System.Reflection;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -89,20 +90,9 @@ namespace FubarDev.WebDavServer.Tests
                 .AddScoped<IHttpMessageHandlerFactory>(sp => new TestHttpMessageHandlerFactory(container.Server))
                 .AddSingleton<IFileSystemFactory, InMemoryFileSystemFactory>()
                 .AddSingleton<IPropertyStoreFactory, InMemoryPropertyStoreFactory>()
-                .AddScoped(ctx =>
-                {
-                    var factory = ctx.GetRequiredService<IPropertyStoreFactory>();
-                    var fs = ctx.GetRequiredService<IFileSystem>();
-                    return factory.Create(fs);
-                })
-                .AddScoped(ctx =>
-                {
-                    var factory = ctx.GetRequiredService<IFileSystemFactory>();
-                    var context = ctx.GetRequiredService<IWebDavContext>();
-                    return factory.CreateFileSystem(null, context.User);
-                })
                 .AddSingleton<ILockManager, InMemoryLockManager>()
                 .AddMvcCore()
+                .AddApplicationPart(typeof(TestWebDavController).GetTypeInfo().Assembly)
                 .AddWebDav();
         }
 

@@ -84,61 +84,71 @@ namespace FubarDev.WebDavServer.Dispatchers
             {
                 var handlerFound = false;
 
-                if (class1Handler is IOptionsHandler optionsHandler)
+                var optionsHandler = class1Handler as IOptionsHandler;
+                if (optionsHandler != null)
                 {
                     _optionsHandler = optionsHandler;
                     handlerFound = true;
                 }
 
-                if (class1Handler is IPropFindHandler propFindHandler)
+                var propFindHandler = class1Handler as IPropFindHandler;
+                if (propFindHandler != null)
                 {
                     _propFindHandler = propFindHandler;
                     handlerFound = true;
                 }
 
-                if (class1Handler is IGetHandler getHandler)
+                var getHandler = class1Handler as IGetHandler;
+                if (getHandler != null)
                 {
                     _getHandler = getHandler;
                     handlerFound = true;
                 }
 
-                if (class1Handler is IHeadHandler headHandler)
+                var headHandler = class1Handler as IHeadHandler;
+                if (headHandler != null)
                 {
                     _headHandler = headHandler;
                     handlerFound = true;
                 }
 
-                if (class1Handler is IPropPatchHandler propPatchHandler)
+                var propPatchHandler = class1Handler as IPropPatchHandler;
+                if (propPatchHandler != null)
                 {
                     _propPatchHandler = propPatchHandler;
                     handlerFound = true;
                 }
 
-                if (class1Handler is IPutHandler putHandler)
+                var putHandler = class1Handler as IPutHandler;
+                if (putHandler != null)
                 {
                     _putHandler = putHandler;
                     handlerFound = true;
                 }
 
-                if (class1Handler is IMkColHandler mkColHandler)
+                var mkColHandler = class1Handler as IMkColHandler;
+                if (mkColHandler != null)
                 {
                     _mkColHandler = mkColHandler;
                     handlerFound = true;
                 }
 
-                if (class1Handler is IDeleteHandler deleteHandler)
+                var deleteHandler = class1Handler as IDeleteHandler;
+                if (deleteHandler != null)
                 {
                     _deleteHandler = deleteHandler;
                     handlerFound = true;
                 }
 
-                if (class1Handler is ICopyHandler copyHandler)
+                var copyHandler = class1Handler as ICopyHandler;
+                if (copyHandler != null)
                 {
                     _copyHandler = copyHandler;
                     handlerFound = true;
                 }
 
-                if (class1Handler is IMoveHandler moveHandler)
+                var moveHandler = class1Handler as IMoveHandler;
+                if (moveHandler != null)
                 {
                     _moveHandler = moveHandler;
                     handlerFound = true;

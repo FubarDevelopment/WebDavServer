@@ -5,6 +5,7 @@ using System.Diagnostics.CodeAnalysis;
 using System.IO;
 using System.Linq;
 using System.Security.Claims;
+using System.Security.Principal;
 using System.Text.Encodings.Web;
 using System.Threading.Tasks;
 
@@ -119,11 +120,11 @@ namespace FubarDev.WebDavServer.Sample.AspNetCore
             {
                 case PropertyStoreType.TextFile:
                     services
-                        .AddTransient<IPropertyStoreFactory, TextFilePropertyStoreFactory>();
+                        .AddScoped<IPropertyStoreFactory, TextFilePropertyStoreFactory>();
                     break;
                 case PropertyStoreType.SQLite:
                     services
-                        .AddTransient<IPropertyStoreFactory, SQLitePropertyStoreFactory>();
+                        .AddScoped<IPropertyStoreFactory, SQLitePropertyStoreFactory>();
                     break;
                 default:
                     throw new NotSupportedException();
@@ -133,11 +134,11 @@ namespace FubarDev.WebDavServer.Sample.AspNetCore
             {
                 case LockManagerType.InMemory:
                     services
-                        .AddTransient<ILockManager, InMemoryLockManager>();
+                        .AddSingleton<ILockManager, InMemoryLockManager>();
                     break;
                 case LockManagerType.SQLite:
                     services
-                        .AddTransient<ILockManager, SQLiteLockManager>()
+                        .AddSingleton<ILockManager, SQLiteLockManager>()
                         .Configure<SQLiteLockManagerOptions>(
                             cfg =>
                             {
@@ -180,6 +181,11 @@ namespace FubarDev.WebDavServer.Sample.AspNetCore
             }
 
             app.UseMiddleware<RequestLogMiddleware>();
+
+            if (!Program.IsKestrel)
+            {
+                app.UseMiddleware<ImpersonationMiddleware>();
+            }
 
             app.UseForwardedHeaders(new ForwardedHeadersOptions()
             {
@@ -279,6 +285,36 @@ namespace FubarDev.WebDavServer.Sample.AspNetCore
                 AutomaticChallenge = true;
                 AutomaticAuthenticate = true;
                 AuthenticationScheme = "Anonymous";
+            }
+        }
+
+        // ReSharper disable once ClassNeverInstantiated.Local
+        private class ImpersonationMiddleware
+        {
+            private readonly RequestDelegate _next;
+
+            public ImpersonationMiddleware(RequestDelegate next)
+            {
+                _next = next;
+            }
+
+            // ReSharper disable once UnusedMember.Local
+            public async Task Invoke(HttpContext context)
+            {
+                var identity = context.User.Identity as WindowsIdentity;
+                if (identity == null || !identity.IsAuthenticated)
+                {
+                    await _next(context);
+                }
+                else
+                {
+                    await WindowsIdentity.RunImpersonated(
+                        identity.AccessToken,
+                        async () =>
+                        {
+                            await _next(context);
+                        });
+                }
             }
         }
 

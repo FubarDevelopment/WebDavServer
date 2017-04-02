@@ -110,7 +110,7 @@ Replace in `Startup.cs` the `.AddMvc()` in function `ConfigureServices` with the
         opt.RootPath = Path.Combine(Path.GetTempPath(), "webdav");
         opt.AnonymousUserName = "anonymous";
     })
-.AddTransient<IPropertyStoreFactory, TextFilePropertyStoreFactory>()
+.AddScoped<IPropertyStoreFactory, TextFilePropertyStoreFactory>()
 .AddSingleton<IFileSystemFactory, DotNetFileSystemFactory>()
 .AddSingleton<ILockManager, InMemoryLockManager>()
 .AddMvcCore()

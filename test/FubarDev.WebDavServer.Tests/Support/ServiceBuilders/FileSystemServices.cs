@@ -17,7 +17,8 @@ using Microsoft.Extensions.Logging;
 
 namespace FubarDev.WebDavServer.Tests.Support.ServiceBuilders
 {
-    public class FileSystemServices
+    public class FileSystemServices<T>
+        where T : class, IFileSystemFactory
     {
         public FileSystemServices()
         {
@@ -31,20 +32,8 @@ namespace FubarDev.WebDavServer.Tests.Support.ServiceBuilders
                 .AddScoped<ILockManager, InMemoryLockManager>()
                 .AddScoped<IDeadPropertyFactory, DeadPropertyFactory>()
                 .AddScoped<IWebDavContext>(sp => new TestHost(sp, new Uri("http://localhost/")))
-                .AddScoped<IFileSystemFactory, InMemoryFileSystemFactory>()
+                .AddScoped<IFileSystemFactory, T>()
                 .AddSingleton<IPropertyStoreFactory, InMemoryPropertyStoreFactory>()
-                .AddScoped(ctx =>
-                {
-                    var factory = ctx.GetRequiredService<IFileSystemFactory>();
-                    var webDavContext = ctx.GetRequiredService<IWebDavContext>();
-                    return factory.CreateFileSystem(null, webDavContext.User);
-                })
-                .AddScoped(ctx =>
-                {
-                    var factory = ctx.GetRequiredService<IPropertyStoreFactory>();
-                    var fs = ctx.GetRequiredService<IFileSystem>();
-                    return factory.Create(fs);
-                })
                 .AddWebDav();
             ServiceProvider = serviceCollection.BuildServiceProvider();
 
