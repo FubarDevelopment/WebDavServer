@@ -170,6 +170,6 @@
     <Analyzer Include="..\..\packages\StyleCop.Analyzers.1.1.0-beta001\analyzers\dotnet\cs\StyleCop.Analyzers.CodeFixes.dll" />
     <Analyzer Include="..\..\packages\StyleCop.Analyzers.1.1.0-beta001\analyzers\dotnet\cs\StyleCop.Analyzers.dll" />
   </ItemGroup>
-  <Import Project="..\..\src\FubarDev.WebDavServer.AspNetCore\FubarDev.WebDavServer.AspNetCore.projitems" Label="Shared" />
+  <Import Project="..\..\src\FubarDev.WebDavServer.AspNetCore\FubarDev.WebDavServer.AspNetCore.Shared.projitems" Label="Shared" />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

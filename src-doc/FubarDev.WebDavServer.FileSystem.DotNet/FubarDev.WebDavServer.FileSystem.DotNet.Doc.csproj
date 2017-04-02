@@ -78,6 +78,6 @@
       <Name>FubarDev.WebDavServer.Doc</Name>
     </ProjectReference>
   </ItemGroup>
-  <Import Project="..\..\src\FubarDev.WebDavServer.FileSystem.DotNet\FubarDev.WebDavServer.FileSystem.DotNet.projitems" Label="Shared" />
+  <Import Project="..\..\src\FubarDev.WebDavServer.FileSystem.DotNet\FubarDev.WebDavServer.FileSystem.DotNet.Shared.projitems" Label="Shared" />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

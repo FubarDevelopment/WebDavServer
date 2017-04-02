@@ -82,6 +82,6 @@
       <Name>FubarDev.WebDavServer.Doc</Name>
     </ProjectReference>
   </ItemGroup>
-  <Import Project="..\..\src\FubarDev.WebDavServer.Locking.InMemory\FubarDev.WebDavServer.Locking.InMemory.projitems" Label="Shared" />
+  <Import Project="..\..\src\FubarDev.WebDavServer.Locking.InMemory\FubarDev.WebDavServer.Locking.InMemory.Shared.projitems" Label="Shared" />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
