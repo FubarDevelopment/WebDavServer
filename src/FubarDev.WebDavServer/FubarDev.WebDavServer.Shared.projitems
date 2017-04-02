@@ -227,7 +227,6 @@
     <Compile Include="$(MSBuildThisFileDirectory)WebDavResult{T}.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)WebDavServer.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)WebDavXmlResult.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)XmlFragmentExtensions.cs" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="$(MSBuildThisFileDirectory)Utils\UAParser\UAParser.regexes.yaml" />
