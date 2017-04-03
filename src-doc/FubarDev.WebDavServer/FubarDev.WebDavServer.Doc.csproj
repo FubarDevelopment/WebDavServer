@@ -112,6 +112,6 @@
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
   </ItemGroup>
-  <Import Project="..\..\src\FubarDev.WebDavServer\FubarDev.WebDavServer.projitems" Label="Shared" />
+  <Import Project="..\..\src\FubarDev.WebDavServer\FubarDev.WebDavServer.Shared.projitems" Label="Shared" />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

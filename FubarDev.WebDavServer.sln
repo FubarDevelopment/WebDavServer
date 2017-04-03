@@ -31,23 +31,23 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "host", "host", "{5FA6C5DF-7
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src-doc", "src-doc", "{5374846F-A7A5-457B-8231-FC1F959523B6}"
 EndProject
-Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "FubarDev.WebDavServer", "src\FubarDev.WebDavServer\FubarDev.WebDavServer.shproj", "{373E3CAA-169B-477D-BA8E-6C33395CE8E8}"
+Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "FubarDev.WebDavServer", "src\FubarDev.WebDavServer\FubarDev.WebDavServer.Shared.shproj", "{373E3CAA-169B-477D-BA8E-6C33395CE8E8}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FubarDev.WebDavServer.Doc", "src-doc\FubarDev.WebDavServer\FubarDev.WebDavServer.Doc.csproj", "{D1C72F41-22CC-4D68-9AA6-9D852D28551F}"
 EndProject
-Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "FubarDev.WebDavServer.AspNetCore", "src\FubarDev.WebDavServer.AspNetCore\FubarDev.WebDavServer.AspNetCore.shproj", "{0D853AF3-DD6E-4BA7-B4B9-7A6D26873352}"
+Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "FubarDev.WebDavServer.AspNetCore", "src\FubarDev.WebDavServer.AspNetCore\FubarDev.WebDavServer.AspNetCore.Shared.shproj", "{0D853AF3-DD6E-4BA7-B4B9-7A6D26873352}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FubarDev.WebDavServer.AspNetCore.Doc", "src-doc\FubarDev.WebDavServer.AspNetCore\FubarDev.WebDavServer.AspNetCore.Doc.csproj", "{02E04B3E-170F-471A-9674-FCBD13F824DE}"
 EndProject
-Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "FubarDev.WebDavServer.FileSystem.DotNet", "src\FubarDev.WebDavServer.FileSystem.DotNet\FubarDev.WebDavServer.FileSystem.DotNet.shproj", "{58EB93B9-486F-4F82-9532-13E40FC63B7B}"
+Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "FubarDev.WebDavServer.FileSystem.DotNet", "src\FubarDev.WebDavServer.FileSystem.DotNet\FubarDev.WebDavServer.FileSystem.DotNet.Shared.shproj", "{58EB93B9-486F-4F82-9532-13E40FC63B7B}"
 EndProject
-Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "FubarDev.WebDavServer.FileSystem.InMemory", "src\FubarDev.WebDavServer.FileSystem.InMemory\FubarDev.WebDavServer.FileSystem.InMemory.shproj", "{AEE61D0B-0D36-44DE-9A59-4B0EFD749EF1}"
+Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "FubarDev.WebDavServer.FileSystem.InMemory", "src\FubarDev.WebDavServer.FileSystem.InMemory\FubarDev.WebDavServer.FileSystem.InMemory.Shared.shproj", "{AEE61D0B-0D36-44DE-9A59-4B0EFD749EF1}"
 EndProject
-Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "FubarDev.WebDavServer.Locking.InMemory", "src\FubarDev.WebDavServer.Locking.InMemory\FubarDev.WebDavServer.Locking.InMemory.shproj", "{D75340CF-6B2A-42C0-BA0A-DAF251964F68}"
+Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "FubarDev.WebDavServer.Locking.InMemory", "src\FubarDev.WebDavServer.Locking.InMemory\FubarDev.WebDavServer.Locking.InMemory.Shared.shproj", "{D75340CF-6B2A-42C0-BA0A-DAF251964F68}"
 EndProject
-Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "FubarDev.WebDavServer.Props.Store.InMemory", "src\FubarDev.WebDavServer.Props.Store.InMemory\FubarDev.WebDavServer.Props.Store.InMemory.shproj", "{C4EDEE1E-F48C-40EF-AC40-3E47DF7B6752}"
+Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "FubarDev.WebDavServer.Props.Store.InMemory", "src\FubarDev.WebDavServer.Props.Store.InMemory\FubarDev.WebDavServer.Props.Store.InMemory.Shared.shproj", "{C4EDEE1E-F48C-40EF-AC40-3E47DF7B6752}"
 EndProject
-Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "FubarDev.WebDavServer.Props.Store.TextFile", "src\FubarDev.WebDavServer.Props.Store.TextFile\FubarDev.WebDavServer.Props.Store.TextFile.shproj", "{DB307210-4FE2-47C2-9667-ABE117DC3EB5}"
+Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "FubarDev.WebDavServer.Props.Store.TextFile", "src\FubarDev.WebDavServer.Props.Store.TextFile\FubarDev.WebDavServer.Props.Store.TextFile.Shared.shproj", "{DB307210-4FE2-47C2-9667-ABE117DC3EB5}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FubarDev.WebDavServer.FileSystem.DotNet.Doc", "src-doc\FubarDev.WebDavServer.FileSystem.DotNet\FubarDev.WebDavServer.FileSystem.DotNet.Doc.csproj", "{418300F4-C46E-4D1D-A527-CC1C8C077780}"
 EndProject
@@ -69,7 +69,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "filesystem", "filesystem", 
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FubarDev.WebDavServer.FileSystem.SQLite", "src\FubarDev.WebDavServer.FileSystem.SQLite\FubarDev.WebDavServer.FileSystem.SQLite.csproj", "{07E32B0A-445D-440A-8506-62CEFB23F135}"
 EndProject
-Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "FubarDev.WebDavServer.FileSystem.SQLite", "src\FubarDev.WebDavServer.FileSystem.SQLite\FubarDev.WebDavServer.FileSystem.SQLite.shproj", "{8C0C4713-DD50-4283-8852-C0F99BBE369F}"
+Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "FubarDev.WebDavServer.FileSystem.SQLite", "src\FubarDev.WebDavServer.FileSystem.SQLite\FubarDev.WebDavServer.FileSystem.SQLite.Shared.shproj", "{8C0C4713-DD50-4283-8852-C0F99BBE369F}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FubarDev.WebDavServer.FileSystem.SQLite.Doc", "src-doc\FubarDev.WebDavServer.FileSystem.SQLite\FubarDev.WebDavServer.FileSystem.SQLite.Doc.csproj", "{589CAE0D-7AD6-4F5A-A654-68BE9C37F95C}"
 EndProject
@@ -77,9 +77,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FubarDev.WebDavServer.Props
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FubarDev.WebDavServer.Locking.SQLite", "src\FubarDev.WebDavServer.Locking.SQLite\FubarDev.WebDavServer.Locking.SQLite.csproj", "{6FF5A558-15E9-4626-9348-23F0B0BADFFA}"
 EndProject
-Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "FubarDev.WebDavServer.Props.Store.SQLite", "src\FubarDev.WebDavServer.Props.Store.SQLite\FubarDev.WebDavServer.Props.Store.SQLite.shproj", "{EC8650B9-FD94-4B0E-92DB-895BDA6C942E}"
+Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "FubarDev.WebDavServer.Props.Store.SQLite", "src\FubarDev.WebDavServer.Props.Store.SQLite\FubarDev.WebDavServer.Props.Store.SQLite.Shared.shproj", "{EC8650B9-FD94-4B0E-92DB-895BDA6C942E}"
 EndProject
-Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "FubarDev.WebDavServer.Locking.SQLite", "src\FubarDev.WebDavServer.Locking.SQLite\FubarDev.WebDavServer.Locking.SQLite.shproj", "{9BCB6186-9430-4899-BB6B-A99EED7B1660}"
+Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "FubarDev.WebDavServer.Locking.SQLite", "src\FubarDev.WebDavServer.Locking.SQLite\FubarDev.WebDavServer.Locking.SQLite.Shared.shproj", "{9BCB6186-9430-4899-BB6B-A99EED7B1660}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FubarDev.WebDavServer.Props.Store.SQLite.Doc", "src-doc\FubarDev.WebDavServer.Props.Store.SQLite.Doc\FubarDev.WebDavServer.Props.Store.SQLite.Doc.csproj", "{C598D1FE-DFC8-45EF-8EEB-D0B4F5A6C9CC}"
 EndProject
@@ -87,26 +87,26 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FubarDev.WebDavServer.Locki
 EndProject
 Global
 	GlobalSection(SharedMSBuildProjectFiles) = preSolution
-		src\FubarDev.WebDavServer.AspNetCore\FubarDev.WebDavServer.AspNetCore.projitems*{02e04b3e-170f-471a-9674-fcbd13f824de}*SharedItemsImports = 4
-		src\FubarDev.WebDavServer.Locking.InMemory\FubarDev.WebDavServer.Locking.InMemory.projitems*{09eb49b5-57ef-48ad-b387-2ecd12effda4}*SharedItemsImports = 4
-		src\FubarDev.WebDavServer.AspNetCore\FubarDev.WebDavServer.AspNetCore.projitems*{0d853af3-dd6e-4ba7-b4b9-7a6d26873352}*SharedItemsImports = 13
-		src\FubarDev.WebDavServer.Locking.SQLite\FubarDev.WebDavServer.Locking.SQLite.projitems*{189f3be7-7d3c-4d24-b114-78dab14e52aa}*SharedItemsImports = 4
-		src\FubarDev.WebDavServer\FubarDev.WebDavServer.projitems*{373e3caa-169b-477d-ba8e-6c33395ce8e8}*SharedItemsImports = 13
-		src\FubarDev.WebDavServer.FileSystem.DotNet\FubarDev.WebDavServer.FileSystem.DotNet.projitems*{418300f4-c46e-4d1d-a527-cc1c8c077780}*SharedItemsImports = 4
-		src\FubarDev.WebDavServer.FileSystem.SQLite\FubarDev.WebDavServer.FileSystem.SQLite.projitems*{589cae0d-7ad6-4f5a-a654-68be9c37f95c}*SharedItemsImports = 4
-		src\FubarDev.WebDavServer.FileSystem.DotNet\FubarDev.WebDavServer.FileSystem.DotNet.projitems*{58eb93b9-486f-4f82-9532-13e40fc63b7b}*SharedItemsImports = 13
-		src\FubarDev.WebDavServer.FileSystem.InMemory\FubarDev.WebDavServer.FileSystem.InMemory.projitems*{753681f9-791e-4dec-afe3-c124b5d6d060}*SharedItemsImports = 4
-		src\FubarDev.WebDavServer.Props.Store.TextFile\FubarDev.WebDavServer.Props.Store.TextFile.projitems*{8190c873-17c8-4605-a53d-ecc620117dd1}*SharedItemsImports = 4
-		src\FubarDev.WebDavServer.FileSystem.SQLite\FubarDev.WebDavServer.FileSystem.SQLite.projitems*{8c0c4713-dd50-4283-8852-c0f99bbe369f}*SharedItemsImports = 13
-		src\FubarDev.WebDavServer.Props.Store.InMemory\FubarDev.WebDavServer.Props.Store.InMemory.projitems*{8dd387e8-0701-4f1f-934d-42b17f8ac40a}*SharedItemsImports = 4
-		src\FubarDev.WebDavServer.Locking.SQLite\FubarDev.WebDavServer.Locking.SQLite.projitems*{9bcb6186-9430-4899-bb6b-a99eed7b1660}*SharedItemsImports = 13
-		src\FubarDev.WebDavServer.FileSystem.InMemory\FubarDev.WebDavServer.FileSystem.InMemory.projitems*{aee61d0b-0d36-44de-9a59-4b0efd749ef1}*SharedItemsImports = 13
-		src\FubarDev.WebDavServer.Props.Store.InMemory\FubarDev.WebDavServer.Props.Store.InMemory.projitems*{c4edee1e-f48c-40ef-ac40-3e47df7b6752}*SharedItemsImports = 13
-		src\FubarDev.WebDavServer.Props.Store.SQLite\FubarDev.WebDavServer.Props.Store.SQLite.projitems*{c598d1fe-dfc8-45ef-8eeb-d0b4f5a6c9cc}*SharedItemsImports = 4
-		src\FubarDev.WebDavServer\FubarDev.WebDavServer.projitems*{d1c72f41-22cc-4d68-9aa6-9d852d28551f}*SharedItemsImports = 4
-		src\FubarDev.WebDavServer.Locking.InMemory\FubarDev.WebDavServer.Locking.InMemory.projitems*{d75340cf-6b2a-42c0-ba0a-daf251964f68}*SharedItemsImports = 13
-		src\FubarDev.WebDavServer.Props.Store.TextFile\FubarDev.WebDavServer.Props.Store.TextFile.projitems*{db307210-4fe2-47c2-9667-abe117dc3eb5}*SharedItemsImports = 13
-		src\FubarDev.WebDavServer.Props.Store.SQLite\FubarDev.WebDavServer.Props.Store.SQLite.projitems*{ec8650b9-fd94-4b0e-92db-895bda6c942e}*SharedItemsImports = 13
+		src\FubarDev.WebDavServer.AspNetCore\FubarDev.WebDavServer.AspNetCore.Shared.projitems*{02e04b3e-170f-471a-9674-fcbd13f824de}*SharedItemsImports = 4
+		src\FubarDev.WebDavServer.Locking.InMemory\FubarDev.WebDavServer.Locking.InMemory.Shared.projitems*{09eb49b5-57ef-48ad-b387-2ecd12effda4}*SharedItemsImports = 4
+		src\FubarDev.WebDavServer.AspNetCore\FubarDev.WebDavServer.AspNetCore.Shared.projitems*{0d853af3-dd6e-4ba7-b4b9-7a6d26873352}*SharedItemsImports = 13
+		src\FubarDev.WebDavServer.Locking.SQLite\FubarDev.WebDavServer.Locking.SQLite.Shared.projitems*{189f3be7-7d3c-4d24-b114-78dab14e52aa}*SharedItemsImports = 4
+		src\FubarDev.WebDavServer\FubarDev.WebDavServer.Shared.projitems*{373e3caa-169b-477d-ba8e-6c33395ce8e8}*SharedItemsImports = 13
+		src\FubarDev.WebDavServer.FileSystem.DotNet\FubarDev.WebDavServer.FileSystem.DotNet.Shared.projitems*{418300f4-c46e-4d1d-a527-cc1c8c077780}*SharedItemsImports = 4
+		src\FubarDev.WebDavServer.FileSystem.SQLite\FubarDev.WebDavServer.FileSystem.SQLite.Shared.projitems*{589cae0d-7ad6-4f5a-a654-68be9c37f95c}*SharedItemsImports = 4
+		src\FubarDev.WebDavServer.FileSystem.DotNet\FubarDev.WebDavServer.FileSystem.DotNet.Shared.projitems*{58eb93b9-486f-4f82-9532-13e40fc63b7b}*SharedItemsImports = 13
+		src\FubarDev.WebDavServer.FileSystem.InMemory\FubarDev.WebDavServer.FileSystem.InMemory.Shared.projitems*{753681f9-791e-4dec-afe3-c124b5d6d060}*SharedItemsImports = 4
+		src\FubarDev.WebDavServer.Props.Store.TextFile\FubarDev.WebDavServer.Props.Store.TextFile.Shared.projitems*{8190c873-17c8-4605-a53d-ecc620117dd1}*SharedItemsImports = 4
+		src\FubarDev.WebDavServer.FileSystem.SQLite\FubarDev.WebDavServer.FileSystem.SQLite.Shared.projitems*{8c0c4713-dd50-4283-8852-c0f99bbe369f}*SharedItemsImports = 13
+		src\FubarDev.WebDavServer.Props.Store.InMemory\FubarDev.WebDavServer.Props.Store.InMemory.Shared.projitems*{8dd387e8-0701-4f1f-934d-42b17f8ac40a}*SharedItemsImports = 4
+		src\FubarDev.WebDavServer.Locking.SQLite\FubarDev.WebDavServer.Locking.SQLite.Shared.projitems*{9bcb6186-9430-4899-bb6b-a99eed7b1660}*SharedItemsImports = 13
+		src\FubarDev.WebDavServer.FileSystem.InMemory\FubarDev.WebDavServer.FileSystem.InMemory.Shared.projitems*{aee61d0b-0d36-44de-9a59-4b0efd749ef1}*SharedItemsImports = 13
+		src\FubarDev.WebDavServer.Props.Store.InMemory\FubarDev.WebDavServer.Props.Store.InMemory.Shared.projitems*{c4edee1e-f48c-40ef-ac40-3e47df7b6752}*SharedItemsImports = 13
+		src\FubarDev.WebDavServer.Props.Store.SQLite\FubarDev.WebDavServer.Props.Store.SQLite.Shared.projitems*{c598d1fe-dfc8-45ef-8eeb-d0b4f5a6c9cc}*SharedItemsImports = 4
+		src\FubarDev.WebDavServer\FubarDev.WebDavServer.Shared.projitems*{d1c72f41-22cc-4d68-9aa6-9d852d28551f}*SharedItemsImports = 4
+		src\FubarDev.WebDavServer.Locking.InMemory\FubarDev.WebDavServer.Locking.InMemory.Shared.projitems*{d75340cf-6b2a-42c0-ba0a-daf251964f68}*SharedItemsImports = 13
+		src\FubarDev.WebDavServer.Props.Store.TextFile\FubarDev.WebDavServer.Props.Store.TextFile.Shared.projitems*{db307210-4fe2-47c2-9667-abe117dc3eb5}*SharedItemsImports = 13
+		src\FubarDev.WebDavServer.Props.Store.SQLite\FubarDev.WebDavServer.Props.Store.SQLite.Shared.projitems*{ec8650b9-fd94-4b0e-92db-895bda6c942e}*SharedItemsImports = 13
 	EndGlobalSection
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug (Coverity)|Any CPU = Debug (Coverity)|Any CPU

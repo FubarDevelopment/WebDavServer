@@ -250,8 +250,8 @@ paket-files/
 .fake/
 
 # JetBrains Rider
-.idea/
-*.sln.iml
+.idea/*/.idea/workspace.xml
+.idea/*/.idea/tasks.xml
 
 # CodeRush
 .cr/
@@ -264,5 +264,6 @@ __pycache__/
 /**/DROP/
 /**/TEMP/
 _site
-*.ncrunchproject
+
+# Coverity
 /cov-int
