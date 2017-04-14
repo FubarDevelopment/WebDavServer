@@ -383,6 +383,27 @@ namespace FubarDev.WebDavServer.Locking
         }
 
         /// <summary>
+        /// Converts a client path to a system path.
+        /// </summary>
+        /// <remarks>
+        /// <para>The client path has the form <c>http://localhost/root-file-system/relative/path</c> and is
+        /// therefore always an absolute path. The returned path must be absolute too and might have
+        /// the form <c>http://localhost/c/relative/path</c> or something similar. It is of utmost
+        /// importance that the URI is always stable. The default implementation of this function
+        /// doesn't make any conversions, because it assumes that the same path path always points
+        /// to the same file system entry for all clients.</para>
+        /// <para>
+        /// A URI to a directory must always end in a slash (<c>/</c>).
+        /// </para>
+        /// </remarks>
+        /// <param name="path">The client path to convert</param>
+        /// <returns>The system path to be converted to</returns>
+        protected virtual Uri NormalizePath(Uri path)
+        {
+            return path;
+        }
+
+        /// <summary>
         /// Gets called when a lock was added
         /// </summary>
         /// <param name="activeLock">The lock that was added</param>
@@ -612,6 +633,7 @@ namespace FubarDev.WebDavServer.Locking
 
         private LockStatus Find(IEnumerable<IActiveLock> locks, Uri parentUrl, bool withChildren, bool findParents)
         {
+            var normalizedParentUrl = NormalizePath(parentUrl);
             var refLocks = new List<IActiveLock>();
             var childLocks = new List<IActiveLock>();
             var parentLocks = new List<IActiveLock>();
@@ -619,7 +641,8 @@ namespace FubarDev.WebDavServer.Locking
             foreach (var activeLock in locks)
             {
                 var lockUrl = BuildUrl(activeLock.Path);
-                var result = Compare(parentUrl, withChildren, lockUrl, activeLock.Recursive);
+                var normalizedLockUrl = NormalizePath(lockUrl);
+                var result = Compare(normalizedParentUrl, withChildren, normalizedLockUrl, activeLock.Recursive);
                 switch (result)
                 {
                     case LockCompareResult.Reference:
