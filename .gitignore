@@ -267,3 +267,5 @@ _site
 
 # Coverity
 /cov-int
+
+docs/manifest\.json
