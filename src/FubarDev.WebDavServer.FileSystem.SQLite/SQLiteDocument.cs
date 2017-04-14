@@ -141,7 +141,12 @@ namespace FubarDev.WebDavServer.FileSystem.SQLite
         // ReSharper disable once ClassNeverInstantiated.Local
         private class RowIdTemp
         {
-            public long RowId { get; [UsedImplicitly] set; }
+            public long RowId
+            {
+                get;
+                [UsedImplicitly]
+                set;
+            }
         }
     }
 }
