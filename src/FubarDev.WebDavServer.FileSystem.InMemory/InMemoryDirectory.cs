@@ -111,13 +111,7 @@ namespace FubarDev.WebDavServer.FileSystem.InMemory
         /// <inheritdoc />
         public Task<ICollection> CreateCollectionAsync(string name, CancellationToken ct)
         {
-            if (InMemoryFileSystem.IsReadOnly)
-                throw new UnauthorizedAccessException("Failed to modify a read-only file system");
-            if (_children.ContainsKey(name))
-                throw new IOException("Document or collection with the same name already exists");
-            var newItem = new InMemoryDirectory(InMemoryFileSystem, this, Path.AppendDirectory(name), name);
-            _children.Add(newItem.Name, newItem);
-            ETag = new EntityTag(false);
+            var newItem = CreateCollection(name);
             return Task.FromResult<ICollection>(newItem);
         }
 
