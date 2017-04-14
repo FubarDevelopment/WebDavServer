@@ -107,6 +107,10 @@ what happens when the `Dispose` function is called:
 * `CommitAsync` called before `Dispose` results in a disposable of the resources.
 * `Dispose` **without** a `CommitAsync` results in a rollback and a disposable of the resources.
 
+# Additional information
+
+All paths are the paths as seen by the client. When multiple different paths point to the same file system location (through mounts or symbolic links), then the client should override the [LockManagerBase.NormalizePath](xref:FubarDev.WebDavServer.Locking.LockManagerBase.NormalizePath*) function to provide a normalized path that represents a global path that is the same across different clients.
+
 # Summary
 
 The easiest way to implement a lock manager is to use a database that already supports transactions, but almost everything
