@@ -71,6 +71,7 @@
     ],
     "postProcessors": [],
     "noLangKeyword": false,
+    "markdownEngineName": "dfm-latest",
     "xref": ["tools/xref-zips/msdn.4.5.2.zip", "tools/xref-zips/namespaces.4.5.2.zip"]
   }
 }
