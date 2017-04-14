@@ -8990,6 +8990,18 @@ references:
   commentId: E:FubarDev.WebDavServer.Locking.LockManagerBase.LockReleased
   fullName: FubarDev.WebDavServer.Locking.LockManagerBase.LockReleased
   nameWithType: LockManagerBase.LockReleased
+- uid: FubarDev.WebDavServer.Locking.LockManagerBase.NormalizePath(System.Uri)
+  name: NormalizePath(Uri)
+  href: api/FubarDev.WebDavServer.Locking.LockManagerBase.html#FubarDev_WebDavServer_Locking_LockManagerBase_NormalizePath_System_Uri_
+  commentId: M:FubarDev.WebDavServer.Locking.LockManagerBase.NormalizePath(System.Uri)
+  fullName: FubarDev.WebDavServer.Locking.LockManagerBase.NormalizePath(System.Uri)
+  nameWithType: LockManagerBase.NormalizePath(Uri)
+- uid: FubarDev.WebDavServer.Locking.LockManagerBase.NormalizePath*
+  name: NormalizePath
+  href: api/FubarDev.WebDavServer.Locking.LockManagerBase.html#FubarDev_WebDavServer_Locking_LockManagerBase_NormalizePath_
+  commentId: Overload:FubarDev.WebDavServer.Locking.LockManagerBase.NormalizePath
+  fullName: FubarDev.WebDavServer.Locking.LockManagerBase.NormalizePath
+  nameWithType: LockManagerBase.NormalizePath
 - uid: FubarDev.WebDavServer.Locking.LockManagerBase.OnLockAdded(FubarDev.WebDavServer.Locking.IActiveLock)
   name: OnLockAdded(IActiveLock)
   href: api/FubarDev.WebDavServer.Locking.LockManagerBase.html#FubarDev_WebDavServer_Locking_LockManagerBase_OnLockAdded_FubarDev_WebDavServer_Locking_IActiveLock_

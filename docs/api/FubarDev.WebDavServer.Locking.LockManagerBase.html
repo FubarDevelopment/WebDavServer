@@ -243,7 +243,7 @@ protected ILockCleanupTask LockCleanupTask { get; }</code></pre>
                 <a href="https://github.com/FubarDevelopment/WebDavServer/new/master/apiSpec/new?filename=FubarDev_WebDavServer_Locking_LockManagerBase_BeginTransactionAsync_System_Threading_CancellationToken_.md&amp;value=---%0Auid%3A%20FubarDev.WebDavServer.Locking.LockManagerBase.BeginTransactionAsync(System.Threading.CancellationToken)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
               </span>
               <span class="small pull-right mobile-hide">
-                <a href="https://github.com/FubarDevelopment/WebDavServer/blob/master/src/FubarDev.WebDavServer/Locking/LockManagerBase.cs/#L408">View Source</a>
+                <a href="https://github.com/FubarDevelopment/WebDavServer/blob/master/src/FubarDev.WebDavServer/Locking/LockManagerBase.cs/#L429">View Source</a>
               </span>
               <a id="FubarDev_WebDavServer_Locking_LockManagerBase_BeginTransactionAsync_" data-uid="FubarDev.WebDavServer.Locking.LockManagerBase.BeginTransactionAsync*"></a>
               <h4 id="FubarDev_WebDavServer_Locking_LockManagerBase_BeginTransactionAsync_System_Threading_CancellationToken_" data-uid="FubarDev.WebDavServer.Locking.LockManagerBase.BeginTransactionAsync(System.Threading.CancellationToken)">BeginTransactionAsync(CancellationToken)</h4>
@@ -548,10 +548,71 @@ access or by the <a class="xref" href="FubarDev.WebDavServer.Locking.LockCleanup
                   <div><a class="xref" href="FubarDev.WebDavServer.Locking.ILockManager.html#FubarDev_WebDavServer_Locking_ILockManager_LockImplicitAsync_FubarDev_WebDavServer_FileSystem_IFileSystem_System_Collections_Generic_IReadOnlyCollection_FubarDev_WebDavServer_Model_Headers_IfHeaderList__FubarDev_WebDavServer_Locking_ILock_System_Threading_CancellationToken_">ILockManager.LockImplicitAsync(IFileSystem, IReadOnlyCollection&lt;IfHeaderList&gt;, ILock, CancellationToken)</a></div>
               <span class="small pull-right mobile-hide">
                 <span class="divider">|</span>
+                <a href="https://github.com/FubarDevelopment/WebDavServer/new/master/apiSpec/new?filename=FubarDev_WebDavServer_Locking_LockManagerBase_NormalizePath_System_Uri_.md&amp;value=---%0Auid%3A%20FubarDev.WebDavServer.Locking.LockManagerBase.NormalizePath(System.Uri)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+              </span>
+              <span class="small pull-right mobile-hide">
+                <a href="https://github.com/FubarDevelopment/WebDavServer/blob/master/src/FubarDev.WebDavServer/Locking/LockManagerBase.cs/#L401">View Source</a>
+              </span>
+              <a id="FubarDev_WebDavServer_Locking_LockManagerBase_NormalizePath_" data-uid="FubarDev.WebDavServer.Locking.LockManagerBase.NormalizePath*"></a>
+              <h4 id="FubarDev_WebDavServer_Locking_LockManagerBase_NormalizePath_System_Uri_" data-uid="FubarDev.WebDavServer.Locking.LockManagerBase.NormalizePath(System.Uri)">NormalizePath(Uri)</h4>
+              <div class="markdown level1 summary"><p>Converts a client path to a system path.</p>
+</div>
+              <div class="markdown level1 conceptual"></div>
+              <h5 class="decalaration">Declaration</h5>
+              <div class="codewrapper">
+                <pre><code class="lang-csharp hljs">protected virtual Uri NormalizePath(Uri path)</code></pre>
+              </div>
+              <h5 class="parameters">Parameters</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Name</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><a class="xref" href="https://msdn.microsoft.com/en-us/library/system.uri(v=vs.110).aspx">Uri</a></td>
+                    <td><span class="parametername">path</span></td>
+                    <td><p>The client path to convert</p>
+</td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 class="returns">Returns</h5>
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><a class="xref" href="https://msdn.microsoft.com/en-us/library/system.uri(v=vs.110).aspx">Uri</a></td>
+                    <td><p>The system path to be converted to</p>
+</td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 id="FubarDev_WebDavServer_Locking_LockManagerBase_NormalizePath_System_Uri__remarks">Remarks</h5>
+              <div class="markdown level1 remarks"><p>The client path has the form <code><a href="http://localhost/root-file-system/relative/path">http://localhost/root-file-system/relative/path</a></code> and is
+therefore always an absolute path. The returned path must be absolute too and might have
+the form <code><a href="http://localhost/c/relative/path">http://localhost/c/relative/path</a></code> or something similar. It is of utmost
+importance that the URI is always stable. The default implementation of this function
+doesn&#39;t make any conversions, because it assumes that the same path path always points
+to the same file system entry for all clients.</p>
+<p>
+A URI to a directory must always end in a slash (<code>/</code>).
+</p>
+</div>
+              <span class="small pull-right mobile-hide">
+                <span class="divider">|</span>
                 <a href="https://github.com/FubarDevelopment/WebDavServer/new/master/apiSpec/new?filename=FubarDev_WebDavServer_Locking_LockManagerBase_OnLockAdded_FubarDev_WebDavServer_Locking_IActiveLock_.md&amp;value=---%0Auid%3A%20FubarDev.WebDavServer.Locking.LockManagerBase.OnLockAdded(FubarDev.WebDavServer.Locking.IActiveLock)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
               </span>
               <span class="small pull-right mobile-hide">
-                <a href="https://github.com/FubarDevelopment/WebDavServer/blob/master/src/FubarDev.WebDavServer/Locking/LockManagerBase.cs/#L389">View Source</a>
+                <a href="https://github.com/FubarDevelopment/WebDavServer/blob/master/src/FubarDev.WebDavServer/Locking/LockManagerBase.cs/#L410">View Source</a>
               </span>
               <a id="FubarDev_WebDavServer_Locking_LockManagerBase_OnLockAdded_" data-uid="FubarDev.WebDavServer.Locking.LockManagerBase.OnLockAdded*"></a>
               <h4 id="FubarDev_WebDavServer_Locking_LockManagerBase_OnLockAdded_FubarDev_WebDavServer_Locking_IActiveLock_" data-uid="FubarDev.WebDavServer.Locking.LockManagerBase.OnLockAdded(FubarDev.WebDavServer.Locking.IActiveLock)">OnLockAdded(IActiveLock)</h4>
@@ -585,7 +646,7 @@ access or by the <a class="xref" href="FubarDev.WebDavServer.Locking.LockCleanup
                 <a href="https://github.com/FubarDevelopment/WebDavServer/new/master/apiSpec/new?filename=FubarDev_WebDavServer_Locking_LockManagerBase_OnLockReleased_FubarDev_WebDavServer_Locking_IActiveLock_.md&amp;value=---%0Auid%3A%20FubarDev.WebDavServer.Locking.LockManagerBase.OnLockReleased(FubarDev.WebDavServer.Locking.IActiveLock)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
               </span>
               <span class="small pull-right mobile-hide">
-                <a href="https://github.com/FubarDevelopment/WebDavServer/blob/master/src/FubarDev.WebDavServer/Locking/LockManagerBase.cs/#L398">View Source</a>
+                <a href="https://github.com/FubarDevelopment/WebDavServer/blob/master/src/FubarDev.WebDavServer/Locking/LockManagerBase.cs/#L419">View Source</a>
               </span>
               <a id="FubarDev_WebDavServer_Locking_LockManagerBase_OnLockReleased_" data-uid="FubarDev.WebDavServer.Locking.LockManagerBase.OnLockReleased*"></a>
               <h4 id="FubarDev_WebDavServer_Locking_LockManagerBase_OnLockReleased_FubarDev_WebDavServer_Locking_IActiveLock_" data-uid="FubarDev.WebDavServer.Locking.LockManagerBase.OnLockReleased(FubarDev.WebDavServer.Locking.IActiveLock)">OnLockReleased(IActiveLock)</h4>
@@ -845,7 +906,7 @@ access or by the <a class="xref" href="FubarDev.WebDavServer.Locking.LockCleanup
               <a href="#top">Back to top</a>
             </span>
             
-            <span>Copyright © 2015-2016 Microsoft<br>Generated by <strong>DocFX</strong></span>
+            <span>Copyright © 2016-2017 Fubar Development Junker<br>Generated by <strong>DocFX</strong></span>
           </div>
         </div>
       </footer>

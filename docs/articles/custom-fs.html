@@ -82,9 +82,15 @@
 <p>The <a class="xref" href="../api/FubarDev.WebDavServer.FileSystem.IFileSystemFactory.html">IFileSystemFactory</a> should be kept very simple. It usually takes the same parameters as its <a class="xref" href="../api/FubarDev.WebDavServer.FileSystem.IFileSystem.html">IFileSystem</a> implementation, because those parameters must be passed to the <code>IFileSystem</code> implementation.</p>
 <p>The implementation usually requires implementations of:</p>
 <ul>
-<li><a class="xref" href="../api/FubarDev.WebDavServer.FileSystem.PathTraversalEngine.html">PathTraversalEngine</a></li>
-<li><a class="xref" href="../api/FubarDev.WebDavServer.Props.Store.IPropertyStoreFactory.html">IPropertyStoreFactory</a></li>
-<li><a class="xref" href="../api/FubarDev.WebDavServer.Locking.ILockManager.html">ILockManager</a></li>
+<li><p><a class="xref" href="../api/FubarDev.WebDavServer.FileSystem.IPathTraversalEngine.html">IPathTraversalEngine</a></p>
+<p>The path traversal engine is used to - as the name already suggests - traverse the path given by the client. It usually gets passed directly to the <a class="xref" href="../api/FubarDev.WebDavServer.FileSystem.IFileSystem.html">IFileSystem</a> implementation to be returned by the <a class="xref" href="../api/FubarDev.WebDavServer.FileSystem.IFileSystemFactory.html#FubarDev_WebDavServer_FileSystem_IFileSystemFactory_CreateFileSystem_">IFileSystemFactory.CreateFileSystem</a> function.</p>
+</li>
+<li><p><a class="xref" href="../api/FubarDev.WebDavServer.Props.Store.IPropertyStoreFactory.html">IPropertyStoreFactory</a></p>
+<p>The property store factory gets usually passed directly to the IFileSystem implementation, because a property store needs to be instantiated for every file system. The underlying storage for a property store might be shared across multiple file systems (and therefore across multiple property stores).</p>
+</li>
+<li><p><a class="xref" href="../api/FubarDev.WebDavServer.Locking.ILockManager.html">ILockManager</a></p>
+<p>The lock manager is - usually - a singleton in the WebDAV server, but it also might be registered as &quot;instance per scope&quot;. It is important to realize that the locks are stored using the clients path. This path might have to be converted to some kind of global path by overriding <a class="xref" href="../api/FubarDev.WebDavServer.Locking.LockManagerBase.html#FubarDev_WebDavServer_Locking_LockManagerBase_NormalizePath_">LockManagerBase.NormalizePath</a>.</p>
+</li>
 </ul>
 <h1 id="ifilesystem">IFileSystem</h1>
 <p>The file system provides the following information:</p>
@@ -93,18 +99,138 @@
 <li>The <a class="xref" href="../api/FubarDev.WebDavServer.Props.Store.IPropertyStore.html">IPropertyStore</a></li>
 <li>The <a class="xref" href="../api/FubarDev.WebDavServer.Locking.ILockManager.html">ILockManager</a></li>
 </ul>
-<p>The <a class="xref" href="../api/FubarDev.WebDavServer.FileSystem.PathTraversalEngine.html">PathTraversalEngine</a> is used to implement the <a class="xref" href="../api/FubarDev.WebDavServer.FileSystem.IFileSystem.html#FubarDev_WebDavServer_FileSystem_IFileSystem_SelectAsync_">IFileSystem.SelectAsync</a> function.</p>
-<h2 id="ilocalfilesystem">ILocalFileSystem</h2>
+<p>An implementation of <a class="xref" href="../api/FubarDev.WebDavServer.FileSystem.IPathTraversalEngine.html">IPathTraversalEngine</a> is used to implement the <a class="xref" href="../api/FubarDev.WebDavServer.FileSystem.IFileSystem.html#FubarDev_WebDavServer_FileSystem_IFileSystem_SelectAsync_">IFileSystem.SelectAsync</a> function.</p>
+<h2 id="implementation-of-ifilesystem">Implementation of IFileSystem</h2>
+<ul>
+<li><p><a class="xref" href="../api/FubarDev.WebDavServer.FileSystem.IFileSystem.html#FubarDev_WebDavServer_FileSystem_IFileSystem_LockManager">IFileSystem.LockManager</a></p>
+<p>This is the <a class="xref" href="../api/FubarDev.WebDavServer.Locking.ILockManager.html">ILockManager</a> to be used for this file system.</p>
+</li>
+<li><p><a class="xref" href="../api/FubarDev.WebDavServer.FileSystem.IFileSystem.html#FubarDev_WebDavServer_FileSystem_IFileSystem_PropertyStore">IFileSystem.PropertyStore</a></p>
+<p>This is the <a class="xref" href="../api/FubarDev.WebDavServer.Props.Store.IPropertyStore.html">IPropertyStore</a> to be used for this file system for dead properties and - optionally - for entity tags if the file system doesn&#39;t support them natively.</p>
+</li>
+<li><p><a class="xref" href="../api/FubarDev.WebDavServer.FileSystem.IFileSystem.html#FubarDev_WebDavServer_FileSystem_IFileSystem_Root">IFileSystem.Root</a></p>
+<p>This is the lazily evaluated root collection for this file system.</p>
+</li>
+<li><p><a class="xref" href="../api/FubarDev.WebDavServer.FileSystem.IFileSystem.html#FubarDev_WebDavServer_FileSystem_IFileSystem_SupportsRangedRead">IFileSystem.SupportsRangedRead</a></p>
+<p>This property returns <code>true</code> when the streams for a document support seeking and partial reading. This is required for a <code>GET</code> with ranges.</p>
+</li>
+<li><p><a class="xref" href="../api/FubarDev.WebDavServer.FileSystem.IFileSystem.html#FubarDev_WebDavServer_FileSystem_IFileSystem_SelectAsync_">IFileSystem.SelectAsync</a></p>
+<p>This function returns a result for a search operation for the given path. The result always contains the last found collection and some other information. The easiest implementation just calls <a class="xref" href="../api/FubarDev.WebDavServer.FileSystem.IPathTraversalEngine.html#FubarDev_WebDavServer_FileSystem_IPathTraversalEngine_TraverseAsync_">IPathTraversalEngine.TraverseAsync</a> for the implementation of <a class="xref" href="../api/FubarDev.WebDavServer.FileSystem.IPathTraversalEngine.html">IPathTraversalEngine</a> passed to the constructor of this file system implementation.</p>
+</li>
+</ul>
+<h2 id="additional-interfaces">Additional interfaces</h2>
+<h3 id="ilocalfilesystem">ILocalFileSystem</h3>
 <p>A file system might optionally implement the <a class="xref" href="../api/FubarDev.WebDavServer.FileSystem.ILocalFileSystem.html">ILocalFileSystem</a> interface. This interface can be used to determine the path where the file system is mapped to.</p>
-<h2 id="imountpointmanager">IMountPointManager</h2>
-<p>This interface enables mount point support. It enables scenarios where the in-memory file system is used to provide a virtual read-only file system where the collections point to other file systems.</p>
-<p>An example can be found in the unit tests.</p>
+<ul>
+<li><p><a class="xref" href="../api/FubarDev.WebDavServer.FileSystem.ILocalFileSystem.html#FubarDev_WebDavServer_FileSystem_ILocalFileSystem_HasSubfolders">ILocalFileSystem.HasSubfolders</a></p>
+<p>This property must return <code>true</code> when this file system is a 1:1 mapping to a real file system. In contrast, a virtual file system that is stored inside a database file (e.g. SQLite), must return false, because the location of the DB file is known, but it doesn&#39;t have sub folders.</p>
+</li>
+<li><p><a class="xref" href="../api/FubarDev.WebDavServer.FileSystem.ILocalFileSystem.html#FubarDev_WebDavServer_FileSystem_ILocalFileSystem_RootDirectoryPath">ILocalFileSystem.RootDirectoryPath</a></p>
+<p>This property returns the starting point of the file system or - in case of a virtual database backed file system - the location of the database file directory (read: the path without the database file name). Its value might be in any form that the host operation system understands, like e.g. UNC paths on Windows.</p>
+</li>
+</ul>
+<h3 id="imountpointmanager">IMountPointManager</h3>
+<p>The <a class="xref" href="../api/FubarDev.WebDavServer.FileSystem.Mount.IMountPointManager.html">IMountPointManager</a> interface enables mount point support. It enables scenarios where the in-memory file system is used to provide a virtual read-only file system where the collections point to other file systems.</p>
+<p>The IMountPointManager inherits from <a class="xref" href="../api/FubarDev.WebDavServer.FileSystem.Mount.IMountPointProvider.html">IMountPointProvider</a>, because the manager also allows querying all the configured mount points.</p>
+<ul>
+<li><p><a class="xref" href="../api/FubarDev.WebDavServer.FileSystem.Mount.IMountPointProvider.html#FubarDev_WebDavServer_FileSystem_Mount_IMountPointProvider_MountPoints">IMountPointProvider.MountPoints</a></p>
+<p>This property returns all mount points. This function must return an enumeration of URIs that are relative to the root file system and not the file system those mount points are configured for. This function is <strong>not</strong> used (yet) by the WebDAV server and is only available for WebDAV extensions.</p>
+<div class="IMPORTANT"><h5>Important</h5><p>The enumeration <strong>must not</strong> change when a different thread changes the mount points!</p>
+</div>
+</li>
+<li><p><a class="xref" href="../api/FubarDev.WebDavServer.FileSystem.Mount.IMountPointProvider.html#FubarDev_WebDavServer_FileSystem_Mount_IMountPointProvider_TryGetMountPoint_">IMountPointProvider.TryGetMountPoint</a></p>
+<p>This function is used to return the destination file system for the given path - if a file system is mounted at the given path.</p>
+</li>
+<li><p><a class="xref" href="../api/FubarDev.WebDavServer.FileSystem.Mount.IMountPointManager.html#FubarDev_WebDavServer_FileSystem_Mount_IMountPointManager_Mount_">IMountPointManager.Mount</a></p>
+<p>This function is used to add a file system for a given mount point. The path must point to an existing collection.</p>
+</li>
+<li><p><a class="xref" href="../api/FubarDev.WebDavServer.FileSystem.Mount.IMountPointManager.html#FubarDev_WebDavServer_FileSystem_Mount_IMountPointManager_Unmount_">IMountPointManager.Unmount</a></p>
+<p>This function is used to remove a mount point.</p>
+</li>
+</ul>
+<p>An example can be found in the unit tests. The in-memory file system implements this interfaces.</p>
+<div class="CAUTION"><h5>Caution</h5><p>The paths for the mount point manager and provider are always absolute paths (i.e. relative to the root file system)!</p>
+</div>
 <h1 id="icollection">ICollection</h1>
 <p>A collection maps to a file system directory and is used to determine or create its child elements (either collections or documents).</p>
+<p>A collection must support the following methods in addition to the <a class="xref" href="../api/FubarDev.WebDavServer.FileSystem.IEntry.html">IEntry</a> interface:</p>
+<ul>
+<li><p><a class="xref" href="../api/FubarDev.WebDavServer.FileSystem.ICollection.html#FubarDev_WebDavServer_FileSystem_ICollection_CreateCollectionAsync_">ICollection.CreateCollectionAsync</a></p>
+<p>This function creates a child collection with the given name.</p>
+</li>
+<li><p><a class="xref" href="../api/FubarDev.WebDavServer.FileSystem.ICollection.html#FubarDev_WebDavServer_FileSystem_ICollection_CreateDocumentAsync_">ICollection.CreateDocumentAsync</a></p>
+<p>This function creates a document with the given name within the current collection.</p>
+</li>
+<li><p><a class="xref" href="../api/FubarDev.WebDavServer.FileSystem.ICollection.html#FubarDev_WebDavServer_FileSystem_ICollection_GetChildAsync_">ICollection.GetChildAsync</a></p>
+<p>This function is used to get the child element (either a collection or document). The given name must not be interpreted as mask for the child entry name and - according the the WebDAV RFC - it must be case-insensitive.</p>
+<div class="NOTE"><h5>Note</h5><p>Even though the WebDAV server must be case-insensitive, it might not be that easy to implement - especially when the underlying file system is case-sensitive. In reality, this shouldn&#39;t be a problem, because all WebDAV clients use the file names as returned by the PROPFIND and there is never a file mask used for filtering the collections items.</p>
+</div>
+</li>
+<li><p><a class="xref" href="../api/FubarDev.WebDavServer.FileSystem.ICollection.html#FubarDev_WebDavServer_FileSystem_ICollection_GetChildrenAsync_">ICollection.GetChildrenAsync</a></p>
+<p>This function is used to get all children for a given collection. During path traversal, only the <a class="xref" href="../api/FubarDev.WebDavServer.FileSystem.ICollection.html#FubarDev_WebDavServer_FileSystem_ICollection_GetChildAsync_">ICollection.GetChildAsync</a> function is used. This allows a faster path traversal to the destination element.</p>
+</li>
+</ul>
 <h1 id="idocument">IDocument</h1>
 <p>The document maps to a file in a file system and is mainly used to read or write its content and to copy or move the file (within the same file system).</p>
+<p>A document must support the following properties and methods in addition to the <a class="xref" href="../api/FubarDev.WebDavServer.FileSystem.IEntry.html">IEntry</a> interface:</p>
+<ul>
+<li><p><a class="xref" href="../api/FubarDev.WebDavServer.FileSystem.IDocument.html#FubarDev_WebDavServer_FileSystem_IDocument_Length">IDocument.Length</a></p>
+<p>Returns the length of the document. This is required for the live property <a class="xref" href="../api/FubarDev.WebDavServer.Props.Live.ContentLengthProperty.html">getcontentlength</a>.</p>
+</li>
+<li><p><a class="xref" href="../api/FubarDev.WebDavServer.FileSystem.IDocument.html#FubarDev_WebDavServer_FileSystem_IDocument_CopyToAsync_">IDocument.CopyToAsync</a></p>
+<p>This function is used to copy a document to a new location within the same file system.</p>
+</li>
+<li><p><a class="xref" href="../api/FubarDev.WebDavServer.FileSystem.IDocument.html#FubarDev_WebDavServer_FileSystem_IDocument_MoveToAsync_">IDocument.MoveToAsync</a></p>
+<p>This function is used to move a document to a new location within the same file system.</p>
+</li>
+<li><p><a class="xref" href="../api/FubarDev.WebDavServer.FileSystem.IDocument.html#FubarDev_WebDavServer_FileSystem_IDocument_CreateAsync_">IDocument.CreateAsync</a></p>
+<p>This function is used to open a writeable stream used to replace the documents content.</p>
+</li>
+<li><p><a class="xref" href="../api/FubarDev.WebDavServer.FileSystem.IDocument.html#FubarDev_WebDavServer_FileSystem_IDocument_OpenReadAsync_">IDocument.OpenReadAsync</a></p>
+<p>This function is used to open a stream to read the documents content.</p>
+<div class="NOTE"><h5>Note</h5><p>When <a class="xref" href="../api/FubarDev.WebDavServer.FileSystem.IFileSystem.html#FubarDev_WebDavServer_FileSystem_IFileSystem_SupportsRangedRead">IFileSystem.SupportsRangedRead</a> returns <code>true</code>, then the stream must be seekable.</p>
+</div>
+</li>
+</ul>
 <h1 id="ientry">IEntry</h1>
 <p>The base interface of <code>ICollection</code> and <code>IDocument</code> provides common information shared between a document and a collection, like its name, parent, creation date, etc...</p>
+<ul>
+<li><p><a class="xref" href="../api/FubarDev.WebDavServer.FileSystem.IEntry.html#FubarDev_WebDavServer_FileSystem_IEntry_Name">IEntry.Name</a></p>
+<p>Returns the name of the collection or document.</p>
+</li>
+<li><p><a class="xref" href="../api/FubarDev.WebDavServer.FileSystem.IEntry.html#FubarDev_WebDavServer_FileSystem_IEntry_Path">IEntry.Path</a></p>
+<p>Returns the full path of the collection or document.</p>
+<div class="TIP"><h5>Tip</h5><p>The path of a collection always ends in a slash (<code>/</code>).</p>
+</div>
+</li>
+<li><p><a class="xref" href="../api/FubarDev.WebDavServer.FileSystem.IEntry.html#FubarDev_WebDavServer_FileSystem_IEntry_Parent">IEntry.Parent</a></p>
+<p>The collection that this entry is part of.</p>
+<div class="NOTE"><h5>Note</h5><p>The root collection returns <code>null</code> for the parent collection.</p>
+</div>
+</li>
+<li><p><a class="xref" href="../api/FubarDev.WebDavServer.FileSystem.IEntry.html#FubarDev_WebDavServer_FileSystem_IEntry_FileSystem">IEntry.FileSystem</a></p>
+<p>The file system that this entry is part of.</p>
+<div class="WARNING"><h5>Warning</h5><p>This file system might be different from the root file system when the this file system is mounted using the root file systems <a class="xref" href="../api/FubarDev.WebDavServer.FileSystem.Mount.IMountPointManager.html">IMountPointManager</a> implementation.</p>
+</div>
+</li>
+<li><p><a class="xref" href="../api/FubarDev.WebDavServer.FileSystem.IEntry.html#FubarDev_WebDavServer_FileSystem_IEntry_CreationTimeUtc">IEntry.CreationTimeUtc</a></p>
+<p>This property must return the creation time as <a href="https://wikipedia.org/wiki/UTC">UTC</a>.</p>
+</li>
+<li><p><a class="xref" href="../api/FubarDev.WebDavServer.FileSystem.IEntry.html#FubarDev_WebDavServer_FileSystem_IEntry_LastWriteTimeUtc">IEntry.LastWriteTimeUtc</a></p>
+<p>This property must return the modification time as <a href="https://wikipedia.org/wiki/UTC">UTC</a>.</p>
+</li>
+<li><p><a class="xref" href="../api/FubarDev.WebDavServer.FileSystem.IEntry.html#FubarDev_WebDavServer_FileSystem_IEntry_DeleteAsync_">IEntry.DeleteAsync</a></p>
+<p>Deletes the given entry.</p>
+<div class="CAUTION"><h5>Caution</h5><p>When this function gets called on a collection, then the collection and <strong>all its children</strong> must be deleted <strong>recursively</strong>!</p>
+</div>
+</li>
+<li><p><a class="xref" href="../api/FubarDev.WebDavServer.FileSystem.IEntry.html#FubarDev_WebDavServer_FileSystem_IEntry_SetCreationTimeUtcAsync_">IEntry.SetCreationTimeUtcAsync</a></p>
+<p>Sets the entries creation time as <a href="https://wikipedia.org/wiki/UTC">UTC</a>.</p>
+</li>
+<li><p><a class="xref" href="../api/FubarDev.WebDavServer.FileSystem.IEntry.html#FubarDev_WebDavServer_FileSystem_IEntry_SetLastWriteTimeUtcAsync_">IEntry.SetLastWriteTimeUtcAsync</a></p>
+<p>Sets the entries modification time as <a href="https://wikipedia.org/wiki/UTC">UTC</a>.</p>
+</li>
+</ul>
 
             </article>
           </div>
@@ -134,7 +260,7 @@
               <a href="#top">Back to top</a>
             </span>
             
-            <span>Copyright © 2015-2016 Microsoft<br>Generated by <strong>DocFX</strong></span>
+            <span>Copyright © 2016-2017 Fubar Development Junker<br>Generated by <strong>DocFX</strong></span>
           </div>
         </div>
       </footer>
