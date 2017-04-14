@@ -16487,36 +16487,6 @@ references:
   commentId: Overload:FubarDev.WebDavServer.WebDavXmlResult.ExecuteResultAsync
   fullName: FubarDev.WebDavServer.WebDavXmlResult.ExecuteResultAsync
   nameWithType: WebDavXmlResult.ExecuteResultAsync
-- uid: FubarDev.WebDavServer.XmlFragmentExtensions
-  name: XmlFragmentExtensions
-  href: api/FubarDev.WebDavServer.XmlFragmentExtensions.html
-  commentId: T:FubarDev.WebDavServer.XmlFragmentExtensions
-  fullName: FubarDev.WebDavServer.XmlFragmentExtensions
-  nameWithType: XmlFragmentExtensions
-- uid: FubarDev.WebDavServer.XmlFragmentExtensions.ReadXmlDocumentFragment(System.IO.Stream)
-  name: ReadXmlDocumentFragment(Stream)
-  href: api/FubarDev.WebDavServer.XmlFragmentExtensions.html#FubarDev_WebDavServer_XmlFragmentExtensions_ReadXmlDocumentFragment_System_IO_Stream_
-  commentId: M:FubarDev.WebDavServer.XmlFragmentExtensions.ReadXmlDocumentFragment(System.IO.Stream)
-  fullName: FubarDev.WebDavServer.XmlFragmentExtensions.ReadXmlDocumentFragment(System.IO.Stream)
-  nameWithType: XmlFragmentExtensions.ReadXmlDocumentFragment(Stream)
-- uid: FubarDev.WebDavServer.XmlFragmentExtensions.ReadXmlDocumentFragment(System.IO.TextReader)
-  name: ReadXmlDocumentFragment(TextReader)
-  href: api/FubarDev.WebDavServer.XmlFragmentExtensions.html#FubarDev_WebDavServer_XmlFragmentExtensions_ReadXmlDocumentFragment_System_IO_TextReader_
-  commentId: M:FubarDev.WebDavServer.XmlFragmentExtensions.ReadXmlDocumentFragment(System.IO.TextReader)
-  fullName: FubarDev.WebDavServer.XmlFragmentExtensions.ReadXmlDocumentFragment(System.IO.TextReader)
-  nameWithType: XmlFragmentExtensions.ReadXmlDocumentFragment(TextReader)
-- uid: FubarDev.WebDavServer.XmlFragmentExtensions.ReadXmlDocumentFragment(System.String)
-  name: ReadXmlDocumentFragment(String)
-  href: api/FubarDev.WebDavServer.XmlFragmentExtensions.html#FubarDev_WebDavServer_XmlFragmentExtensions_ReadXmlDocumentFragment_System_String_
-  commentId: M:FubarDev.WebDavServer.XmlFragmentExtensions.ReadXmlDocumentFragment(System.String)
-  fullName: FubarDev.WebDavServer.XmlFragmentExtensions.ReadXmlDocumentFragment(System.String)
-  nameWithType: XmlFragmentExtensions.ReadXmlDocumentFragment(String)
-- uid: FubarDev.WebDavServer.XmlFragmentExtensions.ReadXmlDocumentFragment*
-  name: ReadXmlDocumentFragment
-  href: api/FubarDev.WebDavServer.XmlFragmentExtensions.html#FubarDev_WebDavServer_XmlFragmentExtensions_ReadXmlDocumentFragment_
-  commentId: Overload:FubarDev.WebDavServer.XmlFragmentExtensions.ReadXmlDocumentFragment
-  fullName: FubarDev.WebDavServer.XmlFragmentExtensions.ReadXmlDocumentFragment
-  nameWithType: XmlFragmentExtensions.ReadXmlDocumentFragment
 - uid: Microsoft.Extensions.DependencyInjection
   name: Microsoft.Extensions.DependencyInjection
   href: api/Microsoft.Extensions.DependencyInjection.html
