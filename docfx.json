@@ -1,22 +1,67 @@
 {
   "metadata": [
     {
+      "src": "src/FubarDev.WebDavServer.AspNetCore/*.csproj",
+      "dest": "temp/api/netstandard1.6",
+      "properties": {
+          "TargetFramework": "netstandard1.6"
+      }
+    },
+    {
       "src": [
         {
           "files": [
-            "src-doc/**/*.csproj"
+            "src/**/*.csproj"
           ],
           "exclude": [
-            "**/obj/**",
-            "**/bin/**",
-            "_site/**",
-            "docs/**"
+            "src/FubarDev.WebDavServer.AspNetCore/*.csproj"
           ]
         }
       ],
-      "dest": "api"
+      "dest": "temp/api/netstandard1.3",
+      "properties": {
+          "TargetFramework": "netstandard1.3"
+      }
+    },
+    {
+      "src": "src/**/*.csproj",
+      "dest": "temp/api/net451",
+      "properties": {
+          "TargetFramework": "net451"
+      }
     }
   ],
+  "merge": {
+    "content": [
+      {
+        "files": "*.yml",
+        "src": "temp/api/netstandard1.3"
+      },
+      {
+        "files": "*.yml",
+        "src": "temp/api/netstandard1.6"
+      },
+      {
+        "files": "*.yml",
+        "src": "temp/api/net451"
+      }
+    ],
+    "fileMetadata": {
+      "platform": {
+        "temp/api/netstandard1.3/*.yml": [
+          "netstandard1.3",
+          "netstandard1.6"
+        ],
+        "temp/api/netstandard1.6/*.yml": [
+          "netstandard1.6"
+        ],
+        "temp/api/net451/*.yml": [
+          "net451"
+        ]
+      }
+    },
+    "dest": "api"
+  },
   "build": {
     "content": [
       {
