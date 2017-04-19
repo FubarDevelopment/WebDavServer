@@ -32,7 +32,7 @@ namespace FubarDev.WebDavServer.Tests.Locking
                     LockType = LockType.CreateWriteLockType(),
                 }).ConfigureAwait(false);
             var prop = await WebDavResponseContentParser.ParsePropResponseContentAsync(response.EnsureSuccessStatusCode().Content).ConfigureAwait(false);
-            var lockToken = CodedUrlParser.Parse(response.Headers.GetValues(WebDavRequestHeader.LockTocken).Single());
+            var lockToken = CodedUrlParser.Parse(response.Headers.GetValues(WebDavRequestHeader.LockToken).Single());
             Assert.NotNull(prop.LockDiscovery);
             Assert.Collection(
                 prop.LockDiscovery.ActiveLock,

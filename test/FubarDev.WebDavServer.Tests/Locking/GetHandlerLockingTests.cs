@@ -62,7 +62,7 @@ namespace FubarDev.WebDavServer.Tests.Locking
                 }).ConfigureAwait(false);
             response.EnsureSuccessStatusCode();
 
-            var lockToken = response.Headers.GetValues(WebDavRequestHeader.LockTocken).Single();
+            var lockToken = response.Headers.GetValues(WebDavRequestHeader.LockToken).Single();
             var ct = CancellationToken.None;
             Client.DefaultRequestHeaders.Add("If", $"({lockToken})");
             var getResponse = await Client.GetAsync(
