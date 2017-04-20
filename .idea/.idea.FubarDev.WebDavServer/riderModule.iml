@@ -17,9 +17,6 @@
       <sourceFolder url="file://$USER_HOME$/.nuget/packages/xunit.runner.visualstudio/2.2.0/build/netcoreapp1.0/xunit.runner.visualstudio.dotnetcore.testadapter.dll" isTestSource="false" />
     </content>
     <content url="file://$MODULE_DIR$/../..">
-      <sourceFolder url="file://$MODULE_DIR$/../../packages/SQLitePCLRaw.lib.e_sqlite3.v110_xp.1.1.2/runtimes/win7-x64/native/e_sqlite3.dll" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/../../packages/SQLitePCLRaw.lib.e_sqlite3.v110_xp.1.1.2/runtimes/win7-x86/native/e_sqlite3.dll" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/../../packages/StyleCop.Analyzers.1.1.0-beta001/analyzers/dotnet/cs" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/../../sample/FubarDev.WebDavServer.Sample.AspNetCore" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/../../src/FubarDev.WebDavServer" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/../../src/FubarDev.WebDavServer.AspNetCore" isTestSource="false" />
@@ -31,42 +28,12 @@
       <sourceFolder url="file://$MODULE_DIR$/../../src/FubarDev.WebDavServer.Props.Store.InMemory" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/../../src/FubarDev.WebDavServer.Props.Store.SQLite" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/../../src/FubarDev.WebDavServer.Props.Store.TextFile" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/../../src-doc/FubarDev.WebDavServer" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/../../src-doc/FubarDev.WebDavServer.AspNetCore" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/../../src-doc/FubarDev.WebDavServer.FileSystem.DotNet" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/../../src-doc/FubarDev.WebDavServer.FileSystem.InMemory" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/../../src-doc/FubarDev.WebDavServer.FileSystem.SQLite" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/../../src-doc/FubarDev.WebDavServer.Locking.InMemory" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/../../src-doc/FubarDev.WebDavServer.Locking.SQLite.Doc" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/../../src-doc/FubarDev.WebDavServer.Props.Store.InMemory" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/../../src-doc/FubarDev.WebDavServer.Props.Store.SQLite.Doc" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/../../src-doc/FubarDev.WebDavServer.Props.Store.TextFile" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/../../stylecop.json" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/../../test/FubarDev.WebDavServer.Tests" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/../../WebDavServer.ruleset" isTestSource="false" />
       <excludeFolder url="file://$MODULE_DIR$/../../packages" />
       <excludeFolder url="file://$MODULE_DIR$/../../sample/FubarDev.WebDavServer.Sample.AspNetCore/bin" />
       <excludeFolder url="file://$MODULE_DIR$/../../sample/FubarDev.WebDavServer.Sample.AspNetCore/obj" />
-      <excludeFolder url="file://$MODULE_DIR$/../../src-doc/FubarDev.WebDavServer.AspNetCore/bin" />
-      <excludeFolder url="file://$MODULE_DIR$/../../src-doc/FubarDev.WebDavServer.AspNetCore/obj" />
-      <excludeFolder url="file://$MODULE_DIR$/../../src-doc/FubarDev.WebDavServer.FileSystem.DotNet/bin" />
-      <excludeFolder url="file://$MODULE_DIR$/../../src-doc/FubarDev.WebDavServer.FileSystem.DotNet/obj" />
-      <excludeFolder url="file://$MODULE_DIR$/../../src-doc/FubarDev.WebDavServer.FileSystem.InMemory/bin" />
-      <excludeFolder url="file://$MODULE_DIR$/../../src-doc/FubarDev.WebDavServer.FileSystem.InMemory/obj" />
-      <excludeFolder url="file://$MODULE_DIR$/../../src-doc/FubarDev.WebDavServer.FileSystem.SQLite/bin" />
-      <excludeFolder url="file://$MODULE_DIR$/../../src-doc/FubarDev.WebDavServer.FileSystem.SQLite/obj" />
-      <excludeFolder url="file://$MODULE_DIR$/../../src-doc/FubarDev.WebDavServer.Locking.InMemory/bin" />
-      <excludeFolder url="file://$MODULE_DIR$/../../src-doc/FubarDev.WebDavServer.Locking.InMemory/obj" />
-      <excludeFolder url="file://$MODULE_DIR$/../../src-doc/FubarDev.WebDavServer.Locking.SQLite.Doc/bin" />
-      <excludeFolder url="file://$MODULE_DIR$/../../src-doc/FubarDev.WebDavServer.Locking.SQLite.Doc/obj" />
-      <excludeFolder url="file://$MODULE_DIR$/../../src-doc/FubarDev.WebDavServer.Props.Store.InMemory/bin" />
-      <excludeFolder url="file://$MODULE_DIR$/../../src-doc/FubarDev.WebDavServer.Props.Store.InMemory/obj" />
-      <excludeFolder url="file://$MODULE_DIR$/../../src-doc/FubarDev.WebDavServer.Props.Store.SQLite.Doc/bin" />
-      <excludeFolder url="file://$MODULE_DIR$/../../src-doc/FubarDev.WebDavServer.Props.Store.SQLite.Doc/obj" />
-      <excludeFolder url="file://$MODULE_DIR$/../../src-doc/FubarDev.WebDavServer.Props.Store.TextFile/bin" />
-      <excludeFolder url="file://$MODULE_DIR$/../../src-doc/FubarDev.WebDavServer.Props.Store.TextFile/obj" />
-      <excludeFolder url="file://$MODULE_DIR$/../../src-doc/FubarDev.WebDavServer/bin" />
-      <excludeFolder url="file://$MODULE_DIR$/../../src-doc/FubarDev.WebDavServer/obj" />
       <excludeFolder url="file://$MODULE_DIR$/../../src/FubarDev.WebDavServer.AspNetCore/bin" />
       <excludeFolder url="file://$MODULE_DIR$/../../src/FubarDev.WebDavServer.AspNetCore/obj" />
       <excludeFolder url="file://$MODULE_DIR$/../../src/FubarDev.WebDavServer.FileSystem.DotNet/bin" />
