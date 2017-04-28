@@ -10,7 +10,6 @@ using System.Threading.Tasks;
 using System.Xml.Linq;
 
 using FubarDev.WebDavServer.Locking;
-using FubarDev.WebDavServer.Locking.InMemory;
 using FubarDev.WebDavServer.Tests.Support;
 using FubarDev.WebDavServer.Tests.Support.ServiceBuilders;
 
@@ -76,7 +75,7 @@ namespace FubarDev.WebDavServer.Tests.Locking
 
             Assert.True(evt.Wait(2000, ct));
             stopwatch.Stop();
-            Assert.True(stopwatch.ElapsedMilliseconds >= 200, $"Duration should be at least 200ms, but was {stopwatch.ElapsedMilliseconds}");
+            Assert.True(stopwatch.ElapsedMilliseconds >= 190, $"Duration should be at least 200ms, but was {stopwatch.ElapsedMilliseconds}");
         }
 
         [Fact]
