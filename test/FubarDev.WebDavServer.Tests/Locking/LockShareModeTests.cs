@@ -92,6 +92,33 @@ namespace FubarDev.WebDavServer.Tests.Locking
         }
 
         [Fact]
+        public async Task TestTwoExclusiveFailingAsync()
+        {
+            var lockManager = ServiceProvider.GetRequiredService<ILockManager>();
+            var ct = CancellationToken.None;
+            var owner = new XElement("test");
+            var testLock = new Lock(
+                "/",
+                "/",
+                true,
+                owner,
+                LockAccessType.Write,
+                LockShareMode.Exclusive,
+                TimeSpan.FromMinutes(1));
+            var result1 = await lockManager.LockAsync(testLock, ct).ConfigureAwait(false);
+            var lock1 = ValidateLockResult(result1);
+            var result2 = await lockManager.LockAsync(testLock, ct).ConfigureAwait(false);
+            Assert.Null(result2.Lock);
+            Assert.NotNull(result2.ConflictingLocks);
+            Assert.Collection(
+                result2.ConflictingLocks.GetLocks(),
+                cl =>
+                {
+                    Assert.Equal(lock1.StateToken, cl.StateToken);
+                });
+        }
+
+        [Fact]
         public async Task TestSharedRootSingleExclusiveSubAsync()
         {
             var lockManager = ServiceProvider.GetRequiredService<ILockManager>();
@@ -123,6 +150,88 @@ namespace FubarDev.WebDavServer.Tests.Locking
                     ct)
                 .ConfigureAwait(false);
             ValidateLockResult(result2);
+        }
+
+        [Fact]
+        public async Task TestExclusiveRootRecursiveWithSharedSubAsync()
+        {
+            var lockManager = ServiceProvider.GetRequiredService<ILockManager>();
+            var ct = CancellationToken.None;
+            var owner = new XElement("test");
+            var result1 = await lockManager
+                .LockAsync(
+                    new Lock(
+                        "/",
+                        "/",
+                        true,
+                        owner,
+                        LockAccessType.Write,
+                        LockShareMode.Exclusive,
+                        TimeSpan.FromMinutes(1)),
+                    ct)
+                .ConfigureAwait(false);
+            var lock1 = ValidateLockResult(result1);
+            var result2 = await lockManager
+                .LockAsync(
+                    new Lock(
+                        "/test",
+                        "/test",
+                        false,
+                        owner,
+                        LockAccessType.Write,
+                        LockShareMode.Shared,
+                        TimeSpan.FromMinutes(1)),
+                    ct)
+                .ConfigureAwait(false);
+            Assert.Null(result2.Lock);
+            Assert.NotNull(result2.ConflictingLocks);
+            Assert.Collection(
+                result2.ConflictingLocks.GetLocks(),
+                cl =>
+                {
+                    Assert.Equal(lock1.StateToken, cl.StateToken);
+                });
+        }
+
+        [Fact]
+        public async Task TestSharedRootRecursiveWithExclusiveSubAsync()
+        {
+            var lockManager = ServiceProvider.GetRequiredService<ILockManager>();
+            var ct = CancellationToken.None;
+            var owner = new XElement("test");
+            var result1 = await lockManager
+                .LockAsync(
+                    new Lock(
+                        "/",
+                        "/",
+                        true,
+                        owner,
+                        LockAccessType.Write,
+                        LockShareMode.Shared,
+                        TimeSpan.FromMinutes(1)),
+                    ct)
+                .ConfigureAwait(false);
+            var lock1 = ValidateLockResult(result1);
+            var result2 = await lockManager
+                .LockAsync(
+                    new Lock(
+                        "/test",
+                        "/test",
+                        false,
+                        owner,
+                        LockAccessType.Write,
+                        LockShareMode.Exclusive,
+                        TimeSpan.FromMinutes(1)),
+                    ct)
+                .ConfigureAwait(false);
+            Assert.Null(result2.Lock);
+            Assert.NotNull(result2.ConflictingLocks);
+            Assert.Collection(
+                result2.ConflictingLocks.GetLocks(),
+                cl =>
+                {
+                    Assert.Equal(lock1.StateToken, cl.StateToken);
+                });
         }
 
         [Fact]
