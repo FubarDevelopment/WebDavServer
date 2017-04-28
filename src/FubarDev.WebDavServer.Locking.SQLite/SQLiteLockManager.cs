@@ -46,12 +46,28 @@ namespace FubarDev.WebDavServer.Locking.SQLite
             [NotNull] ILockCleanupTask cleanupTask,
             [NotNull] ISystemClock systemClock,
             [NotNull] ILogger<SQLiteLockManager> logger)
-            : base(cleanupTask, systemClock, logger, sqliteOptions.Value)
+            : this(sqliteOptions.Value, cleanupTask, systemClock, logger)
         {
-            if (string.IsNullOrEmpty(sqliteOptions.Value.DatabaseFileName))
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="SQLiteLockManager"/> class.
+        /// </summary>
+        /// <param name="sqliteOptions">The SQLite options</param>
+        /// <param name="cleanupTask">The clean-up task for expired locks</param>
+        /// <param name="systemClock">The system clock interface</param>
+        /// <param name="logger">The logger</param>
+        public SQLiteLockManager(
+            [NotNull] SQLiteLockManagerOptions sqliteOptions,
+            [NotNull] ILockCleanupTask cleanupTask,
+            [NotNull] ISystemClock systemClock,
+            [NotNull] ILogger<SQLiteLockManager> logger)
+            : base(cleanupTask, systemClock, logger, sqliteOptions)
+        {
+            if (string.IsNullOrEmpty(sqliteOptions.DatabaseFileName))
                 throw new ArgumentException("A database file name must be set in the SQLiteLockManager options.");
-            EnsureDatabaseExists(sqliteOptions.Value.DatabaseFileName);
-            _connection = new sqlitenet.SQLiteConnection(sqliteOptions.Value.DatabaseFileName);
+            EnsureDatabaseExists(sqliteOptions.DatabaseFileName);
+            _connection = new sqlitenet.SQLiteConnection(sqliteOptions.DatabaseFileName);
         }
 
         /// <summary>

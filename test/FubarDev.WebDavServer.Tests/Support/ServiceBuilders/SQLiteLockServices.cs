@@ -3,6 +3,7 @@
 // </copyright>
 
 using System;
+using System.Collections.Concurrent;
 using System.IO;
 
 using FubarDev.WebDavServer.Locking;
@@ -15,7 +16,7 @@ namespace FubarDev.WebDavServer.Tests.Support.ServiceBuilders
 {
     public class SQLiteLockServices : ILockServices, IDisposable
     {
-        private readonly string _tempDbFileName = Path.GetTempFileName();
+        private readonly ConcurrentBag<string> _tempDbFileNames = new ConcurrentBag<string>();
 
         public SQLiteLockServices()
         {
@@ -23,13 +24,22 @@ namespace FubarDev.WebDavServer.Tests.Support.ServiceBuilders
             serviceCollection.AddOptions();
             serviceCollection.AddLogging();
             serviceCollection.AddScoped<ISystemClock, TestSystemClock>();
-            serviceCollection.Configure<SQLiteLockManagerOptions>(opt =>
-            {
-                opt.Rounding = new DefaultLockTimeRounding(DefaultLockTimeRoundingMode.OneHundredMilliseconds);
-                opt.DatabaseFileName = _tempDbFileName;
-            });
             serviceCollection.AddTransient<ILockCleanupTask, LockCleanupTask>();
-            serviceCollection.AddTransient<ILockManager, SQLiteLockManager>();
+            serviceCollection.AddTransient<ILockManager>(
+                sp =>
+                {
+                    var tempDbFileName = Path.GetTempFileName();
+                    _tempDbFileNames.Add(tempDbFileName);
+                    var config = new SQLiteLockManagerOptions()
+                    {
+                        Rounding = new DefaultLockTimeRounding(DefaultLockTimeRoundingMode.OneHundredMilliseconds),
+                        DatabaseFileName = tempDbFileName,
+                    };
+                    var cleanupTask = sp.GetRequiredService<ILockCleanupTask>();
+                    var systemClock = sp.GetRequiredService<ISystemClock>();
+                    var logger = sp.GetRequiredService<ILogger<SQLiteLockManager>>();
+                    return new SQLiteLockManager(config, cleanupTask, systemClock, logger);
+                });
             ServiceProvider = serviceCollection.BuildServiceProvider();
 
             var loggerFactory = ServiceProvider.GetRequiredService<ILoggerFactory>();
@@ -40,7 +50,10 @@ namespace FubarDev.WebDavServer.Tests.Support.ServiceBuilders
 
         public void Dispose()
         {
-            File.Delete(_tempDbFileName);
+            foreach (var tempDbFileName in _tempDbFileNames)
+            {
+                File.Delete(tempDbFileName);
+            }
         }
     }
 }
