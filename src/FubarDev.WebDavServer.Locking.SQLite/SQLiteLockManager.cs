@@ -23,7 +23,7 @@ namespace FubarDev.WebDavServer.Locking.SQLite
     /// <summary>
     /// An implementation of <see cref="ILockManager"/> that uses SQLite
     /// </summary>
-    public class SQLiteLockManager : LockManagerBase
+    public class SQLiteLockManager : LockManagerBase, IDisposable
     {
         [NotNull]
         private readonly sqlitenet.SQLiteConnection _connection;
@@ -88,6 +88,12 @@ namespace FubarDev.WebDavServer.Locking.SQLite
             {
                 CreateDatabaseTables(conn);
             }
+        }
+
+        /// <inheritdoc />
+        public void Dispose()
+        {
+            _connection.Dispose();
         }
 
         /// <inheritdoc />
