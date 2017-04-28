@@ -20,14 +20,24 @@ using Xunit.Abstractions;
 
 namespace FubarDev.WebDavServer.Tests.Locking
 {
-    public class LockShareModeTests : LockTestsBase
+    public class LockShareModeTests : IClassFixture<MemoryLockServices>, IDisposable
     {
+        private readonly IServiceScope _scope;
+
         private readonly ITestOutputHelper _output;
 
-        public LockShareModeTests(LockServices services, ITestOutputHelper output)
-            : base(services)
+        public LockShareModeTests(MemoryLockServices services, ITestOutputHelper output)
         {
+            var scopeFactory = services.ServiceProvider.GetRequiredService<IServiceScopeFactory>();
+            _scope = scopeFactory.CreateScope();
             _output = output;
+        }
+
+        private IServiceProvider ServiceProvider => _scope.ServiceProvider;
+
+        public void Dispose()
+        {
+            _scope.Dispose();
         }
 
         [Fact]

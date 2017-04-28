@@ -34,6 +34,7 @@
     <ProjectReference Include="..\..\src\FubarDev.WebDavServer.AspNetCore\FubarDev.WebDavServer.AspNetCore.csproj" />
     <ProjectReference Include="..\..\src\FubarDev.WebDavServer.FileSystem.InMemory\FubarDev.WebDavServer.FileSystem.InMemory.csproj" />
     <ProjectReference Include="..\..\src\FubarDev.WebDavServer.Locking.InMemory\FubarDev.WebDavServer.Locking.InMemory.csproj" />
+    <ProjectReference Include="..\..\src\FubarDev.WebDavServer.Locking.SQLite\FubarDev.WebDavServer.Locking.SQLite.csproj" />
     <ProjectReference Include="..\..\src\FubarDev.WebDavServer.Props.Store.InMemory\FubarDev.WebDavServer.Props.Store.InMemory.csproj" />
     <ProjectReference Include="..\..\src\FubarDev.WebDavServer\FubarDev.WebDavServer.csproj" />
   </ItemGroup>

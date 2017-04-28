@@ -20,11 +20,22 @@ using Xunit;
 
 namespace FubarDev.WebDavServer.Tests.Locking
 {
-    public class LockCleanupTests : LockTestsBase
+    public abstract class LockCleanupTests<T> : IClassFixture<T>, IDisposable
+        where T : class, ILockServices
     {
-        public LockCleanupTests(LockServices services)
-            : base(services)
+        private readonly IServiceScope _scope;
+
+        protected LockCleanupTests(T services)
         {
+            var scopeFactory = services.ServiceProvider.GetRequiredService<IServiceScopeFactory>();
+            _scope = scopeFactory.CreateScope();
+        }
+
+        private IServiceProvider ServiceProvider => _scope.ServiceProvider;
+
+        public void Dispose()
+        {
+            _scope.Dispose();
         }
 
         [Fact]
@@ -32,7 +43,7 @@ namespace FubarDev.WebDavServer.Tests.Locking
         {
             var releasedLocks = new HashSet<string>();
             var systemClock = (TestSystemClock)ServiceProvider.GetRequiredService<ISystemClock>();
-            var lockManager = (InMemoryLockManager)ServiceProvider.GetRequiredService<ILockManager>();
+            var lockManager = ServiceProvider.GetRequiredService<ILockManager>();
             var ct = CancellationToken.None;
 
             systemClock.RoundTo(DefaultLockTimeRoundingMode.OneSecond);
@@ -43,7 +54,7 @@ namespace FubarDev.WebDavServer.Tests.Locking
         public async Task TestCleanupTwoAsync()
         {
             var releasedLocks = new HashSet<string>();
-            var lockManager = (InMemoryLockManager)ServiceProvider.GetRequiredService<ILockManager>();
+            var lockManager = ServiceProvider.GetRequiredService<ILockManager>();
             var ct = CancellationToken.None;
             var owner = new XElement("test");
             var l1 = new Lock("/", "/", false, owner, LockAccessType.Write, LockShareMode.Shared, TimeSpan.FromMilliseconds(100));
@@ -73,7 +84,7 @@ namespace FubarDev.WebDavServer.Tests.Locking
         {
             var releasedLocks = new HashSet<string>();
             var systemClock = (TestSystemClock)ServiceProvider.GetRequiredService<ISystemClock>();
-            var lockManager = (InMemoryLockManager)ServiceProvider.GetRequiredService<ILockManager>();
+            var lockManager = ServiceProvider.GetRequiredService<ILockManager>();
             var ct = CancellationToken.None;
 
             systemClock.RoundTo(DefaultLockTimeRoundingMode.OneSecond);
@@ -89,7 +100,7 @@ namespace FubarDev.WebDavServer.Tests.Locking
                 $"Duration should be at least 200ms, but was {outerStopwatch.ElapsedMilliseconds}");
         }
 
-        private async Task TestSingleLockAsync(ISet<string> releasedLocks, InMemoryLockManager lockManager, CancellationToken ct)
+        private async Task TestSingleLockAsync(ISet<string> releasedLocks, ILockManager lockManager, CancellationToken ct)
         {
             var l = new Lock(
                 "/",
