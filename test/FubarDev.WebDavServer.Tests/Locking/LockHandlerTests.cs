@@ -239,7 +239,7 @@ namespace FubarDev.WebDavServer.Tests.Locking
             var refreshResult = await Client.RefreshLockAsync(
                 "/",
                 WebDavTimeoutHeaderValue.CreateInfiniteWebDavTimeout(),
-                new LockToken("<asasdasd>")).ConfigureAwait(false);
+                new LockToken("(<urn:asasdasd>)")).ConfigureAwait(false);
             Assert.Equal(WebDavStatusCode.PreconditionFailed, refreshResult.StatusCode);
         }
 
