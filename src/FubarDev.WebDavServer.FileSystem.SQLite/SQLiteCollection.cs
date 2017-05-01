@@ -4,6 +4,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
@@ -104,7 +105,15 @@ namespace FubarDev.WebDavServer.FileSystem.SQLite
                 Name = name,
                 Path = Path.OriginalString,
             };
-            Connection.Insert(newEntry);
+            try
+            {
+                Connection.Insert(newEntry);
+            }
+            catch (global::SQLite.SQLiteException ex)
+            {
+                throw new IOException(ex.Message, ex);
+            }
+
             return Task.FromResult((ICollection)CreateEntry(newEntry));
         }
 
