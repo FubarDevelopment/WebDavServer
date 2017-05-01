@@ -23,7 +23,6 @@
     <None Include="$(ProjectDir)..\..\WebDavServer.ruleset" Link="WebDavServer.ruleset" />
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Update="NETStandard.Library" Version="1.6.1" />
     <PackageReference Include="JetBrains.Annotations" Version="10.4.0">
       <PrivateAssets>All</PrivateAssets>
     </PackageReference>
@@ -36,5 +35,8 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\FubarDev.WebDavServer\FubarDev.WebDavServer.csproj" />
+  </ItemGroup>
+  <ItemGroup>
+    <DotNetCliToolReference Include="libyear" Version="*" />
   </ItemGroup>
 </Project>

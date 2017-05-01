@@ -40,4 +40,8 @@
     <ProjectReference Include="..\FubarDev.WebDavServer\FubarDev.WebDavServer.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <DotNetCliToolReference Include="libyear" Version="*" />
+  </ItemGroup>
+
 </Project>

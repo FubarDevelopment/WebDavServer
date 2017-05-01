@@ -12,7 +12,6 @@
     <None Include="$(ProjectDir)..\..\WebDavServer.ruleset" Link="WebDavServer.ruleset" />
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Update="NETStandard.Library" Version="1.6.1" />
     <PackageReference Include="Microsoft.AspNetCore.TestHost" Version="1.1.1" />
     <PackageReference Include="Microsoft.Extensions.Logging.Debug" Version="1.1.1" />
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="15.0.0" />
@@ -29,6 +28,9 @@
     <PackageReference Include="JetBrains.Annotations" Version="10.4.0">
       <PrivateAssets>All</PrivateAssets>
     </PackageReference>
+  </ItemGroup>
+  <ItemGroup>
+    <DotNetCliToolReference Include="libyear" Version="*" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\src\FubarDev.WebDavServer.AspNetCore\FubarDev.WebDavServer.AspNetCore.csproj" />
