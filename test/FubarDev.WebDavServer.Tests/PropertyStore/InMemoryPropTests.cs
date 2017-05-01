@@ -21,11 +21,11 @@ using Xunit;
 
 namespace FubarDev.WebDavServer.Tests.PropertyStore
 {
-    public class InMemoryPropTests : IClassFixture<FileSystemServices<InMemoryFileSystemFactory>>, IDisposable
+    public class InMemoryPropTests : IClassFixture<InMemoryFileSystemServices>, IDisposable
     {
         private readonly IServiceScope _serviceScope;
 
-        public InMemoryPropTests(FileSystemServices<InMemoryFileSystemFactory> fsServices)
+        public InMemoryPropTests(InMemoryFileSystemServices fsServices)
         {
             var serviceScopeFactory = fsServices.ServiceProvider.GetRequiredService<IServiceScopeFactory>();
             _serviceScope = serviceScopeFactory.CreateScope();

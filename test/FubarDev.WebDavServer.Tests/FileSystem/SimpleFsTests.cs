@@ -1,4 +1,4 @@
-﻿// <copyright file="InMemoryFsTests.cs" company="Fubar Development Junker">
+﻿// <copyright file="SimpleFsTests.cs" company="Fubar Development Junker">
 // Copyright (c) Fubar Development Junker. All rights reserved.
 // </copyright>
 
@@ -8,7 +8,6 @@ using System.Threading;
 using System.Threading.Tasks;
 
 using FubarDev.WebDavServer.FileSystem;
-using FubarDev.WebDavServer.FileSystem.InMemory;
 using FubarDev.WebDavServer.Tests.Support.ServiceBuilders;
 
 using Microsoft.Extensions.DependencyInjection;
@@ -17,11 +16,12 @@ using Xunit;
 
 namespace FubarDev.WebDavServer.Tests.FileSystem
 {
-    public class InMemoryFsTests : IClassFixture<FileSystemServices<InMemoryFileSystemFactory>>, IDisposable
+    public abstract class SimpleFsTests<T> : IClassFixture<T>, IDisposable
+        where T : class, IFileSystemServices
     {
         private readonly IServiceScope _serviceScope;
 
-        public InMemoryFsTests(FileSystemServices<InMemoryFileSystemFactory> fsServices)
+        protected SimpleFsTests(T fsServices)
         {
             var serviceScopeFactory = fsServices.ServiceProvider.GetRequiredService<IServiceScopeFactory>();
             _serviceScope = serviceScopeFactory.CreateScope();
@@ -52,9 +52,10 @@ namespace FubarDev.WebDavServer.Tests.FileSystem
                 {
                     Assert.NotNull(child);
                     var coll = Assert.IsAssignableFrom<ICollection>(child);
-                    Assert.Same(test1, coll);
+                    Assert.Equal(test1.Path, coll.Path);
                     Assert.Equal("test1", coll.Name);
-                    Assert.Same(root, child.Parent);
+                    Assert.NotNull(coll.Parent);
+                    Assert.Equal(root.Path, coll.Parent.Path);
                 });
         }
 
@@ -72,17 +73,19 @@ namespace FubarDev.WebDavServer.Tests.FileSystem
                 {
                     Assert.NotNull(child);
                     var coll = Assert.IsAssignableFrom<ICollection>(child);
-                    Assert.Same(test1, coll);
+                    Assert.Equal(test1.Path, coll.Path);
                     Assert.Equal("test1", coll.Name);
-                    Assert.Same(root, child.Parent);
+                    Assert.NotNull(coll.Parent);
+                    Assert.Equal(root.Path, coll.Parent.Path);
                 },
                 child =>
                 {
                     Assert.NotNull(child);
                     var coll = Assert.IsAssignableFrom<ICollection>(child);
-                    Assert.Same(test2, coll);
+                    Assert.Equal(test2.Path, coll.Path);
                     Assert.Equal("test2", coll.Name);
-                    Assert.Same(root, child.Parent);
+                    Assert.NotNull(coll.Parent);
+                    Assert.Equal(root.Path, coll.Parent.Path);
                 });
         }
 

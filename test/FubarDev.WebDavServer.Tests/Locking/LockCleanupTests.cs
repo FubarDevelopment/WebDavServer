@@ -124,7 +124,7 @@ namespace FubarDev.WebDavServer.Tests.Locking
                 Assert.True(await sem.WaitAsync(5000, ct).ConfigureAwait(false));
                 stopwatch.Stop();
                 Assert.True(
-                    stopwatch.ElapsedMilliseconds >= 100,
+                    stopwatch.ElapsedMilliseconds >= 90,
                     $"Duration should be at least 100ms, but was {stopwatch.ElapsedMilliseconds}");
             }
             finally

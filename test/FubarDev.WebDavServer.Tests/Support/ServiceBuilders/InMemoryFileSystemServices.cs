@@ -1,8 +1,9 @@
-﻿// <copyright file="FileSystemServices.cs" company="Fubar Development Junker">
+﻿// <copyright file="InMemoryFileSystemServices.cs" company="Fubar Development Junker">
 // Copyright (c) Fubar Development Junker. All rights reserved.
 // </copyright>
 
 using System;
+using System.Collections.Concurrent;
 
 using FubarDev.WebDavServer.FileSystem;
 using FubarDev.WebDavServer.FileSystem.InMemory;
@@ -17,10 +18,9 @@ using Microsoft.Extensions.Logging;
 
 namespace FubarDev.WebDavServer.Tests.Support.ServiceBuilders
 {
-    public class FileSystemServices<T>
-        where T : class, IFileSystemFactory
+    public class InMemoryFileSystemServices : IFileSystemServices
     {
-        public FileSystemServices()
+        public InMemoryFileSystemServices()
         {
             var serviceCollection = new ServiceCollection()
                 .AddOptions()
@@ -32,7 +32,7 @@ namespace FubarDev.WebDavServer.Tests.Support.ServiceBuilders
                 .AddScoped<ILockManager, InMemoryLockManager>()
                 .AddScoped<IDeadPropertyFactory, DeadPropertyFactory>()
                 .AddScoped<IWebDavContext>(sp => new TestHost(sp, new Uri("http://localhost/")))
-                .AddScoped<IFileSystemFactory, T>()
+                .AddScoped<IFileSystemFactory, InMemoryFileSystemFactory>()
                 .AddSingleton<IPropertyStoreFactory, InMemoryPropertyStoreFactory>()
                 .AddWebDav();
             ServiceProvider = serviceCollection.BuildServiceProvider();
