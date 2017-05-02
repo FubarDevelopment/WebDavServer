@@ -16,6 +16,11 @@ namespace FubarDev.WebDavServer
     public interface IWebDavRequestHeaders
     {
         /// <summary>
+        /// Gets the <c>Content-Length</c> header
+        /// </summary>
+        long? ContentLength { get; }
+
+        /// <summary>
         /// Gets the <c>Depth</c> header
         /// </summary>
         DepthHeader? Depth { get; }

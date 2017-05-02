@@ -5,6 +5,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Xml;
 
 using FubarDev.WebDavServer.Model.Headers;
 
@@ -38,7 +39,11 @@ namespace FubarDev.WebDavServer
             IfModifiedSince = ParseHeader("If-Modified-Since", args => IfModifiedSinceHeader.Parse(args.Single()));
             IfUnmodifiedSince = ParseHeader("If-Unmodified-Since", args => IfUnmodifiedSinceHeader.Parse(args.Single()));
             Timeout = ParseHeader("Timeout", TimeoutHeader.Parse);
+            ContentLength = ParseHeader("Content-Length", args => (long?)XmlConvert.ToInt64(args.Single()));
         }
+
+        /// <inheritdoc />
+        public long? ContentLength { get; }
 
         /// <inheritdoc />
         public DepthHeader? Depth { get; }
