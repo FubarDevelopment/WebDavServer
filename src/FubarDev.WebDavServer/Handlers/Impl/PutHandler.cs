@@ -3,6 +3,7 @@
 // </copyright>
 
 using System;
+using System.Buffers;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
@@ -17,6 +18,8 @@ using FubarDev.WebDavServer.Model;
 using FubarDev.WebDavServer.Model.Headers;
 using FubarDev.WebDavServer.Utils;
 
+using Microsoft.Extensions.Logging;
+
 namespace FubarDev.WebDavServer.Handlers.Impl
 {
     /// <summary>
@@ -26,16 +29,20 @@ namespace FubarDev.WebDavServer.Handlers.Impl
     {
         private readonly IFileSystem _fileSystem;
         private readonly IWebDavContext _context;
+        private readonly ILogger<PutHandler> _logger;
+        private readonly ArrayPool<byte> _buffers = ArrayPool<byte>.Shared;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="PutHandler"/> class.
         /// </summary>
         /// <param name="fileSystem">The root file system</param>
         /// <param name="context">The WebDAV request context</param>
-        public PutHandler(IFileSystem fileSystem, IWebDavContext context)
+        /// <param name="logger">The logger</param>
+        public PutHandler(IFileSystem fileSystem, IWebDavContext context, ILogger<PutHandler> logger)
         {
             _fileSystem = fileSystem;
             _context = context;
+            _logger = logger;
         }
 
         /// <inheritdoc />
@@ -105,7 +112,17 @@ namespace FubarDev.WebDavServer.Handlers.Impl
 
                 using (var fileStream = await document.CreateAsync(cancellationToken).ConfigureAwait(false))
                 {
-                    await data.CopyToAsync(fileStream).ConfigureAwait(false);
+                    var contentLength = _context.RequestHeaders.ContentLength;
+                    if (contentLength == null)
+                    {
+                        _logger.LogInformation("Writing data without content length");
+                        await data.CopyToAsync(fileStream).ConfigureAwait(false);
+                    }
+                    else
+                    {
+                        _logger.LogInformation("Writing data with content length {0}", contentLength.Value);
+                        await Copy(data, fileStream, contentLength.Value, cancellationToken).ConfigureAwait(false);
+                    }
                 }
 
                 var docPropertyStore = document.FileSystem.PropertyStore;
@@ -137,6 +154,46 @@ namespace FubarDev.WebDavServer.Handlers.Impl
             finally
             {
                 await tempLock.DisposeAsync(cancellationToken).ConfigureAwait(false);
+            }
+        }
+
+        private async Task Copy(Stream source, Stream destination, long contentLength, CancellationToken cancellationToken)
+        {
+#if DEBUG
+            var bufferSize = 4096;
+#else
+            var bufferSize = 65536;
+#endif
+            var buffer = _buffers.Rent(bufferSize);
+            try
+            {
+                var maxDelay = TimeSpan.FromMilliseconds(200);
+                var sw = new Stopwatch();
+                var totalReadCount = 0L;
+                var remaining = contentLength;
+                while (remaining != 0)
+                {
+                    var copySize = (int)Math.Min(remaining, bufferSize);
+                    sw.Restart();
+                    var readCount = await source.ReadAsync(buffer, 0, copySize, cancellationToken).ConfigureAwait(false);
+                    await destination.WriteAsync(buffer, 0, readCount, cancellationToken).ConfigureAwait(false);
+                    var elapsed = sw.Elapsed;
+                    if (readCount == bufferSize && elapsed < maxDelay && bufferSize < 0x4000000)
+                    {
+                        _buffers.Return(buffer);
+                        bufferSize *= 2;
+                        _logger.LogTrace("Increased buffer size to {0}", bufferSize);
+                        buffer = _buffers.Rent(bufferSize);
+                    }
+
+                    remaining -= readCount;
+                    totalReadCount += readCount;
+                    _logger.LogDebug("Wrote {0} bytes", totalReadCount);
+                }
+            }
+            finally
+            {
+                _buffers.Return(buffer);
             }
         }
     }
