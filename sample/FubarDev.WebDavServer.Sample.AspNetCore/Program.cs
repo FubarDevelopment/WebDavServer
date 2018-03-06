@@ -1,9 +1,10 @@
 ﻿using System;
-using System.IO;
 
+using Microsoft.AspNetCore;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Server.HttpSys;
 using Microsoft.Extensions.Configuration;
-using Microsoft.Net.Http.Server;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace FubarDev.WebDavServer.Sample.AspNetCore
 {
@@ -13,61 +14,49 @@ namespace FubarDev.WebDavServer.Sample.AspNetCore
 
         public static bool DisableBasicAuth { get; private set; }
 
+        public static bool IsWindows => Environment.OSVersion.Platform == PlatformID.Win32NT;
+
         public static void Main(string[] args)
         {
-            var config = new ConfigurationBuilder()
-                .SetBasePath(AppContext.BaseDirectory)
-                .AddJsonFile("hosting.json", true)
-                .AddCommandLine(args)
-                .Build();
+            BuildWebHost(args).Run();
+        }
 
-            var forceKestrelUse = config.GetValue<bool>("use-kestrel");
+        private static IWebHost BuildWebHost(string[] args)
+        {
+            var tempHost = BuildWebHost(args, whb => whb);
+            var config = tempHost.Services.GetRequiredService<IConfiguration>();
+
             DisableBasicAuth = config.GetValue<bool>("disable-basic-auth");
 
-            IWebHost host;
+            return BuildWebHost(
+                args,
+                builder => ConfigureHosting(builder, config));
+        }
+
+        private static IWebHost BuildWebHost(string[] args, Func<IWebHostBuilder, IWebHostBuilder> customConfig) =>
+            customConfig(WebHost.CreateDefaultBuilder(args))
+                .UseStartup<Startup>()
+                .Build();
+
+        private static IWebHostBuilder ConfigureHosting(IWebHostBuilder builder, IConfiguration configuration)
+        {
+            var forceKestrelUse = configuration.GetValue<bool>("use-kestrel");
             if (!forceKestrelUse && IsWindows)
             {
-                host = new WebHostBuilder()
-                    .UseWebListener(opt =>
-                    {
-                        opt.ListenerSettings.Authentication.Schemes = AuthenticationSchemes.NTLM;
-                        opt.ListenerSettings.Authentication.AllowAnonymous = true;
-                    })
-                    .UseConfiguration(config)
-                    .UseContentRoot(Directory.GetCurrentDirectory())
-                    .UseStartup<Startup>()
-                    .Build();
+                builder = builder
+                    .UseHttpSys(
+                        opt =>
+                        {
+                            opt.Authentication.Schemes = AuthenticationSchemes.NTLM;
+                            opt.Authentication.AllowAnonymous = true;
+                        });
             }
             else
             {
-                var pfxFileName = config.GetValue<string>("use-pfx");
                 IsKestrel = true;
-                host = new WebHostBuilder()
-                    .UseKestrel(
-                        opt =>
-                        {
-                            if (!string.IsNullOrEmpty(pfxFileName))
-                            {
-                                opt.UseHttps(pfxFileName);
-                            }
-                        })
-                    .UseConfiguration(config)
-                    .UseContentRoot(Directory.GetCurrentDirectory())
-                    .UseIISIntegration()
-                    .UseStartup<Startup>()
-                    .Build();
             }
 
-            host.Run();
-        }
-
-        public static bool IsWindows
-        {
-            get
-            {
-                string windir = Environment.GetEnvironmentVariable("windir");
-                return !string.IsNullOrEmpty(windir) && windir.Contains(@"\") && Directory.Exists(windir);
-            }
+            return builder;
         }
     }
 }

@@ -8,7 +8,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using System.Xml.Linq;
 
-using DecaTec.WebDav;
+using DecaTec.WebDav.Headers;
 
 using FubarDev.WebDavServer.FileSystem.InMemory;
 using FubarDev.WebDavServer.Props.Dead;

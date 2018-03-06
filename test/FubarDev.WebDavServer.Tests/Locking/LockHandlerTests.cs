@@ -9,6 +9,7 @@ using System.Threading.Tasks;
 using System.Xml.Linq;
 
 using DecaTec.WebDav;
+using DecaTec.WebDav.Headers;
 using DecaTec.WebDav.WebDavArtifacts;
 
 using FubarDev.WebDavServer.Model.Headers;
@@ -236,10 +237,11 @@ namespace FubarDev.WebDavServer.Tests.Locking
                     })
                 .ConfigureAwait(false);
             lockResponse.EnsureSuccessStatusCode();
+            Assert.True(AbsoluteUri.TryParse("urn:asasdasd", out var lockTokenUri));
             var refreshResult = await Client.RefreshLockAsync(
                 "/",
                 WebDavTimeoutHeaderValue.CreateInfiniteWebDavTimeout(),
-                new LockToken("(<urn:asasdasd>)")).ConfigureAwait(false);
+                new LockToken(lockTokenUri)).ConfigureAwait(false);
             Assert.Equal(WebDavStatusCode.PreconditionFailed, refreshResult.StatusCode);
         }
 
@@ -259,10 +261,11 @@ namespace FubarDev.WebDavServer.Tests.Locking
             lockResponse.EnsureSuccessStatusCode();
             var prop = await WebDavResponseContentParser.ParsePropResponseContentAsync(lockResponse.Content).ConfigureAwait(false);
             var lockToken = prop.LockDiscovery.ActiveLock.Single().LockToken.Href;
+            Assert.True(AbsoluteUri.TryParse(lockToken, out var lockTokenUri));
             var refreshResult = await Client.RefreshLockAsync(
                 "/",
                 WebDavTimeoutHeaderValue.CreateInfiniteWebDavTimeout(),
-                new LockToken($"<{lockToken}>")).ConfigureAwait(false);
+                new LockToken(lockTokenUri)).ConfigureAwait(false);
             refreshResult.EnsureSuccessStatusCode();
         }
 

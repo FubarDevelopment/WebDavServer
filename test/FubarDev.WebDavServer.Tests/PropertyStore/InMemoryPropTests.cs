@@ -8,7 +8,6 @@ using System.Threading;
 using System.Threading.Tasks;
 
 using FubarDev.WebDavServer.FileSystem;
-using FubarDev.WebDavServer.FileSystem.InMemory;
 using FubarDev.WebDavServer.Props.Dead;
 using FubarDev.WebDavServer.Props.Store;
 using FubarDev.WebDavServer.Tests.Support.ServiceBuilders;

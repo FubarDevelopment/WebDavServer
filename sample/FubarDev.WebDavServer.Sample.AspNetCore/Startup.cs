@@ -1,12 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
 using System.IO;
 using System.Linq;
 using System.Security.Claims;
-using System.Security.Principal;
-using System.Text.Encodings.Web;
 using System.Threading.Tasks;
 
 using FubarDev.WebDavServer.AspNetCore;
@@ -20,18 +17,16 @@ using FubarDev.WebDavServer.Locking.SQLite;
 using FubarDev.WebDavServer.Props.Store;
 using FubarDev.WebDavServer.Props.Store.SQLite;
 using FubarDev.WebDavServer.Props.Store.TextFile;
+using FubarDev.WebDavServer.Sample.AspNetCore.Middlewares;
 
 using idunno.Authentication;
 
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Http.Authentication;
 using Microsoft.AspNetCore.HttpOverrides;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 
 using Npam.Interop;
@@ -58,35 +53,44 @@ namespace FubarDev.WebDavServer.Sample.AspNetCore
             SQLite,
         }
 
-        public Startup(IHostingEnvironment env)
+        public Startup(IConfiguration configuration)
         {
-            var builder = new ConfigurationBuilder()
-                .SetBasePath(env.ContentRootPath)
-                .AddJsonFile("appsettings.json", optional: true, reloadOnChange: true)
-                .AddJsonFile($"appsettings.{env.EnvironmentName}.json", optional: true)
-                .AddCommandLine(Environment.GetCommandLineArgs().Skip(1).ToArray())
-                .AddEnvironmentVariables();
-            Configuration = builder.Build();
+            Configuration = configuration;
         }
 
-        public IConfigurationRoot Configuration { get; }
+        public IConfiguration Configuration { get; }
 
         // This method gets called by the runtime. Use this method to add services to the container.
-        // For more information on how to configure your application, visit https://go.microsoft.com/fwlink/?LinkID=398940
         public void ConfigureServices(IServiceCollection services)
         {
-            services
-                .AddAuthentication()
-                .Configure<WebDavHostOptions>(
+            services.AddAuthentication(
                     opt =>
                     {
-                        var hostSection = Configuration.GetSection("Host");
-                        hostSection?.Bind(opt);
+                        if (!Program.IsKestrel || !Program.DisableBasicAuth)
+                        {
+                            opt.DefaultScheme = "Basic";
+                        }
+                        else
+                        {
+                            opt.DefaultScheme = "Anonymous";
+                        }
+                        
+                        opt.AddScheme<Authentication.AnonymousAuthHandler>("Anonymous", null);
                     })
+                .AddBasic(
+                    opt =>
+                    {
+                        opt.Events.OnValidateCredentials = ValidateCredentialsAsync;
+                        opt.AllowInsecureProtocol = true;
+                    });
+
+            services.Configure<WebDavHostOptions>(cfg => Configuration.Bind("Host", cfg));
+
+            services
                 .AddMvcCore()
                 .AddAuthorization()
                 .AddWebDav();
-
+            
             var serverConfig = new ServerConfiguration();
             var serverConfigSection = Configuration.GetSection("Server");
             serverConfigSection?.Bind(serverConfig);
@@ -101,7 +105,7 @@ namespace FubarDev.WebDavServer.Sample.AspNetCore
                                 opt.RootPath = Path.Combine(Path.GetTempPath(), "webdav");
                                 opt.AnonymousUserName = "anonymous";
                             })
-                        .AddSingleton<IFileSystemFactory, DotNetFileSystemFactory>();
+                        .AddScoped<IFileSystemFactory, DotNetFileSystemFactory>();
                     break;
                 case FileSystemType.SQLite:
                     services
@@ -110,7 +114,7 @@ namespace FubarDev.WebDavServer.Sample.AspNetCore
                             {
                                 opt.RootPath = Path.Combine(Path.GetTempPath(), "webdav");
                             })
-                        .AddSingleton<IFileSystemFactory, SQLiteFileSystemFactory>();
+                        .AddScoped<IFileSystemFactory, SQLiteFileSystemFactory>();
                     break;
                 default:
                     throw new NotSupportedException();
@@ -151,33 +155,16 @@ namespace FubarDev.WebDavServer.Sample.AspNetCore
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory)
+        public void Configure(IApplicationBuilder app, IHostingEnvironment env)
         {
-            loggerFactory.AddConsole(Configuration.GetSection("Logging"));
-            loggerFactory.AddDebug();
-
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
             }
 
-            if (Program.IsKestrel)
+            if (!Program.IsKestrel || !Program.DisableBasicAuth)
             {
-                if (Program.DisableBasicAuth)
-                {
-                    app.UseMiddleware<AnonymousAuthenticationMiddleware>();
-                }
-                else
-                {
-                    app.UseBasicAuthentication(
-                        new BasicAuthenticationOptions()
-                        {
-                            Events = new BasicAuthenticationEvents()
-                            {
-                                OnValidateCredentials = ValidateCredentialsAsync,
-                            }
-                        });
-                }
+                app.UseAuthentication();
             }
 
             app.UseMiddleware<RequestLogMiddleware>();
@@ -210,9 +197,11 @@ namespace FubarDev.WebDavServer.Sample.AspNetCore
 
             var groups = Npam.NpamUser.GetGroups(context.Username).ToList();
             var accountInfo = Npam.NpamUser.GetAccountInfo(context.Username);
-
-            context.Ticket = CreateAuthenticationTicket(accountInfo, groups);
-            context.HandleResponse();
+            
+            var ticket = CreateAuthenticationTicket(accountInfo, groups);
+            context.Principal = ticket.Principal;
+            context.Properties = ticket.Properties;
+            context.Success();
 
             return Task.FromResult(0);
         }
@@ -224,20 +213,21 @@ namespace FubarDev.WebDavServer.Sample.AspNetCore
                 new AccountInfo() { Username = "tester", Password = "noGh2eefabohgohc", HomeDir = "c:\\temp\\tester" },
             }.ToDictionary(x => x.Username, StringComparer.OrdinalIgnoreCase);
 
-            AccountInfo accountInfo;
-            if (!credentials.TryGetValue(context.Username, out accountInfo))
+            if (!credentials.TryGetValue(context.Username, out var accountInfo))
                 return HandleFailedAuthenticationAsync(context);
 
             if (accountInfo.Password != context.Password)
             {
-                context.HandleResponse();
+                context.Fail("Invalid password");
                 return Task.FromResult(0);
             }
 
             var groups = Enumerable.Empty<Group>();
 
-            context.Ticket = CreateAuthenticationTicket(accountInfo, groups);
-            context.HandleResponse();
+            var ticket = CreateAuthenticationTicket(accountInfo, groups);
+            context.Principal = ticket.Principal;
+            context.Properties = ticket.Properties;
+            context.Success();
 
             return Task.FromResult(0);
         }
@@ -259,8 +249,10 @@ namespace FubarDev.WebDavServer.Sample.AspNetCore
                 HomeDir = hostOptions.Value.AnonymousHomePath,
             };
 
-            context.Ticket = CreateAuthenticationTicket(accountInfo, groups, "anonymous", authenticationScheme);
-            context.HandleResponse();
+            var ticket = CreateAuthenticationTicket(accountInfo, groups, "anonymous", authenticationScheme);
+            context.Principal = ticket.Principal;
+            context.Properties = ticket.Properties;
+            context.Success();
 
             return Task.FromResult(0);
         }
@@ -276,83 +268,6 @@ namespace FubarDev.WebDavServer.Sample.AspNetCore
             var identity = new ClaimsIdentity(claims, authenticationType);
             var principal = new ClaimsPrincipal(identity);
             return new AuthenticationTicket(principal, new AuthenticationProperties(), authenticationScheme);
-        }
-
-        private class AnonymousAuthenticationOptions : AuthenticationOptions
-        {
-            public AnonymousAuthenticationOptions()
-            {
-                AutomaticChallenge = true;
-                AutomaticAuthenticate = true;
-                AuthenticationScheme = "Anonymous";
-            }
-        }
-
-        // ReSharper disable once ClassNeverInstantiated.Local
-        private class ImpersonationMiddleware
-        {
-            private readonly RequestDelegate _next;
-
-            public ImpersonationMiddleware(RequestDelegate next)
-            {
-                _next = next;
-            }
-
-            // ReSharper disable once UnusedMember.Local
-            public async Task Invoke(HttpContext context)
-            {
-                var identity = context.User.Identity as WindowsIdentity;
-                if (identity == null || !identity.IsAuthenticated)
-                {
-                    await _next(context);
-                }
-                else
-                {
-                    await WindowsIdentity.RunImpersonated(
-                        identity.AccessToken,
-                        async () =>
-                        {
-                            await _next(context);
-                        });
-                }
-            }
-        }
-
-        // ReSharper disable once ClassNeverInstantiated.Local
-        private class AnonymousAuthenticationMiddleware : AuthenticationMiddleware<AnonymousAuthenticationOptions>
-        {
-            public AnonymousAuthenticationMiddleware(RequestDelegate next, IOptions<AnonymousAuthenticationOptions> options, ILoggerFactory loggerFactory, UrlEncoder encoder) : base(next, options, loggerFactory, encoder)
-            {
-            }
-
-            protected override AuthenticationHandler<AnonymousAuthenticationOptions> CreateHandler()
-            {
-                return new Handler(Options);
-            }
-
-            private class Handler : AuthenticationHandler<AnonymousAuthenticationOptions>
-            {
-                private readonly AnonymousAuthenticationOptions _options;
-
-                public Handler(AnonymousAuthenticationOptions options)
-                {
-                    _options = options ?? new AnonymousAuthenticationOptions();
-                }
-
-                protected override async Task<AuthenticateResult> HandleAuthenticateAsync()
-                {
-                    var context = new ValidateCredentialsContext(Context, new BasicAuthenticationOptions())
-                    {
-                        Username = "anonymous",
-                    };
-
-                    await HandleFailedAuthenticationAsync(context, true, _options.AuthenticationScheme).ConfigureAwait(false);
-                    Debug.Assert(context.Ticket != null);
-
-                    var result = AuthenticateResult.Success(context.Ticket);
-                    return result;
-                }
-            }
         }
 
         [SuppressMessage("ReSharper", "AutoPropertyCanBeMadeGetOnly.Local")]

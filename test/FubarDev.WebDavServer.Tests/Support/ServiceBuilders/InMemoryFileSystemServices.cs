@@ -3,7 +3,6 @@
 // </copyright>
 
 using System;
-using System.Collections.Concurrent;
 
 using FubarDev.WebDavServer.FileSystem;
 using FubarDev.WebDavServer.FileSystem.InMemory;

@@ -8,6 +8,7 @@ using System.Threading;
 using System.Threading.Tasks;
 
 using DecaTec.WebDav;
+using DecaTec.WebDav.Headers;
 using DecaTec.WebDav.WebDavArtifacts;
 
 using Xunit;

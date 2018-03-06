@@ -6,7 +6,7 @@ using System.Net.Http;
 using System.Threading.Tasks;
 using System.Xml.Linq;
 
-using DecaTec.WebDav;
+using DecaTec.WebDav.Headers;
 using DecaTec.WebDav.WebDavArtifacts;
 
 using FubarDev.WebDavServer.Model;
@@ -22,8 +22,7 @@ namespace FubarDev.WebDavServer.Tests.XmlLang
         {
             var prop = new Prop
             {
-                CreationDateSpecified = true,
-                CreationDate = string.Empty,
+                CreationDateString = string.Empty,
             };
 
             var findResult = await Client.PropFindAsync(
