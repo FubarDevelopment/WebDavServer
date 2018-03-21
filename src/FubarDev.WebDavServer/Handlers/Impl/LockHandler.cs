@@ -197,7 +197,7 @@ namespace FubarDev.WebDavServer.Handlers.Impl
             Debug.Assert(result.RefreshedLocks != null, "result.RefreshedLocks != null");
             var prop = new prop()
             {
-                Any = result.RefreshedLocks.Select(x => x.ToXElement()).ToArray(),
+                Any = result.RefreshedLocks.Select(x => new XElement(WebDavXml.Dav + "lockdiscovery", x.ToXElement())).ToArray(),
             };
 
             return new WebDavResult<prop>(WebDavStatusCode.OK, prop);

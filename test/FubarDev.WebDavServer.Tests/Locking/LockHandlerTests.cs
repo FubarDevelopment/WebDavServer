@@ -260,13 +260,15 @@ namespace FubarDev.WebDavServer.Tests.Locking
                 .ConfigureAwait(false);
             lockResponse.EnsureSuccessStatusCode();
             var prop = await WebDavResponseContentParser.ParsePropResponseContentAsync(lockResponse.Content).ConfigureAwait(false);
-            var lockToken = prop.LockDiscovery.ActiveLock.Single().LockToken.Href;
-            Assert.True(AbsoluteUri.TryParse(lockToken, out var lockTokenUri));
-            var refreshResult = await Client.RefreshLockAsync(
+            var lockToken = prop.LockDiscovery.ActiveLock.Single().LockToken;
+            Assert.True(AbsoluteUri.TryParse(lockToken.Href, out var lockTokenUri));
+            var refreshResponse = await Client.RefreshLockAsync(
                 "/",
                 WebDavTimeoutHeaderValue.CreateInfiniteWebDavTimeout(),
                 new LockToken(lockTokenUri)).ConfigureAwait(false);
-            refreshResult.EnsureSuccessStatusCode();
+            refreshResponse.EnsureSuccessStatusCode();
+            var refreshProp = await WebDavResponseContentParser.ParsePropResponseContentAsync(refreshResponse.Content).ConfigureAwait(false);
+            Assert.NotNull(refreshProp.LockDiscovery);
         }
 
         [Fact]
