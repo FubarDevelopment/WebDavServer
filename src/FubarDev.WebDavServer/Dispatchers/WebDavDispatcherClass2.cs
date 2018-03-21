@@ -46,15 +46,13 @@ namespace FubarDev.WebDavServer.Dispatchers
             {
                 var handlerFound = false;
 
-                var lockHandler = handler as ILockHandler;
-                if (lockHandler != null)
+                if (handler is ILockHandler lockHandler)
                 {
                     _lockHandler = lockHandler;
                     handlerFound = true;
                 }
 
-                var unlockHandler = handler as IUnlockHandler;
-                if (unlockHandler != null)
+                if (handler is IUnlockHandler unlockHandler)
                 {
                     _unlockHandler = unlockHandler;
                     handlerFound = true;

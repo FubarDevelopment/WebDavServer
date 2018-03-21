@@ -84,71 +84,61 @@ namespace FubarDev.WebDavServer.Dispatchers
             {
                 var handlerFound = false;
 
-                var optionsHandler = class1Handler as IOptionsHandler;
-                if (optionsHandler != null)
+                if (class1Handler is IOptionsHandler optionsHandler)
                 {
                     _optionsHandler = optionsHandler;
                     handlerFound = true;
                 }
 
-                var propFindHandler = class1Handler as IPropFindHandler;
-                if (propFindHandler != null)
+                if (class1Handler is IPropFindHandler propFindHandler)
                 {
                     _propFindHandler = propFindHandler;
                     handlerFound = true;
                 }
 
-                var getHandler = class1Handler as IGetHandler;
-                if (getHandler != null)
+                if (class1Handler is IGetHandler getHandler)
                 {
                     _getHandler = getHandler;
                     handlerFound = true;
                 }
 
-                var headHandler = class1Handler as IHeadHandler;
-                if (headHandler != null)
+                if (class1Handler is IHeadHandler headHandler)
                 {
                     _headHandler = headHandler;
                     handlerFound = true;
                 }
 
-                var propPatchHandler = class1Handler as IPropPatchHandler;
-                if (propPatchHandler != null)
+                if (class1Handler is IPropPatchHandler propPatchHandler)
                 {
                     _propPatchHandler = propPatchHandler;
                     handlerFound = true;
                 }
 
-                var putHandler = class1Handler as IPutHandler;
-                if (putHandler != null)
+                if (class1Handler is IPutHandler putHandler)
                 {
                     _putHandler = putHandler;
                     handlerFound = true;
                 }
 
-                var mkColHandler = class1Handler as IMkColHandler;
-                if (mkColHandler != null)
+                if (class1Handler is IMkColHandler mkColHandler)
                 {
                     _mkColHandler = mkColHandler;
                     handlerFound = true;
                 }
 
-                var deleteHandler = class1Handler as IDeleteHandler;
-                if (deleteHandler != null)
+                if (class1Handler is IDeleteHandler deleteHandler)
                 {
                     _deleteHandler = deleteHandler;
                     handlerFound = true;
                 }
 
-                var copyHandler = class1Handler as ICopyHandler;
-                if (copyHandler != null)
+                if (class1Handler is ICopyHandler copyHandler)
                 {
                     _copyHandler = copyHandler;
                     handlerFound = true;
                 }
 
-                var moveHandler = class1Handler as IMoveHandler;
-                if (moveHandler != null)
+                if (class1Handler is IMoveHandler moveHandler)
                 {
                     _moveHandler = moveHandler;
                     handlerFound = true;
@@ -288,8 +278,7 @@ namespace FubarDev.WebDavServer.Dispatchers
             if (propStore != null)
                 yield return _deadPropertyFactory.Create(propStore, entry, DisplayNameProperty.PropertyName);
 
-            var doc = entry as IDocument;
-            if (doc != null)
+            if (entry is IDocument doc)
             {
                 yield return new ContentLengthProperty(doc.Length);
                 if (propStore != null)
@@ -316,8 +305,7 @@ namespace FubarDev.WebDavServer.Dispatchers
         /// <inheritdoc />
         public bool TryCreateDeadProperty(IPropertyStore store, IEntry entry, XName name, out IDeadProperty deadProperty)
         {
-            CreateDeadPropertyDelegate createDeadProp;
-            if (!_defaultCreationMap.Value.TryGetValue(name, out createDeadProp))
+            if (!_defaultCreationMap.Value.TryGetValue(name, out var createDeadProp))
             {
                 deadProperty = null;
                 return false;
