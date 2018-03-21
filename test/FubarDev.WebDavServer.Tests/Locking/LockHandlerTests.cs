@@ -272,6 +272,49 @@ namespace FubarDev.WebDavServer.Tests.Locking
         }
 
         [Fact]
+        public async Task TryRelockRefreshedLock()
+        {
+            var lockResponse = await Client.LockAsync(
+                    "/",
+                    WebDavTimeoutHeaderValue.CreateInfiniteWebDavTimeout(),
+                    WebDavDepthHeaderValue.Infinity,
+                    new LockInfo()
+                    {
+                        LockScope = LockScope.CreateExclusiveLockScope(),
+                        LockType = LockType.CreateWriteLockType(),
+                    })
+                .ConfigureAwait(false);
+            lockResponse.EnsureSuccessStatusCode();
+            var prop = await WebDavResponseContentParser.ParsePropResponseContentAsync(lockResponse.Content).ConfigureAwait(false);
+            var lockToken = prop.LockDiscovery.ActiveLock.Single().LockToken;
+            Assert.True(AbsoluteUri.TryParse(lockToken.Href, out var lockTokenUri));
+            var refreshResponse = await Client.RefreshLockAsync(
+                "/",
+                WebDavTimeoutHeaderValue.CreateInfiniteWebDavTimeout(),
+                new LockToken(lockTokenUri)).ConfigureAwait(false);
+            refreshResponse.EnsureSuccessStatusCode();
+            var refreshProp = await WebDavResponseContentParser.ParsePropResponseContentAsync(refreshResponse.Content).ConfigureAwait(false);
+            Assert.NotNull(refreshProp.LockDiscovery);
+            var refreshLockToken = refreshProp.LockDiscovery.ActiveLock.Single().LockToken;
+            //Assert.Equal(lockToken.Href, refreshLockToken.Href);
+
+            Assert.True(AbsoluteUri.TryParse(refreshLockToken.Href, out var refreshLockTokenUri));
+            var unlockResponse = await Client.UnlockAsync("/", new LockToken(refreshLockTokenUri)).ConfigureAwait(false);
+            unlockResponse.EnsureSuccessStatusCode();
+            var secondLockResponse = await Client.LockAsync(
+                    "/",
+                    WebDavTimeoutHeaderValue.CreateInfiniteWebDavTimeout(),
+                    WebDavDepthHeaderValue.Infinity,
+                    new LockInfo()
+                    {
+                        LockScope = LockScope.CreateExclusiveLockScope(),
+                        LockType = LockType.CreateWriteLockType(),
+                    })
+                .ConfigureAwait(false);
+            secondLockResponse.EnsureSuccessStatusCode();
+        }
+
+        [Fact]
         public async Task AddLockCreatesDocumentTest()
         {
             var response = await Client.LockAsync(
