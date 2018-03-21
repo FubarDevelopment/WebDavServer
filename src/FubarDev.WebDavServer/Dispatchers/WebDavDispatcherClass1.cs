@@ -38,6 +38,9 @@ namespace FubarDev.WebDavServer.Dispatchers
         [NotNull]
         private readonly IDeadPropertyFactory _deadPropertyFactory;
 
+        [NotNull]
+        private readonly IMimeTypeDetector _mimeTypeDetector;
+
         [CanBeNull]
         private readonly IPropFindHandler _propFindHandler;
 
@@ -74,10 +77,17 @@ namespace FubarDev.WebDavServer.Dispatchers
         /// <param name="class1Handlers">The WebDAV class 1 handlers</param>
         /// <param name="context">The WebDAV context</param>
         /// <param name="deadPropertyFactory">The factory to create dead properties</param>
+        /// <param name="mimeTypeDetector">The mime type detector for the getmimetype property</param>
         /// <param name="options">The options for the WebDAV class 1 implementation</param>
-        public WebDavDispatcherClass1([NotNull] [ItemNotNull] IEnumerable<IClass1Handler> class1Handlers, [NotNull] IWebDavContext context, [NotNull] IDeadPropertyFactory deadPropertyFactory, [CanBeNull] IOptions<WebDavDispatcherClass1Options> options)
+        public WebDavDispatcherClass1(
+            [NotNull] [ItemNotNull] IEnumerable<IClass1Handler> class1Handlers,
+            [NotNull] IWebDavContext context,
+            [NotNull] IDeadPropertyFactory deadPropertyFactory,
+            [NotNull] IMimeTypeDetector mimeTypeDetector,
+            [CanBeNull] IOptions<WebDavDispatcherClass1Options> options)
         {
             _deadPropertyFactory = deadPropertyFactory;
+            _mimeTypeDetector = mimeTypeDetector;
             var httpMethods = new HashSet<string>();
 
             foreach (var class1Handler in class1Handlers)
@@ -316,14 +326,14 @@ namespace FubarDev.WebDavServer.Dispatchers
         }
 
         [NotNull]
-        private static IReadOnlyDictionary<XName, CreateDeadPropertyDelegate> CreateDeadPropertiesMap([NotNull] WebDavDispatcherClass1Options options)
+        private IReadOnlyDictionary<XName, CreateDeadPropertyDelegate> CreateDeadPropertiesMap([NotNull] WebDavDispatcherClass1Options options)
         {
             var result = new Dictionary<XName, CreateDeadPropertyDelegate>()
             {
                 [EntityTag.PropertyName] = (store, entry, name) => new GetETagProperty(store, entry),
                 [DisplayNameProperty.PropertyName] = (store, entry, name) => new DisplayNameProperty(entry, store, options.HideExtensionForDisplayName),
                 [GetContentLanguageProperty.PropertyName] = (store, entry, name) => new GetContentLanguageProperty(entry, store),
-                [GetContentTypeProperty.PropertyName] = (store, entry, name) => new GetContentTypeProperty(entry, store),
+                [GetContentTypeProperty.PropertyName] = (store, entry, name) => new GetContentTypeProperty(_mimeTypeDetector, entry, store),
             };
 
             return result;

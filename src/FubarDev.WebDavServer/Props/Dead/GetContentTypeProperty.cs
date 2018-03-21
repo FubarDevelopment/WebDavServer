@@ -2,7 +2,6 @@
 // Copyright (c) Fubar Development Junker. All rights reserved.
 // </copyright>
 
-using System.IO;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Xml.Linq;
@@ -26,8 +25,13 @@ namespace FubarDev.WebDavServer.Props.Dead
         /// </summary>
         public static readonly XName PropertyName = WebDavXml.Dav + "getcontenttype";
 
+        [NotNull]
+        private readonly IMimeTypeDetector _mimeTypeDetector;
+
+        [NotNull]
         private readonly IEntry _entry;
 
+        [NotNull]
         private readonly IPropertyStore _store;
 
         private string _value;
@@ -35,12 +39,14 @@ namespace FubarDev.WebDavServer.Props.Dead
         /// <summary>
         /// Initializes a new instance of the <see cref="GetContentTypeProperty"/> class.
         /// </summary>
+        /// <param name="mimeTypeDetector">The mime type detector</param>
         /// <param name="entry">The entry to instantiate this property for</param>
         /// <param name="store">The property store to store this property</param>
         /// <param name="cost">The cost of querying the display names property</param>
-        public GetContentTypeProperty([NotNull] IEntry entry, [NotNull] IPropertyStore store, int? cost = null)
+        public GetContentTypeProperty([NotNull] IMimeTypeDetector mimeTypeDetector, [NotNull] IEntry entry, [NotNull] IPropertyStore store, int? cost = null)
             : base(PropertyName, null, cost ?? store.Cost, null, null, WebDavXml.Dav + "contenttype")
         {
+            _mimeTypeDetector = mimeTypeDetector;
             _entry = entry;
             _store = store;
         }
@@ -58,12 +64,12 @@ namespace FubarDev.WebDavServer.Props.Dead
                 return _value = storedValue.Value;
             }
 
-            var fileExt = Path.GetExtension(_entry.Name);
-            if (string.IsNullOrEmpty(fileExt))
+            if (!_mimeTypeDetector.TryDetect(_entry, out var mimeType))
+            {
                 return Utils.MimeTypesMap.DefaultMimeType;
+            }
 
-            var newName = Utils.MimeTypesMap.GetMimeType(fileExt.Substring(1));
-            return newName;
+            return mimeType;
         }
 
         /// <inheritdoc />

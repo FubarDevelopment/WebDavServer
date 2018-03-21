@@ -2,8 +2,6 @@
 // Copyright (c) Fubar Development Junker. All rights reserved.
 // </copyright>
 
-using System;
-
 using FubarDev.WebDavServer;
 using FubarDev.WebDavServer.AspNetCore;
 using FubarDev.WebDavServer.AspNetCore.Filters;
@@ -17,13 +15,12 @@ using FubarDev.WebDavServer.Handlers;
 using FubarDev.WebDavServer.Locking;
 using FubarDev.WebDavServer.Props.Dead;
 using FubarDev.WebDavServer.Props.Store;
+using FubarDev.WebDavServer.Utils;
 
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.DependencyInjection.Extensions;
 using Microsoft.Extensions.Options;
-
-using Scrutor;
 
 // ReSharper disable once CheckNamespace
 namespace Microsoft.Extensions.DependencyInjection
@@ -69,6 +66,7 @@ namespace Microsoft.Extensions.DependencyInjection
             services.TryAddScoped<IWebDavContext, WebDavContext>();
             services.TryAddSingleton<ILockCleanupTask, LockCleanupTask>();
             services.TryAddSingleton<IPathTraversalEngine, PathTraversalEngine>();
+            services.TryAddSingleton<IMimeTypeDetector, DefaultMimeTypeDetector>();
             services
                 .AddOptions()
                 .AddScoped<IWebDavDispatcher, WebDavServer>()

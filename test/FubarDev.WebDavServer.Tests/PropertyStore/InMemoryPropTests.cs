@@ -97,6 +97,21 @@ namespace FubarDev.WebDavServer.Tests.PropertyStore
             Assert.Equal("test1-Dokument", await displayNameProperty.GetValueAsync(ct).ConfigureAwait(false));
         }
 
+        [Theory]
+        [InlineData("test1.txt", "text/plain")]
+        [InlineData("test1.docx", "application/vnd.openxmlformats-officedocument.wordprocessingml.document")]
+        [InlineData("test1.png", "image/png")]
+        public async Task ContentTypeDetected(string fileName, string contentType)
+        {
+            var ct = CancellationToken.None;
+
+            var root = await FileSystem.Root;
+            var doc = await root.CreateDocumentAsync(fileName, ct).ConfigureAwait(false);
+            var contentTypeProperty = await GetContentTypePropertyAsync(doc, ct).ConfigureAwait(false);
+
+            Assert.Equal(contentType, await contentTypeProperty.GetValueAsync(ct).ConfigureAwait(false));
+        }
+
         public void Dispose()
         {
             _serviceScope.Dispose();
@@ -108,6 +123,14 @@ namespace FubarDev.WebDavServer.Tests.PropertyStore
             Assert.NotNull(untypedDisplayNameProperty);
             var displayNameProperty = Assert.IsType<DisplayNameProperty>(untypedDisplayNameProperty);
             return displayNameProperty;
+        }
+
+        private async Task<GetContentTypeProperty> GetContentTypePropertyAsync(IEntry entry, CancellationToken ct)
+        {
+            var untypedContentTypeProperty = await entry.GetProperties(Dispatcher).Single(x => x.Name == GetContentTypeProperty.PropertyName, ct).ConfigureAwait(false);
+            Assert.NotNull(untypedContentTypeProperty);
+            var contentTypeProperty = Assert.IsType<GetContentTypeProperty>(untypedContentTypeProperty);
+            return contentTypeProperty;
         }
     }
 }

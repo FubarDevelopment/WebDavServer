@@ -800,8 +800,9 @@ namespace FubarDev.WebDavServer.Utils
         /// Gets the mime type of a document name
         /// </summary>
         /// <param name="fileName">The document name to get the mime type for</param>
-        /// <returns>The mime type of the <paramref name="fileName"/></returns>
-        public static string GetMimeType(string fileName)
+        /// <param name="mimeType">The mime type of the <paramref name="fileName"/></param>
+        /// <returns><c>true</c> when the mime type could be detected</returns>
+        public static bool TryGetMimeType(string fileName, out string mimeType)
         {
             string ext = fileName;
             var ind = ext.LastIndexOf('.');
@@ -810,13 +811,13 @@ namespace FubarDev.WebDavServer.Utils
                 ext = fileName.Substring(ind + 1);
             }
 
-            string result;
-            if (_mimeTypeMap.Value.TryGetValue(ext, out result))
+            if (_mimeTypeMap.Value.TryGetValue(ext, out mimeType))
             {
-                return result;
+                return true;
             }
 
-            return DefaultMimeType;
+            mimeType = DefaultMimeType;
+            return false;
         }
     }
 }
