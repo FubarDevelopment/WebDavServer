@@ -16,6 +16,7 @@ using FubarDev.WebDavServer.FileSystem;
 using FubarDev.WebDavServer.Locking;
 using FubarDev.WebDavServer.Model;
 using FubarDev.WebDavServer.Model.Headers;
+using FubarDev.WebDavServer.Props;
 using FubarDev.WebDavServer.Utils;
 
 using Microsoft.Extensions.Logging;
@@ -29,6 +30,7 @@ namespace FubarDev.WebDavServer.Handlers.Impl
     {
         private readonly IFileSystem _fileSystem;
         private readonly IWebDavContext _context;
+        private readonly IEntryPropertyInitializer _entryPropertyInitializer;
         private readonly ILogger<PutHandler> _logger;
         private readonly ArrayPool<byte> _buffers = ArrayPool<byte>.Shared;
 
@@ -37,11 +39,13 @@ namespace FubarDev.WebDavServer.Handlers.Impl
         /// </summary>
         /// <param name="fileSystem">The root file system</param>
         /// <param name="context">The WebDAV request context</param>
+        /// <param name="entryPropertyInitializer">The property initializer</param>
         /// <param name="logger">The logger</param>
-        public PutHandler(IFileSystem fileSystem, IWebDavContext context, ILogger<PutHandler> logger)
+        public PutHandler(IFileSystem fileSystem, IWebDavContext context, IEntryPropertyInitializer entryPropertyInitializer, ILogger<PutHandler> logger)
         {
             _fileSystem = fileSystem;
             _context = context;
+            _entryPropertyInitializer = entryPropertyInitializer;
             _logger = logger;
         }
 
@@ -105,9 +109,8 @@ namespace FubarDev.WebDavServer.Handlers.Impl
                     Debug.Assert(selectionResult.MissingNames.Count == 1, "selectionResult.MissingNames.Count == 1");
                     Debug.Assert(selectionResult.Collection != null, "selectionResult.Collection != null");
                     var newName = selectionResult.MissingNames.Single();
-                    document =
-                        await selectionResult.Collection.CreateDocumentAsync(newName, cancellationToken)
-                            .ConfigureAwait(false);
+                    document = await selectionResult.Collection.CreateDocumentAsync(newName, cancellationToken)
+                        .ConfigureAwait(false);
                 }
 
                 Debug.Assert(document != null, nameof(document) + " != null");
@@ -138,6 +141,12 @@ namespace FubarDev.WebDavServer.Handlers.Impl
                     }
 
                     await docPropertyStore.UpdateETagAsync(document, cancellationToken).ConfigureAwait(false);
+                    await _entryPropertyInitializer.CreatePropertiesAsync(
+                            document,
+                            docPropertyStore,
+                            _context,
+                            cancellationToken)
+                        .ConfigureAwait(false);
                 }
 
                 var parent = document.Parent;

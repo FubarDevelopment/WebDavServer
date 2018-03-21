@@ -25,7 +25,7 @@ namespace FubarDev.WebDavServer.Props.Dead
         /// </summary>
         public static readonly XName PropertyName = WebDavXml.Dav + "getcontenttype";
 
-        [NotNull]
+        [CanBeNull]
         private readonly IMimeTypeDetector _mimeTypeDetector;
 
         [NotNull]
@@ -39,11 +39,11 @@ namespace FubarDev.WebDavServer.Props.Dead
         /// <summary>
         /// Initializes a new instance of the <see cref="GetContentTypeProperty"/> class.
         /// </summary>
-        /// <param name="mimeTypeDetector">The mime type detector</param>
         /// <param name="entry">The entry to instantiate this property for</param>
         /// <param name="store">The property store to store this property</param>
+        /// <param name="mimeTypeDetector">The mime type detector</param>
         /// <param name="cost">The cost of querying the display names property</param>
-        public GetContentTypeProperty([NotNull] IMimeTypeDetector mimeTypeDetector, [NotNull] IEntry entry, [NotNull] IPropertyStore store, int? cost = null)
+        public GetContentTypeProperty([NotNull] IEntry entry, [NotNull] IPropertyStore store, [CanBeNull] IMimeTypeDetector mimeTypeDetector = null, int? cost = null)
             : base(PropertyName, null, cost ?? store.Cost, null, null, WebDavXml.Dav + "contenttype")
         {
             _mimeTypeDetector = mimeTypeDetector;
@@ -64,7 +64,7 @@ namespace FubarDev.WebDavServer.Props.Dead
                 return _value = storedValue.Value;
             }
 
-            if (!_mimeTypeDetector.TryDetect(_entry, out var mimeType))
+            if (_mimeTypeDetector == null || !_mimeTypeDetector.TryDetect(_entry, out var mimeType))
             {
                 return Utils.MimeTypesMap.DefaultMimeType;
             }

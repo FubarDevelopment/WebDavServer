@@ -14,6 +14,7 @@ using FubarDev.WebDavServer.FileSystem;
 using FubarDev.WebDavServer.Locking;
 using FubarDev.WebDavServer.Model;
 using FubarDev.WebDavServer.Model.Headers;
+using FubarDev.WebDavServer.Props;
 
 namespace FubarDev.WebDavServer.Handlers.Impl
 {
@@ -24,16 +25,19 @@ namespace FubarDev.WebDavServer.Handlers.Impl
     {
         private readonly IFileSystem _rootFileSystem;
         private readonly IWebDavContext _context;
+        private readonly IEntryPropertyInitializer _entryPropertyInitializer;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="MkColHandler"/> class.
         /// </summary>
         /// <param name="rootFileSystem">The root file system</param>
         /// <param name="context">The WebDAV request context</param>
-        public MkColHandler(IFileSystem rootFileSystem, IWebDavContext context)
+        /// <param name="entryPropertyInitializer">The property initializer</param>
+        public MkColHandler(IFileSystem rootFileSystem, IWebDavContext context, IEntryPropertyInitializer entryPropertyInitializer)
         {
             _rootFileSystem = rootFileSystem;
             _context = context;
+            _entryPropertyInitializer = entryPropertyInitializer;
         }
 
         /// <inheritdoc />
@@ -76,7 +80,17 @@ namespace FubarDev.WebDavServer.Handlers.Impl
                 Debug.Assert(collection != null, "collection != null");
                 try
                 {
-                    await collection.CreateCollectionAsync(newName, cancellationToken).ConfigureAwait(false);
+                    var newCollection = await collection.CreateCollectionAsync(newName, cancellationToken)
+                        .ConfigureAwait(false);
+                    if (newCollection.FileSystem.PropertyStore != null)
+                    {
+                        await _entryPropertyInitializer.CreatePropertiesAsync(
+                                newCollection,
+                                newCollection.FileSystem.PropertyStore,
+                                _context,
+                                cancellationToken)
+                            .ConfigureAwait(false);
+                    }
                 }
                 catch (Exception ex)
                 {
