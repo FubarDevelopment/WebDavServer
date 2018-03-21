@@ -128,14 +128,15 @@ namespace FubarDev.WebDavServer.Handlers.Impl
                 var docPropertyStore = document.FileSystem.PropertyStore;
                 if (docPropertyStore != null)
                 {
-                    await docPropertyStore.UpdateETagAsync(document, cancellationToken).ConfigureAwait(false);
-
+                    // Remove the old dead properties first
                     if (selectionResult.ResultType == SelectionResultType.FoundDocument)
                     {
                         Debug.Assert(selectionResult.Document != null, "selectionResult.Document != null");
                         await docPropertyStore.RemoveAsync(selectionResult.Document, cancellationToken)
                             .ConfigureAwait(false);
                     }
+
+                    await docPropertyStore.UpdateETagAsync(document, cancellationToken).ConfigureAwait(false);
                 }
 
                 var parent = document.Parent;
