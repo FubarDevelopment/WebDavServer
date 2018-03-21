@@ -1,4 +1,4 @@
-﻿// <copyright file="ActiveLock.cs" company="Fubar Development Junker">
+// <copyright file="ActiveLock.cs" company="Fubar Development Junker">
 // Copyright (c) Fubar Development Junker. All rights reserved.
 // </copyright>
 
@@ -94,6 +94,45 @@ namespace FubarDev.WebDavServer.Locking
             LastRefresh = lastRefresh;
             Expiration = timeout == TimeoutHeader.Infinite ? DateTime.MaxValue : (lastRefresh ?? issued) + timeout;
             StateToken = $"urn:uuid:{Guid.NewGuid():D}";
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="ActiveLock"/> class.
+        /// </summary>
+        /// <param name="path">The file system path (root-relative) this lock should be applied to</param>
+        /// <param name="href">The href this lock should be applied to (might be relative or absolute)</param>
+        /// <param name="recursive">Must the lock be applied recursively to all children?</param>
+        /// <param name="owner">The owner of the lock</param>
+        /// <param name="accessType">The <see cref="LockAccessType"/> of the lock</param>
+        /// <param name="shareMode">The <see cref="LockShareMode"/> of the lock</param>
+        /// <param name="timeout">The lock timeout</param>
+        /// <param name="issued">The date/time when this lock was issued</param>
+        /// <param name="lastRefresh">The date/time of the last refresh</param>
+        /// <param name="stateToken">The stateTokenh</param>
+        internal ActiveLock(
+            [NotNull] string path,
+            [NotNull] string href,
+            bool recursive,
+            [CanBeNull] XElement owner,
+            LockAccessType accessType,
+            LockShareMode shareMode,
+            TimeSpan timeout,
+            DateTime issued,
+            DateTime? lastRefresh,
+            [NotNull] string stateToken)
+            : base(
+                path,
+                href,
+                recursive,
+                owner,
+                accessType.Name.LocalName,
+                shareMode.Name.LocalName,
+                timeout)
+        {
+            Issued = issued;
+            LastRefresh = lastRefresh;
+            Expiration = timeout == TimeoutHeader.Infinite ? DateTime.MaxValue : (lastRefresh ?? issued) + timeout;
+            StateToken = stateToken;
         }
 
         /// <inheritdoc />
