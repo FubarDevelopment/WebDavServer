@@ -296,7 +296,7 @@ namespace FubarDev.WebDavServer.Tests.Locking
             var refreshProp = await WebDavResponseContentParser.ParsePropResponseContentAsync(refreshResponse.Content).ConfigureAwait(false);
             Assert.NotNull(refreshProp.LockDiscovery);
             var refreshLockToken = refreshProp.LockDiscovery.ActiveLock.Single().LockToken;
-            //Assert.Equal(lockToken.Href, refreshLockToken.Href);
+            Assert.Equal(lockToken.Href, refreshLockToken.Href);
 
             Assert.True(AbsoluteUri.TryParse(refreshLockToken.Href, out var refreshLockTokenUri));
             var unlockResponse = await Client.UnlockAsync("/", new LockToken(refreshLockTokenUri)).ConfigureAwait(false);
