@@ -48,8 +48,8 @@ namespace FubarDev.WebDavServer.Tests.Handlers
 
             var response = await Client
                 .CopyAsync(
-                    new Uri("text1.txt", UriKind.Relative),
-                    new Uri("text2.txt", UriKind.Relative))
+                    new Uri(Client.BaseAddress, new Uri("text1.txt", UriKind.Relative)),
+                    new Uri(Client.BaseAddress, new Uri("text2.txt", UriKind.Relative)))
                 .ConfigureAwait(false);
             Assert.True(response.IsSuccessStatusCode);
 
@@ -71,8 +71,8 @@ namespace FubarDev.WebDavServer.Tests.Handlers
 
             var response = await Client
                 .CopyAsync(
-                    new Uri("test1", UriKind.Relative),
-                    new Uri("test2", UriKind.Relative))
+                    new Uri(Client.BaseAddress, new Uri("test1", UriKind.Relative)),
+                    new Uri(Client.BaseAddress, new Uri("test2", UriKind.Relative)))
                 .ConfigureAwait(false);
             Assert.True(response.IsSuccessStatusCode);
 
@@ -99,8 +99,8 @@ namespace FubarDev.WebDavServer.Tests.Handlers
 
             var response = await Client
                 .CopyAsync(
-                    new Uri("test1", UriKind.Relative),
-                    new Uri("test2", UriKind.Relative),
+                    new Uri(Client.BaseAddress, new Uri("test1", UriKind.Relative)),
+                    new Uri(Client.BaseAddress, new Uri("test2", UriKind.Relative)),
                     true,
                     WebDavDepthHeaderValue.Zero)
                 .ConfigureAwait(false);
@@ -133,8 +133,8 @@ namespace FubarDev.WebDavServer.Tests.Handlers
 
             var response = await Client
                 .CopyAsync(
-                    new Uri("test1", UriKind.Relative),
-                    new Uri("test2", UriKind.Relative),
+                    new Uri(Client.BaseAddress, new Uri("test1", UriKind.Relative)),
+                    new Uri(Client.BaseAddress, new Uri("test2", UriKind.Relative)),
                     false,
                     WebDavDepthHeaderValue.Infinity)
                 .ConfigureAwait(false);
@@ -167,8 +167,8 @@ namespace FubarDev.WebDavServer.Tests.Handlers
 
             var response = await Client
                 .CopyAsync(
-                    new Uri("test1", UriKind.Relative),
-                    new Uri("test2", UriKind.Relative),
+                    new Uri(Client.BaseAddress, new Uri("test1", UriKind.Relative)),
+                    new Uri(Client.BaseAddress, new Uri("test2", UriKind.Relative)),
                     true,
                     WebDavDepthHeaderValue.Zero)
                 .ConfigureAwait(false);
@@ -199,8 +199,8 @@ namespace FubarDev.WebDavServer.Tests.Handlers
 
             var response = await Client
                 .CopyAsync(
-                    new Uri("test1", UriKind.Relative),
-                    new Uri("test2", UriKind.Relative),
+                    new Uri(Client.BaseAddress, new Uri("test1", UriKind.Relative)),
+                    new Uri(Client.BaseAddress, new Uri("test2", UriKind.Relative)),
                     true,
                     WebDavDepthHeaderValue.Infinity)
                 .ConfigureAwait(false);
@@ -239,8 +239,8 @@ namespace FubarDev.WebDavServer.Tests.Handlers
 
             var response = await Client
                 .CopyAsync(
-                    new Uri("test1", UriKind.Relative),
-                    new Uri("test2", UriKind.Relative),
+                    new Uri(Client.BaseAddress, new Uri("test1", UriKind.Relative)),
+                    new Uri(Client.BaseAddress, new Uri("test2", UriKind.Relative)),
                     true,
                     WebDavDepthHeaderValue.Infinity)
                 .ConfigureAwait(false);
@@ -283,8 +283,8 @@ namespace FubarDev.WebDavServer.Tests.Handlers
 
             var response = await Client
                 .CopyAsync(
-                    new Uri("test1", UriKind.Relative),
-                    new Uri("test2", UriKind.Relative),
+                    new Uri(Client.BaseAddress, new Uri("test1", UriKind.Relative)),
+                    new Uri(Client.BaseAddress, new Uri("test2", UriKind.Relative)),
                     true,
                     WebDavDepthHeaderValue.Zero)
                 .ConfigureAwait(false);
@@ -323,8 +323,8 @@ namespace FubarDev.WebDavServer.Tests.Handlers
 
             var response = await Client
                 .CopyAsync(
-                    new Uri("test1", UriKind.Relative),
-                    new Uri("test2", UriKind.Relative),
+                    new Uri(Client.BaseAddress, new Uri("test1", UriKind.Relative)),
+                    new Uri(Client.BaseAddress, new Uri("test2", UriKind.Relative)),
                     true,
                     WebDavDepthHeaderValue.Infinity)
                 .ConfigureAwait(false);
@@ -364,8 +364,8 @@ namespace FubarDev.WebDavServer.Tests.Handlers
 
             var response = await Client
                 .CopyAsync(
-                    new Uri("test1", UriKind.Relative),
-                    new Uri("test2", UriKind.Relative),
+                    new Uri(Client.BaseAddress, new Uri("test1", UriKind.Relative)),
+                    new Uri(Client.BaseAddress, new Uri("test2", UriKind.Relative)),
                     true,
                     WebDavDepthHeaderValue.Zero)
                 .ConfigureAwait(false);
@@ -401,8 +401,8 @@ namespace FubarDev.WebDavServer.Tests.Handlers
 
             var response = await Client
                 .CopyAsync(
-                    new Uri("test1", UriKind.Relative),
-                    new Uri("test2", UriKind.Relative),
+                    new Uri(Client.BaseAddress, new Uri("test1", UriKind.Relative)),
+                    new Uri(Client.BaseAddress, new Uri("test2", UriKind.Relative)),
                     true,
                     WebDavDepthHeaderValue.Infinity)
                 .ConfigureAwait(false);
@@ -471,8 +471,8 @@ namespace FubarDev.WebDavServer.Tests.Handlers
 
             var response = await Client
                 .CopyAsync(
-                    new Uri("test1", UriKind.Relative),
-                    new Uri("test2", UriKind.Relative),
+                    new Uri(Client.BaseAddress, new Uri("test1", UriKind.Relative)),
+                    new Uri(Client.BaseAddress, new Uri("test2", UriKind.Relative)),
                     true,
                     WebDavDepthHeaderValue.Infinity)
                 .ConfigureAwait(false);
