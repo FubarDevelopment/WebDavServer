@@ -55,7 +55,7 @@ namespace FubarDev.WebDavServer.Handlers.Impl
 
             var lockRequirements = new Lock(
                 new Uri(path, UriKind.Relative),
-                _context.RelativeRequestUrl,
+                _context.PublicRelativeRequestUrl,
                 false,
                 new XElement(WebDavXml.Dav + "owner", _context.User.Identity.Name),
                 LockAccessType.Write,

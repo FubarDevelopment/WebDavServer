@@ -84,7 +84,7 @@ namespace FubarDev.WebDavServer.Handlers.Impl
 
             var lockRequirements = new Lock(
                 new Uri(path, UriKind.Relative),
-                _context.RelativeRequestUrl,
+                _context.PublicRelativeRequestUrl,
                 false,
                 new XElement(WebDavXml.Dav + "owner", _context.User.Identity.Name),
                 LockAccessType.Write,
@@ -170,7 +170,7 @@ namespace FubarDev.WebDavServer.Handlers.Impl
                     {
                         new response()
                         {
-                            href = _context.BaseUrl.Append(path, true).OriginalString,
+                            href = _context.PublicControllerUrl.Append(path, true).OriginalString,
                             ItemsElementName = propStats.Select(x => ItemsChoiceType2.propstat).ToArray(),
                             Items = propStats.Cast<object>().ToArray(),
                         },

@@ -26,28 +26,70 @@ namespace FubarDev.WebDavServer
         string RequestProtocol { get; }
 
         /// <summary>
-        /// Gets the relative request URL (e.g. <c>/webdav/test.txt</c>)
+        /// Gets the relative request URL (e.g. <c>/webdav/path-to-controller/test.txt</c>)
         /// </summary>
         [NotNull]
-        Uri RelativeRequestUrl { get; }
+        Uri PublicRelativeRequestUrl { get; }
 
         /// <summary>
-        /// Gets the absolute request URL (e.g. http://localhost/webdav/test.txt)
+        /// Gets the absolute request URL (e.g. <c>http://your-webdav-server/webdav/path-to-controller/test.txt</c>)
         /// </summary>
         [NotNull]
-        Uri AbsoluteRequestUrl { get; }
+        Uri PublicAbsoluteRequestUrl { get; }
 
         /// <summary>
-        /// Gets the base URL of the web service (e.g. http://localhost/webdav/)
+        /// Gets the base URL of the web service up to the controller path (e.g. <c>http://your-webdav-server/webdav/path-to-controller/</c>)
         /// </summary>
         [NotNull]
-        Uri BaseUrl { get; }
+        Uri PublicControllerUrl { get; }
 
         /// <summary>
-        /// Gets the root URL of the web service (e.g. http://localhost/)
+        /// Gets the base URL of the web service (e.g. <c>http://your-webdav-server/webdav/</c>)
         /// </summary>
         [NotNull]
-        Uri RootUrl { get; }
+        Uri PublicBaseUrl { get; }
+
+        /// <summary>
+        /// Gets the root URL of the web service (e.g. <c>http://your-webdav-server/</c>)
+        /// </summary>
+        [NotNull]
+        Uri PublicRootUrl { get; }
+
+        /// <summary>
+        /// Gets the relative request URL (e.g. <c>/base-path/path-to-controller/test.txt</c>)
+        /// </summary>
+        [NotNull]
+        Uri ServiceRelativeRequestUrl { get; }
+
+        /// <summary>
+        /// Gets the absolute request URL (e.g. <c>http://localhost/base-path/path-to-controller/test.txt</c>)
+        /// </summary>
+        [NotNull]
+        Uri ServiceAbsoluteRequestUrl { get; }
+
+        /// <summary>
+        /// Gets the base URL of the web service (e.g. <c>http://localhost/base-path/</c>)
+        /// </summary>
+        [NotNull]
+        Uri ServiceBaseUrl { get; }
+
+        /// <summary>
+        /// Gets the root URL of the web service (e.g. <c>http://localhost/</c>)
+        /// </summary>
+        [NotNull]
+        Uri ServiceRootUrl { get; }
+
+        /// <summary>
+        /// Gets the relative request URL (e.g. <c>path-to-controller/</c>)
+        /// </summary>
+        [NotNull]
+        Uri ControllerRelativeUrl { get; }
+
+        /// <summary>
+        /// Gets the relative request URL (e.g. <c>test.txt</c>)
+        /// </summary>
+        [NotNull]
+        Uri ActionUrl { get; }
 
         /// <summary>
         /// Gets the parsed user agent

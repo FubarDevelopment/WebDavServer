@@ -13,6 +13,7 @@ using FubarDev.WebDavServer.FileSystem;
 using FubarDev.WebDavServer.Formatters;
 using FubarDev.WebDavServer.Handlers;
 using FubarDev.WebDavServer.Locking;
+using FubarDev.WebDavServer.Props;
 using FubarDev.WebDavServer.Props.Dead;
 using FubarDev.WebDavServer.Props.Store;
 using FubarDev.WebDavServer.Utils;
@@ -67,6 +68,7 @@ namespace Microsoft.Extensions.DependencyInjection
             services.TryAddSingleton<ILockCleanupTask, LockCleanupTask>();
             services.TryAddSingleton<IPathTraversalEngine, PathTraversalEngine>();
             services.TryAddSingleton<IMimeTypeDetector, DefaultMimeTypeDetector>();
+            services.TryAddSingleton<IEntryPropertyInitializer, DefaultEntryPropertyInitializer>();
             services
                 .AddOptions()
                 .AddScoped<IWebDavDispatcher, WebDavServer>()

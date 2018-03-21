@@ -137,9 +137,9 @@ namespace FubarDev.WebDavServer.Handlers.Impl
             foreach (var entry in entries)
             {
                 var entryPath = entry.Path.OriginalString;
-                var href = _context.BaseUrl.Append(entryPath, true);
+                var href = _context.PublicControllerUrl.Append(entryPath, true);
                 if (!_options.UseAbsoluteHref)
-                    href = new Uri("/" + _context.RootUrl.MakeRelativeUri(href).OriginalString, UriKind.Relative);
+                    href = new Uri("/" + _context.PublicRootUrl.MakeRelativeUri(href).OriginalString, UriKind.Relative);
 
                 var collector = new PropertyCollector(this, _context, new ReadableFilter(), new PropFilter(prop));
                 var propStats = await collector.GetPropertiesAsync(entry, int.MaxValue, cancellationToken).ConfigureAwait(false);
@@ -186,9 +186,9 @@ namespace FubarDev.WebDavServer.Handlers.Impl
             foreach (var entry in entries)
             {
                 var entryPath = entry.Path.OriginalString;
-                var href = _context.BaseUrl.Append(entryPath, true);
+                var href = _context.PublicControllerUrl.Append(entryPath, true);
                 if (!_options.UseAbsoluteHref)
-                    href = new Uri("/" + _context.RootUrl.MakeRelativeUri(href).OriginalString, UriKind.Relative);
+                    href = new Uri("/" + _context.PublicRootUrl.MakeRelativeUri(href).OriginalString, UriKind.Relative);
 
                 var collector = new PropertyCollector(this, _context, new ReadableFilter(), new CostFilter(0));
                 var propStats = await collector.GetPropertiesAsync(entry, 0, cancellationToken).ConfigureAwait(false);
@@ -219,9 +219,9 @@ namespace FubarDev.WebDavServer.Handlers.Impl
             foreach (var entry in entries)
             {
                 var entryPath = entry.Path.OriginalString;
-                var href = _context.BaseUrl.Append(entryPath, true);
+                var href = _context.PublicControllerUrl.Append(entryPath, true);
                 if (!_options.UseAbsoluteHref)
-                    href = new Uri("/" + _context.RootUrl.MakeRelativeUri(href).OriginalString, UriKind.Relative);
+                    href = new Uri("/" + _context.PublicRootUrl.MakeRelativeUri(href).OriginalString, UriKind.Relative);
 
                 var collector = new PropertyCollector(this, _context, new ReadableFilter(), new CostFilter(0));
                 var propStats = await collector.GetPropertyNamesAsync(entry, cancellationToken).ConfigureAwait(false);

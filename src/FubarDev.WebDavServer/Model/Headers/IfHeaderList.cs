@@ -92,7 +92,7 @@ namespace FubarDev.WebDavServer.Model.Headers
         [ItemNotNull]
         internal static IEnumerable<IfHeaderList> Parse([NotNull] StringSource source, [NotNull] EntityTagComparer etagComparer, [NotNull] IWebDavContext context)
         {
-            Uri previousResourceTag = context.AbsoluteRequestUrl;
+            Uri previousResourceTag = context.PublicAbsoluteRequestUrl;
             while (!source.SkipWhiteSpace())
             {
                 Uri resourceTag;
@@ -100,7 +100,7 @@ namespace FubarDev.WebDavServer.Model.Headers
                 {
                     // Coded-URL found
                     if (!resourceTag.IsAbsoluteUri)
-                        resourceTag = new Uri(context.RootUrl, resourceTag);
+                        resourceTag = new Uri(context.PublicRootUrl, resourceTag);
                     previousResourceTag = resourceTag;
                     source.SkipWhiteSpace();
                 }
@@ -115,9 +115,9 @@ namespace FubarDev.WebDavServer.Model.Headers
                 if (!source.AdvanceIf(")"))
                     throw new ArgumentException($"{source.Remaining} is not a valid list (not ending with a ')')", nameof(source));
 
-                var relateiveHref = context.RootUrl.IsBaseOf(resourceTag) ? AddRootSlashToUri(context.RootUrl.MakeRelativeUri(resourceTag)) : resourceTag;
-                var path = context.BaseUrl.IsBaseOf(resourceTag) ? context.BaseUrl.MakeRelativeUri(resourceTag) : resourceTag;
-                yield return new IfHeaderList(resourceTag, relateiveHref, path, conditions);
+                var relativeHref = context.PublicControllerUrl.IsBaseOf(resourceTag) ? AddRootSlashToUri(context.PublicControllerUrl.MakeRelativeUri(resourceTag)) : resourceTag;
+                var path = context.PublicControllerUrl.IsBaseOf(resourceTag) ? context.PublicControllerUrl.MakeRelativeUri(resourceTag) : resourceTag;
+                yield return new IfHeaderList(resourceTag, relativeHref, path, conditions);
             }
         }
 

@@ -244,9 +244,9 @@ namespace FubarDev.WebDavServer.Handlers.Impl
 
         private string GetHref(string path)
         {
-            var href = _context.BaseUrl.Append(path, true);
+            var href = _context.PublicControllerUrl.Append(path, true);
             if (!_useAbsoluteHref)
-                return "/" + _context.RootUrl.MakeRelativeUri(href).OriginalString;
+                return "/" + _context.PublicRootUrl.MakeRelativeUri(href).OriginalString;
             return href.OriginalString;
         }
     }

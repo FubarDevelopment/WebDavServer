@@ -50,8 +50,8 @@ namespace FubarDev.WebDavServer.Handlers.Impl
             var releaseStatus = await _lockManager.ReleaseAsync(path, stateToken.StateToken, cancellationToken).ConfigureAwait(false);
             if (releaseStatus != LockReleaseStatus.Success)
             {
-                var href = new Uri(_context.BaseUrl, path);
-                href = new Uri("/" + _context.RootUrl.MakeRelativeUri(href).OriginalString);
+                var href = new Uri(_context.PublicControllerUrl, path);
+                href = new Uri("/" + _context.PublicRootUrl.MakeRelativeUri(href).OriginalString);
                 return new WebDavResult<error>(
                     WebDavStatusCode.Conflict,
                     new error()

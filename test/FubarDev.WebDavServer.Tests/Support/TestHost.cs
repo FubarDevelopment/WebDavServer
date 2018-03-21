@@ -26,13 +26,13 @@ namespace FubarDev.WebDavServer.Tests.Support
 
         public TestHost(IServiceProvider serviceProvider, Uri baseUrl)
         {
-            BaseUrl = baseUrl;
-            RootUrl = new Uri(baseUrl, "/");
+            PublicBaseUrl = baseUrl;
+            PublicRootUrl = new Uri(baseUrl, "/");
             RequestProtocol = "HTTP/1.1";
-            _absoluteRequestUrl = new Lazy<Uri>(() => RootUrl);
+            _absoluteRequestUrl = new Lazy<Uri>(() => PublicRootUrl);
             _relativeRequestUrl = new Lazy<Uri>(() =>
             {
-                var requestUrl = RootUrl.MakeRelativeUri(baseUrl);
+                var requestUrl = PublicRootUrl.MakeRelativeUri(baseUrl);
                 if (!requestUrl.OriginalString.StartsWith("/"))
                     return new Uri("/" + requestUrl.OriginalString, UriKind.Relative);
                 return requestUrl;
@@ -43,10 +43,10 @@ namespace FubarDev.WebDavServer.Tests.Support
 
         public TestHost(IServiceProvider serviceProvider, Uri baseUrl, IHttpContextAccessor httpContextAccessor)
         {
-            BaseUrl = baseUrl;
-            RootUrl = new Uri(baseUrl, "/");
+            PublicBaseUrl = baseUrl;
+            PublicRootUrl = new Uri(baseUrl, "/");
             RequestProtocol = "HTTP/1.1";
-            _absoluteRequestUrl = new Lazy<Uri>(() => new Uri(RootUrl, httpContextAccessor.HttpContext.Request.Path.ToUriComponent()));
+            _absoluteRequestUrl = new Lazy<Uri>(() => new Uri(PublicRootUrl, httpContextAccessor.HttpContext.Request.Path.ToUriComponent()));
             _relativeRequestUrl = new Lazy<Uri>(() =>
             {
                 var requestUrl = httpContextAccessor.HttpContext.Request.Path.ToUriComponent();
@@ -65,13 +65,27 @@ namespace FubarDev.WebDavServer.Tests.Support
 
         public string RequestProtocol { get; }
 
-        public Uri RelativeRequestUrl => _relativeRequestUrl.Value;
+        public Uri ServiceRelativeRequestUrl => PublicRelativeRequestUrl;
 
-        public Uri AbsoluteRequestUrl => _absoluteRequestUrl.Value;
+        public Uri ServiceAbsoluteRequestUrl => PublicAbsoluteRequestUrl;
 
-        public Uri BaseUrl { get; }
+        public Uri ServiceBaseUrl => PublicBaseUrl;
 
-        public Uri RootUrl { get; }
+        public Uri ServiceRootUrl => PublicRootUrl;
+
+        public Uri ControllerRelativeUrl { get; } = new Uri(string.Empty, UriKind.RelativeOrAbsolute);
+
+        public Uri ActionUrl => PublicRelativeRequestUrl;
+
+        public Uri PublicRelativeRequestUrl => _relativeRequestUrl.Value;
+
+        public Uri PublicAbsoluteRequestUrl => _absoluteRequestUrl.Value;
+
+        public Uri PublicControllerUrl => PublicBaseUrl;
+
+        public Uri PublicBaseUrl { get; }
+
+        public Uri PublicRootUrl { get; }
 
         public IUAParserOutput DetectedClient { get; } = Parser.GetDefault().Parse(string.Empty);
 

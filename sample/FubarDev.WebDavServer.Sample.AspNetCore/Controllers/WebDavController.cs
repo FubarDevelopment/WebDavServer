@@ -6,7 +6,7 @@ using Microsoft.Extensions.Logging;
 
 namespace FubarDev.WebDavServer.Sample.AspNetCore.Controllers
 {
-    [Route("{*path}")]
+    [Route("_dav/{*path}")]
     [Authorize]
     public class WebDavController : WebDavControllerBase
     {

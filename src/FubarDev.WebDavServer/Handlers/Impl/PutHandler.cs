@@ -70,7 +70,7 @@ namespace FubarDev.WebDavServer.Handlers.Impl
 
             var lockRequirements = new Lock(
                 new Uri(path, UriKind.Relative),
-                _context.RelativeRequestUrl,
+                _context.PublicRelativeRequestUrl,
                 false,
                 new XElement(WebDavXml.Dav + "owner", _context.User.Identity.Name),
                 LockAccessType.Write,
@@ -110,6 +110,7 @@ namespace FubarDev.WebDavServer.Handlers.Impl
                             .ConfigureAwait(false);
                 }
 
+                Debug.Assert(document != null, nameof(document) + " != null");
                 using (var fileStream = await document.CreateAsync(cancellationToken).ConfigureAwait(false))
                 {
                     var contentLength = _context.RequestHeaders.ContentLength;
