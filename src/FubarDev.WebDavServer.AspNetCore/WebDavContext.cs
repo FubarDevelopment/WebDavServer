@@ -103,19 +103,20 @@ namespace FubarDev.WebDavServer.AspNetCore
             if (options.BaseUrl != null)
             {
                 result.Append(options.BaseUrl);
-                if (!options.BaseUrl.EndsWith("/", StringComparison.Ordinal))
-                    result.Append("/");
             }
             else
             {
                 var request = httpContext.Request;
-                var pathBase = request.PathBase.ToString();
-                result.Append(request.Scheme).Append("://").Append(request.Host).Append(pathBase);
-                if (!pathBase.EndsWith("/", StringComparison.Ordinal))
-                    result.Append("/");
+                result.Append(request.Scheme).Append("://").Append(request.Host)
+                    .Append(request.Path)
+                    .Append(request.PathBase);
             }
 
-            return new Uri(result.ToString());
+            var resultUrl = result.ToString();
+            if (!resultUrl.EndsWith("/", StringComparison.Ordinal))
+                resultUrl += "/";
+
+            return new Uri(resultUrl);
         }
 
         private static IUAParserOutput DetectClient(HttpContext httpContext)
