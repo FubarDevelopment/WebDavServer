@@ -1,4 +1,4 @@
-﻿// <copyright file="LockManagerBase.cs" company="Fubar Development Junker">
+// <copyright file="LockManagerBase.cs" company="Fubar Development Junker">
 // Copyright (c) Fubar Development Junker. All rights reserved.
 // </copyright>
 
@@ -469,7 +469,8 @@ namespace FubarDev.WebDavServer.Locking
                 LockShareMode.Parse(activeLock.ShareMode),
                 timeout,
                 activeLock.Issued,
-                lastRefresh);
+                lastRefresh,
+                activeLock.StateToken);
         }
 
 #if USE_VARIANT_1
