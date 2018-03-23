@@ -50,6 +50,7 @@ namespace FubarDev.WebDavServer.Model
 
                         name.Append(part);
                     }
+
                     return name.ToString();
                 });
 

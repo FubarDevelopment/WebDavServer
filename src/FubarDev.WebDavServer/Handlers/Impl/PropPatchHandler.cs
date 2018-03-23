@@ -55,7 +55,7 @@ namespace FubarDev.WebDavServer.Handlers.Impl
             Conflict,
             FailedDependency,
             InsufficientStorage,
-            ReadOnlyProperty
+            ReadOnlyProperty,
         }
 
         /// <inheritdoc />

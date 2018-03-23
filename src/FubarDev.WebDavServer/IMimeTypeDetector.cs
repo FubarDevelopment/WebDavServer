@@ -1,4 +1,8 @@
-﻿using FubarDev.WebDavServer.FileSystem;
+﻿// <copyright file="IMimeTypeDetector.cs" company="Fubar Development Junker">
+// Copyright (c) Fubar Development Junker. All rights reserved.
+// </copyright>
+
+using FubarDev.WebDavServer.FileSystem;
 
 namespace FubarDev.WebDavServer
 {

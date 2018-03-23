@@ -62,7 +62,7 @@ namespace FubarDev.WebDavServer
             /// <summary>
             /// The underlying task is finished
             /// </summary>
-            Completed
+            Completed,
         }
 
         /// <summary>

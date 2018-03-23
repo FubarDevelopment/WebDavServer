@@ -36,6 +36,6 @@ namespace FubarDev.WebDavServer.FileSystem
         /// This is different from <see cref="MissingDocumentOrCollection"/>, because the last missing part contains a <c>/</c>
         /// at the end and is therefore clearly a collection.
         /// </remarks>
-        MissingCollection
+        MissingCollection,
     }
 }

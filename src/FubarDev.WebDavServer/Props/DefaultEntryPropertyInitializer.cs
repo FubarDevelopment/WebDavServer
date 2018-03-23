@@ -1,4 +1,8 @@
-﻿using System.Linq;
+﻿// <copyright file="DefaultEntryPropertyInitializer.cs" company="Fubar Development Junker">
+// Copyright (c) Fubar Development Junker. All rights reserved.
+// </copyright>
+
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 
