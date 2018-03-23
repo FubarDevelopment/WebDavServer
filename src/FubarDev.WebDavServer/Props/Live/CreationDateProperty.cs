@@ -15,7 +15,7 @@ namespace FubarDev.WebDavServer.Props.Live
     /// <summary>
     /// The <c>creationdate</c> property
     /// </summary>
-    public class CreationDateProperty : GenericDateTimeRfc1123Property, ILiveProperty
+    public class CreationDateProperty : GenericDateTimeOffsetIso8601Property, ILiveProperty
     {
         /// <summary>
         /// The XML property name
@@ -27,7 +27,7 @@ namespace FubarDev.WebDavServer.Props.Live
         /// </summary>
         /// <param name="propValue">The initial property value</param>
         /// <param name="setValueAsyncFunc">The delegate to set the value asynchronously</param>
-        public CreationDateProperty(DateTime propValue, SetPropertyValueAsyncDelegate<DateTime> setValueAsyncFunc)
+        public CreationDateProperty(DateTimeOffset propValue, SetPropertyValueAsyncDelegate<DateTimeOffset> setValueAsyncFunc)
             : base(PropertyName, 0, ct => Task.FromResult(propValue), setValueAsyncFunc)
         {
         }

@@ -282,7 +282,7 @@ namespace FubarDev.WebDavServer.Dispatchers
 
             yield return entry.GetResourceTypeProperty();
             yield return new LastModifiedProperty(entry.LastWriteTimeUtc, entry.SetLastWriteTimeUtcAsync);
-            yield return new CreationDateProperty(entry.CreationTimeUtc, entry.SetCreationTimeUtcAsync);
+            yield return new CreationDateProperty(entry.CreationTimeUtc, (value, ct) => entry.SetCreationTimeUtcAsync(value.UtcDateTime, ct));
             yield return new GetETagProperty(entry.FileSystem.PropertyStore, entry);
 
             if (propStore != null)
