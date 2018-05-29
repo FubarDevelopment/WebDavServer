@@ -1,0 +1,15 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<hibernate-mapping
+        assembly="FubarDev.WebDavServer.NHibernate"
+        namespace="FubarDev.WebDavServer.NHibernate.Models"
+        xmlns="urn:nhibernate-mapping-2.2">
+    <class name="FileData" table="filesystementrydata">
+        <id name="Id" column="id">
+            <generator class="foreign">
+                <param name="property">Entry</param>
+            </generator>
+        </id>
+        <property name="Data" column="data" not-null="true" type="BinaryBlob" />
+        <one-to-one name="Entry" lazy="no-proxy" constrained="true" />
+    </class>
+</hibernate-mapping>

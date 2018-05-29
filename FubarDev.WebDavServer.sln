@@ -52,6 +52,10 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		WebDavServer.ruleset = WebDavServer.ruleset
 	EndProjectSection
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FubarDev.WebDavServer.NHibernate", "src\FubarDev.WebDavServer.NHibernate\FubarDev.WebDavServer.NHibernate.csproj", "{3EE21206-9067-4F94-ABE6-0B87FCAF5420}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "orm-support", "orm-support", "{16E44BF0-2741-4441-A4D6-72AF28D6A39B}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug (Coverity)|Any CPU = Debug (Coverity)|Any CPU
@@ -136,6 +140,12 @@ Global
 		{8950120E-82E4-43DA-958B-858B88D9CA9B}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{8950120E-82E4-43DA-958B-858B88D9CA9B}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{8950120E-82E4-43DA-958B-858B88D9CA9B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3EE21206-9067-4F94-ABE6-0B87FCAF5420}.Debug (Coverity)|Any CPU.ActiveCfg = Debug|Any CPU
+		{3EE21206-9067-4F94-ABE6-0B87FCAF5420}.Debug (Coverity)|Any CPU.Build.0 = Debug|Any CPU
+		{3EE21206-9067-4F94-ABE6-0B87FCAF5420}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3EE21206-9067-4F94-ABE6-0B87FCAF5420}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3EE21206-9067-4F94-ABE6-0B87FCAF5420}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3EE21206-9067-4F94-ABE6-0B87FCAF5420}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -157,6 +167,8 @@ Global
 		{6FF5A558-15E9-4626-9348-23F0B0BADFFA} = {5BF42C52-A65B-4419-A771-20ADFF257552}
 		{B80FF6EE-2136-410D-B5BE-E8F2A032189E} = {E1DB9590-0D33-42F8-9F3B-EB379EC00F9D}
 		{8950120E-82E4-43DA-958B-858B88D9CA9B} = {48040D3B-35E8-45CE-A3E8-E3971F98C892}
+		{16E44BF0-2741-4441-A4D6-72AF28D6A39B} = {581960B3-7392-4BB5-AD95-D106F89604A1}
+		{3EE21206-9067-4F94-ABE6-0B87FCAF5420} = {16E44BF0-2741-4441-A4D6-72AF28D6A39B}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {E470F174-9A96-43E0-9676-5CEDE1E7B89A}

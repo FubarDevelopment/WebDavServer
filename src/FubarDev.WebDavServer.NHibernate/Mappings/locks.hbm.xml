@@ -1,0 +1,19 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<hibernate-mapping
+        assembly="FubarDev.WebDavServer.NHibernate"
+        namespace="FubarDev.WebDavServer.NHibernate.Models"
+        xmlns="urn:nhibernate-mapping-2.2">
+    <class name="ActiveLockEntry" table="locks">
+        <id name="StateToken" column="id" generator="assigned" length="200" />
+        <property name="Path" column="path" not-null="true" type="StringClob" />
+        <property name="Href" column="href" not-null="true" type="StringClob" />
+        <property name="Recursive" column="recursive" not-null="true" />
+        <property name="AccessType" column="access_type" not-null="true" type="StringClob" />
+        <property name="ShareMode" column="share_mode" not-null="true" type="StringClob" />
+        <property name="Timeout" column="timeout" not-null="true" />
+        <property name="Issued" column="issued" not-null="true" type="UtcDateTime" />
+        <property name="LastRefresh" column="last_refresh" type="UtcDateTime" />
+        <property name="Expiration" column="expiration" not-null="true" type="UtcDateTime" />
+        <property name="Owner" column="owner" type="StringClob" />
+    </class>
+</hibernate-mapping>

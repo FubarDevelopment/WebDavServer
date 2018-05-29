@@ -1,0 +1,13 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<hibernate-mapping
+        assembly="FubarDev.WebDavServer.NHibernate"
+        namespace="FubarDev.WebDavServer.NHibernate.Models"
+        xmlns="urn:nhibernate-mapping-2.2">
+    <class name="PropertyEntry" table="props">
+        <id name="Id" column="id" generator="assigned" />
+        <many-to-one name="Entry" column="entry" not-null="true" />
+        <property name="XmlName" column="name" not-null="true" length="150" />
+        <property name="Language" column="language" length="150" />
+        <property name="Value" column="value" type="StringClob" />
+    </class>
+</hibernate-mapping>
