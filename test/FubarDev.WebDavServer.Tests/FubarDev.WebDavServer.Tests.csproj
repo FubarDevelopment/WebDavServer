@@ -2,31 +2,23 @@
   <PropertyGroup>
     <OutputType>Exe</OutputType>
     <TargetFramework>netcoreapp2.0</TargetFramework>
-    <CodeAnalysisRuleSet>$(ProjectDir)..\..\WebDavServer.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
+  <Import Project="../../Global.props" />
   <ItemGroup>
     <AdditionalFiles Include="$(ProjectDir)..\..\stylecop.json" Link="stylecop.json" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="$(ProjectDir)..\..\WebDavServer.ruleset" Link="WebDavServer.ruleset" />
-  </ItemGroup>
-  <ItemGroup>
-    <PackageReference Include="JetBrains.Annotations" Version="11.1.0" />
     <PackageReference Include="Microsoft.AspNetCore.TestHost" Version="2.0.2" />
     <PackageReference Include="Microsoft.Extensions.Logging.Debug" Version="2.0.1" />
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="15.6.1" />
-    <PackageReference Include="Microsoft.NETCore.App" Version="2.0.6" />
     <PackageReference Include="MimeKitLite" Version="2.0.2" />
     <PackageReference Include="PortableWebDavLibrary" Version="1.1.7" />
-    <PackageReference Include="StyleCop.Analyzers" Version="1.1.0-beta006" PrivateAssets="All" />
+    <PackageReference Include="StyleCop.Analyzers" Version="1.1.0-beta007" PrivateAssets="All" />
     <PackageReference Include="System.Xml.XPath.XDocument" Version="4.3.0" />
     <PackageReference Include="xunit" Version="2.3.1" />
     <PackageReference Include="Microsoft.Extensions.Logging" Version="2.0.1" />
     <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="2.0.0" />
     <PackageReference Include="xunit.runner.visualstudio" Version="2.3.1" />
-  </ItemGroup>
-  <ItemGroup>
-    <DotNetCliToolReference Include="libyear" Version="*" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\src\FubarDev.WebDavServer.AspNetCore\FubarDev.WebDavServer.AspNetCore.csproj" />

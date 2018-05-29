@@ -1,0 +1,33 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project>
+  <Import Project="DotNetSdkMono.props" />
+
+  <PropertyGroup>
+    <LangVersion>latest</LangVersion>
+    <VersionPrefix>1.0</VersionPrefix>
+    <Product>WebDAV Server</Product>
+    <Copyright>Fubar Development Junker 2016-2018</Copyright>
+    <Company>Fubar Development Junker</Company>
+    <Authors>Fubar Development Junker</Authors>
+    <PackageLicenseUrl>https://github.com/FubarDevelopment/WebDavServer/blob/master/LICENSE</PackageLicenseUrl>
+    <PackageProjectUrl>https://github.com/FubarDevelopment/WebDavServer</PackageProjectUrl>
+    <RepositoryUrl>https://github.com/FubarDevelopment/WebDavServer.git</RepositoryUrl>
+    <PackageReleaseNotes>https://github.com/FubarDevelopment/WebDavServer/releases</PackageReleaseNotes>
+    <RepositoryType>git</RepositoryType>
+    <MinClientVersion>3.5</MinClientVersion>
+    <CodeAnalysisRuleSet>$(MSBuildThisFileDirectory)WebDavServer.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <AdditionalFiles Include="$(MSBuildThisFileDirectory)stylecop.json" Link="stylecop.json" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="JetBrains.Annotations" Version="11.1.0" PrivateAssets="All" />
+  </ItemGroup>
+
+  <PropertyGroup Condition="'$(TargetFramework)'=='net461'">
+    <DefineConstants>$(DefineConstants);NETFRAMEWORK</DefineConstants>
+  </PropertyGroup>
+
+</Project>

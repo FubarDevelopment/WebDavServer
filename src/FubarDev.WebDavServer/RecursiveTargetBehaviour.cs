@@ -17,6 +17,6 @@ namespace FubarDev.WebDavServer
         /// <summary>
         /// Delete the existing target entry before copying the contents from the source
         /// </summary>
-        DeleteTarget
+        DeleteTarget,
     }
 }

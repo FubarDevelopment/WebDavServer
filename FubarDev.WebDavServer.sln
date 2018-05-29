@@ -41,9 +41,16 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FubarDev.WebDavServer.Locki
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "third-party", "third-party", "{E1DB9590-0D33-42F8-9F3B-EB379EC00F9D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "idunno.Authentication", "third-party\idunno.Authentication\idunno.Authentication.csproj", "{B80FF6EE-2136-410D-B5BE-E8F2A032189E}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "idunno.Authentication", "third-party\idunno.Authentication\idunno.Authentication.csproj", "{B80FF6EE-2136-410D-B5BE-E8F2A032189E}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FubarDev.WebDavServer.Sample.AspNetCore", "sample\FubarDev.WebDavServer.Sample.AspNetCore\FubarDev.WebDavServer.Sample.AspNetCore.csproj", "{8950120E-82E4-43DA-958B-858B88D9CA9B}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FubarDev.WebDavServer.Sample.AspNetCore", "sample\FubarDev.WebDavServer.Sample.AspNetCore\FubarDev.WebDavServer.Sample.AspNetCore.csproj", "{8950120E-82E4-43DA-958B-858B88D9CA9B}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{7740DEB8-8645-4C76-8B8E-7D3A36A9D06A}"
+	ProjectSection(SolutionItems) = preProject
+		Global.props = Global.props
+		PackageLibrary.props = PackageLibrary.props
+		WebDavServer.ruleset = WebDavServer.ruleset
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -150,5 +157,8 @@ Global
 		{6FF5A558-15E9-4626-9348-23F0B0BADFFA} = {5BF42C52-A65B-4419-A771-20ADFF257552}
 		{B80FF6EE-2136-410D-B5BE-E8F2A032189E} = {E1DB9590-0D33-42F8-9F3B-EB379EC00F9D}
 		{8950120E-82E4-43DA-958B-858B88D9CA9B} = {48040D3B-35E8-45CE-A3E8-E3971F98C892}
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {E470F174-9A96-43E0-9676-5CEDE1E7B89A}
 	EndGlobalSection
 EndGlobal

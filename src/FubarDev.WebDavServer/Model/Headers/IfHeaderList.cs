@@ -42,7 +42,7 @@ namespace FubarDev.WebDavServer.Model.Headers
         public Uri ResourceTag { get; }
 
         /// <summary>
-        /// Gets the resource tag relative to the <see cref="IWebDavContext.RootUrl"/>.
+        /// Gets the resource tag relative to the <see cref="IWebDavContext.PublicRootUrl"/>.
         /// </summary>
         /// <remarks>
         /// Might be an absolute URL when the host or scheme don't match.
@@ -51,7 +51,7 @@ namespace FubarDev.WebDavServer.Model.Headers
         public Uri RelativeHref { get; }
 
         /// <summary>
-        /// Gets the path to the destination relative to the <see cref="IWebDavContext.BaseUrl"/>.
+        /// Gets the path to the destination relative to the <see cref="IWebDavContext.PublicBaseUrl"/>.
         /// </summary>
         /// <remarks>
         /// Might be an absolute URL when the host or scheme don't match.
@@ -95,8 +95,7 @@ namespace FubarDev.WebDavServer.Model.Headers
             Uri previousResourceTag = context.PublicAbsoluteRequestUrl;
             while (!source.SkipWhiteSpace())
             {
-                Uri resourceTag;
-                if (CodedUrlParser.TryParse(source, out resourceTag))
+                if (CodedUrlParser.TryParse(source, out var resourceTag))
                 {
                     // Coded-URL found
                     if (!resourceTag.IsAbsoluteUri)

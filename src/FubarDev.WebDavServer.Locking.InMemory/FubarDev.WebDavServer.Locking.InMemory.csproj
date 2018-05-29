@@ -1,36 +1,10 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <CodeAnalysisRuleSet>$(ProjectDir)..\..\WebDavServer.ruleset</CodeAnalysisRuleSet>
-    <DocumentationFile Condition=" '$(Configuration)' == 'Release' ">bin\$(Configuration)\$(TargetFramework)\$(AssemblyName).xml</DocumentationFile>
-    <Version>0.1.0</Version>
-    <Authors>Mark Junker</Authors>
-    <Company>Fubar Development Junker</Company>
-    <Product>WebDAV Server</Product>
     <Description>In-memory lock management for the .NET WebDAV server</Description>
-    <Copyright>2016 © Fubar Development Junker</Copyright>
-    <PackageLicenseUrl>https://github.com/FubarDevelopment/WebDavServer/blob/master/LICENSE</PackageLicenseUrl>
-    <PackageProjectUrl>https://github.com/FubarDevelopment/WebDavServer</PackageProjectUrl>
-    <RepositoryUrl>https://github.com/FubarDevelopment/WebDavServer.git</RepositoryUrl>
-    <RepositoryType>git</RepositoryType>
-    <AssemblyVersion>0.1.0</AssemblyVersion>
-    <FileVersion>0.1.0</FileVersion>
-    <LangVersion>latest</LangVersion>
-    <TargetFramework>netstandard2.0</TargetFramework>
+    <TargetFrameworks>net461;netstandard2.0</TargetFrameworks>
   </PropertyGroup>
-  <ItemGroup>
-    <AdditionalFiles Include="$(ProjectDir)..\..\stylecop.json" Link="stylecop.json" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="$(ProjectDir)..\..\WebDavServer.ruleset" Link="WebDavServer.ruleset" />
-  </ItemGroup>
-  <ItemGroup>
-    <PackageReference Include="JetBrains.Annotations" Version="11.1.0" />
-    <PackageReference Include="StyleCop.Analyzers" Version="1.1.0-beta006" PrivateAssets="All" />
-  </ItemGroup>
+  <Import Project="../../PackageLibrary.props" />
   <ItemGroup>
     <ProjectReference Include="..\FubarDev.WebDavServer\FubarDev.WebDavServer.csproj" />
-  </ItemGroup>
-  <ItemGroup>
-    <DotNetCliToolReference Include="libyear" Version="*" />
   </ItemGroup>
 </Project>

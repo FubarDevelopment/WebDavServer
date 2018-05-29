@@ -225,8 +225,7 @@ namespace FubarDev.WebDavServer.Locking
             var pathToInfo = new Dictionary<Uri, PathInfo>();
             foreach (var ifHeaderList in ifHeader.Lists.Where(x => x.RequiresStateToken))
             {
-                PathInfo pathInfo;
-                if (!pathToInfo.TryGetValue(ifHeaderList.Path, out pathInfo))
+                if (!pathToInfo.TryGetValue(ifHeaderList.Path, out var pathInfo))
                 {
                     pathInfo = new PathInfo();
                     pathToInfo.Add(ifHeaderList.Path, pathInfo);
@@ -594,8 +593,7 @@ namespace FubarDev.WebDavServer.Locking
             foreach (var matchingIfListItem in ifListLocks)
             {
                 var ifHeaderList = matchingIfListItem.Key;
-                PathInfo pathInfo;
-                if (!pathToInfo.TryGetValue(ifHeaderList.Path, out pathInfo))
+                if (!pathToInfo.TryGetValue(ifHeaderList.Path, out var pathInfo))
                 {
                     pathInfo = new PathInfo
                     {

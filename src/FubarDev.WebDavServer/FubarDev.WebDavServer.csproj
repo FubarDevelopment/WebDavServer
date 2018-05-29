@@ -1,38 +1,18 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk" ToolsVersion="15.0">
   <PropertyGroup>
-    <CodeAnalysisRuleSet>$(ProjectDir)..\..\WebDavServer.ruleset</CodeAnalysisRuleSet>
-    <DocumentationFile Condition=" '$(Configuration)' == 'Release' ">bin\$(Configuration)\$(TargetFramework)\$(AssemblyName).xml</DocumentationFile>
-    <Version>0.1.0</Version>
-    <Authors>Mark Junker</Authors>
-    <Company>Fubar Development Junker</Company>
-    <Product>WebDAV Server</Product>
     <Description>A .NET WebDAV server</Description>
-    <Copyright>2016 © Fubar Development Junker</Copyright>
-    <PackageLicenseUrl>https://github.com/FubarDevelopment/WebDavServer/blob/master/LICENSE</PackageLicenseUrl>
-    <PackageProjectUrl>https://github.com/FubarDevelopment/WebDavServer</PackageProjectUrl>
-    <RepositoryUrl>https://github.com/FubarDevelopment/WebDavServer.git</RepositoryUrl>
-    <RepositoryType>git</RepositoryType>
-    <AssemblyVersion>0.1.0</AssemblyVersion>
-    <FileVersion>0.1.0</FileVersion>
-    <LangVersion>latest</LangVersion>
-    <TargetFramework>netstandard2.0</TargetFramework>
+    <TargetFrameworks>netstandard2.0;net461</TargetFrameworks>
   </PropertyGroup>
+  <Import Project="../../PackageLibrary.props" />
   <ItemGroup>
-    <PackageReference Include="JetBrains.Annotations" Version="11.1.0" />
-    <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="2.0.1" />
-    <PackageReference Include="Microsoft.Extensions.Options" Version="2.0.1" />
-    <PackageReference Include="StyleCop.Analyzers" Version="1.1.0-beta006" PrivateAssets="All" />
-    <PackageReference Include="System.Buffers" Version="4.4.0" />
-    <PackageReference Include="System.Collections.Immutable" Version="1.4.0" />
-    <PackageReference Include="System.Interactive.Async" Version="3.1.1" />
+    <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="2.0.0" />
+    <PackageReference Include="Microsoft.Extensions.Options" Version="2.0.0" />
+    <PackageReference Include="System.Buffers" Version="4.0.0" />
+    <PackageReference Include="System.Collections.Immutable" Version="1.2.0" />
+    <PackageReference Include="System.Interactive.Async" Version="3.0.0" />
   </ItemGroup>
   <ItemGroup>
-    <DotNetCliToolReference Include="libyear" Version="*" />
-  </ItemGroup>
-  <ItemGroup>
-    <AdditionalFiles Include="$(ProjectDir)..\..\stylecop.json" Link="stylecop.json" />
     <EmbeddedResource Include="Utils\UAParser\UAParser.regexes.yaml" />
-    <None Include="$(ProjectDir)..\..\WebDavServer.ruleset" Link="WebDavServer.ruleset" />
     <None Include="Model\webdav.xsd" />
   </ItemGroup>
   <ItemGroup>
