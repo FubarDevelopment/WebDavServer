@@ -102,7 +102,7 @@ namespace FubarDev.WebDavServer.Locking
         public Task DisposeAsync(CancellationToken cancellationToken)
         {
             if (!IsTemporaryLock)
-                return Task.FromResult(0);
+                return Task.CompletedTask;
 
             // A temporary lock is always on its own
             var l = OwnedLocks.Single();

@@ -9,7 +9,7 @@ using FubarDev.WebDavServer.Locking;
 
 namespace FubarDev.WebDavServer.NHibernate.Models
 {
-    internal class ActiveLockEntry : IActiveLock
+    public class ActiveLockEntry : IActiveLock
     {
         public virtual string StateToken { get; set; } = string.Empty;
 

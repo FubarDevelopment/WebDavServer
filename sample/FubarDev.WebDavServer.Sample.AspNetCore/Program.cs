@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Server.HttpSys;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
 
 namespace FubarDev.WebDavServer.Sample.AspNetCore
 {
@@ -35,6 +36,7 @@ namespace FubarDev.WebDavServer.Sample.AspNetCore
 
         private static IWebHost BuildWebHost(string[] args, Func<IWebHostBuilder, IWebHostBuilder> customConfig) =>
             customConfig(WebHost.CreateDefaultBuilder(args))
+                .ConfigureLogging((ctxt, b) => { b.AddExceptionDemystifyer(); })
                 .UseStartup<Startup>()
                 .Build();
 

@@ -9,7 +9,7 @@
                 <param name="property">Entry</param>
             </generator>
         </id>
-        <property name="Data" column="data" not-null="true" type="BinaryBlob" />
+        <property name="Data" column="data" not-null="true" type="BinaryBlob" lazy="true" />
         <one-to-one name="Entry" lazy="no-proxy" constrained="true" />
     </class>
 </hibernate-mapping>

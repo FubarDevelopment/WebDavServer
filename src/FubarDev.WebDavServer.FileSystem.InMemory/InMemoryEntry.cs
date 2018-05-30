@@ -87,7 +87,7 @@ namespace FubarDev.WebDavServer.FileSystem.InMemory
                 throw new UnauthorizedAccessException("Failed to modify a read-only file system");
 
             LastWriteTimeUtc = lastWriteTime;
-            return Task.FromResult(0);
+            return Task.CompletedTask;
         }
 
         /// <inheritdoc />
@@ -97,7 +97,7 @@ namespace FubarDev.WebDavServer.FileSystem.InMemory
                 throw new UnauthorizedAccessException("Failed to modify a read-only file system");
 
             CreationTimeUtc = creationTime;
-            return Task.FromResult(0);
+            return Task.CompletedTask;
         }
     }
 }

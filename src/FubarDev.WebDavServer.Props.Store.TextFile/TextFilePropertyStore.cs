@@ -125,7 +125,7 @@ namespace FubarDev.WebDavServer.Props.Store.TextFile
             }
 
             UpdateInfo(entry, info, cancellationToken);
-            return Task.FromResult(0);
+            return Task.CompletedTask;
         }
 
         /// <inheritdoc />
@@ -158,7 +158,7 @@ namespace FubarDev.WebDavServer.Props.Store.TextFile
         {
             var fileName = GetFileNameFor(entry);
             if (!File.Exists(fileName))
-                return Task.FromResult(0);
+                return Task.CompletedTask;
 
             var storeData = Load(entry, false, cancellationToken);
             var entryKey = GetEntryKey(entry);
@@ -167,7 +167,7 @@ namespace FubarDev.WebDavServer.Props.Store.TextFile
                 Save(entry, storeData, cancellationToken);
             }
 
-            return Task.FromResult(0);
+            return Task.CompletedTask;
         }
 
         /// <inheritdoc />

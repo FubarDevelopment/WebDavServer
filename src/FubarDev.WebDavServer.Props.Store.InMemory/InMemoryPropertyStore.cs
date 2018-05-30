@@ -65,14 +65,14 @@ namespace FubarDev.WebDavServer.Props.Store.InMemory
 
             SetAll(entry, elementsToSet);
 
-            return Task.FromResult(0);
+            return Task.CompletedTask;
         }
 
         /// <inheritdoc />
         public override Task RemoveAsync(IEntry entry, CancellationToken cancellationToken)
         {
             _properties.Remove(entry.Path);
-            return Task.FromResult(0);
+            return Task.CompletedTask;
         }
 
         /// <inheritdoc />

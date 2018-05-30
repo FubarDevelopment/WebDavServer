@@ -106,8 +106,7 @@ namespace FubarDev.WebDavServer.Props.Store
         /// <inheritdoc />
         public Task<EntityTag> GetETagAsync(IEntry entry, CancellationToken cancellationToken)
         {
-            var etagEntry = entry as IEntityTagEntry;
-            if (etagEntry != null)
+            if (entry is IEntityTagEntry etagEntry)
                 return Task.FromResult(etagEntry.ETag);
 
             return GetDeadETagAsync(entry, cancellationToken);
@@ -116,8 +115,7 @@ namespace FubarDev.WebDavServer.Props.Store
         /// <inheritdoc />
         public Task<EntityTag> UpdateETagAsync(IEntry entry, CancellationToken cancellationToken)
         {
-            var etagEntry = entry as IEntityTagEntry;
-            if (etagEntry != null)
+            if (entry is IEntityTagEntry etagEntry)
                 return etagEntry.UpdateETagAsync(cancellationToken);
 
             return UpdateDeadETagAsync(entry, cancellationToken);

@@ -105,7 +105,7 @@ namespace FubarDev.WebDavServer.Locking.InMemory
             public Task CommitAsync(CancellationToken cancellationToken)
             {
                 _lockManager._locks = _locks;
-                return Task.FromResult(0);
+                return Task.CompletedTask;
             }
 
             /// <inheritdoc />

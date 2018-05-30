@@ -99,6 +99,7 @@ namespace FubarDev.WebDavServer.NHibernate.FileSystem
                 InvariantName = invariantName,
                 LastWriteTimeUtc = now,
                 CreationTimeUtc = now,
+                Properties = new Dictionary<string, PropertyEntry>(),
             };
 
             await Connection.SaveAsync(newEntry, cancellationToken).ConfigureAwait(false);
@@ -121,6 +122,7 @@ namespace FubarDev.WebDavServer.NHibernate.FileSystem
                 InvariantName = invariantName,
                 LastWriteTimeUtc = now,
                 CreationTimeUtc = now,
+                Properties = new Dictionary<string, PropertyEntry>(),
             };
 
             await Connection.SaveAsync(newEntry, cancellationToken).ConfigureAwait(false);

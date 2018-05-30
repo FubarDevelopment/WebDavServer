@@ -22,11 +22,8 @@ namespace FubarDev.WebDavServer.NHibernate.FileSystem
     /// <summary>
     /// The <see cref="IFileSystem"/> implementation using an SQLite database
     /// </summary>
-    public class NHibernateFileSystem : IFileSystem, IDisposable, IMountPointManager
+    public class NHibernateFileSystem : IFileSystem, IMountPointManager
     {
-        [NotNull]
-        private readonly ISession _connection;
-
         [NotNull]
         private readonly IPathTraversalEngine _pathTraversalEngine;
 
@@ -48,7 +45,7 @@ namespace FubarDev.WebDavServer.NHibernate.FileSystem
             [CanBeNull] IPropertyStoreFactory propertyStoreFactory = null)
         {
             LockManager = lockManager;
-            _connection = connection;
+            Connection = connection;
             _pathTraversalEngine = pathTraversalEngine;
             PropertyStore = propertyStoreFactory?.Create(this);
             Root = new AsyncLazy<ICollection>(async () =>
@@ -63,7 +60,8 @@ namespace FubarDev.WebDavServer.NHibernate.FileSystem
         /// <summary>
         /// Gets the SQLite DB connection
         /// </summary>
-        public ISession Connection => _connection;
+        [NotNull]
+        public ISession Connection { get; }
 
         /// <inheritdoc />
         public AsyncLazy<ICollection> Root { get; }
@@ -102,12 +100,6 @@ namespace FubarDev.WebDavServer.NHibernate.FileSystem
         public void Unmount(Uri source)
         {
             _mountPoints.Remove(source);
-        }
-
-        /// <inheritdoc />
-        public void Dispose()
-        {
-            _connection.Dispose();
         }
     }
 }

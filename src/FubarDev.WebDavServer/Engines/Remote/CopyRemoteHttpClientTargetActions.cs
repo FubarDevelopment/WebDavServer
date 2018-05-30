@@ -84,7 +84,7 @@ namespace FubarDev.WebDavServer.Engines.Remote
         /// <inheritdoc />
         public override Task ExecuteAsync(ICollection source, RemoteCollectionTarget destination, CancellationToken cancellationToken)
         {
-            return Task.FromResult(0);
+            return Task.CompletedTask;
         }
     }
 }

@@ -200,7 +200,7 @@ namespace FubarDev.WebDavServer.Locking.SQLite
             {
                 _connection.Commit();
                 _committed = true;
-                return Task.FromResult(0);
+                return Task.CompletedTask;
             }
 
             public void Dispose()

@@ -16,7 +16,13 @@ namespace FubarDev.WebDavServer.NHibernate.UserTypes
     {
         private bool _useWeakTypes;
 
-        public bool Equals(object x, object y)
+        public SqlType[] SqlTypes { get; } = { SqlTypeFactory.GetString(80) };
+
+        public Type ReturnedType { get; } = typeof(EntityTag);
+
+        public bool IsMutable { get; } = false;
+
+        public new bool Equals(object x, object y)
         {
             if (ReferenceEquals(x, y))
                 return true;
@@ -83,12 +89,6 @@ namespace FubarDev.WebDavServer.NHibernate.UserTypes
             return ((EntityTag)value).ToString();
         }
 
-        public SqlType[] SqlTypes { get; } = { SqlTypeFactory.GetString(80) };
-
-        public Type ReturnedType { get; } = typeof(EntityTag);
-
-        public bool IsMutable { get; } = false;
-
         public int Compare(object x, object y)
         {
             if (ReferenceEquals(x, y))
@@ -122,6 +122,9 @@ namespace FubarDev.WebDavServer.NHibernate.UserTypes
 
         public void SetParameterValues(IDictionary<string, string> parameters)
         {
+            if (parameters == null)
+                return;
+
             if (parameters.TryGetValue("weak", out var weakValue))
             {
                 _useWeakTypes = XmlConvert.ToBoolean(weakValue);

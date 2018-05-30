@@ -3,6 +3,7 @@
 // </copyright>
 
 using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Threading;
@@ -61,12 +62,9 @@ namespace FubarDev.WebDavServer.NHibernate.FileSystem
         {
             using (var trans = Connection.BeginTransaction())
             {
-                await Connection.CreateQuery("delete FileData fd where fd.Id=?")
-                    .SetParameter(0, Info.Id).ExecuteUpdateAsync(cancellationToken)
-                    .ConfigureAwait(false);
                 await Connection.DeleteAsync(Info, cancellationToken)
                     .ConfigureAwait(false);
-                trans.CommitAsync(cancellationToken)
+                await trans.CommitAsync(cancellationToken)
                     .ConfigureAwait(false);
             }
 
@@ -137,6 +135,7 @@ namespace FubarDev.WebDavServer.NHibernate.FileSystem
                         LastWriteTimeUtc = Info.LastWriteTimeUtc,
                         ETag = Info.ETag,
                         Length = Info.Length,
+                        Properties = new Dictionary<string, PropertyEntry>(),
                     };
 
                     var targetData = new FileData()

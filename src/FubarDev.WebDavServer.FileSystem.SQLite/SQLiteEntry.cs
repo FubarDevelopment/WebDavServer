@@ -106,7 +106,7 @@ namespace FubarDev.WebDavServer.FileSystem.SQLite
                 Connection.Update(Info);
             }
 
-            return Task.FromResult(0);
+            return Task.CompletedTask;
         }
 
         /// <inheritdoc />
@@ -119,7 +119,7 @@ namespace FubarDev.WebDavServer.FileSystem.SQLite
                 Connection.Update(Info);
             }
 
-            return Task.FromResult(0);
+            return Task.CompletedTask;
         }
     }
 }

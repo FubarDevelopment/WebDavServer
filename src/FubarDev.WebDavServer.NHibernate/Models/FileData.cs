@@ -2,7 +2,7 @@
 
 namespace FubarDev.WebDavServer.NHibernate.Models
 {
-    internal class FileData
+    public class FileData
     {
         public virtual Guid Id { get; set; }
 

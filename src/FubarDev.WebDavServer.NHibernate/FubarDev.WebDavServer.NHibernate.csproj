@@ -5,15 +5,12 @@
   <Import Project="../../PackageLibrary.props" />
   <ItemGroup>
     <PackageReference Include="FluentMigrator.Runner" Version="3.0.0" />
-    <PackageReference Include="NHibernate" Version="5.0.0" />
+    <PackageReference Include="NHibernate" Version="5.1.0" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\FubarDev.WebDavServer\FubarDev.WebDavServer.csproj" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="**\*.hbm.xml" />
-  </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Props\Store" />
   </ItemGroup>
 </Project>

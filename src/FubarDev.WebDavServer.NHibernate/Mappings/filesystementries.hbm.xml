@@ -5,20 +5,19 @@
         xmlns="urn:nhibernate-mapping-2.2">
     <class name="FileEntry" table="filesystementries">
         <id name="Id" column="id" generator="assigned" />
-        <version name="ETag" column="etag" type="FubarDev.WebDavServer.NHibernate.UserTypes.ETagVersionType" />
-        <property name="ParentId" column="paren_tid" not-null="true" />
-        <property name="Path" column="path" not-null="true" type="StringClob" />
+        <version name="ETag" column="etag" type="FubarDev.WebDavServer.NHibernate.UserTypes.ETagVersionType, FubarDev.WebDavServer.NHibernate" />
+        <property name="ParentId" column="parent_id" />
         <property name="Name" column="name" not-null="true" length="200" />
         <property name="InvariantName" column="invariant_name" not-null="true" length="200" />
         <property name="IsCollection" column="collection" not-null="true" />
-        <property name="LastWriteTimeUtc" column="mtime" not-null="true" type="UtcDateTime" />
-        <property name="CreationTimeUtc" column="ctime" not-null="true" type="UtcDateTime" />
+        <property name="LastWriteTimeUtc" column="mtime" not-null="true" />
+        <property name="CreationTimeUtc" column="ctime" not-null="true" />
         <property name="Length" column="length" not-null="true" />
         <one-to-one name="Data" lazy="no-proxy" cascade="all-delete-orphan" />
         <map name="Properties" inverse="true" lazy="extra" cascade="all-delete-orphan">
             <key column="entry_id" />
-            <map-key type="string" />
-            <
+            <map-key column="name" type="String" />
+            <one-to-many class="PropertyEntry" />
         </map>
     </class>
 </hibernate-mapping>

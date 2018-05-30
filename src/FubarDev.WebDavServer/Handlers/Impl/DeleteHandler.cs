@@ -15,6 +15,8 @@ using FubarDev.WebDavServer.Model;
 using FubarDev.WebDavServer.Model.Headers;
 using FubarDev.WebDavServer.Utils;
 
+using Microsoft.Extensions.Logging;
+
 namespace FubarDev.WebDavServer.Handlers.Impl
 {
     /// <summary>
@@ -25,16 +27,19 @@ namespace FubarDev.WebDavServer.Handlers.Impl
         private readonly IFileSystem _rootFileSystem;
 
         private readonly IWebDavContext _context;
+        private readonly ILogger<DeleteHandler> _logger;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="DeleteHandler"/> class.
         /// </summary>
         /// <param name="rootFileSystem">The root file system</param>
         /// <param name="context">The current WebDAV context</param>
-        public DeleteHandler(IFileSystem rootFileSystem, IWebDavContext context)
+        /// <param name="logger">The logger</param>
+        public DeleteHandler(IFileSystem rootFileSystem, IWebDavContext context, ILogger<DeleteHandler> logger)
         {
             _rootFileSystem = rootFileSystem;
             _context = context;
+            _logger = logger;
         }
 
         /// <inheritdoc />
@@ -89,8 +94,9 @@ namespace FubarDev.WebDavServer.Handlers.Impl
                             .ConfigureAwait(false);
                     }
                 }
-                catch
+                catch (Exception ex)
                 {
+                    _logger.LogWarning(ex, ex.Message);
                     deleteResult = new DeleteResult(WebDavStatusCode.Forbidden, targetEntry);
                 }
 

@@ -48,11 +48,6 @@ namespace FubarDev.WebDavServer.NHibernate.FileSystem
         /// </summary>
         public NHibernateFileSystem NHibernateFileSystem { get; }
 
-        /// <summary>
-        /// Gets the SQLite connection
-        /// </summary>
-        protected ISession Connection => NHibernateFileSystem.Connection;
-
         /// <inheritdoc />
         public string Name { get; }
 
@@ -73,6 +68,11 @@ namespace FubarDev.WebDavServer.NHibernate.FileSystem
 
         /// <inheritdoc />
         public EntityTag ETag => Info.ETag;
+
+        /// <summary>
+        /// Gets the SQLite connection
+        /// </summary>
+        protected ISession Connection => NHibernateFileSystem.Connection;
 
         /// <inheritdoc />
         public async Task<EntityTag> UpdateETagAsync(CancellationToken cancellationToken)

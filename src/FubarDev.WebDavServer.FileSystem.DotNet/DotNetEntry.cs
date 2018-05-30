@@ -68,14 +68,14 @@ namespace FubarDev.WebDavServer.FileSystem.DotNet
         public Task SetLastWriteTimeUtcAsync(DateTime lastWriteTime, CancellationToken cancellationToken)
         {
             Info.LastWriteTimeUtc = lastWriteTime;
-            return Task.FromResult(0);
+            return Task.CompletedTask;
         }
 
         /// <inheritdoc />
         public Task SetCreationTimeUtcAsync(DateTime creationTime, CancellationToken cancellationToken)
         {
             Info.CreationTimeUtc = creationTime;
-            return Task.FromResult(0);
+            return Task.CompletedTask;
         }
     }
 }

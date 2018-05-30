@@ -39,18 +39,18 @@ namespace FubarDev.WebDavServer.NHibernate.Locking
         /// <summary>
         /// Initializes a new instance of the <see cref="NHibernateLockManager"/> class.
         /// </summary>
-        /// <param name="session">The NHibernate session</param>
+        /// <param name="sessionFactory">The NHibernate session factory</param>
         /// <param name="options">The options</param>
         /// <param name="cleanupTask">The clean-up task for expired locks</param>
         /// <param name="systemClock">The system clock interface</param>
         /// <param name="logger">The logger</param>
         public NHibernateLockManager(
-            [NotNull] ISession session,
+            [NotNull] ISessionFactory sessionFactory,
             [NotNull] IOptions<NHibernateLockManagerOptions> options,
             [NotNull] ILockCleanupTask cleanupTask,
             [NotNull] ISystemClock systemClock,
             [NotNull] ILogger<NHibernateLockManager> logger)
-            : this(session, options.Value, cleanupTask, systemClock, logger)
+            : this(sessionFactory.OpenSession(), options.Value, cleanupTask, systemClock, logger)
         {
         }
 
@@ -165,7 +165,7 @@ namespace FubarDev.WebDavServer.NHibernate.Locking
             {
                 _transaction.Commit();
                 _committed = true;
-                return Task.FromResult(0);
+                return Task.CompletedTask;
             }
 
             public void Dispose()

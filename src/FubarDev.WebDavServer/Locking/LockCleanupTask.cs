@@ -61,8 +61,11 @@ namespace FubarDev.WebDavServer.Locking
         /// <param name="activeLock">The active lock to track</param>
         public void Add(ILockManager lockManager, IActiveLock activeLock)
         {
+            // ReSharper disable InconsistentlySynchronizedField
             if (_logger.IsEnabled(LogLevel.Trace))
                 _logger.LogTrace($"Adding lock {activeLock}");
+
+            // ReSharper restore InconsistentlySynchronizedField
 
             // Don't track locks with infinite timeout
             if (activeLock.Timeout == TimeoutHeader.Infinite)
@@ -92,13 +95,15 @@ namespace FubarDev.WebDavServer.Locking
         /// <param name="activeLock">The active lock to remove</param>
         public void Remove(IActiveLock activeLock)
         {
+            // ReSharper disable InconsistentlySynchronizedField
             if (_logger.IsEnabled(LogLevel.Trace))
                 _logger.LogTrace($"Try removing lock {activeLock}");
 
+            // ReSharper restore InconsistentlySynchronizedField
+
             lock (_syncRoot)
             {
-                IReadOnlyCollection<ActiveLockItem> lockItems;
-                if (!_activeLocks.TryGetValue(activeLock.Expiration, out lockItems))
+                if (!_activeLocks.TryGetValue(activeLock.Expiration, out var lockItems))
                 {
                     // Lock item not found
                     if (_logger.IsEnabled(LogLevel.Debug))
@@ -202,8 +207,12 @@ namespace FubarDev.WebDavServer.Locking
             // it before the timer event could get its hands on it.
             if (removeResult)
             {
+                // ReSharper disable InconsistentlySynchronizedField
                 if (_logger.IsEnabled(LogLevel.Trace))
                     _logger.LogTrace($"Lock {lockItem.ActiveLock.StateToken} will now be removed from the lock manager.");
+
+                // ReSharper restore InconsistentlySynchronizedField
+
                 var stateToken = new Uri(lockItem.ActiveLock.StateToken, UriKind.RelativeOrAbsolute);
                 await lockItem.LockManager.ReleaseAsync(lockItem.ActiveLock.Path, stateToken, CancellationToken.None).ConfigureAwait(false);
             }

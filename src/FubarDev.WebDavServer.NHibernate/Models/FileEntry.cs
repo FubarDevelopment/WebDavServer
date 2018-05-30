@@ -5,11 +5,11 @@ using FubarDev.WebDavServer.Model.Headers;
 
 namespace FubarDev.WebDavServer.NHibernate.Models
 {
-    internal class FileEntry
+    public class FileEntry
     {
         public virtual Guid Id { get; set; }
 
-        public virtual Guid ParentId { get; set; }
+        public virtual Guid? ParentId { get; set; }
 
         public virtual string Name { get; set; }
 

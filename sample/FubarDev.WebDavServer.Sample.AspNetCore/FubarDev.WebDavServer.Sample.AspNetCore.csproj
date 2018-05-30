@@ -9,7 +9,11 @@
     <None Remove="wwwroot\**" />
   </ItemGroup>
   <ItemGroup>
+    <PackageReference Include="Ben.Demystifier" Version="0.1.1" />
+    <PackageReference Include="codeessentials.AspNetCore.Diagnostics.Demystifier" Version="0.1.28" />
+    <PackageReference Include="codeessentials.Extensions.Logging.Demystifier" Version="0.1.28" />
     <PackageReference Include="Microsoft.AspNetCore.All" Version="2.0.6" />
+    <PackageReference Include="Microsoft.Data.Sqlite" Version="2.1.0" />
     <PackageReference Include="Npam" Version="1.0.0" />
   </ItemGroup>
   <ItemGroup>
@@ -21,6 +25,7 @@
     <ProjectReference Include="..\..\src\FubarDev.WebDavServer.FileSystem.SQLite\FubarDev.WebDavServer.FileSystem.SQLite.csproj" />
     <ProjectReference Include="..\..\src\FubarDev.WebDavServer.Locking.InMemory\FubarDev.WebDavServer.Locking.InMemory.csproj" />
     <ProjectReference Include="..\..\src\FubarDev.WebDavServer.Locking.SQLite\FubarDev.WebDavServer.Locking.SQLite.csproj" />
+    <ProjectReference Include="..\..\src\FubarDev.WebDavServer.NHibernate\FubarDev.WebDavServer.NHibernate.csproj" />
     <ProjectReference Include="..\..\src\FubarDev.WebDavServer.Props.Store.SQLite\FubarDev.WebDavServer.Props.Store.SQLite.csproj" />
     <ProjectReference Include="..\..\src\FubarDev.WebDavServer.Props.Store.TextFile\FubarDev.WebDavServer.Props.Store.TextFile.csproj" />
     <ProjectReference Include="..\..\third-party\idunno.Authentication\idunno.Authentication.csproj" />

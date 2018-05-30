@@ -11,8 +11,7 @@ namespace FubarDev.WebDavServer.NHibernate.Migrations
         {
             Create.Table("filesystementries")
                 .WithColumn("id").AsGuid().PrimaryKey()
-                .WithColumn("parent_id").AsGuid()
-                .WithColumn("path").AsString()
+                .WithColumn("parent_id").AsGuid().Nullable().ForeignKey("fk_entry_parent", "filesystementries", "id").OnDelete(Rule.Cascade)
                 .WithColumn("name").AsString(200)
                 .WithColumn("invariant_name").AsString(200).Indexed()
                 .WithColumn("collection").AsBoolean()
@@ -22,7 +21,7 @@ namespace FubarDev.WebDavServer.NHibernate.Migrations
                 .WithColumn("etag").AsString(80);
 
             Create.Table("filesystementrydata")
-                .WithColumn("id").AsGuid().PrimaryKey()
+                .WithColumn("id").AsGuid().PrimaryKey().ForeignKey("fk_data_entry", "filesystementries", "id").OnDelete(Rule.Cascade)
                 .WithColumn("data").AsBinary();
 
             Create.Index()
@@ -30,16 +29,6 @@ namespace FubarDev.WebDavServer.NHibernate.Migrations
                 .OnColumn("parent_id").Ascending()
                 .OnColumn("invariant_name").Ascending()
                 .WithOptions().Unique();
-
-            Create.ForeignKey("fk_entry_parent")
-                .FromTable("filesystementries").ForeignColumn("parent_id")
-                .ToTable("filesystementries").PrimaryColumn("id")
-                .OnDelete(Rule.Cascade);
-
-            Create.ForeignKey("fk_data_entry")
-                .FromTable("filesystementrydata").ForeignColumn("id")
-                .ToTable("filesystementries").PrimaryColumn("id")
-                .OnDelete(Rule.Cascade);
         }
     }
 }

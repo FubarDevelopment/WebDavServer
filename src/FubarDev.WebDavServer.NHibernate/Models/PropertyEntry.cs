@@ -3,14 +3,13 @@
 // </copyright>
 
 using System;
-using System.Xml.Linq;
 
 namespace FubarDev.WebDavServer.NHibernate.Models
 {
     /// <summary>
     /// An entity for properties
     /// </summary>
-    internal class PropertyEntry
+    public class PropertyEntry
     {
         /// <summary>
         /// Gets or sets the unique identifier
@@ -35,6 +34,6 @@ namespace FubarDev.WebDavServer.NHibernate.Models
         /// <summary>
         /// Gets or sets the XML element
         /// </summary>
-        public virtual XElement Value { get; set; }
+        public virtual string Value { get; set; }
     }
 }

@@ -1,4 +1,4 @@
-﻿// <copyright file="SQLiteFileSystemFactory.cs" company="Fubar Development Junker">
+﻿// <copyright file="NHibernateFileSystemFactory.cs" company="Fubar Development Junker">
 // Copyright (c) Fubar Development Junker. All rights reserved.
 // </copyright>
 
@@ -15,11 +15,12 @@ using NHibernate;
 namespace FubarDev.WebDavServer.NHibernate.FileSystem
 {
     /// <summary>
-    /// An implementation of <see cref="IFileSystemFactory"/> that provides file system storage in a SQLite database
+    /// An implementation of <see cref="IFileSystemFactory"/> that provides file system storage in a NHibernate-managed database
     /// </summary>
     public class NHibernateFileSystemFactory : IFileSystemFactory
     {
-        [NotNull] private readonly ISessionFactory _sessionFactory;
+        [NotNull]
+        private readonly ISession _session;
 
         [NotNull]
         private readonly IPathTraversalEngine _pathTraversalEngine;
@@ -33,17 +34,17 @@ namespace FubarDev.WebDavServer.NHibernate.FileSystem
         /// <summary>
         /// Initializes a new instance of the <see cref="NHibernateFileSystemFactory"/> class.
         /// </summary>
-        /// <param name="sessionFactory">The NHibernate session factory</param>
+        /// <param name="session">The NHibernate session</param>
         /// <param name="pathTraversalEngine">The engine to traverse paths</param>
         /// <param name="propertyStoreFactory">The store for dead properties</param>
         /// <param name="lockManager">The global lock manager</param>
         public NHibernateFileSystemFactory(
-            [NotNull] ISessionFactory sessionFactory,
+            [NotNull] ISession session,
             [NotNull] IPathTraversalEngine pathTraversalEngine,
             [CanBeNull] IPropertyStoreFactory propertyStoreFactory = null,
             [CanBeNull] ILockManager lockManager = null)
         {
-            _sessionFactory = sessionFactory;
+            _session = session;
             _pathTraversalEngine = pathTraversalEngine;
             _propertyStoreFactory = propertyStoreFactory;
             _lockManager = lockManager;
@@ -52,7 +53,7 @@ namespace FubarDev.WebDavServer.NHibernate.FileSystem
         /// <inheritdoc />
         public virtual IFileSystem CreateFileSystem(ICollection mountPoint, IPrincipal principal)
         {
-            return new NHibernateFileSystem(mountPoint, _sessionFactory.OpenSession(), _pathTraversalEngine, _lockManager, _propertyStoreFactory);
+            return new NHibernateFileSystem(mountPoint, _session, _pathTraversalEngine, _lockManager, _propertyStoreFactory);
         }
     }
 }

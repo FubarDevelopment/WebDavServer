@@ -87,7 +87,7 @@ namespace FubarDev.WebDavServer.Props.Store.SQLite
 
             SetAll(entry, elementsToSet);
 
-            return Task.FromResult(0);
+            return Task.CompletedTask;
         }
 
         /// <inheritdoc />
@@ -103,7 +103,7 @@ namespace FubarDev.WebDavServer.Props.Store.SQLite
                     .ExecuteNonQuery();
             }
 
-            return Task.FromResult(0);
+            return Task.CompletedTask;
         }
 
         /// <inheritdoc />

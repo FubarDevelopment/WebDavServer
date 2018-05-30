@@ -11,9 +11,9 @@
         <property name="AccessType" column="access_type" not-null="true" type="StringClob" />
         <property name="ShareMode" column="share_mode" not-null="true" type="StringClob" />
         <property name="Timeout" column="timeout" not-null="true" />
-        <property name="Issued" column="issued" not-null="true" type="UtcDateTime" />
-        <property name="LastRefresh" column="last_refresh" type="UtcDateTime" />
-        <property name="Expiration" column="expiration" not-null="true" type="UtcDateTime" />
+        <property name="Issued" column="issued" not-null="true" />
+        <property name="LastRefresh" column="last_refresh" />
+        <property name="Expiration" column="expiration" not-null="true" />
         <property name="Owner" column="owner" type="StringClob" />
     </class>
 </hibernate-mapping>
