@@ -1,6 +1,6 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk.Web">
   <PropertyGroup>
-    <TargetFramework>netcoreapp2.0</TargetFramework>
+    <TargetFramework>netcoreapp2.1</TargetFramework>
   </PropertyGroup>
   <ItemGroup>
     <Compile Remove="wwwroot\**" />
@@ -12,7 +12,7 @@
     <PackageReference Include="Ben.Demystifier" Version="0.1.1" />
     <PackageReference Include="codeessentials.AspNetCore.Diagnostics.Demystifier" Version="0.1.28" />
     <PackageReference Include="codeessentials.Extensions.Logging.Demystifier" Version="0.1.28" />
-    <PackageReference Include="Microsoft.AspNetCore.All" Version="2.0.6" />
+    <PackageReference Include="Microsoft.AspNetCore.App" Version="2.1.0" />
     <PackageReference Include="Microsoft.Data.Sqlite" Version="2.1.0" />
     <PackageReference Include="Npam" Version="1.0.0" />
   </ItemGroup>
