@@ -76,13 +76,15 @@ namespace FubarDev.WebDavServer.Sample.AspNetCore
 
         public IConfiguration Configuration { get; }
 
+        public bool DisableBasicAuth => Configuration.GetValue<bool>("disable-basic-auth");
+
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddAuthentication(
                     opt =>
                     {
-                        if (!Program.IsKestrel || !Program.DisableBasicAuth)
+                        if (!Program.IsKestrel || !DisableBasicAuth)
                         {
                             opt.DefaultScheme = "Basic";
                         }
@@ -329,7 +331,7 @@ namespace FubarDev.WebDavServer.Sample.AspNetCore
                 app.UseExceptionDemystifier();
             }
 
-            if (!Program.IsKestrel || !Program.DisableBasicAuth)
+            if (!Program.IsKestrel || !DisableBasicAuth)
             {
                 app.UseAuthentication();
             }

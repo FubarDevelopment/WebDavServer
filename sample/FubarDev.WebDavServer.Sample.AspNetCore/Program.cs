@@ -4,7 +4,6 @@ using Microsoft.AspNetCore;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Server.HttpSys;
 using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 
 namespace FubarDev.WebDavServer.Sample.AspNetCore
@@ -13,36 +12,25 @@ namespace FubarDev.WebDavServer.Sample.AspNetCore
     {
         public static bool IsKestrel { get; private set; }
 
-        public static bool DisableBasicAuth { get; private set; }
-
         public static bool IsWindows => Environment.OSVersion.Platform == PlatformID.Win32NT;
 
         public static void Main(string[] args)
         {
-            BuildWebHost(args).Run();
+            CreateWebHostBuilder(args).Build().Run();
         }
 
-        private static IWebHost BuildWebHost(string[] args)
+        public static IWebHostBuilder CreateWebHostBuilder(string[] args)
         {
-            var tempHost = BuildWebHost(args, whb => whb);
-            var config = tempHost.Services.GetRequiredService<IConfiguration>();
-
-            DisableBasicAuth = config.GetValue<bool>("disable-basic-auth");
-
-            return BuildWebHost(
-                args,
-                builder => ConfigureHosting(builder, config));
-        }
-
-        private static IWebHost BuildWebHost(string[] args, Func<IWebHostBuilder, IWebHostBuilder> customConfig) =>
-            customConfig(WebHost.CreateDefaultBuilder(args))
+            var builder = WebHost.CreateDefaultBuilder(args)
                 .ConfigureLogging((ctxt, b) => { b.AddExceptionDemystifyer(); })
-                .UseStartup<Startup>()
-                .Build();
+                .UseStartup<Startup>();
 
-        private static IWebHostBuilder ConfigureHosting(IWebHostBuilder builder, IConfiguration configuration)
-        {
-            var forceKestrelUse = configuration.GetValue<bool>("use-kestrel");
+            var environmentName = builder.GetSetting("ENVIRONMENT");
+            var config = Configure(new ConfigurationBuilder(), environmentName, args).Build();
+
+            builder.UseConfiguration(config);
+
+            var forceKestrelUse = config.GetValue<bool>("use-kestrel");
             if (!forceKestrelUse && IsWindows)
             {
                 builder = builder
@@ -59,6 +47,31 @@ namespace FubarDev.WebDavServer.Sample.AspNetCore
             }
 
             return builder;
+        }
+
+        private static IConfigurationBuilder Configure(
+            IConfigurationBuilder config,
+            string environmentName,
+            string[] args)
+        {
+            config.AddJsonFile("appsettings.json", true, true);
+
+            config.AddJsonFile(
+                string.Format("appsettings.{0}.json", environmentName),
+                true,
+                true);
+
+            if (environmentName == EnvironmentName.Development)
+            {
+                var assembly = typeof(Program).Assembly;
+                config.AddUserSecrets(assembly, true);
+            }
+
+            config.AddEnvironmentVariables();
+            if (args != null)
+                config.AddCommandLine(args);
+
+            return config;
         }
     }
 }
