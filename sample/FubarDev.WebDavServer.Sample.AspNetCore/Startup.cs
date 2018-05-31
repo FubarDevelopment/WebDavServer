@@ -24,6 +24,7 @@ using FubarDev.WebDavServer.Props.Store;
 using FubarDev.WebDavServer.Props.Store.SQLite;
 using FubarDev.WebDavServer.Props.Store.TextFile;
 using FubarDev.WebDavServer.Sample.AspNetCore.Middlewares;
+using FubarDev.WebDavServer.Sample.AspNetCore.NhSupport;
 
 using idunno.Authentication;
 
@@ -295,8 +296,10 @@ namespace FubarDev.WebDavServer.Sample.AspNetCore
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env, IServiceProvider serviceProvider)
+        public void Configure(IApplicationBuilder app, IHostingEnvironment env, IServiceProvider serviceProvider, Microsoft.Extensions.Logging.ILoggerFactory loggerFactory)
         {
+            NHibernateLogger.SetLoggersFactory(new NHibernateLoggerFactory(loggerFactory));
+
             using (var scope = serviceProvider.CreateScope())
             {
                 var runner = scope.ServiceProvider.GetService<IMigrationRunner>();
