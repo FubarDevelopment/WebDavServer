@@ -10,7 +10,6 @@ using System.Threading.Tasks;
 
 using FubarDev.WebDavServer.FileSystem;
 using FubarDev.WebDavServer.Model;
-using FubarDev.WebDavServer.Model.Headers;
 using FubarDev.WebDavServer.NHibernate.Models;
 
 using JetBrains.Annotations;
