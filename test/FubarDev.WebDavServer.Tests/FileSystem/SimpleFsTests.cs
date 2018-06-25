@@ -4,6 +4,7 @@
 
 using System;
 using System.IO;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -68,7 +69,7 @@ namespace FubarDev.WebDavServer.Tests.FileSystem
             var test2 = await root.CreateCollectionAsync("test2", ct).ConfigureAwait(false);
             var rootChildren = await root.GetChildrenAsync(ct).ConfigureAwait(false);
             Assert.Collection(
-                rootChildren,
+                rootChildren.OrderBy(n => n.Name),
                 child =>
                 {
                     Assert.NotNull(child);
