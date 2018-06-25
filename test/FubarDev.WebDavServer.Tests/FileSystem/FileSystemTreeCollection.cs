@@ -3,6 +3,7 @@
 // </copyright>
 
 using System;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -103,7 +104,7 @@ namespace FubarDev.WebDavServer.Tests.FileSystem
             Assert.Same(root, rootNode.Collection);
             Assert.Equal(0, rootNode.Documents.Count);
             Assert.Collection(
-                rootNode.Nodes,
+                rootNode.Nodes.OrderBy(n => n.Name),
                 node =>
                 {
                     Assert.NotNull(node.Collection);
@@ -135,7 +136,7 @@ namespace FubarDev.WebDavServer.Tests.FileSystem
             Assert.Same(root, rootNode.Collection);
             Assert.Equal(0, rootNode.Documents.Count);
             Assert.Collection(
-                rootNode.Nodes,
+                rootNode.Nodes.OrderBy(n => n.Name),
                 node1 =>
                 {
                     Assert.NotNull(node1.Collection);
@@ -187,7 +188,7 @@ namespace FubarDev.WebDavServer.Tests.FileSystem
             Assert.Same(root, rootNode.Collection);
             Assert.Equal(0, rootNode.Documents.Count);
             Assert.Collection(
-                rootNode.Nodes,
+                rootNode.Nodes.OrderBy(n => n.Name),
                 node1 =>
                 {
                     Assert.NotNull(node1.Collection);
@@ -195,7 +196,7 @@ namespace FubarDev.WebDavServer.Tests.FileSystem
                     Assert.Same(rootNode.Collection, node1.Collection.Parent);
                     Assert.Equal(0, node1.Documents.Count);
                     Assert.Collection(
-                        node1.Nodes,
+                        node1.Nodes.OrderBy(n => n.Name),
                         node2 =>
                         {
                             Assert.NotNull(node2.Collection);
@@ -220,7 +221,7 @@ namespace FubarDev.WebDavServer.Tests.FileSystem
                     Assert.Same(rootNode.Collection, node1.Collection.Parent);
                     Assert.Equal(0, node1.Documents.Count);
                     Assert.Collection(
-                        node1.Nodes,
+                        node1.Nodes.OrderBy(n => n.Name),
                         node2 =>
                         {
                             Assert.NotNull(node2.Collection);
@@ -255,7 +256,7 @@ namespace FubarDev.WebDavServer.Tests.FileSystem
             Assert.Same(root, rootNode.Collection);
             Assert.Equal(0, rootNode.Documents.Count);
             Assert.Collection(
-                rootNode.Nodes,
+                rootNode.Nodes.OrderBy(n => n.Name),
                 node1 =>
                 {
                     Assert.NotNull(node1.Collection);
@@ -263,7 +264,7 @@ namespace FubarDev.WebDavServer.Tests.FileSystem
                     Assert.Same(rootNode.Collection, node1.Collection.Parent);
                     Assert.Equal(0, node1.Nodes.Count);
                     Assert.Collection(
-                        node1.Documents,
+                        node1.Documents.OrderBy(n => n.Name),
                         document =>
                         {
                             Assert.Equal("test1.1", document.Name);
@@ -282,7 +283,7 @@ namespace FubarDev.WebDavServer.Tests.FileSystem
                     Assert.Same(rootNode.Collection, node1.Collection.Parent);
                     Assert.Equal(0, node1.Nodes.Count);
                     Assert.Collection(
-                        node1.Documents,
+                        node1.Documents.OrderBy(n => n.Name),
                         document =>
                         {
                             Assert.Equal("test2.1", document.Name);
@@ -313,14 +314,14 @@ namespace FubarDev.WebDavServer.Tests.FileSystem
             Assert.Same(root, rootNode.Collection);
             Assert.Equal(0, rootNode.Documents.Count);
             Assert.Collection(
-                rootNode.Nodes,
+                rootNode.Nodes.OrderBy(n => n.Name),
                 node1 =>
                 {
                     Assert.NotNull(node1.Collection);
                     Assert.Equal("test1", node1.Collection.Name);
                     Assert.Same(rootNode.Collection, node1.Collection.Parent);
                     Assert.Collection(
-                        node1.Nodes,
+                        node1.Nodes.OrderBy(n => n.Name),
                         node2 =>
                         {
                             Assert.NotNull(node2.Collection);
@@ -330,7 +331,7 @@ namespace FubarDev.WebDavServer.Tests.FileSystem
                             Assert.Equal(0, node2.Nodes.Count);
                         });
                     Assert.Collection(
-                        node1.Documents,
+                        node1.Documents.OrderBy(n => n.Name),
                         document =>
                         {
                             Assert.Equal("test1.1", document.Name);
@@ -348,7 +349,7 @@ namespace FubarDev.WebDavServer.Tests.FileSystem
                     Assert.Equal("test2", node1.Collection.Name);
                     Assert.Same(rootNode.Collection, node1.Collection.Parent);
                     Assert.Collection(
-                        node1.Nodes,
+                        node1.Nodes.OrderBy(n => n.Name),
                         node2 =>
                         {
                             Assert.NotNull(node2.Collection);
@@ -358,7 +359,7 @@ namespace FubarDev.WebDavServer.Tests.FileSystem
                             Assert.Equal(0, node2.Nodes.Count);
                         });
                     Assert.Collection(
-                        node1.Documents,
+                        node1.Documents.OrderBy(n => n.Name),
                         document =>
                         {
                             Assert.Equal("test2.1", document.Name);
