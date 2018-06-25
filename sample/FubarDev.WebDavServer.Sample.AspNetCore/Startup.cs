@@ -74,7 +74,7 @@ namespace FubarDev.WebDavServer.Sample.AspNetCore
                         {
                             opt.DefaultScheme = "Anonymous";
                         }
-                        
+
                         opt.AddScheme<Authentication.AnonymousAuthHandler>("Anonymous", null);
                     })
                 .AddBasic(
@@ -90,7 +90,7 @@ namespace FubarDev.WebDavServer.Sample.AspNetCore
                 .AddMvcCore()
                 .AddAuthorization()
                 .AddWebDav();
-            
+
             var serverConfig = new ServerConfiguration();
             var serverConfigSection = Configuration.GetSection("Server");
             serverConfigSection?.Bind(serverConfig);
@@ -110,10 +110,7 @@ namespace FubarDev.WebDavServer.Sample.AspNetCore
                 case FileSystemType.SQLite:
                     services
                         .Configure<SQLiteFileSystemOptions>(
-                            opt =>
-                            {
-                                opt.RootPath = Path.Combine(Path.GetTempPath(), "webdav");
-                            })
+                            opt => opt.RootPath = Path.Combine(Path.GetTempPath(), "webdav"))
                         .AddScoped<IFileSystemFactory, SQLiteFileSystemFactory>();
                     break;
                 default:
@@ -144,10 +141,7 @@ namespace FubarDev.WebDavServer.Sample.AspNetCore
                     services
                         .AddSingleton<ILockManager, SQLiteLockManager>()
                         .Configure<SQLiteLockManagerOptions>(
-                            cfg =>
-                            {
-                                cfg.DatabaseFileName = Path.Combine(Path.GetTempPath(), "webdav", "locks.db");
-                            });
+                            cfg => cfg.DatabaseFileName = Path.Combine(Path.GetTempPath(), "webdav", "locks.db"));
                     break;
                 default:
                     throw new NotSupportedException();
@@ -197,7 +191,7 @@ namespace FubarDev.WebDavServer.Sample.AspNetCore
 
             var groups = Npam.NpamUser.GetGroups(context.Username).ToList();
             var accountInfo = Npam.NpamUser.GetAccountInfo(context.Username);
-            
+
             var ticket = CreateAuthenticationTicket(accountInfo, groups);
             context.Principal = ticket.Principal;
             context.Properties = ticket.Properties;
