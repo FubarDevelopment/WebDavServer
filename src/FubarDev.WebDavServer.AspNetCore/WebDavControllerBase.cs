@@ -116,9 +116,6 @@ namespace FubarDev.WebDavServer.AspNetCore
             [FromBody] propfind request,
             CancellationToken cancellationToken = default(CancellationToken))
         {
-            var routeData = HttpContext.GetRouteData();
-            var baseUrl = Url.RouteUrl((object)null);
-            //var a = HttpContext. .GetLeftPart(UriPartial.Authority);
             var result = await _dispatcher.Class1.PropFindAsync(path ?? string.Empty, request, cancellationToken).ConfigureAwait(false);
             return new WebDavIndirectResult(_dispatcher, result, _responseLogger);
         }
