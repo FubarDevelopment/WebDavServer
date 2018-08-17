@@ -94,10 +94,15 @@ namespace FubarDev.WebDavServer.Tests.FileSystem
             _serviceScope.Dispose();
         }
 
-        public class FileSystemServices
+        public class FileSystemServices : IDisposable
         {
+            private readonly ServiceProvider _rootServiceProvider;
+            private readonly IServiceScope _scope;
+
             public FileSystemServices()
             {
+                IPropertyStoreFactory propertyStoreFactory = null;
+
                 var serviceCollection = new ServiceCollection()
                     .AddOptions()
                     .AddLogging()
@@ -110,16 +115,23 @@ namespace FubarDev.WebDavServer.Tests.FileSystem
                     .AddScoped<IWebDavContext>(sp => new TestHost(sp, new Uri("http://localhost/")))
                     .AddScoped<InMemoryFileSystemFactory>()
                     .AddScoped<IFileSystemFactory, MyVirtualRootFileSystemFactory>()
-                    .AddSingleton<IPropertyStoreFactory, InMemoryPropertyStoreFactory>()
+                    .AddScoped(sp => propertyStoreFactory ?? (propertyStoreFactory = ActivatorUtilities.CreateInstance<InMemoryPropertyStoreFactory>(sp)))
                     .AddWebDav();
 
-                ServiceProvider = serviceCollection.BuildServiceProvider();
+                _rootServiceProvider = serviceCollection.BuildServiceProvider(true);
+                _scope = _rootServiceProvider.CreateScope();
 
-                var loggerFactory = ServiceProvider.GetRequiredService<ILoggerFactory>();
+                var loggerFactory = _rootServiceProvider.GetRequiredService<ILoggerFactory>();
                 loggerFactory.AddDebug(LogLevel.Trace);
             }
 
-            public IServiceProvider ServiceProvider { get; }
+            public IServiceProvider ServiceProvider => _scope.ServiceProvider;
+
+            public void Dispose()
+            {
+                _scope.Dispose();
+                _rootServiceProvider.Dispose();
+            }
         }
 
         // ReSharper disable once ClassNeverInstantiated.Local

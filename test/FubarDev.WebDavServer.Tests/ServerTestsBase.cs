@@ -35,6 +35,8 @@ namespace FubarDev.WebDavServer.Tests
 {
     public abstract class ServerTestsBase : IDisposable
     {
+        private readonly IServiceScope _scope;
+
         protected ServerTestsBase()
             : this(RecursiveProcessingMode.PreferFastest)
         {
@@ -45,12 +47,16 @@ namespace FubarDev.WebDavServer.Tests
             var builder = new WebHostBuilder()
                 .ConfigureServices(sc => ConfigureServices(this, processingMode, sc))
                 .UseStartup<TestStartup>();
+
             Server = new TestServer(builder);
-            FileSystem = Server.Host.Services.GetRequiredService<IFileSystem>();
+            _scope = Server.Host.Services.CreateScope();
+
             Client = new WebDavClient(Server.CreateHandler())
             {
                 BaseAddress = Server.BaseAddress,
             };
+
+            FileSystem = _scope.ServiceProvider.GetRequiredService<IFileSystem>();
         }
 
         [NotNull]
@@ -63,16 +69,19 @@ namespace FubarDev.WebDavServer.Tests
         protected WebDavClient Client { get; }
 
         [NotNull]
-        protected IServiceProvider ServiceProvider => Server.Host.Services;
+        protected IServiceProvider ServiceProvider => _scope.ServiceProvider;
 
         public void Dispose()
         {
             Server.Dispose();
             Client.Dispose();
+            _scope.Dispose();
         }
 
         private void ConfigureServices(ServerTestsBase container, RecursiveProcessingMode processingMode, IServiceCollection services)
         {
+            IFileSystemFactory fileSystemFactory = null;
+            IPropertyStoreFactory propertyStoreFactory = null;
             services
                 .AddOptions()
                 .AddLogging()
@@ -88,8 +97,8 @@ namespace FubarDev.WebDavServer.Tests
                     })
                 .AddScoped<IWebDavContext>(sp => new TestHost(sp, container.Server.BaseAddress, sp.GetRequiredService<IHttpContextAccessor>()))
                 .AddScoped<IHttpMessageHandlerFactory>(sp => new TestHttpMessageHandlerFactory(container.Server))
-                .AddSingleton<IFileSystemFactory, InMemoryFileSystemFactory>()
-                .AddSingleton<IPropertyStoreFactory, InMemoryPropertyStoreFactory>()
+                .AddScoped(sp => fileSystemFactory ?? (fileSystemFactory = ActivatorUtilities.CreateInstance<InMemoryFileSystemFactory>(sp)))
+                .AddScoped(sp => propertyStoreFactory ?? (propertyStoreFactory = ActivatorUtilities.CreateInstance<InMemoryPropertyStoreFactory>(sp)))
                 .AddSingleton<ILockManager, InMemoryLockManager>()
                 .AddMvcCore()
                 .AddApplicationPart(typeof(TestWebDavController).GetTypeInfo().Assembly)
@@ -99,6 +108,12 @@ namespace FubarDev.WebDavServer.Tests
         [UsedImplicitly]
         private class TestStartup
         {
+            [UsedImplicitly]
+            public IServiceProvider ConfigureServices(IServiceCollection services)
+            {
+                return services.BuildServiceProvider(true);
+            }
+
             [UsedImplicitly]
             public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory)
             {
