@@ -26,19 +26,14 @@ namespace FubarDev.WebDavServer.Formatters
         private static readonly Encoding _defaultEncoding = new UTF8Encoding(false);
 
         [NotNull]
-        private readonly ILogger<WebDavXmlOutputFormatter> _logger;
-
-        [NotNull]
         private readonly string _namespacePrefix;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="WebDavXmlOutputFormatter"/> class.
         /// </summary>
         /// <param name="options">The formatter options</param>
-        /// <param name="logger">The logger</param>
-        public WebDavXmlOutputFormatter([NotNull] IOptions<WebDavFormatterOptions> options, [NotNull] ILogger<WebDavXmlOutputFormatter> logger)
+        public WebDavXmlOutputFormatter([NotNull] IOptions<WebDavFormatterOptions> options)
         {
-            _logger = logger;
             Encoding = _defaultEncoding;
 
             var contentType = options.Value.ContentType ?? "text/xml";
@@ -70,13 +65,6 @@ namespace FubarDev.WebDavServer.Formatters
                 {
                     xelem.SetAttributeValue(XNamespace.Xmlns + _namespacePrefix, WebDavXml.Dav.NamespaceName);
                 }
-            }
-
-            if (_logger.IsEnabled(LogLevel.Debug))
-            {
-                var debugOutput = new StringWriter();
-                SerializerInstance<T>.Serializer.Serialize(debugOutput, data, ns);
-                _logger.LogDebug(debugOutput.ToString());
             }
 
             using (var writer = XmlWriter.Create(output, writerSettings))
