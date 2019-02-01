@@ -91,52 +91,48 @@ namespace FubarDev.WebDavServer.AspNetCore.Logging
                     // Ignore all exceptions
                 }
 
-                if (context.Request.Body != null && !string.IsNullOrEmpty(context.Request.ContentType))
+                var shouldTryReadingBody =
+                    IsXmlContentType(context.Request)
+                    || context.Request.Body != null && IsMicrosoftWebDavClient(context.Request);
+
+                if (shouldTryReadingBody)
                 {
-                    var contentType = new MediaType(context.Request.ContentType);
-                    if (IsXml(contentType))
+                    var encoding = GetEncoding(context.Request);
+
+                    var temp = new MemoryStream();
+                    await context.Request.Body.CopyToAsync(temp, 65536).ConfigureAwait(false);
+
+                    if (temp.Length != 0)
                     {
-                        var encoding = _defaultEncoding;
-                        if (contentType.Charset.HasValue)
+                        temp.Position = 0;
+
+                        try
                         {
-                            encoding = Encoding.GetEncoding(contentType.Charset.Value);
+                            using (var reader = new StreamReader(temp, encoding, false, 1000, true))
+                            {
+                                var doc = XDocument.Load(reader);
+                                info.Add($"Body: {doc}");
+                            }
                         }
-
-                        var temp = new MemoryStream();
-                        await context.Request.Body.CopyToAsync(temp, 65536).ConfigureAwait(false);
-
-                        if (temp.Length != 0)
+                        catch (Exception ex)
                         {
+                            _logger.LogWarning(EventIds.Unspecified, ex, ex.Message);
                             temp.Position = 0;
-
-                            try
+                            using (var reader = new StreamReader(temp, encoding, false, 1000, true))
                             {
-                                using (var reader = new StreamReader(temp, encoding, false, 1000, true))
-                                {
-                                    var doc = XDocument.Load(reader);
-                                    info.Add($"Body: {doc}");
-                                }
+                                var content = await reader.ReadToEndAsync().ConfigureAwait(false);
+                                info.Add($"Body: {content}");
                             }
-                            catch (Exception ex)
-                            {
-                                _logger.LogWarning(EventIds.Unspecified, ex, ex.Message);
-                                temp.Position = 0;
-                                using (var reader = new StreamReader(temp, encoding, false, 1000, true))
-                                {
-                                    var content = await reader.ReadToEndAsync().ConfigureAwait(false);
-                                    info.Add($"Body: {content}");
-                                }
-                            }
-
-                            if (!context.Request.Body.CanSeek)
-                            {
-                                var oldStream = context.Request.Body;
-                                context.Request.Body = temp;
-                                oldStream.Dispose();
-                            }
-
-                            context.Request.Body.Position = 0;
                         }
+
+                        if (!context.Request.Body.CanSeek)
+                        {
+                            var oldStream = context.Request.Body;
+                            context.Request.Body = temp;
+                            oldStream.Dispose();
+                        }
+
+                        context.Request.Body.Position = 0;
                     }
                 }
 
@@ -144,6 +140,44 @@ namespace FubarDev.WebDavServer.AspNetCore.Logging
             }
 
             await _next(context).ConfigureAwait(false);
+        }
+
+        private static bool IsXmlContentType(HttpRequest request)
+        {
+            return request.Body != null
+                   && !string.IsNullOrEmpty(request.ContentType)
+                   && IsXml(request.ContentType);
+        }
+
+        private static bool IsMicrosoftWebDavClient(HttpRequest request)
+        {
+            if (!request.Headers.TryGetValue("User-Agent", out var userAgentValues))
+            {
+                return false;
+            }
+
+            if (userAgentValues.Count == 0)
+            {
+                return false;
+            }
+
+            return userAgentValues[0].IndexOf("Microsoft-WebDAV-MiniRedir", StringComparison.OrdinalIgnoreCase) != -1;
+        }
+
+        private static Encoding GetEncoding(HttpRequest request)
+        {
+            if (string.IsNullOrEmpty(request.ContentType))
+            {
+                return _defaultEncoding;
+            }
+
+            var contentType = new MediaType(request.ContentType);
+            if (contentType.Charset.HasValue)
+            {
+                return Encoding.GetEncoding(contentType.Charset.Value);
+            }
+
+            return _defaultEncoding;
         }
     }
 }
