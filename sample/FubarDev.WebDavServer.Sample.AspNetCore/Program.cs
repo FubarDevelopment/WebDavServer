@@ -6,6 +6,9 @@ using Microsoft.AspNetCore.Server.HttpSys;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
+using Serilog;
+using Serilog.Events;
+
 namespace FubarDev.WebDavServer.Sample.AspNetCore
 {
     public class Program
@@ -18,7 +21,26 @@ namespace FubarDev.WebDavServer.Sample.AspNetCore
 
         public static void Main(string[] args)
         {
-            BuildWebHost(args).Run();
+            Log.Logger = new LoggerConfiguration()
+                .MinimumLevel.Debug()
+                .MinimumLevel.Override("Microsoft", LogEventLevel.Information)
+                .Enrich.FromLogContext()
+                .WriteTo.Console()
+                .CreateLogger();
+
+            try
+            {
+                Log.Information("Starting web host");
+                BuildWebHost(args).Run();
+            }
+            catch (Exception ex)
+            {
+                Log.Fatal(ex, "Host terminated unexpectedly");
+            }
+            finally
+            {
+                Log.CloseAndFlush();
+            }
         }
 
         private static IWebHost BuildWebHost(string[] args)
@@ -36,6 +58,7 @@ namespace FubarDev.WebDavServer.Sample.AspNetCore
         private static IWebHost BuildWebHost(string[] args, Func<IWebHostBuilder, IWebHostBuilder> customConfig) =>
             customConfig(WebHost.CreateDefaultBuilder(args))
                 .UseStartup<Startup>()
+                .UseSerilog()
                 .Build();
 
         private static IWebHostBuilder ConfigureHosting(IWebHostBuilder builder, IConfiguration configuration)
