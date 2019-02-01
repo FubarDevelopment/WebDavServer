@@ -3,10 +3,14 @@
 // </copyright>
 
 using System;
+using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
 
 using FubarDev.WebDavServer.Model.Headers;
+using FubarDev.WebDavServer.Props;
+using FubarDev.WebDavServer.Props.Dead;
+using FubarDev.WebDavServer.Props.Live;
 
 using JetBrains.Annotations;
 
@@ -47,10 +51,14 @@ namespace FubarDev.WebDavServer.FileSystem.InMemory
         /// <inheritdoc />
         public Uri Path { get; }
 
-        /// <inheritdoc />
+        /// <summary>
+        /// Gets or sets the last time this entry was modified.
+        /// </summary>
         public DateTime LastWriteTimeUtc { get; protected set; }
 
-        /// <inheritdoc />
+        /// <summary>
+        /// Gets or sets the time this entry was created.
+        /// </summary>
         public DateTime CreationTimeUtc { get; protected set; }
 
         /// <inheritdoc />
@@ -80,7 +88,13 @@ namespace FubarDev.WebDavServer.FileSystem.InMemory
         /// <inheritdoc />
         public abstract Task<DeleteResult> DeleteAsync(CancellationToken cancellationToken);
 
-        /// <inheritdoc />
+        /// <summary>
+        /// Sets the last write time.
+        /// </summary>
+        /// <param name="lastWriteTime">The new last write time.</param>
+        /// <param name="cancellationToken">The cancellation token.</param>
+        /// <returns>The async task.</returns>
+        [NotNull]
         public Task SetLastWriteTimeUtcAsync(DateTime lastWriteTime, CancellationToken cancellationToken)
         {
             if (InMemoryFileSystem.IsReadOnly)
@@ -90,7 +104,13 @@ namespace FubarDev.WebDavServer.FileSystem.InMemory
             return Task.FromResult(0);
         }
 
-        /// <inheritdoc />
+        /// <summary>
+        /// Sets the creation time.
+        /// </summary>
+        /// <param name="creationTime">The new creation time.</param>
+        /// <param name="cancellationToken">The cancellation token.</param>
+        /// <returns>The async task.</returns>
+        [NotNull]
         public Task SetCreationTimeUtcAsync(DateTime creationTime, CancellationToken cancellationToken)
         {
             if (InMemoryFileSystem.IsReadOnly)
@@ -98,6 +118,14 @@ namespace FubarDev.WebDavServer.FileSystem.InMemory
 
             CreationTimeUtc = creationTime;
             return Task.FromResult(0);
+        }
+
+        /// <inheritdoc />
+        public IEnumerable<IUntypedReadableProperty> GetLiveProperties()
+        {
+            yield return new LastModifiedProperty(LastWriteTimeUtc, SetLastWriteTimeUtcAsync);
+            yield return new CreationDateProperty(CreationTimeUtc, (value, ct) => SetCreationTimeUtcAsync(value.UtcDateTime, ct));
+            yield return new GetETagProperty(FileSystem.PropertyStore, this);
         }
     }
 }

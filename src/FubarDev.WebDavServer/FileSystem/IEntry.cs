@@ -3,8 +3,11 @@
 // </copyright>
 
 using System;
+using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
+
+using FubarDev.WebDavServer.Props;
 
 using JetBrains.Annotations;
 
@@ -43,16 +46,6 @@ namespace FubarDev.WebDavServer.FileSystem
         Uri Path { get; }
 
         /// <summary>
-        /// Gets the last time this entry was modified
-        /// </summary>
-        DateTime LastWriteTimeUtc { get; }
-
-        /// <summary>
-        /// Gets the time this entry was created
-        /// </summary>
-        DateTime CreationTimeUtc { get; }
-
-        /// <summary>
         /// Deletes this entry
         /// </summary>
         /// <param name="cancellationToken">The cancellation token</param>
@@ -62,21 +55,11 @@ namespace FubarDev.WebDavServer.FileSystem
         Task<DeleteResult> DeleteAsync(CancellationToken cancellationToken);
 
         /// <summary>
-        /// Sets the last write time
+        /// Gets the live properties of this entry.
         /// </summary>
-        /// <param name="lastWriteTime">The new last write time</param>
-        /// <param name="cancellationToken">The cancellation token</param>
-        /// <returns>The async task</returns>
+        /// <returns>The live properties of this entry.</returns>
         [NotNull]
-        Task SetLastWriteTimeUtcAsync(DateTime lastWriteTime, CancellationToken cancellationToken);
-
-        /// <summary>
-        /// Sets the creation time
-        /// </summary>
-        /// <param name="creationTime">The new creation time</param>
-        /// <param name="cancellationToken">The cancellation token</param>
-        /// <returns>The async task</returns>
-        [NotNull]
-        Task SetCreationTimeUtcAsync(DateTime creationTime, CancellationToken cancellationToken);
+        [ItemNotNull]
+        IEnumerable<IUntypedReadableProperty> GetLiveProperties();
     }
 }

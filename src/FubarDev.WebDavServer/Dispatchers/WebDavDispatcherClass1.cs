@@ -1,4 +1,4 @@
-﻿// <copyright file="WebDavDispatcherClass1.cs" company="Fubar Development Junker">
+// <copyright file="WebDavDispatcherClass1.cs" company="Fubar Development Junker">
 // Copyright (c) Fubar Development Junker. All rights reserved.
 // </copyright>
 
@@ -281,9 +281,11 @@ namespace FubarDev.WebDavServer.Dispatchers
             var propStore = entry.FileSystem.PropertyStore;
 
             yield return entry.GetResourceTypeProperty();
-            yield return new LastModifiedProperty(entry.LastWriteTimeUtc, entry.SetLastWriteTimeUtcAsync);
-            yield return new CreationDateProperty(entry.CreationTimeUtc, (value, ct) => entry.SetCreationTimeUtcAsync(value.UtcDateTime, ct));
-            yield return new GetETagProperty(entry.FileSystem.PropertyStore, entry);
+
+            foreach (var property in entry.GetLiveProperties())
+            {
+                yield return property;
+            }
 
             if (propStore != null)
                 yield return _deadPropertyFactory.Create(propStore, entry, DisplayNameProperty.PropertyName);

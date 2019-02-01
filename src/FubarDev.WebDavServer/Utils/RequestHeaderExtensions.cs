@@ -2,11 +2,13 @@
 // Copyright (c) Fubar Development Junker. All rights reserved.
 // </copyright>
 
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 
 using FubarDev.WebDavServer.FileSystem;
 using FubarDev.WebDavServer.Model;
+using FubarDev.WebDavServer.Props.Live;
 
 using JetBrains.Annotations;
 
@@ -30,11 +32,25 @@ namespace FubarDev.WebDavServer.Utils
             if (headers.IfModifiedSince != null || headers.IfUnmodifiedSince != null)
             {
                 // Validate against last modification time
-                var lastWriteTimeUtc = entry.LastWriteTimeUtc;
-                if (headers.IfUnmodifiedSince != null && !headers.IfUnmodifiedSince.IsMatch(lastWriteTimeUtc))
+                var lastWriteTimeProperty = entry.GetLiveProperties().OfType<LastModifiedProperty>().SingleOrDefault();
+                if (lastWriteTimeProperty != null)
+                {
+                    var lastWriteTimeUtc = await lastWriteTimeProperty.GetValueAsync(cancellationToken)
+                        .ConfigureAwait(false);
+                    if (headers.IfUnmodifiedSince != null && !headers.IfUnmodifiedSince.IsMatch(lastWriteTimeUtc))
+                    {
+                        throw new WebDavException(WebDavStatusCode.PreconditionFailed);
+                    }
+
+                    if (headers.IfModifiedSince != null && !headers.IfModifiedSince.IsMatch(lastWriteTimeUtc))
+                    {
+                        throw new WebDavException(WebDavStatusCode.NotModified);
+                    }
+                }
+                else
+                {
                     throw new WebDavException(WebDavStatusCode.PreconditionFailed);
-                if (headers.IfModifiedSince != null && !headers.IfModifiedSince.IsMatch(lastWriteTimeUtc))
-                    throw new WebDavException(WebDavStatusCode.NotModified);
+                }
             }
         }
     }
