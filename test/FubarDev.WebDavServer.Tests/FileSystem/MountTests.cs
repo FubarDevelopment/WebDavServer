@@ -21,7 +21,6 @@ using JetBrains.Annotations;
 
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
-using Microsoft.Extensions.Logging.Debug;
 
 using Xunit;
 

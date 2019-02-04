@@ -5,12 +5,12 @@
 namespace FubarDev.WebDavServer.Handlers.Impl
 {
     /// <summary>
-    /// Options for the <see cref="CopyHandler"/>
+    /// Options for the <see cref="CopyHandler"/>.
     /// </summary>
     public class CopyHandlerOptions
     {
         /// <summary>
-        /// Gets or sets the mode that determines the method used to copy files
+        /// Gets or sets the mode that determines the method used to copy files.
         /// </summary>
         public RecursiveProcessingMode Mode { get; set; }
 

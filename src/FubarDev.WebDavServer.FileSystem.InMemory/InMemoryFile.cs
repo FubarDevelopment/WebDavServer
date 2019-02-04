@@ -16,17 +16,17 @@ using FubarDev.WebDavServer.Model.Headers;
 namespace FubarDev.WebDavServer.FileSystem.InMemory
 {
     /// <summary>
-    /// An in-memory implementation of a WebDAV document
+    /// An in-memory implementation of a WebDAV document.
     /// </summary>
     public class InMemoryFile : InMemoryEntry, IDocument
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="InMemoryFile"/> class.
         /// </summary>
-        /// <param name="fileSystem">The file system this document belongs to</param>
-        /// <param name="parent">The parent collection</param>
-        /// <param name="path">The root-relative path of this document</param>
-        /// <param name="name">The name of this document</param>
+        /// <param name="fileSystem">The file system this document belongs to.</param>
+        /// <param name="parent">The parent collection.</param>
+        /// <param name="path">The root-relative path of this document.</param>
+        /// <param name="name">The name of this document.</param>
         public InMemoryFile(InMemoryFileSystem fileSystem, ICollection parent, Uri path, string name)
             : this(fileSystem, parent, path, name, new byte[0])
         {
@@ -35,11 +35,11 @@ namespace FubarDev.WebDavServer.FileSystem.InMemory
         /// <summary>
         /// Initializes a new instance of the <see cref="InMemoryFile"/> class.
         /// </summary>
-        /// <param name="fileSystem">The file system this document belongs to</param>
-        /// <param name="parent">The parent collection</param>
-        /// <param name="path">The root-relative path of this document</param>
-        /// <param name="name">The name of this document</param>
-        /// <param name="data">The initial data of this document</param>
+        /// <param name="fileSystem">The file system this document belongs to.</param>
+        /// <param name="parent">The parent collection.</param>
+        /// <param name="path">The root-relative path of this document.</param>
+        /// <param name="name">The name of this document.</param>
+        /// <param name="data">The initial data of this document.</param>
         public InMemoryFile(InMemoryFileSystem fileSystem, ICollection parent, Uri path, string name, byte[] data)
             : base(fileSystem, parent, path, name)
         {
@@ -50,7 +50,7 @@ namespace FubarDev.WebDavServer.FileSystem.InMemory
         public long Length => Data.Length;
 
         /// <summary>
-        /// Gets or sets the underlying data
+        /// Gets or sets the underlying data.
         /// </summary>
         public MemoryStream Data { get; set; }
 
@@ -58,10 +58,14 @@ namespace FubarDev.WebDavServer.FileSystem.InMemory
         public override async Task<DeleteResult> DeleteAsync(CancellationToken cancellationToken)
         {
             if (InMemoryFileSystem.IsReadOnly)
+            {
                 throw new UnauthorizedAccessException("Failed to modify a read-only file system");
+            }
 
             if (InMemoryParent == null)
+            {
                 throw new InvalidOperationException("The document must belong to a collection");
+            }
 
             if (InMemoryParent.Remove(Name))
             {
@@ -87,7 +91,9 @@ namespace FubarDev.WebDavServer.FileSystem.InMemory
         public Task<Stream> CreateAsync(CancellationToken cancellationToken)
         {
             if (InMemoryFileSystem.IsReadOnly)
+            {
                 throw new UnauthorizedAccessException("Failed to modify a read-only file system");
+            }
 
             return Task.FromResult<Stream>(Data = new MyMemoryStream(this));
         }
@@ -124,7 +130,9 @@ namespace FubarDev.WebDavServer.FileSystem.InMemory
         public async Task<IDocument> MoveToAsync(ICollection collection, string name, CancellationToken cancellationToken)
         {
             if (InMemoryFileSystem.IsReadOnly)
+            {
                 throw new UnauthorizedAccessException("Failed to modify a read-only file system");
+            }
 
             var sourcePropStore = FileSystem.PropertyStore;
             var destPropStore = collection.FileSystem.PropertyStore;
@@ -147,9 +155,14 @@ namespace FubarDev.WebDavServer.FileSystem.InMemory
             doc.ETag = ETag;
             Debug.Assert(InMemoryParent != null, "InMemoryParent != null");
             if (InMemoryParent == null)
+            {
                 throw new InvalidOperationException("The document must belong to a collection");
+            }
+
             if (!InMemoryParent.Remove(Name))
+            {
                 throw new InvalidOperationException("Failed to remove the document from the source collection.");
+            }
 
             if (destPropStore != null)
             {

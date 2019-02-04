@@ -42,10 +42,10 @@ namespace FubarDev.WebDavServer.Handlers.Impl
         /// <summary>
         /// Initializes a new instance of the <see cref="LockHandler"/> class.
         /// </summary>
-        /// <param name="context">The WebDAV request context</param>
-        /// <param name="rootFileSystem">The root file system</param>
-        /// <param name="lockManager">The lock manager</param>
-        /// <param name="timeoutPolicy">The timeout policy for the selection of the <see cref="TimeoutHeader"/> value</param>
+        /// <param name="context">The WebDAV request context.</param>
+        /// <param name="rootFileSystem">The root file system.</param>
+        /// <param name="lockManager">The lock manager.</param>
+        /// <param name="timeoutPolicy">The timeout policy for the selection of the <see cref="TimeoutHeader"/> value.</param>
         public LockHandler([NotNull] IWebDavContext context, [NotNull] IFileSystem rootFileSystem, ILockManager lockManager = null, ITimeoutPolicy timeoutPolicy = null)
         {
             _context = context;
@@ -62,7 +62,9 @@ namespace FubarDev.WebDavServer.Handlers.Impl
         public async Task<IWebDavResult> LockAsync(string path, lockinfo info, CancellationToken cancellationToken)
         {
             if (_lockManager == null)
+            {
                 throw new NotSupportedException();
+            }
 
             var owner = info.owner;
             var recursive = (_context.RequestHeaders.Depth ?? DepthHeader.Infinity) == DepthHeader.Infinity;
@@ -140,10 +142,14 @@ namespace FubarDev.WebDavServer.Handlers.Impl
                 if (selectionResult.IsMissing)
                 {
                     if (_context.RequestHeaders.IfNoneMatch != null)
+                    {
                         throw new WebDavException(WebDavStatusCode.PreconditionFailed);
+                    }
 
                     if (selectionResult.MissingNames.Count > 1)
+                    {
                         return new WebDavResult(WebDavStatusCode.Conflict);
+                    }
 
                     var current = selectionResult.Collection;
                     var docName = selectionResult.MissingNames.Single();
@@ -181,10 +187,14 @@ namespace FubarDev.WebDavServer.Handlers.Impl
         public async Task<IWebDavResult> RefreshLockAsync(string path, IfHeader ifHeader, TimeoutHeader timeoutHeader, CancellationToken cancellationToken)
         {
             if (_lockManager == null)
+            {
                 throw new NotSupportedException();
+            }
 
             if (ifHeader.Lists.Any(x => x.Path.IsAbsoluteUri))
+            {
                 throw new InvalidOperationException("A Resource-Tag pointing to a different server or application isn't supported.");
+            }
 
             var timeout = _timeoutPolicy?.SelectTimeout(
                               timeoutHeader?.Values ?? new[] { TimeoutHeader.Infinite })
@@ -192,7 +202,9 @@ namespace FubarDev.WebDavServer.Handlers.Impl
 
             var result = await _lockManager.RefreshLockAsync(_rootFileSystem, ifHeader, timeout, cancellationToken).ConfigureAwait(false);
             if (result.ErrorResponse != null)
+            {
                 return new WebDavResult<error>(WebDavStatusCode.PreconditionFailed, result.ErrorResponse.error);
+            }
 
             Debug.Assert(result.RefreshedLocks != null, "result.RefreshedLocks != null");
             var prop = new prop()
@@ -246,7 +258,10 @@ namespace FubarDev.WebDavServer.Handlers.Impl
         {
             var href = _context.PublicControllerUrl.Append(path, true);
             if (!_useAbsoluteHref)
+            {
                 return "/" + _context.PublicRootUrl.MakeRelativeUri(href).OriginalString;
+            }
+
             return href.OriginalString;
         }
     }

@@ -15,7 +15,7 @@ using Microsoft.Extensions.Logging;
 namespace FubarDev.WebDavServer.FileSystem
 {
     /// <summary>
-    /// Helper class to find an entry for a given path
+    /// Helper class to find an entry for a given path.
     /// </summary>
     public class PathTraversalEngine : IPathTraversalEngine
     {
@@ -25,7 +25,7 @@ namespace FubarDev.WebDavServer.FileSystem
         /// <summary>
         /// Initializes a new instance of the <see cref="PathTraversalEngine"/> class.
         /// </summary>
-        /// <param name="logger">The logger</param>
+        /// <param name="logger">The logger.</param>
         public PathTraversalEngine(ILogger<PathTraversalEngine> logger = null)
         {
             _logger = logger;
@@ -58,7 +58,9 @@ namespace FubarDev.WebDavServer.FileSystem
 
             var remaining = path.Substring(lastIndex);
             if (!string.IsNullOrEmpty(remaining))
+            {
                 yield return remaining;
+            }
         }
 
         [NotNull]
@@ -103,10 +105,15 @@ namespace FubarDev.WebDavServer.FileSystem
             {
                 var pathPart = pathPartsArr[i];
                 if (_logger?.IsEnabled(LogLevel.Trace) ?? false)
+                {
                     _logger.LogTrace($"Processing path ({id}), part {pathPart.Name} ({pathPart.OriginalName})");
+                }
 
                 if (pathPart.OriginalName == "./" || pathPart.OriginalName == string.Empty)
+                {
                     continue;
+                }
+
                 if (pathPart.OriginalName == "../")
                 {
                     currentCollection = currentPathStack.Pop();
@@ -119,7 +126,10 @@ namespace FubarDev.WebDavServer.FileSystem
                     // missing
                     var missingPathParts = pathPartsArr.Select(x => x.Name).Skip(i).ToArray();
                     if (_logger?.IsEnabled(LogLevel.Debug) ?? false)
+                    {
                         _logger.LogDebug($"Processing path ({id}), missing {pathPart.Name} ({pathPart.OriginalName}) with ({string.Join("/", missingPathParts)}) following");
+                    }
+
                     return SelectionResult.CreateMissingDocumentOrCollection(currentCollection, missingPathParts);
                 }
 
@@ -129,7 +139,10 @@ namespace FubarDev.WebDavServer.FileSystem
                     // file instead of directory
                     var missingPathParts = pathPartsArr.Select(x => x.Name).Skip(i).ToArray();
                     if (_logger?.IsEnabled(LogLevel.Debug) ?? false)
+                    {
                         _logger.LogDebug($"Processing path ({id}), missing collection {pathPart.Name} ({pathPart.OriginalName}) with ({string.Join("/", missingPathParts)}) following");
+                    }
+
                     return SelectionResult.CreateMissingCollection(currentCollection, missingPathParts);
                 }
 
@@ -137,7 +150,10 @@ namespace FubarDev.WebDavServer.FileSystem
                 {
                     // file found
                     if (_logger?.IsEnabled(LogLevel.Debug) ?? false)
+                    {
                         _logger.LogDebug($"Processing path ({id}), found document {next.Name} ({next.Path})");
+                    }
+
                     return SelectionResult.Create(currentCollection, (IDocument)next);
                 }
 
@@ -147,7 +163,10 @@ namespace FubarDev.WebDavServer.FileSystem
 
             // directory found
             if (_logger?.IsEnabled(LogLevel.Debug) ?? false)
+            {
                 _logger.LogDebug($"Processing path ({id}), found collection {currentCollection.Name} ({currentCollection.Path})");
+            }
+
             return SelectionResult.Create(currentCollection);
         }
 

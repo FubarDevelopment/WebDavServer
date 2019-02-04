@@ -24,7 +24,7 @@ using Polly;
 namespace FubarDev.WebDavServer.Props.Store.TextFile
 {
     /// <summary>
-    /// A property store that stores the properties in a JSON file
+    /// A property store that stores the properties in a JSON file.
     /// </summary>
     public class TextFilePropertyStore : PropertyStoreBase, IFileSystemPropertyStore
     {
@@ -45,12 +45,12 @@ namespace FubarDev.WebDavServer.Props.Store.TextFile
         /// <summary>
         /// Initializes a new instance of the <see cref="TextFilePropertyStore"/> class.
         /// </summary>
-        /// <param name="options">The options for the text file property store</param>
-        /// <param name="deadPropertyFactory">The factory for the dead properties</param>
-        /// <param name="rootFolder">The root folder where the properties will be stored</param>
-        /// <param name="storeInRootOnly">Store all properties in the same JSON text file</param>
-        /// <param name="storeEntryName">The name of the JSON text file</param>
-        /// <param name="logger">The logger for the property store</param>
+        /// <param name="options">The options for the text file property store.</param>
+        /// <param name="deadPropertyFactory">The factory for the dead properties.</param>
+        /// <param name="rootFolder">The root folder where the properties will be stored.</param>
+        /// <param name="storeInRootOnly">Store all properties in the same JSON text file.</param>
+        /// <param name="storeEntryName">The name of the JSON text file.</param>
+        /// <param name="logger">The logger for the property store.</param>
         public TextFilePropertyStore(TextFilePropertyStoreOptions options, IDeadPropertyFactory deadPropertyFactory, string rootFolder, bool storeInRootOnly, string storeEntryName, ILogger<TextFilePropertyStore> logger)
             : base(deadPropertyFactory)
         {
@@ -86,7 +86,9 @@ namespace FubarDev.WebDavServer.Props.Store.TextFile
         public override Task<IReadOnlyCollection<XElement>> GetAsync(IEntry entry, CancellationToken cancellationToken)
         {
             if (_logger.IsEnabled(LogLevel.Trace))
+            {
                 _logger.LogTrace($"Get properties for {entry.Path}");
+            }
 
             var storeData = Load(entry, false, cancellationToken);
             EntryInfo info;
@@ -110,7 +112,9 @@ namespace FubarDev.WebDavServer.Props.Store.TextFile
         public override Task SetAsync(IEntry entry, IEnumerable<XElement> elements, CancellationToken cancellationToken)
         {
             if (_logger.IsEnabled(LogLevel.Trace))
+            {
                 _logger.LogTrace($"Set properties for {entry.Path}");
+            }
 
             var info = GetInfo(entry, cancellationToken) ?? new EntryInfo();
             foreach (var element in elements)
@@ -125,14 +129,16 @@ namespace FubarDev.WebDavServer.Props.Store.TextFile
             }
 
             UpdateInfo(entry, info, cancellationToken);
-            return Task.FromResult(0);
+            return Task.CompletedTask;
         }
 
         /// <inheritdoc />
         public override Task<IReadOnlyCollection<bool>> RemoveAsync(IEntry entry, IEnumerable<XName> keys, CancellationToken cancellationToken)
         {
             if (_logger.IsEnabled(LogLevel.Trace))
+            {
                 _logger.LogTrace($"Remove properties for {entry.Path}");
+            }
 
             var info = GetInfo(entry, cancellationToken) ?? new EntryInfo();
             var result = new List<bool>();
@@ -158,7 +164,9 @@ namespace FubarDev.WebDavServer.Props.Store.TextFile
         {
             var fileName = GetFileNameFor(entry);
             if (!File.Exists(fileName))
-                return Task.FromResult(0);
+            {
+                return Task.CompletedTask;
+            }
 
             var storeData = Load(entry, false, cancellationToken);
             var entryKey = GetEntryKey(entry);
@@ -167,7 +175,7 @@ namespace FubarDev.WebDavServer.Props.Store.TextFile
                 Save(entry, storeData, cancellationToken);
             }
 
-            return Task.FromResult(0);
+            return Task.CompletedTask;
         }
 
         /// <inheritdoc />
@@ -221,7 +229,10 @@ namespace FubarDev.WebDavServer.Props.Store.TextFile
         private static string GetEntryKey(IEntry entry)
         {
             if (entry is ICollection)
+            {
                 return ".";
+            }
+
             return entry.Name.ToLower();
         }
 
@@ -239,7 +250,9 @@ namespace FubarDev.WebDavServer.Props.Store.TextFile
 
             EntryInfo info;
             if (!storeData.Entries.TryGetValue(GetEntryKey(entry), out info))
+            {
                 info = new EntryInfo();
+            }
 
             return info;
         }
@@ -269,7 +282,9 @@ namespace FubarDev.WebDavServer.Props.Store.TextFile
         private StoreData Load(string fileName, bool useCache, CancellationToken cancellationToken)
         {
             if (!File.Exists(fileName))
+            {
                 return new StoreData();
+            }
 
             if (!useCache)
             {
@@ -306,7 +321,9 @@ namespace FubarDev.WebDavServer.Props.Store.TextFile
             }
 
             if (_logger.IsEnabled(LogLevel.Trace))
+            {
                 _logger.LogTrace($"Property store file name for {entry.Path} is {result}");
+            }
 
             return result;
         }
@@ -318,7 +335,10 @@ namespace FubarDev.WebDavServer.Props.Store.TextFile
             while (entry.Parent != null)
             {
                 if (!string.IsNullOrEmpty(entry.Name))
+                {
                     names.Add(entry.Name);
+                }
+
                 entry = entry.Parent;
             }
 
@@ -326,7 +346,9 @@ namespace FubarDev.WebDavServer.Props.Store.TextFile
             var result = Path.Combine(RootPath, Path.Combine(names.ToArray()));
 
             if (_logger.IsEnabled(LogLevel.Trace))
+            {
                 _logger.LogTrace($"File system path for {entry.Path} is {result}");
+            }
 
             return result;
         }

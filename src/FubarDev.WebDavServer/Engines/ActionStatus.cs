@@ -5,7 +5,7 @@
 namespace FubarDev.WebDavServer.Engines
 {
     /// <summary>
-    /// The status of an action
+    /// The status of an action.
     /// </summary>
     public enum ActionStatus
     {

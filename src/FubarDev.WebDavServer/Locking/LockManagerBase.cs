@@ -46,10 +46,10 @@ namespace FubarDev.WebDavServer.Locking
         /// <summary>
         /// Initializes a new instance of the <see cref="LockManagerBase"/> class.
         /// </summary>
-        /// <param name="cleanupTask">The clean-up task for expired locks</param>
-        /// <param name="systemClock">The system clock interface</param>
-        /// <param name="logger">The logger</param>
-        /// <param name="options">The options of the lock manager</param>
+        /// <param name="cleanupTask">The clean-up task for expired locks.</param>
+        /// <param name="systemClock">The system clock interface.</param>
+        /// <param name="logger">The logger.</param>
+        /// <param name="options">The options of the lock manager.</param>
         protected LockManagerBase([NotNull] ILockCleanupTask cleanupTask, [NotNull] ISystemClock systemClock, [NotNull] ILogger logger, [CanBeNull] ILockManagerOptions options = null)
         {
             _rounding = options?.Rounding ?? new DefaultLockTimeRounding(DefaultLockTimeRoundingMode.OneSecond);
@@ -78,56 +78,56 @@ namespace FubarDev.WebDavServer.Locking
         protected interface ILockManagerTransaction : IDisposable
         {
             /// <summary>
-            /// Gets all active locks
+            /// Gets all active locks.
             /// </summary>
-            /// <param name="cancellationToken">The cancellation token</param>
-            /// <returns>The collection of all active locks</returns>
+            /// <param name="cancellationToken">The cancellation token.</param>
+            /// <returns>The collection of all active locks.</returns>
             [NotNull]
             [ItemNotNull]
             Task<IReadOnlyCollection<IActiveLock>> GetActiveLocksAsync(CancellationToken cancellationToken);
 
             /// <summary>
-            /// Adds a new active lock
+            /// Adds a new active lock.
             /// </summary>
-            /// <param name="activeLock">The active lock to add</param>
-            /// <param name="cancellationToken">The cancellation token</param>
-            /// <returns><see langword="true"/> when adding the lock succeeded</returns>
+            /// <param name="activeLock">The active lock to add.</param>
+            /// <param name="cancellationToken">The cancellation token.</param>
+            /// <returns><see langword="true"/> when adding the lock succeeded.</returns>
             [NotNull]
             Task<bool> AddAsync([NotNull] IActiveLock activeLock, CancellationToken cancellationToken);
 
             /// <summary>
-            /// Updates the active lock
+            /// Updates the active lock.
             /// </summary>
-            /// <param name="activeLock">The active lock with the updated values</param>
-            /// <param name="cancellationToken">The cancellation token</param>
-            /// <returns><see langword="true"/> when the lock was updatet, <see langword="false"/> when the lock was added instead</returns>
+            /// <param name="activeLock">The active lock with the updated values.</param>
+            /// <param name="cancellationToken">The cancellation token.</param>
+            /// <returns><see langword="true"/> when the lock was updated, <see langword="false"/> when the lock was added instead.</returns>
             [NotNull]
             Task<bool> UpdateAsync([NotNull] IActiveLock activeLock, CancellationToken cancellationToken);
 
             /// <summary>
-            /// Removes an active lock with the given <paramref name="stateToken"/>
+            /// Removes an active lock with the given <paramref name="stateToken"/>.
             /// </summary>
-            /// <param name="stateToken">The state token of the active lock to remove</param>
-            /// <param name="cancellationToken">The cancellation token</param>
-            /// <returns><see langword="true"/> when a lock with the given <paramref name="stateToken"/> existed and could be removed</returns>
+            /// <param name="stateToken">The state token of the active lock to remove.</param>
+            /// <param name="cancellationToken">The cancellation token.</param>
+            /// <returns><see langword="true"/> when a lock with the given <paramref name="stateToken"/> existed and could be removed.</returns>
             [NotNull]
             Task<bool> RemoveAsync([NotNull] string stateToken, CancellationToken cancellationToken);
 
             /// <summary>
-            /// Gets an active lock by its <paramref name="stateToken"/>
+            /// Gets an active lock by its <paramref name="stateToken"/>.
             /// </summary>
-            /// <param name="stateToken">The state token to search for</param>
-            /// <param name="cancellationToken">The cancellation token</param>
-            /// <returns>The active lock for the state token or <see langword="null"/> when the lock wasn't found</returns>
+            /// <param name="stateToken">The state token to search for.</param>
+            /// <param name="cancellationToken">The cancellation token.</param>
+            /// <returns>The active lock for the state token or <see langword="null"/> when the lock wasn't found.</returns>
             [NotNull]
             [ItemCanBeNull]
             Task<IActiveLock> GetAsync([NotNull] string stateToken, CancellationToken cancellationToken);
 
             /// <summary>
-            /// Commits the changes made during the transaction
+            /// Commits the changes made during the transaction.
             /// </summary>
-            /// <param name="cancellationToken">The cancellation token</param>
-            /// <returns>The async task</returns>
+            /// <param name="cancellationToken">The cancellation token.</param>
+            /// <returns>The async task.</returns>
             [NotNull]
             Task CommitAsync(CancellationToken cancellationToken);
         }
@@ -136,7 +136,7 @@ namespace FubarDev.WebDavServer.Locking
         public int Cost { get; } = 0;
 
         /// <summary>
-        /// Gets the lock cleanup task
+        /// Gets the lock cleanup task.
         /// </summary>
         [NotNull]
         protected ILockCleanupTask LockCleanupTask => _cleanupTask;
@@ -154,7 +154,10 @@ namespace FubarDev.WebDavServer.Locking
                 if (conflictingLocks.Count != 0)
                 {
                     if (_logger.IsEnabled(LogLevel.Information))
+                    {
                         _logger.LogInformation($"Found conflicting locks for {l}: {string.Join(",", conflictingLocks.GetLocks().Select(x => x.ToString()))}");
+                    }
+
                     return new LockResult(conflictingLocks);
                 }
 
@@ -336,7 +339,10 @@ namespace FubarDev.WebDavServer.Locking
                 if (activeLock == null)
                 {
                     if (_logger.IsEnabled(LogLevel.Information))
+                    {
                         _logger.LogInformation($"Tried to remove non-existent lock {stateToken}");
+                    }
+
                     return LockReleaseStatus.NoLock;
                 }
 
@@ -344,7 +350,9 @@ namespace FubarDev.WebDavServer.Locking
                 var lockUrl = BuildUrl(activeLock.Path);
                 var lockCompareResult = Compare(lockUrl, activeLock.Recursive, destinationUrl, false);
                 if (lockCompareResult != LockCompareResult.Reference)
+                {
                     return LockReleaseStatus.InvalidLockRange;
+                }
 
                 await transaction.RemoveAsync(stateToken.OriginalString, cancellationToken).ConfigureAwait(false);
                 await transaction.CommitAsync(cancellationToken).ConfigureAwait(false);
@@ -396,35 +404,35 @@ namespace FubarDev.WebDavServer.Locking
         /// </para>
         /// </remarks>
         /// <param name="path">The client path to convert</param>
-        /// <returns>The system path to be converted to</returns>
+        /// <returns>The system path to be converted to.</returns>
         protected virtual Uri NormalizePath(Uri path)
         {
             return path;
         }
 
         /// <summary>
-        /// Gets called when a lock was added
+        /// Gets called when a lock was added.
         /// </summary>
-        /// <param name="activeLock">The lock that was added</param>
+        /// <param name="activeLock">The lock that was added.</param>
         protected virtual void OnLockAdded(IActiveLock activeLock)
         {
             LockAdded?.Invoke(this, new LockEventArgs(activeLock));
         }
 
         /// <summary>
-        /// Gets called when a lock was released
+        /// Gets called when a lock was released.
         /// </summary>
-        /// <param name="activeLock">The lock that was released</param>
+        /// <param name="activeLock">The lock that was released.</param>
         protected virtual void OnLockReleased(IActiveLock activeLock)
         {
             LockReleased?.Invoke(this, new LockEventArgs(activeLock));
         }
 
         /// <summary>
-        /// Begins a new transaction
+        /// Begins a new transaction.
         /// </summary>
-        /// <param name="cancellationToken">The cancellation token</param>
-        /// <returns>The transaction to be used to update the active locks</returns>
+        /// <param name="cancellationToken">The cancellation token.</param>
+        /// <returns>The transaction to be used to update the active locks.</returns>
         protected abstract Task<ILockManagerTransaction> BeginTransactionAsync(CancellationToken cancellationToken);
 
         private static LockStatus GetConflictingLocks(LockStatus affactingLocks, LockShareMode shareMode)
@@ -452,10 +460,10 @@ namespace FubarDev.WebDavServer.Locking
         /// <summary>
         /// Returns a new active lock whose new expiration date/time is recalculated using <paramref name="lastRefresh"/> and <paramref name="timeout"/>.
         /// </summary>
-        /// <param name="activeLock">The active lock to refresh</param>
-        /// <param name="lastRefresh">The date/time of the last refresh</param>
-        /// <param name="timeout">The new timeout to apply to the lock</param>
-        /// <returns>The new (refreshed) active lock</returns>
+        /// <param name="activeLock">The active lock to refresh.</param>
+        /// <param name="lastRefresh">The date/time of the last refresh.</param>
+        /// <param name="timeout">The new timeout to apply to the lock.</param>
+        /// <returns>The new (refreshed) active lock.</returns>
         [Pure]
         private static ActiveLock Refresh(IActiveLock activeLock, DateTime lastRefresh, TimeSpan timeout)
         {
@@ -586,7 +594,9 @@ namespace FubarDev.WebDavServer.Locking
             // List of matches between path info and if header lists
             var successfulConditions = new List<Tuple<PathInfo, IfHeaderList>>();
             if (ifListLocks.Count == 0)
+            {
                 return null;
+            }
 
             // Collect all file system specific information
             var pathToInfo = new Dictionary<Uri, PathInfo>();
@@ -683,7 +693,10 @@ namespace FubarDev.WebDavServer.Locking
         private Uri BuildUrl(string path)
         {
             if (string.IsNullOrEmpty(path))
+            {
                 return _baseUrl;
+            }
+
             return new Uri(_baseUrl, path + (path.EndsWith("/") ? string.Empty : "/"));
         }
 

@@ -11,7 +11,7 @@ using FubarDev.WebDavServer.Model;
 namespace FubarDev.WebDavServer.Props.Filters
 {
     /// <summary>
-    /// Filters the allowed properties by name
+    /// Filters the allowed properties by name.
     /// </summary>
     public class PropFilter : IPropertyFilter
     {
@@ -22,7 +22,7 @@ namespace FubarDev.WebDavServer.Props.Filters
         /// <summary>
         /// Initializes a new instance of the <see cref="PropFilter"/> class.
         /// </summary>
-        /// <param name="prop">The <see cref="prop"/> element containing the property names</param>
+        /// <param name="prop">The <see cref="prop"/> element containing the property names.</param>
         public PropFilter(prop prop)
         {
             _requestedProperties = new HashSet<XName>(prop.Any.Select(x => x.Name));

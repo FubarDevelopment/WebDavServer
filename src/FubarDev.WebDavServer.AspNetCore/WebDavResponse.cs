@@ -13,7 +13,7 @@ using Microsoft.Extensions.Primitives;
 namespace FubarDev.WebDavServer.AspNetCore
 {
     /// <summary>
-    /// The implementation of the <see cref="IWebDavResponse"/>
+    /// The implementation of the <see cref="IWebDavResponse"/>.
     /// </summary>
     /// <remarks>
     /// This class wraps a <see cref="HttpResponse"/> to be accessible by the WebDAV serves <see cref="IWebDavResult"/>.
@@ -25,8 +25,8 @@ namespace FubarDev.WebDavServer.AspNetCore
         /// <summary>
         /// Initializes a new instance of the <see cref="WebDavResponse"/> class.
         /// </summary>
-        /// <param name="dispatcher">The WebDAV HTTP method dispatcher</param>
-        /// <param name="response">The ASP.NET Core HTTP response</param>
+        /// <param name="dispatcher">The WebDAV HTTP method dispatcher.</param>
+        /// <param name="response">The ASP.NET Core HTTP response.</param>
         public WebDavResponse(IWebDavDispatcher dispatcher, HttpResponse response)
         {
             _response = response;
@@ -97,12 +97,16 @@ namespace FubarDev.WebDavServer.AspNetCore
             {
                 var values = _headers[item.Key].ToArray();
                 if (item.Value.Length != values.Length)
+                {
                     return false;
+                }
 
                 for (var i = 0; i != values.Length; ++i)
                 {
                     if (item.Value[i] != values[i])
+                    {
                         return false;
+                    }
                 }
 
                 return true;

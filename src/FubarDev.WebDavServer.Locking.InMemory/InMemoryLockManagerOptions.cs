@@ -5,7 +5,7 @@
 namespace FubarDev.WebDavServer.Locking.InMemory
 {
     /// <summary>
-    /// Options for the <see cref="InMemoryLockManager"/>
+    /// Options for the <see cref="InMemoryLockManager"/>.
     /// </summary>
     public class InMemoryLockManagerOptions : ILockManagerOptions
     {

@@ -17,17 +17,17 @@ using SQLitePCL;
 namespace FubarDev.WebDavServer.FileSystem.SQLite
 {
     /// <summary>
-    /// A <see cref="SQLitePCL"/> based implementation of a WebDAV document
+    /// A <see cref="SQLitePCL"/> based implementation of a WebDAV document.
     /// </summary>
     internal class SQLiteDocument : SQLiteEntry, IDocument
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="SQLiteDocument"/> class.
         /// </summary>
-        /// <param name="fileSystem">The file system this document belongs to</param>
-        /// <param name="parent">The parent collection</param>
-        /// <param name="info">The file information</param>
-        /// <param name="path">The root-relative path of this document</param>
+        /// <param name="fileSystem">The file system this document belongs to.</param>
+        /// <param name="parent">The parent collection.</param>
+        /// <param name="info">The file information.</param>
+        /// <param name="path">The root-relative path of this document.</param>
         public SQLiteDocument(SQLiteFileSystem fileSystem, ICollection parent, FileEntry info, Uri path)
             : base(fileSystem, parent, info, path, null)
         {
@@ -43,7 +43,9 @@ namespace FubarDev.WebDavServer.FileSystem.SQLite
                 .ExecuteQuery<RowIdTemp>()
                 .FirstOrDefault();
             if (result == null)
+            {
                 return Task.FromResult<Stream>(new MemoryStream());
+            }
 
             sqlite3_blob blob;
             var rc = raw.sqlite3_blob_open(
@@ -55,7 +57,9 @@ namespace FubarDev.WebDavServer.FileSystem.SQLite
                 0,
                 out blob);
             if (rc != 0)
+            {
                 throw new SQLiteFileSystemException(Connection.Handle);
+            }
 
             var stream = new SQLiteBlobReadStream(Connection.Handle, blob);
             return Task.FromResult<Stream>(stream);

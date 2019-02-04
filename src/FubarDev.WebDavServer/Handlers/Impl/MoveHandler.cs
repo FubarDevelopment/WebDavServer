@@ -30,11 +30,11 @@ namespace FubarDev.WebDavServer.Handlers.Impl
         /// <summary>
         /// Initializes a new instance of the <see cref="MoveHandler"/> class.
         /// </summary>
-        /// <param name="rootFileSystem">The root file system</param>
-        /// <param name="host">The WebDAV server context</param>
-        /// <param name="options">The options for the <c>MOVE</c> handler</param>
-        /// <param name="logger">The logger for this handler</param>
-        /// <param name="serviceProvider">The service provider used to lazily query the <see cref="IRemoteMoveTargetActionsFactory"/> implementation</param>
+        /// <param name="rootFileSystem">The root file system.</param>
+        /// <param name="host">The WebDAV server context.</param>
+        /// <param name="options">The options for the <c>MOVE</c> handler.</param>
+        /// <param name="logger">The logger for this handler.</param>
+        /// <param name="serviceProvider">The service provider used to lazily query the <see cref="IRemoteMoveTargetActionsFactory"/> implementation.</param>
         public MoveHandler(IFileSystem rootFileSystem, IWebDavContext host, IOptions<MoveHandlerOptions> options, ILogger<MoveHandler> logger, IServiceProvider serviceProvider)
             : base(rootFileSystem, host, logger)
         {
@@ -61,7 +61,9 @@ namespace FubarDev.WebDavServer.Handlers.Impl
                 var targetActions = await remoteTargetActionsFactory
                     .CreateMoveTargetActionsAsync(destinationUrl, cancellationToken).ConfigureAwait(false);
                 if (targetActions != null)
+                {
                     return targetActions;
+                }
             }
 
             return null;
@@ -71,7 +73,10 @@ namespace FubarDev.WebDavServer.Handlers.Impl
         protected override ITargetActions<CollectionTarget, DocumentTarget, MissingTarget> CreateLocalTargetActions(RecursiveProcessingMode mode)
         {
             if (mode == RecursiveProcessingMode.PreferFastest)
+            {
                 return new MoveInFileSystemTargetAction(WebDavContext.Dispatcher, Logger);
+            }
+
             return new MoveBetweenFileSystemsTargetAction(WebDavContext.Dispatcher);
         }
     }

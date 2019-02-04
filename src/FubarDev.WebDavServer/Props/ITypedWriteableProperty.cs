@@ -16,11 +16,11 @@ namespace FubarDev.WebDavServer.Props
     public interface ITypedWriteableProperty<T> : ITypedReadableProperty<T>, IUntypedWriteableProperty
     {
         /// <summary>
-        /// Sets the underlying typed value
+        /// Sets the underlying typed value.
         /// </summary>
-        /// <param name="value">The value to set</param>
-        /// <param name="ct">The cancellation token</param>
-        /// <returns>the async task</returns>
+        /// <param name="value">The value to set.</param>
+        /// <param name="ct">The cancellation token.</param>
+        /// <returns>the async task.</returns>
         [NotNull]
         Task SetValueAsync([NotNull] T value, CancellationToken ct);
     }

@@ -18,7 +18,7 @@ using FubarDev.WebDavServer.Utils;
 namespace FubarDev.WebDavServer.Handlers.Impl
 {
     /// <summary>
-    /// The implementation of the <see cref="IDeleteHandler"/> interface
+    /// The implementation of the <see cref="IDeleteHandler"/> interface.
     /// </summary>
     public class DeleteHandler : IDeleteHandler
     {
@@ -29,8 +29,8 @@ namespace FubarDev.WebDavServer.Handlers.Impl
         /// <summary>
         /// Initializes a new instance of the <see cref="DeleteHandler"/> class.
         /// </summary>
-        /// <param name="rootFileSystem">The root file system</param>
-        /// <param name="context">The current WebDAV context</param>
+        /// <param name="rootFileSystem">The root file system.</param>
+        /// <param name="context">The current WebDAV context.</param>
         public DeleteHandler(IFileSystem rootFileSystem, IWebDavContext context)
         {
             _rootFileSystem = rootFileSystem;
@@ -47,7 +47,9 @@ namespace FubarDev.WebDavServer.Handlers.Impl
             if (selectionResult.IsMissing)
             {
                 if (_context.RequestHeaders.IfNoneMatch != null)
+                {
                     throw new WebDavException(WebDavStatusCode.PreconditionFailed);
+                }
 
                 throw new WebDavException(WebDavStatusCode.NotFound);
             }
@@ -72,7 +74,9 @@ namespace FubarDev.WebDavServer.Handlers.Impl
                 : await lockManager.LockImplicitAsync(_rootFileSystem, _context.RequestHeaders.If?.Lists, lockRequirements, cancellationToken)
                                    .ConfigureAwait(false);
             if (!tempLock.IsSuccessful)
+            {
                 return tempLock.CreateErrorResponse();
+            }
 
             try
             {

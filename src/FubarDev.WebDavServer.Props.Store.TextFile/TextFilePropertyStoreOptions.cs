@@ -5,17 +5,17 @@
 namespace FubarDev.WebDavServer.Props.Store.TextFile
 {
     /// <summary>
-    /// The options for the <see cref="TextFilePropertyStore"/>
+    /// The options for the <see cref="TextFilePropertyStore"/>.
     /// </summary>
     public class TextFilePropertyStoreOptions
     {
         /// <summary>
-        /// Gets or sets the default estimated cost for querying the dead properties values
+        /// Gets or sets the default estimated cost for querying the dead properties values.
         /// </summary>
         public int EstimatedCost { get; set; } = 10;
 
         /// <summary>
-        /// Gets or sets the root folder where the properties are stored
+        /// Gets or sets the root folder where the properties are stored.
         /// </summary>
         public string RootFolder { get; set; }
 

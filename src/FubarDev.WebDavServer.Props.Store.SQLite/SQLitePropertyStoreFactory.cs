@@ -19,7 +19,7 @@ using sqlitenet = SQLite;
 namespace FubarDev.WebDavServer.Props.Store.SQLite
 {
     /// <summary>
-    /// The factory for the <see cref="SQLitePropertyStore"/>
+    /// The factory for the <see cref="SQLitePropertyStore"/>.
     /// </summary>
     public class SQLitePropertyStoreFactory : IPropertyStoreFactory
     {
@@ -38,10 +38,10 @@ namespace FubarDev.WebDavServer.Props.Store.SQLite
         /// <summary>
         /// Initializes a new instance of the <see cref="SQLitePropertyStoreFactory"/> class.
         /// </summary>
-        /// <param name="webDavContext">The WebDAV request context</param>
-        /// <param name="logger">The logger for the property store factory</param>
-        /// <param name="deadPropertyFactory">The factory for dead properties</param>
-        /// <param name="options">The options for this property store</param>
+        /// <param name="webDavContext">The WebDAV request context.</param>
+        /// <param name="logger">The logger for the property store factory.</param>
+        /// <param name="deadPropertyFactory">The factory for dead properties.</param>
+        /// <param name="options">The options for this property store.</param>
         public SQLitePropertyStoreFactory([NotNull] IWebDavContext webDavContext, [NotNull] ILogger<SQLitePropertyStore> logger, [NotNull] IDeadPropertyFactory deadPropertyFactory, [CanBeNull] IOptions<SQLitePropertyStoreOptions> options = null)
         {
             _webDavContext = webDavContext;
@@ -53,7 +53,7 @@ namespace FubarDev.WebDavServer.Props.Store.SQLite
         /// <summary>
         /// Ensures that a database with the given file name exists.
         /// </summary>
-        /// <param name="dbFileName">The file name of the database</param>
+        /// <param name="dbFileName">The file name of the database.</param>
         public static void EnsureDatabaseExists(string dbFileName)
         {
             if (File.Exists(dbFileName))
@@ -70,13 +70,16 @@ namespace FubarDev.WebDavServer.Props.Store.SQLite
         }
 
         /// <summary>
-        /// Creates a new database
+        /// Creates a new database.
         /// </summary>
-        /// <param name="dbFileName">The file name of the database</param>
+        /// <param name="dbFileName">The file name of the database.</param>
         public static void CreateDatabase(string dbFileName)
         {
             if (File.Exists(dbFileName))
+            {
                 File.Delete(dbFileName);
+            }
+
             var dbFileFolder = Path.GetDirectoryName(dbFileName);
             Debug.Assert(dbFileFolder != null, "dbFileFolder != null");
             Directory.CreateDirectory(dbFileFolder);
@@ -117,9 +120,9 @@ namespace FubarDev.WebDavServer.Props.Store.SQLite
         }
 
         /// <summary>
-        /// Creates the database tables
+        /// Creates the database tables.
         /// </summary>
-        /// <param name="connection">The database connection</param>
+        /// <param name="connection">The database connection.</param>
         private static void CreateDatabaseTables(sqlitenet.SQLiteConnection connection)
         {
             connection.CreateTable<PropertyEntry>(sqlitenet.CreateFlags.AllImplicit);

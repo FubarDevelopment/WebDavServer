@@ -12,7 +12,7 @@ using JetBrains.Annotations;
 namespace FubarDev.WebDavServer.Model.Headers
 {
     /// <summary>
-    /// This class encapsualtes a HTTP range
+    /// This class encapsulates a HTTP range.
     /// </summary>
     public class RangeHeader
     {
@@ -21,8 +21,8 @@ namespace FubarDev.WebDavServer.Model.Headers
         /// <summary>
         /// Initializes a new instance of the <see cref="RangeHeader"/> class.
         /// </summary>
-        /// <param name="unit">The unit of the range (currently only <c>bytes</c> is allowed)</param>
-        /// <param name="rangeItems">The HTTP range items for this range</param>
+        /// <param name="unit">The unit of the range (currently only <c>bytes</c> is allowed).</param>
+        /// <param name="rangeItems">The HTTP range items for this range.</param>
         public RangeHeader([NotNull] string unit, params RangeHeaderItem[] rangeItems)
             : this(unit, false, rangeItems)
         {
@@ -31,31 +31,34 @@ namespace FubarDev.WebDavServer.Model.Headers
         private RangeHeader([NotNull] string unit, bool ignoreInvalidUnit, IReadOnlyCollection<RangeHeaderItem> rangeItems)
         {
             if (!ignoreInvalidUnit && !string.IsNullOrEmpty(unit) && unit != "bytes")
+            {
                 throw new NotSupportedException();
+            }
+
             Unit = string.IsNullOrEmpty(unit) ? "bytes" : unit;
             RangeItems = rangeItems.ToList();
         }
 
         /// <summary>
-        /// Gets the unit for this HTTP range
+        /// Gets the unit for this HTTP range.
         /// </summary>
         [NotNull]
         public string Unit { get; }
 
         /// <summary>
-        /// Gets the HTTP range items
+        /// Gets the HTTP range items.
         /// </summary>
         [NotNull]
         public IReadOnlyCollection<RangeHeaderItem> RangeItems { get; }
 
         /// <summary>
-        /// Parses a <paramref name="range"/> into a new <see cref="RangeHeader"/> instance
+        /// Parses a <paramref name="range"/> into a new <see cref="RangeHeader"/> instance.
         /// </summary>
         /// <remarks>
-        /// The range must be in the form <c>unit=(range)+</c>
+        /// The range must be in the form <c>unit=(range)+</c>.
         /// </remarks>
-        /// <param name="range">The range to parse</param>
-        /// <returns>The new <see cref="RangeHeader"/></returns>
+        /// <param name="range">The range to parse.</param>
+        /// <returns>The new <see cref="RangeHeader"/>.</returns>
         [NotNull]
         public static RangeHeader Parse([NotNull] string range)
         {
@@ -63,13 +66,13 @@ namespace FubarDev.WebDavServer.Model.Headers
         }
 
         /// <summary>
-        /// Parses the <paramref name="ranges"/> into a new <see cref="RangeHeader"/> instance
+        /// Parses the <paramref name="ranges"/> into a new <see cref="RangeHeader"/> instance.
         /// </summary>
         /// <remarks>
-        /// The range must be in the form <c>unit=(range)+</c>
+        /// The range must be in the form <c>unit=(range)+</c>.
         /// </remarks>
-        /// <param name="ranges">The ranges to parse</param>
-        /// <returns>The new <see cref="RangeHeader"/></returns>
+        /// <param name="ranges">The ranges to parse.</param>
+        /// <returns>The new <see cref="RangeHeader"/>.</returns>
         [NotNull]
         public static RangeHeader Parse([NotNull][ItemNotNull] IEnumerable<string> ranges)
         {
@@ -115,20 +118,20 @@ namespace FubarDev.WebDavServer.Model.Headers
         /// <remarks>
         /// The return value of this function can be parsed using <see cref="Parse(string)"/>.
         /// </remarks>
-        /// <returns>The textual representation of this range</returns>
+        /// <returns>The textual representation of this range.</returns>
         public override string ToString()
         {
             return $"{Unit}={string.Join(",", RangeItems.Select(x => x.ToString()))}";
         }
 
         /// <summary>
-        /// Returns the textual representation of a single <see cref="RangeHeaderItem"/>
+        /// Returns the textual representation of a single <see cref="RangeHeaderItem"/>.
         /// </summary>
         /// <remarks>
-        /// The return value of this function looks like <c>unit range/length</c>
+        /// The return value of this function looks like <c>unit range/length</c>.
         /// </remarks>
-        /// <param name="rangeItem">The <see cref="RangeHeaderItem"/> to get the textual representation for</param>
-        /// <returns>The textual representation of <paramref name="rangeItem"/></returns>
+        /// <param name="rangeItem">The <see cref="RangeHeaderItem"/> to get the textual representation for.</param>
+        /// <returns>The textual representation of <paramref name="rangeItem"/>.</returns>
         [NotNull]
         public virtual string ToString(RangeHeaderItem rangeItem)
         {
@@ -136,14 +139,14 @@ namespace FubarDev.WebDavServer.Model.Headers
         }
 
         /// <summary>
-        /// Returns the textual representation of a single <see cref="RangeHeaderItem"/>
+        /// Returns the textual representation of a single <see cref="RangeHeaderItem"/>.
         /// </summary>
         /// <remarks>
-        /// The return value of this function looks like <c>unit range/length</c>
+        /// The return value of this function looks like <c>unit range/length</c>.
         /// </remarks>
-        /// <param name="rangeItem">The <see cref="RangeHeaderItem"/> to get the textual representation for</param>
-        /// <param name="length">The length value to be used in the textual representation</param>
-        /// <returns>The textual representation of <paramref name="rangeItem"/></returns>
+        /// <param name="rangeItem">The <see cref="RangeHeaderItem"/> to get the textual representation for.</param>
+        /// <param name="length">The length value to be used in the textual representation.</param>
+        /// <returns>The textual representation of <paramref name="rangeItem"/>.</returns>
         [NotNull]
         public virtual string ToString(RangeHeaderItem rangeItem, long? length)
         {
@@ -151,10 +154,10 @@ namespace FubarDev.WebDavServer.Model.Headers
         }
 
         /// <summary>
-        /// Normalize all byte ranges using the specified <paramref name="totalLength"/>
+        /// Normalize all byte ranges using the specified <paramref name="totalLength"/>.
         /// </summary>
-        /// <param name="totalLength">The length of the resource</param>
-        /// <returns>The list of normalized byte ranges</returns>
+        /// <param name="totalLength">The length of the resource.</param>
+        /// <returns>The list of normalized byte ranges.</returns>
         [NotNull]
         public IReadOnlyList<NormalizedRangeItem> Normalize(long totalLength)
         {
@@ -187,7 +190,10 @@ namespace FubarDev.WebDavServer.Model.Headers
             }
 
             if (currentRangeItem != null)
+            {
                 result.Add(currentRangeItem.Value);
+            }
+
             return result;
         }
     }

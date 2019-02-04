@@ -28,7 +28,7 @@ using Microsoft.Extensions.Options;
 namespace FubarDev.WebDavServer.Dispatchers
 {
     /// <summary>
-    /// The default WebDAV class 1 implementation
+    /// The default WebDAV class 1 implementation.
     /// </summary>
     public class WebDavDispatcherClass1 : IWebDavClass1
     {
@@ -74,11 +74,11 @@ namespace FubarDev.WebDavServer.Dispatchers
         /// <summary>
         /// Initializes a new instance of the <see cref="WebDavDispatcherClass1"/> class.
         /// </summary>
-        /// <param name="class1Handlers">The WebDAV class 1 handlers</param>
-        /// <param name="context">The WebDAV context</param>
-        /// <param name="deadPropertyFactory">The factory to create dead properties</param>
-        /// <param name="mimeTypeDetector">The mime type detector for the getmimetype property</param>
-        /// <param name="options">The options for the WebDAV class 1 implementation</param>
+        /// <param name="class1Handlers">The WebDAV class 1 handlers.</param>
+        /// <param name="context">The WebDAV context.</param>
+        /// <param name="deadPropertyFactory">The factory to create dead properties.</param>
+        /// <param name="mimeTypeDetector">The mime type detector for the <c>getmimetype</c> property.</param>
+        /// <param name="options">The options for the WebDAV class 1 implementation.</param>
         public WebDavDispatcherClass1(
             [NotNull] [ItemNotNull] IEnumerable<IClass1Handler> class1Handlers,
             [NotNull] IWebDavContext context,
@@ -199,7 +199,10 @@ namespace FubarDev.WebDavServer.Dispatchers
         public Task<IWebDavResult> GetAsync(string path, CancellationToken cancellationToken)
         {
             if (_getHandler == null)
+            {
                 throw new NotSupportedException();
+            }
+
             return _getHandler.GetAsync(path, cancellationToken);
         }
 
@@ -207,7 +210,10 @@ namespace FubarDev.WebDavServer.Dispatchers
         public Task<IWebDavResult> HeadAsync(string path, CancellationToken cancellationToken)
         {
             if (_headHandler == null)
+            {
                 throw new NotSupportedException();
+            }
+
             return _headHandler.HeadAsync(path, cancellationToken);
         }
 
@@ -215,7 +221,10 @@ namespace FubarDev.WebDavServer.Dispatchers
         public Task<IWebDavResult> PutAsync(string path, Stream data, CancellationToken cancellationToken)
         {
             if (_putHandler == null)
+            {
                 throw new NotSupportedException();
+            }
+
             return _putHandler.PutAsync(path, data, cancellationToken);
         }
 
@@ -223,7 +232,10 @@ namespace FubarDev.WebDavServer.Dispatchers
         public Task<IWebDavResult> OptionsAsync(string path, CancellationToken cancellationToken)
         {
             if (_optionsHandler == null)
+            {
                 throw new NotSupportedException();
+            }
+
             return _optionsHandler.OptionsAsync(path, cancellationToken);
         }
 
@@ -231,7 +243,10 @@ namespace FubarDev.WebDavServer.Dispatchers
         public Task<IWebDavResult> PropFindAsync(string path, propfind request, CancellationToken cancellationToken)
         {
             if (_propFindHandler == null)
+            {
                 throw new NotSupportedException();
+            }
+
             return _propFindHandler.PropFindAsync(path, request, cancellationToken);
         }
 
@@ -239,7 +254,10 @@ namespace FubarDev.WebDavServer.Dispatchers
         public Task<IWebDavResult> PropPatchAsync(string path, propertyupdate request, CancellationToken cancellationToken)
         {
             if (_propPatchHandler == null)
+            {
                 throw new NotSupportedException();
+            }
+
             return _propPatchHandler.PropPatchAsync(path, request, cancellationToken);
         }
 
@@ -247,7 +265,10 @@ namespace FubarDev.WebDavServer.Dispatchers
         public Task<IWebDavResult> DeleteAsync(string path, CancellationToken cancellationToken)
         {
             if (_deleteHandler == null)
+            {
                 throw new NotSupportedException();
+            }
+
             return _deleteHandler.DeleteAsync(path, cancellationToken);
         }
 
@@ -255,7 +276,10 @@ namespace FubarDev.WebDavServer.Dispatchers
         public Task<IWebDavResult> MkColAsync(string path, CancellationToken cancellationToken)
         {
             if (_mkColHandler == null)
+            {
                 throw new NotSupportedException();
+            }
+
             return _mkColHandler.MkColAsync(path, cancellationToken);
         }
 
@@ -263,7 +287,10 @@ namespace FubarDev.WebDavServer.Dispatchers
         public Task<IWebDavResult> CopyAsync(string path, Uri destination, CancellationToken cancellationToken)
         {
             if (_copyHandler == null)
+            {
                 throw new NotSupportedException();
+            }
+
             return _copyHandler.CopyAsync(path, destination, cancellationToken);
         }
 
@@ -271,7 +298,10 @@ namespace FubarDev.WebDavServer.Dispatchers
         public Task<IWebDavResult> MoveAsync(string path, Uri destination, CancellationToken cancellationToken)
         {
             if (_moveHandler == null)
+            {
                 throw new NotSupportedException();
+            }
+
             return _moveHandler.MoveAsync(path, destination, cancellationToken);
         }
 
@@ -288,7 +318,9 @@ namespace FubarDev.WebDavServer.Dispatchers
             }
 
             if (propStore != null)
+            {
                 yield return _deadPropertyFactory.Create(propStore, entry, DisplayNameProperty.PropertyName);
+            }
 
             if (entry is IDocument doc)
             {

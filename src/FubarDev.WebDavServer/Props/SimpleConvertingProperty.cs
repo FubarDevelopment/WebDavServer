@@ -13,19 +13,19 @@ using JetBrains.Annotations;
 namespace FubarDev.WebDavServer.Props
 {
     /// <summary>
-    /// Simple converting property
+    /// Simple converting property.
     /// </summary>
-    /// <typeparam name="T">The type to be converted from or to</typeparam>
+    /// <typeparam name="T">The type to be converted from or to.</typeparam>
     public abstract class SimpleConvertingProperty<T> : SimpleTypedProperty<T>
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="SimpleConvertingProperty{T}"/> class.
         /// </summary>
-        /// <param name="name">The property name</param>
-        /// <param name="language">The language for the property value</param>
-        /// <param name="cost">The cost to get the properties value</param>
-        /// <param name="converter">The converter to copy the value to/from an <see cref="XElement"/></param>
-        /// <param name="alternativeNames">The alternative names</param>
+        /// <param name="name">The property name.</param>
+        /// <param name="language">The language for the property value.</param>
+        /// <param name="cost">The cost to get the properties value.</param>
+        /// <param name="converter">The converter to copy the value to/from an <see cref="XElement"/>.</param>
+        /// <param name="alternativeNames">The alternative names.</param>
         protected SimpleConvertingProperty([NotNull] XName name, [CanBeNull] string language, int cost, [NotNull] IPropertyConverter<T> converter, params XName[] alternativeNames)
             : base(name, language, cost, alternativeNames)
         {
@@ -33,7 +33,7 @@ namespace FubarDev.WebDavServer.Props
         }
 
         /// <summary>
-        /// Gets the converter to be used to copy to/from an <see cref="XElement"/>
+        /// Gets the converter to be used to copy to/from an <see cref="XElement"/>.
         /// </summary>
         [NotNull]
         protected IPropertyConverter<T> Converter { get; }
@@ -44,7 +44,10 @@ namespace FubarDev.WebDavServer.Props
             var result = await GetValueAsync(ct).ConfigureAwait(false);
             var element = Converter.ToElement(Name, result);
             if (!string.IsNullOrEmpty(Language))
+            {
                 element.SetAttributeValue(XNamespace.Xml + "lang", Language);
+            }
+
             return element;
         }
 

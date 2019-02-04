@@ -17,8 +17,8 @@ namespace FubarDev.WebDavServer.Locking
         /// <summary>
         /// Selects the timeout from the list of client requested timeouts.
         /// </summary>
-        /// <param name="timeouts">The timeouts requested by the client</param>
-        /// <returns>The timeout to use</returns>
+        /// <param name="timeouts">The timeouts requested by the client.</param>
+        /// <returns>The timeout to use.</returns>
         TimeSpan SelectTimeout([NotNull] IReadOnlyCollection<TimeSpan> timeouts);
     }
 }

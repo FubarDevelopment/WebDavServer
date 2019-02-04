@@ -13,18 +13,18 @@ using JetBrains.Annotations;
 namespace FubarDev.WebDavServer.Engines.Local
 {
     /// <summary>
-    /// The local file system collection target
+    /// The local file system collection target.
     /// </summary>
     public class CollectionTarget : EntryTarget, ICollectionTarget<CollectionTarget, DocumentTarget, MissingTarget>
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="CollectionTarget"/> class.
         /// </summary>
-        /// <param name="destinationUrl">The destination URL for this collection</param>
-        /// <param name="parent">The parent collection</param>
-        /// <param name="collection">The underlying collection</param>
-        /// <param name="created">Was this collection created by the <see cref="RecursiveExecutionEngine{TCollection,TDocument,TMissing}"/></param>
-        /// <param name="targetActions">The target actions implementation to use</param>
+        /// <param name="destinationUrl">The destination URL for this collection.</param>
+        /// <param name="parent">The parent collection.</param>
+        /// <param name="collection">The underlying collection.</param>
+        /// <param name="created">Was this collection created by the <see cref="RecursiveExecutionEngine{TCollection,TDocument,TMissing}"/>.</param>
+        /// <param name="targetActions">The target actions implementation to use.</param>
         public CollectionTarget(
             [NotNull] Uri destinationUrl,
             [CanBeNull] CollectionTarget parent,
@@ -38,7 +38,7 @@ namespace FubarDev.WebDavServer.Engines.Local
         }
 
         /// <summary>
-        /// Gets the underlying collection
+        /// Gets the underlying collection.
         /// </summary>
         [NotNull]
         public ICollection Collection { get; }
@@ -49,10 +49,10 @@ namespace FubarDev.WebDavServer.Engines.Local
         /// <summary>
         /// Creates a new instance of the <see cref="CollectionTarget"/> class.
         /// </summary>
-        /// <param name="destinationUrl">The destination URL for this collection</param>
-        /// <param name="collection">The underlying collection</param>
-        /// <param name="targetActions">The target actions implementation to use</param>
-        /// <returns>The created collection target object</returns>
+        /// <param name="destinationUrl">The destination URL for this collection.</param>
+        /// <param name="collection">The underlying collection.</param>
+        /// <param name="targetActions">The target actions implementation to use.</param>
+        /// <returns>The created collection target object.</returns>
         [NotNull]
         public static CollectionTarget NewInstance(
             [NotNull] Uri destinationUrl,
@@ -87,11 +87,15 @@ namespace FubarDev.WebDavServer.Engines.Local
         {
             var result = await Collection.GetChildAsync(name, cancellationToken).ConfigureAwait(false);
             if (result == null)
+            {
                 return new MissingTarget(DestinationUrl.Append(name, false), name, this, TargetActions);
+            }
 
             var doc = result as IDocument;
             if (doc != null)
+            {
                 return new DocumentTarget(this, DestinationUrl.Append(doc), doc, TargetActions);
+            }
 
             var coll = (ICollection)result;
             return new CollectionTarget(DestinationUrl.Append(coll), this, coll, false, TargetActions);

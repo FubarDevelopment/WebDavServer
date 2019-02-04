@@ -15,7 +15,7 @@ using JetBrains.Annotations;
 namespace FubarDev.WebDavServer.Props
 {
     /// <summary>
-    /// The default implementation of a <see cref="IEntryPropertyInitializer"/>
+    /// The default implementation of a <see cref="IEntryPropertyInitializer"/>.
     /// </summary>
     public class DefaultEntryPropertyInitializer : IEntryPropertyInitializer
     {
@@ -42,13 +42,13 @@ namespace FubarDev.WebDavServer.Props
         }
 
         /// <summary>
-        /// Create generic property
+        /// Create generic property.
         /// </summary>
-        /// <param name="entry">The entry to create the properties for</param>
-        /// <param name="propertyStore">The property store</param>
-        /// <param name="context">The PUT/MKCOL request context</param>
-        /// <param name="cancellationToken">The cancellation token</param>
-        /// <returns>The task</returns>
+        /// <param name="entry">The entry to create the properties for.</param>
+        /// <param name="propertyStore">The property store.</param>
+        /// <param name="context">The PUT/MKCOL request context.</param>
+        /// <param name="cancellationToken">The cancellation token.</param>
+        /// <returns>The task.</returns>
         protected virtual Task CreateGenericPropertiesAsync(
             [NotNull] IEntry entry,
             [NotNull] IPropertyStore propertyStore,

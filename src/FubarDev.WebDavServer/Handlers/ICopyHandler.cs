@@ -16,12 +16,12 @@ namespace FubarDev.WebDavServer.Handlers
     public interface ICopyHandler : IClass1Handler
     {
         /// <summary>
-        /// Copies from the source to the destination
+        /// Copies from the source to the destination.
         /// </summary>
-        /// <param name="path">The source to copy</param>
-        /// <param name="destination">The destination to copy to</param>
-        /// <param name="cancellationToken">The cancellation token</param>
-        /// <returns>The result of the operation</returns>
+        /// <param name="path">The source to copy.</param>
+        /// <param name="destination">The destination to copy to.</param>
+        /// <param name="cancellationToken">The cancellation token.</param>
+        /// <returns>The result of the operation.</returns>
         [NotNull]
         [ItemNotNull]
         Task<IWebDavResult> CopyAsync([NotNull] string path, [NotNull] Uri destination, CancellationToken cancellationToken);

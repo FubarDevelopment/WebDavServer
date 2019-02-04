@@ -18,12 +18,12 @@ using JetBrains.Annotations;
 namespace FubarDev.WebDavServer.Props.Dead
 {
     /// <summary>
-    /// The implementation of the <c>getetag</c> property
+    /// The implementation of the <c>getetag</c> property.
     /// </summary>
     public class GetETagProperty : ITypedReadableProperty<EntityTag>, IDeadProperty
     {
         /// <summary>
-        /// The XML name of the property
+        /// The XML name of the property.
         /// </summary>
         public static readonly XName PropertyName = WebDavXml.Dav + "getetag";
 
@@ -39,9 +39,9 @@ namespace FubarDev.WebDavServer.Props.Dead
         /// <summary>
         /// Initializes a new instance of the <see cref="GetETagProperty"/> class.
         /// </summary>
-        /// <param name="propertyStore">The property store to store this property</param>
-        /// <param name="entry">The entry to instantiate this property for</param>
-        /// <param name="cost">The cost of querying the display names property</param>
+        /// <param name="propertyStore">The property store to store this property.</param>
+        /// <param name="entry">The entry to instantiate this property for.</param>
+        /// <param name="cost">The cost of querying the display names property.</param>
         public GetETagProperty([CanBeNull] IPropertyStore propertyStore, IEntry entry, int? cost = null)
         {
             _propertyStore = propertyStore;
@@ -64,7 +64,7 @@ namespace FubarDev.WebDavServer.Props.Dead
         public int Cost { get; }
 
         /// <summary>
-        /// Gets the entity tag converter
+        /// Gets the entity tag converter.
         /// </summary>
         public IPropertyConverter<EntityTag> Converter { get; } = new EntityTagConverter();
 

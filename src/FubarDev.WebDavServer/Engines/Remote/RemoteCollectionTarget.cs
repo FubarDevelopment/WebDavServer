@@ -16,7 +16,7 @@ using JetBrains.Annotations;
 namespace FubarDev.WebDavServer.Engines.Remote
 {
     /// <summary>
-    /// The remote server collection target
+    /// The remote server collection target.
     /// </summary>
     public class RemoteCollectionTarget : ICollectionTarget<RemoteCollectionTarget, RemoteDocumentTarget, RemoteMissingTarget>
     {
@@ -29,11 +29,11 @@ namespace FubarDev.WebDavServer.Engines.Remote
         /// <summary>
         /// Initializes a new instance of the <see cref="RemoteCollectionTarget"/> class.
         /// </summary>
-        /// <param name="parent">The parent collection</param>
-        /// <param name="name">The name of the remote collection</param>
-        /// <param name="destinationUrl">The destination URL</param>
-        /// <param name="created">Was the collection created by the <see cref="RecursiveExecutionEngine{TCollection,TDocument,TMissing}"/></param>
-        /// <param name="targetActions">The target actions implementation to use</param>
+        /// <param name="parent">The parent collection.</param>
+        /// <param name="name">The name of the remote collection.</param>
+        /// <param name="destinationUrl">The destination URL.</param>
+        /// <param name="created">Was the collection created by the <see cref="RecursiveExecutionEngine{TCollection,TDocument,TMissing}"/>.</param>
+        /// <param name="targetActions">The target actions implementation to use.</param>
         public RemoteCollectionTarget([CanBeNull] RemoteCollectionTarget parent, [NotNull] string name, [NotNull] Uri destinationUrl, bool created, [NotNull] IRemoteTargetActions targetActions)
         {
             _parent = parent;

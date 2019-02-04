@@ -9,7 +9,7 @@ using FubarDev.WebDavServer.FileSystem;
 namespace FubarDev.WebDavServer.Utils
 {
     /// <summary>
-    /// The default implementation of a <see cref="IMimeTypeDetector"/>
+    /// The default implementation of a <see cref="IMimeTypeDetector"/>.
     /// </summary>
     public class DefaultMimeTypeDetector : IMimeTypeDetector
     {
@@ -19,7 +19,7 @@ namespace FubarDev.WebDavServer.Utils
             var fileExt = Path.GetExtension(entry.Name);
             if (string.IsNullOrEmpty(fileExt))
             {
-                mimeType = Utils.MimeTypesMap.DefaultMimeType;
+                mimeType = MimeTypesMap.DefaultMimeType;
                 return false;
             }
 

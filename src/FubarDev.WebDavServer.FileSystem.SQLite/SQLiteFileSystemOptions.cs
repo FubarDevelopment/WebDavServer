@@ -7,7 +7,7 @@ using FubarDev.WebDavServer.Utils;
 namespace FubarDev.WebDavServer.FileSystem.SQLite
 {
     /// <summary>
-    /// The options for the <see cref="SQLiteFileSystemFactory"/> and <see cref="SQLiteFileSystem"/>
+    /// The options for the <see cref="SQLiteFileSystemFactory"/> and <see cref="SQLiteFileSystem"/>.
     /// </summary>
     public class SQLiteFileSystemOptions
     {
@@ -21,7 +21,7 @@ namespace FubarDev.WebDavServer.FileSystem.SQLite
         }
 
         /// <summary>
-        /// Gets or sets the home path for all users
+        /// Gets or sets the home path for all users.
         /// </summary>
         public string RootPath { get; set; }
     }

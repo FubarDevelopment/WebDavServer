@@ -13,7 +13,7 @@ using JetBrains.Annotations;
 namespace FubarDev.WebDavServer
 {
     /// <summary>
-    /// A WebDAV result returning an <see cref="XElement"/> in the response body
+    /// A WebDAV result returning an <see cref="XElement"/> in the response body.
     /// </summary>
     public class WebDavXmlResult : WebDavResult
     {
@@ -23,8 +23,8 @@ namespace FubarDev.WebDavServer
         /// <summary>
         /// Initializes a new instance of the <see cref="WebDavXmlResult"/> class.
         /// </summary>
-        /// <param name="statusCode">The WebDAV status code</param>
-        /// <param name="element">The element to be serialized as the response body</param>
+        /// <param name="statusCode">The WebDAV status code.</param>
+        /// <param name="element">The element to be serialized as the response body.</param>
         public WebDavXmlResult(WebDavStatusCode statusCode, [NotNull] XElement element)
             : base(statusCode)
         {

@@ -17,12 +17,12 @@ namespace FubarDev.WebDavServer.Handlers
     public interface IUnlockHandler : IClass2Handler
     {
         /// <summary>
-        /// Removes a LOCK with the given <paramref name="stateToken"/> from the given <paramref name="path"/>
+        /// Removes a LOCK with the given <paramref name="stateToken"/> from the given <paramref name="path"/>.
         /// </summary>
-        /// <param name="path">The path to remove the lock for</param>
-        /// <param name="stateToken">The state token of the lock to remove</param>
-        /// <param name="cancellationToken">The cancellcation token</param>
-        /// <returns>The result of the operation</returns>
+        /// <param name="path">The path to remove the lock for.</param>
+        /// <param name="stateToken">The state token of the lock to remove.</param>
+        /// <param name="cancellationToken">The cancellation token.</param>
+        /// <returns>The result of the operation.</returns>
         [NotNull]
         [ItemNotNull]
         Task<IWebDavResult> UnlockAsync([NotNull] string path, [NotNull] LockTokenHeader stateToken, CancellationToken cancellationToken);

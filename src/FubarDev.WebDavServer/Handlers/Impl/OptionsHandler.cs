@@ -25,7 +25,7 @@ namespace FubarDev.WebDavServer.Handlers.Impl
         /// <summary>
         /// Initializes a new instance of the <see cref="OptionsHandler"/> class.
         /// </summary>
-        /// <param name="rootFileSystem">The root file system</param>
+        /// <param name="rootFileSystem">The root file system.</param>
         public OptionsHandler([NotNull] IFileSystem rootFileSystem)
         {
             _rootFileSystem = rootFileSystem;
@@ -58,13 +58,19 @@ namespace FubarDev.WebDavServer.Handlers.Impl
                 IImmutableDictionary<string, IEnumerable<string>> headers = ImmutableDictionary<string, IEnumerable<string>>.Empty;
 
                 foreach (var webDavClass in response.Dispatcher.SupportedClasses)
+                {
                     headers = AddHeaderValues(headers, webDavClass.OptionsResponseHeaders);
+                }
 
                 if (_targetFileSystem.SupportsRangedRead)
+                {
                     Headers["Accept-Ranges"] = new[] { "bytes" };
+                }
 
                 foreach (var header in headers)
+                {
                     Headers[header.Key] = header.Value;
+                }
 
                 return base.ExecuteResultAsync(response, ct);
             }

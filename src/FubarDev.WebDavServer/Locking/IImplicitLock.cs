@@ -9,41 +9,41 @@ using System.Threading.Tasks;
 namespace FubarDev.WebDavServer.Locking
 {
     /// <summary>
-    /// The interface for the result of the <c>If</c> header evaluation
+    /// The interface for the result of the <c>If</c> header evaluation.
     /// </summary>
     public interface IImplicitLock
     {
         /// <summary>
-        /// Gets the locks matched by the <c>If</c> header or implicit shared lock
+        /// Gets the locks matched by the <c>If</c> header or implicit shared lock.
         /// </summary>
         IReadOnlyCollection<IActiveLock> OwnedLocks { get; }
 
         /// <summary>
-        /// Gets the locks preventing the usage of an implicit lock
+        /// Gets the locks preventing the usage of an implicit lock.
         /// </summary>
         IReadOnlyCollection<IActiveLock> ConflictingLocks { get; }
 
         /// <summary>
-        /// Gets a value indicating whether an implicit lock was created
+        /// Gets a value indicating whether an implicit lock was created.
         /// </summary>
         bool IsTemporaryLock { get; }
 
         /// <summary>
-        /// Gets a value indicating whether the <c>If</c> header was evaluated successfully
+        /// Gets a value indicating whether the <c>If</c> header was evaluated successfully.
         /// </summary>
         bool IsSuccessful { get; }
 
         /// <summary>
-        /// Disposes the temporary lock (when it was issued)
+        /// Disposes the temporary lock (when it was issued).
         /// </summary>
-        /// <param name="cancellationToken">The cancellation token</param>
-        /// <returns>The async task</returns>
+        /// <param name="cancellationToken">The cancellation token.</param>
+        /// <returns>The async task.</returns>
         Task DisposeAsync(CancellationToken cancellationToken);
 
         /// <summary>
-        /// Creates an error response when <see cref="IsSuccessful"/> is <see langword="false"/>
+        /// Creates an error response when <see cref="IsSuccessful"/> is <see langword="false"/>.
         /// </summary>
-        /// <returns>The WebDAV response</returns>
+        /// <returns>The WebDAV response.</returns>
         IWebDavResult CreateErrorResponse();
     }
 }

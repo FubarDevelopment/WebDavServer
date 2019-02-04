@@ -16,7 +16,7 @@ using Microsoft.Extensions.Logging;
 namespace FubarDev.WebDavServer.Locking
 {
     /// <summary>
-    /// A background task that removes expired locks
+    /// A background task that removes expired locks.
     /// </summary>
     public class LockCleanupTask : ILockCleanupTask, IDisposable
     {
@@ -43,8 +43,8 @@ namespace FubarDev.WebDavServer.Locking
         /// <summary>
         /// Initializes a new instance of the <see cref="LockCleanupTask"/> class.
         /// </summary>
-        /// <param name="systemClock">The system clock</param>
-        /// <param name="logger">The logger for the cleanup task</param>
+        /// <param name="systemClock">The system clock.</param>
+        /// <param name="logger">The logger for the cleanup task.</param>
         public LockCleanupTask(
             [NotNull] ISystemClock systemClock,
             [NotNull] ILogger<LockCleanupTask> logger)
@@ -58,15 +58,19 @@ namespace FubarDev.WebDavServer.Locking
         /// Adds a lock to be tracked by this cleanup task.
         /// </summary>
         /// <param name="lockManager">The lock manager that created this active lock.</param>
-        /// <param name="activeLock">The active lock to track</param>
+        /// <param name="activeLock">The active lock to track.</param>
         public void Add(ILockManager lockManager, IActiveLock activeLock)
         {
             if (_logger.IsEnabled(LogLevel.Trace))
+            {
                 _logger.LogTrace($"Adding lock {activeLock}");
+            }
 
             // Don't track locks with infinite timeout
             if (activeLock.Timeout == TimeoutHeader.Infinite)
+            {
                 return;
+            }
 
             lock (_syncRoot)
             {
@@ -77,7 +81,10 @@ namespace FubarDev.WebDavServer.Locking
                 {
                     // New item is not the most recent to expire
                     if (_logger.IsEnabled(LogLevel.Debug))
+                    {
                         _logger.LogDebug($"New lock {activeLock.StateToken} item is not the most recent item");
+                    }
+
                     return;
                 }
 
@@ -89,11 +96,13 @@ namespace FubarDev.WebDavServer.Locking
         /// <summary>
         /// Removes the active lock so that it isn't tracked any more by this cleanup task.
         /// </summary>
-        /// <param name="activeLock">The active lock to remove</param>
+        /// <param name="activeLock">The active lock to remove.</param>
         public void Remove(IActiveLock activeLock)
         {
             if (_logger.IsEnabled(LogLevel.Trace))
+            {
                 _logger.LogTrace($"Try removing lock {activeLock}");
+            }
 
             lock (_syncRoot)
             {
@@ -102,7 +111,10 @@ namespace FubarDev.WebDavServer.Locking
                 {
                     // Lock item not found
                     if (_logger.IsEnabled(LogLevel.Debug))
+                    {
                         _logger.LogDebug($"Lock {activeLock.StateToken} is not tracked any more.");
+                    }
+
                     return;
                 }
 
@@ -113,7 +125,10 @@ namespace FubarDev.WebDavServer.Locking
                 {
                     // Lock item not found
                     if (_logger.IsEnabled(LogLevel.Debug))
+                    {
                         _logger.LogDebug($"Lock {activeLock.StateToken} is not tracked any more.");
+                    }
+
                     return;
                 }
 
@@ -157,7 +172,9 @@ namespace FubarDev.WebDavServer.Locking
                 var now = _systemClock.UtcNow;
 
                 if (_logger.IsEnabled(LogLevel.Trace))
+                {
                     _logger.LogTrace($"Cleanup timer called at {now:O}");
+                }
 
                 ActiveLockItem nextLockItem;
 
@@ -165,7 +182,10 @@ namespace FubarDev.WebDavServer.Locking
                 if (lockItem == null)
                 {
                     if (_logger.IsEnabled(LogLevel.Debug))
+                    {
                         _logger.LogDebug("Lock was already removed (no lock found).");
+                    }
+
                     removeResult = false;
                     nextLockItem = FindMostRecentExpirationItem();
                 }
@@ -174,14 +194,20 @@ namespace FubarDev.WebDavServer.Locking
                     // The expiration might be in the future, because this timer event might be one
                     // that belongs to an already removed item.
                     if (_logger.IsEnabled(LogLevel.Debug))
+                    {
                         _logger.LogDebug($"Lock was already removed (different lock {lockItem.ActiveLock.StateToken} found).");
+                    }
+
                     removeResult = false;
                     nextLockItem = _mostRecentExpirationLockItem;
                 }
                 else
                 {
                     if (_logger.IsEnabled(LogLevel.Debug))
+                    {
                         _logger.LogDebug($"Lock {lockItem.ActiveLock.StateToken} will be removed.");
+                    }
+
                     removeResult = _activeLocks.Remove(lockItem.Expiration, lockItem);
                     nextLockItem = FindMostRecentExpirationItem();
                 }
@@ -203,7 +229,10 @@ namespace FubarDev.WebDavServer.Locking
             if (removeResult)
             {
                 if (_logger.IsEnabled(LogLevel.Trace))
+                {
                     _logger.LogTrace($"Lock {lockItem.ActiveLock.StateToken} will now be removed from the lock manager.");
+                }
+
                 var stateToken = new Uri(lockItem.ActiveLock.StateToken, UriKind.RelativeOrAbsolute);
                 await lockItem.LockManager.ReleaseAsync(lockItem.ActiveLock.Path, stateToken, CancellationToken.None).ConfigureAwait(false);
             }
@@ -225,17 +254,23 @@ namespace FubarDev.WebDavServer.Locking
         private void ConfigureTimer([NotNull] ActiveLockItem lockItem)
         {
             if (_logger.IsEnabled(LogLevel.Trace))
+            {
                 _logger.LogTrace($"Lock {lockItem.ActiveLock.StateToken} is the next to expire.");
+            }
 
             var remainingTime = lockItem.Expiration - _systemClock.UtcNow;
             if (remainingTime < TimeSpan.Zero)
                 remainingTime = TimeSpan.Zero;
 
             if (_logger.IsEnabled(LogLevel.Debug))
+            {
                 _logger.LogDebug($"Locks {lockItem.ActiveLock.StateToken} remaining time is {remainingTime}.");
+            }
 
             if (_logger.IsEnabled(LogLevel.Debug))
+            {
                 _logger.LogDebug($"Lock {lockItem.ActiveLock.StateToken} is expected to expire at time {_systemClock.UtcNow + remainingTime:O}.");
+            }
 
             _timer.Change(remainingTime, _deactivated);
         }

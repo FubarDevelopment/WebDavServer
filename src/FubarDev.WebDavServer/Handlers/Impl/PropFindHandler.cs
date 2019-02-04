@@ -1,4 +1,4 @@
-﻿// <copyright file="PropFindHandler.cs" company="Fubar Development Junker">
+// <copyright file="PropFindHandler.cs" company="Fubar Development Junker">
 // Copyright (c) Fubar Development Junker. All rights reserved.
 // </copyright>
 
@@ -24,7 +24,7 @@ using Microsoft.Extensions.Options;
 namespace FubarDev.WebDavServer.Handlers.Impl
 {
     /// <summary>
-    /// The implementation of the <see cref="IPropFindHandler"/> interface
+    /// The implementation of the <see cref="IPropFindHandler"/> interface.
     /// </summary>
     public class PropFindHandler : IPropFindHandler
     {
@@ -37,9 +37,9 @@ namespace FubarDev.WebDavServer.Handlers.Impl
         /// <summary>
         /// Initializes a new instance of the <see cref="PropFindHandler"/> class.
         /// </summary>
-        /// <param name="fileSystem">The root file system</param>
-        /// <param name="context">The WebDAV request context</param>
-        /// <param name="options">The options for this handler</param>
+        /// <param name="fileSystem">The root file system.</param>
+        /// <param name="context">The WebDAV request context.</param>
+        /// <param name="options">The options for this handler.</param>
         public PropFindHandler([NotNull]IFileSystem fileSystem, [NotNull]IWebDavContext context, [CanBeNull] IOptions<PropFindHandlerOptions> options)
         {
             _options = options?.Value ?? new PropFindHandlerOptions();
@@ -51,7 +51,7 @@ namespace FubarDev.WebDavServer.Handlers.Impl
         public IEnumerable<string> HttpMethods { get; } = new[] { "PROPFIND" };
 
         /// <summary>
-        /// Gets the root file system
+        /// Gets the root file system.
         /// </summary>
         [NotNull]
         public IFileSystem FileSystem { get; }
@@ -63,7 +63,9 @@ namespace FubarDev.WebDavServer.Handlers.Impl
             if (selectionResult.IsMissing)
             {
                 if (_context.RequestHeaders.IfNoneMatch != null)
+                {
                     throw new WebDavException(WebDavStatusCode.PreconditionFailed);
+                }
 
                 throw new WebDavException(WebDavStatusCode.NotFound);
             }
@@ -81,7 +83,7 @@ namespace FubarDev.WebDavServer.Handlers.Impl
                 Debug.Assert(selectionResult.Collection != null, "selectionResult.Collection != null");
                 Debug.Assert(selectionResult.ResultType == SelectionResultType.FoundCollection, "selectionResult.ResultType == SelectionResultType.FoundCollection");
                 entries.Add(selectionResult.Collection);
-                var collector = selectionResult.Collection as IRecusiveChildrenCollector;
+                var collector = selectionResult.Collection as IRecursiveChildrenCollector;
                 var depth = _context.RequestHeaders.Depth ?? (collector == null ? DepthHeader.One : DepthHeader.Infinity);
                 if (depth == DepthHeader.One)
                 {
@@ -111,7 +113,9 @@ namespace FubarDev.WebDavServer.Handlers.Impl
             }
 
             if (request == null)
+            {
                 return await HandleAllPropAsync(entries, cancellationToken).ConfigureAwait(false);
+            }
 
             Debug.Assert(request.ItemsElementName != null, "request.ItemsElementName != null");
             switch (request.ItemsElementName[0])
@@ -139,7 +143,9 @@ namespace FubarDev.WebDavServer.Handlers.Impl
                 var entryPath = entry.Path.OriginalString;
                 var href = _context.PublicControllerUrl.Append(entryPath, true);
                 if (!_options.UseAbsoluteHref)
+                {
                     href = new Uri("/" + _context.PublicRootUrl.MakeRelativeUri(href).OriginalString, UriKind.Relative);
+                }
 
                 var collector = new PropertyCollector(this, _context, new ReadableFilter(), new PropFilter(prop));
                 var propStats = await collector.GetPropertiesAsync(entry, int.MaxValue, cancellationToken).ConfigureAwait(false);
@@ -188,7 +194,9 @@ namespace FubarDev.WebDavServer.Handlers.Impl
                 var entryPath = entry.Path.OriginalString;
                 var href = _context.PublicControllerUrl.Append(entryPath, true);
                 if (!_options.UseAbsoluteHref)
+                {
                     href = new Uri("/" + _context.PublicRootUrl.MakeRelativeUri(href).OriginalString, UriKind.Relative);
+                }
 
                 var collector = new PropertyCollector(this, _context, new ReadableFilter(), new CostFilter(0));
                 var propStats = await collector.GetPropertiesAsync(entry, 0, cancellationToken).ConfigureAwait(false);
@@ -221,7 +229,9 @@ namespace FubarDev.WebDavServer.Handlers.Impl
                 var entryPath = entry.Path.OriginalString;
                 var href = _context.PublicControllerUrl.Append(entryPath, true);
                 if (!_options.UseAbsoluteHref)
+                {
                     href = new Uri("/" + _context.PublicRootUrl.MakeRelativeUri(href).OriginalString, UriKind.Relative);
+                }
 
                 var collector = new PropertyCollector(this, _context, new ReadableFilter(), new CostFilter(0));
                 var propStats = await collector.GetPropertyNamesAsync(entry, cancellationToken).ConfigureAwait(false);
@@ -278,7 +288,9 @@ namespace FubarDev.WebDavServer.Handlers.Impl
                         var property = propsEnumerator.Current;
 
                         if (!_filters.All(x => x.IsAllowed(property)))
+                        {
                             continue;
+                        }
 
                         foreach (var filter in _filters)
                         {
@@ -354,7 +366,9 @@ namespace FubarDev.WebDavServer.Handlers.Impl
                         var property = propsEnumerator.Current;
 
                         if (!_filters.All(x => x.IsAllowed(property)))
+                        {
                             continue;
+                        }
 
                         foreach (var filter in _filters)
                         {

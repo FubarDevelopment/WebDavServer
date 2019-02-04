@@ -12,7 +12,7 @@ using Microsoft.Extensions.Options;
 namespace FubarDev.WebDavServer.Locking
 {
     /// <summary>
-    /// The default timeout policy
+    /// The default timeout policy.
     /// </summary>
     public class DefaultTimeoutPolicy : ITimeoutPolicy
     {
@@ -32,18 +32,25 @@ namespace FubarDev.WebDavServer.Locking
         {
             var t = timeouts.ToImmutableList();
             if (_options.AllowInfiniteTimeout)
+            {
                 t = t.Where(x => x != Model.Headers.TimeoutHeader.Infinite).ToImmutableList();
+            }
 
             if (_options.MaxTimeout != null)
             {
                 var timeoutCandidates = t.Where(x => x <= _options.MaxTimeout).ToImmutableList();
                 if (timeoutCandidates.Count != 0)
+                {
                     return timeoutCandidates.Max();
+                }
+
                 return _options.MaxTimeout.Value;
             }
 
             if (t.Count != 0)
+            {
                 return t.Max();
+            }
 
             return Model.Headers.TimeoutHeader.Infinite;
         }

@@ -14,16 +14,16 @@ using JetBrains.Annotations;
 namespace FubarDev.WebDavServer
 {
     /// <summary>
-    /// Extension methods for the <see cref="CollectionActionResult"/>
+    /// Extension methods for the <see cref="CollectionActionResult"/>.
     /// </summary>
     public static class CollectionActionResultExtensions
     {
         /// <summary>
         /// Evaluate the result of a <see cref="CollectionActionResult"/> and return a <see cref="IWebDavResult"/> implementation object.
         /// </summary>
-        /// <param name="collectionResult">The <see cref="CollectionActionResult"/> to evaluate</param>
-        /// <param name="context">The <see cref="IWebDavContext"/> to create the response for</param>
-        /// <returns>The created response</returns>
+        /// <param name="collectionResult">The <see cref="CollectionActionResult"/> to evaluate.</param>
+        /// <param name="context">The <see cref="IWebDavContext"/> to create the response for.</param>
+        /// <returns>The created response.</returns>
         public static IWebDavResult Evaluate([NotNull] this CollectionActionResult collectionResult, [NotNull] IWebDavContext context)
         {
             if (collectionResult.Status == ActionStatus.Ignored)

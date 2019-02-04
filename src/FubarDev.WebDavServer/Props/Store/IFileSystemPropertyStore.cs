@@ -12,10 +12,10 @@ namespace FubarDev.WebDavServer.Props.Store
     public interface IFileSystemPropertyStore : IPropertyStore
     {
         /// <summary>
-        /// Determines whether the given <paramref name="entry"/> should be ignored when the client performs a PROPFIND
+        /// Determines whether the given <paramref name="entry"/> should be ignored when the client performs a PROPFIND.
         /// </summary>
-        /// <param name="entry">The entry that needs to be checked if it should be ignored</param>
-        /// <returns><see langword="true"/> when the entry should be ignored</returns>
+        /// <param name="entry">The entry that needs to be checked if it should be ignored.</param>
+        /// <returns><see langword="true"/> when the entry should be ignored.</returns>
         bool IgnoreEntry(IEntry entry);
     }
 }

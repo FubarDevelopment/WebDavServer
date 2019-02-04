@@ -20,7 +20,7 @@ using Microsoft.Extensions.Logging;
 namespace FubarDev.WebDavServer.AspNetCore
 {
     /// <summary>
-    /// An <see cref="IActionResult"/> implementation that takes a <see cref="IWebDavResult"/>
+    /// An <see cref="IActionResult"/> implementation that takes a <see cref="IWebDavResult"/>.
     /// </summary>
     public class WebDavIndirectResult : StatusCodeResult
     {
@@ -36,9 +36,9 @@ namespace FubarDev.WebDavServer.AspNetCore
         /// <summary>
         /// Initializes a new instance of the <see cref="WebDavIndirectResult"/> class.
         /// </summary>
-        /// <param name="dispatcher">The WebDAV HTTP method dispatcher</param>
-        /// <param name="result">The result of the WebDAV operation</param>
-        /// <param name="logger">The logger for a <see cref="WebDavIndirectResult"/></param>
+        /// <param name="dispatcher">The WebDAV HTTP method dispatcher.</param>
+        /// <param name="result">The result of the WebDAV operation.</param>
+        /// <param name="logger">The logger for a <see cref="WebDavIndirectResult"/>.</param>
         public WebDavIndirectResult(IWebDavDispatcher dispatcher, IWebDavResult result, [CanBeNull] ILogger<WebDavIndirectResult> logger)
             : base((int)result.StatusCode)
         {
@@ -58,7 +58,9 @@ namespace FubarDev.WebDavServer.AspNetCore
             // Sets the reason phrase
             var responseFeature = context.HttpContext.Features.Get<IHttpResponseFeature>();
             if (responseFeature != null)
+            {
                 responseFeature.ReasonPhrase = _result.StatusCode.GetReasonPhrase();
+            }
 
             if (_logger?.IsEnabled(LogLevel.Debug) ?? false)
             {

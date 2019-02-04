@@ -8,7 +8,7 @@ using System.Linq;
 namespace FubarDev.WebDavServer.Props.Filters
 {
     /// <summary>
-    /// Implementation of a property filter that allows only readable properties
+    /// Implementation of a property filter that allows only readable properties.
     /// </summary>
     public class ReadableFilter : IPropertyFilter
     {

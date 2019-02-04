@@ -5,7 +5,7 @@
 namespace FubarDev.WebDavServer
 {
     /// <summary>
-    /// Defines the mode that should be used to copy or move entries
+    /// Defines the mode that should be used to copy or move entries.
     /// </summary>
     public enum RecursiveProcessingMode
     {

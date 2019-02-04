@@ -21,34 +21,34 @@ namespace FubarDev.WebDavServer.Engines
         where TMissing : class, IMissingTarget<TCollection, TDocument, TMissing>
     {
         /// <summary>
-        /// Gets a value indicating whether the collection was created by the <see cref="RecursiveExecutionEngine{TCollection,TDocument,TMissing}"/>
+        /// Gets a value indicating whether the collection was created by the <see cref="RecursiveExecutionEngine{TCollection,TDocument,TMissing}"/>.
         /// </summary>
         bool Created { get; }
 
         /// <summary>
-        /// Delete the collection target
+        /// Delete the collection target.
         /// </summary>
-        /// <param name="cancellationToken">The cancellation token</param>
-        /// <returns>The collection that's now a missing target (because it was deleted by this function)</returns>
+        /// <param name="cancellationToken">The cancellation token.</param>
+        /// <returns>The collection that's now a missing target (because it was deleted by this function).</returns>
         [NotNull]
         [ItemNotNull]
         Task<TMissing> DeleteAsync(CancellationToken cancellationToken);
 
         /// <summary>
-        /// Gets a child target
+        /// Gets a child target.
         /// </summary>
-        /// <param name="name">The name of the child element</param>
-        /// <param name="cancellationToken">The cancellation token</param>
-        /// <returns>The target which might be missing or a collection or document</returns>
+        /// <param name="name">The name of the child element.</param>
+        /// <param name="cancellationToken">The cancellation token.</param>
+        /// <returns>The target which might be missing or a collection or document.</returns>
         [NotNull]
         [ItemNotNull]
         Task<ITarget> GetAsync([NotNull] string name, CancellationToken cancellationToken);
 
         /// <summary>
-        /// Creates a missing child element with the given <paramref name="name"/>
+        /// Creates a missing child element with the given <paramref name="name"/>.
         /// </summary>
-        /// <param name="name">The name of the new child element</param>
-        /// <returns>The missing target</returns>
+        /// <param name="name">The name of the new child element.</param>
+        /// <returns>The missing target.</returns>
         [NotNull]
         TMissing NewMissing([NotNull] string name);
     }

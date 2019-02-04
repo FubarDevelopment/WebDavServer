@@ -1,4 +1,4 @@
-﻿// <copyright file="PropPatchHandler.cs" company="Fubar Development Junker">
+// <copyright file="PropPatchHandler.cs" company="Fubar Development Junker">
 // Copyright (c) Fubar Development Junker. All rights reserved.
 // </copyright>
 
@@ -25,7 +25,7 @@ using JetBrains.Annotations;
 namespace FubarDev.WebDavServer.Handlers.Impl
 {
     /// <summary>
-    /// Implementation of the <see cref="IPropPatchHandler"/> interface
+    /// Implementation of the <see cref="IPropPatchHandler"/> interface.
     /// </summary>
     public class PropPatchHandler : IPropPatchHandler
     {
@@ -38,8 +38,8 @@ namespace FubarDev.WebDavServer.Handlers.Impl
         /// <summary>
         /// Initializes a new instance of the <see cref="PropPatchHandler"/> class.
         /// </summary>
-        /// <param name="fileSystem">The root file system</param>
-        /// <param name="context">The WebDAV request context</param>
+        /// <param name="fileSystem">The root file system.</param>
+        /// <param name="context">The WebDAV request context.</param>
         public PropPatchHandler([NotNull] IFileSystem fileSystem, [NotNull] IWebDavContext context)
         {
             _fileSystem = fileSystem;
@@ -71,7 +71,9 @@ namespace FubarDev.WebDavServer.Handlers.Impl
             if (selectionResult.IsMissing)
             {
                 if (_context.RequestHeaders.IfNoneMatch != null)
+                {
                     throw new WebDavException(WebDavStatusCode.PreconditionFailed);
+                }
 
                 throw new WebDavException(WebDavStatusCode.NotFound);
             }
@@ -100,7 +102,9 @@ namespace FubarDev.WebDavServer.Handlers.Impl
                         cancellationToken)
                     .ConfigureAwait(false);
             if (!tempLock.IsSuccessful)
+            {
                 return tempLock.CreateErrorResponse();
+            }
 
             try
             {
@@ -130,7 +134,10 @@ namespace FubarDev.WebDavServer.Handlers.Impl
                 {
                     var targetPropStore = targetEntry.FileSystem.PropertyStore;
                     if (targetPropStore != null)
+                    {
                         await targetPropStore.UpdateETagAsync(targetEntry, cancellationToken).ConfigureAwait(false);
+                    }
+
                     var parent = targetEntry.Parent;
                     while (parent != null)
                     {
@@ -190,12 +197,16 @@ namespace FubarDev.WebDavServer.Handlers.Impl
         {
             IUntypedReadableProperty foundProperty;
             if (properties.TryGetValue(propertyKey, out foundProperty))
+            {
                 return foundProperty;
+            }
 
             foreach (var item in properties.Values.Where(x => x.AlternativeNames.Count != 0))
             {
                 if (item.AlternativeNames.Any(x => x == propertyKey))
+                {
                     return item;
+                }
             }
 
             return null;
@@ -233,7 +244,9 @@ namespace FubarDev.WebDavServer.Handlers.Impl
         private async Task<IReadOnlyCollection<ChangeItem>> RevertChangesAsync([NotNull] IEntry entry, [NotNull][ItemNotNull] IReadOnlyCollection<ChangeItem> changes, [NotNull] IDictionary<XName, IUntypedReadableProperty> properties, CancellationToken cancellationToken)
         {
             if (entry.FileSystem.PropertyStore == null || _fileSystem.PropertyStore == null)
+            {
                 throw new InvalidOperationException("The property store must be configured");
+            }
 
             var newChangeItems = new List<ChangeItem>();
 
@@ -252,7 +265,10 @@ namespace FubarDev.WebDavServer.Handlers.Impl
                         Debug.Assert(entry.FileSystem.PropertyStore != null, "entry.FileSystem.PropertyStore != null");
                         Debug.Assert(changeItem.OldValue != null, "changeItem.OldValue != null");
                         if (changeItem.OldValue == null)
+                        {
                             throw new InvalidOperationException("There must be a old value for the item to change");
+                        }
+
                         await entry.FileSystem.PropertyStore.SetAsync(entry, changeItem.OldValue, cancellationToken).ConfigureAwait(false);
                         newChangeItem = ChangeItem.FailedDependency(changeItem.Key);
                         break;
@@ -263,7 +279,10 @@ namespace FubarDev.WebDavServer.Handlers.Impl
                             Debug.Assert(_fileSystem.PropertyStore != null, "_fileSystem.PropertyStore != null");
                             Debug.Assert(changeItem.OldValue != null, "changeItem.OldValue != null");
                             if (changeItem.OldValue == null)
+                            {
                                 throw new InvalidOperationException("There must be a old value for the item to change");
+                            }
+
                             await _fileSystem.PropertyStore.SetAsync(entry, changeItem.OldValue, cancellationToken).ConfigureAwait(false);
                         }
 
@@ -293,7 +312,9 @@ namespace FubarDev.WebDavServer.Handlers.Impl
         {
             var result = new List<ChangeItem>();
             if (request.Items == null)
+            {
                 return result;
+            }
 
             var failed = false;
             foreach (var item in request.Items)
@@ -328,7 +349,9 @@ namespace FubarDev.WebDavServer.Handlers.Impl
             var result = new List<ChangeItem>();
 
             if (remove.prop?.Any == null)
+            {
                 return result;
+            }
 
             var language = remove.prop.Language;
 
@@ -338,7 +361,10 @@ namespace FubarDev.WebDavServer.Handlers.Impl
                 // Add a parent elements xml:lang to the element
                 var elementLanguage = element.Attribute(XNamespace.Xml + "lang")?.Value;
                 if (string.IsNullOrEmpty(elementLanguage) && !string.IsNullOrEmpty(language))
+                {
                     element.SetAttributeValue(XNamespace.Xml + "lang", language);
+                }
+
                 var propertyKey = element.Name;
 
                 if (failed)
@@ -409,7 +435,9 @@ namespace FubarDev.WebDavServer.Handlers.Impl
             var result = new List<ChangeItem>();
 
             if (set.prop?.Any == null)
+            {
                 return result;
+            }
 
             var language = set.prop.Language;
 
@@ -419,7 +447,9 @@ namespace FubarDev.WebDavServer.Handlers.Impl
                 // Add a parent elements xml:lang to the element
                 var elementLanguage = element.Attribute(XNamespace.Xml + "lang")?.Value;
                 if (string.IsNullOrEmpty(elementLanguage) && !string.IsNullOrEmpty(language))
+                {
                     element.SetAttributeValue(XNamespace.Xml + "lang", language);
+                }
 
                 if (failed)
                 {

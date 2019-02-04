@@ -12,12 +12,12 @@ using JetBrains.Annotations;
 namespace FubarDev.WebDavServer.Locking
 {
     /// <summary>
-    /// The lock share mode
+    /// The lock share mode.
     /// </summary>
     public struct LockShareMode : IEquatable<LockShareMode>
     {
         /// <summary>
-        /// Gets the default <c>shared</c> lock share mode
+        /// Gets the default <c>shared</c> lock share mode.
         /// </summary>
         public static readonly LockShareMode Shared = new LockShareMode(SharedId, new lockscope()
         {
@@ -26,7 +26,7 @@ namespace FubarDev.WebDavServer.Locking
         });
 
         /// <summary>
-        /// Gets the default <c>exclusive</c> lock share mode
+        /// Gets the default <c>exclusive</c> lock share mode.
         /// </summary>
         public static readonly LockShareMode Exclusive = new LockShareMode(ExclusiveId, new lockscope()
         {
@@ -40,40 +40,43 @@ namespace FubarDev.WebDavServer.Locking
         private LockShareMode([NotNull] string id, [NotNull] lockscope xmlValue)
         {
             if (id == null)
+            {
                 throw new ArgumentNullException(nameof(id));
+            }
+
             Name = WebDavXml.Dav + id;
             XmlValue = xmlValue;
         }
 
         /// <summary>
-        /// Gets the XML name of the lock share mode
+        /// Gets the XML name of the lock share mode.
         /// </summary>
         [NotNull]
         public XName Name { get; }
 
         /// <summary>
-        /// Gets the <see cref="lockscope"/> element for this lock share mode
+        /// Gets the <see cref="lockscope"/> element for this lock share mode.
         /// </summary>
         [NotNull]
         public lockscope XmlValue { get; }
 
         /// <summary>
-        /// Compares two lock share modes for their equality
+        /// Compares two lock share modes for their equality.
         /// </summary>
-        /// <param name="x">The first lock share mode to compare</param>
-        /// <param name="y">The second lock share mode to compare</param>
-        /// <returns><see langword="true"/> when both lock share modes are of equal value</returns>
+        /// <param name="x">The first lock share mode to compare.</param>
+        /// <param name="y">The second lock share mode to compare.</param>
+        /// <returns><see langword="true"/> when both lock share modes are of equal value.</returns>
         public static bool operator ==(LockShareMode x, LockShareMode y)
         {
             return x.Name == y.Name;
         }
 
         /// <summary>
-        /// Compares two lock share modes for their inequality
+        /// Compares two lock share modes for their inequality.
         /// </summary>
-        /// <param name="x">The first lock share mode to compare</param>
-        /// <param name="y">The second lock share mode to compare</param>
-        /// <returns><see langword="true"/> when both lock share modes are not of equal value</returns>
+        /// <param name="x">The first lock share mode to compare.</param>
+        /// <param name="y">The second lock share mode to compare.</param>
+        /// <returns><see langword="true"/> when both lock share modes are not of equal value.</returns>
         public static bool operator !=(LockShareMode x, LockShareMode y)
         {
             return x.Name != y.Name;
@@ -82,12 +85,14 @@ namespace FubarDev.WebDavServer.Locking
         /// <summary>
         /// Parses the given lock share mode value and returns the corresponding <see cref="LockShareMode"/> instance.
         /// </summary>
-        /// <param name="shareMode">The share mode to parse</param>
-        /// <returns>The corresponding <see cref="LockShareMode"/></returns>
+        /// <param name="shareMode">The share mode to parse.</param>
+        /// <returns>The corresponding <see cref="LockShareMode"/>.</returns>
         public static LockShareMode Parse([NotNull] string shareMode)
         {
             if (shareMode == null)
+            {
                 throw new ArgumentNullException(nameof(shareMode));
+            }
 
             switch (shareMode.ToLowerInvariant())
             {
@@ -110,7 +115,10 @@ namespace FubarDev.WebDavServer.Locking
         public override bool Equals(object obj)
         {
             if (ReferenceEquals(null, obj))
+            {
                 return false;
+            }
+
             return obj is LockShareMode && Equals((LockShareMode)obj);
         }
 

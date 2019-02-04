@@ -15,7 +15,7 @@ using JetBrains.Annotations;
 namespace FubarDev.WebDavServer.FileSystem.InMemory
 {
     /// <summary>
-    /// An in-memory implementation of the <see cref="IFileSystemFactory"/>
+    /// An in-memory implementation of the <see cref="IFileSystemFactory"/>.
     /// </summary>
     public class InMemoryFileSystemFactory : IFileSystemFactory
     {
@@ -37,10 +37,10 @@ namespace FubarDev.WebDavServer.FileSystem.InMemory
         /// <summary>
         /// Initializes a new instance of the <see cref="InMemoryFileSystemFactory"/> class.
         /// </summary>
-        /// <param name="pathTraversalEngine">The engine to traverse paths</param>
-        /// <param name="systemClock">Interface for the access to the systems clock</param>
-        /// <param name="lockManager">The global lock manager</param>
-        /// <param name="propertyStoreFactory">The store for dead properties</param>
+        /// <param name="pathTraversalEngine">The engine to traverse paths.</param>
+        /// <param name="systemClock">Interface for the access to the systems clock.</param>
+        /// <param name="lockManager">The global lock manager.</param>
+        /// <param name="propertyStoreFactory">The store for dead properties.</param>
         public InMemoryFileSystemFactory(
             [NotNull] IPathTraversalEngine pathTraversalEngine,
             [NotNull] ISystemClock systemClock,
@@ -77,21 +77,21 @@ namespace FubarDev.WebDavServer.FileSystem.InMemory
         }
 
         /// <summary>
-        /// Called when file system will be initialized
+        /// Called when file system will be initialized.
         /// </summary>
-        /// <param name="mountPoint">The mount point</param>
-        /// <param name="principal">The principal the file system was created for</param>
-        /// <param name="fileSystem">The created file system</param>
+        /// <param name="mountPoint">The mount point.</param>
+        /// <param name="principal">The principal the file system was created for.</param>
+        /// <param name="fileSystem">The created file system.</param>
         protected virtual void InitializeFileSystem([CanBeNull] ICollection mountPoint, [NotNull] IPrincipal principal, [NotNull] InMemoryFileSystem fileSystem)
         {
         }
 
         /// <summary>
-        /// Called when the file system will be updated
+        /// Called when the file system will be updated.
         /// </summary>
-        /// <param name="mountPoint">The mount point</param>
-        /// <param name="principal">The principal the file system was created for</param>
-        /// <param name="fileSystem">The created file system</param>
+        /// <param name="mountPoint">The mount point.</param>
+        /// <param name="principal">The principal the file system was created for.</param>
+        /// <param name="fileSystem">The created file system.</param>
         protected virtual void UpdateFileSystem([CanBeNull] ICollection mountPoint, [NotNull] IPrincipal principal, [NotNull] InMemoryFileSystem fileSystem)
         {
         }
@@ -113,20 +113,35 @@ namespace FubarDev.WebDavServer.FileSystem.InMemory
             public bool Equals(FileSystemKey other)
             {
                 if (ReferenceEquals(null, other))
+                {
                     return false;
+                }
+
                 if (ReferenceEquals(this, other))
+                {
                     return true;
+                }
+
                 return _comparer.Equals(_userName, other._userName) && _comparer.Equals(_mountPoint, other._mountPoint);
             }
 
             public override bool Equals(object obj)
             {
                 if (ReferenceEquals(null, obj))
+                {
                     return false;
+                }
+
                 if (ReferenceEquals(this, obj))
+                {
                     return true;
+                }
+
                 if (obj.GetType() != GetType())
+                {
                     return false;
+                }
+
                 return Equals((FileSystemKey)obj);
             }
 

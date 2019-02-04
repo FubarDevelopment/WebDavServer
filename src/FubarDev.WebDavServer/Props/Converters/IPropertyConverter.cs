@@ -15,26 +15,26 @@ namespace FubarDev.WebDavServer.Props.Converters
     public interface IPropertyConverter<T>
     {
         /// <summary>
-        /// Determines whether the value is valid
+        /// Determines whether the value is valid.
         /// </summary>
-        /// <param name="value">The value to validate</param>
-        /// <returns><see langword="true"/> when the <paramref name="value"/> is valid</returns>
+        /// <param name="value">The value to validate.</param>
+        /// <returns><see langword="true"/> when the <paramref name="value"/> is valid.</returns>
         bool IsValidValue([CanBeNull] T value);
 
         /// <summary>
-        /// Convert to the type <typeparamref name="T"/> from a given <paramref name="element"/>
+        /// Convert to the type <typeparamref name="T"/> from a given <paramref name="element"/>.
         /// </summary>
-        /// <param name="element">The <see cref="XElement"/> to extract the value from</param>
-        /// <returns>The value extracted from the <paramref name="element"/></returns>
+        /// <param name="element">The <see cref="XElement"/> to extract the value from.</param>
+        /// <returns>The value extracted from the <paramref name="element"/>.</returns>
         [NotNull]
         T FromElement([NotNull] XElement element);
 
         /// <summary>
-        /// Covert from a given <paramref name="value"/> to an <see cref="XElement"/>
+        /// Covert from a given <paramref name="value"/> to an <see cref="XElement"/>.
         /// </summary>
-        /// <param name="name">The name of the <see cref="XElement"/> to be created</param>
-        /// <param name="value">The value to be converted to an <see cref="XElement"/></param>
-        /// <returns>The created <see cref="XElement"/></returns>
+        /// <param name="name">The name of the <see cref="XElement"/> to be created.</param>
+        /// <param name="value">The value to be converted to an <see cref="XElement"/>.</param>
+        /// <returns>The created <see cref="XElement"/>.</returns>
         [NotNull]
         XElement ToElement(XName name, [NotNull] T value);
     }

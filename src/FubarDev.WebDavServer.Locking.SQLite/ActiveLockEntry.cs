@@ -55,7 +55,10 @@ namespace FubarDev.WebDavServer.Locking.SQLite
         public XElement GetOwner()
         {
             if (Owner == null)
+            {
                 return null;
+            }
+
             return XElement.Parse(Owner);
         }
     }

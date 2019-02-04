@@ -17,7 +17,7 @@ using JetBrains.Annotations;
 namespace FubarDev.WebDavServer.FileSystem.DotNet
 {
     /// <summary>
-    /// A file system implementation using <see cref="System.IO"/>
+    /// A file system implementation using <see cref="System.IO"/>.
     /// </summary>
     public class DotNetFileSystem : ILocalFileSystem, IMountPointManager
     {
@@ -28,12 +28,12 @@ namespace FubarDev.WebDavServer.FileSystem.DotNet
         /// <summary>
         /// Initializes a new instance of the <see cref="DotNetFileSystem"/> class.
         /// </summary>
-        /// <param name="options">The options for this file system</param>
-        /// <param name="mountPoint">The mount point where this file system should be included</param>
-        /// <param name="rootFolder">The root folder</param>
-        /// <param name="pathTraversalEngine">The engine to traverse paths</param>
-        /// <param name="lockManager">The global lock manager</param>
-        /// <param name="propertyStoreFactory">The store for dead properties</param>
+        /// <param name="options">The options for this file system.</param>
+        /// <param name="mountPoint">The mount point where this file system should be included.</param>
+        /// <param name="rootFolder">The root folder.</param>
+        /// <param name="pathTraversalEngine">The engine to traverse paths.</param>
+        /// <param name="lockManager">The global lock manager.</param>
+        /// <param name="propertyStoreFactory">The store for dead properties.</param>
         public DotNetFileSystem(
             [NotNull] DotNetFileSystemOptions options,
             [CanBeNull] ICollection mountPoint,
@@ -62,7 +62,7 @@ namespace FubarDev.WebDavServer.FileSystem.DotNet
         public AsyncLazy<ICollection> Root { get; }
 
         /// <summary>
-        /// Gets the file systems options
+        /// Gets the file systems options.
         /// </summary>
         public DotNetFileSystemOptions Options { get; }
 

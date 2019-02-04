@@ -30,9 +30,9 @@ namespace FubarDev.WebDavServer.Handlers.Impl
         /// <summary>
         /// Initializes a new instance of the <see cref="MkColHandler"/> class.
         /// </summary>
-        /// <param name="rootFileSystem">The root file system</param>
-        /// <param name="context">The WebDAV request context</param>
-        /// <param name="entryPropertyInitializer">The property initializer</param>
+        /// <param name="rootFileSystem">The root file system.</param>
+        /// <param name="context">The WebDAV request context.</param>
+        /// <param name="entryPropertyInitializer">The property initializer.</param>
         public MkColHandler(IFileSystem rootFileSystem, IWebDavContext context, IEntryPropertyInitializer entryPropertyInitializer)
         {
             _rootFileSystem = rootFileSystem;
@@ -48,14 +48,20 @@ namespace FubarDev.WebDavServer.Handlers.Impl
         {
             var selectionResult = await _rootFileSystem.SelectAsync(path, cancellationToken).ConfigureAwait(false);
             if (!selectionResult.IsMissing)
+            {
                 throw new WebDavException(WebDavStatusCode.Forbidden);
+            }
 
             Debug.Assert(selectionResult.MissingNames != null, "selectionResult.PathEntries != null");
             if (selectionResult.MissingNames.Count != 1)
+            {
                 throw new WebDavException(WebDavStatusCode.Conflict);
+            }
 
             if (_context.RequestHeaders.IfNoneMatch != null)
+            {
                 throw new WebDavException(WebDavStatusCode.PreconditionFailed);
+            }
 
             var lockRequirements = new Lock(
                 new Uri(path, UriKind.Relative),
@@ -71,7 +77,9 @@ namespace FubarDev.WebDavServer.Handlers.Impl
                 : await lockManager.LockImplicitAsync(_rootFileSystem, _context.RequestHeaders.If?.Lists, lockRequirements, cancellationToken)
                                    .ConfigureAwait(false);
             if (!tempLock.IsSuccessful)
+            {
                 return tempLock.CreateErrorResponse();
+            }
 
             try
             {

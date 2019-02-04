@@ -141,7 +141,9 @@ namespace FubarDev.WebDavServer.Handlers.Impl.GetResults
                         .ConfigureAwait(false);
 
                     foreach (var header in content.Headers)
+                    {
                         response.Headers.Add(header.Key, header.Value.ToArray());
+                    }
 
                     await content.CopyToAsync(response.Body).ConfigureAwait(false);
                 }

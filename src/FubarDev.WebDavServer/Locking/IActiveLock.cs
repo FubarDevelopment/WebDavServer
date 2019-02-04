@@ -9,31 +9,31 @@ using JetBrains.Annotations;
 namespace FubarDev.WebDavServer.Locking
 {
     /// <summary>
-    /// An interface for the information about an active lock
+    /// An interface for the information about an active lock.
     /// </summary>
     public interface IActiveLock : ILock
     {
         /// <summary>
-        /// Gets the state token
+        /// Gets the state token.
         /// </summary>
         /// <remarks>
-        /// This is always a valid URI (might be relative)
+        /// This is always a valid URI (might be relative).
         /// </remarks>
         [NotNull]
         string StateToken { get; }
 
         /// <summary>
-        /// Gets the timestamp when this lock was issued
+        /// Gets the timestamp when this lock was issued.
         /// </summary>
         DateTime Issued { get; }
 
         /// <summary>
-        /// Gets the timestamp when this lock was refreshed
+        /// Gets the timestamp when this lock was refreshed.
         /// </summary>
         DateTime? LastRefresh { get; }
 
         /// <summary>
-        /// Gets the timestamp when this lock expires
+        /// Gets the timestamp when this lock expires.
         /// </summary>
         /// <seealso cref="ILock.Timeout"/>
         DateTime Expiration { get; }

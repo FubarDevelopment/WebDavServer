@@ -23,7 +23,7 @@ using JetBrains.Annotations;
 namespace FubarDev.WebDavServer.Dispatchers
 {
     /// <summary>
-    /// The default WebDAV class 2 implementation
+    /// The default WebDAV class 2 implementation.
     /// </summary>
     public class WebDavDispatcherClass2 : IWebDavClass2
     {
@@ -36,8 +36,8 @@ namespace FubarDev.WebDavServer.Dispatchers
         /// <summary>
         /// Initializes a new instance of the <see cref="WebDavDispatcherClass2"/> class.
         /// </summary>
-        /// <param name="handlers">The WebDAV class 2 handlers</param>
-        /// <param name="context">The WebDAV context</param>
+        /// <param name="handlers">The WebDAV class 2 handlers.</param>
+        /// <param name="context">The WebDAV context.</param>
         public WebDavDispatcherClass2([NotNull] [ItemNotNull] IEnumerable<IClass2Handler> handlers, [NotNull] IWebDavContext context)
         {
             var httpMethods = new HashSet<string>();
@@ -99,7 +99,10 @@ namespace FubarDev.WebDavServer.Dispatchers
         public Task<IWebDavResult> LockAsync(string path, lockinfo info, CancellationToken cancellationToken)
         {
             if (_lockHandler == null)
+            {
                 throw new NotSupportedException();
+            }
+
             return _lockHandler.LockAsync(path, info, cancellationToken);
         }
 
@@ -107,7 +110,10 @@ namespace FubarDev.WebDavServer.Dispatchers
         public Task<IWebDavResult> RefreshLockAsync(string path, IfHeader ifHeader, TimeoutHeader timeoutHeader, CancellationToken cancellationToken)
         {
             if (_lockHandler == null)
+            {
                 throw new NotSupportedException();
+            }
+
             return _lockHandler.RefreshLockAsync(path, ifHeader, timeoutHeader, cancellationToken);
         }
 
@@ -115,7 +121,10 @@ namespace FubarDev.WebDavServer.Dispatchers
         public Task<IWebDavResult> UnlockAsync(string path, LockTokenHeader stateToken, CancellationToken cancellationToken)
         {
             if (_unlockHandler == null)
+            {
                 throw new NotSupportedException();
+            }
+
             return _unlockHandler.UnlockAsync(path, stateToken, cancellationToken);
         }
 

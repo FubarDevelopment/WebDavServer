@@ -16,7 +16,7 @@ using JetBrains.Annotations;
 namespace FubarDev.WebDavServer.FileSystem.InMemory
 {
     /// <summary>
-    /// An in-memory file system implementation
+    /// An in-memory file system implementation.
     /// </summary>
     public class InMemoryFileSystem : IFileSystem, IMountPointManager
     {
@@ -27,11 +27,11 @@ namespace FubarDev.WebDavServer.FileSystem.InMemory
         /// <summary>
         /// Initializes a new instance of the <see cref="InMemoryFileSystem"/> class.
         /// </summary>
-        /// <param name="mountPoint">The mount point where this file system should be included</param>
-        /// <param name="pathTraversalEngine">The engine to traverse paths</param>
-        /// <param name="systemClock">Interface for the access to the systems clock</param>
-        /// <param name="lockManager">The global lock manager</param>
-        /// <param name="propertyStoreFactory">The store for dead properties</param>
+        /// <param name="mountPoint">The mount point where this file system should be included.</param>
+        /// <param name="pathTraversalEngine">The engine to traverse paths.</param>
+        /// <param name="systemClock">Interface for the access to the systems clock.</param>
+        /// <param name="lockManager">The global lock manager.</param>
+        /// <param name="propertyStoreFactory">The store for dead properties.</param>
         public InMemoryFileSystem(
             [CanBeNull] ICollection mountPoint,
             [NotNull] IPathTraversalEngine pathTraversalEngine,
@@ -49,13 +49,13 @@ namespace FubarDev.WebDavServer.FileSystem.InMemory
         }
 
         /// <summary>
-        /// Gets the root collection
+        /// Gets the root collection.
         /// </summary>
         [NotNull]
         public InMemoryDirectory RootCollection { get; }
 
         /// <summary>
-        /// Gets the systems clock
+        /// Gets the systems clock.
         /// </summary>
         public ISystemClock SystemClock { get; }
 

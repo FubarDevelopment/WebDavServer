@@ -24,7 +24,7 @@ using Microsoft.Extensions.Logging;
 namespace FubarDev.WebDavServer.Handlers.Impl
 {
     /// <summary>
-    /// Implementation of the <see cref="IPutHandler"/> interface
+    /// Implementation of the <see cref="IPutHandler"/> interface.
     /// </summary>
     public class PutHandler : IPutHandler
     {
@@ -37,10 +37,10 @@ namespace FubarDev.WebDavServer.Handlers.Impl
         /// <summary>
         /// Initializes a new instance of the <see cref="PutHandler"/> class.
         /// </summary>
-        /// <param name="fileSystem">The root file system</param>
-        /// <param name="context">The WebDAV request context</param>
-        /// <param name="entryPropertyInitializer">The property initializer</param>
-        /// <param name="logger">The logger</param>
+        /// <param name="fileSystem">The root file system.</param>
+        /// <param name="context">The WebDAV request context.</param>
+        /// <param name="entryPropertyInitializer">The property initializer.</param>
+        /// <param name="logger">The logger.</param>
         public PutHandler(IFileSystem fileSystem, IWebDavContext context, IEntryPropertyInitializer entryPropertyInitializer, ILogger<PutHandler> logger)
         {
             _fileSystem = fileSystem;
@@ -57,14 +57,21 @@ namespace FubarDev.WebDavServer.Handlers.Impl
         {
             var selectionResult = await _fileSystem.SelectAsync(path, cancellationToken).ConfigureAwait(false);
             if (selectionResult.ResultType == SelectionResultType.MissingCollection)
+            {
                 throw new WebDavException(WebDavStatusCode.NotFound);
+            }
+
             if (selectionResult.ResultType == SelectionResultType.FoundCollection)
+            {
                 throw new WebDavException(WebDavStatusCode.MethodNotAllowed);
+            }
 
             if (selectionResult.IsMissing)
             {
                 if (_context.RequestHeaders.IfNoneMatch != null)
+                {
                     throw new WebDavException(WebDavStatusCode.PreconditionFailed);
+                }
             }
             else
             {
@@ -90,7 +97,9 @@ namespace FubarDev.WebDavServer.Handlers.Impl
                         cancellationToken)
                     .ConfigureAwait(false);
             if (!tempLock.IsSuccessful)
+            {
                 return tempLock.CreateErrorResponse();
+            }
 
             try
             {

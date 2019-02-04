@@ -16,7 +16,7 @@ using JetBrains.Annotations;
 namespace FubarDev.WebDavServer.Props.Dead
 {
     /// <summary>
-    /// The generic dead property
+    /// The generic dead property.
     /// </summary>
     public class DeadProperty : IUntypedWriteableProperty, IDeadProperty
     {
@@ -29,9 +29,9 @@ namespace FubarDev.WebDavServer.Props.Dead
         /// <summary>
         /// Initializes a new instance of the <see cref="DeadProperty"/> class.
         /// </summary>
-        /// <param name="store">The property store for the dead properties</param>
-        /// <param name="entry">The file system entry</param>
-        /// <param name="name">The XML name of the dead property</param>
+        /// <param name="store">The property store for the dead properties.</param>
+        /// <param name="entry">The file system entry.</param>
+        /// <param name="name">The XML name of the dead property.</param>
         public DeadProperty([NotNull] IPropertyStore store, [NotNull] IEntry entry, [NotNull] XName name)
         {
             Name = name;
@@ -43,9 +43,9 @@ namespace FubarDev.WebDavServer.Props.Dead
         /// <summary>
         /// Initializes a new instance of the <see cref="DeadProperty"/> class.
         /// </summary>
-        /// <param name="store">The property store for the dead properties</param>
-        /// <param name="entry">The file system entry</param>
-        /// <param name="element">The element to intialize this property with</param>
+        /// <param name="store">The property store for the dead properties.</param>
+        /// <param name="entry">The file system entry.</param>
+        /// <param name="element">The element to initialize this property with.</param>
         public DeadProperty(IPropertyStore store, IEntry entry, XElement element)
         {
             _store = store;
@@ -88,7 +88,9 @@ namespace FubarDev.WebDavServer.Props.Dead
             }
 
             if (result == null)
+            {
                 throw new InvalidOperationException("Cannot get value from uninitialized property");
+            }
 
             return result;
         }

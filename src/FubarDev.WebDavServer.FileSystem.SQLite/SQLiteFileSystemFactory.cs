@@ -19,7 +19,7 @@ using sqlitenet = SQLite;
 namespace FubarDev.WebDavServer.FileSystem.SQLite
 {
     /// <summary>
-    /// An implementation of <see cref="IFileSystemFactory"/> that provides file system storage in a SQLite database
+    /// An implementation of <see cref="IFileSystemFactory"/> that provides file system storage in a SQLite database.
     /// </summary>
     public class SQLiteFileSystemFactory : IFileSystemFactory
     {
@@ -38,10 +38,10 @@ namespace FubarDev.WebDavServer.FileSystem.SQLite
         /// <summary>
         /// Initializes a new instance of the <see cref="SQLiteFileSystemFactory"/> class.
         /// </summary>
-        /// <param name="options">The options for this file system</param>
-        /// <param name="pathTraversalEngine">The engine to traverse paths</param>
-        /// <param name="propertyStoreFactory">The store for dead properties</param>
-        /// <param name="lockManager">The global lock manager</param>
+        /// <param name="options">The options for this file system.</param>
+        /// <param name="pathTraversalEngine">The engine to traverse paths.</param>
+        /// <param name="propertyStoreFactory">The store for dead properties.</param>
+        /// <param name="lockManager">The global lock manager.</param>
         public SQLiteFileSystemFactory(
             [NotNull] IOptions<SQLiteFileSystemOptions> options,
             [NotNull] IPathTraversalEngine pathTraversalEngine,
@@ -57,7 +57,7 @@ namespace FubarDev.WebDavServer.FileSystem.SQLite
         /// <summary>
         /// Ensures that a database with the given file name exists.
         /// </summary>
-        /// <param name="dbFileName">The file name of the database</param>
+        /// <param name="dbFileName">The file name of the database.</param>
         public static void EnsureDatabaseExists(string dbFileName)
         {
             if (File.Exists(dbFileName))
@@ -74,13 +74,16 @@ namespace FubarDev.WebDavServer.FileSystem.SQLite
         }
 
         /// <summary>
-        /// Creates a new database
+        /// Creates a new database.
         /// </summary>
-        /// <param name="dbFileName">The file name of the database</param>
+        /// <param name="dbFileName">The file name of the database.</param>
         public static void CreateDatabase(string dbFileName)
         {
             if (File.Exists(dbFileName))
+            {
                 File.Delete(dbFileName);
+            }
+
             var dbFileFolder = Path.GetDirectoryName(dbFileName);
             Debug.Assert(dbFileFolder != null, "dbFileFolder != null");
             Directory.CreateDirectory(dbFileFolder);

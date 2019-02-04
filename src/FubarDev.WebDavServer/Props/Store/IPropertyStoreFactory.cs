@@ -12,10 +12,10 @@ namespace FubarDev.WebDavServer.Props.Store
     public interface IPropertyStoreFactory
     {
         /// <summary>
-        /// Creates/gets a property store for a file system
+        /// Creates/gets a property store for a file system.
         /// </summary>
-        /// <param name="fileSystem">The file system to get/create the property store for</param>
-        /// <returns>The property store for the <paramref name="fileSystem"/></returns>
+        /// <param name="fileSystem">The file system to get/create the property store for.</param>
+        /// <returns>The property store for the <paramref name="fileSystem"/>.</returns>
         IPropertyStore Create(IFileSystem fileSystem);
     }
 }

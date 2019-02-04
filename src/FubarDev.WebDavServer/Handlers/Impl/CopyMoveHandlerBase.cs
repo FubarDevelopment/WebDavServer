@@ -34,9 +34,9 @@ namespace FubarDev.WebDavServer.Handlers.Impl
         /// <summary>
         /// Initializes a new instance of the <see cref="CopyMoveHandlerBase"/> class.
         /// </summary>
-        /// <param name="rootFileSystem">The root file system</param>
-        /// <param name="context">The WebDAV context</param>
-        /// <param name="logger">The logger to use (either for COPY or MOVE)</param>
+        /// <param name="rootFileSystem">The root file system.</param>
+        /// <param name="context">The WebDAV context.</param>
+        /// <param name="logger">The logger to use (either for COPY or MOVE).</param>
         protected CopyMoveHandlerBase([NotNull] IFileSystem rootFileSystem, [NotNull] IWebDavContext context, [NotNull] ILogger logger)
         {
             _rootFileSystem = rootFileSystem;
@@ -45,28 +45,28 @@ namespace FubarDev.WebDavServer.Handlers.Impl
         }
 
         /// <summary>
-        /// Gets the WebDAV context
+        /// Gets the WebDAV context.
         /// </summary>
         [NotNull]
         protected IWebDavContext WebDavContext { get; }
 
         /// <summary>
-        /// Gets the logger
+        /// Gets the logger.
         /// </summary>
         [NotNull]
         protected ILogger Logger { get; }
 
         /// <summary>
-        /// Executes the COPY or MOVE recursively
+        /// Executes the COPY or MOVE recursively.
         /// </summary>
-        /// <param name="sourcePath">The source path</param>
-        /// <param name="destination">The destination URI</param>
-        /// <param name="depth">The depth</param>
-        /// <param name="overwrite">Can the destination be overwritten?</param>
-        /// <param name="mode">The COPY mode to use</param>
-        /// <param name="isMove">Is this a move operation?</param>
-        /// <param name="cancellationToken">The cancellcation token</param>
-        /// <returns>The result of the operation</returns>
+        /// <param name="sourcePath">The source path.</param>
+        /// <param name="destination">The destination URI.</param>
+        /// <param name="depth">The depth.</param>
+        /// <param name="overwrite">Indicates whether the destination can be overwritten.</param>
+        /// <param name="mode">The COPY mode to use.</param>
+        /// <param name="isMove">Indicates whether this is a move operation.</param>
+        /// <param name="cancellationToken">The cancellation token.</param>
+        /// <returns>The result of the operation.</returns>
         protected async Task<IWebDavResult> ExecuteAsync(
             [NotNull] string sourcePath,
             [NotNull] Uri destination,
@@ -80,7 +80,9 @@ namespace FubarDev.WebDavServer.Handlers.Impl
             if (sourceSelectionResult.IsMissing)
             {
                 if (WebDavContext.RequestHeaders.IfNoneMatch != null)
+                {
                     throw new WebDavException(WebDavStatusCode.PreconditionFailed);
+                }
 
                 throw new WebDavException(WebDavStatusCode.NotFound);
             }
@@ -111,7 +113,9 @@ namespace FubarDev.WebDavServer.Handlers.Impl
                             cancellationToken)
                         .ConfigureAwait(false);
                 if (!sourceTempLock.IsSuccessful)
+                {
                     return sourceTempLock.CreateErrorResponse();
+                }
             }
             else
             {
@@ -127,10 +131,14 @@ namespace FubarDev.WebDavServer.Handlers.Impl
                 if (!WebDavContext.PublicControllerUrl.IsBaseOf(destinationUrl) || mode == RecursiveProcessingMode.PreferCrossServer)
                 {
                     if (Logger.IsEnabled(LogLevel.Trace))
+                    {
                         Logger.LogTrace("Using cross-server mode");
+                    }
 
                     if (Logger.IsEnabled(LogLevel.Debug))
+                    {
                         Logger.LogDebug($"{WebDavContext.PublicControllerUrl} is not a base of {destinationUrl}");
+                    }
 
                     using (var remoteHandler = await CreateRemoteTargetActionsAsync(
                             destinationUrl,
@@ -193,7 +201,9 @@ namespace FubarDev.WebDavServer.Handlers.Impl
                                 cancellationToken)
                             .ConfigureAwait(false);
                     if (!destTempLock.IsSuccessful)
+                    {
                         return destTempLock.CreateErrorResponse();
+                    }
 
                     try
                     {
@@ -249,37 +259,37 @@ namespace FubarDev.WebDavServer.Handlers.Impl
         }
 
         /// <summary>
-        /// Create the target action implementation for remote COPY or MOVE
+        /// Create the target action implementation for remote COPY or MOVE.
         /// </summary>
-        /// <param name="destinationUrl">The destination URL</param>
-        /// <param name="cancellationToken">The cancellcation token</param>
-        /// <returns>The implementation for remote actions</returns>
+        /// <param name="destinationUrl">The destination URL.</param>
+        /// <param name="cancellationToken">The cancellation token.</param>
+        /// <returns>The implementation for remote actions.</returns>
         [NotNull]
         [ItemCanBeNull]
         protected abstract Task<IRemoteTargetActions> CreateRemoteTargetActionsAsync(Uri destinationUrl, CancellationToken cancellationToken);
 
         /// <summary>
-        /// Create the target action implementation for local COPY or MOVE
+        /// Create the target action implementation for local COPY or MOVE.
         /// </summary>
-        /// <param name="mode">The requested processing mode (in-filesystem or cross-filesystem)</param>
-        /// <returns>The implementation for local actions</returns>
+        /// <param name="mode">The requested processing mode (in-filesystem or cross-filesystem).</param>
+        /// <returns>The implementation for local actions.</returns>
         [NotNull]
         protected abstract ITargetActions<CollectionTarget, DocumentTarget, MissingTarget> CreateLocalTargetActions(RecursiveProcessingMode mode);
 
         /// <summary>
-        /// Executes the COPY or MOVE recursively
+        /// Executes the COPY or MOVE recursively.
         /// </summary>
-        /// <typeparam name="TCollection">The collection type</typeparam>
-        /// <typeparam name="TDocument">The document type</typeparam>
-        /// <typeparam name="TMissing">The type for a missing entry</typeparam>
-        /// <param name="engine">The engine to use to perform the operation</param>
-        /// <param name="sourceUrl">The source URL</param>
-        /// <param name="sourceSelectionResult">The source element</param>
-        /// <param name="parentCollection">The parent collection of the source element</param>
-        /// <param name="targetItem">The target of the operation</param>
-        /// <param name="depth">The depth</param>
-        /// <param name="cancellationToken">The cancellcation token</param>
-        /// <returns>The result of the operation</returns>
+        /// <typeparam name="TCollection">The collection type.</typeparam>
+        /// <typeparam name="TDocument">The document type.</typeparam>
+        /// <typeparam name="TMissing">The type for a missing entry.</typeparam>
+        /// <param name="engine">The engine to use to perform the operation.</param>
+        /// <param name="sourceUrl">The source URL.</param>
+        /// <param name="sourceSelectionResult">The source element.</param>
+        /// <param name="parentCollection">The parent collection of the source element.</param>
+        /// <param name="targetItem">The target of the operation.</param>
+        /// <param name="depth">The depth.</param>
+        /// <param name="cancellationToken">The cancellation token.</param>
+        /// <returns>The result of the operation.</returns>
         private async Task<Engines.CollectionActionResult> ExecuteAsync<TCollection, TDocument, TMissing>(
             [NotNull] RecursiveExecutionEngine<TCollection, TDocument, TMissing> engine,
             [NotNull] Uri sourceUrl,
@@ -295,7 +305,9 @@ namespace FubarDev.WebDavServer.Handlers.Impl
             Debug.Assert(sourceSelectionResult.Collection != null, "sourceSelectionResult.Collection != null");
 
             if (Logger.IsEnabled(LogLevel.Trace))
+            {
                 Logger.LogTrace($"Copy or move from {sourceUrl} to {targetItem.DestinationUrl}");
+            }
 
             if (sourceSelectionResult.ResultType == SelectionResultType.FoundDocument)
             {
@@ -435,7 +447,9 @@ namespace FubarDev.WebDavServer.Handlers.Impl
 
             Debug.Assert(parentCollection != null, "Cannt copy or move the root collection.");
             if (parentCollection == null)
+            {
                 throw new InvalidOperationException("Cannt copy or move the root collection.");
+            }
 
             return await ExecuteAsync(
                     engine,

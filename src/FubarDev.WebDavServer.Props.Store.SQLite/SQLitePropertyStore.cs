@@ -2,7 +2,6 @@
 // Copyright (c) Fubar Development Junker. All rights reserved.
 // </copyright>
 
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
@@ -23,7 +22,7 @@ using sqlitenet = SQLite;
 namespace FubarDev.WebDavServer.Props.Store.SQLite
 {
     /// <summary>
-    /// The in-memory implementation of a property store
+    /// The in-memory implementation of a property store.
     /// </summary>
     public class SQLitePropertyStore : PropertyStoreBase, IFileSystemPropertyStore
     {
@@ -40,10 +39,10 @@ namespace FubarDev.WebDavServer.Props.Store.SQLite
         /// <summary>
         /// Initializes a new instance of the <see cref="SQLitePropertyStore"/> class.
         /// </summary>
-        /// <param name="deadPropertyFactory">The factory to create dead properties</param>
-        /// <param name="dbFileName">The file name of the SQLite database</param>
-        /// <param name="options">The options for this property store</param>
-        /// <param name="logger">The logger</param>
+        /// <param name="deadPropertyFactory">The factory to create dead properties.</param>
+        /// <param name="dbFileName">The file name of the SQLite database.</param>
+        /// <param name="options">The options for this property store.</param>
+        /// <param name="logger">The logger.</param>
         public SQLitePropertyStore([NotNull] IDeadPropertyFactory deadPropertyFactory, [NotNull] string dbFileName, [CanBeNull] IOptions<SQLitePropertyStoreOptions> options, [NotNull] ILogger<SQLitePropertyStore> logger)
             : base(deadPropertyFactory)
         {
@@ -87,7 +86,7 @@ namespace FubarDev.WebDavServer.Props.Store.SQLite
 
             SetAll(entry, elementsToSet);
 
-            return Task.FromResult(0);
+            return Task.CompletedTask;
         }
 
         /// <inheritdoc />
@@ -103,7 +102,7 @@ namespace FubarDev.WebDavServer.Props.Store.SQLite
                     .ExecuteNonQuery();
             }
 
-            return Task.FromResult(0);
+            return Task.CompletedTask;
         }
 
         /// <inheritdoc />
@@ -116,7 +115,9 @@ namespace FubarDev.WebDavServer.Props.Store.SQLite
             {
                 XElement element;
                 if (!entries.TryGetValue(key, out element))
+                {
                     continue;
+                }
 
                 if (key == GetETagProperty.PropertyName)
                 {

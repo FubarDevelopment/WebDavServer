@@ -12,7 +12,7 @@ namespace FubarDev.WebDavServer
     public interface ISystemClock
     {
         /// <summary>
-        /// Gets the <see cref="DateTime.UtcNow"/>
+        /// Gets the <see cref="DateTime.UtcNow"/>.
         /// </summary>
         DateTime UtcNow { get; }
     }

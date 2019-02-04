@@ -13,14 +13,14 @@ using JetBrains.Annotations;
 namespace FubarDev.WebDavServer.Engines.Local
 {
     /// <summary>
-    /// The <see cref="ITargetActions{TCollection,TDocument,TMissing}"/> implementation that moves between two file systems
+    /// The <see cref="ITargetActions{TCollection,TDocument,TMissing}"/> implementation that moves between two file systems.
     /// </summary>
     public class MoveBetweenFileSystemsTargetAction : ITargetActions<CollectionTarget, DocumentTarget, MissingTarget>
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="MoveBetweenFileSystemsTargetAction"/> class.
         /// </summary>
-        /// <param name="dispatcher">The WebDAV dispatcher</param>
+        /// <param name="dispatcher">The WebDAV dispatcher.</param>
         public MoveBetweenFileSystemsTargetAction([NotNull] IWebDavDispatcher dispatcher)
         {
             Dispatcher = dispatcher;
@@ -85,7 +85,9 @@ namespace FubarDev.WebDavServer.Engines.Local
         private static async Task CopyETagAsync(IEntry source, IEntry dest, CancellationToken cancellationToken)
         {
             if (dest is IEntityTagEntry)
+            {
                 return;
+            }
 
             var sourcePropStore = source.FileSystem.PropertyStore;
             var destPropStore = dest.FileSystem.PropertyStore;

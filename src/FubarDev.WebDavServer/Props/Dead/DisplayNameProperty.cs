@@ -17,12 +17,12 @@ using JetBrains.Annotations;
 namespace FubarDev.WebDavServer.Props.Dead
 {
     /// <summary>
-    /// The <c>displayname</c> property
+    /// The <c>displayname</c> property.
     /// </summary>
     public class DisplayNameProperty : GenericStringProperty, IDeadProperty
     {
         /// <summary>
-        /// The XML name of the property
+        /// The XML name of the property.
         /// </summary>
         public static readonly XName PropertyName = WebDavXml.Dav + "displayname";
 
@@ -37,10 +37,10 @@ namespace FubarDev.WebDavServer.Props.Dead
         /// <summary>
         /// Initializes a new instance of the <see cref="DisplayNameProperty"/> class.
         /// </summary>
-        /// <param name="entry">The entry to instantiate this property for</param>
-        /// <param name="store">The property store to store this property</param>
-        /// <param name="hideExtension">Hide the extension from the display name</param>
-        /// <param name="cost">The cost of querying the display names property</param>
+        /// <param name="entry">The entry to instantiate this property for.</param>
+        /// <param name="store">The property store to store this property.</param>
+        /// <param name="hideExtension">Hide the extension from the display name.</param>
+        /// <param name="cost">The cost of querying the display names property.</param>
         public DisplayNameProperty([NotNull] IEntry entry, [NotNull] IPropertyStore store, bool hideExtension, int? cost = null)
             : base(PropertyName, null, cost ?? store.Cost, null, null)
         {
@@ -53,7 +53,9 @@ namespace FubarDev.WebDavServer.Props.Dead
         public override async Task<string> GetValueAsync(CancellationToken ct)
         {
             if (_value != null)
+            {
                 return _value;
+            }
 
             if (_store != null)
             {

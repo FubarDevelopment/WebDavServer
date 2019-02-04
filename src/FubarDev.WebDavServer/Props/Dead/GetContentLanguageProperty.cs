@@ -17,7 +17,7 @@ using JetBrains.Annotations;
 namespace FubarDev.WebDavServer.Props.Dead
 {
     /// <summary>
-    /// The implementation of the <c>getcontentlanguage</c> property
+    /// The implementation of the <c>getcontentlanguage</c> property.
     /// </summary>
     public class GetContentLanguageProperty : GenericStringProperty, IDeadProperty
     {
@@ -43,10 +43,10 @@ namespace FubarDev.WebDavServer.Props.Dead
         /// <summary>
         /// Initializes a new instance of the <see cref="GetContentLanguageProperty"/> class.
         /// </summary>
-        /// <param name="entry">The entry to instantiate this property for</param>
-        /// <param name="store">The property store to store this property</param>
-        /// <param name="defaultContentLanguage">The content language to return when none was specified</param>
-        /// <param name="cost">The cost of querying the display names property</param>
+        /// <param name="entry">The entry to instantiate this property for.</param>
+        /// <param name="store">The property store to store this property.</param>
+        /// <param name="defaultContentLanguage">The content language to return when none was specified.</param>
+        /// <param name="cost">The cost of querying the display names property.</param>
         public GetContentLanguageProperty([NotNull] IEntry entry, [NotNull] IPropertyStore store, [NotNull] string defaultContentLanguage = "en", int? cost = null)
             : base(PropertyName, null, cost ?? store.Cost, null, null, WebDavXml.Dav + "contentlanguage")
         {
@@ -56,11 +56,11 @@ namespace FubarDev.WebDavServer.Props.Dead
         }
 
         /// <summary>
-        /// Tries to get the value of this property
+        /// Tries to get the value of this property.
         /// </summary>
-        /// <param name="ct">The cancellation token</param>
+        /// <param name="ct">The cancellation token.</param>
         /// <returns>A tuple where the first item indicates whether the value was read from the property store and
-        /// the second item is the value to be returned as value for this property</returns>
+        /// the second item is the value to be returned as value for this property.</returns>
         public async Task<ValueTuple<bool, string>> TryGetValueAsync(CancellationToken ct)
         {
             var result = await GetValueAsync(ct).ConfigureAwait(false);
@@ -71,7 +71,9 @@ namespace FubarDev.WebDavServer.Props.Dead
         public override async Task<string> GetValueAsync(CancellationToken ct)
         {
             if (_value != null || _isLoaded)
+            {
                 return _value ?? _defaultContentLanguage;
+            }
 
             var storedValue = await _store.GetAsync(_entry, Name, ct).ConfigureAwait(false);
             if (storedValue != null)

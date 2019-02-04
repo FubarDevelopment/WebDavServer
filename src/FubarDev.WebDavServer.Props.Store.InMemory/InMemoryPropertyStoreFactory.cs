@@ -12,7 +12,7 @@ using Microsoft.Extensions.Logging;
 namespace FubarDev.WebDavServer.Props.Store.InMemory
 {
     /// <summary>
-    /// The factory for the <see cref="InMemoryPropertyStore"/>
+    /// The factory for the <see cref="InMemoryPropertyStore"/>.
     /// </summary>
     public class InMemoryPropertyStoreFactory : IPropertyStoreFactory
     {
@@ -25,8 +25,8 @@ namespace FubarDev.WebDavServer.Props.Store.InMemory
         /// <summary>
         /// Initializes a new instance of the <see cref="InMemoryPropertyStoreFactory"/> class.
         /// </summary>
-        /// <param name="logger">The logger for the property store factory</param>
-        /// <param name="deadPropertyFactory">The factory for dead properties</param>
+        /// <param name="logger">The logger for the property store factory.</param>
+        /// <param name="deadPropertyFactory">The factory for dead properties.</param>
         public InMemoryPropertyStoreFactory([NotNull] ILogger<InMemoryPropertyStore> logger, [NotNull] IDeadPropertyFactory deadPropertyFactory)
         {
             _logger = logger;

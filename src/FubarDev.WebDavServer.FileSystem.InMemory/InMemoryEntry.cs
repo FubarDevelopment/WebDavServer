@@ -17,7 +17,7 @@ using JetBrains.Annotations;
 namespace FubarDev.WebDavServer.FileSystem.InMemory
 {
     /// <summary>
-    /// Am in-memory implementation of a WebDAV entry (collection or document)
+    /// Am in-memory implementation of a WebDAV entry (collection or document).
     /// </summary>
     public abstract class InMemoryEntry : IEntry, IEntityTagEntry
     {
@@ -26,10 +26,10 @@ namespace FubarDev.WebDavServer.FileSystem.InMemory
         /// <summary>
         /// Initializes a new instance of the <see cref="InMemoryEntry"/> class.
         /// </summary>
-        /// <param name="fileSystem">The file system this entry belongs to</param>
-        /// <param name="parent">The parent collection</param>
-        /// <param name="path">The root-relative path of this entry</param>
-        /// <param name="name">The name of the entry</param>
+        /// <param name="fileSystem">The file system this entry belongs to.</param>
+        /// <param name="parent">The parent collection.</param>
+        /// <param name="path">The root-relative path of this entry.</param>
+        /// <param name="name">The name of the entry.</param>
         protected InMemoryEntry(InMemoryFileSystem fileSystem, ICollection parent, Uri path, string name)
         {
             _parent = parent;
@@ -65,13 +65,13 @@ namespace FubarDev.WebDavServer.FileSystem.InMemory
         public EntityTag ETag { get; protected set; } = new EntityTag(false);
 
         /// <summary>
-        /// Gets the file system
+        /// Gets the file system.
         /// </summary>
         [NotNull]
         protected InMemoryFileSystem InMemoryFileSystem { get; }
 
         /// <summary>
-        /// Gets the parent collection
+        /// Gets the parent collection.
         /// </summary>
         [CanBeNull]
         protected InMemoryDirectory InMemoryParent => _parent as InMemoryDirectory;
@@ -80,7 +80,9 @@ namespace FubarDev.WebDavServer.FileSystem.InMemory
         public Task<EntityTag> UpdateETagAsync(CancellationToken cancellationToken)
         {
             if (InMemoryFileSystem.IsReadOnly)
+            {
                 throw new UnauthorizedAccessException("Failed to modify a read-only file system");
+            }
 
             return Task.FromResult(ETag = new EntityTag(false));
         }
@@ -98,10 +100,12 @@ namespace FubarDev.WebDavServer.FileSystem.InMemory
         public Task SetLastWriteTimeUtcAsync(DateTime lastWriteTime, CancellationToken cancellationToken)
         {
             if (InMemoryFileSystem.IsReadOnly)
+            {
                 throw new UnauthorizedAccessException("Failed to modify a read-only file system");
+            }
 
             LastWriteTimeUtc = lastWriteTime;
-            return Task.FromResult(0);
+            return Task.CompletedTask;
         }
 
         /// <summary>
@@ -114,10 +118,12 @@ namespace FubarDev.WebDavServer.FileSystem.InMemory
         public Task SetCreationTimeUtcAsync(DateTime creationTime, CancellationToken cancellationToken)
         {
             if (InMemoryFileSystem.IsReadOnly)
+            {
                 throw new UnauthorizedAccessException("Failed to modify a read-only file system");
+            }
 
             CreationTimeUtc = creationTime;
-            return Task.FromResult(0);
+            return Task.CompletedTask;
         }
 
         /// <inheritdoc />

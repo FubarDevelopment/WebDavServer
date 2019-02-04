@@ -12,7 +12,7 @@ using Microsoft.AspNetCore.Mvc.Routing;
 namespace FubarDev.WebDavServer.AspNetCore.Routing
 {
     /// <summary>
-    /// The WebDAV HTTP PROPFIND method
+    /// The WebDAV HTTP PROPFIND method.
     /// </summary>
     public class HttpPropFindAttribute : HttpMethodAttribute
     {
@@ -34,7 +34,9 @@ namespace FubarDev.WebDavServer.AspNetCore.Routing
             : base(_supportedMethods, template)
         {
             if (template == null)
+            {
                 throw new ArgumentNullException(nameof(template));
+            }
         }
     }
 }

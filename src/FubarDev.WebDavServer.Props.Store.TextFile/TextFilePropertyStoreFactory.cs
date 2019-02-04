@@ -15,7 +15,7 @@ using Microsoft.Extensions.Options;
 namespace FubarDev.WebDavServer.Props.Store.TextFile
 {
     /// <summary>
-    /// The factory for the <see cref="TextFilePropertyStore"/>
+    /// The factory for the <see cref="TextFilePropertyStore"/>.
     /// </summary>
     public class TextFilePropertyStoreFactory : IPropertyStoreFactory
     {
@@ -34,10 +34,10 @@ namespace FubarDev.WebDavServer.Props.Store.TextFile
         /// <summary>
         /// Initializes a new instance of the <see cref="TextFilePropertyStoreFactory"/> class.
         /// </summary>
-        /// <param name="options">The options for the text file property store</param>
-        /// <param name="deadPropertyFactory">The factory for the dead properties</param>
-        /// <param name="webDavContext">The WebDAV request context</param>
-        /// <param name="logger">The logger for the property store factory</param>
+        /// <param name="options">The options for the text file property store.</param>
+        /// <param name="deadPropertyFactory">The factory for the dead properties.</param>
+        /// <param name="webDavContext">The WebDAV request context.</param>
+        /// <param name="logger">The logger for the property store factory.</param>
         public TextFilePropertyStoreFactory(IOptions<TextFilePropertyStoreOptions> options, [NotNull] IDeadPropertyFactory deadPropertyFactory, [NotNull] IWebDavContext webDavContext, [NotNull] ILogger<TextFilePropertyStore> logger)
         {
             _options = options?.Value ?? new TextFilePropertyStoreOptions();
@@ -64,7 +64,10 @@ namespace FubarDev.WebDavServer.Props.Store.TextFile
                         : "anonymous";
                     var p = userName.IndexOf('\\');
                     if (p != -1)
+                    {
                         userName = userName.Substring(p + 1);
+                    }
+
                     fileName = $"{userName}.json";
                 }
             }

@@ -15,16 +15,16 @@ namespace FubarDev.WebDavServer.FileSystem.Mount
     public interface IMountPointProvider
     {
         /// <summary>
-        /// Gets all mount points
+        /// Gets all mount points.
         /// </summary>
         IEnumerable<Uri> MountPoints { get; }
 
         /// <summary>
-        /// Try to get a mount point for a given path
+        /// Try to get a mount point for a given path.
         /// </summary>
-        /// <param name="path">The path to get the destination file system for</param>
-        /// <param name="destination">The destination file system</param>
-        /// <returns><see langword="true"/> when there is a destination file system for a <paramref name="path"/></returns>
+        /// <param name="path">The path to get the destination file system for.</param>
+        /// <param name="destination">The destination file system.</param>
+        /// <returns><see langword="true"/> when there is a destination file system for a <paramref name="path"/>.</returns>
         bool TryGetMountPoint([NotNull] Uri path, out IFileSystem destination);
     }
 }

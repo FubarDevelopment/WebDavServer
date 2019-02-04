@@ -39,7 +39,10 @@ namespace FubarDev.WebDavServer
         public AsyncLazy([NotNull] Func<Task<T>> factory)
         {
             if (factory == null)
+            {
                 throw new ArgumentNullException(nameof(factory));
+            }
+
             var factoryFunc = RunOnThreadPool(factory);
             _instance = new Lazy<Task<T>>(factoryFunc);
         }
@@ -77,7 +80,9 @@ namespace FubarDev.WebDavServer
             get
             {
                 lock (_mutex)
+                {
                     return _instance.Value;
+                }
             }
         }
 
@@ -87,9 +92,15 @@ namespace FubarDev.WebDavServer
             get
             {
                 if (!_instance.IsValueCreated)
+                {
                     return LazyState.NotStarted;
+                }
+
                 if (!_instance.Value.IsCompleted)
+                {
                     return LazyState.Executing;
+                }
+
                 return LazyState.Completed;
             }
         }
@@ -138,7 +149,10 @@ namespace FubarDev.WebDavServer
                 get
                 {
                     if (!_lazy._instance.IsValueCreated)
+                    {
                         throw new InvalidOperationException("Not yet created.");
+                    }
+
                     return _lazy._instance.Value;
                 }
             }
@@ -148,7 +162,10 @@ namespace FubarDev.WebDavServer
                 get
                 {
                     if (!_lazy._instance.IsValueCreated || !_lazy._instance.Value.IsCompleted)
+                    {
                         throw new InvalidOperationException("Not yet created.");
+                    }
+
                     return _lazy._instance.Value.Result;
                 }
             }

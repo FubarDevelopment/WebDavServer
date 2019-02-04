@@ -16,7 +16,7 @@ using Microsoft.Extensions.Logging;
 namespace FubarDev.WebDavServer.Engines.Local
 {
     /// <summary>
-    /// The <see cref="ITargetActions{TCollection,TDocument,TMissing}"/> implementation that moves only entries within the same file system
+    /// The <see cref="ITargetActions{TCollection,TDocument,TMissing}"/> implementation that moves only entries within the same file system.
     /// </summary>
     public class MoveInFileSystemTargetAction : ITargetActions<CollectionTarget, DocumentTarget, MissingTarget>
     {
@@ -26,8 +26,8 @@ namespace FubarDev.WebDavServer.Engines.Local
         /// <summary>
         /// Initializes a new instance of the <see cref="MoveInFileSystemTargetAction"/> class.
         /// </summary>
-        /// <param name="dispatcher">The WebDAV dispatcher</param>
-        /// <param name="logger">The logger</param>
+        /// <param name="dispatcher">The WebDAV dispatcher.</param>
+        /// <param name="logger">The logger.</param>
         public MoveInFileSystemTargetAction([NotNull] IWebDavDispatcher dispatcher, [NotNull] ILogger logger)
         {
             Dispatcher = dispatcher;
@@ -55,7 +55,10 @@ namespace FubarDev.WebDavServer.Engines.Local
             {
                 Debug.Assert(destination.Parent != null, "destination.Parent != null");
                 if (destination.Parent == null)
+                {
                     throw new InvalidOperationException("The destination document must have a parent collection");
+                }
+
                 await source.MoveToAsync(destination.Parent.Collection, destination.Name, cancellationToken).ConfigureAwait(false);
                 return new ActionResult(ActionStatus.Overwritten, destination);
             }
@@ -74,7 +77,9 @@ namespace FubarDev.WebDavServer.Engines.Local
             await CopyETagAsync(source, destination.Collection, cancellationToken).ConfigureAwait(false);
 
             if (_logger.IsEnabled(LogLevel.Trace))
+            {
                 _logger.LogTrace($"Try to delete {source.Path}");
+            }
 
             await source.DeleteAsync(cancellationToken).ConfigureAwait(false);
         }
@@ -82,10 +87,14 @@ namespace FubarDev.WebDavServer.Engines.Local
         private async Task CopyETagAsync(IEntry source, IEntry dest, CancellationToken cancellationToken)
         {
             if (dest is IEntityTagEntry)
+            {
                 return;
+            }
 
             if (_logger.IsEnabled(LogLevel.Trace))
+            {
                 _logger.LogTrace($"Try to copy ETag from {source.Path} to {dest.Path}");
+            }
 
             var sourcePropStore = source.FileSystem.PropertyStore;
             var destPropStore = dest.FileSystem.PropertyStore;

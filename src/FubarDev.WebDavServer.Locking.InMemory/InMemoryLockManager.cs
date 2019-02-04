@@ -16,7 +16,7 @@ using Microsoft.Extensions.Options;
 namespace FubarDev.WebDavServer.Locking.InMemory
 {
     /// <summary>
-    /// An in-memory implementation of a lock manager
+    /// An in-memory implementation of a lock manager.
     /// </summary>
     public class InMemoryLockManager : LockManagerBase
     {
@@ -27,10 +27,10 @@ namespace FubarDev.WebDavServer.Locking.InMemory
         /// <summary>
         /// Initializes a new instance of the <see cref="InMemoryLockManager"/> class.
         /// </summary>
-        /// <param name="options">The options of the lock manager</param>
-        /// <param name="cleanupTask">The clean-up task for expired locks</param>
-        /// <param name="systemClock">The system clock interface</param>
-        /// <param name="logger">The logger</param>
+        /// <param name="options">The options of the lock manager.</param>
+        /// <param name="cleanupTask">The clean-up task for expired locks.</param>
+        /// <param name="systemClock">The system clock interface.</param>
+        /// <param name="logger">The logger.</param>
         public InMemoryLockManager(IOptions<InMemoryLockManagerOptions> options, ILockCleanupTask cleanupTask, ISystemClock systemClock, ILogger<InMemoryLockManager> logger)
             : base(cleanupTask, systemClock, logger, options.Value)
         {
@@ -53,7 +53,7 @@ namespace FubarDev.WebDavServer.Locking.InMemory
             /// <summary>
             /// Initializes a new instance of the <see cref="InMemoryTransaction"/> class.
             /// </summary>
-            /// <param name="lockManager">The lock manager that stores the locks</param>
+            /// <param name="lockManager">The lock manager that stores the locks.</param>
             public InMemoryTransaction([NotNull] InMemoryLockManager lockManager)
             {
                 _lockManager = lockManager;
@@ -70,7 +70,10 @@ namespace FubarDev.WebDavServer.Locking.InMemory
             public Task<bool> AddAsync(IActiveLock activeLock, CancellationToken cancellationToken)
             {
                 if (_locks.ContainsKey(activeLock.StateToken))
+                {
                     return Task.FromResult(false);
+                }
+
                 _locks = _locks.Add(activeLock.StateToken, activeLock);
                 return Task.FromResult(true);
             }
@@ -80,7 +83,10 @@ namespace FubarDev.WebDavServer.Locking.InMemory
             {
                 var hadKey = _locks.ContainsKey(activeLock.StateToken);
                 if (hadKey)
+                {
                     _locks = _locks.Remove(activeLock.StateToken);
+                }
+
                 _locks = _locks.Add(activeLock.StateToken, activeLock);
                 return Task.FromResult(hadKey);
             }
@@ -89,7 +95,10 @@ namespace FubarDev.WebDavServer.Locking.InMemory
             public Task<bool> RemoveAsync(string stateToken, CancellationToken cancellationToken)
             {
                 if (!_locks.ContainsKey(stateToken))
+                {
                     return Task.FromResult(false);
+                }
+
                 _locks = _locks.Remove(stateToken);
                 return Task.FromResult(true);
             }
@@ -105,7 +114,7 @@ namespace FubarDev.WebDavServer.Locking.InMemory
             public Task CommitAsync(CancellationToken cancellationToken)
             {
                 _lockManager._locks = _locks;
-                return Task.FromResult(0);
+                return Task.CompletedTask;
             }
 
             /// <inheritdoc />

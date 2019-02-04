@@ -5,7 +5,7 @@
 namespace FubarDev.WebDavServer.Locking
 {
     /// <summary>
-    /// Result of an UNLOCK
+    /// Result of an UNLOCK.
     /// </summary>
     public enum LockReleaseStatus
     {

@@ -18,11 +18,11 @@ using Microsoft.Extensions.Logging;
 namespace FubarDev.WebDavServer.Engines
 {
     /// <summary>
-    /// The engine that operates recursively on its targets
+    /// The engine that operates recursively on its targets.
     /// </summary>
-    /// <typeparam name="TCollection">The interface type for a collection target</typeparam>
-    /// <typeparam name="TDocument">The interface type for a document target</typeparam>
-    /// <typeparam name="TMissing">The interface type for a missing target</typeparam>
+    /// <typeparam name="TCollection">The interface type for a collection target.</typeparam>
+    /// <typeparam name="TDocument">The interface type for a document target.</typeparam>
+    /// <typeparam name="TMissing">The interface type for a missing target.</typeparam>
     public class RecursiveExecutionEngine<TCollection, TDocument, TMissing>
         where TCollection : class, ICollectionTarget<TCollection, TDocument, TMissing>
         where TDocument : class, IDocumentTarget<TCollection, TDocument, TMissing>
@@ -37,9 +37,9 @@ namespace FubarDev.WebDavServer.Engines
         /// <summary>
         /// Initializes a new instance of the <see cref="RecursiveExecutionEngine{TCollection,TDocument,TMissing}"/> class.
         /// </summary>
-        /// <param name="handler">The handler that performs the operation on the targets</param>
-        /// <param name="allowOverwrite">Is overwriting the destination allowed?</param>
-        /// <param name="logger">The logger</param>
+        /// <param name="handler">The handler that performs the operation on the targets.</param>
+        /// <param name="allowOverwrite">Indicates whether overwriting the destination is allowed.</param>
+        /// <param name="logger">The logger.</param>
         public RecursiveExecutionEngine(ITargetActions<TCollection, TDocument, TMissing> handler, bool allowOverwrite, ILogger logger)
         {
             _handler = handler;
@@ -48,51 +48,60 @@ namespace FubarDev.WebDavServer.Engines
         }
 
         /// <summary>
-        /// Operates on a collection and the given missing target
+        /// Operates on a collection and the given missing target.
         /// </summary>
-        /// <param name="sourceUrl">The root-relative source URL</param>
-        /// <param name="source">The source collection</param>
-        /// <param name="depth">The recursion depth</param>
-        /// <param name="target">The target of the operation</param>
-        /// <param name="cancellationToken">The cancellation token</param>
-        /// <returns>The result information of the current operation</returns>
+        /// <param name="sourceUrl">The root-relative source URL.</param>
+        /// <param name="source">The source collection.</param>
+        /// <param name="depth">The recursion depth.</param>
+        /// <param name="target">The target of the operation.</param>
+        /// <param name="cancellationToken">The cancellation token.</param>
+        /// <returns>The result information of the current operation.</returns>
         public async Task<CollectionActionResult> ExecuteAsync(Uri sourceUrl, ICollection source, DepthHeader depth, TMissing target, CancellationToken cancellationToken)
         {
             if (_logger.IsEnabled(LogLevel.Trace))
+            {
                 _logger.LogTrace($"Collecting nodes for operation on collection {sourceUrl} with missing target {target.DestinationUrl}.");
+            }
+
             var nodes = await source.GetNodeAsync(depth.OrderValue, cancellationToken).ConfigureAwait(false);
             return await ExecuteAsync(sourceUrl, nodes, target, cancellationToken).ConfigureAwait(false);
         }
 
         /// <summary>
-        /// Operates on a collection and the given target collection
+        /// Operates on a collection and the given target collection.
         /// </summary>
-        /// <param name="sourceUrl">The root-relative source URL</param>
-        /// <param name="source">The source collection</param>
-        /// <param name="depth">The recursion depth</param>
-        /// <param name="target">The target collection</param>
-        /// <param name="cancellationToken">The cancellation token</param>
-        /// <returns>The result information of the current operation</returns>
+        /// <param name="sourceUrl">The root-relative source URL.</param>
+        /// <param name="source">The source collection.</param>
+        /// <param name="depth">The recursion depth.</param>
+        /// <param name="target">The target collection.</param>
+        /// <param name="cancellationToken">The cancellation token.</param>
+        /// <returns>The result information of the current operation.</returns>
         public async Task<CollectionActionResult> ExecuteAsync(Uri sourceUrl, ICollection source, DepthHeader depth, TCollection target, CancellationToken cancellationToken)
         {
             if (_logger.IsEnabled(LogLevel.Trace))
+            {
                 _logger.LogTrace($"Collecting nodes for operation on collection {sourceUrl} with existing target {target.DestinationUrl}.");
+            }
+
             var nodes = await source.GetNodeAsync(depth.OrderValue, cancellationToken).ConfigureAwait(false);
             return await ExecuteAsync(sourceUrl, nodes, target, cancellationToken).ConfigureAwait(false);
         }
 
         /// <summary>
-        /// Operates on a documentation and the given missing target
+        /// Operates on a documentation and the given missing target.
         /// </summary>
-        /// <param name="sourceUrl">The root-relative source URL</param>
-        /// <param name="source">The source documentation</param>
-        /// <param name="target">The target of the operation</param>
-        /// <param name="cancellationToken">The cancellation token</param>
-        /// <returns>The result information of the current operation</returns>
+        /// <param name="sourceUrl">The root-relative source URL.</param>
+        /// <param name="source">The source documentation.</param>
+        /// <param name="target">The target of the operation.</param>
+        /// <param name="cancellationToken">The cancellation token.</param>
+        /// <returns>The result information of the current operation.</returns>
         public async Task<ActionResult> ExecuteAsync(Uri sourceUrl, IDocument source, TMissing target, CancellationToken cancellationToken)
         {
             if (_logger.IsEnabled(LogLevel.Trace))
+            {
                 _logger.LogTrace($"Perform operation on document {sourceUrl} with missing target {target.DestinationUrl}.");
+            }
+
             try
             {
                 var properties = await GetWriteableProperties(source, cancellationToken).ConfigureAwait(false);
@@ -122,17 +131,19 @@ namespace FubarDev.WebDavServer.Engines
         }
 
         /// <summary>
-        /// Operates on a documentation and the given document target
+        /// Operates on a documentation and the given document target.
         /// </summary>
-        /// <param name="sourceUrl">The root-relative source URL</param>
-        /// <param name="source">The source documentation</param>
-        /// <param name="target">The target document of the operation</param>
-        /// <param name="cancellationToken">The cancellation token</param>
-        /// <returns>The result information of the current operation</returns>
+        /// <param name="sourceUrl">The root-relative source URL.</param>
+        /// <param name="source">The source documentation.</param>
+        /// <param name="target">The target document of the operation.</param>
+        /// <param name="cancellationToken">The cancellation token.</param>
+        /// <returns>The result information of the current operation.</returns>
         public async Task<ActionResult> ExecuteAsync(Uri sourceUrl, IDocument source, TDocument target, CancellationToken cancellationToken)
         {
             if (_logger.IsEnabled(LogLevel.Trace))
+            {
                 _logger.LogTrace($"Try to perform operation on document {sourceUrl} with existing target {target.DestinationUrl}.");
+            }
 
             if (!_allowOverwrite)
             {
@@ -143,7 +154,9 @@ namespace FubarDev.WebDavServer.Engines
             if (_handler.ExistingTargetBehaviour == RecursiveTargetBehaviour.DeleteTarget)
             {
                 if (_logger.IsEnabled(LogLevel.Trace))
+                {
                     _logger.LogTrace($"Delete {target.DestinationUrl} before performing operation on document {sourceUrl}.");
+                }
 
                 TMissing missingTarget;
                 try
@@ -163,13 +176,17 @@ namespace FubarDev.WebDavServer.Engines
             }
 
             if (_logger.IsEnabled(LogLevel.Trace))
+            {
                 _logger.LogTrace($"Perform operation on document {sourceUrl} with existing target {target.DestinationUrl}.");
+            }
 
             var properties = await GetWriteableProperties(source, cancellationToken).ConfigureAwait(false);
 
             var docActionResult = await _handler.ExecuteAsync(source, target, cancellationToken).ConfigureAwait(false);
             if (docActionResult.IsFailure)
+            {
                 return docActionResult;
+            }
 
             var failedPropertyNames = await target.SetPropertiesAsync(properties, cancellationToken).ConfigureAwait(false);
             if (failedPropertyNames.Count != 0)
@@ -193,7 +210,9 @@ namespace FubarDev.WebDavServer.Engines
                 {
                     var prop = propsEnum.Current as IUntypedWriteableProperty;
                     if (prop != null)
+                    {
                         properties.Add(prop);
+                    }
                 }
             }
 
@@ -207,7 +226,9 @@ namespace FubarDev.WebDavServer.Engines
             CancellationToken cancellationToken)
         {
             if (_logger.IsEnabled(LogLevel.Trace))
+            {
                 _logger.LogTrace($"Collect properties for operation on collection {sourceUrl} and create target {target.DestinationUrl}.");
+            }
 
             var properties = await GetWriteableProperties(sourceNode.Collection, cancellationToken).ConfigureAwait(false);
 
@@ -237,7 +258,9 @@ namespace FubarDev.WebDavServer.Engines
             if (_allowOverwrite && _handler.ExistingTargetBehaviour == RecursiveTargetBehaviour.DeleteTarget)
             {
                 if (_logger.IsEnabled(LogLevel.Trace))
+                {
                     _logger.LogTrace($"Delete existing target {target.DestinationUrl} for operation on collection {sourceUrl}.");
+                }
 
                 // Only delete an existing collection when the client allows an overwrite
                 TMissing missing;
@@ -258,7 +281,9 @@ namespace FubarDev.WebDavServer.Engines
             }
 
             if (_logger.IsEnabled(LogLevel.Trace))
+            {
                 _logger.LogTrace($"Collect properties for operation on collection {sourceUrl} with existing target {target.DestinationUrl}.");
+            }
 
             var properties = await GetWriteableProperties(sourceNode.Collection, cancellationToken).ConfigureAwait(false);
             return await ExecuteAsync(sourceUrl, sourceNode, target, properties, cancellationToken).ConfigureAwait(false);
@@ -272,7 +297,9 @@ namespace FubarDev.WebDavServer.Engines
             CancellationToken cancellationToken)
         {
             if (_logger.IsEnabled(LogLevel.Trace))
+            {
                 _logger.LogTrace($"Perform operation on collection {sourceUrl} with existing target {target.DestinationUrl}.");
+            }
 
             var documentActionResults = ImmutableList<ActionResult>.Empty;
             var collectionActionResults = ImmutableList<CollectionActionResult>.Empty;
@@ -374,7 +401,9 @@ namespace FubarDev.WebDavServer.Engines
             try
             {
                 if (_logger.IsEnabled(LogLevel.Trace))
+                {
                     _logger.LogTrace($"Set properties on collection {target.DestinationUrl}.");
+                }
 
                 var failedPropertyNames = await target.SetPropertiesAsync(properties, cancellationToken).ConfigureAwait(false);
                 if (failedPropertyNames.Count != 0)

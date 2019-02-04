@@ -19,7 +19,7 @@ using JetBrains.Annotations;
 namespace FubarDev.WebDavServer.Handlers.Impl
 {
     /// <summary>
-    /// The implementation of the <see cref="IGetHandler"/> and <see cref="IHeadHandler"/> interfaces
+    /// The implementation of the <see cref="IGetHandler"/> and <see cref="IHeadHandler"/> interfaces.
     /// </summary>
     public class GetHeadHandler : IGetHandler, IHeadHandler
     {
@@ -29,8 +29,8 @@ namespace FubarDev.WebDavServer.Handlers.Impl
         /// <summary>
         /// Initializes a new instance of the <see cref="GetHeadHandler"/> class.
         /// </summary>
-        /// <param name="fileSystem">The root file system</param>
-        /// <param name="context">The WebDAV context</param>
+        /// <param name="fileSystem">The root file system.</param>
+        /// <param name="context">The WebDAV context.</param>
         public GetHeadHandler([NotNull] IFileSystem fileSystem, [NotNull] IWebDavContext context)
         {
             _context = context;
@@ -41,7 +41,7 @@ namespace FubarDev.WebDavServer.Handlers.Impl
         public IEnumerable<string> HttpMethods { get; } = new[] { "GET", "HEAD" };
 
         /// <summary>
-        /// Gets the root file system
+        /// Gets the root file system.
         /// </summary>
         [NotNull]
         public IFileSystem FileSystem { get; }
@@ -68,7 +68,9 @@ namespace FubarDev.WebDavServer.Handlers.Impl
             if (selectionResult.IsMissing)
             {
                 if (_context.RequestHeaders.IfNoneMatch != null)
+                {
                     throw new WebDavException(WebDavStatusCode.PreconditionFailed);
+                }
 
                 throw new WebDavException(WebDavStatusCode.NotFound);
             }
@@ -79,7 +81,10 @@ namespace FubarDev.WebDavServer.Handlers.Impl
             if (selectionResult.ResultType == SelectionResultType.FoundCollection)
             {
                 if (returnFile)
+                {
                     throw new NotSupportedException();
+                }
+
                 Debug.Assert(selectionResult.Collection != null, "selectionResult.Collection != null");
                 return new WebDavCollectionResult(selectionResult.Collection);
             }
@@ -91,7 +96,9 @@ namespace FubarDev.WebDavServer.Handlers.Impl
             if (rangeHeader != null)
             {
                 if (rangeHeader.Unit != "bytes")
+                {
                     throw new NotSupportedException();
+                }
 
                 var rangeItems = rangeHeader.Normalize(doc.Length);
                 if (rangeItems.Any(x => x.Length < 0 || x.To >= doc.Length))

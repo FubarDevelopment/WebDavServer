@@ -10,7 +10,7 @@ namespace FubarDev.WebDavServer.FileSystem
     public interface ILocalFileSystem : IFileSystem
     {
         /// <summary>
-        /// Gets the path to the root directory
+        /// Gets the path to the root directory.
         /// </summary>
         string RootDirectoryPath { get; }
 

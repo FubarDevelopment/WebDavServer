@@ -11,51 +11,51 @@ using JetBrains.Annotations;
 namespace FubarDev.WebDavServer.FileSystem
 {
     /// <summary>
-    /// The document of a collection
+    /// The document of a collection.
     /// </summary>
     public interface IDocument : IEntry
     {
         /// <summary>
-        /// Gets the length of the document
+        /// Gets the length of the document.
         /// </summary>
         long Length { get; }
 
         /// <summary>
-        /// Opens the document for reading
+        /// Opens the document for reading.
         /// </summary>
-        /// <param name="cancellationToken">The cancellation token</param>
-        /// <returns>The stream used to read the document</returns>
+        /// <param name="cancellationToken">The cancellation token.</param>
+        /// <returns>The stream used to read the document.</returns>
         [NotNull]
         [ItemNotNull]
         Task<Stream> OpenReadAsync(CancellationToken cancellationToken);
 
         /// <summary>
-        /// Overwrites the document
+        /// Overwrites the document.
         /// </summary>
-        /// <param name="cancellationToken">The cancellation token</param>
-        /// <returns>The stream used to write to the document</returns>
+        /// <param name="cancellationToken">The cancellation token.</param>
+        /// <returns>The stream used to write to the document.</returns>
         [NotNull]
         [ItemNotNull]
         Task<Stream> CreateAsync(CancellationToken cancellationToken);
 
         /// <summary>
-        /// Copies the document to a new location within the same file system
+        /// Copies the document to a new location within the same file system.
         /// </summary>
-        /// <param name="collection">The destination collection</param>
-        /// <param name="name">The new name of the document</param>
-        /// <param name="cancellationToken">The cancellation token</param>
-        /// <returns>The created document</returns>
+        /// <param name="collection">The destination collection.</param>
+        /// <param name="name">The new name of the document.</param>
+        /// <param name="cancellationToken">The cancellation token.</param>
+        /// <returns>The created document.</returns>
         [NotNull]
         [ItemNotNull]
         Task<IDocument> CopyToAsync([NotNull] ICollection collection, [NotNull] string name, CancellationToken cancellationToken);
 
         /// <summary>
-        /// Moves the document to a new location within the same file system
+        /// Moves the document to a new location within the same file system.
         /// </summary>
-        /// <param name="collection">The destination collection</param>
-        /// <param name="name">The new name of the document</param>
-        /// <param name="cancellationToken">The cancellation token</param>
-        /// <returns>The created document</returns>
+        /// <param name="collection">The destination collection.</param>
+        /// <param name="name">The new name of the document.</param>
+        /// <param name="cancellationToken">The cancellation token.</param>
+        /// <returns>The created document.</returns>
         [NotNull]
         [ItemNotNull]
         Task<IDocument> MoveToAsync([NotNull] ICollection collection, [NotNull] string name, CancellationToken cancellationToken);

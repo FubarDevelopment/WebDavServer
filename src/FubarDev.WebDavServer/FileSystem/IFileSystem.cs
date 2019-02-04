@@ -18,7 +18,7 @@ namespace FubarDev.WebDavServer.FileSystem
     public interface IFileSystem
     {
         /// <summary>
-        /// Gets the root collection
+        /// Gets the root collection.
         /// </summary>
         [NotNull]
         AsyncLazy<ICollection> Root { get; }
@@ -35,17 +35,17 @@ namespace FubarDev.WebDavServer.FileSystem
         IPropertyStore PropertyStore { get; }
 
         /// <summary>
-        /// Gets the global lock manager
+        /// Gets the global lock manager.
         /// </summary>
         [CanBeNull]
         ILockManager LockManager { get; }
 
         /// <summary>
-        /// Finds an entry for a given path
+        /// Finds an entry for a given path.
         /// </summary>
-        /// <param name="path">The root-relative path</param>
-        /// <param name="ct">The cancellation token</param>
-        /// <returns>The result of the search operation</returns>
+        /// <param name="path">The root-relative path.</param>
+        /// <param name="ct">The cancellation token.</param>
+        /// <returns>The result of the search operation.</returns>
         [NotNull]
         [ItemNotNull]
         Task<SelectionResult> SelectAsync([NotNull] string path, CancellationToken ct);

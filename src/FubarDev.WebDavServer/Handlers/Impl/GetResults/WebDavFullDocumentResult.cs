@@ -40,7 +40,9 @@ namespace FubarDev.WebDavServer.Handlers.Impl.GetResults
             await base.ExecuteResultAsync(response, ct).ConfigureAwait(false);
 
             if (_document.FileSystem.SupportsRangedRead)
+            {
                 response.Headers["Accept-Ranges"] = new[] { "bytes" };
+            }
 
             var properties = await _document.GetProperties(response.Dispatcher).ToList(ct).ConfigureAwait(false);
             var etagProperty = properties.OfType<GetETagProperty>().FirstOrDefault();
@@ -68,7 +70,9 @@ namespace FubarDev.WebDavServer.Handlers.Impl.GetResults
                 await SetPropertiesToContentHeaderAsync(content, properties, ct).ConfigureAwait(false);
 
                 foreach (var header in content.Headers)
+                {
                     response.Headers.Add(header.Key, header.Value.ToArray());
+                }
 
                 await content.CopyToAsync(response.Body).ConfigureAwait(false);
             }
@@ -88,7 +92,9 @@ namespace FubarDev.WebDavServer.Handlers.Impl.GetResults
             {
                 var propValue = await contentLanguageProp.TryGetValueAsync(ct).ConfigureAwait(false);
                 if (propValue.Item1)
+                {
                     content.Headers.ContentLanguage.Add(propValue.Item2);
+                }
             }
 
             string contentType;

@@ -15,11 +15,11 @@ namespace FubarDev.WebDavServer.Handlers
     public interface IDeleteHandler : IClass1Handler
     {
         /// <summary>
-        /// Deletes the element at the given path
+        /// Deletes the element at the given path.
         /// </summary>
-        /// <param name="path">The path to the element to delete</param>
-        /// <param name="cancellationToken">The cancellcation token</param>
-        /// <returns>The result of the operation</returns>
+        /// <param name="path">The path to the element to delete.</param>
+        /// <param name="cancellationToken">The cancellation token.</param>
+        /// <returns>The result of the operation.</returns>
         [NotNull]
         [ItemNotNull]
         Task<IWebDavResult> DeleteAsync([NotNull] string path, CancellationToken cancellationToken);

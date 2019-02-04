@@ -14,68 +14,74 @@ using JetBrains.Annotations;
 namespace FubarDev.WebDavServer.FileSystem
 {
     /// <summary>
-    /// Extension methods for the collections
+    /// Extension methods for the collections.
     /// </summary>
     public static class CollectionExtensions
     {
         /// <summary>
-        /// Returns the target if the collection is a mount point or the collection itself
+        /// Returns the target if the collection is a mount point or the collection itself.
         /// </summary>
-        /// <param name="collection">The collection to found the mount destination for</param>
-        /// <param name="mountPointProvider">The mount point provider</param>
-        /// <returns>The <paramref name="collection"/> or the destination collection if a mount point existed</returns>
+        /// <param name="collection">The collection to found the mount destination for.</param>
+        /// <param name="mountPointProvider">The mount point provider.</param>
+        /// <returns>The <paramref name="collection"/> or the destination collection if a mount point existed.</returns>
         public static async Task<ICollection> GetMountTargetAsync([NotNull] this ICollection collection, [CanBeNull] IMountPointProvider mountPointProvider)
         {
             IFileSystem fileSystem;
             if (mountPointProvider != null && mountPointProvider.TryGetMountPoint(collection.Path, out fileSystem))
+            {
                 return await fileSystem.Root;
+            }
+
             return collection;
         }
 
         /// <summary>
-        /// Returns the target if the collection is a mount point or the collection itself
+        /// Returns the target if the collection is a mount point or the collection itself.
         /// </summary>
-        /// <param name="collection">The collection to found the mount destination for</param>
-        /// <param name="mountPointProvider">The mount point provider</param>
-        /// <returns>The <paramref name="collection"/> or the destination collection if a mount point existed</returns>
+        /// <param name="collection">The collection to found the mount destination for.</param>
+        /// <param name="mountPointProvider">The mount point provider.</param>
+        /// <returns>The <paramref name="collection"/> or the destination collection if a mount point existed.</returns>
         public static async Task<IEntry> GetMountTargetEntryAsync([NotNull] this ICollection collection, [CanBeNull] IMountPointProvider mountPointProvider)
         {
             IFileSystem fileSystem;
             if (mountPointProvider != null && mountPointProvider.TryGetMountPoint(collection.Path, out fileSystem))
+            {
                 return await fileSystem.Root;
+            }
+
             return collection;
         }
 
         /// <summary>
-        /// Gets all entries of a collection recursively
+        /// Gets all entries of a collection recursively.
         /// </summary>
-        /// <param name="collection">The collection to get the entries from</param>
-        /// <param name="children">Child items for the given <paramref name="collection"/></param>
-        /// <param name="maxDepth">The maximum depth (0 = only entries of the <paramref name="collection"/>, but not of its sub collections)</param>
-        /// <returns>An async enumerable to collect all the entries recursively</returns>
+        /// <param name="collection">The collection to get the entries from.</param>
+        /// <param name="children">Child items for the given <paramref name="collection"/>.</param>
+        /// <param name="maxDepth">The maximum depth (0 = only entries of the <paramref name="collection"/>, but not of its sub collections).</param>
+        /// <returns>An async enumerable to collect all the entries recursively.</returns>
         public static IAsyncEnumerable<IEntry> EnumerateEntries(this ICollection collection, IReadOnlyCollection<IEntry> children, int maxDepth)
         {
             return new FileSystemEntries(collection, children, 0, maxDepth);
         }
 
         /// <summary>
-        /// Gets all entries of a collection recursively
+        /// Gets all entries of a collection recursively.
         /// </summary>
-        /// <param name="collection">The collection to get the entries from</param>
-        /// <param name="maxDepth">The maximum depth (0 = only entries of the <paramref name="collection"/>, but not of its sub collections)</param>
-        /// <returns>An async enumerable to collect all the entries recursively</returns>
+        /// <param name="collection">The collection to get the entries from.</param>
+        /// <param name="maxDepth">The maximum depth (0 = only entries of the <paramref name="collection"/>, but not of its sub collections).</param>
+        /// <returns>An async enumerable to collect all the entries recursively.</returns>
         public static IAsyncEnumerable<IEntry> EnumerateEntries(this ICollection collection, int maxDepth)
         {
             return new FileSystemEntries(collection, null, 0, maxDepth);
         }
 
         /// <summary>
-        /// Gets the collection as node
+        /// Gets the collection as node.
         /// </summary>
-        /// <param name="collection">The collection to get the node for</param>
-        /// <param name="maxDepth">The maximum depth to be used to get the child nodes</param>
-        /// <param name="cancellationToken">The cancellation token</param>
-        /// <returns>The collection node</returns>
+        /// <param name="collection">The collection to get the node for.</param>
+        /// <param name="maxDepth">The maximum depth to be used to get the child nodes.</param>
+        /// <param name="cancellationToken">The cancellation token.</param>
+        /// <returns>The collection node.</returns>
         public static async Task<ICollectionNode> GetNodeAsync(this ICollection collection, int maxDepth, CancellationToken cancellationToken)
         {
             var subNodeQueue = new Queue<NodeInfo>();

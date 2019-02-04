@@ -15,7 +15,7 @@ using Microsoft.Extensions.DependencyInjection;
 namespace FubarDev.WebDavServer.Props.Dead
 {
     /// <summary>
-    /// A factory for the creation of dead properties
+    /// A factory for the creation of dead properties.
     /// </summary>
     /// <remarks>
     /// Some dead properties are special (like the <see cref="GetETagProperty"/>), because they have custom implementations.
@@ -28,7 +28,7 @@ namespace FubarDev.WebDavServer.Props.Dead
         /// <summary>
         /// Initializes a new instance of the <see cref="DeadPropertyFactory"/> class.
         /// </summary>
-        /// <param name="serviceProvider">The service provider used to query the <see cref="Dispatchers.IWebDavClass"/> implementations</param>
+        /// <param name="serviceProvider">The service provider used to query the <see cref="Dispatchers.IWebDavClass"/> implementations.</param>
         public DeadPropertyFactory([NotNull] IServiceProvider serviceProvider)
         {
             _webDavDispatcher = new Lazy<IWebDavDispatcher>(serviceProvider.GetRequiredService<IWebDavDispatcher>);
@@ -41,7 +41,9 @@ namespace FubarDev.WebDavServer.Props.Dead
             {
                 IDeadProperty deadProp;
                 if (webDavClass.TryCreateDeadProperty(store, entry, name, out deadProp))
+                {
                     return deadProp;
+                }
             }
 
             return new DeadProperty(store, entry, name);

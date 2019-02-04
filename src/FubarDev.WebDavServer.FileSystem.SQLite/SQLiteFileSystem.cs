@@ -35,12 +35,12 @@ namespace FubarDev.WebDavServer.FileSystem.SQLite
         /// <summary>
         /// Initializes a new instance of the <see cref="SQLiteFileSystem"/> class.
         /// </summary>
-        /// <param name="options">The options for this file system</param>
-        /// <param name="mountPoint">The mount point where this file system should be included</param>
-        /// <param name="connection">The SQLite database connection</param>
-        /// <param name="pathTraversalEngine">The engine to traverse paths</param>
-        /// <param name="lockManager">The global lock manager</param>
-        /// <param name="propertyStoreFactory">The store for dead properties</param>
+        /// <param name="options">The options for this file system.</param>
+        /// <param name="mountPoint">The mount point where this file system should be included.</param>
+        /// <param name="connection">The SQLite database connection.</param>
+        /// <param name="pathTraversalEngine">The engine to traverse paths.</param>
+        /// <param name="lockManager">The global lock manager.</param>
+        /// <param name="propertyStoreFactory">The store for dead properties.</param>
         public SQLiteFileSystem(
             [NotNull] SQLiteFileSystemOptions options,
             [CanBeNull] ICollection mountPoint,
@@ -62,12 +62,12 @@ namespace FubarDev.WebDavServer.FileSystem.SQLite
         }
 
         /// <summary>
-        /// Gets the file systems options
+        /// Gets the file systems options.
         /// </summary>
         public SQLiteFileSystemOptions Options { get; }
 
         /// <summary>
-        /// Gets the SQLite DB connection
+        /// Gets the SQLite DB connection.
         /// </summary>
         public db::SQLiteConnection Connection => _connection;
 

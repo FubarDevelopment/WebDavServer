@@ -1,6 +1,3 @@
-using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Mvc;
-
 namespace FubarDev.WebDavServer.Sample.AspNetCore.Controllers
 {
     /*

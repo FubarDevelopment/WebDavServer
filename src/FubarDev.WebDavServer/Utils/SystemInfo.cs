@@ -13,22 +13,22 @@ using JetBrains.Annotations;
 namespace FubarDev.WebDavServer.Utils
 {
     /// <summary>
-    /// System information utility class
+    /// System information utility class.
     /// </summary>
     public static class SystemInfo
     {
         /// <summary>
-        /// The name of the claim for the user home path
+        /// The name of the claim for the user home path.
         /// </summary>
         public const string UserHomePathClaim = "DAV:user-home-path";
 
         /// <summary>
-        /// Gets the home path of the user
+        /// Gets the home path of the user.
         /// </summary>
-        /// <param name="principal">The principal to get the home path for</param>
-        /// <param name="homePath">The home path to use</param>
-        /// <param name="anonymousUserName">The user name for the unauthenticated user</param>
-        /// <returns>The home path of the user</returns>
+        /// <param name="principal">The principal to get the home path for.</param>
+        /// <param name="homePath">The home path to use.</param>
+        /// <param name="anonymousUserName">The user name for the unauthenticated user.</param>
+        /// <returns>The home path of the user.</returns>
         [NotNull]
         public static string GetUserHomePath([NotNull] IPrincipal principal, string homePath = null, string anonymousUserName = null)
         {
@@ -39,7 +39,9 @@ namespace FubarDev.WebDavServer.Utils
                     .Claims
                     .FirstOrDefault(c => c.Type == UserHomePathClaim && !string.IsNullOrEmpty(c.Value));
                 if (!string.IsNullOrEmpty(homePathClaim?.Value))
+                {
                     return homePathClaim.Value;
+                }
             }
 
             var rootPathInfo = GetHomePath();
@@ -53,9 +55,9 @@ namespace FubarDev.WebDavServer.Utils
         }
 
         /// <summary>
-        /// Gets the home path information
+        /// Gets the home path information.
         /// </summary>
-        /// <returns>The found home path</returns>
+        /// <returns>The found home path.</returns>
         [NotNull]
         public static HomePathInfo GetHomePath()
         {
@@ -66,7 +68,7 @@ namespace FubarDev.WebDavServer.Utils
         }
 
         /// <summary>
-        /// Information about the found home path
+        /// Information about the found home path.
         /// </summary>
         public class HomePathInfo
         {
@@ -77,12 +79,12 @@ namespace FubarDev.WebDavServer.Utils
             }
 
             /// <summary>
-            /// Gets or sets the root path for all users
+            /// Gets or sets the root path for all users.
             /// </summary>
             public string RootPath { get; set; }
 
             /// <summary>
-            /// Gets or sets a value indicating whether the root path is probably a unix OS
+            /// Gets or sets a value indicating whether the root path is probably a unix OS.
             /// </summary>
             public bool IsProbablyUnix { get; set; }
         }

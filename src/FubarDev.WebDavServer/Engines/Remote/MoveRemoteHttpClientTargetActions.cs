@@ -14,15 +14,15 @@ using JetBrains.Annotations;
 namespace FubarDev.WebDavServer.Engines.Remote
 {
     /// <summary>
-    /// The <see cref="ITargetActions{TCollection,TDocument,TMissing}"/> implementation that moves entries between servers
+    /// The <see cref="ITargetActions{TCollection,TDocument,TMissing}"/> implementation that moves entries between servers.
     /// </summary>
     public class MoveRemoteHttpClientTargetActions : RemoteHttpClientTargetActions, IRemoteMoveTargetActions
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="MoveRemoteHttpClientTargetActions"/> class.
         /// </summary>
-        /// <param name="dispatcher">The WebDAV dispatcher</param>
-        /// <param name="httpClient">The <see cref="HttpClient"/> to use</param>
+        /// <param name="dispatcher">The WebDAV dispatcher.</param>
+        /// <param name="httpClient">The <see cref="HttpClient"/> to use.</param>
         public MoveRemoteHttpClientTargetActions([NotNull] IWebDavDispatcher dispatcher, [NotNull] HttpClient httpClient)
             : base(dispatcher, httpClient)
         {

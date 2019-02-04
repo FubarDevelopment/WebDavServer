@@ -14,14 +14,14 @@ using JetBrains.Annotations;
 namespace FubarDev.WebDavServer.Engines.Local
 {
     /// <summary>
-    /// The <see cref="ITargetActions{TCollection,TDocument,TMissing}"/> implementation that copies only entries within the same file system
+    /// The <see cref="ITargetActions{TCollection,TDocument,TMissing}"/> implementation that copies only entries within the same file system.
     /// </summary>
     public class CopyInFileSystemTargetAction : ITargetActions<CollectionTarget, DocumentTarget, MissingTarget>
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="CopyInFileSystemTargetAction"/> class.
         /// </summary>
-        /// <param name="dispatcher">The WebDAV dispatcher</param>
+        /// <param name="dispatcher">The WebDAV dispatcher.</param>
         public CopyInFileSystemTargetAction([NotNull] IWebDavDispatcher dispatcher)
         {
             Dispatcher = dispatcher;
@@ -67,7 +67,9 @@ namespace FubarDev.WebDavServer.Engines.Local
         private static async Task CopyETagAsync(IEntry source, IEntry dest, CancellationToken cancellationToken)
         {
             if (dest is IEntityTagEntry)
+            {
                 return;
+            }
 
             var sourcePropStore = source.FileSystem.PropertyStore;
             var destPropStore = dest.FileSystem.PropertyStore;

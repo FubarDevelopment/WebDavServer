@@ -19,7 +19,7 @@ using Microsoft.Extensions.Options;
 namespace FubarDev.WebDavServer.AspNetCore
 {
     /// <summary>
-    /// The ASP.NET core specific implementation of the <see cref="IWebDavContext"/> interface
+    /// The ASP.NET core specific implementation of the <see cref="IWebDavContext"/> interface.
     /// </summary>
     public sealed class WebDavContext : IWebDavContext
     {
@@ -58,9 +58,9 @@ namespace FubarDev.WebDavServer.AspNetCore
         /// <summary>
         /// Initializes a new instance of the <see cref="WebDavContext"/> class.
         /// </summary>
-        /// <param name="serviceProvider">The service provider used to get the <see cref="IWebDavDispatcher"/> with</param>
-        /// <param name="httpContextAccessor">The <see cref="HttpContext"/> accessor</param>
-        /// <param name="options">The options for the <see cref="WebDavContext"/></param>
+        /// <param name="serviceProvider">The service provider used to get the <see cref="IWebDavDispatcher"/> with.</param>
+        /// <param name="httpContextAccessor">The <see cref="HttpContext"/> accessor.</param>
+        /// <param name="options">The options for the <see cref="WebDavContext"/>.</param>
         public WebDavContext(IServiceProvider serviceProvider, IHttpContextAccessor httpContextAccessor, IOptions<WebDavHostOptions> options)
         {
             var opt = options?.Value ?? new WebDavHostOptions();
@@ -161,7 +161,10 @@ namespace FubarDev.WebDavServer.AspNetCore
             var basePath = request.PathBase.ToString();
             var path = request.Path.ToString();
             if (!basePath.EndsWith("/") && !path.StartsWith("/"))
+            {
                 basePath += "/";
+            }
+
             result.Append(request.Scheme).Append("://").Append(request.Host)
                 .Append(basePath)
                 .Append(path);
@@ -172,14 +175,18 @@ namespace FubarDev.WebDavServer.AspNetCore
         private static Uri BuildPublicBaseUrl(HttpContext httpContext, WebDavHostOptions options)
         {
             if (options.BaseUrl == null)
+            {
                 return BuildServiceBaseUrl(httpContext);
+            }
 
             var result = new StringBuilder();
             result.Append(options.BaseUrl);
 
             var resultUrl = result.ToString();
             if (!resultUrl.EndsWith("/", StringComparison.Ordinal))
+            {
                 resultUrl += "/";
+            }
 
             return new Uri(resultUrl);
         }
@@ -193,7 +200,9 @@ namespace FubarDev.WebDavServer.AspNetCore
 
             var resultUrl = result.ToString();
             if (!resultUrl.EndsWith("/", StringComparison.Ordinal))
+            {
                 resultUrl += "/";
+            }
 
             return new Uri(resultUrl);
         }

@@ -21,10 +21,10 @@ namespace FubarDev.WebDavServer.Engines
         where TMissing : class, IMissingTarget<TCollection, TDocument, TMissing>
     {
         /// <summary>
-        /// Delete the document target
+        /// Delete the document target.
         /// </summary>
-        /// <param name="cancellationToken">The cancellation token</param>
-        /// <returns>The document that's now a missing target (because it was deleted by this function)</returns>
+        /// <param name="cancellationToken">The cancellation token.</param>
+        /// <returns>The document that's now a missing target (because it was deleted by this function).</returns>
         [NotNull]
         [ItemNotNull]
         Task<TMissing> DeleteAsync(CancellationToken cancellationToken);

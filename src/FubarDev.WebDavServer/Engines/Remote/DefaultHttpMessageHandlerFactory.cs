@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 namespace FubarDev.WebDavServer.Engines.Remote
 {
     /// <summary>
-    /// The implementation of the <see cref="IHttpMessageHandlerFactory"/>
+    /// The implementation of the <see cref="IHttpMessageHandlerFactory"/>.
     /// </summary>
     public class DefaultHttpMessageHandlerFactory : IHttpMessageHandlerFactory
     {

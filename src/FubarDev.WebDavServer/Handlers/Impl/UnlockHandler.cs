@@ -16,7 +16,7 @@ using JetBrains.Annotations;
 namespace FubarDev.WebDavServer.Handlers.Impl
 {
     /// <summary>
-    /// The implementation of the <see cref="IUnlockHandler"/> interface
+    /// The implementation of the <see cref="IUnlockHandler"/> interface.
     /// </summary>
     public class UnlockHandler : IUnlockHandler
     {
@@ -29,8 +29,8 @@ namespace FubarDev.WebDavServer.Handlers.Impl
         /// <summary>
         /// Initializes a new instance of the <see cref="UnlockHandler"/> class.
         /// </summary>
-        /// <param name="context">The WebDAV request context</param>
-        /// <param name="lockManager">The global lock manager</param>
+        /// <param name="context">The WebDAV request context.</param>
+        /// <param name="lockManager">The global lock manager.</param>
         public UnlockHandler([NotNull] IWebDavContext context, [CanBeNull] ILockManager lockManager = null)
         {
             _context = context;
@@ -45,7 +45,9 @@ namespace FubarDev.WebDavServer.Handlers.Impl
         public async Task<IWebDavResult> UnlockAsync(string path, LockTokenHeader stateToken, CancellationToken cancellationToken)
         {
             if (_lockManager == null)
+            {
                 throw new NotSupportedException();
+            }
 
             var releaseStatus = await _lockManager.ReleaseAsync(path, stateToken.StateToken, cancellationToken).ConfigureAwait(false);
             if (releaseStatus != LockReleaseStatus.Success)

@@ -13,16 +13,16 @@ using JetBrains.Annotations;
 namespace FubarDev.WebDavServer
 {
     /// <summary>
-    /// The default WebDAV server implementation
+    /// The default WebDAV server implementation.
     /// </summary>
     public class WebDavServer : IWebDavDispatcher
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="WebDavServer"/> class.
         /// </summary>
-        /// <param name="webDavClass1">The WebDAV class 1 implementation</param>
-        /// <param name="formatter">The formatter for the WebDAV XML responses</param>
-        /// <param name="webDavClass2">The WebDAV class 2 implementation</param>
+        /// <param name="webDavClass1">The WebDAV class 1 implementation.</param>
+        /// <param name="formatter">The formatter for the WebDAV XML responses.</param>
+        /// <param name="webDavClass2">The WebDAV class 2 implementation.</param>
         public WebDavServer([NotNull] IWebDavClass1 webDavClass1, [NotNull] IWebDavOutputFormatter formatter, [CanBeNull] IWebDavClass2 webDavClass2 = null)
         {
             Formatter = formatter;

@@ -7,14 +7,14 @@ using JetBrains.Annotations;
 namespace FubarDev.WebDavServer.Locking
 {
     /// <summary>
-    /// The result of a locking operation
+    /// The result of a locking operation.
     /// </summary>
     public class LockResult
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="LockResult"/> class.
         /// </summary>
-        /// <param name="activeLock">The active lock when locking succeeded</param>
+        /// <param name="activeLock">The active lock when locking succeeded.</param>
         public LockResult(IActiveLock activeLock)
         {
             Lock = activeLock;
@@ -23,14 +23,14 @@ namespace FubarDev.WebDavServer.Locking
         /// <summary>
         /// Initializes a new instance of the <see cref="LockResult"/> class.
         /// </summary>
-        /// <param name="conflictingLocks">The collection of locks preventing locking the given destination</param>
+        /// <param name="conflictingLocks">The collection of locks preventing locking the given destination.</param>
         public LockResult(LockStatus conflictingLocks)
         {
             ConflictingLocks = conflictingLocks;
         }
 
         /// <summary>
-        /// Gets the active lock when locking succeeded
+        /// Gets the active lock when locking succeeded.
         /// </summary>
         [CanBeNull]
         public IActiveLock Lock { get; }

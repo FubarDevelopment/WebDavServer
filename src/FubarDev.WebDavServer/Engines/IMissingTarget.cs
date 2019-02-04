@@ -21,11 +21,12 @@ namespace FubarDev.WebDavServer.Engines
         where TMissing : class, IMissingTarget<TCollection, TDocument, TMissing>
     {
         /// <summary>
-        /// Creates a collection with the same name of this target
+        /// Creates a collection with the same name of this target.
         /// </summary>
-        /// <param name="cancellationToken">The cancellation token</param>
-        /// <returns>The created collection target</returns>
+        /// <param name="cancellationToken">The cancellation token.</param>
+        /// <returns>The created collection target.</returns>
         [NotNull]
+        [ItemNotNull]
         Task<TCollection> CreateCollectionAsync(CancellationToken cancellationToken);
     }
 }

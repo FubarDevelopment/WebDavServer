@@ -12,7 +12,7 @@ using JetBrains.Annotations;
 namespace FubarDev.WebDavServer.Utils
 {
     /// <summary>
-    /// This is some kind of a "View" to an underlying stream
+    /// This is some kind of a "View" to an underlying stream.
     /// </summary>
     public class StreamView : Stream
     {
@@ -50,7 +50,10 @@ namespace FubarDev.WebDavServer.Utils
             set
             {
                 if (_position == value)
+                {
                     return;
+                }
+
                 _baseStream.Seek(value - _position, SeekOrigin.Current);
                 _position = value;
             }
@@ -59,16 +62,16 @@ namespace FubarDev.WebDavServer.Utils
         private long Offset { get; }
 
         /// <summary>
-        /// Creates a new stream view
+        /// Creates a new stream view.
         /// </summary>
         /// <remarks>
         /// The <paramref name="baseStream"/> must be at position 0.
         /// </remarks>
-        /// <param name="baseStream">The underlying stream</param>
-        /// <param name="position">The start position</param>
-        /// <param name="length">The length of the data to be read from the underlying stream</param>
-        /// <param name="ct">The cancellation token</param>
-        /// <returns>The new stream view</returns>
+        /// <param name="baseStream">The underlying stream.</param>
+        /// <param name="position">The start position.</param>
+        /// <param name="length">The length of the data to be read from the underlying stream.</param>
+        /// <param name="ct">The cancellation token.</param>
+        /// <returns>The new stream view.</returns>
         public static async Task<StreamView> CreateAsync(
             [NotNull] Stream baseStream,
             long position,
@@ -98,7 +101,10 @@ namespace FubarDev.WebDavServer.Utils
         {
             var remaining = Math.Min(Length - _position, count);
             if (remaining == 0)
+            {
                 return 0;
+            }
+
             var readCount = _baseStream.Read(buffer, offset, (int)remaining);
             _position += readCount;
             return readCount;
@@ -113,18 +119,30 @@ namespace FubarDev.WebDavServer.Utils
                 case SeekOrigin.Begin:
                     var newPosFromBegin = Offset + offset;
                     if (newPosFromBegin < Offset)
+                    {
                         newPosFromBegin = Offset;
+                    }
+
                     if (newPosFromBegin > Offset + Length)
+                    {
                         newPosFromBegin = Offset + Length;
+                    }
+
                     result = _baseStream.Seek(newPosFromBegin, origin);
                     _position = offset;
                     break;
                 case SeekOrigin.Current:
                     var newPosFromCurrent = Offset + _position + offset;
                     if (newPosFromCurrent < Offset)
+                    {
                         newPosFromCurrent = Offset;
+                    }
+
                     if (newPosFromCurrent > Offset + Length)
+                    {
                         newPosFromCurrent = Offset + Length;
+                    }
+
                     var newOffset = newPosFromCurrent - (Offset + _position);
                     result = _baseStream.Seek(newOffset, SeekOrigin.Current);
                     _position = newPosFromCurrent - Offset;
@@ -157,7 +175,9 @@ namespace FubarDev.WebDavServer.Utils
         {
             base.Dispose(disposing);
             if (disposing)
+            {
                 _baseStream.Dispose();
+            }
         }
 
         private static async Task SkipAsync([NotNull] Stream baseStream, long count, CancellationToken ct)

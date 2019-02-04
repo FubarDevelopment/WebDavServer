@@ -9,7 +9,7 @@ using System.Linq;
 namespace FubarDev.WebDavServer.Model.Headers
 {
     /// <summary>
-    /// The HTTP <c>Timeout</c> header
+    /// The HTTP <c>Timeout</c> header.
     /// </summary>
     public class TimeoutHeader
     {
@@ -18,27 +18,27 @@ namespace FubarDev.WebDavServer.Model.Headers
         /// <summary>
         /// Initializes a new instance of the <see cref="TimeoutHeader"/> class.
         /// </summary>
-        /// <param name="values">The timeout values</param>
+        /// <param name="values">The timeout values.</param>
         public TimeoutHeader(IReadOnlyCollection<TimeSpan> values)
         {
             Values = values;
         }
 
         /// <summary>
-        /// Gets the timeout value for an infinite timeout
+        /// Gets the timeout value for an infinite timeout.
         /// </summary>
         public static TimeSpan Infinite { get; } = TimeSpan.MaxValue;
 
         /// <summary>
-        /// Gets the timeout values of the <c>Timeout</c> header
+        /// Gets the timeout values of the <c>Timeout</c> header.
         /// </summary>
         public IReadOnlyCollection<TimeSpan> Values { get; }
 
         /// <summary>
-        /// Parses the header values to get a new instance of the <see cref="TimeoutHeader"/> class
+        /// Parses the header values to get a new instance of the <see cref="TimeoutHeader"/> class.
         /// </summary>
-        /// <param name="args">The header values to parse</param>
-        /// <returns>The new instance of the <see cref="TimeoutHeader"/> class</returns>
+        /// <param name="args">The header values to parse.</param>
+        /// <returns>The new instance of the <see cref="TimeoutHeader"/> class.</returns>
         public static TimeoutHeader Parse(IEnumerable<string> args)
         {
             var timespans = new List<TimeSpan>();

@@ -24,9 +24,14 @@ namespace FubarDev.WebDavServer.Utils
                 // Validate against ETag
                 var etag = await entry.GetEntityTagAsync(cancellationToken).ConfigureAwait(false);
                 if (headers.IfMatch != null && !headers.IfMatch.IsMatch(etag))
+                {
                     throw new WebDavException(WebDavStatusCode.PreconditionFailed);
+                }
+
                 if (headers.IfNoneMatch != null && !headers.IfNoneMatch.IsMatch(etag))
+                {
                     throw new WebDavException(WebDavStatusCode.NotModified);
+                }
             }
 
             if (headers.IfModifiedSince != null || headers.IfUnmodifiedSince != null)

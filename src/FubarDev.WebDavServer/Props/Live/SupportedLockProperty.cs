@@ -17,12 +17,12 @@ using JetBrains.Annotations;
 namespace FubarDev.WebDavServer.Props.Live
 {
     /// <summary>
-    /// The <c>supportedlock</c> property
+    /// The <c>supportedlock</c> property.
     /// </summary>
     public class SupportedLockProperty : ITypedReadableProperty<supportedlock>, ILiveProperty
     {
         /// <summary>
-        /// The XML name of the property
+        /// The XML name of the property.
         /// </summary>
         [NotNull]
         public static readonly XName PropertyName = WebDavXml.Dav + "supportedlock";
@@ -36,7 +36,7 @@ namespace FubarDev.WebDavServer.Props.Live
         /// <summary>
         /// Initializes a new instance of the <see cref="SupportedLockProperty"/> class.
         /// </summary>
-        /// <param name="entry">The file system entry this property is for</param>
+        /// <param name="entry">The file system entry this property is for.</param>
         public SupportedLockProperty([NotNull] IEntry entry)
         {
             _lockManager = entry.FileSystem.LockManager;

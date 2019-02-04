@@ -15,18 +15,18 @@ namespace FubarDev.WebDavServer.FileSystem
     public interface IEntityTagEntry
     {
         /// <summary>
-        /// Gets the <see cref="EntityTag"/> for a <see cref="IDocument"/> or <see cref="ICollection"/>
+        /// Gets the <see cref="EntityTag"/> for a <see cref="IDocument"/> or <see cref="ICollection"/>.
         /// </summary>
         EntityTag ETag { get; }
 
         /// <summary>
-        /// Enforces the update of an <see cref="EntityTag"/>
+        /// Enforces the update of an <see cref="EntityTag"/>.
         /// </summary>
         /// <remarks>
         /// This is usually called when the <see cref="IEntry"/> properties were changed.
         /// </remarks>
-        /// <param name="cancellationToken">The cancellation token</param>
-        /// <returns>The new <see cref="EntityTag"/></returns>
+        /// <param name="cancellationToken">The cancellation token.</param>
+        /// <returns>The new <see cref="EntityTag"/>.</returns>
         Task<EntityTag> UpdateETagAsync(CancellationToken cancellationToken);
     }
 }

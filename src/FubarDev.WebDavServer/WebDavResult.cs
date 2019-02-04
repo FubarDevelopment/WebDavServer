@@ -13,14 +13,14 @@ using FubarDev.WebDavServer.Model;
 namespace FubarDev.WebDavServer
 {
     /// <summary>
-    /// The result of a WebDAV operation
+    /// The result of a WebDAV operation.
     /// </summary>
     public class WebDavResult : IWebDavResult
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="WebDavResult"/> class.
         /// </summary>
-        /// <param name="statusCode">The WebDAV status code</param>
+        /// <param name="statusCode">The WebDAV status code.</param>
         public WebDavResult(WebDavStatusCode statusCode)
         {
             StatusCode = statusCode;
@@ -30,7 +30,7 @@ namespace FubarDev.WebDavServer
         public WebDavStatusCode StatusCode { get; }
 
         /// <summary>
-        /// Gets the header values to be set for the response
+        /// Gets the header values to be set for the response.
         /// </summary>
         public Dictionary<string, IEnumerable<string>> Headers { get; } = new Dictionary<string, IEnumerable<string>>();
 
@@ -40,7 +40,9 @@ namespace FubarDev.WebDavServer
             IImmutableDictionary<string, IEnumerable<string>> headers = ImmutableDictionary<string, IEnumerable<string>>.Empty;
 
             foreach (var webDavClass in response.Dispatcher.SupportedClasses)
+            {
                 headers = AddHeaderValues(headers, webDavClass.DefaultResponseHeaders);
+            }
 
             headers = AddHeaderValues(headers, Headers);
 
@@ -53,21 +55,20 @@ namespace FubarDev.WebDavServer
         }
 
         /// <summary>
-        /// Adds header values to the current header dictionary
+        /// Adds header values to the current header dictionary.
         /// </summary>
-        /// <param name="currentHeaders">The current header dictionary</param>
-        /// <param name="headersToAdd">The headers to add</param>
-        /// <returns>The updated header dictionary</returns>
+        /// <param name="currentHeaders">The current header dictionary.</param>
+        /// <param name="headersToAdd">The headers to add.</param>
+        /// <returns>The updated header dictionary.</returns>
         protected IImmutableDictionary<string, IEnumerable<string>> AddHeaderValues(
             IImmutableDictionary<string, IEnumerable<string>> currentHeaders,
             IReadOnlyDictionary<string, IEnumerable<string>> headersToAdd)
         {
             foreach (var header in headersToAdd)
             {
-                IEnumerable<string> oldValues;
                 currentHeaders = currentHeaders.SetItem(
                     header.Key,
-                    currentHeaders.TryGetValue(header.Key, out oldValues) ? oldValues.Union(header.Value) : header.Value);
+                    currentHeaders.TryGetValue(header.Key, out var oldValues) ? oldValues.Union(header.Value) : header.Value);
             }
 
             return currentHeaders;

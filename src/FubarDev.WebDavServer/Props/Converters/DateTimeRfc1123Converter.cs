@@ -11,19 +11,22 @@ using JetBrains.Annotations;
 namespace FubarDev.WebDavServer.Props.Converters
 {
     /// <summary>
-    /// A property converter for RFC 1123 dates
+    /// A property converter for RFC 1123 dates.
     /// </summary>
     public class DateTimeRfc1123Converter : IPropertyConverter<DateTime>
     {
         /// <summary>
-        /// Parses a string with a RFC 1123 date
+        /// Parses a string with a RFC 1123 date.
         /// </summary>
-        /// <param name="s">The string to parse</param>
-        /// <returns>The parsed date</returns>
+        /// <param name="s">The string to parse.</param>
+        /// <returns>The parsed date.</returns>
         public static DateTime Parse([NotNull] string s)
         {
             if (s.EndsWith("UTC"))
+            {
                 s = s.Substring(0, s.Length - 3) + "GMT";
+            }
+
             return DateTime.ParseExact(s, "R", CultureInfo.InvariantCulture);
         }
 
@@ -37,7 +40,9 @@ namespace FubarDev.WebDavServer.Props.Converters
         public XElement ToElement(XName name, DateTime value)
         {
             if (value == DateTime.MinValue)
+            {
                 return new XElement(name);
+            }
 
             return new XElement(name, value.ToString("R"));
         }

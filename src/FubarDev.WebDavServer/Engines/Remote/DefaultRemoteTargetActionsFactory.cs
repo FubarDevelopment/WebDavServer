@@ -14,7 +14,7 @@ using JetBrains.Annotations;
 namespace FubarDev.WebDavServer.Engines.Remote
 {
     /// <summary>
-    /// The factory class for remote target actions
+    /// The factory class for remote target actions.
     /// </summary>
     public class DefaultRemoteTargetActionsFactory : IRemoteCopyTargetActionsFactory, IRemoteMoveTargetActionsFactory
     {
@@ -40,12 +40,16 @@ namespace FubarDev.WebDavServer.Engines.Remote
         {
             // Copy or move from server to server (slow)
             if (_httpMessageHandlerFactory == null)
+            {
                 throw new WebDavException(WebDavStatusCode.BadGateway, "No HttpClient factory for remote access");
+            }
 
             var parentCollectionUrl = destinationUrl.GetParent();
             var httpMessageHandler = await _httpMessageHandlerFactory.CreateAsync(parentCollectionUrl, cancellationToken).ConfigureAwait(false);
             if (httpMessageHandler == null)
+            {
                 throw new WebDavException(WebDavStatusCode.BadGateway, "No HttpClient created");
+            }
 
             var httpClient = new HttpClient(httpMessageHandler)
             {
@@ -60,7 +64,9 @@ namespace FubarDev.WebDavServer.Engines.Remote
         {
             // Copy or move from server to server (slow)
             if (_httpMessageHandlerFactory == null)
+            {
                 throw new WebDavException(WebDavStatusCode.BadGateway, "No HttpClient factory for remote access");
+            }
 
             var parentCollectionUrl = destinationUrl.GetParent();
             var httpMessageHandler = await _httpMessageHandlerFactory.CreateAsync(parentCollectionUrl, cancellationToken).ConfigureAwait(false);

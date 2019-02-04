@@ -9,7 +9,7 @@ using FubarDev.WebDavServer.Model.Headers;
 namespace FubarDev.WebDavServer.Locking
 {
     /// <summary>
-    /// The default rounding implementation
+    /// The default rounding implementation.
     /// </summary>
     public class DefaultLockTimeRounding : ILockTimeRounding
     {
@@ -18,7 +18,7 @@ namespace FubarDev.WebDavServer.Locking
         /// <summary>
         /// Initializes a new instance of the <see cref="DefaultLockTimeRounding"/> class.
         /// </summary>
-        /// <param name="roundingMode">The rounding mode</param>
+        /// <param name="roundingMode">The rounding mode.</param>
         public DefaultLockTimeRounding(DefaultLockTimeRoundingMode roundingMode)
         {
             _roundingMode = roundingMode;
@@ -56,7 +56,9 @@ namespace FubarDev.WebDavServer.Locking
         public TimeSpan Round(TimeSpan ts)
         {
             if (ts == TimeoutHeader.Infinite)
+            {
                 return ts;
+            }
 
             var seconds = 0;
             var millis = ts.Milliseconds;

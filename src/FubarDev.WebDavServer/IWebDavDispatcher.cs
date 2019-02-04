@@ -17,26 +17,26 @@ namespace FubarDev.WebDavServer
     public interface IWebDavDispatcher
     {
         /// <summary>
-        /// Gets the list of supported WebDAV classes
+        /// Gets the list of supported WebDAV classes.
         /// </summary>
         [NotNull]
         [ItemNotNull]
         IReadOnlyCollection<IWebDavClass> SupportedClasses { get; }
 
         /// <summary>
-        /// Gets the formatter for the WebDAV XML responses
+        /// Gets the formatter for the WebDAV XML responses.
         /// </summary>
         [NotNull]
         IWebDavOutputFormatter Formatter { get; }
 
         /// <summary>
-        /// Gets the WebDAV class 1 implementation
+        /// Gets the WebDAV class 1 implementation.
         /// </summary>
         [NotNull]
         IWebDavClass1 Class1 { get; }
 
         /// <summary>
-        /// Gets the WebDAV class 2 implementation
+        /// Gets the WebDAV class 2 implementation.
         /// </summary>
         [CanBeNull]
         IWebDavClass2 Class2 { get; }

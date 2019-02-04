@@ -5,7 +5,7 @@
 namespace FubarDev.WebDavServer.Handlers.Impl
 {
     /// <summary>
-    /// Options for <see cref="PropFindHandler"/>
+    /// Options for <see cref="PropFindHandler"/>.
     /// </summary>
     public class PropFindHandlerOptions
     {

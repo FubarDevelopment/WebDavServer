@@ -197,7 +197,7 @@ namespace FubarDev.WebDavServer.Sample.AspNetCore
             context.Properties = ticket.Properties;
             context.Success();
 
-            return Task.FromResult(0);
+            return Task.CompletedTask;
         }
 
         private Task ValidateWindowsTestCredentialsAsync(ValidateCredentialsContext context)
@@ -213,7 +213,7 @@ namespace FubarDev.WebDavServer.Sample.AspNetCore
             if (accountInfo.Password != context.Password)
             {
                 context.Fail("Invalid password");
-                return Task.FromResult(0);
+                return Task.CompletedTask;
             }
 
             var groups = Enumerable.Empty<Group>();
@@ -223,18 +223,18 @@ namespace FubarDev.WebDavServer.Sample.AspNetCore
             context.Properties = ticket.Properties;
             context.Success();
 
-            return Task.FromResult(0);
+            return Task.CompletedTask;
         }
 
         private static Task HandleFailedAuthenticationAsync(ValidateCredentialsContext context, bool? allowAnonymousAccess = null, string authenticationScheme = "Basic")
         {
             if (context.Username != "anonymous")
-                return Task.FromResult(0);
+                return Task.CompletedTask;
 
             var hostOptions = context.HttpContext.RequestServices.GetRequiredService<IOptions<WebDavHostOptions>>();
             var allowAnonAccess = allowAnonymousAccess ?? hostOptions.Value.AllowAnonymousAccess;
             if (!allowAnonAccess)
-                return Task.FromResult(0);
+                return Task.CompletedTask;
 
             var groups = Enumerable.Empty<Group>();
             var accountInfo = new AccountInfo()
@@ -248,7 +248,7 @@ namespace FubarDev.WebDavServer.Sample.AspNetCore
             context.Properties = ticket.Properties;
             context.Success();
 
-            return Task.FromResult(0);
+            return Task.CompletedTask;
         }
 
         private static AuthenticationTicket CreateAuthenticationTicket(AccountInfo accountInfo, IEnumerable<Group> groups, string authenticationType = "passwd", string authenticationScheme = "Basic")

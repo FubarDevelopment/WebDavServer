@@ -9,12 +9,12 @@ using JetBrains.Annotations;
 namespace FubarDev.WebDavServer.Model.Headers
 {
     /// <summary>
-    /// Comparer for the <see cref="DepthHeader"/>
+    /// Comparer for the <see cref="DepthHeader"/>.
     /// </summary>
     public class DepthHeaderComparer : IComparer<DepthHeader>, IEqualityComparer<DepthHeader>
     {
         /// <summary>
-        /// Gets the default depth header comparer
+        /// Gets the default depth header comparer.
         /// </summary>
         [NotNull]
         public static DepthHeaderComparer Default { get; } = new DepthHeaderComparer();

@@ -5,7 +5,7 @@
 namespace FubarDev.WebDavServer.Locking
 {
     /// <summary>
-    /// The rounding modes for the default rounding mode implementation
+    /// The rounding modes for the default rounding mode implementation.
     /// </summary>
     public enum DefaultLockTimeRoundingMode
     {

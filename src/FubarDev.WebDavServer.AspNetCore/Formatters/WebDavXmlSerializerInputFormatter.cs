@@ -8,7 +8,7 @@ using Microsoft.AspNetCore.Mvc.Formatters;
 namespace FubarDev.WebDavServer.AspNetCore.Formatters
 {
     /// <summary>
-    /// The formatter for the WebDAV request body
+    /// The formatter for the WebDAV request body.
     /// </summary>
     public class WebDavXmlSerializerInputFormatter : XmlSerializerInputFormatter
     {

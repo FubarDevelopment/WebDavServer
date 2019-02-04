@@ -5,16 +5,16 @@
 namespace FubarDev.WebDavServer.AspNetCore
 {
     /// <summary>
-    /// Options for the WebDAV host
+    /// Options for the WebDAV host.
     /// </summary>
     public class WebDavHostOptions
     {
         /// <summary>
-        /// Gets or sets the base URL of the WebDAV server
+        /// Gets or sets the base URL of the WebDAV server.
         /// </summary>
         /// <remarks>
         /// This is usually required when run behind a proxy server. When it is set,
-        /// then it must point to the <see cref="IWebDavContext.ServiceBaseUrl"/>!
+        /// then it must point to the <see cref="IWebDavContext.ServiceBaseUrl"/>.
         /// </remarks>
         public string BaseUrl { get; set; }
 

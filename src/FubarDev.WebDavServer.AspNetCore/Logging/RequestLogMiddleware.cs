@@ -18,7 +18,7 @@ using Microsoft.Extensions.Logging;
 namespace FubarDev.WebDavServer.AspNetCore.Logging
 {
     /// <summary>
-    /// The request log middleware
+    /// The request log middleware.
     /// </summary>
     public class RequestLogMiddleware
     {
@@ -36,8 +36,8 @@ namespace FubarDev.WebDavServer.AspNetCore.Logging
         /// <summary>
         /// Initializes a new instance of the <see cref="RequestLogMiddleware"/> class.
         /// </summary>
-        /// <param name="next">The next middleware</param>
-        /// <param name="logger">The logger for this middleware</param>
+        /// <param name="next">The next middleware.</param>
+        /// <param name="logger">The logger for this middleware.</param>
         public RequestLogMiddleware(RequestDelegate next, ILogger<RequestLogMiddleware> logger)
         {
             _next = next;
@@ -45,10 +45,10 @@ namespace FubarDev.WebDavServer.AspNetCore.Logging
         }
 
         /// <summary>
-        /// Tests if the media type qualifies for XML deserialization
+        /// Tests if the media type qualifies for XML deserialization.
         /// </summary>
-        /// <param name="mediaType">The media type to test</param>
-        /// <returns><see langword="true"/> when the media type might be an XML type</returns>
+        /// <param name="mediaType">The media type to test.</param>
+        /// <returns><see langword="true"/> when the media type might be an XML type.</returns>
         public static bool IsXml(string mediaType)
         {
             var contentType = new MediaType(mediaType);
@@ -57,10 +57,10 @@ namespace FubarDev.WebDavServer.AspNetCore.Logging
         }
 
         /// <summary>
-        /// Tests if the media type qualifies for XML deserialization
+        /// Tests if the media type qualifies for XML deserialization.
         /// </summary>
-        /// <param name="mediaType">The media type to test</param>
-        /// <returns><see langword="true"/> when the media type might be an XML type</returns>
+        /// <param name="mediaType">The media type to test.</param>
+        /// <returns><see langword="true"/> when the media type might be an XML type.</returns>
         public static bool IsXml(MediaType mediaType)
         {
             var isXml = XmlMediaTypes.Any(mediaType.IsSubsetOf);
@@ -68,19 +68,19 @@ namespace FubarDev.WebDavServer.AspNetCore.Logging
         }
 
         /// <summary>
-        /// Invoked by ASP.NET core
+        /// Invoked by ASP.NET core.
         /// </summary>
-        /// <param name="context">The HTTP context</param>
-        /// <returns>The async task</returns>
+        /// <param name="context">The HTTP context.</param>
+        /// <returns>The async task.</returns>
         // ReSharper disable once ConsiderUsingAsyncSuffix
         public async Task Invoke(HttpContext context)
         {
             using (_logger.BeginScope("RequestInfo"))
             {
                 var info = new List<string>()
-                    {
-                        $"{context.Request.Protocol} {context.Request.Method} {context.Request.GetDisplayUrl()}",
-                    };
+                {
+                    $"{context.Request.Protocol} {context.Request.Method} {context.Request.GetDisplayUrl()}",
+                };
 
                 try
                 {
@@ -93,7 +93,7 @@ namespace FubarDev.WebDavServer.AspNetCore.Logging
 
                 var shouldTryReadingBody =
                     IsXmlContentType(context.Request)
-                    || context.Request.Body != null && IsMicrosoftWebDavClient(context.Request);
+                    || (context.Request.Body != null && IsMicrosoftWebDavClient(context.Request));
 
                 if (shouldTryReadingBody)
                 {

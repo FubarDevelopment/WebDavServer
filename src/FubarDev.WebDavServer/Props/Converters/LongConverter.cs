@@ -8,7 +8,7 @@ using System.Xml.Linq;
 namespace FubarDev.WebDavServer.Props.Converters
 {
     /// <summary>
-    /// Converter between <see cref="XElement"/> and <see langword="long"/>
+    /// Converter between <see cref="XElement"/> and <see langword="long"/>.
     /// </summary>
     public class LongConverter : IPropertyConverter<long>
     {

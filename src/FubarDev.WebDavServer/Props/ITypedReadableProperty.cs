@@ -16,10 +16,10 @@ namespace FubarDev.WebDavServer.Props
     public interface ITypedReadableProperty<T> : IUntypedReadableProperty
     {
         /// <summary>
-        /// Gets the underlying typed value
+        /// Gets the underlying typed value.
         /// </summary>
-        /// <param name="ct">The cancellation token</param>
-        /// <returns>The underlying typed value</returns>
+        /// <param name="ct">The cancellation token.</param>
+        /// <returns>The underlying typed value.</returns>
         [NotNull]
         [ItemNotNull]
         Task<T> GetValueAsync(CancellationToken ct);

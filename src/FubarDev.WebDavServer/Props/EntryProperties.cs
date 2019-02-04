@@ -19,7 +19,7 @@ using JetBrains.Annotations;
 namespace FubarDev.WebDavServer.Props
 {
     /// <summary>
-    /// The asynchronously enumerable properties for a <see cref="IEntry"/>
+    /// The asynchronously enumerable properties for a <see cref="IEntry"/>.
     /// </summary>
     public class EntryProperties : IAsyncEnumerable<IUntypedReadableProperty>
     {
@@ -40,11 +40,11 @@ namespace FubarDev.WebDavServer.Props
         /// <summary>
         /// Initializes a new instance of the <see cref="EntryProperties"/> class.
         /// </summary>
-        /// <param name="entry">The entry whose properties are to enumerate</param>
-        /// <param name="predefinedProperties">The predefined properties for the entry</param>
-        /// <param name="propertyStore">The property store to get the remaining dead properties for</param>
-        /// <param name="maxCost">The maximum cost of the properties to return</param>
-        /// <param name="returnInvalidProperties">Do we want to get invalid live properties?</param>
+        /// <param name="entry">The entry whose properties are to enumerate.</param>
+        /// <param name="predefinedProperties">The predefined properties for the entry.</param>
+        /// <param name="propertyStore">The property store to get the remaining dead properties for.</param>
+        /// <param name="maxCost">The maximum cost of the properties to return.</param>
+        /// <param name="returnInvalidProperties">Indicates whether we want to get invalid live properties.</param>
         public EntryProperties(
             [NotNull] IEntry entry,
             [NotNull] [ItemNotNull] IEnumerable<IUntypedReadableProperty> predefinedProperties,
@@ -168,20 +168,29 @@ namespace FubarDev.WebDavServer.Props
                     _predefinedPropertiesFinished = true;
 
                     if (_propertyStore == null || (_maxCost.HasValue && _propertyStore.Cost > _maxCost))
+                    {
                         return null;
+                    }
 
                     var deadProperties = await _propertyStore.LoadAsync(_entry, cancellationToken).ConfigureAwait(false);
                     _deadPropertiesEnumerator = deadProperties.GetEnumerator();
                 }
 
                 if (_propertyStore == null || (_maxCost.HasValue && _propertyStore.Cost > _maxCost))
+                {
                     return null;
+                }
 
                 Debug.Assert(_deadPropertiesEnumerator != null, "_deadPropertiesEnumerator != null");
                 if (_deadPropertiesEnumerator == null)
+                {
                     throw new InvalidOperationException("Internal error: The dead properties enumerator was not initialized");
+                }
+
                 if (!_deadPropertiesEnumerator.MoveNext())
+                {
                     return null;
+                }
 
                 return _deadPropertiesEnumerator.Current;
             }

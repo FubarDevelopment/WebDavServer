@@ -15,13 +15,13 @@ namespace FubarDev.WebDavServer.Locking
         /// Adds a lock to be tracked by this cleanup task.
         /// </summary>
         /// <param name="lockManager">The lock manager that created this active lock.</param>
-        /// <param name="activeLock">The active lock to track</param>
+        /// <param name="activeLock">The active lock to track.</param>
         void Add([NotNull] ILockManager lockManager, [NotNull] IActiveLock activeLock);
 
         /// <summary>
         /// Removes the active lock so that it isn't tracked any more by this cleanup task.
         /// </summary>
-        /// <param name="activeLock">The active lock to remove</param>
+        /// <param name="activeLock">The active lock to remove.</param>
         void Remove([NotNull] IActiveLock activeLock);
     }
 }

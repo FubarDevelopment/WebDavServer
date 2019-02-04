@@ -14,7 +14,7 @@ using JetBrains.Annotations;
 namespace FubarDev.WebDavServer
 {
     /// <summary>
-    /// Implementation of the <see cref="IWebDavRequestHeaders"/> interface
+    /// Implementation of the <see cref="IWebDavRequestHeaders"/> interface.
     /// </summary>
     public class WebDavRequestHeaders : IWebDavRequestHeaders
     {
@@ -25,8 +25,8 @@ namespace FubarDev.WebDavServer
         /// <summary>
         /// Initializes a new instance of the <see cref="WebDavRequestHeaders"/> class.
         /// </summary>
-        /// <param name="headers">The headers to parse</param>
-        /// <param name="context">The WebDAV request context</param>
+        /// <param name="headers">The headers to parse.</param>
+        /// <param name="context">The WebDAV request context.</param>
         public WebDavRequestHeaders([NotNull] IEnumerable<KeyValuePair<string, IEnumerable<string>>> headers, [NotNull] IWebDavContext context)
         {
             Headers = headers.ToDictionary(x => x.Key, x => (IReadOnlyCollection<string>)x.Value.ToList(), StringComparer.OrdinalIgnoreCase);
@@ -82,7 +82,10 @@ namespace FubarDev.WebDavServer
             {
                 IReadOnlyCollection<string> v;
                 if (Headers.TryGetValue(name, out v))
+                {
                     return v;
+                }
+
                 return _empty;
             }
         }
@@ -93,7 +96,9 @@ namespace FubarDev.WebDavServer
             if (Headers.TryGetValue(name, out v))
             {
                 if (v.Count != 0)
+                {
                     return createFunc(v);
+                }
             }
 
             return defaultValue;

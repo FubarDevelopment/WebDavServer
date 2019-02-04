@@ -8,7 +8,7 @@ using System.Text.RegularExpressions;
 namespace FubarDev.WebDavServer.Model.Headers
 {
     /// <summary>
-    /// Range for a HTTP request or response
+    /// Range for a HTTP request or response.
     /// </summary>
     public struct RangeHeaderItem
     {
@@ -17,8 +17,8 @@ namespace FubarDev.WebDavServer.Model.Headers
         /// <summary>
         /// Initializes a new instance of the <see cref="RangeHeaderItem"/> struct.
         /// </summary>
-        /// <param name="from">From byte</param>
-        /// <param name="to">To byte</param>
+        /// <param name="from">From byte.</param>
+        /// <param name="to">To byte.</param>
         public RangeHeaderItem(long? from, long? to)
         {
             From = from;
@@ -26,30 +26,36 @@ namespace FubarDev.WebDavServer.Model.Headers
         }
 
         /// <summary>
-        /// Gets the start position
+        /// Gets the start position.
         /// </summary>
         public long? From { get; }
 
         /// <summary>
-        /// Gets the end position
+        /// Gets the end position.
         /// </summary>
         public long? To { get; }
 
         /// <summary>
-        /// Parses a <see cref="RangeHeaderItem"/> from a string
+        /// Parses a <see cref="RangeHeaderItem"/> from a string.
         /// </summary>
         /// <remarks>
-        /// Allowed are: "*", "from-", "-to", "from-to"
+        /// Allowed are: "*", "from-", "-to", "from-to".
         /// </remarks>
-        /// <param name="rangeItem">The string to parse</param>
-        /// <returns>The new <see cref="RangeHeaderItem"/></returns>
+        /// <param name="rangeItem">The string to parse.</param>
+        /// <returns>The new <see cref="RangeHeaderItem"/>.</returns>
         public static RangeHeaderItem Parse(string rangeItem)
         {
             if (rangeItem == "*")
+            {
                 return default(RangeHeaderItem);
+            }
+
             var match = _rangePattern.Match(rangeItem);
             if (!match.Success)
+            {
                 throw new ArgumentOutOfRangeException(nameof(rangeItem));
+            }
+
             var s = match.Groups[8].Value;
             if (!string.IsNullOrEmpty(s))
             {
@@ -77,29 +83,41 @@ namespace FubarDev.WebDavServer.Model.Headers
         }
 
         /// <summary>
-        /// Returns the textual representation of the HTTP range item
+        /// Returns the textual representation of the HTTP range item.
         /// </summary>
-        /// <returns>the textual representation of the HTTP range item</returns>
+        /// <returns>the textual representation of the HTTP range item.</returns>
         public override string ToString()
         {
             if (From.HasValue || To.HasValue)
+            {
                 return $"{From}-{To}";
+            }
+
             return "*";
         }
 
         /// <summary>
-        /// Normalize this range header item
+        /// Normalize this range header item.
         /// </summary>
-        /// <param name="totalLength">The total length to normalize this item with</param>
-        /// <returns>The normalized range item</returns>
+        /// <param name="totalLength">The total length to normalize this item with.</param>
+        /// <returns>The normalized range item.</returns>
         public NormalizedRangeItem Normalize(long totalLength)
         {
             if (!From.HasValue && !To.HasValue)
+            {
                 return new NormalizedRangeItem(0, totalLength - 1);
+            }
+
             if (From.HasValue && To.HasValue)
+            {
                 return new NormalizedRangeItem(From.Value, To.Value);
+            }
+
             if (From.HasValue)
+            {
                 return new NormalizedRangeItem(From.Value, totalLength - 1);
+            }
+
             return new NormalizedRangeItem(totalLength - To.Value, totalLength - 1);
         }
     }

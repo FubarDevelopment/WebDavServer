@@ -7,7 +7,7 @@ using System.Net;
 namespace FubarDev.WebDavServer.Model
 {
     /// <summary>
-    /// The status codes used by the WebDAV server
+    /// The status codes used by the WebDAV server.
     /// </summary>
     public enum WebDavStatusCode
     {

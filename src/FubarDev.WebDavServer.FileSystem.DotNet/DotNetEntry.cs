@@ -24,11 +24,11 @@ namespace FubarDev.WebDavServer.FileSystem.DotNet
         /// <summary>
         /// Initializes a new instance of the <see cref="DotNetEntry"/> class.
         /// </summary>
-        /// <param name="fileSystem">The file system this entry belongs to</param>
-        /// <param name="parent">The parent collection</param>
-        /// <param name="info">The file system information</param>
-        /// <param name="path">The root-relative path of this entry</param>
-        /// <param name="name">The entry name (<see langword="null"/> when <see cref="FileSystemInfo.Name"/> of <see cref="Info"/> should be used)</param>
+        /// <param name="fileSystem">The file system this entry belongs to.</param>
+        /// <param name="parent">The parent collection.</param>
+        /// <param name="info">The file system information.</param>
+        /// <param name="path">The root-relative path of this entry.</param>
+        /// <param name="name">The entry name (<see langword="null"/> when <see cref="FileSystemInfo.Name"/> of <see cref="Info"/> should be used).</param>
         protected DotNetEntry(DotNetFileSystem fileSystem, ICollection parent, FileSystemInfo info, Uri path, [CanBeNull] string name)
         {
             Parent = parent;
@@ -39,12 +39,12 @@ namespace FubarDev.WebDavServer.FileSystem.DotNet
         }
 
         /// <summary>
-        /// Gets the file system information of this entry
+        /// Gets the file system information of this entry.
         /// </summary>
         public FileSystemInfo Info { get; }
 
         /// <summary>
-        /// Gets the file system this entry belongs to
+        /// Gets the file system this entry belongs to.
         /// </summary>
         public DotNetFileSystem DotNetFileSystem { get; }
 
@@ -83,7 +83,7 @@ namespace FubarDev.WebDavServer.FileSystem.DotNet
         public Task SetLastWriteTimeUtcAsync(DateTime lastWriteTime, CancellationToken cancellationToken)
         {
             Info.LastWriteTimeUtc = lastWriteTime;
-            return Task.FromResult(0);
+            return Task.CompletedTask;
         }
 
         /// <summary>
@@ -96,7 +96,7 @@ namespace FubarDev.WebDavServer.FileSystem.DotNet
         public Task SetCreationTimeUtcAsync(DateTime creationTime, CancellationToken cancellationToken)
         {
             Info.CreationTimeUtc = creationTime;
-            return Task.FromResult(0);
+            return Task.CompletedTask;
         }
 
         /// <inheritdoc />

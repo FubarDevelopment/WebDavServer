@@ -21,7 +21,7 @@ using sqlitenet = SQLite;
 namespace FubarDev.WebDavServer.Locking.SQLite
 {
     /// <summary>
-    /// An implementation of <see cref="ILockManager"/> that uses SQLite
+    /// An implementation of <see cref="ILockManager"/> that uses SQLite.
     /// </summary>
     public class SQLiteLockManager : LockManagerBase, IDisposable
     {
@@ -37,10 +37,10 @@ namespace FubarDev.WebDavServer.Locking.SQLite
         /// <summary>
         /// Initializes a new instance of the <see cref="SQLiteLockManager"/> class.
         /// </summary>
-        /// <param name="sqliteOptions">The SQLite options</param>
-        /// <param name="cleanupTask">The clean-up task for expired locks</param>
-        /// <param name="systemClock">The system clock interface</param>
-        /// <param name="logger">The logger</param>
+        /// <param name="sqliteOptions">The SQLite options.</param>
+        /// <param name="cleanupTask">The clean-up task for expired locks.</param>
+        /// <param name="systemClock">The system clock interface.</param>
+        /// <param name="logger">The logger.</param>
         public SQLiteLockManager(
             [NotNull] IOptions<SQLiteLockManagerOptions> sqliteOptions,
             [NotNull] ILockCleanupTask cleanupTask,
@@ -53,10 +53,10 @@ namespace FubarDev.WebDavServer.Locking.SQLite
         /// <summary>
         /// Initializes a new instance of the <see cref="SQLiteLockManager"/> class.
         /// </summary>
-        /// <param name="sqliteOptions">The SQLite options</param>
-        /// <param name="cleanupTask">The clean-up task for expired locks</param>
-        /// <param name="systemClock">The system clock interface</param>
-        /// <param name="logger">The logger</param>
+        /// <param name="sqliteOptions">The SQLite options.</param>
+        /// <param name="cleanupTask">The clean-up task for expired locks.</param>
+        /// <param name="systemClock">The system clock interface.</param>
+        /// <param name="logger">The logger.</param>
         public SQLiteLockManager(
             [NotNull] SQLiteLockManagerOptions sqliteOptions,
             [NotNull] ILockCleanupTask cleanupTask,
@@ -65,7 +65,10 @@ namespace FubarDev.WebDavServer.Locking.SQLite
             : base(cleanupTask, systemClock, logger, sqliteOptions)
         {
             if (string.IsNullOrEmpty(sqliteOptions.DatabaseFileName))
+            {
                 throw new ArgumentException("A database file name must be set in the SQLiteLockManager options.");
+            }
+
             EnsureDatabaseExists(sqliteOptions.DatabaseFileName);
             _connection = new sqlitenet.SQLiteConnection(sqliteOptions.DatabaseFileName);
         }
@@ -73,7 +76,7 @@ namespace FubarDev.WebDavServer.Locking.SQLite
         /// <summary>
         /// Ensures that a database with the given file name exists.
         /// </summary>
-        /// <param name="dbFileName">The file name of the database</param>
+        /// <param name="dbFileName">The file name of the database.</param>
         public static void EnsureDatabaseExists(string dbFileName)
         {
             if (File.Exists(dbFileName))
@@ -90,13 +93,16 @@ namespace FubarDev.WebDavServer.Locking.SQLite
         }
 
         /// <summary>
-        /// Creates a new database
+        /// Creates a new database.
         /// </summary>
-        /// <param name="dbFileName">The file name of the database</param>
+        /// <param name="dbFileName">The file name of the database.</param>
         public static void CreateDatabase(string dbFileName)
         {
             if (File.Exists(dbFileName))
+            {
                 File.Delete(dbFileName);
+            }
+
             var dbFileFolder = Path.GetDirectoryName(dbFileName);
             Debug.Assert(dbFileFolder != null, "dbFileFolder != null");
             Directory.CreateDirectory(dbFileFolder);
@@ -200,13 +206,16 @@ namespace FubarDev.WebDavServer.Locking.SQLite
             {
                 _connection.Commit();
                 _committed = true;
-                return Task.FromResult(0);
+                return Task.CompletedTask;
             }
 
             public void Dispose()
             {
                 if (!_committed)
+                {
                     _connection.Rollback();
+                }
+
                 _semaphore.Release();
             }
 

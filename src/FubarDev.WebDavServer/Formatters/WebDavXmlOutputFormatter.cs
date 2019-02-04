@@ -12,13 +12,12 @@ using FubarDev.WebDavServer.Model;
 
 using JetBrains.Annotations;
 
-using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 
 namespace FubarDev.WebDavServer.Formatters
 {
     /// <summary>
-    /// The default implementation of the <see cref="IWebDavOutputFormatter"/> interface
+    /// The default implementation of the <see cref="IWebDavOutputFormatter"/> interface.
     /// </summary>
     public class WebDavXmlOutputFormatter : IWebDavOutputFormatter
     {

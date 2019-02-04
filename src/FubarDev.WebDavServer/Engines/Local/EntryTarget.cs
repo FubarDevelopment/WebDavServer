@@ -19,7 +19,7 @@ using JetBrains.Annotations;
 namespace FubarDev.WebDavServer.Engines.Local
 {
     /// <summary>
-    /// The base class of all existing targets
+    /// The base class of all existing targets.
     /// </summary>
     public abstract class EntryTarget : IExistingTarget
     {
@@ -29,10 +29,10 @@ namespace FubarDev.WebDavServer.Engines.Local
         /// <summary>
         /// Initializes a new instance of the <see cref="EntryTarget"/> class.
         /// </summary>
-        /// <param name="targetActions">The target actions implementation to use</param>
-        /// <param name="parent">The parent collection</param>
-        /// <param name="destinationUrl">The destination URL for this entry</param>
-        /// <param name="entry">The underlying entry</param>
+        /// <param name="targetActions">The target actions implementation to use.</param>
+        /// <param name="parent">The parent collection.</param>
+        /// <param name="destinationUrl">The destination URL for this entry.</param>
+        /// <param name="entry">The underlying entry.</param>
         protected EntryTarget(
             ITargetActions<CollectionTarget, DocumentTarget, MissingTarget> targetActions,
             [CanBeNull] CollectionTarget parent,
@@ -50,7 +50,7 @@ namespace FubarDev.WebDavServer.Engines.Local
         public string Name { get; }
 
         /// <summary>
-        /// Gets the parent collection target
+        /// Gets the parent collection target.
         /// </summary>
         [CanBeNull]
         public CollectionTarget Parent { get; }
@@ -59,7 +59,7 @@ namespace FubarDev.WebDavServer.Engines.Local
         public Uri DestinationUrl { get; }
 
         /// <summary>
-        /// Gets the target actions implementation to use
+        /// Gets the target actions implementation to use.
         /// </summary>
         [NotNull]
         protected ITargetActions<CollectionTarget, DocumentTarget, MissingTarget> TargetActions { get; }
@@ -87,7 +87,9 @@ namespace FubarDev.WebDavServer.Engines.Local
             var livePropertiesResult = await SetPropertiesAsync(liveProperties, cancellationToken).ConfigureAwait(false);
 
             if (deadProperties.Count != 0)
+            {
                 await SetPropertiesAsync(deadProperties, cancellationToken).ConfigureAwait(false);
+            }
 
             return livePropertiesResult;
         }
@@ -97,14 +99,18 @@ namespace FubarDev.WebDavServer.Engines.Local
         {
             var propertyStore = _entry.FileSystem.PropertyStore;
             if (propertyStore == null)
+            {
                 return;
+            }
 
             var elements = new List<XElement>();
             foreach (var property in properties)
             {
                 var propValue = await property.GetXmlValueAsync(cancellationToken).ConfigureAwait(false);
                 if (!property.IsDefaultValue(propValue))
+                {
                     elements.Add(propValue);
+                }
             }
 
             await propertyStore.SetAsync(_entry, elements, cancellationToken).ConfigureAwait(false);

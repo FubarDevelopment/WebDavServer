@@ -17,12 +17,12 @@ using JetBrains.Annotations;
 namespace FubarDev.WebDavServer.Props.Live
 {
     /// <summary>
-    /// The <c>lockdiscovery</c> property
+    /// The <c>lockdiscovery</c> property.
     /// </summary>
     public class LockDiscoveryProperty : ILiveProperty
     {
         /// <summary>
-        /// The XML property name
+        /// The XML property name.
         /// </summary>
         public static readonly XName PropertyName = WebDavXml.Dav + "lockdiscovery";
 
@@ -35,7 +35,7 @@ namespace FubarDev.WebDavServer.Props.Live
         /// <summary>
         /// Initializes a new instance of the <see cref="LockDiscoveryProperty"/> class.
         /// </summary>
-        /// <param name="entry">The file system entry</param>
+        /// <param name="entry">The file system entry.</param>
         public LockDiscoveryProperty([NotNull] IEntry entry)
         {
             _lockManager = entry.FileSystem.LockManager;
@@ -67,16 +67,19 @@ namespace FubarDev.WebDavServer.Props.Live
         }
 
         /// <summary>
-        /// Get the XML value asynchronously
+        /// Get the XML value asynchronously.
         /// </summary>
-        /// <param name="omitOwner">Do we want to omit the owner?</param>
-        /// <param name="omitToken">Do we want to omit the lock token?</param>
-        /// <param name="ct">The cancellation token</param>
-        /// <returns>The XML value</returns>
+        /// <param name="omitOwner">Indicates whether we want to omit the owner.</param>
+        /// <param name="omitToken">Indicates whether we want to omit the lock token</param>
+        /// <param name="ct">The cancellation token.</param>
+        /// <returns>The XML value.</returns>
         public async Task<XElement> GetXmlValueAsync(bool omitOwner, bool omitToken, CancellationToken ct)
         {
             if (_lockManager == null)
+            {
                 return new XElement(Name);
+            }
+
             var affectedLocks = await _lockManager.GetAffectedLocksAsync(_entryPath, false, true, ct).ConfigureAwait(false);
             var lockElements = affectedLocks.Select(x => x.ToXElement(omitOwner: omitOwner, omitToken: omitToken)).Cast<object>().ToArray();
             return new XElement(Name, lockElements);

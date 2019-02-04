@@ -14,17 +14,17 @@ using FubarDev.WebDavServer.Model;
 namespace FubarDev.WebDavServer.FileSystem.DotNet
 {
     /// <summary>
-    /// A .NET <see cref="System.IO"/> based implementation of a WebDAV document
+    /// A .NET <see cref="System.IO"/> based implementation of a WebDAV document.
     /// </summary>
     public class DotNetFile : DotNetEntry, IDocument
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="DotNetFile"/> class.
         /// </summary>
-        /// <param name="fileSystem">The file system this document belongs to</param>
-        /// <param name="parent">The parent collection</param>
-        /// <param name="info">The file information</param>
-        /// <param name="path">The root-relative path of this document</param>
+        /// <param name="fileSystem">The file system this document belongs to.</param>
+        /// <param name="parent">The parent collection.</param>
+        /// <param name="info">The file information.</param>
+        /// <param name="path">The root-relative path of this document.</param>
         public DotNetFile(DotNetFileSystem fileSystem, ICollection parent, FileInfo info, Uri path)
             : base(fileSystem, parent, info, path, null)
         {
@@ -32,7 +32,7 @@ namespace FubarDev.WebDavServer.FileSystem.DotNet
         }
 
         /// <summary>
-        /// Gets the file information
+        /// Gets the file information.
         /// </summary>
         public FileInfo FileInfo { get; }
 
@@ -49,7 +49,10 @@ namespace FubarDev.WebDavServer.FileSystem.DotNet
         public async Task<Stream> CreateAsync(CancellationToken cancellationToken)
         {
             if (FileSystem.PropertyStore != null)
+            {
                 await FileSystem.PropertyStore.UpdateETagAsync(this, cancellationToken).ConfigureAwait(false);
+            }
+
             return FileInfo.Open(FileMode.Create, FileAccess.Write);
         }
 
@@ -111,7 +114,10 @@ namespace FubarDev.WebDavServer.FileSystem.DotNet
             var dir = (DotNetDirectory)collection;
             var targetFileName = System.IO.Path.Combine(dir.DirectoryInfo.FullName, name);
             if (File.Exists(targetFileName))
+            {
                 File.Delete(targetFileName);
+            }
+
             File.Move(FileInfo.FullName, targetFileName);
             var fileInfo = new FileInfo(targetFileName);
             var doc = new DotNetFile(dir.DotNetFileSystem, dir, fileInfo, dir.Path.Append(fileInfo.Name, false));

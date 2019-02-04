@@ -5,7 +5,7 @@
 namespace FubarDev.WebDavServer.Dispatchers
 {
     /// <summary>
-    /// The options for the <see cref="WebDavDispatcherClass1"/>
+    /// The options for the <see cref="WebDavDispatcherClass1"/>.
     /// </summary>
     public class WebDavDispatcherClass1Options
     {

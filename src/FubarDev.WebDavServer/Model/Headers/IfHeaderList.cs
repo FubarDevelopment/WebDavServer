@@ -32,7 +32,7 @@ namespace FubarDev.WebDavServer.Model.Headers
         }
 
         /// <summary>
-        /// Gets the resource tag which is always an absolute URI
+        /// Gets the resource tag which is always an absolute URI.
         /// </summary>
         /// <remarks>
         /// When a relative URI gets sent from the client, then it gets converted into an
@@ -78,11 +78,11 @@ namespace FubarDev.WebDavServer.Model.Headers
         public bool RequiresStateToken => Conditions.Any(x => x.StateToken != null && !x.Not);
 
         /// <summary>
-        /// Validates if all conditions match the passed entity tag and/or state tokens
+        /// Validates if all conditions match the passed entity tag and/or state tokens.
         /// </summary>
-        /// <param name="etag">The entity tag</param>
-        /// <param name="stateTokens">The state tokens</param>
-        /// <returns><see langword="true"/> when this condition matches</returns>
+        /// <param name="etag">The entity tag.</param>
+        /// <param name="stateTokens">The state tokens.</param>
+        /// <returns><see langword="true"/> when this condition matches.</returns>
         public bool IsMatch(EntityTag? etag, IReadOnlyCollection<Uri> stateTokens)
         {
             return Conditions.All(x => x.IsMatch(etag, stateTokens));
@@ -99,7 +99,10 @@ namespace FubarDev.WebDavServer.Model.Headers
                 {
                     // Coded-URL found
                     if (!resourceTag.IsAbsoluteUri)
+                    {
                         resourceTag = new Uri(context.PublicRootUrl, resourceTag);
+                    }
+
                     previousResourceTag = resourceTag;
                     source.SkipWhiteSpace();
                 }
@@ -109,10 +112,15 @@ namespace FubarDev.WebDavServer.Model.Headers
                 }
 
                 if (!source.AdvanceIf("("))
+                {
                     throw new ArgumentException($"{source.Remaining} is not a valid list (not starting with a '(')", nameof(source));
+                }
+
                 var conditions = IfHeaderCondition.Parse(source, etagComparer).ToList();
                 if (!source.AdvanceIf(")"))
+                {
                     throw new ArgumentException($"{source.Remaining} is not a valid list (not ending with a ')')", nameof(source));
+                }
 
                 var relativeHref = context.PublicControllerUrl.IsBaseOf(resourceTag) ? AddRootSlashToUri(context.PublicControllerUrl.MakeRelativeUri(resourceTag)) : resourceTag;
                 var path = context.PublicControllerUrl.IsBaseOf(resourceTag) ? context.PublicControllerUrl.MakeRelativeUri(resourceTag) : resourceTag;
@@ -123,10 +131,16 @@ namespace FubarDev.WebDavServer.Model.Headers
         private static Uri AddRootSlashToUri(Uri url)
         {
             if (url.IsAbsoluteUri)
+            {
                 return url;
+            }
+
             var s = url.OriginalString;
             if (s.StartsWith("/"))
+            {
                 return url;
+            }
+
             return new Uri("/" + s, UriKind.Relative);
         }
     }

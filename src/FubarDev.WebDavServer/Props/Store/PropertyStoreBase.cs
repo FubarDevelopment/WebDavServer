@@ -17,14 +17,14 @@ using JetBrains.Annotations;
 namespace FubarDev.WebDavServer.Props.Store
 {
     /// <summary>
-    /// Common functionality for a property store implementation
+    /// Common functionality for a property store implementation.
     /// </summary>
     public abstract class PropertyStoreBase : IPropertyStore
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="PropertyStoreBase"/> class.
         /// </summary>
-        /// <param name="deadPropertyFactory">The factory to create dead properties</param>
+        /// <param name="deadPropertyFactory">The factory to create dead properties.</param>
         protected PropertyStoreBase([NotNull] IDeadPropertyFactory deadPropertyFactory)
         {
             DeadPropertyFactory = deadPropertyFactory;
@@ -34,7 +34,7 @@ namespace FubarDev.WebDavServer.Props.Store
         public abstract int Cost { get; }
 
         /// <summary>
-        /// Gets the dead property factory
+        /// Gets the dead property factory.
         /// </summary>
         [NotNull]
         protected IDeadPropertyFactory DeadPropertyFactory { get; }
@@ -92,7 +92,10 @@ namespace FubarDev.WebDavServer.Props.Store
         {
             var element = await GetAsync(entry, name, cancellationToken).ConfigureAwait(false);
             if (element == null)
+            {
                 return Create(entry, name);
+            }
+
             return CreateProperty(entry, element);
         }
 
@@ -108,7 +111,9 @@ namespace FubarDev.WebDavServer.Props.Store
         {
             var etagEntry = entry as IEntityTagEntry;
             if (etagEntry != null)
+            {
                 return Task.FromResult(etagEntry.ETag);
+            }
 
             return GetDeadETagAsync(entry, cancellationToken);
         }
@@ -118,25 +123,27 @@ namespace FubarDev.WebDavServer.Props.Store
         {
             var etagEntry = entry as IEntityTagEntry;
             if (etagEntry != null)
+            {
                 return etagEntry.UpdateETagAsync(cancellationToken);
+            }
 
             return UpdateDeadETagAsync(entry, cancellationToken);
         }
 
         /// <summary>
-        /// Gets a <see cref="GetETagProperty"/> from the property store
+        /// Gets a <see cref="GetETagProperty"/> from the property store.
         /// </summary>
-        /// <param name="entry">The entry to get the <c>getetag</c> property from</param>
-        /// <param name="cancellationToken">The cancellation token</param>
-        /// <returns>The entity tag for the <paramref name="entry"/></returns>
+        /// <param name="entry">The entry to get the <c>getetag</c> property from.</param>
+        /// <param name="cancellationToken">The cancellation token.</param>
+        /// <returns>The entity tag for the <paramref name="entry"/>.</returns>
         protected abstract Task<EntityTag> GetDeadETagAsync(IEntry entry, CancellationToken cancellationToken);
 
         /// <summary>
-        /// Updates a <see cref="GetETagProperty"/> in the property store
+        /// Updates a <see cref="GetETagProperty"/> in the property store.
         /// </summary>
-        /// <param name="entry">The entry to update the <c>getetag</c> property for</param>
-        /// <param name="cancellationToken">The cancellation token</param>
-        /// <returns>The updated entity tag for the <paramref name="entry"/></returns>
+        /// <param name="entry">The entry to update the <c>getetag</c> property for.</param>
+        /// <param name="cancellationToken">The cancellation token.</param>
+        /// <returns>The updated entity tag for the <paramref name="entry"/>.</returns>
         protected abstract Task<EntityTag> UpdateDeadETagAsync(IEntry entry, CancellationToken cancellationToken);
 
         private IDeadProperty CreateProperty(IEntry entry, XElement element)

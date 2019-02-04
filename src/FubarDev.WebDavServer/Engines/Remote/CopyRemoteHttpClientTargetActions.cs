@@ -14,15 +14,15 @@ using JetBrains.Annotations;
 namespace FubarDev.WebDavServer.Engines.Remote
 {
     /// <summary>
-    /// The <see cref="ITargetActions{TCollection,TDocument,TMissing}"/> implementation that copies entries between servers
+    /// The <see cref="ITargetActions{TCollection,TDocument,TMissing}"/> implementation that copies entries between servers.
     /// </summary>
     public class CopyRemoteHttpClientTargetActions : RemoteHttpClientTargetActions, IRemoteCopyTargetActions
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="CopyRemoteHttpClientTargetActions"/> class.
         /// </summary>
-        /// <param name="dispatcher">The WebDAV dispatcher</param>
-        /// <param name="httpClient">The <see cref="HttpClient"/> to use</param>
+        /// <param name="dispatcher">The WebDAV dispatcher.</param>
+        /// <param name="httpClient">The <see cref="HttpClient"/> to use.</param>
         public CopyRemoteHttpClientTargetActions([NotNull] IWebDavDispatcher dispatcher, [NotNull] HttpClient httpClient)
             : base(dispatcher, httpClient)
         {
@@ -84,7 +84,7 @@ namespace FubarDev.WebDavServer.Engines.Remote
         /// <inheritdoc />
         public override Task ExecuteAsync(ICollection source, RemoteCollectionTarget destination, CancellationToken cancellationToken)
         {
-            return Task.FromResult(0);
+            return Task.CompletedTask;
         }
     }
 }

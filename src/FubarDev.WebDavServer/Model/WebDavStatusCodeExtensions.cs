@@ -11,7 +11,7 @@ using JetBrains.Annotations;
 namespace FubarDev.WebDavServer.Model
 {
     /// <summary>
-    /// Extension methods for the <see cref="WebDavStatusCode"/>
+    /// Extension methods for the <see cref="WebDavStatusCode"/>.
     /// </summary>
     public static class WebDavStatusCodeExtensions
     {
@@ -23,11 +23,11 @@ namespace FubarDev.WebDavServer.Model
         };
 
         /// <summary>
-        /// Builds the reason phrase for a status code and an additional message
+        /// Builds the reason phrase for a status code and an additional message.
         /// </summary>
-        /// <param name="statusCode">The status code to build the reason phrase for</param>
-        /// <param name="additionalMessage">The additional message for the reason phrase</param>
-        /// <returns>The built reason phrase</returns>
+        /// <param name="statusCode">The status code to build the reason phrase for.</param>
+        /// <param name="additionalMessage">The additional message for the reason phrase.</param>
+        /// <returns>The built reason phrase.</returns>
         [NotNull]
         public static string GetReasonPhrase(this WebDavStatusCode statusCode, [CanBeNull] string additionalMessage = null)
         {
@@ -55,7 +55,9 @@ namespace FubarDev.WebDavServer.Model
                 });
 
             if (string.IsNullOrEmpty(additionalMessage))
+            {
                 return reasonPhrase;
+            }
 
             return $"{reasonPhrase} ({additionalMessage})";
         }
@@ -78,7 +80,9 @@ namespace FubarDev.WebDavServer.Model
             }
 
             if (startIndex < currentIndex)
+            {
                 yield return name.Substring(startIndex);
+            }
         }
     }
 }

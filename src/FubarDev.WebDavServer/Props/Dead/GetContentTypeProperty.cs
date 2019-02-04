@@ -16,12 +16,12 @@ using JetBrains.Annotations;
 namespace FubarDev.WebDavServer.Props.Dead
 {
     /// <summary>
-    /// The implementation of the <c>getcontenttype</c> property
+    /// The implementation of the <c>getcontenttype</c> property.
     /// </summary>
     public class GetContentTypeProperty : GenericStringProperty, IDeadProperty
     {
         /// <summary>
-        /// The XML name of the property
+        /// The XML name of the property.
         /// </summary>
         public static readonly XName PropertyName = WebDavXml.Dav + "getcontenttype";
 
@@ -39,10 +39,10 @@ namespace FubarDev.WebDavServer.Props.Dead
         /// <summary>
         /// Initializes a new instance of the <see cref="GetContentTypeProperty"/> class.
         /// </summary>
-        /// <param name="entry">The entry to instantiate this property for</param>
-        /// <param name="store">The property store to store this property</param>
-        /// <param name="mimeTypeDetector">The mime type detector</param>
-        /// <param name="cost">The cost of querying the display names property</param>
+        /// <param name="entry">The entry to instantiate this property for.</param>
+        /// <param name="store">The property store to store this property.</param>
+        /// <param name="mimeTypeDetector">The mime type detector.</param>
+        /// <param name="cost">The cost of querying the display names property.</param>
         public GetContentTypeProperty([NotNull] IEntry entry, [NotNull] IPropertyStore store, [CanBeNull] IMimeTypeDetector mimeTypeDetector = null, int? cost = null)
             : base(PropertyName, null, cost ?? store.Cost, null, null, WebDavXml.Dav + "contenttype")
         {
@@ -55,7 +55,9 @@ namespace FubarDev.WebDavServer.Props.Dead
         public override async Task<string> GetValueAsync(CancellationToken ct)
         {
             if (_value != null)
+            {
                 return _value;
+            }
 
             var storedValue = await _store.GetAsync(_entry, Name, ct).ConfigureAwait(false);
             if (storedValue != null)

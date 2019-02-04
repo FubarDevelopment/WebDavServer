@@ -13,7 +13,7 @@ using JetBrains.Annotations;
 namespace FubarDev.WebDavServer.FileSystem
 {
     /// <summary>
-    /// The result of a <see cref="IFileSystem.SelectAsync"/> operation
+    /// The result of a <see cref="IFileSystem.SelectAsync"/> operation.
     /// </summary>
     public class SelectionResult
     {
@@ -30,12 +30,12 @@ namespace FubarDev.WebDavServer.FileSystem
         }
 
         /// <summary>
-        /// Gets the type of the result
+        /// Gets the type of the result.
         /// </summary>
         public SelectionResultType ResultType { get; }
 
         /// <summary>
-        /// Gets a value indicating whether there was a missing path part?
+        /// Gets a value indicating whether there was a missing path part?.
         /// </summary>
         public bool IsMissing =>
             ResultType == SelectionResultType.MissingCollection ||
@@ -53,7 +53,7 @@ namespace FubarDev.WebDavServer.FileSystem
         public ICollection Collection { get; }
 
         /// <summary>
-        /// Gets the found document
+        /// Gets the found document.
         /// </summary>
         /// <remarks>
         /// This property is only valid when <see cref="ResultType"/> is <see cref="SelectionResultType.FoundDocument"/>.
@@ -64,13 +64,16 @@ namespace FubarDev.WebDavServer.FileSystem
             get
             {
                 if (ResultType != SelectionResultType.FoundDocument)
+                {
                     throw new InvalidOperationException();
+                }
+
                 return _document;
             }
         }
 
         /// <summary>
-        /// Gets the collection of missing child elements
+        /// Gets the collection of missing child elements.
         /// </summary>
         /// <remarks>
         /// This is only valid, when <see cref="IsMissing"/> is <see langword="true"/>.
@@ -82,13 +85,16 @@ namespace FubarDev.WebDavServer.FileSystem
             get
             {
                 if (ResultType != SelectionResultType.MissingCollection && ResultType != SelectionResultType.MissingDocumentOrCollection)
+                {
                     throw new InvalidOperationException();
+                }
+
                 return _pathEntries;
             }
         }
 
         /// <summary>
-        /// Gets the full root-relative path of the element that was searched
+        /// Gets the full root-relative path of the element that was searched.
         /// </summary>
         [NotNull]
         public Uri FullPath
@@ -111,13 +117,16 @@ namespace FubarDev.WebDavServer.FileSystem
                 Debug.Assert(MissingNames != null, "MissingNames != null");
                 result.Append(string.Join("/", MissingNames.Select(n => n.UriEscape())));
                 if (ResultType == SelectionResultType.MissingCollection)
+                {
                     result.Append("/");
+                }
+
                 return new Uri(result.ToString(), UriKind.Relative);
             }
         }
 
         /// <summary>
-        /// Gets the found target entry
+        /// Gets the found target entry.
         /// </summary>
         /// <remarks>
         /// This is only valid when <see cref="IsMissing"/> is <see langword="false"/>.
@@ -128,7 +137,10 @@ namespace FubarDev.WebDavServer.FileSystem
             get
             {
                 if (IsMissing)
+                {
                     throw new InvalidOperationException();
+                }
+
                 if (ResultType == SelectionResultType.FoundDocument)
                 {
                     Debug.Assert(Document != null, "Document != null");
@@ -140,69 +152,90 @@ namespace FubarDev.WebDavServer.FileSystem
         }
 
         /// <summary>
-        /// Gets the file system of the found element or the last found collection
+        /// Gets the file system of the found element or the last found collection.
         /// </summary>
         [NotNull]
         public IFileSystem TargetFileSystem => ((IEntry)_document ?? Collection).FileSystem;
 
         /// <summary>
-        /// Creates a selection result for a found document
+        /// Creates a selection result for a found document.
         /// </summary>
-        /// <param name="collection">The parent collection</param>
-        /// <param name="document">The found document</param>
-        /// <returns>The created selection result</returns>
+        /// <param name="collection">The parent collection.</param>
+        /// <param name="document">The found document.</param>
+        /// <returns>The created selection result.</returns>
         [NotNull]
         public static SelectionResult Create([NotNull] ICollection collection, [NotNull] IDocument document)
         {
             if (collection == null)
+            {
                 throw new ArgumentNullException(nameof(collection));
+            }
+
             if (document == null)
+            {
                 throw new ArgumentNullException(nameof(document));
+            }
+
             return new SelectionResult(SelectionResultType.FoundDocument, collection, document, null);
         }
 
         /// <summary>
-        /// Creates a selection result for a found collection
+        /// Creates a selection result for a found collection.
         /// </summary>
-        /// <param name="collection">The found collection</param>
-        /// <returns>The created selection result</returns>
+        /// <param name="collection">The found collection.</param>
+        /// <returns>The created selection result.</returns>
         [NotNull]
         public static SelectionResult Create([NotNull] ICollection collection)
         {
             if (collection == null)
+            {
                 throw new ArgumentNullException(nameof(collection));
+            }
+
             return new SelectionResult(SelectionResultType.FoundCollection, collection, null, null);
         }
 
         /// <summary>
-        /// Creates a selection for a missing document or collection
+        /// Creates a selection for a missing document or collection.
         /// </summary>
-        /// <param name="collection">The last found collection</param>
-        /// <param name="pathEntries">The missing path elements</param>
-        /// <returns>The created selection result</returns>
+        /// <param name="collection">The last found collection.</param>
+        /// <param name="pathEntries">The missing path elements.</param>
+        /// <returns>The created selection result.</returns>
         [NotNull]
         public static SelectionResult CreateMissingDocumentOrCollection([NotNull] ICollection collection, [NotNull] [ItemNotNull] IReadOnlyCollection<string> pathEntries)
         {
             if (collection == null)
+            {
                 throw new ArgumentNullException(nameof(collection));
+            }
+
             if (pathEntries == null)
+            {
                 throw new ArgumentNullException(nameof(pathEntries));
+            }
+
             return new SelectionResult(SelectionResultType.MissingDocumentOrCollection, collection, null, pathEntries);
         }
 
         /// <summary>
-        /// Creates a selection for a missing collection
+        /// Creates a selection for a missing collection.
         /// </summary>
-        /// <param name="collection">The last found collection</param>
-        /// <param name="pathEntries">The missing path elements</param>
-        /// <returns>The created selection result</returns>
+        /// <param name="collection">The last found collection.</param>
+        /// <param name="pathEntries">The missing path elements.</param>
+        /// <returns>The created selection result.</returns>
         [NotNull]
         public static SelectionResult CreateMissingCollection([NotNull] ICollection collection, [NotNull] [ItemNotNull] IReadOnlyCollection<string> pathEntries)
         {
             if (collection == null)
+            {
                 throw new ArgumentNullException(nameof(collection));
+            }
+
             if (pathEntries == null)
+            {
                 throw new ArgumentNullException(nameof(pathEntries));
+            }
+
             return new SelectionResult(SelectionResultType.MissingCollection, collection, null, pathEntries);
         }
     }

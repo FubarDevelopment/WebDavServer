@@ -5,7 +5,7 @@
 namespace FubarDev.WebDavServer
 {
     /// <summary>
-    /// Define the behaviour, when a target already exists
+    /// Define the behaviour, when a target already exists.
     /// </summary>
     public enum RecursiveTargetBehaviour
     {

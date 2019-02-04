@@ -7,7 +7,7 @@ using System;
 namespace FubarDev.WebDavServer
 {
     /// <summary>
-    /// The default implementation of <see cref="ISystemClock"/>
+    /// The default implementation of <see cref="ISystemClock"/>.
     /// </summary>
     public class SystemClock : ISystemClock
     {

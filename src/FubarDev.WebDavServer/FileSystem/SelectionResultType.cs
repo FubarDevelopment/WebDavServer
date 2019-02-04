@@ -5,7 +5,7 @@
 namespace FubarDev.WebDavServer.FileSystem
 {
     /// <summary>
-    /// The status of a selection result
+    /// The status of a selection result.
     /// </summary>
     /// <seealso cref="IFileSystem.SelectAsync"/>
     public enum SelectionResultType

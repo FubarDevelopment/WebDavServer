@@ -10,7 +10,7 @@ namespace FubarDev.WebDavServer.Handlers.Impl
     public class MoveHandlerOptions
     {
         /// <summary>
-        /// Gets or sets the mode that determines the method used to move files
+        /// Gets or sets the mode that determines the method used to move files.
         /// </summary>
         public RecursiveProcessingMode Mode { get; set; }
 

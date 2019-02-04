@@ -20,18 +20,18 @@ using SQLite;
 namespace FubarDev.WebDavServer.FileSystem.SQLite
 {
     /// <summary>
-    /// A <see cref="SQLitePCL"/> based implementation of a WebDAV entry (collection or document)
+    /// A <see cref="SQLitePCL"/> based implementation of a WebDAV entry (collection or document).
     /// </summary>
     internal abstract class SQLiteEntry : IEntry, IEntityTagEntry
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="SQLiteEntry"/> class.
         /// </summary>
-        /// <param name="fileSystem">The file system this entry belongs to</param>
-        /// <param name="parent">The parent collection</param>
-        /// <param name="info">The file system information</param>
-        /// <param name="path">The root-relative path of this entry</param>
-        /// <param name="name">The entry name (<see langword="null"/> when <see cref="FileEntry.Name"/> of <see cref="SQLiteEntry.Info"/> should be used)</param>
+        /// <param name="fileSystem">The file system this entry belongs to.</param>
+        /// <param name="parent">The parent collection.</param>
+        /// <param name="info">The file system information.</param>
+        /// <param name="path">The root-relative path of this entry.</param>
+        /// <param name="name">The entry name (<see langword="null"/> when <see cref="FileEntry.Name"/> of <see cref="SQLiteEntry.Info"/> should be used).</param>
         protected SQLiteEntry(SQLiteFileSystem fileSystem, ICollection parent, FileEntry info, Uri path, [CanBeNull] string name)
         {
             Parent = parent;
@@ -43,17 +43,17 @@ namespace FubarDev.WebDavServer.FileSystem.SQLite
         }
 
         /// <summary>
-        /// Gets the file system information of this entry
+        /// Gets the file system information of this entry.
         /// </summary>
         public FileEntry Info { get; }
 
         /// <summary>
-        /// Gets the file system this entry belongs to
+        /// Gets the file system this entry belongs to.
         /// </summary>
         public SQLiteFileSystem SQLiteFileSystem { get; }
 
         /// <summary>
-        /// Gets the SQLite connection
+        /// Gets the SQLite connection.
         /// </summary>
         public SQLiteConnection Connection => SQLiteFileSystem.Connection;
 
@@ -120,7 +120,7 @@ namespace FubarDev.WebDavServer.FileSystem.SQLite
                 Connection.Update(Info);
             }
 
-            return Task.FromResult(0);
+            return Task.CompletedTask;
         }
 
         /// <summary>
@@ -139,7 +139,7 @@ namespace FubarDev.WebDavServer.FileSystem.SQLite
                 Connection.Update(Info);
             }
 
-            return Task.FromResult(0);
+            return Task.CompletedTask;
         }
 
         /// <inheritdoc />

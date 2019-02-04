@@ -18,7 +18,7 @@ using Microsoft.Extensions.Logging;
 namespace FubarDev.WebDavServer.Props.Store.InMemory
 {
     /// <summary>
-    /// The in-memory implementation of a property store
+    /// The in-memory implementation of a property store.
     /// </summary>
     public class InMemoryPropertyStore : PropertyStoreBase
     {
@@ -28,8 +28,8 @@ namespace FubarDev.WebDavServer.Props.Store.InMemory
         /// <summary>
         /// Initializes a new instance of the <see cref="InMemoryPropertyStore"/> class.
         /// </summary>
-        /// <param name="deadPropertyFactory">The factory to create dead properties</param>
-        /// <param name="logger">The logger</param>
+        /// <param name="deadPropertyFactory">The factory to create dead properties.</param>
+        /// <param name="logger">The logger.</param>
         public InMemoryPropertyStore(IDeadPropertyFactory deadPropertyFactory, ILogger<InMemoryPropertyStore> logger)
             : base(deadPropertyFactory)
         {
@@ -65,14 +65,14 @@ namespace FubarDev.WebDavServer.Props.Store.InMemory
 
             SetAll(entry, elementsToSet);
 
-            return Task.FromResult(0);
+            return Task.CompletedTask;
         }
 
         /// <inheritdoc />
         public override Task RemoveAsync(IEntry entry, CancellationToken cancellationToken)
         {
             _properties.Remove(entry.Path);
-            return Task.FromResult(0);
+            return Task.CompletedTask;
         }
 
         /// <inheritdoc />
@@ -100,7 +100,9 @@ namespace FubarDev.WebDavServer.Props.Store.InMemory
                 }
 
                 if (properties.Count == 0)
+                {
                     _properties.Remove(entry.Path);
+                }
             }
 
             return Task.FromResult<IReadOnlyCollection<bool>>(result);
@@ -175,7 +177,9 @@ namespace FubarDev.WebDavServer.Props.Store.InMemory
         {
             IDictionary<XName, XElement> properties;
             if (!_properties.TryGetValue(entry.Path, out properties))
+            {
                 _properties.Add(entry.Path, properties = new Dictionary<XName, XElement>());
+            }
 
             var isEtagEntry = entry is IEntityTagEntry;
             foreach (var element in elements)
