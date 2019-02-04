@@ -2,6 +2,7 @@
 // Copyright (c) Fubar Development Junker. All rights reserved.
 // </copyright>
 
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Formatters;
 
 namespace FubarDev.WebDavServer.AspNetCore.Formatters
@@ -14,7 +15,9 @@ namespace FubarDev.WebDavServer.AspNetCore.Formatters
         /// <summary>
         /// Initializes a new instance of the <see cref="WebDavXmlSerializerInputFormatter"/> class.
         /// </summary>
-        public WebDavXmlSerializerInputFormatter()
+        /// <param name="options">The MVC options.</param>
+        public WebDavXmlSerializerInputFormatter(MvcOptions options)
+            : base(options)
         {
             SupportedMediaTypes.Add("text/plain");
         }

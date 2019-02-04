@@ -11,7 +11,7 @@ namespace FubarDev.WebDavServer.AspNetCore.Formatters.Internal
     {
         public void Configure(MvcOptions options)
         {
-            options.InputFormatters.Add(new WebDavXmlSerializerInputFormatter());
+            options.InputFormatters.Add(new WebDavXmlSerializerInputFormatter(options));
         }
     }
 }

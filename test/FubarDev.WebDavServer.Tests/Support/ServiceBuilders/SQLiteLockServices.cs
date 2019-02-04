@@ -22,7 +22,13 @@ namespace FubarDev.WebDavServer.Tests.Support.ServiceBuilders
         {
             var serviceCollection = new ServiceCollection();
             serviceCollection.AddOptions();
-            serviceCollection.AddLogging();
+            serviceCollection.AddLogging(
+                loggerBuilder =>
+                {
+                    loggerBuilder
+                        .AddDebug()
+                        .SetMinimumLevel(LogLevel.Trace);
+                });
             serviceCollection.AddScoped<ISystemClock, TestSystemClock>();
             serviceCollection.AddTransient<ILockCleanupTask, LockCleanupTask>();
             serviceCollection.AddTransient<ILockManager>(
@@ -41,9 +47,6 @@ namespace FubarDev.WebDavServer.Tests.Support.ServiceBuilders
                     return new SQLiteLockManager(config, cleanupTask, systemClock, logger);
                 });
             ServiceProvider = serviceCollection.BuildServiceProvider();
-
-            var loggerFactory = ServiceProvider.GetRequiredService<ILoggerFactory>();
-            loggerFactory.AddDebug(LogLevel.Trace);
         }
 
         public IServiceProvider ServiceProvider { get; }

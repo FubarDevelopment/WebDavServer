@@ -46,6 +46,15 @@ namespace FubarDev.WebDavServer.Tests
         {
             var builder = new WebHostBuilder()
                 .ConfigureServices(sc => ConfigureServices(this, processingMode, sc))
+                .ConfigureLogging(
+                    loggingBuilder =>
+                    {
+                        loggingBuilder.AddDebug();
+                        loggingBuilder.AddFilter(
+                            "FubarDev.WebDavServer.AspNetCore.WebDavIndirectResult",
+                            LogLevel.Information);
+                        loggingBuilder.SetMinimumLevel(LogLevel.Debug);
+                    })
                 .UseStartup<TestStartup>();
 
             Server = new TestServer(builder);
@@ -117,13 +126,6 @@ namespace FubarDev.WebDavServer.Tests
             [UsedImplicitly]
             public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory)
             {
-                loggerFactory.AddDebug((path, level) =>
-                {
-                    if (path == "FubarDev.WebDavServer.AspNetCore.WebDavIndirectResult")
-                        return level >= LogLevel.Information;
-                    return level >= LogLevel.Debug;
-                });
-
                 app.UseMiddleware<RequestLogMiddleware>();
                 app.UseMvc();
             }

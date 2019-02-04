@@ -21,6 +21,7 @@ using JetBrains.Annotations;
 
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Logging.Debug;
 
 using Xunit;
 
@@ -105,24 +106,30 @@ namespace FubarDev.WebDavServer.Tests.FileSystem
 
                 var serviceCollection = new ServiceCollection()
                     .AddOptions()
-                    .AddLogging()
+                    .AddLogging(
+                        loggerBuilder =>
+                        {
+                            loggerBuilder
+                                .AddDebug()
+                                .SetMinimumLevel(LogLevel.Trace);
+                        })
                     .Configure<InMemoryLockManagerOptions>(
                         opt =>
                         {
-                            opt.Rounding = new DefaultLockTimeRounding(DefaultLockTimeRoundingMode.OneHundredMilliseconds);
+                            opt.Rounding =
+                                new DefaultLockTimeRounding(DefaultLockTimeRoundingMode.OneHundredMilliseconds);
                         })
                     .AddScoped<ILockManager, InMemoryLockManager>()
                     .AddScoped<IWebDavContext>(sp => new TestHost(sp, new Uri("http://localhost/")))
                     .AddScoped<InMemoryFileSystemFactory>()
                     .AddScoped<IFileSystemFactory, MyVirtualRootFileSystemFactory>()
-                    .AddScoped(sp => propertyStoreFactory ?? (propertyStoreFactory = ActivatorUtilities.CreateInstance<InMemoryPropertyStoreFactory>(sp)))
+                    .AddScoped(
+                        sp => propertyStoreFactory ?? (propertyStoreFactory =
+                                  ActivatorUtilities.CreateInstance<InMemoryPropertyStoreFactory>(sp)))
                     .AddWebDav();
 
                 _rootServiceProvider = serviceCollection.BuildServiceProvider(true);
                 _scope = _rootServiceProvider.CreateScope();
-
-                var loggerFactory = _rootServiceProvider.GetRequiredService<ILoggerFactory>();
-                loggerFactory.AddDebug(LogLevel.Trace);
             }
 
             public IServiceProvider ServiceProvider => _scope.ServiceProvider;
