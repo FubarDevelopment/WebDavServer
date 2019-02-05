@@ -22,8 +22,13 @@ namespace FubarDev.WebDavServer.Sample.AspNetCore
         public static void Main(string[] args)
         {
             Log.Logger = new LoggerConfiguration()
+#if DEBUG
                 .MinimumLevel.Debug()
                 .MinimumLevel.Override("Microsoft", LogEventLevel.Information)
+                .MinimumLevel.Override("FubarDev.WebDavServer.BufferPools", LogEventLevel.Verbose)
+#else
+                .MinimumLevel.Warning()
+#endif
                 .Enrich.FromLogContext()
                 .WriteTo.Console()
                 .CreateLogger();
@@ -72,10 +77,13 @@ namespace FubarDev.WebDavServer.Sample.AspNetCore
                         {
                             opt.Authentication.Schemes = AuthenticationSchemes.NTLM;
                             opt.Authentication.AllowAnonymous = true;
+                            opt.MaxRequestBodySize = null;
                         });
             }
             else
             {
+                builder = builder
+                    .UseKestrel(opt => opt.Limits.MaxRequestBodySize = null);
                 IsKestrel = true;
             }
 

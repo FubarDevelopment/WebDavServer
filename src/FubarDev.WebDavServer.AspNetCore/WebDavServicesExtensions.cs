@@ -7,6 +7,7 @@ using FubarDev.WebDavServer.AspNetCore;
 using FubarDev.WebDavServer.AspNetCore.Filters;
 using FubarDev.WebDavServer.AspNetCore.Filters.Internal;
 using FubarDev.WebDavServer.AspNetCore.Formatters.Internal;
+using FubarDev.WebDavServer.BufferPools;
 using FubarDev.WebDavServer.Dispatchers;
 using FubarDev.WebDavServer.Engines.Remote;
 using FubarDev.WebDavServer.FileSystem;
@@ -69,12 +70,14 @@ namespace Microsoft.Extensions.DependencyInjection
             services.TryAddSingleton<IPathTraversalEngine, PathTraversalEngine>();
             services.TryAddSingleton<IMimeTypeDetector, DefaultMimeTypeDetector>();
             services.TryAddSingleton<IEntryPropertyInitializer, DefaultEntryPropertyInitializer>();
+            services.TryAddSingleton<IBufferPoolFactory, ArrayPoolBufferPoolFactory>();
             services
                 .AddOptions()
                 .AddScoped<IWebDavDispatcher, WebDavServer>()
                 .AddSingleton<WebDavExceptionFilter>()
                 .AddScoped<IWebDavOutputFormatter, WebDavXmlOutputFormatter>()
-                .AddSingleton<LockCleanupTask>();
+                .AddSingleton<LockCleanupTask>()
+                .AddScoped(sp => sp.GetRequiredService<IBufferPoolFactory>().CreatePool());
             services.Scan(
                 scan => scan
                     .FromAssemblyOf<IHandler>()

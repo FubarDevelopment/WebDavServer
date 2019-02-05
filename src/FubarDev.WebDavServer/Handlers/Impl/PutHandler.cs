@@ -31,8 +31,8 @@ namespace FubarDev.WebDavServer.Handlers.Impl
         private readonly IFileSystem _fileSystem;
         private readonly IWebDavContext _context;
         private readonly IEntryPropertyInitializer _entryPropertyInitializer;
+        private readonly IBufferPoolFactory _bufferPoolFactory;
         private readonly ILogger<PutHandler> _logger;
-        private readonly ArrayPool<byte> _buffers = ArrayPool<byte>.Shared;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="PutHandler"/> class.
@@ -40,12 +40,14 @@ namespace FubarDev.WebDavServer.Handlers.Impl
         /// <param name="fileSystem">The root file system.</param>
         /// <param name="context">The WebDAV request context.</param>
         /// <param name="entryPropertyInitializer">The property initializer.</param>
+        /// <param name="bufferPoolFactory">A buffer pool factory.</param>
         /// <param name="logger">The logger.</param>
-        public PutHandler(IFileSystem fileSystem, IWebDavContext context, IEntryPropertyInitializer entryPropertyInitializer, ILogger<PutHandler> logger)
+        public PutHandler(IFileSystem fileSystem, IWebDavContext context, IEntryPropertyInitializer entryPropertyInitializer, IBufferPoolFactory bufferPoolFactory, ILogger<PutHandler> logger)
         {
             _fileSystem = fileSystem;
             _context = context;
             _entryPropertyInitializer = entryPropertyInitializer;
+            _bufferPoolFactory = bufferPoolFactory;
             _logger = logger;
         }
 
@@ -179,41 +181,25 @@ namespace FubarDev.WebDavServer.Handlers.Impl
 
         private async Task Copy(Stream source, Stream destination, long contentLength, CancellationToken cancellationToken)
         {
-#if DEBUG
-            var bufferSize = 4096;
-#else
-            var bufferSize = 65536;
-#endif
-            var buffer = _buffers.Rent(bufferSize);
-            try
+            using (var pool = _bufferPoolFactory.CreatePool())
             {
-                var maxDelay = TimeSpan.FromMilliseconds(200);
-                var sw = new Stopwatch();
+                var readCount = 0;
                 var totalReadCount = 0L;
                 var remaining = contentLength;
                 while (remaining != 0)
                 {
-                    var copySize = (int)Math.Min(remaining, bufferSize);
-                    sw.Restart();
-                    var readCount = await source.ReadAsync(buffer, 0, copySize, cancellationToken).ConfigureAwait(false);
+                    var buffer = pool.GetBuffer(readCount);
+                    var copySize = (int)Math.Min(remaining, buffer.Length);
+                    readCount = await source.ReadAsync(buffer, 0, copySize, cancellationToken).ConfigureAwait(false);
                     await destination.WriteAsync(buffer, 0, readCount, cancellationToken).ConfigureAwait(false);
-                    var elapsed = sw.Elapsed;
-                    if (readCount == bufferSize && elapsed < maxDelay && bufferSize < 0x4000000)
-                    {
-                        _buffers.Return(buffer);
-                        bufferSize *= 2;
-                        _logger.LogTrace("Increased buffer size to {0}", bufferSize);
-                        buffer = _buffers.Rent(bufferSize);
-                    }
 
                     remaining -= readCount;
                     totalReadCount += readCount;
-                    _logger.LogDebug("Wrote {0} bytes", totalReadCount);
+                    if (_logger.IsEnabled(LogLevel.Trace))
+                    {
+                        _logger.LogTrace("Wrote {0} bytes", totalReadCount);
+                    }
                 }
-            }
-            finally
-            {
-                _buffers.Return(buffer);
             }
         }
     }
