@@ -192,14 +192,6 @@ The base interface of `ICollection` and `IDocument` provides common information 
   > [!WARNING]
   > This file system might be different from the root file system when the this file system is mounted using the root file systems [IMountPointManager](xref:FubarDev.WebDavServer.FileSystem.Mount.IMountPointManager) implementation.
 
-* [IEntry.CreationTimeUtc](xref:FubarDev.WebDavServer.FileSystem.IEntry.CreationTimeUtc)
-
-  This property must return the creation time as [UTC](https://wikipedia.org/wiki/UTC).
-
-* [IEntry.LastWriteTimeUtc](xref:FubarDev.WebDavServer.FileSystem.IEntry.LastWriteTimeUtc)
-
-  This property must return the modification time as [UTC](https://wikipedia.org/wiki/UTC).
-
 * [IEntry.DeleteAsync](xref:FubarDev.WebDavServer.FileSystem.IEntry.DeleteAsync*)
 
   Deletes the given entry.
@@ -207,10 +199,6 @@ The base interface of `ICollection` and `IDocument` provides common information 
   > [!CAUTION]
   > When this function gets called on a collection, then the collection and **all its children** must be deleted **recursively**!
 
-* [IEntry.SetCreationTimeUtcAsync](xref:FubarDev.WebDavServer.FileSystem.IEntry.SetCreationTimeUtcAsync*)
+* [IEntry.GetLiveProperties](xref:FubarDev.WebDavServer.FileSystem.IEntry.GetLiveProperties*)
 
-  Sets the entries creation time as [UTC](https://wikipedia.org/wiki/UTC).
-
-* [IEntry.SetLastWriteTimeUtcAsync](xref:FubarDev.WebDavServer.FileSystem.IEntry.SetLastWriteTimeUtcAsync*)
-
-  Sets the entries modification time as [UTC](https://wikipedia.org/wiki/UTC).
+  Gets all live properties for this entry (excluding the `resourcetype` property).

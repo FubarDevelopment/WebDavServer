@@ -10,3 +10,5 @@
   href: custom-ps.md
 - name: Custom lock manager
   href: custom-lm.md
+- name: Configuration
+  href: xref:configuration
