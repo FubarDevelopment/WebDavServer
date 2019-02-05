@@ -5,10 +5,10 @@
   <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-    <title>You own WebDAV server </title>
+    <title>You own WebDAV server | WebDAV Server documentation </title>
     <meta name="viewport" content="width=device-width">
-    <meta name="title" content="You own WebDAV server ">
-    <meta name="generator" content="docfx 2.16.2.2">
+    <meta name="title" content="You own WebDAV server | WebDAV Server documentation ">
+    <meta name="generator" content="docfx 2.35.4.0">
     
     <link rel="shortcut icon" href="../favicon.ico">
     <link rel="stylesheet" href="../styles/docfx.vendor.css">
@@ -16,7 +16,7 @@
     <link rel="stylesheet" href="../styles/main.css">
     <meta property="docfx:navrel" content="../toc.html">
     <meta property="docfx:tocrel" content="toc.html">
-    
+    <meta property="docfx:rel" content="../">
     
   </head>
   <body data-spy="scroll" data-target="#affix">
@@ -55,6 +55,14 @@
           </div>
         </div>
       </header>
+      <div class="container body-content">
+        
+        <div id="search-results">
+          <div class="search-list"></div>
+          <div class="sr-items"></div>
+          <ul id="pagination"></ul>
+        </div>
+      </div>
       <div role="main" class="container body-content hide-when-search">
         
         <div class="sidenav hide-when-search">
@@ -94,19 +102,19 @@ is using a ASP.NET Core project as host.</p>
 <p>This are the packages that must be installed:</p>
 <ul>
 <li><p><a href="https://www.myget.org/feed/webdav-server/package/nuget/FubarDev.WebDavServer">FubarDev.WebDavServer</a></p>
-<p> This is the main package containing the WebDAV implementation.</p>
+<p>This is the main package containing the WebDAV implementation.</p>
 </li>
 <li><p><a href="https://www.myget.org/feed/webdav-server/package/nuget/FubarDev.WebDavServer.FileSystem.DotNet">FubarDev.WebDavServer.FileSystem.DotNet</a></p>
-<p> This package contains the <a class="xref" href="https://msdn.microsoft.com/en-us/library/system.io(v=vs.110).aspx">System.IO</a> based file system implementation.</p>
+<p>This package contains the <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.io">System.IO</a> based file system implementation.</p>
 </li>
 <li><p><a href="https://www.myget.org/feed/webdav-server/package/nuget/FubarDev.WebDavServer.Props.Store.TextFile">FubarDev.WebDavServer.Props.Store.TextFile</a></p>
-<p> This package stores the dead properties in a JSON file.</p>
+<p>This package stores the dead properties in a JSON file.</p>
 </li>
 <li><p><a href="https://www.myget.org/feed/webdav-server/package/nuget/FubarDev.WebDavServer.Locking.InMemory">FubarDev.WebDavServer.Locking.InMemory</a></p>
-<p> This is the implementation of the locking that doesn&#39;t persist the information about the active locks.</p>
+<p>This is the implementation of the locking that doesn't persist the information about the active locks.</p>
 </li>
 <li><p><a href="https://www.myget.org/feed/webdav-server/package/nuget/FubarDev.WebDavServer.AspNetCore">FubarDev.WebDavServer.AspNetCore</a></p>
-<p> This package contains the glue between ASP.NET Core and the WebDAV server.</p>
+<p>This package contains the glue between ASP.NET Core and the WebDAV server.</p>
 </li>
 </ul>
 <p><img src="../images/walk-through/04-packages.png" alt="screenshot"></p>
@@ -118,32 +126,33 @@ is using a ASP.NET Core project as host.</p>
 <p><img src="../images/walk-through/06-rename-controller.png" alt="screenshot"></p>
 </li>
 <li><p>Replace the content of <code>WebDavController.cs</code> with the following:</p>
-<pre><code class="lang-csharp"> using System;
+<pre><code class="lang-csharp">using System;
 
- using FubarDev.WebDavServer;
- using FubarDev.WebDavServer.AspNetCore;
+using FubarDev.WebDavServer;
+using FubarDev.WebDavServer.AspNetCore;
 
- using Microsoft.AspNetCore.Authorization;
- using Microsoft.AspNetCore.Mvc;
- using Microsoft.Extensions.Logging;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Logging;
 
- namespace TestWebDavServer.Controllers
- {
-     [Route(&quot;{*path}&quot;)]
-     public class WebDavController : WebDavControllerBase
-     {
-         public WebDavController(IWebDavContext context, IWebDavDispatcher dispatcher, ILogger&lt;WebDavIndirectResult&gt; responseLogger = null)
-             : base(context, dispatcher, responseLogger)
-         {
-         }
-     }
- }
-</code></pre><p> <img src="../images/walk-through/07-modify-controller.png" alt="screenshot"></p>
+namespace TestWebDavServer.Controllers
+{
+    [Route(&quot;{*path}&quot;)]
+    public class WebDavController : WebDavControllerBase
+    {
+        public WebDavController(IWebDavContext context, IWebDavDispatcher dispatcher, ILogger&lt;WebDavIndirectResult&gt; responseLogger = null)
+            : base(context, dispatcher, responseLogger)
+        {
+        }
+    }
+}
+</code></pre>
+<p><img src="../images/walk-through/07-modify-controller.png" alt="screenshot"></p>
 </li>
 </ol>
 <h2 id="explanation">Explanation</h2>
 <p>This controller uses the base controller class from <a class="xref" href="../api/FubarDev.WebDavServer.AspNetCore.html">FubarDev.WebDavServer.AspNetCore</a>. This
-controller contains everything that&#39;s needed for a WebDAV server class 1,2 implementation.</p>
+controller contains everything that's needed for a WebDAV server class 1,2 implementation.</p>
 <p>The <a class="xref" href="../api/FubarDev.WebDavServer.IWebDavContext.html">IWebDavContext</a> is the request context (similar to the <code>HttpContext</code> used in ASP.NET Core). It is used to query some basic information about the current request.</p>
 <p>The <a class="xref" href="../api/FubarDev.WebDavServer.IWebDavDispatcher.html">IWebDavDispatcher</a> is the interface to the main WebDAV server functionality.</p>
 <h1 id="configure-the-servies">Configure the servies</h1>
@@ -160,14 +169,15 @@ controller contains everything that&#39;s needed for a WebDAV server class 1,2 i
 .AddMvcCore()
 .AddAuthorization()
 .AddWebDav();
-</code></pre><p><img src="../images/walk-through/09-after-replace.png" alt="screenshot"></p>
+</code></pre>
+<p><img src="../images/walk-through/09-after-replace.png" alt="screenshot"></p>
 <h2 id="explanation-1">Explanation</h2>
 <p>The configuration of <code>DotNetFileSystemOptions</code> uses the <code>%TEMP%\webdav</code> folder as root folder. It also specifies that the unauthenticated user always gets the name <code>anonymous</code>.</p>
 <p>This code also adds some required services:</p>
 <ul>
 <li><p><a class="xref" href="../api/FubarDev.WebDavServer.Props.Store.IPropertyStoreFactory.html">IPropertyStoreFactory</a> is the interface used for getting an <a class="xref" href="../api/FubarDev.WebDavServer.Props.Store.IPropertyStore.html">IPropertyStore</a> for an <a class="xref" href="../api/FubarDev.WebDavServer.FileSystem.IFileSystem.html">IFileSystem</a>.</p>
 </li>
-<li><p><a class="xref" href="../api/FubarDev.WebDavServer.FileSystem.IFileSystemFactory.html">IFileSystemFactory</a> is the unterface used for getting an <a class="xref" href="../api/FubarDev.WebDavServer.FileSystem.IFileSystem.html">IFileSystem</a> for the currently authenticated <a class="xref" href="https://msdn.microsoft.com/en-us/library/system.security.principal.iprincipal(v=vs.110).aspx">IPrincipal</a>.</p>
+<li><p><a class="xref" href="../api/FubarDev.WebDavServer.FileSystem.IFileSystemFactory.html">IFileSystemFactory</a> is the unterface used for getting an <a class="xref" href="../api/FubarDev.WebDavServer.FileSystem.IFileSystem.html">IFileSystem</a> for the currently authenticated <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.security.principal.iprincipal">IPrincipal</a>.</p>
 </li>
 <li><p><a class="xref" href="../api/FubarDev.WebDavServer.Locking.ILockManager.html">ILockManager</a> is used for the coordination of WebDAV locks.</p>
 </li>
@@ -182,12 +192,13 @@ controller contains everything that&#39;s needed for a WebDAV server class 1,2 i
 <p><img src="../images/walk-through/10-add-authorize-controller-attribute.png" alt="screenshot"></p>
 </li>
 <li><p>Replace in <code>Program.cs</code> the <code>.UseKestrel()</code> with the WebListener</p>
-<pre><code class="lang-csharp">     .UseWebListener(opt =&gt;
-     {
-         opt.ListenerSettings.Authentication.Schemes = AuthenticationSchemes.NTLM;
-         opt.ListenerSettings.Authentication.AllowAnonymous = true;
-     })
-</code></pre></li>
+<pre><code class="lang-csharp">    .UseWebListener(opt =&gt;
+    {
+        opt.ListenerSettings.Authentication.Schemes = AuthenticationSchemes.NTLM;
+        opt.ListenerSettings.Authentication.AllowAnonymous = true;
+    })
+</code></pre>
+</li>
 <li><p>Remove the IIS integration</p>
 </li>
 </ol>
@@ -200,7 +211,7 @@ controller contains everything that&#39;s needed for a WebDAV server class 1,2 i
 <p>After:</p>
 <p><img src="../images/walk-through/11-after-browser-disable.png" alt="screenshot"></p>
 <h1 id="change-the-start-project-important">Change the start project (<strong>important!</strong>)</h1>
-<p>You must change the start project from <code>IIS Express</code> to <code>TestWebDavServer</code> (your test project). Otherwise, using the <code>NTLM</code> authentication configured above, doesn&#39;t work.</p>
+<p>You must change the start project from <code>IIS Express</code> to <code>TestWebDavServer</code> (your test project). Otherwise, using the <code>NTLM</code> authentication configured above, doesn't work.</p>
 <p><img src="../images/walk-through/12-start-server.png" alt="screenshot"></p>
 <h1 id="running-the-test-server">Running the test server</h1>
 <p>When you start the test server, you can see the WebDAV url in the console window:</p>
@@ -215,7 +226,7 @@ controller contains everything that&#39;s needed for a WebDAV server class 1,2 i
               <div class="contribution">
                 <ul class="nav">
                   <li>
-                    <a href="https://github.com/FubarDevelopment/WebDavServer/blob/master/articles/getting-started.md/#L1" class="contribution-link">Improve this Doc</a>
+                    <a href="https://github.com/FubarDevelopment/WebDavServer/blob/master/docfx_project/articles/getting-started.md/#L1" class="contribution-link">Improve this Doc</a>
                   </li>
                 </ul>
               </div>
@@ -234,7 +245,7 @@ controller contains everything that&#39;s needed for a WebDAV server class 1,2 i
             <span class="pull-right">
               <a href="#top">Back to top</a>
             </span>
-            <span>Copyright © 2016-2017 Fubar Development Junker<br>Generated by <strong>DocFX</strong></span>
+            <span>Copyright © 2016-2019 Fubar Development Junker<br>Generated by <strong>DocFX</strong></span>
             
           </div>
         </div>

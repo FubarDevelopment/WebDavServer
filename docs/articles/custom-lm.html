@@ -5,10 +5,10 @@
   <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-    <title>How to develop your own lock manager </title>
+    <title>How to develop your own lock manager | WebDAV Server documentation </title>
     <meta name="viewport" content="width=device-width">
-    <meta name="title" content="How to develop your own lock manager ">
-    <meta name="generator" content="docfx 2.16.2.2">
+    <meta name="title" content="How to develop your own lock manager | WebDAV Server documentation ">
+    <meta name="generator" content="docfx 2.35.4.0">
     
     <link rel="shortcut icon" href="../favicon.ico">
     <link rel="stylesheet" href="../styles/docfx.vendor.css">
@@ -16,7 +16,7 @@
     <link rel="stylesheet" href="../styles/main.css">
     <meta property="docfx:navrel" content="../toc.html">
     <meta property="docfx:tocrel" content="toc.html">
-    
+    <meta property="docfx:rel" content="../">
     
   </head>
   <body data-spy="scroll" data-target="#affix">
@@ -55,6 +55,14 @@
           </div>
         </div>
       </header>
+      <div class="container body-content">
+        
+        <div id="search-results">
+          <div class="search-list"></div>
+          <div class="sr-items"></div>
+          <ul id="pagination"></ul>
+        </div>
+      </div>
       <div role="main" class="container body-content hide-when-search">
         
         <div class="sidenav hide-when-search">
@@ -80,7 +88,7 @@ committing).</p>
 <h1 id="create-a-new-class">Create a new class</h1>
 <p>First, you have to create a new class derived from <a class="xref" href="../api/FubarDev.WebDavServer.Locking.LockManagerBase.html">LockManagerBase</a>. It needs to implement the
 <code>BeginTransactionAsync</code> method.</p>
-<p>We don&#39;t have a database that supports transactions, so we have to use a semaphore
+<p>We don't have a database that supports transactions, so we have to use a semaphore
 to restrict concurrent access to the file system. Another solution might be using
 a lock file, which is overkill for this example.</p>
 <h1 id="storage">Storage</h1>
@@ -94,12 +102,12 @@ parameter.</p>
 <p>The constructor should take a parameter of type <code>IOptions&lt;TextFileLockManagerOptions&gt;</code> and we pass its <code>Value</code> to the base
 class.</p>
 <h1 id="synchronization">Synchronization</h1>
-<p>For the synchronization, we use a <a class="xref" href="https://msdn.microsoft.com/en-us/library/system.threading.semaphoreslim(v=vs.110).aspx">SemaphoreSlim</a> and create it with an initial count of 1. In the <code>BeginTransactionAsync</code> method, we first have to call <a class="xref" href="https://msdn.microsoft.com/en-us/library/hh462805(v=vs.110).aspx">SemaphoreSlim.WaitAsync</a> and then we have to call <code>Release</code> on the semaphore in the <code>Dispose</code> method of our <code>ILockManagerTransaction</code> implementation. For a cluster of WebDAV servers using the
+<p>For the synchronization, we use a <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.threading.semaphoreslim">SemaphoreSlim</a> and create it with an initial count of 1. In the <code>BeginTransactionAsync</code> method, we first have to call <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.threading.semaphoreslim.waitasync#System_Threading_SemaphoreSlim_WaitAsync">SemaphoreSlim.WaitAsync</a> and then we have to call <code>Release</code> on the semaphore in the <code>Dispose</code> method of our <code>ILockManagerTransaction</code> implementation. For a cluster of WebDAV servers using the
 same lock file, one may use a lock file to synchronize access.</p>
 <p>You can find the changes in <a href="https://github.com/FubarDevelopment/WebDavServer-TextFileLockManager/commit/961319aba341423bee39e7968385c91d58771511">this GIT commit</a>.</p>
 <h1 id="file-format">File format</h1>
-<p>We just use a simple JSON file because we usually don&#39;t have many active locks and reading and writing a whole
-file doesn&#39;t cause a huge performance penalty.</p>
+<p>We just use a simple JSON file because we usually don't have many active locks and reading and writing a whole
+file doesn't cause a huge performance penalty.</p>
 <h2 id="structure">Structure</h2>
 <p>The structure of the file is just a list of objects that implement the <a class="xref" href="../api/FubarDev.WebDavServer.Locking.IActiveLock.html">IActiveLock</a> interface,
 but it also has to implement every property with a setter and an additional <code>Owner</code> property.</p>
@@ -116,7 +124,7 @@ but it also has to implement every property with a setter and an additional <cod
 <p>This function is used to get all active locks. We just cast the values of the dicitonary to  an <a class="xref" href="../api/FubarDev.WebDavServer.Locking.IActiveLock.html">IActiveLock</a> and return those as a list. A sample implementation can be found in <a href="https://github.com/FubarDevelopment/WebDavServer-TextFileLockManager/commit/117137a82e167d82df5888c48a3d3d843a1868c2">this GIT commit</a>.</p>
 </li>
 <li><p><a class="xref" href="../api/FubarDev.WebDavServer.Locking.LockManagerBase.ILockManagerTransaction.html#FubarDev_WebDavServer_Locking_LockManagerBase_ILockManagerTransaction_AddAsync_FubarDev_WebDavServer_Locking_IActiveLock_System_Threading_CancellationToken_">ILockManagerTransaction.AddAsync</a></p>
-<p>Adds a new active lock. We&#39;re just adding the lock to the dictionary. An example implementation (with tests) can be found <a href="https://github.com/FubarDevelopment/WebDavServer-TextFileLockManager/commit/254e91583c0c21f2b4a4d3e5694ac3094921ea6f">on GitHub</a>.</p>
+<p>Adds a new active lock. We're just adding the lock to the dictionary. An example implementation (with tests) can be found <a href="https://github.com/FubarDevelopment/WebDavServer-TextFileLockManager/commit/254e91583c0c21f2b4a4d3e5694ac3094921ea6f">on GitHub</a>.</p>
 </li>
 <li><p><a class="xref" href="../api/FubarDev.WebDavServer.Locking.LockManagerBase.ILockManagerTransaction.html#FubarDev_WebDavServer_Locking_LockManagerBase_ILockManagerTransaction_UpdateAsync_FubarDev_WebDavServer_Locking_IActiveLock_System_Threading_CancellationToken_">ILockManagerTransaction.UpdateAsync</a></p>
 <p>Updates an active lock. This is done when the lock was refreshed. The implementation for this example can be found <a href="https://github.com/FubarDevelopment/WebDavServer-TextFileLockManager/commit/fa64422266779354f05f5e20f072cc133fb8fe20">on GitHub</a>.</p>
@@ -128,14 +136,14 @@ but it also has to implement every property with a setter and an additional <cod
 <p>Gets an active lock by its state token.</p>
 </li>
 <li><p><a class="xref" href="../api/FubarDev.WebDavServer.Locking.LockManagerBase.ILockManagerTransaction.html#FubarDev_WebDavServer_Locking_LockManagerBase_ILockManagerTransaction_CommitAsync_System_Threading_CancellationToken_">ILockManagerTransaction.CommitAsync</a></p>
-<p>Commits all changes made during the transaction. In our implementation, we&#39;ll just save the locks as JSON file.</p>
+<p>Commits all changes made during the transaction. In our implementation, we'll just save the locks as JSON file.</p>
 </li>
 </ul>
 <p>The implementation for <code>RemoveAsync</code> and <code>GetAsync</code> can be found in <a href="https://github.com/FubarDevelopment/WebDavServer-TextFileLockManager/commit/30cbf50d170a6ace1868a00aea0ff3716861f727">this GitHub commit</a>.</p>
 <h2 id="getactivelocksasync">GetActiveLocksAsync</h2>
 <p>This function just returns every row in the table holding the active locks.</p>
 <h2 id="idisposable-implementation">IDisposable implementation</h2>
-<p>This interface also inherits from <a class="xref" href="https://msdn.microsoft.com/en-us/library/system.idisposable(v=vs.110).aspx">IDisposable</a>. It depends on the state of the transaction
+<p>This interface also inherits from <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.idisposable">IDisposable</a>. It depends on the state of the transaction
 what happens when the <code>Dispose</code> function is called:</p>
 <ul>
 <li><code>CommitAsync</code> called before <code>Dispose</code> results in a disposable of the resources.</li>
@@ -146,7 +154,7 @@ what happens when the <code>Dispose</code> function is called:</p>
 <h1 id="summary">Summary</h1>
 <p>The easiest way to implement a lock manager is to use a database that already supports transactions, but almost everything
 can be used to store the transactions. The most important thing is the synchronized access to the locks. It is also
-very important, that the <code>BeginTransaction</code> method blocks the caller until it&#39;s safe to update the locks.</p>
+very important, that the <code>BeginTransaction</code> method blocks the caller until it's safe to update the locks.</p>
 <p>For databases like MongoDB, a <a href="https://docs.mongodb.com/manual/tutorial/perform-two-phase-commits/">two-phase commit</a> is encouraged.</p>
 
             </article>
@@ -157,7 +165,7 @@ very important, that the <code>BeginTransaction</code> method blocks the caller 
               <div class="contribution">
                 <ul class="nav">
                   <li>
-                    <a href="https://github.com/FubarDevelopment/WebDavServer/blob/master/articles/custom-lm.md/#L1" class="contribution-link">Improve this Doc</a>
+                    <a href="https://github.com/FubarDevelopment/WebDavServer/blob/master/docfx_project/articles/custom-lm.md/#L1" class="contribution-link">Improve this Doc</a>
                   </li>
                 </ul>
               </div>
@@ -176,7 +184,7 @@ very important, that the <code>BeginTransaction</code> method blocks the caller 
             <span class="pull-right">
               <a href="#top">Back to top</a>
             </span>
-            <span>Copyright © 2016-2017 Fubar Development Junker<br>Generated by <strong>DocFX</strong></span>
+            <span>Copyright © 2016-2019 Fubar Development Junker<br>Generated by <strong>DocFX</strong></span>
             
           </div>
         </div>

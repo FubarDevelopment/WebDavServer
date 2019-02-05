@@ -6,11 +6,11 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
     <title>Interface IMissingTarget&lt;TCollection, TDocument, TMissing&gt;
-   </title>
+   | WebDAV Server documentation </title>
     <meta name="viewport" content="width=device-width">
     <meta name="title" content="Interface IMissingTarget&lt;TCollection, TDocument, TMissing&gt;
-   ">
-    <meta name="generator" content="docfx 2.16.2.2">
+   | WebDAV Server documentation ">
+    <meta name="generator" content="docfx 2.35.4.0">
     
     <link rel="shortcut icon" href="../favicon.ico">
     <link rel="stylesheet" href="../styles/docfx.vendor.css">
@@ -18,7 +18,7 @@
     <link rel="stylesheet" href="../styles/main.css">
     <meta property="docfx:navrel" content="../toc.html">
     <meta property="docfx:tocrel" content="toc.html">
-    
+    <meta property="docfx:rel" content="../">
     
   </head>
   <body data-spy="scroll" data-target="#affix">
@@ -57,6 +57,14 @@
           </div>
         </div>
       </header>
+      <div role="main" class="container body-content">
+        
+        <div id="search-results">
+          <div class="search-list"></div>
+          <div class="sr-items"></div>
+          <ul id="pagination"></ul>
+        </div>
+      </div>
       <div role="main" class="container body-content hide-when-search">
         
         <div class="sidenav hide-when-search">
@@ -72,7 +80,7 @@
               
               <h1 id="FubarDev_WebDavServer_Engines_IMissingTarget_3" data-uid="FubarDev.WebDavServer.Engines.IMissingTarget`3">Interface IMissingTarget&lt;TCollection, TDocument, TMissing&gt;
               </h1>
-              <div class="markdown level0 summary"><p>Interface for a target that&#39;s missing</p>
+              <div class="markdown level0 summary"><p>Interface for a target that's missing</p>
 </div>
               <div class="markdown level0 conceptual"></div>
               <div class="inheritedMembers">
@@ -123,16 +131,17 @@
                 <a href="https://github.com/FubarDevelopment/WebDavServer/new/master/apiSpec/new?filename=FubarDev_WebDavServer_Engines_IMissingTarget_3_CreateCollectionAsync_System_Threading_CancellationToken_.md&amp;value=---%0Auid%3A%20FubarDev.WebDavServer.Engines.IMissingTarget%603.CreateCollectionAsync(System.Threading.CancellationToken)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
               </span>
               <span class="small pull-right mobile-hide">
-                <a href="https://github.com/FubarDevelopment/WebDavServer/blob/master/src/FubarDev.WebDavServer/Engines/IMissingTarget.cs/#L28">View Source</a>
+                <a href="https://github.com/FubarDevelopment/WebDavServer/blob/release/2.0/src/FubarDev.WebDavServer/Engines/IMissingTarget.cs/#L28">View Source</a>
               </span>
               <a id="FubarDev_WebDavServer_Engines_IMissingTarget_3_CreateCollectionAsync_" data-uid="FubarDev.WebDavServer.Engines.IMissingTarget`3.CreateCollectionAsync*"></a>
               <h4 id="FubarDev_WebDavServer_Engines_IMissingTarget_3_CreateCollectionAsync_System_Threading_CancellationToken_" data-uid="FubarDev.WebDavServer.Engines.IMissingTarget`3.CreateCollectionAsync(System.Threading.CancellationToken)">CreateCollectionAsync(CancellationToken)</h4>
-              <div class="markdown level1 summary"><p>Creates a collection with the same name of this target</p>
+              <div class="markdown level1 summary"><p>Creates a collection with the same name of this target.</p>
 </div>
               <div class="markdown level1 conceptual"></div>
               <h5 class="decalaration">Declaration</h5>
               <div class="codewrapper">
                 <pre><code class="lang-csharp hljs">[NotNull]
+[ItemNotNull]
 Task&lt;TCollection&gt; CreateCollectionAsync(CancellationToken cancellationToken)</code></pre>
               </div>
               <h5 class="parameters">Parameters</h5>
@@ -146,9 +155,9 @@ Task&lt;TCollection&gt; CreateCollectionAsync(CancellationToken cancellationToke
                 </thead>
                 <tbody>
                   <tr>
-                    <td><a class="xref" href="https://msdn.microsoft.com/en-us/library/system.threading.cancellationtoken(v=vs.110).aspx">CancellationToken</a></td>
+                    <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.threading.cancellationtoken">CancellationToken</a></td>
                     <td><span class="parametername">cancellationToken</span></td>
-                    <td><p>The cancellation token</p>
+                    <td><p>The cancellation token.</p>
 </td>
                   </tr>
                 </tbody>
@@ -163,8 +172,8 @@ Task&lt;TCollection&gt; CreateCollectionAsync(CancellationToken cancellationToke
                 </thead>
                 <tbody>
                   <tr>
-                    <td><a class="xref" href="https://msdn.microsoft.com/en-us/library/dd321424(v=vs.110).aspx">Task</a>&lt;TCollection&gt;</td>
-                    <td><p>The created collection target</p>
+                    <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.threading.tasks.task-1">Task</a>&lt;TCollection&gt;</td>
+                    <td><p>The created collection target.</p>
 </td>
                   </tr>
                 </tbody>
@@ -180,7 +189,7 @@ Task&lt;TCollection&gt; CreateCollectionAsync(CancellationToken cancellationToke
                     <a href="https://github.com/FubarDevelopment/WebDavServer/new/master/apiSpec/new?filename=FubarDev_WebDavServer_Engines_IMissingTarget_3.md&amp;value=---%0Auid%3A%20FubarDev.WebDavServer.Engines.IMissingTarget%603%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A" class="contribution-link">Improve this Doc</a>
                   </li>
                   <li>
-                    <a href="https://github.com/FubarDevelopment/WebDavServer/blob/master/src/FubarDev.WebDavServer/Engines/IMissingTarget.cs/#L18" class="contribution-link">View Source</a>
+                    <a href="https://github.com/FubarDevelopment/WebDavServer/blob/release/2.0/src/FubarDev.WebDavServer/Engines/IMissingTarget.cs/#L18" class="contribution-link">View Source</a>
                   </li>
                 </ul>
               </div>
@@ -199,7 +208,7 @@ Task&lt;TCollection&gt; CreateCollectionAsync(CancellationToken cancellationToke
             <span class="pull-right">
               <a href="#top">Back to top</a>
             </span>
-            <span>Copyright © 2016-2017 Fubar Development Junker<br>Generated by <strong>DocFX</strong></span>
+            <span>Copyright © 2016-2019 Fubar Development Junker<br>Generated by <strong>DocFX</strong></span>
             
           </div>
         </div>

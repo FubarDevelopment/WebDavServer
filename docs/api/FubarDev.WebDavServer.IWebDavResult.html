@@ -6,11 +6,11 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
     <title>Interface IWebDavResult
-   </title>
+   | WebDAV Server documentation </title>
     <meta name="viewport" content="width=device-width">
     <meta name="title" content="Interface IWebDavResult
-   ">
-    <meta name="generator" content="docfx 2.16.2.2">
+   | WebDAV Server documentation ">
+    <meta name="generator" content="docfx 2.35.4.0">
     
     <link rel="shortcut icon" href="../favicon.ico">
     <link rel="stylesheet" href="../styles/docfx.vendor.css">
@@ -18,7 +18,7 @@
     <link rel="stylesheet" href="../styles/main.css">
     <meta property="docfx:navrel" content="../toc.html">
     <meta property="docfx:tocrel" content="toc.html">
-    
+    <meta property="docfx:rel" content="../">
     
   </head>
   <body data-spy="scroll" data-target="#affix">
@@ -57,6 +57,14 @@
           </div>
         </div>
       </header>
+      <div role="main" class="container body-content">
+        
+        <div id="search-results">
+          <div class="search-list"></div>
+          <div class="sr-items"></div>
+          <ul id="pagination"></ul>
+        </div>
+      </div>
       <div role="main" class="container body-content hide-when-search">
         
         <div class="sidenav hide-when-search">
@@ -88,11 +96,11 @@
                 <a href="https://github.com/FubarDevelopment/WebDavServer/new/master/apiSpec/new?filename=FubarDev_WebDavServer_IWebDavResult_StatusCode.md&amp;value=---%0Auid%3A%20FubarDev.WebDavServer.IWebDavResult.StatusCode%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
               </span>
               <span class="small pull-right mobile-hide">
-                <a href="https://github.com/FubarDevelopment/WebDavServer/blob/master/src/FubarDev.WebDavServer/IWebDavResult.cs/#L22">View Source</a>
+                <a href="https://github.com/FubarDevelopment/WebDavServer/blob/release/2.0/src/FubarDev.WebDavServer/IWebDavResult.cs/#L22">View Source</a>
               </span>
               <a id="FubarDev_WebDavServer_IWebDavResult_StatusCode_" data-uid="FubarDev.WebDavServer.IWebDavResult.StatusCode*"></a>
               <h4 id="FubarDev_WebDavServer_IWebDavResult_StatusCode" data-uid="FubarDev.WebDavServer.IWebDavResult.StatusCode">StatusCode</h4>
-              <div class="markdown level1 summary"><p>Gets the WebDAV status code</p>
+              <div class="markdown level1 summary"><p>Gets the WebDAV status code.</p>
 </div>
               <div class="markdown level1 conceptual"></div>
               <h5 class="decalaration">Declaration</h5>
@@ -121,11 +129,11 @@
                 <a href="https://github.com/FubarDevelopment/WebDavServer/new/master/apiSpec/new?filename=FubarDev_WebDavServer_IWebDavResult_ExecuteResultAsync_FubarDev_WebDavServer_IWebDavResponse_System_Threading_CancellationToken_.md&amp;value=---%0Auid%3A%20FubarDev.WebDavServer.IWebDavResult.ExecuteResultAsync(FubarDev.WebDavServer.IWebDavResponse%2CSystem.Threading.CancellationToken)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
               </span>
               <span class="small pull-right mobile-hide">
-                <a href="https://github.com/FubarDevelopment/WebDavServer/blob/master/src/FubarDev.WebDavServer/IWebDavResult.cs/#L30">View Source</a>
+                <a href="https://github.com/FubarDevelopment/WebDavServer/blob/release/2.0/src/FubarDev.WebDavServer/IWebDavResult.cs/#L30">View Source</a>
               </span>
               <a id="FubarDev_WebDavServer_IWebDavResult_ExecuteResultAsync_" data-uid="FubarDev.WebDavServer.IWebDavResult.ExecuteResultAsync*"></a>
               <h4 id="FubarDev_WebDavServer_IWebDavResult_ExecuteResultAsync_FubarDev_WebDavServer_IWebDavResponse_System_Threading_CancellationToken_" data-uid="FubarDev.WebDavServer.IWebDavResult.ExecuteResultAsync(FubarDev.WebDavServer.IWebDavResponse,System.Threading.CancellationToken)">ExecuteResultAsync(IWebDavResponse, CancellationToken)</h4>
-              <div class="markdown level1 summary"><p>Writes the result to a <span class="paramref">response</span></p>
+              <div class="markdown level1 summary"><p>Writes the result to a <code data-dev-comment-type="paramref" class="paramref">response</code>.</p>
 </div>
               <div class="markdown level1 conceptual"></div>
               <h5 class="decalaration">Declaration</h5>
@@ -146,13 +154,13 @@ Task ExecuteResultAsync([NotNull] IWebDavResponse response, CancellationToken ct
                   <tr>
                     <td><a class="xref" href="FubarDev.WebDavServer.IWebDavResponse.html">IWebDavResponse</a></td>
                     <td><span class="parametername">response</span></td>
-                    <td><p>The response object to write to</p>
+                    <td><p>The response object to write to.</p>
 </td>
                   </tr>
                   <tr>
-                    <td><a class="xref" href="https://msdn.microsoft.com/en-us/library/system.threading.cancellationtoken(v=vs.110).aspx">CancellationToken</a></td>
+                    <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.threading.cancellationtoken">CancellationToken</a></td>
                     <td><span class="parametername">ct</span></td>
-                    <td><p>The cancellation token</p>
+                    <td><p>The cancellation token.</p>
 </td>
                   </tr>
                 </tbody>
@@ -167,8 +175,8 @@ Task ExecuteResultAsync([NotNull] IWebDavResponse response, CancellationToken ct
                 </thead>
                 <tbody>
                   <tr>
-                    <td><a class="xref" href="https://msdn.microsoft.com/en-us/library/system.threading.tasks.task(v=vs.110).aspx">Task</a></td>
-                    <td><p>The async task</p>
+                    <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.threading.tasks.task">Task</a></td>
+                    <td><p>The async task.</p>
 </td>
                   </tr>
                 </tbody>
@@ -184,7 +192,7 @@ Task ExecuteResultAsync([NotNull] IWebDavResponse response, CancellationToken ct
                     <a href="https://github.com/FubarDevelopment/WebDavServer/new/master/apiSpec/new?filename=FubarDev_WebDavServer_IWebDavResult.md&amp;value=---%0Auid%3A%20FubarDev.WebDavServer.IWebDavResult%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A" class="contribution-link">Improve this Doc</a>
                   </li>
                   <li>
-                    <a href="https://github.com/FubarDevelopment/WebDavServer/blob/master/src/FubarDev.WebDavServer/IWebDavResult.cs/#L17" class="contribution-link">View Source</a>
+                    <a href="https://github.com/FubarDevelopment/WebDavServer/blob/release/2.0/src/FubarDev.WebDavServer/IWebDavResult.cs/#L17" class="contribution-link">View Source</a>
                   </li>
                 </ul>
               </div>
@@ -203,7 +211,7 @@ Task ExecuteResultAsync([NotNull] IWebDavResponse response, CancellationToken ct
             <span class="pull-right">
               <a href="#top">Back to top</a>
             </span>
-            <span>Copyright © 2016-2017 Fubar Development Junker<br>Generated by <strong>DocFX</strong></span>
+            <span>Copyright © 2016-2019 Fubar Development Junker<br>Generated by <strong>DocFX</strong></span>
             
           </div>
         </div>

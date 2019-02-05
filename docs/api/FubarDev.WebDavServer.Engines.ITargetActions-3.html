@@ -6,11 +6,11 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
     <title>Interface ITargetActions&lt;TCollection, TDocument, TMissing&gt;
-   </title>
+   | WebDAV Server documentation </title>
     <meta name="viewport" content="width=device-width">
     <meta name="title" content="Interface ITargetActions&lt;TCollection, TDocument, TMissing&gt;
-   ">
-    <meta name="generator" content="docfx 2.16.2.2">
+   | WebDAV Server documentation ">
+    <meta name="generator" content="docfx 2.35.4.0">
     
     <link rel="shortcut icon" href="../favicon.ico">
     <link rel="stylesheet" href="../styles/docfx.vendor.css">
@@ -18,7 +18,7 @@
     <link rel="stylesheet" href="../styles/main.css">
     <meta property="docfx:navrel" content="../toc.html">
     <meta property="docfx:tocrel" content="toc.html">
-    
+    <meta property="docfx:rel" content="../">
     
   </head>
   <body data-spy="scroll" data-target="#affix">
@@ -57,6 +57,14 @@
           </div>
         </div>
       </header>
+      <div role="main" class="container body-content">
+        
+        <div id="search-results">
+          <div class="search-list"></div>
+          <div class="sr-items"></div>
+          <ul id="pagination"></ul>
+        </div>
+      </div>
       <div role="main" class="container body-content hide-when-search">
         
         <div class="sidenav hide-when-search">
@@ -80,6 +88,7 @@
               <h5 id="FubarDev_WebDavServer_Engines_ITargetActions_3_syntax">Syntax</h5>
               <div class="codewrapper">
                 <pre><code class="lang-csharp hljs">public interface ITargetActions&lt;in TCollection, TDocument, in TMissing&gt;
+
     where TCollection : class, ICollectionTarget&lt;TCollection, TDocument, TMissing&gt; where TDocument : class, IDocumentTarget&lt;TCollection, TDocument, TMissing&gt; where TMissing : class, IMissingTarget&lt;TCollection, TDocument, TMissing&gt;</code></pre>
               </div>
               <h5 class="typeParameters">Type Parameters</h5>
@@ -115,11 +124,11 @@
                 <a href="https://github.com/FubarDevelopment/WebDavServer/new/master/apiSpec/new?filename=FubarDev_WebDavServer_Engines_ITargetActions_3_Dispatcher.md&amp;value=---%0Auid%3A%20FubarDev.WebDavServer.Engines.ITargetActions%603.Dispatcher%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
               </span>
               <span class="small pull-right mobile-hide">
-                <a href="https://github.com/FubarDevelopment/WebDavServer/blob/master/src/FubarDev.WebDavServer/Engines/ITargetActions.cs/#L31">View Source</a>
+                <a href="https://github.com/FubarDevelopment/WebDavServer/blob/release/2.0/src/FubarDev.WebDavServer/Engines/ITargetActions.cs/#L31">View Source</a>
               </span>
               <a id="FubarDev_WebDavServer_Engines_ITargetActions_3_Dispatcher_" data-uid="FubarDev.WebDavServer.Engines.ITargetActions`3.Dispatcher*"></a>
               <h4 id="FubarDev_WebDavServer_Engines_ITargetActions_3_Dispatcher" data-uid="FubarDev.WebDavServer.Engines.ITargetActions`3.Dispatcher">Dispatcher</h4>
-              <div class="markdown level1 summary"><p>Gets the WebDAV dispatcher</p>
+              <div class="markdown level1 summary"><p>Gets the WebDAV dispatcher.</p>
 </div>
               <div class="markdown level1 conceptual"></div>
               <h5 class="decalaration">Declaration</h5>
@@ -149,11 +158,11 @@
                 <a href="https://github.com/FubarDevelopment/WebDavServer/new/master/apiSpec/new?filename=FubarDev_WebDavServer_Engines_ITargetActions_3_ExistingTargetBehaviour.md&amp;value=---%0Auid%3A%20FubarDev.WebDavServer.Engines.ITargetActions%603.ExistingTargetBehaviour%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
               </span>
               <span class="small pull-right mobile-hide">
-                <a href="https://github.com/FubarDevelopment/WebDavServer/blob/master/src/FubarDev.WebDavServer/Engines/ITargetActions.cs/#L36">View Source</a>
+                <a href="https://github.com/FubarDevelopment/WebDavServer/blob/release/2.0/src/FubarDev.WebDavServer/Engines/ITargetActions.cs/#L36">View Source</a>
               </span>
               <a id="FubarDev_WebDavServer_Engines_ITargetActions_3_ExistingTargetBehaviour_" data-uid="FubarDev.WebDavServer.Engines.ITargetActions`3.ExistingTargetBehaviour*"></a>
               <h4 id="FubarDev_WebDavServer_Engines_ITargetActions_3_ExistingTargetBehaviour" data-uid="FubarDev.WebDavServer.Engines.ITargetActions`3.ExistingTargetBehaviour">ExistingTargetBehaviour</h4>
-              <div class="markdown level1 summary"><p>Gets the behaviour of this implementation when a target already exists</p>
+              <div class="markdown level1 summary"><p>Gets the behaviour of this implementation when a target already exists.</p>
 </div>
               <div class="markdown level1 conceptual"></div>
               <h5 class="decalaration">Declaration</h5>
@@ -182,11 +191,11 @@
                 <a href="https://github.com/FubarDevelopment/WebDavServer/new/master/apiSpec/new?filename=FubarDev_WebDavServer_Engines_ITargetActions_3_ExecuteAsync_FubarDev_WebDavServer_FileSystem_ICollection__0_System_Threading_CancellationToken_.md&amp;value=---%0Auid%3A%20FubarDev.WebDavServer.Engines.ITargetActions%603.ExecuteAsync(FubarDev.WebDavServer.FileSystem.ICollection%2C%600%2CSystem.Threading.CancellationToken)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
               </span>
               <span class="small pull-right mobile-hide">
-                <a href="https://github.com/FubarDevelopment/WebDavServer/blob/master/src/FubarDev.WebDavServer/Engines/ITargetActions.cs/#L73">View Source</a>
+                <a href="https://github.com/FubarDevelopment/WebDavServer/blob/release/2.0/src/FubarDev.WebDavServer/Engines/ITargetActions.cs/#L73">View Source</a>
               </span>
               <a id="FubarDev_WebDavServer_Engines_ITargetActions_3_ExecuteAsync_" data-uid="FubarDev.WebDavServer.Engines.ITargetActions`3.ExecuteAsync*"></a>
               <h4 id="FubarDev_WebDavServer_Engines_ITargetActions_3_ExecuteAsync_FubarDev_WebDavServer_FileSystem_ICollection__0_System_Threading_CancellationToken_" data-uid="FubarDev.WebDavServer.Engines.ITargetActions`3.ExecuteAsync(FubarDev.WebDavServer.FileSystem.ICollection,`0,System.Threading.CancellationToken)">ExecuteAsync(ICollection, TCollection, CancellationToken)</h4>
-              <div class="markdown level1 summary"><p>Do some cleanup after all child elements of the <span class="paramref">source</span> are processed (copied or moved)</p>
+              <div class="markdown level1 summary"><p>Do some cleanup after all child elements of the <code data-dev-comment-type="paramref" class="paramref">source</code> are processed (copied or moved).</p>
 </div>
               <div class="markdown level1 conceptual"></div>
               <h5 class="decalaration">Declaration</h5>
@@ -207,19 +216,19 @@ Task ExecuteAsync([NotNull] ICollection source, TCollection destination, Cancell
                   <tr>
                     <td><a class="xref" href="FubarDev.WebDavServer.FileSystem.ICollection.html">ICollection</a></td>
                     <td><span class="parametername">source</span></td>
-                    <td><p>The source collection</p>
+                    <td><p>The source collection.</p>
 </td>
                   </tr>
                   <tr>
                     <td><span class="xref">TCollection</span></td>
                     <td><span class="parametername">destination</span></td>
-                    <td><p>The destination collection</p>
+                    <td><p>The destination collection.</p>
 </td>
                   </tr>
                   <tr>
-                    <td><a class="xref" href="https://msdn.microsoft.com/en-us/library/system.threading.cancellationtoken(v=vs.110).aspx">CancellationToken</a></td>
+                    <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.threading.cancellationtoken">CancellationToken</a></td>
                     <td><span class="parametername">cancellationToken</span></td>
-                    <td><p>The cancellation token</p>
+                    <td><p>The cancellation token.</p>
 </td>
                   </tr>
                 </tbody>
@@ -234,8 +243,8 @@ Task ExecuteAsync([NotNull] ICollection source, TCollection destination, Cancell
                 </thead>
                 <tbody>
                   <tr>
-                    <td><a class="xref" href="https://msdn.microsoft.com/en-us/library/system.threading.tasks.task(v=vs.110).aspx">Task</a></td>
-                    <td><p>The task for async execution</p>
+                    <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.threading.tasks.task">Task</a></td>
+                    <td><p>The task for async execution.</p>
 </td>
                   </tr>
                 </tbody>
@@ -248,11 +257,11 @@ Task ExecuteAsync([NotNull] ICollection source, TCollection destination, Cancell
                 <a href="https://github.com/FubarDevelopment/WebDavServer/new/master/apiSpec/new?filename=FubarDev_WebDavServer_Engines_ITargetActions_3_ExecuteAsync_FubarDev_WebDavServer_FileSystem_IDocument__1_System_Threading_CancellationToken_.md&amp;value=---%0Auid%3A%20FubarDev.WebDavServer.Engines.ITargetActions%603.ExecuteAsync(FubarDev.WebDavServer.FileSystem.IDocument%2C%601%2CSystem.Threading.CancellationToken)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
               </span>
               <span class="small pull-right mobile-hide">
-                <a href="https://github.com/FubarDevelopment/WebDavServer/blob/master/src/FubarDev.WebDavServer/Engines/ITargetActions.cs/#L60">View Source</a>
+                <a href="https://github.com/FubarDevelopment/WebDavServer/blob/release/2.0/src/FubarDev.WebDavServer/Engines/ITargetActions.cs/#L60">View Source</a>
               </span>
               <a id="FubarDev_WebDavServer_Engines_ITargetActions_3_ExecuteAsync_" data-uid="FubarDev.WebDavServer.Engines.ITargetActions`3.ExecuteAsync*"></a>
               <h4 id="FubarDev_WebDavServer_Engines_ITargetActions_3_ExecuteAsync_FubarDev_WebDavServer_FileSystem_IDocument__1_System_Threading_CancellationToken_" data-uid="FubarDev.WebDavServer.Engines.ITargetActions`3.ExecuteAsync(FubarDev.WebDavServer.FileSystem.IDocument,`1,System.Threading.CancellationToken)">ExecuteAsync(IDocument, TDocument, CancellationToken)</h4>
-              <div class="markdown level1 summary"><p>Copies or moves a document to an existing target</p>
+              <div class="markdown level1 summary"><p>Copies or moves a document to an existing target.</p>
 </div>
               <div class="markdown level1 conceptual"></div>
               <h5 class="decalaration">Declaration</h5>
@@ -273,19 +282,19 @@ Task&lt;ActionResult&gt; ExecuteAsync([NotNull] IDocument source, [NotNull] TDoc
                   <tr>
                     <td><a class="xref" href="FubarDev.WebDavServer.FileSystem.IDocument.html">IDocument</a></td>
                     <td><span class="parametername">source</span></td>
-                    <td><p>The source document</p>
+                    <td><p>The source document.</p>
 </td>
                   </tr>
                   <tr>
                     <td><span class="xref">TDocument</span></td>
                     <td><span class="parametername">destination</span></td>
-                    <td><p>The destination document to overwrite</p>
+                    <td><p>The destination document to overwrite.</p>
 </td>
                   </tr>
                   <tr>
-                    <td><a class="xref" href="https://msdn.microsoft.com/en-us/library/system.threading.cancellationtoken(v=vs.110).aspx">CancellationToken</a></td>
+                    <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.threading.cancellationtoken">CancellationToken</a></td>
                     <td><span class="parametername">cancellationToken</span></td>
-                    <td><p>The cancellation token</p>
+                    <td><p>The cancellation token.</p>
 </td>
                   </tr>
                 </tbody>
@@ -300,14 +309,14 @@ Task&lt;ActionResult&gt; ExecuteAsync([NotNull] IDocument source, [NotNull] TDoc
                 </thead>
                 <tbody>
                   <tr>
-                    <td><a class="xref" href="https://msdn.microsoft.com/en-us/library/dd321424(v=vs.110).aspx">Task</a>&lt;<a class="xref" href="FubarDev.WebDavServer.Engines.ActionResult.html">ActionResult</a>&gt;</td>
-                    <td><p>The result information about this action</p>
+                    <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.threading.tasks.task-1">Task</a>&lt;<a class="xref" href="FubarDev.WebDavServer.Engines.ActionResult.html">ActionResult</a>&gt;</td>
+                    <td><p>The result information about this action.</p>
 </td>
                   </tr>
                 </tbody>
               </table>
               <h5 id="FubarDev_WebDavServer_Engines_ITargetActions_3_ExecuteAsync_FubarDev_WebDavServer_FileSystem_IDocument__1_System_Threading_CancellationToken__remarks">Remarks</h5>
-              <div class="markdown level1 remarks"><p>The <span class="paramref">source</span> can only be copied to the <span class="paramref">destination</span> when
+              <div class="markdown level1 remarks"><p>The <code data-dev-comment-type="paramref" class="paramref">source</code> can only be copied to the <code data-dev-comment-type="paramref" class="paramref">destination</code> when
 overwriting it is allowed.</p>
 </div>
               <span class="small pull-right mobile-hide">
@@ -315,11 +324,11 @@ overwriting it is allowed.</p>
                 <a href="https://github.com/FubarDevelopment/WebDavServer/new/master/apiSpec/new?filename=FubarDev_WebDavServer_Engines_ITargetActions_3_ExecuteAsync_FubarDev_WebDavServer_FileSystem_IDocument__2_System_Threading_CancellationToken_.md&amp;value=---%0Auid%3A%20FubarDev.WebDavServer.Engines.ITargetActions%603.ExecuteAsync(FubarDev.WebDavServer.FileSystem.IDocument%2C%602%2CSystem.Threading.CancellationToken)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
               </span>
               <span class="small pull-right mobile-hide">
-                <a href="https://github.com/FubarDevelopment/WebDavServer/blob/master/src/FubarDev.WebDavServer/Engines/ITargetActions.cs/#L45">View Source</a>
+                <a href="https://github.com/FubarDevelopment/WebDavServer/blob/release/2.0/src/FubarDev.WebDavServer/Engines/ITargetActions.cs/#L45">View Source</a>
               </span>
               <a id="FubarDev_WebDavServer_Engines_ITargetActions_3_ExecuteAsync_" data-uid="FubarDev.WebDavServer.Engines.ITargetActions`3.ExecuteAsync*"></a>
               <h4 id="FubarDev_WebDavServer_Engines_ITargetActions_3_ExecuteAsync_FubarDev_WebDavServer_FileSystem_IDocument__2_System_Threading_CancellationToken_" data-uid="FubarDev.WebDavServer.Engines.ITargetActions`3.ExecuteAsync(FubarDev.WebDavServer.FileSystem.IDocument,`2,System.Threading.CancellationToken)">ExecuteAsync(IDocument, TMissing, CancellationToken)</h4>
-              <div class="markdown level1 summary"><p>Copies or moves a document to a target that doesn&#39;t exist</p>
+              <div class="markdown level1 summary"><p>Copies or moves a document to a target that doesn't exist.</p>
 </div>
               <div class="markdown level1 conceptual"></div>
               <h5 class="decalaration">Declaration</h5>
@@ -341,19 +350,19 @@ Task&lt;TDocument&gt; ExecuteAsync([NotNull] IDocument source, [NotNull] TMissin
                   <tr>
                     <td><a class="xref" href="FubarDev.WebDavServer.FileSystem.IDocument.html">IDocument</a></td>
                     <td><span class="parametername">source</span></td>
-                    <td><p>The source document</p>
+                    <td><p>The source document.</p>
 </td>
                   </tr>
                   <tr>
                     <td><span class="xref">TMissing</span></td>
                     <td><span class="parametername">destination</span></td>
-                    <td><p>The target where the document should be copied or moved to</p>
+                    <td><p>The target where the document should be copied or moved to.</p>
 </td>
                   </tr>
                   <tr>
-                    <td><a class="xref" href="https://msdn.microsoft.com/en-us/library/system.threading.cancellationtoken(v=vs.110).aspx">CancellationToken</a></td>
+                    <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.threading.cancellationtoken">CancellationToken</a></td>
                     <td><span class="parametername">cancellationToken</span></td>
-                    <td><p>The cancellation token</p>
+                    <td><p>The cancellation token.</p>
 </td>
                   </tr>
                 </tbody>
@@ -368,8 +377,8 @@ Task&lt;TDocument&gt; ExecuteAsync([NotNull] IDocument source, [NotNull] TMissin
                 </thead>
                 <tbody>
                   <tr>
-                    <td><a class="xref" href="https://msdn.microsoft.com/en-us/library/dd321424(v=vs.110).aspx">Task</a>&lt;TDocument&gt;</td>
-                    <td><p>The created document target</p>
+                    <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.threading.tasks.task-1">Task</a>&lt;TDocument&gt;</td>
+                    <td><p>The created document target.</p>
 </td>
                   </tr>
                 </tbody>
@@ -385,7 +394,7 @@ Task&lt;TDocument&gt; ExecuteAsync([NotNull] IDocument source, [NotNull] TMissin
                     <a href="https://github.com/FubarDevelopment/WebDavServer/new/master/apiSpec/new?filename=FubarDev_WebDavServer_Engines_ITargetActions_3.md&amp;value=---%0Auid%3A%20FubarDev.WebDavServer.Engines.ITargetActions%603%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A" class="contribution-link">Improve this Doc</a>
                   </li>
                   <li>
-                    <a href="https://github.com/FubarDevelopment/WebDavServer/blob/master/src/FubarDev.WebDavServer/Engines/ITargetActions.cs/#L20" class="contribution-link">View Source</a>
+                    <a href="https://github.com/FubarDevelopment/WebDavServer/blob/release/2.0/src/FubarDev.WebDavServer/Engines/ITargetActions.cs/#L20" class="contribution-link">View Source</a>
                   </li>
                 </ul>
               </div>
@@ -404,7 +413,7 @@ Task&lt;TDocument&gt; ExecuteAsync([NotNull] IDocument source, [NotNull] TMissin
             <span class="pull-right">
               <a href="#top">Back to top</a>
             </span>
-            <span>Copyright © 2016-2017 Fubar Development Junker<br>Generated by <strong>DocFX</strong></span>
+            <span>Copyright © 2016-2019 Fubar Development Junker<br>Generated by <strong>DocFX</strong></span>
             
           </div>
         </div>

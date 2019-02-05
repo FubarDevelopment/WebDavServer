@@ -6,11 +6,11 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
     <title>Class MultiValueDictionary&lt;TKey, TValue&gt;
-   </title>
+   | WebDAV Server documentation </title>
     <meta name="viewport" content="width=device-width">
     <meta name="title" content="Class MultiValueDictionary&lt;TKey, TValue&gt;
-   ">
-    <meta name="generator" content="docfx 2.16.2.2">
+   | WebDAV Server documentation ">
+    <meta name="generator" content="docfx 2.35.4.0">
     
     <link rel="shortcut icon" href="../favicon.ico">
     <link rel="stylesheet" href="../styles/docfx.vendor.css">
@@ -18,7 +18,7 @@
     <link rel="stylesheet" href="../styles/main.css">
     <meta property="docfx:navrel" content="../toc.html">
     <meta property="docfx:tocrel" content="toc.html">
-    
+    <meta property="docfx:rel" content="../">
     
   </head>
   <body data-spy="scroll" data-target="#affix">
@@ -57,6 +57,14 @@
           </div>
         </div>
       </header>
+      <div role="main" class="container body-content">
+        
+        <div id="search-results">
+          <div class="search-list"></div>
+          <div class="sr-items"></div>
+          <ul id="pagination"></ul>
+        </div>
+      </div>
       <div role="main" class="container body-content hide-when-search">
         
         <div class="sidenav hide-when-search">
@@ -72,45 +80,45 @@
               
               <h1 id="System_Collections_Generic_MultiValueDictionary_2" data-uid="System.Collections.Generic.MultiValueDictionary`2">Class MultiValueDictionary&lt;TKey, TValue&gt;
               </h1>
-              <div class="markdown level0 summary"><p>A MultiValueDictionary can be viewed as a <a class="xref" href="https://msdn.microsoft.com/en-us/library/system.collections.idictionary(v=vs.110).aspx">IDictionary</a> that allows multiple 
-values for any given unique key. While the MultiValueDictionary API is 
-mostly the same as that of a regular <a class="xref" href="https://msdn.microsoft.com/en-us/library/system.collections.idictionary(v=vs.110).aspx">IDictionary</a>, there is a distinction
-in that getting the value for a key returns a <a class="xref" href="https://msdn.microsoft.com/en-us/library/hh881542(v=vs.110).aspx">IReadOnlyCollection&lt;T&gt;</a> of values
-rather than a single value associated with that key. Additionally, 
+              <div class="markdown level0 summary"><p>A MultiValueDictionary can be viewed as a <span class="xref">System.Collections.IDictionary</span> that allows multiple
+values for any given unique key. While the MultiValueDictionary API is
+mostly the same as that of a regular <span class="xref">System.Collections.IDictionary</span>, there is a distinction
+in that getting the value for a key returns a <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.collections.generic.ireadonlycollection-1">IReadOnlyCollection&lt;T&gt;</a> of values
+rather than a single value associated with that key. Additionally,
 there is functionality to allow adding or removing more than a single
-value at once. </p>
+value at once.</p>
 <p>The MultiValueDictionary can also be viewed as a IReadOnlyDictionary&lt;TKey,IReadOnlyCollection&lt;TValue&gt;t&gt;
-where the <a class="xref" href="https://msdn.microsoft.com/en-us/library/hh881542(v=vs.110).aspx">IReadOnlyCollection&lt;T&gt;</a> is abstracted from the view of the programmer.</p>
-<p>For a read-only MultiValueDictionary, see <a class="xref" href="https://msdn.microsoft.com/en-us/library/bb534291(v=vs.110).aspx">ILookup&lt;TKey, TElement&gt;</a>.</p>
+where the <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.collections.generic.ireadonlycollection-1">IReadOnlyCollection&lt;T&gt;</a> is abstracted from the view of the programmer.</p>
+<p>For a read-only MultiValueDictionary, see <span class="xref">System.Linq.ILookup`2</span>.</p>
 </div>
               <div class="markdown level0 conceptual"></div>
               <div class="inheritance">
                 <h5>Inheritance</h5>
-                  <div class="level0"><a class="xref" href="https://msdn.microsoft.com/en-us/library/system.object(v=vs.110).aspx">Object</a></div>
+                  <div class="level0"><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object">Object</a></div>
                   <div class="level1"><span class="xref">MultiValueDictionary&lt;TKey, TValue&gt;</span></div>
               </div>
               <div class="inheritedMembers">
                 <h5>Inherited Members</h5>
                 <div>
-                  <a class="xref" href="https://msdn.microsoft.com/en-us/library/bsc2ak47(v=vs.110).aspx">Object.Equals(Object)</a>
+                  <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.equals#System_Object_Equals_System_Object_">Object.Equals(Object)</a>
                 </div>
                 <div>
-                  <a class="xref" href="https://msdn.microsoft.com/en-us/library/w4hkze5k(v=vs.110).aspx">Object.Equals(Object, Object)</a>
+                  <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.equals#System_Object_Equals_System_Object_System_Object_">Object.Equals(Object, Object)</a>
                 </div>
                 <div>
-                  <a class="xref" href="https://msdn.microsoft.com/en-us/library/zdee4b3y(v=vs.110).aspx">Object.GetHashCode()</a>
+                  <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.gethashcode#System_Object_GetHashCode">Object.GetHashCode()</a>
                 </div>
                 <div>
-                  <a class="xref" href="https://msdn.microsoft.com/en-us/library/dfwy45w9(v=vs.110).aspx">Object.GetType()</a>
+                  <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.gettype#System_Object_GetType">Object.GetType()</a>
                 </div>
                 <div>
-                  <a class="xref" href="https://msdn.microsoft.com/en-us/library/57ctke0a(v=vs.110).aspx">Object.MemberwiseClone()</a>
+                  <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.memberwiseclone#System_Object_MemberwiseClone">Object.MemberwiseClone()</a>
                 </div>
                 <div>
-                  <a class="xref" href="https://msdn.microsoft.com/en-us/library/hz2a0b8x(v=vs.110).aspx">Object.ReferenceEquals(Object, Object)</a>
+                  <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.referenceequals#System_Object_ReferenceEquals_System_Object_System_Object_">Object.ReferenceEquals(Object, Object)</a>
                 </div>
                 <div>
-                  <a class="xref" href="https://msdn.microsoft.com/en-us/library/7bxwbwt2(v=vs.110).aspx">Object.ToString()</a>
+                  <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.tostring#System_Object_ToString">Object.ToString()</a>
                 </div>
               </div>
               <h6><strong>Namespace</strong>:System.Collections.Generic</h6>
@@ -147,13 +155,13 @@ where the <a class="xref" href="https://msdn.microsoft.com/en-us/library/hh88154
                 <a href="https://github.com/FubarDevelopment/WebDavServer/new/master/apiSpec/new?filename=System_Collections_Generic_MultiValueDictionary_2__ctor.md&amp;value=---%0Auid%3A%20System.Collections.Generic.MultiValueDictionary%602.%23ctor%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
               </span>
               <span class="small pull-right mobile-hide">
-                <a href="https://github.com/FubarDevelopment/WebDavServer/blob/master/src/FubarDev.WebDavServer/Utils/MultiValueDictionary.cs/#L63">View Source</a>
+                <a href="https://github.com/FubarDevelopment/WebDavServer/blob/release/2.0/src/FubarDev.WebDavServer/Utils/MultiValueDictionary.cs/#L63">View Source</a>
               </span>
               <a id="System_Collections_Generic_MultiValueDictionary_2__ctor_" data-uid="System.Collections.Generic.MultiValueDictionary`2.#ctor*"></a>
               <h4 id="System_Collections_Generic_MultiValueDictionary_2__ctor" data-uid="System.Collections.Generic.MultiValueDictionary`2.#ctor">MultiValueDictionary()</h4>
-              <div class="markdown level1 summary"><p>Initializes a new instance of the <a class="xref" href="System.Collections.Generic.MultiValueDictionary-2.html">MultiValueDictionary&lt;TKey, TValue&gt;</a> 
+              <div class="markdown level1 summary"><p>Initializes a new instance of the <a class="xref" href="System.Collections.Generic.MultiValueDictionary-2.html">MultiValueDictionary&lt;TKey, TValue&gt;</a>
 class that is empty, has the default initial capacity, and uses the default
-<a class="xref" href="https://msdn.microsoft.com/en-us/library/ms132151(v=vs.110).aspx">IEqualityComparer&lt;T&gt;</a> for <span class="typeparamref">TKey</span>.</p>
+<a class="xref" href="https://docs.microsoft.com/dotnet/api/system.collections.generic.iequalitycomparer-1">IEqualityComparer&lt;T&gt;</a> for <code data-dev-comment-type="typeparamref" class="typeparamref">TKey</code>.</p>
 </div>
               <div class="markdown level1 conceptual"></div>
               <h5 class="decalaration">Declaration</h5>
@@ -165,13 +173,13 @@ class that is empty, has the default initial capacity, and uses the default
                 <a href="https://github.com/FubarDevelopment/WebDavServer/new/master/apiSpec/new?filename=System_Collections_Generic_MultiValueDictionary_2__ctor_System_Collections_Generic_IEnumerable_System_Collections_Generic_KeyValuePair__0_System_Collections_Generic_IReadOnlyCollection__1____.md&amp;value=---%0Auid%3A%20System.Collections.Generic.MultiValueDictionary%602.%23ctor(System.Collections.Generic.IEnumerable%7BSystem.Collections.Generic.KeyValuePair%7B%600%2CSystem.Collections.Generic.IReadOnlyCollection%7B%601%7D%7D%7D)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
               </span>
               <span class="small pull-right mobile-hide">
-                <a href="https://github.com/FubarDevelopment/WebDavServer/blob/master/src/FubarDev.WebDavServer/Utils/MultiValueDictionary.cs/#L117">View Source</a>
+                <a href="https://github.com/FubarDevelopment/WebDavServer/blob/release/2.0/src/FubarDev.WebDavServer/Utils/MultiValueDictionary.cs/#L117">View Source</a>
               </span>
               <a id="System_Collections_Generic_MultiValueDictionary_2__ctor_" data-uid="System.Collections.Generic.MultiValueDictionary`2.#ctor*"></a>
               <h4 id="System_Collections_Generic_MultiValueDictionary_2__ctor_System_Collections_Generic_IEnumerable_System_Collections_Generic_KeyValuePair__0_System_Collections_Generic_IReadOnlyCollection__1____" data-uid="System.Collections.Generic.MultiValueDictionary`2.#ctor(System.Collections.Generic.IEnumerable{System.Collections.Generic.KeyValuePair{`0,System.Collections.Generic.IReadOnlyCollection{`1}}})">MultiValueDictionary(IEnumerable&lt;KeyValuePair&lt;TKey, IReadOnlyCollection&lt;TValue&gt;&gt;&gt;)</h4>
-              <div class="markdown level1 summary"><p>Initializes a new instance of the <a class="xref" href="System.Collections.Generic.MultiValueDictionary-2.html">MultiValueDictionary&lt;TKey, TValue&gt;</a> class that contains 
-elements copied from the specified IEnumerable&lt;KeyValuePair&lt;TKey, IReadOnlyCollection&lt;TValue&gt;&gt;&gt; and uses the 
-default <a class="xref" href="https://msdn.microsoft.com/en-us/library/ms132151(v=vs.110).aspx">IEqualityComparer&lt;T&gt;</a> for the <span class="typeparamref">TKey</span> type.</p>
+              <div class="markdown level1 summary"><p>Initializes a new instance of the <a class="xref" href="System.Collections.Generic.MultiValueDictionary-2.html">MultiValueDictionary&lt;TKey, TValue&gt;</a> class that contains
+elements copied from the specified IEnumerable&lt;KeyValuePair&lt;TKey, IReadOnlyCollection&lt;TValue&gt;&gt;&gt; and uses the
+default <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.collections.generic.iequalitycomparer-1">IEqualityComparer&lt;T&gt;</a> for the <code data-dev-comment-type="typeparamref" class="typeparamref">TKey</code> type.</p>
 </div>
               <div class="markdown level1 conceptual"></div>
               <h5 class="decalaration">Declaration</h5>
@@ -189,7 +197,7 @@ default <a class="xref" href="https://msdn.microsoft.com/en-us/library/ms132151(
                 </thead>
                 <tbody>
                   <tr>
-                    <td><a class="xref" href="https://msdn.microsoft.com/en-us/library/9eekhta0(v=vs.110).aspx">IEnumerable</a>&lt;<span class="xref">System.Collections.Generic.KeyValuePair</span>&lt;TKey, <a class="xref" href="https://msdn.microsoft.com/en-us/library/hh881542(v=vs.110).aspx">IReadOnlyCollection</a>&lt;TValue&gt;&gt;&gt;</td>
+                    <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1">IEnumerable</a>&lt;<span class="xref">System.Collections.Generic.KeyValuePair</span>&lt;TKey, <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.collections.generic.ireadonlycollection-1">IReadOnlyCollection</a>&lt;TValue&gt;&gt;&gt;</td>
                     <td><span class="parametername">enumerable</span></td>
                     <td><p>IEnumerable to copy elements into this from</p>
 </td>
@@ -206,7 +214,7 @@ default <a class="xref" href="https://msdn.microsoft.com/en-us/library/ms132151(
                 </thead>
                 <tbody>
                   <tr>
-                    <td><a class="xref" href="https://msdn.microsoft.com/en-us/library/system.argumentnullexception(v=vs.110).aspx">ArgumentNullException</a></td>
+                    <td><span class="xref">System.ArgumentNullException</span></td>
                     <td><p>enumerable must be non-null</p>
 </td>
                   </tr>
@@ -217,13 +225,13 @@ default <a class="xref" href="https://msdn.microsoft.com/en-us/library/ms132151(
                 <a href="https://github.com/FubarDevelopment/WebDavServer/new/master/apiSpec/new?filename=System_Collections_Generic_MultiValueDictionary_2__ctor_System_Collections_Generic_IEnumerable_System_Collections_Generic_KeyValuePair__0_System_Collections_Generic_IReadOnlyCollection__1____System_Collections_Generic_IEqualityComparer__0__.md&amp;value=---%0Auid%3A%20System.Collections.Generic.MultiValueDictionary%602.%23ctor(System.Collections.Generic.IEnumerable%7BSystem.Collections.Generic.KeyValuePair%7B%600%2CSystem.Collections.Generic.IReadOnlyCollection%7B%601%7D%7D%7D%2CSystem.Collections.Generic.IEqualityComparer%7B%600%7D)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
               </span>
               <span class="small pull-right mobile-hide">
-                <a href="https://github.com/FubarDevelopment/WebDavServer/blob/master/src/FubarDev.WebDavServer/Utils/MultiValueDictionary.cs/#L130">View Source</a>
+                <a href="https://github.com/FubarDevelopment/WebDavServer/blob/release/2.0/src/FubarDev.WebDavServer/Utils/MultiValueDictionary.cs/#L130">View Source</a>
               </span>
               <a id="System_Collections_Generic_MultiValueDictionary_2__ctor_" data-uid="System.Collections.Generic.MultiValueDictionary`2.#ctor*"></a>
               <h4 id="System_Collections_Generic_MultiValueDictionary_2__ctor_System_Collections_Generic_IEnumerable_System_Collections_Generic_KeyValuePair__0_System_Collections_Generic_IReadOnlyCollection__1____System_Collections_Generic_IEqualityComparer__0__" data-uid="System.Collections.Generic.MultiValueDictionary`2.#ctor(System.Collections.Generic.IEnumerable{System.Collections.Generic.KeyValuePair{`0,System.Collections.Generic.IReadOnlyCollection{`1}}},System.Collections.Generic.IEqualityComparer{`0})">MultiValueDictionary(IEnumerable&lt;KeyValuePair&lt;TKey, IReadOnlyCollection&lt;TValue&gt;&gt;&gt;, IEqualityComparer&lt;TKey&gt;)</h4>
-              <div class="markdown level1 summary"><p>Initializes a new instance of the <a class="xref" href="System.Collections.Generic.MultiValueDictionary-2.html">MultiValueDictionary&lt;TKey, TValue&gt;</a> class that contains 
-elements copied from the specified IEnumerable&lt;KeyValuePair&lt;TKey, IReadOnlyCollection&lt;TValue&gt;&gt;&gt; and uses the 
-specified <a class="xref" href="https://msdn.microsoft.com/en-us/library/ms132151(v=vs.110).aspx">IEqualityComparer&lt;T&gt;</a>.</p>
+              <div class="markdown level1 summary"><p>Initializes a new instance of the <a class="xref" href="System.Collections.Generic.MultiValueDictionary-2.html">MultiValueDictionary&lt;TKey, TValue&gt;</a> class that contains
+elements copied from the specified IEnumerable&lt;KeyValuePair&lt;TKey, IReadOnlyCollection&lt;TValue&gt;&gt;&gt; and uses the
+specified <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.collections.generic.iequalitycomparer-1">IEqualityComparer&lt;T&gt;</a>.</p>
 </div>
               <div class="markdown level1 conceptual"></div>
               <h5 class="decalaration">Declaration</h5>
@@ -241,21 +249,21 @@ specified <a class="xref" href="https://msdn.microsoft.com/en-us/library/ms13215
                 </thead>
                 <tbody>
                   <tr>
-                    <td><a class="xref" href="https://msdn.microsoft.com/en-us/library/9eekhta0(v=vs.110).aspx">IEnumerable</a>&lt;<span class="xref">System.Collections.Generic.KeyValuePair</span>&lt;TKey, <a class="xref" href="https://msdn.microsoft.com/en-us/library/hh881542(v=vs.110).aspx">IReadOnlyCollection</a>&lt;TValue&gt;&gt;&gt;</td>
+                    <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1">IEnumerable</a>&lt;<span class="xref">System.Collections.Generic.KeyValuePair</span>&lt;TKey, <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.collections.generic.ireadonlycollection-1">IReadOnlyCollection</a>&lt;TValue&gt;&gt;&gt;</td>
                     <td><span class="parametername">enumerable</span></td>
                     <td><p>IEnumerable to copy elements into this from</p>
 </td>
                   </tr>
                   <tr>
-                    <td><a class="xref" href="https://msdn.microsoft.com/en-us/library/ms132151(v=vs.110).aspx">IEqualityComparer</a>&lt;TKey&gt;</td>
+                    <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.collections.generic.iequalitycomparer-1">IEqualityComparer</a>&lt;TKey&gt;</td>
                     <td><span class="parametername">comparer</span></td>
-                    <td><p>Specified comparer to use for the <span class="typeparamref">TKey</span>s</p>
+                    <td><p>Specified comparer to use for the <code data-dev-comment-type="typeparamref" class="typeparamref">TKey</code>s</p>
 </td>
                   </tr>
                 </tbody>
               </table>
               <h5 id="System_Collections_Generic_MultiValueDictionary_2__ctor_System_Collections_Generic_IEnumerable_System_Collections_Generic_KeyValuePair__0_System_Collections_Generic_IReadOnlyCollection__1____System_Collections_Generic_IEqualityComparer__0___remarks">Remarks</h5>
-              <div class="markdown level1 remarks"><p>If <span class="paramref">comparer</span> is set to null, then the default <a class="xref" href="https://msdn.microsoft.com/en-us/library/system.collections.iequalitycomparer(v=vs.110).aspx">IEqualityComparer</a> for <span class="typeparamref">TKey</span> is used.</p>
+              <div class="markdown level1 remarks"><p>If <code data-dev-comment-type="paramref" class="paramref">comparer</code> is set to null, then the default <span class="xref">System.Collections.IEqualityComparer</span> for <code data-dev-comment-type="typeparamref" class="typeparamref">TKey</code> is used.</p>
 </div>
               <h5 class="exceptions">Exceptions</h5>
               <table class="table table-bordered table-striped table-condensed">
@@ -267,7 +275,7 @@ specified <a class="xref" href="https://msdn.microsoft.com/en-us/library/ms13215
                 </thead>
                 <tbody>
                   <tr>
-                    <td><a class="xref" href="https://msdn.microsoft.com/en-us/library/system.argumentnullexception(v=vs.110).aspx">ArgumentNullException</a></td>
+                    <td><span class="xref">System.ArgumentNullException</span></td>
                     <td><p>enumerable must be non-null</p>
 </td>
                   </tr>
@@ -278,13 +286,13 @@ specified <a class="xref" href="https://msdn.microsoft.com/en-us/library/ms13215
                 <a href="https://github.com/FubarDevelopment/WebDavServer/new/master/apiSpec/new?filename=System_Collections_Generic_MultiValueDictionary_2__ctor_System_Collections_Generic_IEqualityComparer__0__.md&amp;value=---%0Auid%3A%20System.Collections.Generic.MultiValueDictionary%602.%23ctor(System.Collections.Generic.IEqualityComparer%7B%600%7D)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
               </span>
               <span class="small pull-right mobile-hide">
-                <a href="https://github.com/FubarDevelopment/WebDavServer/blob/master/src/FubarDev.WebDavServer/Utils/MultiValueDictionary.cs/#L89">View Source</a>
+                <a href="https://github.com/FubarDevelopment/WebDavServer/blob/release/2.0/src/FubarDev.WebDavServer/Utils/MultiValueDictionary.cs/#L89">View Source</a>
               </span>
               <a id="System_Collections_Generic_MultiValueDictionary_2__ctor_" data-uid="System.Collections.Generic.MultiValueDictionary`2.#ctor*"></a>
               <h4 id="System_Collections_Generic_MultiValueDictionary_2__ctor_System_Collections_Generic_IEqualityComparer__0__" data-uid="System.Collections.Generic.MultiValueDictionary`2.#ctor(System.Collections.Generic.IEqualityComparer{`0})">MultiValueDictionary(IEqualityComparer&lt;TKey&gt;)</h4>
-              <div class="markdown level1 summary"><p>Initializes a new instance of the <a class="xref" href="System.Collections.Generic.MultiValueDictionary-2.html">MultiValueDictionary&lt;TKey, TValue&gt;</a> class 
-that is empty, has the default initial capacity, and uses the 
-specified <a class="xref" href="https://msdn.microsoft.com/en-us/library/ms132151(v=vs.110).aspx">IEqualityComparer&lt;T&gt;</a>.</p>
+              <div class="markdown level1 summary"><p>Initializes a new instance of the <a class="xref" href="System.Collections.Generic.MultiValueDictionary-2.html">MultiValueDictionary&lt;TKey, TValue&gt;</a> class
+that is empty, has the default initial capacity, and uses the
+specified <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.collections.generic.iequalitycomparer-1">IEqualityComparer&lt;T&gt;</a>.</p>
 </div>
               <div class="markdown level1 conceptual"></div>
               <h5 class="decalaration">Declaration</h5>
@@ -302,28 +310,28 @@ specified <a class="xref" href="https://msdn.microsoft.com/en-us/library/ms13215
                 </thead>
                 <tbody>
                   <tr>
-                    <td><a class="xref" href="https://msdn.microsoft.com/en-us/library/ms132151(v=vs.110).aspx">IEqualityComparer</a>&lt;TKey&gt;</td>
+                    <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.collections.generic.iequalitycomparer-1">IEqualityComparer</a>&lt;TKey&gt;</td>
                     <td><span class="parametername">comparer</span></td>
-                    <td><p>Specified comparer to use for the <span class="typeparamref">TKey</span>s</p>
+                    <td><p>Specified comparer to use for the <code data-dev-comment-type="typeparamref" class="typeparamref">TKey</code>s</p>
 </td>
                   </tr>
                 </tbody>
               </table>
               <h5 id="System_Collections_Generic_MultiValueDictionary_2__ctor_System_Collections_Generic_IEqualityComparer__0___remarks">Remarks</h5>
-              <div class="markdown level1 remarks"><p>If <span class="paramref">comparer</span> is set to null, then the default <a class="xref" href="https://msdn.microsoft.com/en-us/library/system.collections.iequalitycomparer(v=vs.110).aspx">IEqualityComparer</a> for <span class="typeparamref">TKey</span> is used.</p>
+              <div class="markdown level1 remarks"><p>If <code data-dev-comment-type="paramref" class="paramref">comparer</code> is set to null, then the default <span class="xref">System.Collections.IEqualityComparer</span> for <code data-dev-comment-type="typeparamref" class="typeparamref">TKey</code> is used.</p>
 </div>
               <span class="small pull-right mobile-hide">
                 <span class="divider">|</span>
                 <a href="https://github.com/FubarDevelopment/WebDavServer/new/master/apiSpec/new?filename=System_Collections_Generic_MultiValueDictionary_2__ctor_System_Int32_.md&amp;value=---%0Auid%3A%20System.Collections.Generic.MultiValueDictionary%602.%23ctor(System.Int32)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
               </span>
               <span class="small pull-right mobile-hide">
-                <a href="https://github.com/FubarDevelopment/WebDavServer/blob/master/src/FubarDev.WebDavServer/Utils/MultiValueDictionary.cs/#L75">View Source</a>
+                <a href="https://github.com/FubarDevelopment/WebDavServer/blob/release/2.0/src/FubarDev.WebDavServer/Utils/MultiValueDictionary.cs/#L75">View Source</a>
               </span>
               <a id="System_Collections_Generic_MultiValueDictionary_2__ctor_" data-uid="System.Collections.Generic.MultiValueDictionary`2.#ctor*"></a>
               <h4 id="System_Collections_Generic_MultiValueDictionary_2__ctor_System_Int32_" data-uid="System.Collections.Generic.MultiValueDictionary`2.#ctor(System.Int32)">MultiValueDictionary(Int32)</h4>
-              <div class="markdown level1 summary"><p>Initializes a new instance of the <a class="xref" href="System.Collections.Generic.MultiValueDictionary-2.html">MultiValueDictionary&lt;TKey, TValue&gt;</a> class that is 
-empty, has the specified initial capacity, and uses the default <a class="xref" href="https://msdn.microsoft.com/en-us/library/ms132151(v=vs.110).aspx">IEqualityComparer&lt;T&gt;</a>
-for <span class="typeparamref">TKey</span>.</p>
+              <div class="markdown level1 summary"><p>Initializes a new instance of the <a class="xref" href="System.Collections.Generic.MultiValueDictionary-2.html">MultiValueDictionary&lt;TKey, TValue&gt;</a> class that is
+empty, has the specified initial capacity, and uses the default <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.collections.generic.iequalitycomparer-1">IEqualityComparer&lt;T&gt;</a>
+for <code data-dev-comment-type="typeparamref" class="typeparamref">TKey</code>.</p>
 </div>
               <div class="markdown level1 conceptual"></div>
               <h5 class="decalaration">Declaration</h5>
@@ -341,7 +349,7 @@ for <span class="typeparamref">TKey</span>.</p>
                 </thead>
                 <tbody>
                   <tr>
-                    <td><a class="xref" href="https://msdn.microsoft.com/en-us/library/system.int32(v=vs.110).aspx">Int32</a></td>
+                    <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.int32">Int32</a></td>
                     <td><span class="parametername">capacity</span></td>
                     <td><p>Initial number of keys that the <a class="xref" href="System.Collections.Generic.MultiValueDictionary-2.html">MultiValueDictionary&lt;TKey, TValue&gt;</a> will allocate space for</p>
 </td>
@@ -358,7 +366,7 @@ for <span class="typeparamref">TKey</span>.</p>
                 </thead>
                 <tbody>
                   <tr>
-                    <td><a class="xref" href="https://msdn.microsoft.com/en-us/library/system.argumentoutofrangeexception(v=vs.110).aspx">ArgumentOutOfRangeException</a></td>
+                    <td><span class="xref">System.ArgumentOutOfRangeException</span></td>
                     <td><p>capacity must be &gt;= 0</p>
 </td>
                   </tr>
@@ -369,13 +377,13 @@ for <span class="typeparamref">TKey</span>.</p>
                 <a href="https://github.com/FubarDevelopment/WebDavServer/new/master/apiSpec/new?filename=System_Collections_Generic_MultiValueDictionary_2__ctor_System_Int32_System_Collections_Generic_IEqualityComparer__0__.md&amp;value=---%0Auid%3A%20System.Collections.Generic.MultiValueDictionary%602.%23ctor(System.Int32%2CSystem.Collections.Generic.IEqualityComparer%7B%600%7D)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
               </span>
               <span class="small pull-right mobile-hide">
-                <a href="https://github.com/FubarDevelopment/WebDavServer/blob/master/src/FubarDev.WebDavServer/Utils/MultiValueDictionary.cs/#L103">View Source</a>
+                <a href="https://github.com/FubarDevelopment/WebDavServer/blob/release/2.0/src/FubarDev.WebDavServer/Utils/MultiValueDictionary.cs/#L103">View Source</a>
               </span>
               <a id="System_Collections_Generic_MultiValueDictionary_2__ctor_" data-uid="System.Collections.Generic.MultiValueDictionary`2.#ctor*"></a>
               <h4 id="System_Collections_Generic_MultiValueDictionary_2__ctor_System_Int32_System_Collections_Generic_IEqualityComparer__0__" data-uid="System.Collections.Generic.MultiValueDictionary`2.#ctor(System.Int32,System.Collections.Generic.IEqualityComparer{`0})">MultiValueDictionary(Int32, IEqualityComparer&lt;TKey&gt;)</h4>
-              <div class="markdown level1 summary"><p>Initializes a new instance of the <a class="xref" href="System.Collections.Generic.MultiValueDictionary-2.html">MultiValueDictionary&lt;TKey, TValue&gt;</a> class 
-that is empty, has the specified initial capacity, and uses the 
-specified <a class="xref" href="https://msdn.microsoft.com/en-us/library/ms132151(v=vs.110).aspx">IEqualityComparer&lt;T&gt;</a>.</p>
+              <div class="markdown level1 summary"><p>Initializes a new instance of the <a class="xref" href="System.Collections.Generic.MultiValueDictionary-2.html">MultiValueDictionary&lt;TKey, TValue&gt;</a> class
+that is empty, has the specified initial capacity, and uses the
+specified <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.collections.generic.iequalitycomparer-1">IEqualityComparer&lt;T&gt;</a>.</p>
 </div>
               <div class="markdown level1 conceptual"></div>
               <h5 class="decalaration">Declaration</h5>
@@ -393,21 +401,21 @@ specified <a class="xref" href="https://msdn.microsoft.com/en-us/library/ms13215
                 </thead>
                 <tbody>
                   <tr>
-                    <td><a class="xref" href="https://msdn.microsoft.com/en-us/library/system.int32(v=vs.110).aspx">Int32</a></td>
+                    <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.int32">Int32</a></td>
                     <td><span class="parametername">capacity</span></td>
                     <td><p>Initial number of keys that the <a class="xref" href="System.Collections.Generic.MultiValueDictionary-2.html">MultiValueDictionary&lt;TKey, TValue&gt;</a> will allocate space for</p>
 </td>
                   </tr>
                   <tr>
-                    <td><a class="xref" href="https://msdn.microsoft.com/en-us/library/ms132151(v=vs.110).aspx">IEqualityComparer</a>&lt;TKey&gt;</td>
+                    <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.collections.generic.iequalitycomparer-1">IEqualityComparer</a>&lt;TKey&gt;</td>
                     <td><span class="parametername">comparer</span></td>
-                    <td><p>Specified comparer to use for the <span class="typeparamref">TKey</span>s</p>
+                    <td><p>Specified comparer to use for the <code data-dev-comment-type="typeparamref" class="typeparamref">TKey</code>s</p>
 </td>
                   </tr>
                 </tbody>
               </table>
               <h5 id="System_Collections_Generic_MultiValueDictionary_2__ctor_System_Int32_System_Collections_Generic_IEqualityComparer__0___remarks">Remarks</h5>
-              <div class="markdown level1 remarks"><p>If <span class="paramref">comparer</span> is set to null, then the default <a class="xref" href="https://msdn.microsoft.com/en-us/library/system.collections.iequalitycomparer(v=vs.110).aspx">IEqualityComparer</a> for <span class="typeparamref">TKey</span> is used.</p>
+              <div class="markdown level1 remarks"><p>If <code data-dev-comment-type="paramref" class="paramref">comparer</code> is set to null, then the default <span class="xref">System.Collections.IEqualityComparer</span> for <code data-dev-comment-type="typeparamref" class="typeparamref">TKey</code> is used.</p>
 </div>
               <h5 class="exceptions">Exceptions</h5>
               <table class="table table-bordered table-striped table-condensed">
@@ -419,7 +427,7 @@ specified <a class="xref" href="https://msdn.microsoft.com/en-us/library/ms13215
                 </thead>
                 <tbody>
                   <tr>
-                    <td><a class="xref" href="https://msdn.microsoft.com/en-us/library/system.argumentoutofrangeexception(v=vs.110).aspx">ArgumentOutOfRangeException</a></td>
+                    <td><span class="xref">System.ArgumentOutOfRangeException</span></td>
                     <td><p>Capacity must be &gt;= 0</p>
 </td>
                   </tr>
@@ -432,11 +440,11 @@ specified <a class="xref" href="https://msdn.microsoft.com/en-us/library/ms13215
                 <a href="https://github.com/FubarDevelopment/WebDavServer/new/master/apiSpec/new?filename=System_Collections_Generic_MultiValueDictionary_2_Count.md&amp;value=---%0Auid%3A%20System.Collections.Generic.MultiValueDictionary%602.Count%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
               </span>
               <span class="small pull-right mobile-hide">
-                <a href="https://github.com/FubarDevelopment/WebDavServer/blob/master/src/FubarDev.WebDavServer/Utils/MultiValueDictionary.cs/#L868">View Source</a>
+                <a href="https://github.com/FubarDevelopment/WebDavServer/blob/release/2.0/src/FubarDev.WebDavServer/Utils/MultiValueDictionary.cs/#L868">View Source</a>
               </span>
               <a id="System_Collections_Generic_MultiValueDictionary_2_Count_" data-uid="System.Collections.Generic.MultiValueDictionary`2.Count*"></a>
               <h4 id="System_Collections_Generic_MultiValueDictionary_2_Count" data-uid="System.Collections.Generic.MultiValueDictionary`2.Count">Count</h4>
-              <div class="markdown level1 summary"><p>Returns the number of <span class="typeparamref">TKey</span>s with one or more associated <span class="typeparamref">TValue</span>
+              <div class="markdown level1 summary"><p>Returns the number of <code data-dev-comment-type="typeparamref" class="typeparamref">TKey</code>s with one or more associated <code data-dev-comment-type="typeparamref" class="typeparamref">TValue</code>
 in this <a class="xref" href="System.Collections.Generic.MultiValueDictionary-2.html">MultiValueDictionary&lt;TKey, TValue&gt;</a>.</p>
 </div>
               <div class="markdown level1 conceptual"></div>
@@ -454,26 +462,26 @@ in this <a class="xref" href="System.Collections.Generic.MultiValueDictionary-2.
                 </thead>
                 <tbody>
                   <tr>
-                    <td><a class="xref" href="https://msdn.microsoft.com/en-us/library/system.int32(v=vs.110).aspx">Int32</a></td>
-                    <td><p>The number of <span class="typeparamref">TKey</span>s in this <a class="xref" href="System.Collections.Generic.MultiValueDictionary-2.html">MultiValueDictionary&lt;TKey, TValue&gt;</a>.</p>
+                    <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.int32">Int32</a></td>
+                    <td><p>The number of <code data-dev-comment-type="typeparamref" class="typeparamref">TKey</code>s in this <a class="xref" href="System.Collections.Generic.MultiValueDictionary-2.html">MultiValueDictionary&lt;TKey, TValue&gt;</a>.</p>
 </td>
                   </tr>
                 </tbody>
               </table>
               <h5 class="implements">Implements</h5>
-                  <div><a class="xref" href="https://msdn.microsoft.com/en-us/library/hh881496(v=vs.110).aspx">IReadOnlyCollection&lt;T&gt;.Count</a></div>
+                  <div><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.collections.generic.ireadonlycollection-1.count#System_Collections_Generic_IReadOnlyCollection_1_Count">IReadOnlyCollection&lt;T&gt;.Count</a></div>
               <span class="small pull-right mobile-hide">
                 <span class="divider">|</span>
                 <a href="https://github.com/FubarDevelopment/WebDavServer/new/master/apiSpec/new?filename=System_Collections_Generic_MultiValueDictionary_2_Item__0_.md&amp;value=---%0Auid%3A%20System.Collections.Generic.MultiValueDictionary%602.Item(%600)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
               </span>
               <span class="small pull-right mobile-hide">
-                <a href="https://github.com/FubarDevelopment/WebDavServer/blob/master/src/FubarDev.WebDavServer/Utils/MultiValueDictionary.cs/#L848">View Source</a>
+                <a href="https://github.com/FubarDevelopment/WebDavServer/blob/release/2.0/src/FubarDev.WebDavServer/Utils/MultiValueDictionary.cs/#L848">View Source</a>
               </span>
               <a id="System_Collections_Generic_MultiValueDictionary_2_Item_" data-uid="System.Collections.Generic.MultiValueDictionary`2.Item*"></a>
               <h4 id="System_Collections_Generic_MultiValueDictionary_2_Item__0_" data-uid="System.Collections.Generic.MultiValueDictionary`2.Item(`0)">Item[TKey]</h4>
-              <div class="markdown level1 summary"><p>Get every <span class="typeparamref">TValue</span> associated with the given <span class="typeparamref">TKey</span>. If 
-<span class="paramref">key</span> is not found in this <a class="xref" href="System.Collections.Generic.MultiValueDictionary-2.html">MultiValueDictionary&lt;TKey, TValue&gt;</a>, will 
-throw a <a class="xref" href="https://msdn.microsoft.com/en-us/library/system.collections.generic.keynotfoundexception(v=vs.110).aspx">KeyNotFoundException</a>.</p>
+              <div class="markdown level1 summary"><p>Get every <code data-dev-comment-type="typeparamref" class="typeparamref">TValue</code> associated with the given <code data-dev-comment-type="typeparamref" class="typeparamref">TKey</code>. If
+<code data-dev-comment-type="paramref" class="paramref">key</code> is not found in this <a class="xref" href="System.Collections.Generic.MultiValueDictionary-2.html">MultiValueDictionary&lt;TKey, TValue&gt;</a>, will
+throw a <span class="xref">System.Collections.Generic.KeyNotFoundException</span>.</p>
 </div>
               <div class="markdown level1 conceptual"></div>
               <h5 class="decalaration">Declaration</h5>
@@ -493,7 +501,7 @@ throw a <a class="xref" href="https://msdn.microsoft.com/en-us/library/system.co
                   <tr>
                     <td><span class="xref">TKey</span></td>
                     <td><span class="parametername">key</span></td>
-                    <td><p>The <span class="typeparamref">TKey</span> of the elements to retrieve.</p>
+                    <td><p>The <code data-dev-comment-type="typeparamref" class="typeparamref">TKey</code> of the elements to retrieve.</p>
 </td>
                   </tr>
                 </tbody>
@@ -508,18 +516,18 @@ throw a <a class="xref" href="https://msdn.microsoft.com/en-us/library/system.co
                 </thead>
                 <tbody>
                   <tr>
-                    <td><a class="xref" href="https://msdn.microsoft.com/en-us/library/hh881542(v=vs.110).aspx">IReadOnlyCollection</a>&lt;TValue&gt;</td>
-                    <td><p>An <a class="xref" href="https://msdn.microsoft.com/en-us/library/hh881542(v=vs.110).aspx">IReadOnlyCollection&lt;T&gt;</a> containing every <span class="typeparamref">TValue</span>
-associated with <span class="paramref">key</span>.</p>
+                    <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.collections.generic.ireadonlycollection-1">IReadOnlyCollection</a>&lt;TValue&gt;</td>
+                    <td><p>An <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.collections.generic.ireadonlycollection-1">IReadOnlyCollection&lt;T&gt;</a> containing every <code data-dev-comment-type="typeparamref" class="typeparamref">TValue</code>
+associated with <code data-dev-comment-type="paramref" class="paramref">key</code>.</p>
 </td>
                   </tr>
                 </tbody>
               </table>
               <h5 class="implements">Implements</h5>
-                  <div><a class="xref" href="https://msdn.microsoft.com/en-us/library/hh136396(v=vs.110).aspx">IReadOnlyDictionary&lt;TKey, TValue&gt;.Item[TKey]</a></div>
+                  <div><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.collections.generic.ireadonlydictionary-2.item#System_Collections_Generic_IReadOnlyDictionary_2_Item__0_">IReadOnlyDictionary&lt;TKey,TValue&gt;.Item[TKey]</a></div>
               <h5 id="System_Collections_Generic_MultiValueDictionary_2_Item__0__remarks">Remarks</h5>
-              <div class="markdown level1 remarks"><p>Note that the <a class="xref" href="https://msdn.microsoft.com/en-us/library/hh881542(v=vs.110).aspx">IReadOnlyCollection&lt;T&gt;</a> returned will change alongside any changes 
-to the <a class="xref" href="System.Collections.Generic.MultiValueDictionary-2.html">MultiValueDictionary&lt;TKey, TValue&gt;</a> </p>
+              <div class="markdown level1 remarks"><p>Note that the <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.collections.generic.ireadonlycollection-1">IReadOnlyCollection&lt;T&gt;</a> returned will change alongside any changes
+to the <a class="xref" href="System.Collections.Generic.MultiValueDictionary-2.html">MultiValueDictionary&lt;TKey, TValue&gt;</a></p>
 </div>
               <h5 class="exceptions">Exceptions</h5>
               <table class="table table-bordered table-striped table-condensed">
@@ -531,14 +539,14 @@ to the <a class="xref" href="System.Collections.Generic.MultiValueDictionary-2.h
                 </thead>
                 <tbody>
                   <tr>
-                    <td><a class="xref" href="https://msdn.microsoft.com/en-us/library/system.argumentnullexception(v=vs.110).aspx">ArgumentNullException</a></td>
-                    <td><p><span class="paramref">key</span> must be non-null</p>
+                    <td><span class="xref">System.ArgumentNullException</span></td>
+                    <td><p><code data-dev-comment-type="paramref" class="paramref">key</code> must be non-null</p>
 </td>
                   </tr>
                   <tr>
-                    <td><a class="xref" href="https://msdn.microsoft.com/en-us/library/system.collections.generic.keynotfoundexception(v=vs.110).aspx">KeyNotFoundException</a></td>
-                    <td><p><span class="paramref">key</span> does not have any associated 
-<span class="typeparamref">TValue</span>s in this <a class="xref" href="System.Collections.Generic.MultiValueDictionary-2.html">MultiValueDictionary&lt;TKey, TValue&gt;</a>.</p>
+                    <td><span class="xref">System.Collections.Generic.KeyNotFoundException</span></td>
+                    <td><p><code data-dev-comment-type="paramref" class="paramref">key</code> does not have any associated
+<code data-dev-comment-type="typeparamref" class="typeparamref">TValue</code>s in this <a class="xref" href="System.Collections.Generic.MultiValueDictionary-2.html">MultiValueDictionary&lt;TKey, TValue&gt;</a>.</p>
 </td>
                   </tr>
                 </tbody>
@@ -548,12 +556,12 @@ to the <a class="xref" href="System.Collections.Generic.MultiValueDictionary-2.h
                 <a href="https://github.com/FubarDevelopment/WebDavServer/new/master/apiSpec/new?filename=System_Collections_Generic_MultiValueDictionary_2_Keys.md&amp;value=---%0Auid%3A%20System.Collections.Generic.MultiValueDictionary%602.Keys%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
               </span>
               <span class="small pull-right mobile-hide">
-                <a href="https://github.com/FubarDevelopment/WebDavServer/blob/master/src/FubarDev.WebDavServer/Utils/MultiValueDictionary.cs/#L783">View Source</a>
+                <a href="https://github.com/FubarDevelopment/WebDavServer/blob/release/2.0/src/FubarDev.WebDavServer/Utils/MultiValueDictionary.cs/#L783">View Source</a>
               </span>
               <a id="System_Collections_Generic_MultiValueDictionary_2_Keys_" data-uid="System.Collections.Generic.MultiValueDictionary`2.Keys*"></a>
               <h4 id="System_Collections_Generic_MultiValueDictionary_2_Keys" data-uid="System.Collections.Generic.MultiValueDictionary`2.Keys">Keys</h4>
-              <div class="markdown level1 summary"><p>Gets each <span class="typeparamref">TKey</span> in this <a class="xref" href="System.Collections.Generic.MultiValueDictionary-2.html">MultiValueDictionary&lt;TKey, TValue&gt;</a> that
-has one or more associated <span class="typeparamref">TValue</span>.</p>
+              <div class="markdown level1 summary"><p>Gets each <code data-dev-comment-type="typeparamref" class="typeparamref">TKey</code> in this <a class="xref" href="System.Collections.Generic.MultiValueDictionary-2.html">MultiValueDictionary&lt;TKey, TValue&gt;</a> that
+has one or more associated <code data-dev-comment-type="typeparamref" class="typeparamref">TValue</code>.</p>
 </div>
               <div class="markdown level1 conceptual"></div>
               <h5 class="decalaration">Declaration</h5>
@@ -570,28 +578,28 @@ has one or more associated <span class="typeparamref">TValue</span>.</p>
                 </thead>
                 <tbody>
                   <tr>
-                    <td><a class="xref" href="https://msdn.microsoft.com/en-us/library/9eekhta0(v=vs.110).aspx">IEnumerable</a>&lt;TKey&gt;</td>
-                    <td><p>An <a class="xref" href="https://msdn.microsoft.com/en-us/library/9eekhta0(v=vs.110).aspx">IEnumerable&lt;T&gt;</a> containing each <span class="typeparamref">TKey</span> 
-in this <a class="xref" href="System.Collections.Generic.MultiValueDictionary-2.html">MultiValueDictionary&lt;TKey, TValue&gt;</a> that has one or more associated 
-<span class="typeparamref">TValue</span>.</p>
+                    <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1">IEnumerable</a>&lt;TKey&gt;</td>
+                    <td><p>An <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1">IEnumerable&lt;T&gt;</a> containing each <code data-dev-comment-type="typeparamref" class="typeparamref">TKey</code>
+in this <a class="xref" href="System.Collections.Generic.MultiValueDictionary-2.html">MultiValueDictionary&lt;TKey, TValue&gt;</a> that has one or more associated
+<code data-dev-comment-type="typeparamref" class="typeparamref">TValue</code>.</p>
 </td>
                   </tr>
                 </tbody>
               </table>
               <h5 class="implements">Implements</h5>
-                  <div><a class="xref" href="https://msdn.microsoft.com/en-us/library/hh192240(v=vs.110).aspx">IReadOnlyDictionary&lt;TKey, TValue&gt;.Keys</a></div>
+                  <div><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.collections.generic.ireadonlydictionary-2.keys#System_Collections_Generic_IReadOnlyDictionary_2_Keys">IReadOnlyDictionary&lt;TKey,TValue&gt;.Keys</a></div>
               <span class="small pull-right mobile-hide">
                 <span class="divider">|</span>
                 <a href="https://github.com/FubarDevelopment/WebDavServer/new/master/apiSpec/new?filename=System_Collections_Generic_MultiValueDictionary_2_Values.md&amp;value=---%0Auid%3A%20System.Collections.Generic.MultiValueDictionary%602.Values%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
               </span>
               <span class="small pull-right mobile-hide">
-                <a href="https://github.com/FubarDevelopment/WebDavServer/blob/master/src/FubarDev.WebDavServer/Utils/MultiValueDictionary.cs/#L823">View Source</a>
+                <a href="https://github.com/FubarDevelopment/WebDavServer/blob/release/2.0/src/FubarDev.WebDavServer/Utils/MultiValueDictionary.cs/#L823">View Source</a>
               </span>
               <a id="System_Collections_Generic_MultiValueDictionary_2_Values_" data-uid="System.Collections.Generic.MultiValueDictionary`2.Values*"></a>
               <h4 id="System_Collections_Generic_MultiValueDictionary_2_Values" data-uid="System.Collections.Generic.MultiValueDictionary`2.Values">Values</h4>
-              <div class="markdown level1 summary"><p>Gets an enumerable of <a class="xref" href="https://msdn.microsoft.com/en-us/library/hh881542(v=vs.110).aspx">IReadOnlyCollection&lt;T&gt;</a> from this <a class="xref" href="System.Collections.Generic.MultiValueDictionary-2.html">MultiValueDictionary&lt;TKey, TValue&gt;</a>,
-where each <a class="xref" href="https://msdn.microsoft.com/en-us/library/hh881542(v=vs.110).aspx">IReadOnlyCollection&lt;T&gt;</a> is the collection of every <span class="typeparamref">TValue</span> associated
-with a <span class="typeparamref">TKey</span> present in the <a class="xref" href="System.Collections.Generic.MultiValueDictionary-2.html">MultiValueDictionary&lt;TKey, TValue&gt;</a>. </p>
+              <div class="markdown level1 summary"><p>Gets an enumerable of <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.collections.generic.ireadonlycollection-1">IReadOnlyCollection&lt;T&gt;</a> from this <a class="xref" href="System.Collections.Generic.MultiValueDictionary-2.html">MultiValueDictionary&lt;TKey, TValue&gt;</a>,
+where each <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.collections.generic.ireadonlycollection-1">IReadOnlyCollection&lt;T&gt;</a> is the collection of every <code data-dev-comment-type="typeparamref" class="typeparamref">TValue</code> associated
+with a <code data-dev-comment-type="typeparamref" class="typeparamref">TKey</code> present in the <a class="xref" href="System.Collections.Generic.MultiValueDictionary-2.html">MultiValueDictionary&lt;TKey, TValue&gt;</a>.</p>
 </div>
               <div class="markdown level1 conceptual"></div>
               <h5 class="decalaration">Declaration</h5>
@@ -608,15 +616,15 @@ with a <span class="typeparamref">TKey</span> present in the <a class="xref" hre
                 </thead>
                 <tbody>
                   <tr>
-                    <td><a class="xref" href="https://msdn.microsoft.com/en-us/library/9eekhta0(v=vs.110).aspx">IEnumerable</a>&lt;<a class="xref" href="https://msdn.microsoft.com/en-us/library/hh881542(v=vs.110).aspx">IReadOnlyCollection</a>&lt;TValue&gt;&gt;</td>
-                    <td><p>An IEnumerable of each <a class="xref" href="https://msdn.microsoft.com/en-us/library/hh881542(v=vs.110).aspx">IReadOnlyCollection&lt;T&gt;</a> in this 
+                    <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1">IEnumerable</a>&lt;<a class="xref" href="https://docs.microsoft.com/dotnet/api/system.collections.generic.ireadonlycollection-1">IReadOnlyCollection</a>&lt;TValue&gt;&gt;</td>
+                    <td><p>An IEnumerable of each <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.collections.generic.ireadonlycollection-1">IReadOnlyCollection&lt;T&gt;</a> in this
 <a class="xref" href="System.Collections.Generic.MultiValueDictionary-2.html">MultiValueDictionary&lt;TKey, TValue&gt;</a></p>
 </td>
                   </tr>
                 </tbody>
               </table>
               <h5 class="implements">Implements</h5>
-                  <div><a class="xref" href="https://msdn.microsoft.com/en-us/library/hh192237(v=vs.110).aspx">IReadOnlyDictionary&lt;TKey, TValue&gt;.Values</a></div>
+                  <div><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.collections.generic.ireadonlydictionary-2.values#System_Collections_Generic_IReadOnlyDictionary_2_Values">IReadOnlyDictionary&lt;TKey,TValue&gt;.Values</a></div>
               <h3 id="methods">Methods
               </h3>
               <span class="small pull-right mobile-hide">
@@ -624,11 +632,11 @@ with a <span class="typeparamref">TKey</span> present in the <a class="xref" hre
                 <a href="https://github.com/FubarDevelopment/WebDavServer/new/master/apiSpec/new?filename=System_Collections_Generic_MultiValueDictionary_2_Add__0__1_.md&amp;value=---%0Auid%3A%20System.Collections.Generic.MultiValueDictionary%602.Add(%600%2C%601)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
               </span>
               <span class="small pull-right mobile-hide">
-                <a href="https://github.com/FubarDevelopment/WebDavServer/blob/master/src/FubarDev.WebDavServer/Utils/MultiValueDictionary.cs/#L612">View Source</a>
+                <a href="https://github.com/FubarDevelopment/WebDavServer/blob/release/2.0/src/FubarDev.WebDavServer/Utils/MultiValueDictionary.cs/#L612">View Source</a>
               </span>
               <a id="System_Collections_Generic_MultiValueDictionary_2_Add_" data-uid="System.Collections.Generic.MultiValueDictionary`2.Add*"></a>
               <h4 id="System_Collections_Generic_MultiValueDictionary_2_Add__0__1_" data-uid="System.Collections.Generic.MultiValueDictionary`2.Add(`0,`1)">Add(TKey, TValue)</h4>
-              <div class="markdown level1 summary"><p>Adds the specified <span class="typeparamref">TKey</span> and <span class="typeparamref">TValue</span> to the <a class="xref" href="System.Collections.Generic.MultiValueDictionary-2.html">MultiValueDictionary&lt;TKey, TValue&gt;</a>.</p>
+              <div class="markdown level1 summary"><p>Adds the specified <code data-dev-comment-type="typeparamref" class="typeparamref">TKey</code> and <code data-dev-comment-type="typeparamref" class="typeparamref">TValue</code> to the <a class="xref" href="System.Collections.Generic.MultiValueDictionary-2.html">MultiValueDictionary&lt;TKey, TValue&gt;</a>.</p>
 </div>
               <div class="markdown level1 conceptual"></div>
               <h5 class="decalaration">Declaration</h5>
@@ -648,21 +656,21 @@ with a <span class="typeparamref">TKey</span> present in the <a class="xref" hre
                   <tr>
                     <td><span class="xref">TKey</span></td>
                     <td><span class="parametername">key</span></td>
-                    <td><p>The <span class="typeparamref">TKey</span> of the element to add.</p>
+                    <td><p>The <code data-dev-comment-type="typeparamref" class="typeparamref">TKey</code> of the element to add.</p>
 </td>
                   </tr>
                   <tr>
                     <td><span class="xref">TValue</span></td>
                     <td><span class="parametername">value</span></td>
-                    <td><p>The <span class="typeparamref">TValue</span> of the element to add.</p>
+                    <td><p>The <code data-dev-comment-type="typeparamref" class="typeparamref">TValue</code> of the element to add.</p>
 </td>
                   </tr>
                 </tbody>
               </table>
               <h5 id="System_Collections_Generic_MultiValueDictionary_2_Add__0__1__remarks">Remarks</h5>
-              <div class="markdown level1 remarks"><p>Unlike the Add for <a class="xref" href="https://msdn.microsoft.com/en-us/library/system.collections.idictionary(v=vs.110).aspx">IDictionary</a>, the <a class="xref" href="System.Collections.Generic.MultiValueDictionary-2.html">MultiValueDictionary&lt;TKey, TValue&gt;</a> Add will not
-throw any exceptions. If the given <span class="typeparamref">TKey</span> is already in the <a class="xref" href="System.Collections.Generic.MultiValueDictionary-2.html">MultiValueDictionary&lt;TKey, TValue&gt;</a>,
-then <span class="typeparamref">TValue</span> will be added to <a class="xref" href="https://msdn.microsoft.com/en-us/library/hh881542(v=vs.110).aspx">IReadOnlyCollection&lt;T&gt;</a> associated with <span class="paramref">key</span></p>
+              <div class="markdown level1 remarks"><p>Unlike the Add for <span class="xref">System.Collections.IDictionary</span>, the <a class="xref" href="System.Collections.Generic.MultiValueDictionary-2.html">MultiValueDictionary&lt;TKey, TValue&gt;</a> Add will not
+throw any exceptions. If the given <code data-dev-comment-type="typeparamref" class="typeparamref">TKey</code> is already in the <a class="xref" href="System.Collections.Generic.MultiValueDictionary-2.html">MultiValueDictionary&lt;TKey, TValue&gt;</a>,
+then <code data-dev-comment-type="typeparamref" class="typeparamref">TValue</code> will be added to <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.collections.generic.ireadonlycollection-1">IReadOnlyCollection&lt;T&gt;</a> associated with <code data-dev-comment-type="paramref" class="paramref">key</code></p>
 </div>
               <h5 class="exceptions">Exceptions</h5>
               <table class="table table-bordered table-striped table-condensed">
@@ -674,8 +682,8 @@ then <span class="typeparamref">TValue</span> will be added to <a class="xref" h
                 </thead>
                 <tbody>
                   <tr>
-                    <td><a class="xref" href="https://msdn.microsoft.com/en-us/library/system.argumentnullexception(v=vs.110).aspx">ArgumentNullException</a></td>
-                    <td><p><span class="paramref">key</span> is <code>null</code>.</p>
+                    <td><span class="xref">System.ArgumentNullException</span></td>
+                    <td><p><code data-dev-comment-type="paramref" class="paramref">key</code> is <code>null</code>.</p>
 </td>
                   </tr>
                 </tbody>
@@ -685,13 +693,13 @@ then <span class="typeparamref">TValue</span> will be added to <a class="xref" h
                 <a href="https://github.com/FubarDevelopment/WebDavServer/new/master/apiSpec/new?filename=System_Collections_Generic_MultiValueDictionary_2_AddRange__0_System_Collections_Generic_IEnumerable__1__.md&amp;value=---%0Auid%3A%20System.Collections.Generic.MultiValueDictionary%602.AddRange(%600%2CSystem.Collections.Generic.IEnumerable%7B%601%7D)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
               </span>
               <span class="small pull-right mobile-hide">
-                <a href="https://github.com/FubarDevelopment/WebDavServer/blob/master/src/FubarDev.WebDavServer/Utils/MultiValueDictionary.cs/#L638">View Source</a>
+                <a href="https://github.com/FubarDevelopment/WebDavServer/blob/release/2.0/src/FubarDev.WebDavServer/Utils/MultiValueDictionary.cs/#L638">View Source</a>
               </span>
               <a id="System_Collections_Generic_MultiValueDictionary_2_AddRange_" data-uid="System.Collections.Generic.MultiValueDictionary`2.AddRange*"></a>
               <h4 id="System_Collections_Generic_MultiValueDictionary_2_AddRange__0_System_Collections_Generic_IEnumerable__1__" data-uid="System.Collections.Generic.MultiValueDictionary`2.AddRange(`0,System.Collections.Generic.IEnumerable{`1})">AddRange(TKey, IEnumerable&lt;TValue&gt;)</h4>
               <div class="markdown level1 summary"><p>Adds a number of key-value pairs to this <a class="xref" href="System.Collections.Generic.MultiValueDictionary-2.html">MultiValueDictionary&lt;TKey, TValue&gt;</a>, where
-the key for each value is <span class="paramref">key</span>, and the value for a pair
-is an element from <span class="paramref">values</span></p>
+the key for each value is <code data-dev-comment-type="paramref" class="paramref">key</code>, and the value for a pair
+is an element from <code data-dev-comment-type="paramref" class="paramref">values</code></p>
 </div>
               <div class="markdown level1 conceptual"></div>
               <h5 class="decalaration">Declaration</h5>
@@ -711,13 +719,13 @@ is an element from <span class="paramref">values</span></p>
                   <tr>
                     <td><span class="xref">TKey</span></td>
                     <td><span class="parametername">key</span></td>
-                    <td><p>The <span class="typeparamref">TKey</span> of all entries to add</p>
+                    <td><p>The <code data-dev-comment-type="typeparamref" class="typeparamref">TKey</code> of all entries to add</p>
 </td>
                   </tr>
                   <tr>
-                    <td><a class="xref" href="https://msdn.microsoft.com/en-us/library/9eekhta0(v=vs.110).aspx">IEnumerable</a>&lt;TValue&gt;</td>
+                    <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1">IEnumerable</a>&lt;TValue&gt;</td>
                     <td><span class="parametername">values</span></td>
-                    <td><p>An <a class="xref" href="https://msdn.microsoft.com/en-us/library/9eekhta0(v=vs.110).aspx">IEnumerable&lt;T&gt;</a> of values to add</p>
+                    <td><p>An <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1">IEnumerable&lt;T&gt;</a> of values to add</p>
 </td>
                   </tr>
                 </tbody>
@@ -736,8 +744,8 @@ of whether the AddRange method actually modified the <a class="xref" href="Syste
                 </thead>
                 <tbody>
                   <tr>
-                    <td><a class="xref" href="https://msdn.microsoft.com/en-us/library/system.argumentnullexception(v=vs.110).aspx">ArgumentNullException</a></td>
-                    <td><p><span class="paramref">key</span> and <span class="paramref">values</span> must be non-null</p>
+                    <td><span class="xref">System.ArgumentNullException</span></td>
+                    <td><p><code data-dev-comment-type="paramref" class="paramref">key</code> and <code data-dev-comment-type="paramref" class="paramref">values</code> must be non-null</p>
 </td>
                   </tr>
                 </tbody>
@@ -747,11 +755,11 @@ of whether the AddRange method actually modified the <a class="xref" href="Syste
                 <a href="https://github.com/FubarDevelopment/WebDavServer/new/master/apiSpec/new?filename=System_Collections_Generic_MultiValueDictionary_2_Clear.md&amp;value=---%0Auid%3A%20System.Collections.Generic.MultiValueDictionary%602.Clear%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
               </span>
               <span class="small pull-right mobile-hide">
-                <a href="https://github.com/FubarDevelopment/WebDavServer/blob/master/src/FubarDev.WebDavServer/Utils/MultiValueDictionary.cs/#L743">View Source</a>
+                <a href="https://github.com/FubarDevelopment/WebDavServer/blob/release/2.0/src/FubarDev.WebDavServer/Utils/MultiValueDictionary.cs/#L743">View Source</a>
               </span>
               <a id="System_Collections_Generic_MultiValueDictionary_2_Clear_" data-uid="System.Collections.Generic.MultiValueDictionary`2.Clear*"></a>
               <h4 id="System_Collections_Generic_MultiValueDictionary_2_Clear" data-uid="System.Collections.Generic.MultiValueDictionary`2.Clear">Clear()</h4>
-              <div class="markdown level1 summary"><p>Removes every <span class="typeparamref">TKey</span> and <span class="typeparamref">TValue</span> from this 
+              <div class="markdown level1 summary"><p>Removes every <code data-dev-comment-type="typeparamref" class="typeparamref">TKey</code> and <code data-dev-comment-type="typeparamref" class="typeparamref">TValue</code> from this
 <a class="xref" href="System.Collections.Generic.MultiValueDictionary-2.html">MultiValueDictionary&lt;TKey, TValue&gt;</a>.</p>
 </div>
               <div class="markdown level1 conceptual"></div>
@@ -764,11 +772,11 @@ of whether the AddRange method actually modified the <a class="xref" href="Syste
                 <a href="https://github.com/FubarDevelopment/WebDavServer/new/master/apiSpec/new?filename=System_Collections_Generic_MultiValueDictionary_2_Contains__0__1_.md&amp;value=---%0Auid%3A%20System.Collections.Generic.MultiValueDictionary%602.Contains(%600%2C%601)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
               </span>
               <span class="small pull-right mobile-hide">
-                <a href="https://github.com/FubarDevelopment/WebDavServer/blob/master/src/FubarDev.WebDavServer/Utils/MultiValueDictionary.cs/#L717">View Source</a>
+                <a href="https://github.com/FubarDevelopment/WebDavServer/blob/release/2.0/src/FubarDev.WebDavServer/Utils/MultiValueDictionary.cs/#L717">View Source</a>
               </span>
               <a id="System_Collections_Generic_MultiValueDictionary_2_Contains_" data-uid="System.Collections.Generic.MultiValueDictionary`2.Contains*"></a>
               <h4 id="System_Collections_Generic_MultiValueDictionary_2_Contains__0__1_" data-uid="System.Collections.Generic.MultiValueDictionary`2.Contains(`0,`1)">Contains(TKey, TValue)</h4>
-              <div class="markdown level1 summary"><p>Determines if the given <span class="typeparamref">TKey</span>-<span class="typeparamref">TValue</span> 
+              <div class="markdown level1 summary"><p>Determines if the given <code data-dev-comment-type="typeparamref" class="typeparamref">TKey</code>-<code data-dev-comment-type="typeparamref" class="typeparamref">TValue</code>
 pair exists within this <a class="xref" href="System.Collections.Generic.MultiValueDictionary-2.html">MultiValueDictionary&lt;TKey, TValue&gt;</a>.</p>
 </div>
               <div class="markdown level1 conceptual"></div>
@@ -789,13 +797,13 @@ pair exists within this <a class="xref" href="System.Collections.Generic.MultiVa
                   <tr>
                     <td><span class="xref">TKey</span></td>
                     <td><span class="parametername">key</span></td>
-                    <td><p>The <span class="typeparamref">TKey</span> of the element.</p>
+                    <td><p>The <code data-dev-comment-type="typeparamref" class="typeparamref">TKey</code> of the element.</p>
 </td>
                   </tr>
                   <tr>
                     <td><span class="xref">TValue</span></td>
                     <td><span class="parametername">value</span></td>
-                    <td><p>The <span class="typeparamref">TValue</span> of the element.</p>
+                    <td><p>The <code data-dev-comment-type="typeparamref" class="typeparamref">TValue</code> of the element.</p>
 </td>
                   </tr>
                 </tbody>
@@ -810,7 +818,7 @@ pair exists within this <a class="xref" href="System.Collections.Generic.MultiVa
                 </thead>
                 <tbody>
                   <tr>
-                    <td><a class="xref" href="https://msdn.microsoft.com/en-us/library/system.boolean(v=vs.110).aspx">Boolean</a></td>
+                    <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.boolean">Boolean</a></td>
                     <td><p><code>true</code> if found; otherwise <code>false</code></p>
 </td>
                   </tr>
@@ -826,8 +834,8 @@ pair exists within this <a class="xref" href="System.Collections.Generic.MultiVa
                 </thead>
                 <tbody>
                   <tr>
-                    <td><a class="xref" href="https://msdn.microsoft.com/en-us/library/system.argumentnullexception(v=vs.110).aspx">ArgumentNullException</a></td>
-                    <td><p><span class="paramref">key</span> must be non-null</p>
+                    <td><span class="xref">System.ArgumentNullException</span></td>
+                    <td><p><code data-dev-comment-type="paramref" class="paramref">key</code> must be non-null</p>
 </td>
                   </tr>
                 </tbody>
@@ -837,12 +845,12 @@ pair exists within this <a class="xref" href="System.Collections.Generic.MultiVa
                 <a href="https://github.com/FubarDevelopment/WebDavServer/new/master/apiSpec/new?filename=System_Collections_Generic_MultiValueDictionary_2_ContainsKey__0_.md&amp;value=---%0Auid%3A%20System.Collections.Generic.MultiValueDictionary%602.ContainsKey(%600)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
               </span>
               <span class="small pull-right mobile-hide">
-                <a href="https://github.com/FubarDevelopment/WebDavServer/blob/master/src/FubarDev.WebDavServer/Utils/MultiValueDictionary.cs/#L764">View Source</a>
+                <a href="https://github.com/FubarDevelopment/WebDavServer/blob/release/2.0/src/FubarDev.WebDavServer/Utils/MultiValueDictionary.cs/#L764">View Source</a>
               </span>
               <a id="System_Collections_Generic_MultiValueDictionary_2_ContainsKey_" data-uid="System.Collections.Generic.MultiValueDictionary`2.ContainsKey*"></a>
               <h4 id="System_Collections_Generic_MultiValueDictionary_2_ContainsKey__0_" data-uid="System.Collections.Generic.MultiValueDictionary`2.ContainsKey(`0)">ContainsKey(TKey)</h4>
-              <div class="markdown level1 summary"><p>Determines if the given <span class="typeparamref">TKey</span> exists within this <a class="xref" href="System.Collections.Generic.MultiValueDictionary-2.html">MultiValueDictionary&lt;TKey, TValue&gt;</a> and has
-at least one <span class="typeparamref">TValue</span> associated with it.</p>
+              <div class="markdown level1 summary"><p>Determines if the given <code data-dev-comment-type="typeparamref" class="typeparamref">TKey</code> exists within this <a class="xref" href="System.Collections.Generic.MultiValueDictionary-2.html">MultiValueDictionary&lt;TKey, TValue&gt;</a> and has
+at least one <code data-dev-comment-type="typeparamref" class="typeparamref">TValue</code> associated with it.</p>
 </div>
               <div class="markdown level1 conceptual"></div>
               <h5 class="decalaration">Declaration</h5>
@@ -862,7 +870,7 @@ at least one <span class="typeparamref">TValue</span> associated with it.</p>
                   <tr>
                     <td><span class="xref">TKey</span></td>
                     <td><span class="parametername">key</span></td>
-                    <td><p>The <span class="typeparamref">TKey</span> to search the <a class="xref" href="System.Collections.Generic.MultiValueDictionary-2.html">MultiValueDictionary&lt;TKey, TValue&gt;</a> for</p>
+                    <td><p>The <code data-dev-comment-type="typeparamref" class="typeparamref">TKey</code> to search the <a class="xref" href="System.Collections.Generic.MultiValueDictionary-2.html">MultiValueDictionary&lt;TKey, TValue&gt;</a> for</p>
 </td>
                   </tr>
                 </tbody>
@@ -877,15 +885,15 @@ at least one <span class="typeparamref">TValue</span> associated with it.</p>
                 </thead>
                 <tbody>
                   <tr>
-                    <td><a class="xref" href="https://msdn.microsoft.com/en-us/library/system.boolean(v=vs.110).aspx">Boolean</a></td>
-                    <td><p><code>true</code> if the <a class="xref" href="System.Collections.Generic.MultiValueDictionary-2.html">MultiValueDictionary&lt;TKey, TValue&gt;</a> contains the requested <span class="typeparamref">TKey</span>;
-    otherwise <code>false</code>.</p>
+                    <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.boolean">Boolean</a></td>
+                    <td><p><code>true</code> if the <a class="xref" href="System.Collections.Generic.MultiValueDictionary-2.html">MultiValueDictionary&lt;TKey, TValue&gt;</a> contains the requested <code data-dev-comment-type="typeparamref" class="typeparamref">TKey</code>;
+otherwise <code>false</code>.</p>
 </td>
                   </tr>
                 </tbody>
               </table>
               <h5 class="implements">Implements</h5>
-                  <div><a class="xref" href="https://msdn.microsoft.com/en-us/library/hh136572(v=vs.110).aspx">IReadOnlyDictionary&lt;TKey, TValue&gt;.ContainsKey(TKey)</a></div>
+                  <div><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.collections.generic.ireadonlydictionary-2.containskey#System_Collections_Generic_IReadOnlyDictionary_2_ContainsKey__0_">IReadOnlyDictionary&lt;TKey,TValue&gt;.ContainsKey(TKey)</a></div>
               <h5 class="exceptions">Exceptions</h5>
               <table class="table table-bordered table-striped table-condensed">
                 <thead>
@@ -896,8 +904,8 @@ at least one <span class="typeparamref">TValue</span> associated with it.</p>
                 </thead>
                 <tbody>
                   <tr>
-                    <td><a class="xref" href="https://msdn.microsoft.com/en-us/library/system.argumentnullexception(v=vs.110).aspx">ArgumentNullException</a></td>
-                    <td><p><span class="paramref">key</span> must be non-null</p>
+                    <td><span class="xref">System.ArgumentNullException</span></td>
+                    <td><p><code data-dev-comment-type="paramref" class="paramref">key</code> must be non-null</p>
 </td>
                   </tr>
                 </tbody>
@@ -907,11 +915,11 @@ at least one <span class="typeparamref">TValue</span> associated with it.</p>
                 <a href="https://github.com/FubarDevelopment/WebDavServer/new/master/apiSpec/new?filename=System_Collections_Generic_MultiValueDictionary_2_ContainsValue__1_.md&amp;value=---%0Auid%3A%20System.Collections.Generic.MultiValueDictionary%602.ContainsValue(%601)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
               </span>
               <span class="small pull-right mobile-hide">
-                <a href="https://github.com/FubarDevelopment/WebDavServer/blob/master/src/FubarDev.WebDavServer/Utils/MultiValueDictionary.cs/#L731">View Source</a>
+                <a href="https://github.com/FubarDevelopment/WebDavServer/blob/release/2.0/src/FubarDev.WebDavServer/Utils/MultiValueDictionary.cs/#L731">View Source</a>
               </span>
               <a id="System_Collections_Generic_MultiValueDictionary_2_ContainsValue_" data-uid="System.Collections.Generic.MultiValueDictionary`2.ContainsValue*"></a>
               <h4 id="System_Collections_Generic_MultiValueDictionary_2_ContainsValue__1_" data-uid="System.Collections.Generic.MultiValueDictionary`2.ContainsValue(`1)">ContainsValue(TValue)</h4>
-              <div class="markdown level1 summary"><p>Determines if the given <span class="typeparamref">TValue</span> exists within this <a class="xref" href="System.Collections.Generic.MultiValueDictionary-2.html">MultiValueDictionary&lt;TKey, TValue&gt;</a>.</p>
+              <div class="markdown level1 summary"><p>Determines if the given <code data-dev-comment-type="typeparamref" class="typeparamref">TValue</code> exists within this <a class="xref" href="System.Collections.Generic.MultiValueDictionary-2.html">MultiValueDictionary&lt;TKey, TValue&gt;</a>.</p>
 </div>
               <div class="markdown level1 conceptual"></div>
               <h5 class="decalaration">Declaration</h5>
@@ -931,7 +939,7 @@ at least one <span class="typeparamref">TValue</span> associated with it.</p>
                   <tr>
                     <td><span class="xref">TValue</span></td>
                     <td><span class="parametername">value</span></td>
-                    <td><p>A <span class="typeparamref">TValue</span> to search the <a class="xref" href="System.Collections.Generic.MultiValueDictionary-2.html">MultiValueDictionary&lt;TKey, TValue&gt;</a> for</p>
+                    <td><p>A <code data-dev-comment-type="typeparamref" class="typeparamref">TValue</code> to search the <a class="xref" href="System.Collections.Generic.MultiValueDictionary-2.html">MultiValueDictionary&lt;TKey, TValue&gt;</a> for</p>
 </td>
                   </tr>
                 </tbody>
@@ -946,8 +954,8 @@ at least one <span class="typeparamref">TValue</span> associated with it.</p>
                 </thead>
                 <tbody>
                   <tr>
-                    <td><a class="xref" href="https://msdn.microsoft.com/en-us/library/system.boolean(v=vs.110).aspx">Boolean</a></td>
-                    <td><p><code>true</code> if the <a class="xref" href="System.Collections.Generic.MultiValueDictionary-2.html">MultiValueDictionary&lt;TKey, TValue&gt;</a> contains the <span class="paramref">value</span>; otherwise <code>false</code></p>
+                    <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.boolean">Boolean</a></td>
+                    <td><p><code>true</code> if the <a class="xref" href="System.Collections.Generic.MultiValueDictionary-2.html">MultiValueDictionary&lt;TKey, TValue&gt;</a> contains the <code data-dev-comment-type="paramref" class="paramref">value</code>; otherwise <code>false</code></p>
 </td>
                   </tr>
                 </tbody>
@@ -957,20 +965,22 @@ at least one <span class="typeparamref">TValue</span> associated with it.</p>
                 <a href="https://github.com/FubarDevelopment/WebDavServer/new/master/apiSpec/new?filename=System_Collections_Generic_MultiValueDictionary_2_Create__1.md&amp;value=---%0Auid%3A%20System.Collections.Generic.MultiValueDictionary%602.Create%60%601%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
               </span>
               <span class="small pull-right mobile-hide">
-                <a href="https://github.com/FubarDevelopment/WebDavServer/blob/master/src/FubarDev.WebDavServer/Utils/MultiValueDictionary.cs/#L167">View Source</a>
+                <a href="https://github.com/FubarDevelopment/WebDavServer/blob/release/2.0/src/FubarDev.WebDavServer/Utils/MultiValueDictionary.cs/#L167">View Source</a>
               </span>
               <a id="System_Collections_Generic_MultiValueDictionary_2_Create_" data-uid="System.Collections.Generic.MultiValueDictionary`2.Create*"></a>
               <h4 id="System_Collections_Generic_MultiValueDictionary_2_Create__1" data-uid="System.Collections.Generic.MultiValueDictionary`2.Create``1">Create&lt;TValueCollection&gt;()</h4>
-              <div class="markdown level1 summary"><p>Creates a new new instance of the <a class="xref" href="System.Collections.Generic.MultiValueDictionary-2.html">MultiValueDictionary&lt;TKey, TValue&gt;</a> 
+              <div class="markdown level1 summary"><p>Creates a new new instance of the <a class="xref" href="System.Collections.Generic.MultiValueDictionary-2.html">MultiValueDictionary&lt;TKey, TValue&gt;</a>
 class that is empty, has the default initial capacity, and uses the default
-<a class="xref" href="https://msdn.microsoft.com/en-us/library/ms132151(v=vs.110).aspx">IEqualityComparer&lt;T&gt;</a> for <span class="typeparamref">TKey</span>. The 
-internal dictionary will use instances of the <span class="typeparamref">TValueCollection</span>
+<a class="xref" href="https://docs.microsoft.com/dotnet/api/system.collections.generic.iequalitycomparer-1">IEqualityComparer&lt;T&gt;</a> for <code data-dev-comment-type="typeparamref" class="typeparamref">TKey</code>. The
+internal dictionary will use instances of the <code data-dev-comment-type="typeparamref" class="typeparamref">TValueCollection</code>
 class as its collection type.</p>
 </div>
               <div class="markdown level1 conceptual"></div>
               <h5 class="decalaration">Declaration</h5>
               <div class="codewrapper">
-                <pre><code class="lang-csharp hljs">public static MultiValueDictionary&lt;TKey, TValue&gt; Create&lt;TValueCollection&gt;()where TValueCollection : ICollection&lt;TValue&gt;, new ()</code></pre>
+                <pre><code class="lang-csharp hljs">public static MultiValueDictionary&lt;TKey, TValue&gt; Create&lt;TValueCollection&gt;()
+
+    where TValueCollection : ICollection&lt;TValue&gt;, new()</code></pre>
               </div>
               <h5 class="returns">Returns</h5>
               <table class="table table-bordered table-striped table-condensed">
@@ -1007,7 +1017,7 @@ will contain in its internal dictionary.</p>
                 </tbody>
               </table>
               <h5 id="System_Collections_Generic_MultiValueDictionary_2_Create__1_remarks">Remarks</h5>
-              <div class="markdown level1 remarks"><p>Note that <span class="typeparamref">TValueCollection</span> must implement <a class="xref" href="https://msdn.microsoft.com/en-us/library/92t2ye13(v=vs.110).aspx">ICollection&lt;T&gt;</a>
+              <div class="markdown level1 remarks"><p>Note that <code data-dev-comment-type="typeparamref" class="typeparamref">TValueCollection</code> must implement <span class="xref">System.Collections.Generic.ICollection`1</span>
 in addition to being constructable through new(). The collection returned from the constructor
 must also not have IsReadOnly set to True by default.</p>
 </div>
@@ -1021,9 +1031,9 @@ must also not have IsReadOnly set to True by default.</p>
                 </thead>
                 <tbody>
                   <tr>
-                    <td><a class="xref" href="https://msdn.microsoft.com/en-us/library/system.invalidoperationexception(v=vs.110).aspx">InvalidOperationException</a></td>
-                    <td><p><span class="typeparamref">TValueCollection</span> must not have
-    IsReadOnly set to true by default.</p>
+                    <td><span class="xref">System.InvalidOperationException</span></td>
+                    <td><p><code data-dev-comment-type="typeparamref" class="typeparamref">TValueCollection</code> must not have
+IsReadOnly set to true by default.</p>
 </td>
                   </tr>
                 </tbody>
@@ -1033,20 +1043,22 @@ must also not have IsReadOnly set to True by default.</p>
                 <a href="https://github.com/FubarDevelopment/WebDavServer/new/master/apiSpec/new?filename=System_Collections_Generic_MultiValueDictionary_2_Create__1_System_Collections_Generic_IEnumerable_System_Collections_Generic_KeyValuePair__0_System_Collections_Generic_IReadOnlyCollection__1____.md&amp;value=---%0Auid%3A%20System.Collections.Generic.MultiValueDictionary%602.Create%60%601(System.Collections.Generic.IEnumerable%7BSystem.Collections.Generic.KeyValuePair%7B%600%2CSystem.Collections.Generic.IReadOnlyCollection%7B%601%7D%7D%7D)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
               </span>
               <span class="small pull-right mobile-hide">
-                <a href="https://github.com/FubarDevelopment/WebDavServer/blob/master/src/FubarDev.WebDavServer/Utils/MultiValueDictionary.cs/#L305">View Source</a>
+                <a href="https://github.com/FubarDevelopment/WebDavServer/blob/release/2.0/src/FubarDev.WebDavServer/Utils/MultiValueDictionary.cs/#L305">View Source</a>
               </span>
               <a id="System_Collections_Generic_MultiValueDictionary_2_Create_" data-uid="System.Collections.Generic.MultiValueDictionary`2.Create*"></a>
               <h4 id="System_Collections_Generic_MultiValueDictionary_2_Create__1_System_Collections_Generic_IEnumerable_System_Collections_Generic_KeyValuePair__0_System_Collections_Generic_IReadOnlyCollection__1____" data-uid="System.Collections.Generic.MultiValueDictionary`2.Create``1(System.Collections.Generic.IEnumerable{System.Collections.Generic.KeyValuePair{`0,System.Collections.Generic.IReadOnlyCollection{`1}}})">Create&lt;TValueCollection&gt;(IEnumerable&lt;KeyValuePair&lt;TKey, IReadOnlyCollection&lt;TValue&gt;&gt;&gt;)</h4>
-              <div class="markdown level1 summary"><p>Initializes a new instance of the <a class="xref" href="System.Collections.Generic.MultiValueDictionary-2.html">MultiValueDictionary&lt;TKey, TValue&gt;</a> class that contains 
+              <div class="markdown level1 summary"><p>Initializes a new instance of the <a class="xref" href="System.Collections.Generic.MultiValueDictionary-2.html">MultiValueDictionary&lt;TKey, TValue&gt;</a> class that contains
 elements copied from the specified IEnumerable&lt;KeyValuePair&lt;TKey, IReadOnlyCollection&lt;TValue&gt;&gt;&gt;
-and uses the default <a class="xref" href="https://msdn.microsoft.com/en-us/library/ms132151(v=vs.110).aspx">IEqualityComparer&lt;T&gt;</a> for the <span class="typeparamref">TKey</span> type.
-The internal dictionary will use instances of the <span class="typeparamref">TValueCollection</span>
+and uses the default <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.collections.generic.iequalitycomparer-1">IEqualityComparer&lt;T&gt;</a> for the <code data-dev-comment-type="typeparamref" class="typeparamref">TKey</code> type.
+The internal dictionary will use instances of the <code data-dev-comment-type="typeparamref" class="typeparamref">TValueCollection</code>
 class as its collection type.</p>
 </div>
               <div class="markdown level1 conceptual"></div>
               <h5 class="decalaration">Declaration</h5>
               <div class="codewrapper">
-                <pre><code class="lang-csharp hljs">public static MultiValueDictionary&lt;TKey, TValue&gt; Create&lt;TValueCollection&gt;(IEnumerable&lt;KeyValuePair&lt;TKey, IReadOnlyCollection&lt;TValue&gt;&gt;&gt; enumerable)where TValueCollection : ICollection&lt;TValue&gt;, new ()</code></pre>
+                <pre><code class="lang-csharp hljs">public static MultiValueDictionary&lt;TKey, TValue&gt; Create&lt;TValueCollection&gt;(IEnumerable&lt;KeyValuePair&lt;TKey, IReadOnlyCollection&lt;TValue&gt;&gt;&gt; enumerable)
+
+    where TValueCollection : ICollection&lt;TValue&gt;, new()</code></pre>
               </div>
               <h5 class="parameters">Parameters</h5>
               <table class="table table-bordered table-striped table-condensed">
@@ -1059,7 +1071,7 @@ class as its collection type.</p>
                 </thead>
                 <tbody>
                   <tr>
-                    <td><a class="xref" href="https://msdn.microsoft.com/en-us/library/9eekhta0(v=vs.110).aspx">IEnumerable</a>&lt;<span class="xref">System.Collections.Generic.KeyValuePair</span>&lt;TKey, <a class="xref" href="https://msdn.microsoft.com/en-us/library/hh881542(v=vs.110).aspx">IReadOnlyCollection</a>&lt;TValue&gt;&gt;&gt;</td>
+                    <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1">IEnumerable</a>&lt;<span class="xref">System.Collections.Generic.KeyValuePair</span>&lt;TKey, <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.collections.generic.ireadonlycollection-1">IReadOnlyCollection</a>&lt;TValue&gt;&gt;&gt;</td>
                     <td><span class="parametername">enumerable</span></td>
                     <td><p>IEnumerable to copy elements into this from</p>
 </td>
@@ -1101,7 +1113,7 @@ will contain in its internal dictionary.</p>
                 </tbody>
               </table>
               <h5 id="System_Collections_Generic_MultiValueDictionary_2_Create__1_System_Collections_Generic_IEnumerable_System_Collections_Generic_KeyValuePair__0_System_Collections_Generic_IReadOnlyCollection__1_____remarks">Remarks</h5>
-              <div class="markdown level1 remarks"><p>Note that <span class="typeparamref">TValueCollection</span> must implement <a class="xref" href="https://msdn.microsoft.com/en-us/library/92t2ye13(v=vs.110).aspx">ICollection&lt;T&gt;</a>
+              <div class="markdown level1 remarks"><p>Note that <code data-dev-comment-type="typeparamref" class="typeparamref">TValueCollection</code> must implement <span class="xref">System.Collections.Generic.ICollection`1</span>
 in addition to being constructable through new(). The collection returned from the constructor
 must also not have IsReadOnly set to True by default.</p>
 </div>
@@ -1115,13 +1127,13 @@ must also not have IsReadOnly set to True by default.</p>
                 </thead>
                 <tbody>
                   <tr>
-                    <td><a class="xref" href="https://msdn.microsoft.com/en-us/library/system.invalidoperationexception(v=vs.110).aspx">InvalidOperationException</a></td>
-                    <td><p><span class="typeparamref">TValueCollection</span> must not have
-    IsReadOnly set to true by default.</p>
+                    <td><span class="xref">System.InvalidOperationException</span></td>
+                    <td><p><code data-dev-comment-type="typeparamref" class="typeparamref">TValueCollection</code> must not have
+IsReadOnly set to true by default.</p>
 </td>
                   </tr>
                   <tr>
-                    <td><a class="xref" href="https://msdn.microsoft.com/en-us/library/system.argumentnullexception(v=vs.110).aspx">ArgumentNullException</a></td>
+                    <td><span class="xref">System.ArgumentNullException</span></td>
                     <td><p>enumerable must be non-null</p>
 </td>
                   </tr>
@@ -1132,20 +1144,22 @@ must also not have IsReadOnly set to True by default.</p>
                 <a href="https://github.com/FubarDevelopment/WebDavServer/new/master/apiSpec/new?filename=System_Collections_Generic_MultiValueDictionary_2_Create__1_System_Collections_Generic_IEnumerable_System_Collections_Generic_KeyValuePair__0_System_Collections_Generic_IReadOnlyCollection__1____System_Collections_Generic_IEqualityComparer__0__.md&amp;value=---%0Auid%3A%20System.Collections.Generic.MultiValueDictionary%602.Create%60%601(System.Collections.Generic.IEnumerable%7BSystem.Collections.Generic.KeyValuePair%7B%600%2CSystem.Collections.Generic.IReadOnlyCollection%7B%601%7D%7D%7D%2CSystem.Collections.Generic.IEqualityComparer%7B%600%7D)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
               </span>
               <span class="small pull-right mobile-hide">
-                <a href="https://github.com/FubarDevelopment/WebDavServer/blob/master/src/FubarDev.WebDavServer/Utils/MultiValueDictionary.cs/#L344">View Source</a>
+                <a href="https://github.com/FubarDevelopment/WebDavServer/blob/release/2.0/src/FubarDev.WebDavServer/Utils/MultiValueDictionary.cs/#L344">View Source</a>
               </span>
               <a id="System_Collections_Generic_MultiValueDictionary_2_Create_" data-uid="System.Collections.Generic.MultiValueDictionary`2.Create*"></a>
               <h4 id="System_Collections_Generic_MultiValueDictionary_2_Create__1_System_Collections_Generic_IEnumerable_System_Collections_Generic_KeyValuePair__0_System_Collections_Generic_IReadOnlyCollection__1____System_Collections_Generic_IEqualityComparer__0__" data-uid="System.Collections.Generic.MultiValueDictionary`2.Create``1(System.Collections.Generic.IEnumerable{System.Collections.Generic.KeyValuePair{`0,System.Collections.Generic.IReadOnlyCollection{`1}}},System.Collections.Generic.IEqualityComparer{`0})">Create&lt;TValueCollection&gt;(IEnumerable&lt;KeyValuePair&lt;TKey, IReadOnlyCollection&lt;TValue&gt;&gt;&gt;, IEqualityComparer&lt;TKey&gt;)</h4>
-              <div class="markdown level1 summary"><p>Initializes a new instance of the <a class="xref" href="System.Collections.Generic.MultiValueDictionary-2.html">MultiValueDictionary&lt;TKey, TValue&gt;</a> class that contains 
+              <div class="markdown level1 summary"><p>Initializes a new instance of the <a class="xref" href="System.Collections.Generic.MultiValueDictionary-2.html">MultiValueDictionary&lt;TKey, TValue&gt;</a> class that contains
 elements copied from the specified IEnumerable&lt;KeyValuePair&lt;TKey, IReadOnlyCollection&lt;TValue&gt;&gt;&gt;
-and uses the specified <a class="xref" href="https://msdn.microsoft.com/en-us/library/ms132151(v=vs.110).aspx">IEqualityComparer&lt;T&gt;</a> for the <span class="typeparamref">TKey</span> type.
-The internal dictionary will use instances of the <span class="typeparamref">TValueCollection</span>
+and uses the specified <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.collections.generic.iequalitycomparer-1">IEqualityComparer&lt;T&gt;</a> for the <code data-dev-comment-type="typeparamref" class="typeparamref">TKey</code> type.
+The internal dictionary will use instances of the <code data-dev-comment-type="typeparamref" class="typeparamref">TValueCollection</code>
 class as its collection type.</p>
 </div>
               <div class="markdown level1 conceptual"></div>
               <h5 class="decalaration">Declaration</h5>
               <div class="codewrapper">
-                <pre><code class="lang-csharp hljs">public static MultiValueDictionary&lt;TKey, TValue&gt; Create&lt;TValueCollection&gt;(IEnumerable&lt;KeyValuePair&lt;TKey, IReadOnlyCollection&lt;TValue&gt;&gt;&gt; enumerable, IEqualityComparer&lt;TKey&gt; comparer)where TValueCollection : ICollection&lt;TValue&gt;, new ()</code></pre>
+                <pre><code class="lang-csharp hljs">public static MultiValueDictionary&lt;TKey, TValue&gt; Create&lt;TValueCollection&gt;(IEnumerable&lt;KeyValuePair&lt;TKey, IReadOnlyCollection&lt;TValue&gt;&gt;&gt; enumerable, IEqualityComparer&lt;TKey&gt; comparer)
+
+    where TValueCollection : ICollection&lt;TValue&gt;, new()</code></pre>
               </div>
               <h5 class="parameters">Parameters</h5>
               <table class="table table-bordered table-striped table-condensed">
@@ -1158,15 +1172,15 @@ class as its collection type.</p>
                 </thead>
                 <tbody>
                   <tr>
-                    <td><a class="xref" href="https://msdn.microsoft.com/en-us/library/9eekhta0(v=vs.110).aspx">IEnumerable</a>&lt;<span class="xref">System.Collections.Generic.KeyValuePair</span>&lt;TKey, <a class="xref" href="https://msdn.microsoft.com/en-us/library/hh881542(v=vs.110).aspx">IReadOnlyCollection</a>&lt;TValue&gt;&gt;&gt;</td>
+                    <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1">IEnumerable</a>&lt;<span class="xref">System.Collections.Generic.KeyValuePair</span>&lt;TKey, <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.collections.generic.ireadonlycollection-1">IReadOnlyCollection</a>&lt;TValue&gt;&gt;&gt;</td>
                     <td><span class="parametername">enumerable</span></td>
                     <td><p>IEnumerable to copy elements into this from</p>
 </td>
                   </tr>
                   <tr>
-                    <td><a class="xref" href="https://msdn.microsoft.com/en-us/library/ms132151(v=vs.110).aspx">IEqualityComparer</a>&lt;TKey&gt;</td>
+                    <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.collections.generic.iequalitycomparer-1">IEqualityComparer</a>&lt;TKey&gt;</td>
                     <td><span class="parametername">comparer</span></td>
-                    <td><p>Specified comparer to use for the <span class="typeparamref">TKey</span>s</p>
+                    <td><p>Specified comparer to use for the <code data-dev-comment-type="typeparamref" class="typeparamref">TKey</code>s</p>
 </td>
                   </tr>
                 </tbody>
@@ -1206,7 +1220,7 @@ will contain in its internal dictionary.</p>
                 </tbody>
               </table>
               <h5 id="System_Collections_Generic_MultiValueDictionary_2_Create__1_System_Collections_Generic_IEnumerable_System_Collections_Generic_KeyValuePair__0_System_Collections_Generic_IReadOnlyCollection__1____System_Collections_Generic_IEqualityComparer__0___remarks">Remarks</h5>
-              <div class="markdown level1 remarks"><p>If <span class="paramref">comparer</span> is set to null, then the default <a class="xref" href="https://msdn.microsoft.com/en-us/library/system.collections.iequalitycomparer(v=vs.110).aspx">IEqualityComparer</a> for <span class="typeparamref">TKey</span> is used.</p>
+              <div class="markdown level1 remarks"><p>If <code data-dev-comment-type="paramref" class="paramref">comparer</code> is set to null, then the default <span class="xref">System.Collections.IEqualityComparer</span> for <code data-dev-comment-type="typeparamref" class="typeparamref">TKey</code> is used.</p>
 </div>
               <h5 class="exceptions">Exceptions</h5>
               <table class="table table-bordered table-striped table-condensed">
@@ -1218,13 +1232,13 @@ will contain in its internal dictionary.</p>
                 </thead>
                 <tbody>
                   <tr>
-                    <td><a class="xref" href="https://msdn.microsoft.com/en-us/library/system.invalidoperationexception(v=vs.110).aspx">InvalidOperationException</a></td>
-                    <td><p><span class="typeparamref">TValueCollection</span> must not have
-    IsReadOnly set to true by default.</p>
+                    <td><span class="xref">System.InvalidOperationException</span></td>
+                    <td><p><code data-dev-comment-type="typeparamref" class="typeparamref">TValueCollection</code> must not have
+IsReadOnly set to true by default.</p>
 </td>
                   </tr>
                   <tr>
-                    <td><a class="xref" href="https://msdn.microsoft.com/en-us/library/system.argumentnullexception(v=vs.110).aspx">ArgumentNullException</a></td>
+                    <td><span class="xref">System.ArgumentNullException</span></td>
                     <td><p>enumerable must be non-null</p>
 </td>
                   </tr>
@@ -1235,20 +1249,22 @@ will contain in its internal dictionary.</p>
                 <a href="https://github.com/FubarDevelopment/WebDavServer/new/master/apiSpec/new?filename=System_Collections_Generic_MultiValueDictionary_2_Create__1_System_Collections_Generic_IEnumerable_System_Collections_Generic_KeyValuePair__0_System_Collections_Generic_IReadOnlyCollection__1____System_Collections_Generic_IEqualityComparer__0__System_Func___0__.md&amp;value=---%0Auid%3A%20System.Collections.Generic.MultiValueDictionary%602.Create%60%601(System.Collections.Generic.IEnumerable%7BSystem.Collections.Generic.KeyValuePair%7B%600%2CSystem.Collections.Generic.IReadOnlyCollection%7B%601%7D%7D%7D%2CSystem.Collections.Generic.IEqualityComparer%7B%600%7D%2CSystem.Func%7B%60%600%7D)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
               </span>
               <span class="small pull-right mobile-hide">
-                <a href="https://github.com/FubarDevelopment/WebDavServer/blob/master/src/FubarDev.WebDavServer/Utils/MultiValueDictionary.cs/#L575">View Source</a>
+                <a href="https://github.com/FubarDevelopment/WebDavServer/blob/release/2.0/src/FubarDev.WebDavServer/Utils/MultiValueDictionary.cs/#L575">View Source</a>
               </span>
               <a id="System_Collections_Generic_MultiValueDictionary_2_Create_" data-uid="System.Collections.Generic.MultiValueDictionary`2.Create*"></a>
               <h4 id="System_Collections_Generic_MultiValueDictionary_2_Create__1_System_Collections_Generic_IEnumerable_System_Collections_Generic_KeyValuePair__0_System_Collections_Generic_IReadOnlyCollection__1____System_Collections_Generic_IEqualityComparer__0__System_Func___0__" data-uid="System.Collections.Generic.MultiValueDictionary`2.Create``1(System.Collections.Generic.IEnumerable{System.Collections.Generic.KeyValuePair{`0,System.Collections.Generic.IReadOnlyCollection{`1}}},System.Collections.Generic.IEqualityComparer{`0},System.Func{``0})">Create&lt;TValueCollection&gt;(IEnumerable&lt;KeyValuePair&lt;TKey, IReadOnlyCollection&lt;TValue&gt;&gt;&gt;, IEqualityComparer&lt;TKey&gt;, Func&lt;TValueCollection&gt;)</h4>
-              <div class="markdown level1 summary"><p>Initializes a new instance of the <a class="xref" href="System.Collections.Generic.MultiValueDictionary-2.html">MultiValueDictionary&lt;TKey, TValue&gt;</a> class that contains 
+              <div class="markdown level1 summary"><p>Initializes a new instance of the <a class="xref" href="System.Collections.Generic.MultiValueDictionary-2.html">MultiValueDictionary&lt;TKey, TValue&gt;</a> class that contains
 elements copied from the specified IEnumerable&lt;KeyValuePair&lt;TKey, IReadOnlyCollection&lt;TValue&gt;&gt;&gt;
-and uses the specified <a class="xref" href="https://msdn.microsoft.com/en-us/library/ms132151(v=vs.110).aspx">IEqualityComparer&lt;T&gt;</a> for the <span class="typeparamref">TKey</span> type.
-The internal dictionary will use instances of the <span class="typeparamref">TValueCollection</span>
+and uses the specified <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.collections.generic.iequalitycomparer-1">IEqualityComparer&lt;T&gt;</a> for the <code data-dev-comment-type="typeparamref" class="typeparamref">TKey</code> type.
+The internal dictionary will use instances of the <code data-dev-comment-type="typeparamref" class="typeparamref">TValueCollection</code>
 class as its collection type.</p>
 </div>
               <div class="markdown level1 conceptual"></div>
               <h5 class="decalaration">Declaration</h5>
               <div class="codewrapper">
-                <pre><code class="lang-csharp hljs">public static MultiValueDictionary&lt;TKey, TValue&gt; Create&lt;TValueCollection&gt;(IEnumerable&lt;KeyValuePair&lt;TKey, IReadOnlyCollection&lt;TValue&gt;&gt;&gt; enumerable, IEqualityComparer&lt;TKey&gt; comparer, Func&lt;TValueCollection&gt; collectionFactory)where TValueCollection : ICollection&lt;TValue&gt;</code></pre>
+                <pre><code class="lang-csharp hljs">public static MultiValueDictionary&lt;TKey, TValue&gt; Create&lt;TValueCollection&gt;(IEnumerable&lt;KeyValuePair&lt;TKey, IReadOnlyCollection&lt;TValue&gt;&gt;&gt; enumerable, IEqualityComparer&lt;TKey&gt; comparer, Func&lt;TValueCollection&gt; collectionFactory)
+
+    where TValueCollection : ICollection&lt;TValue&gt;</code></pre>
               </div>
               <h5 class="parameters">Parameters</h5>
               <table class="table table-bordered table-striped table-condensed">
@@ -1261,21 +1277,21 @@ class as its collection type.</p>
                 </thead>
                 <tbody>
                   <tr>
-                    <td><a class="xref" href="https://msdn.microsoft.com/en-us/library/9eekhta0(v=vs.110).aspx">IEnumerable</a>&lt;<span class="xref">System.Collections.Generic.KeyValuePair</span>&lt;TKey, <a class="xref" href="https://msdn.microsoft.com/en-us/library/hh881542(v=vs.110).aspx">IReadOnlyCollection</a>&lt;TValue&gt;&gt;&gt;</td>
+                    <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1">IEnumerable</a>&lt;<span class="xref">System.Collections.Generic.KeyValuePair</span>&lt;TKey, <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.collections.generic.ireadonlycollection-1">IReadOnlyCollection</a>&lt;TValue&gt;&gt;&gt;</td>
                     <td><span class="parametername">enumerable</span></td>
                     <td><p>IEnumerable to copy elements into this from</p>
 </td>
                   </tr>
                   <tr>
-                    <td><a class="xref" href="https://msdn.microsoft.com/en-us/library/ms132151(v=vs.110).aspx">IEqualityComparer</a>&lt;TKey&gt;</td>
+                    <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.collections.generic.iequalitycomparer-1">IEqualityComparer</a>&lt;TKey&gt;</td>
                     <td><span class="parametername">comparer</span></td>
-                    <td><p>Specified comparer to use for the <span class="typeparamref">TKey</span>s</p>
+                    <td><p>Specified comparer to use for the <code data-dev-comment-type="typeparamref" class="typeparamref">TKey</code>s</p>
 </td>
                   </tr>
                   <tr>
-                    <td><a class="xref" href="https://msdn.microsoft.com/en-us/library/bb534960(v=vs.110).aspx">Func</a>&lt;TValueCollection&gt;</td>
+                    <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.func-1">Func</a>&lt;TValueCollection&gt;</td>
                     <td><span class="parametername">collectionFactory</span></td>
-                    <td><p>A function to create a new <a class="xref" href="https://msdn.microsoft.com/en-us/library/92t2ye13(v=vs.110).aspx">ICollection&lt;T&gt;</a> to use
+                    <td><p>A function to create a new <span class="xref">System.Collections.Generic.ICollection`1</span> to use
 in the internal dictionary store of this <a class="xref" href="System.Collections.Generic.MultiValueDictionary-2.html">MultiValueDictionary&lt;TKey, TValue&gt;</a>.</p>
 </td>
                   </tr>
@@ -1316,7 +1332,7 @@ will contain in its internal dictionary.</p>
                 </tbody>
               </table>
               <h5 id="System_Collections_Generic_MultiValueDictionary_2_Create__1_System_Collections_Generic_IEnumerable_System_Collections_Generic_KeyValuePair__0_System_Collections_Generic_IReadOnlyCollection__1____System_Collections_Generic_IEqualityComparer__0__System_Func___0___remarks">Remarks</h5>
-              <div class="markdown level1 remarks"><p>If <span class="paramref">comparer</span> is set to null, then the default <a class="xref" href="https://msdn.microsoft.com/en-us/library/system.collections.iequalitycomparer(v=vs.110).aspx">IEqualityComparer</a> for <span class="typeparamref">TKey</span> is used.</p>
+              <div class="markdown level1 remarks"><p>If <code data-dev-comment-type="paramref" class="paramref">comparer</code> is set to null, then the default <span class="xref">System.Collections.IEqualityComparer</span> for <code data-dev-comment-type="typeparamref" class="typeparamref">TKey</code> is used.</p>
 </div>
               <h5 class="exceptions">Exceptions</h5>
               <table class="table table-bordered table-striped table-condensed">
@@ -1328,13 +1344,13 @@ will contain in its internal dictionary.</p>
                 </thead>
                 <tbody>
                   <tr>
-                    <td><a class="xref" href="https://msdn.microsoft.com/en-us/library/system.invalidoperationexception(v=vs.110).aspx">InvalidOperationException</a></td>
-                    <td><p><span class="paramref">collectionFactory</span> must create collections with
-    IsReadOnly set to true by default.</p>
+                    <td><span class="xref">System.InvalidOperationException</span></td>
+                    <td><p><code data-dev-comment-type="paramref" class="paramref">collectionFactory</code> must create collections with
+IsReadOnly set to true by default.</p>
 </td>
                   </tr>
                   <tr>
-                    <td><a class="xref" href="https://msdn.microsoft.com/en-us/library/system.argumentnullexception(v=vs.110).aspx">ArgumentNullException</a></td>
+                    <td><span class="xref">System.ArgumentNullException</span></td>
                     <td><p>enumerable must be non-null</p>
 </td>
                   </tr>
@@ -1345,20 +1361,22 @@ will contain in its internal dictionary.</p>
                 <a href="https://github.com/FubarDevelopment/WebDavServer/new/master/apiSpec/new?filename=System_Collections_Generic_MultiValueDictionary_2_Create__1_System_Collections_Generic_IEnumerable_System_Collections_Generic_KeyValuePair__0_System_Collections_Generic_IReadOnlyCollection__1____System_Func___0__.md&amp;value=---%0Auid%3A%20System.Collections.Generic.MultiValueDictionary%602.Create%60%601(System.Collections.Generic.IEnumerable%7BSystem.Collections.Generic.KeyValuePair%7B%600%2CSystem.Collections.Generic.IReadOnlyCollection%7B%601%7D%7D%7D%2CSystem.Func%7B%60%600%7D)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
               </span>
               <span class="small pull-right mobile-hide">
-                <a href="https://github.com/FubarDevelopment/WebDavServer/blob/master/src/FubarDev.WebDavServer/Utils/MultiValueDictionary.cs/#L534">View Source</a>
+                <a href="https://github.com/FubarDevelopment/WebDavServer/blob/release/2.0/src/FubarDev.WebDavServer/Utils/MultiValueDictionary.cs/#L534">View Source</a>
               </span>
               <a id="System_Collections_Generic_MultiValueDictionary_2_Create_" data-uid="System.Collections.Generic.MultiValueDictionary`2.Create*"></a>
               <h4 id="System_Collections_Generic_MultiValueDictionary_2_Create__1_System_Collections_Generic_IEnumerable_System_Collections_Generic_KeyValuePair__0_System_Collections_Generic_IReadOnlyCollection__1____System_Func___0__" data-uid="System.Collections.Generic.MultiValueDictionary`2.Create``1(System.Collections.Generic.IEnumerable{System.Collections.Generic.KeyValuePair{`0,System.Collections.Generic.IReadOnlyCollection{`1}}},System.Func{``0})">Create&lt;TValueCollection&gt;(IEnumerable&lt;KeyValuePair&lt;TKey, IReadOnlyCollection&lt;TValue&gt;&gt;&gt;, Func&lt;TValueCollection&gt;)</h4>
-              <div class="markdown level1 summary"><p>Initializes a new instance of the <a class="xref" href="System.Collections.Generic.MultiValueDictionary-2.html">MultiValueDictionary&lt;TKey, TValue&gt;</a> class that contains 
+              <div class="markdown level1 summary"><p>Initializes a new instance of the <a class="xref" href="System.Collections.Generic.MultiValueDictionary-2.html">MultiValueDictionary&lt;TKey, TValue&gt;</a> class that contains
 elements copied from the specified IEnumerable&lt;KeyValuePair&lt;TKey, IReadOnlyCollection&lt;TValue&gt;&gt;&gt;
-and uses the default <a class="xref" href="https://msdn.microsoft.com/en-us/library/ms132151(v=vs.110).aspx">IEqualityComparer&lt;T&gt;</a> for the <span class="typeparamref">TKey</span> type.
-The internal dictionary will use instances of the <span class="typeparamref">TValueCollection</span>
+and uses the default <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.collections.generic.iequalitycomparer-1">IEqualityComparer&lt;T&gt;</a> for the <code data-dev-comment-type="typeparamref" class="typeparamref">TKey</code> type.
+The internal dictionary will use instances of the <code data-dev-comment-type="typeparamref" class="typeparamref">TValueCollection</code>
 class as its collection type.</p>
 </div>
               <div class="markdown level1 conceptual"></div>
               <h5 class="decalaration">Declaration</h5>
               <div class="codewrapper">
-                <pre><code class="lang-csharp hljs">public static MultiValueDictionary&lt;TKey, TValue&gt; Create&lt;TValueCollection&gt;(IEnumerable&lt;KeyValuePair&lt;TKey, IReadOnlyCollection&lt;TValue&gt;&gt;&gt; enumerable, Func&lt;TValueCollection&gt; collectionFactory)where TValueCollection : ICollection&lt;TValue&gt;</code></pre>
+                <pre><code class="lang-csharp hljs">public static MultiValueDictionary&lt;TKey, TValue&gt; Create&lt;TValueCollection&gt;(IEnumerable&lt;KeyValuePair&lt;TKey, IReadOnlyCollection&lt;TValue&gt;&gt;&gt; enumerable, Func&lt;TValueCollection&gt; collectionFactory)
+
+    where TValueCollection : ICollection&lt;TValue&gt;</code></pre>
               </div>
               <h5 class="parameters">Parameters</h5>
               <table class="table table-bordered table-striped table-condensed">
@@ -1371,15 +1389,15 @@ class as its collection type.</p>
                 </thead>
                 <tbody>
                   <tr>
-                    <td><a class="xref" href="https://msdn.microsoft.com/en-us/library/9eekhta0(v=vs.110).aspx">IEnumerable</a>&lt;<span class="xref">System.Collections.Generic.KeyValuePair</span>&lt;TKey, <a class="xref" href="https://msdn.microsoft.com/en-us/library/hh881542(v=vs.110).aspx">IReadOnlyCollection</a>&lt;TValue&gt;&gt;&gt;</td>
+                    <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1">IEnumerable</a>&lt;<span class="xref">System.Collections.Generic.KeyValuePair</span>&lt;TKey, <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.collections.generic.ireadonlycollection-1">IReadOnlyCollection</a>&lt;TValue&gt;&gt;&gt;</td>
                     <td><span class="parametername">enumerable</span></td>
                     <td><p>IEnumerable to copy elements into this from</p>
 </td>
                   </tr>
                   <tr>
-                    <td><a class="xref" href="https://msdn.microsoft.com/en-us/library/bb534960(v=vs.110).aspx">Func</a>&lt;TValueCollection&gt;</td>
+                    <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.func-1">Func</a>&lt;TValueCollection&gt;</td>
                     <td><span class="parametername">collectionFactory</span></td>
-                    <td><p>A function to create a new <a class="xref" href="https://msdn.microsoft.com/en-us/library/92t2ye13(v=vs.110).aspx">ICollection&lt;T&gt;</a> to use
+                    <td><p>A function to create a new <span class="xref">System.Collections.Generic.ICollection`1</span> to use
 in the internal dictionary store of this <a class="xref" href="System.Collections.Generic.MultiValueDictionary-2.html">MultiValueDictionary&lt;TKey, TValue&gt;</a>.</p>
 </td>
                   </tr>
@@ -1420,7 +1438,7 @@ will contain in its internal dictionary.</p>
                 </tbody>
               </table>
               <h5 id="System_Collections_Generic_MultiValueDictionary_2_Create__1_System_Collections_Generic_IEnumerable_System_Collections_Generic_KeyValuePair__0_System_Collections_Generic_IReadOnlyCollection__1____System_Func___0___remarks">Remarks</h5>
-              <div class="markdown level1 remarks"><p>Note that <span class="typeparamref">TValueCollection</span> must implement <a class="xref" href="https://msdn.microsoft.com/en-us/library/92t2ye13(v=vs.110).aspx">ICollection&lt;T&gt;</a>
+              <div class="markdown level1 remarks"><p>Note that <code data-dev-comment-type="typeparamref" class="typeparamref">TValueCollection</code> must implement <span class="xref">System.Collections.Generic.ICollection`1</span>
 in addition to being constructable through new(). The collection returned from the constructor
 must also not have IsReadOnly set to True by default.</p>
 </div>
@@ -1434,13 +1452,13 @@ must also not have IsReadOnly set to True by default.</p>
                 </thead>
                 <tbody>
                   <tr>
-                    <td><a class="xref" href="https://msdn.microsoft.com/en-us/library/system.invalidoperationexception(v=vs.110).aspx">InvalidOperationException</a></td>
-                    <td><p><span class="paramref">collectionFactory</span> must create collections with
-    IsReadOnly set to true by default.</p>
+                    <td><span class="xref">System.InvalidOperationException</span></td>
+                    <td><p><code data-dev-comment-type="paramref" class="paramref">collectionFactory</code> must create collections with
+IsReadOnly set to true by default.</p>
 </td>
                   </tr>
                   <tr>
-                    <td><a class="xref" href="https://msdn.microsoft.com/en-us/library/system.argumentnullexception(v=vs.110).aspx">ArgumentNullException</a></td>
+                    <td><span class="xref">System.ArgumentNullException</span></td>
                     <td><p>enumerable must be non-null</p>
 </td>
                   </tr>
@@ -1451,20 +1469,22 @@ must also not have IsReadOnly set to True by default.</p>
                 <a href="https://github.com/FubarDevelopment/WebDavServer/new/master/apiSpec/new?filename=System_Collections_Generic_MultiValueDictionary_2_Create__1_System_Collections_Generic_IEqualityComparer__0__.md&amp;value=---%0Auid%3A%20System.Collections.Generic.MultiValueDictionary%602.Create%60%601(System.Collections.Generic.IEqualityComparer%7B%600%7D)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
               </span>
               <span class="small pull-right mobile-hide">
-                <a href="https://github.com/FubarDevelopment/WebDavServer/blob/master/src/FubarDev.WebDavServer/Utils/MultiValueDictionary.cs/#L235">View Source</a>
+                <a href="https://github.com/FubarDevelopment/WebDavServer/blob/release/2.0/src/FubarDev.WebDavServer/Utils/MultiValueDictionary.cs/#L235">View Source</a>
               </span>
               <a id="System_Collections_Generic_MultiValueDictionary_2_Create_" data-uid="System.Collections.Generic.MultiValueDictionary`2.Create*"></a>
               <h4 id="System_Collections_Generic_MultiValueDictionary_2_Create__1_System_Collections_Generic_IEqualityComparer__0__" data-uid="System.Collections.Generic.MultiValueDictionary`2.Create``1(System.Collections.Generic.IEqualityComparer{`0})">Create&lt;TValueCollection&gt;(IEqualityComparer&lt;TKey&gt;)</h4>
-              <div class="markdown level1 summary"><p>Creates a new new instance of the <a class="xref" href="System.Collections.Generic.MultiValueDictionary-2.html">MultiValueDictionary&lt;TKey, TValue&gt;</a> 
+              <div class="markdown level1 summary"><p>Creates a new new instance of the <a class="xref" href="System.Collections.Generic.MultiValueDictionary-2.html">MultiValueDictionary&lt;TKey, TValue&gt;</a>
 class that is empty, has the default initial capacity, and uses the specified
-<a class="xref" href="https://msdn.microsoft.com/en-us/library/ms132151(v=vs.110).aspx">IEqualityComparer&lt;T&gt;</a> for <span class="typeparamref">TKey</span>. The 
-internal dictionary will use instances of the <span class="typeparamref">TValueCollection</span>
+<a class="xref" href="https://docs.microsoft.com/dotnet/api/system.collections.generic.iequalitycomparer-1">IEqualityComparer&lt;T&gt;</a> for <code data-dev-comment-type="typeparamref" class="typeparamref">TKey</code>. The
+internal dictionary will use instances of the <code data-dev-comment-type="typeparamref" class="typeparamref">TValueCollection</code>
 class as its collection type.</p>
 </div>
               <div class="markdown level1 conceptual"></div>
               <h5 class="decalaration">Declaration</h5>
               <div class="codewrapper">
-                <pre><code class="lang-csharp hljs">public static MultiValueDictionary&lt;TKey, TValue&gt; Create&lt;TValueCollection&gt;(IEqualityComparer&lt;TKey&gt; comparer)where TValueCollection : ICollection&lt;TValue&gt;, new ()</code></pre>
+                <pre><code class="lang-csharp hljs">public static MultiValueDictionary&lt;TKey, TValue&gt; Create&lt;TValueCollection&gt;(IEqualityComparer&lt;TKey&gt; comparer)
+
+    where TValueCollection : ICollection&lt;TValue&gt;, new()</code></pre>
               </div>
               <h5 class="parameters">Parameters</h5>
               <table class="table table-bordered table-striped table-condensed">
@@ -1477,9 +1497,9 @@ class as its collection type.</p>
                 </thead>
                 <tbody>
                   <tr>
-                    <td><a class="xref" href="https://msdn.microsoft.com/en-us/library/ms132151(v=vs.110).aspx">IEqualityComparer</a>&lt;TKey&gt;</td>
+                    <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.collections.generic.iequalitycomparer-1">IEqualityComparer</a>&lt;TKey&gt;</td>
                     <td><span class="parametername">comparer</span></td>
-                    <td><p>Specified comparer to use for the <span class="typeparamref">TKey</span>s</p>
+                    <td><p>Specified comparer to use for the <code data-dev-comment-type="typeparamref" class="typeparamref">TKey</code>s</p>
 </td>
                   </tr>
                 </tbody>
@@ -1519,7 +1539,7 @@ will contain in its internal dictionary.</p>
                 </tbody>
               </table>
               <h5 id="System_Collections_Generic_MultiValueDictionary_2_Create__1_System_Collections_Generic_IEqualityComparer__0___remarks">Remarks</h5>
-              <div class="markdown level1 remarks"><p>If <span class="paramref">comparer</span> is set to null, then the default <a class="xref" href="https://msdn.microsoft.com/en-us/library/system.collections.iequalitycomparer(v=vs.110).aspx">IEqualityComparer</a> for <span class="typeparamref">TKey</span> is used.</p>
+              <div class="markdown level1 remarks"><p>If <code data-dev-comment-type="paramref" class="paramref">comparer</code> is set to null, then the default <span class="xref">System.Collections.IEqualityComparer</span> for <code data-dev-comment-type="typeparamref" class="typeparamref">TKey</code> is used.</p>
 </div>
               <h5 class="exceptions">Exceptions</h5>
               <table class="table table-bordered table-striped table-condensed">
@@ -1531,9 +1551,9 @@ will contain in its internal dictionary.</p>
                 </thead>
                 <tbody>
                   <tr>
-                    <td><a class="xref" href="https://msdn.microsoft.com/en-us/library/system.invalidoperationexception(v=vs.110).aspx">InvalidOperationException</a></td>
-                    <td><p><span class="typeparamref">TValueCollection</span> must not have
-    IsReadOnly set to true by default.</p>
+                    <td><span class="xref">System.InvalidOperationException</span></td>
+                    <td><p><code data-dev-comment-type="typeparamref" class="typeparamref">TValueCollection</code> must not have
+IsReadOnly set to true by default.</p>
 </td>
                   </tr>
                 </tbody>
@@ -1543,20 +1563,22 @@ will contain in its internal dictionary.</p>
                 <a href="https://github.com/FubarDevelopment/WebDavServer/new/master/apiSpec/new?filename=System_Collections_Generic_MultiValueDictionary_2_Create__1_System_Collections_Generic_IEqualityComparer__0__System_Func___0__.md&amp;value=---%0Auid%3A%20System.Collections.Generic.MultiValueDictionary%602.Create%60%601(System.Collections.Generic.IEqualityComparer%7B%600%7D%2CSystem.Func%7B%60%600%7D)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
               </span>
               <span class="small pull-right mobile-hide">
-                <a href="https://github.com/FubarDevelopment/WebDavServer/blob/master/src/FubarDev.WebDavServer/Utils/MultiValueDictionary.cs/#L460">View Source</a>
+                <a href="https://github.com/FubarDevelopment/WebDavServer/blob/release/2.0/src/FubarDev.WebDavServer/Utils/MultiValueDictionary.cs/#L460">View Source</a>
               </span>
               <a id="System_Collections_Generic_MultiValueDictionary_2_Create_" data-uid="System.Collections.Generic.MultiValueDictionary`2.Create*"></a>
               <h4 id="System_Collections_Generic_MultiValueDictionary_2_Create__1_System_Collections_Generic_IEqualityComparer__0__System_Func___0__" data-uid="System.Collections.Generic.MultiValueDictionary`2.Create``1(System.Collections.Generic.IEqualityComparer{`0},System.Func{``0})">Create&lt;TValueCollection&gt;(IEqualityComparer&lt;TKey&gt;, Func&lt;TValueCollection&gt;)</h4>
-              <div class="markdown level1 summary"><p>Creates a new new instance of the <a class="xref" href="System.Collections.Generic.MultiValueDictionary-2.html">MultiValueDictionary&lt;TKey, TValue&gt;</a> 
+              <div class="markdown level1 summary"><p>Creates a new new instance of the <a class="xref" href="System.Collections.Generic.MultiValueDictionary-2.html">MultiValueDictionary&lt;TKey, TValue&gt;</a>
 class that is empty, has the default initial capacity, and uses the specified
-<a class="xref" href="https://msdn.microsoft.com/en-us/library/ms132151(v=vs.110).aspx">IEqualityComparer&lt;T&gt;</a> for <span class="typeparamref">TKey</span>. The 
-internal dictionary will use instances of the <span class="typeparamref">TValueCollection</span>
+<a class="xref" href="https://docs.microsoft.com/dotnet/api/system.collections.generic.iequalitycomparer-1">IEqualityComparer&lt;T&gt;</a> for <code data-dev-comment-type="typeparamref" class="typeparamref">TKey</code>. The
+internal dictionary will use instances of the <code data-dev-comment-type="typeparamref" class="typeparamref">TValueCollection</code>
 class as its collection type.</p>
 </div>
               <div class="markdown level1 conceptual"></div>
               <h5 class="decalaration">Declaration</h5>
               <div class="codewrapper">
-                <pre><code class="lang-csharp hljs">public static MultiValueDictionary&lt;TKey, TValue&gt; Create&lt;TValueCollection&gt;(IEqualityComparer&lt;TKey&gt; comparer, Func&lt;TValueCollection&gt; collectionFactory)where TValueCollection : ICollection&lt;TValue&gt;</code></pre>
+                <pre><code class="lang-csharp hljs">public static MultiValueDictionary&lt;TKey, TValue&gt; Create&lt;TValueCollection&gt;(IEqualityComparer&lt;TKey&gt; comparer, Func&lt;TValueCollection&gt; collectionFactory)
+
+    where TValueCollection : ICollection&lt;TValue&gt;</code></pre>
               </div>
               <h5 class="parameters">Parameters</h5>
               <table class="table table-bordered table-striped table-condensed">
@@ -1569,15 +1591,15 @@ class as its collection type.</p>
                 </thead>
                 <tbody>
                   <tr>
-                    <td><a class="xref" href="https://msdn.microsoft.com/en-us/library/ms132151(v=vs.110).aspx">IEqualityComparer</a>&lt;TKey&gt;</td>
+                    <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.collections.generic.iequalitycomparer-1">IEqualityComparer</a>&lt;TKey&gt;</td>
                     <td><span class="parametername">comparer</span></td>
-                    <td><p>Specified comparer to use for the <span class="typeparamref">TKey</span>s</p>
+                    <td><p>Specified comparer to use for the <code data-dev-comment-type="typeparamref" class="typeparamref">TKey</code>s</p>
 </td>
                   </tr>
                   <tr>
-                    <td><a class="xref" href="https://msdn.microsoft.com/en-us/library/bb534960(v=vs.110).aspx">Func</a>&lt;TValueCollection&gt;</td>
+                    <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.func-1">Func</a>&lt;TValueCollection&gt;</td>
                     <td><span class="parametername">collectionFactory</span></td>
-                    <td><p>A function to create a new <a class="xref" href="https://msdn.microsoft.com/en-us/library/92t2ye13(v=vs.110).aspx">ICollection&lt;T&gt;</a> to use
+                    <td><p>A function to create a new <span class="xref">System.Collections.Generic.ICollection`1</span> to use
 in the internal dictionary store of this <a class="xref" href="System.Collections.Generic.MultiValueDictionary-2.html">MultiValueDictionary&lt;TKey, TValue&gt;</a>.</p>
 </td>
                   </tr>
@@ -1618,7 +1640,7 @@ will contain in its internal dictionary.</p>
                 </tbody>
               </table>
               <h5 id="System_Collections_Generic_MultiValueDictionary_2_Create__1_System_Collections_Generic_IEqualityComparer__0__System_Func___0___remarks">Remarks</h5>
-              <div class="markdown level1 remarks"><p>If <span class="paramref">comparer</span> is set to null, then the default <a class="xref" href="https://msdn.microsoft.com/en-us/library/system.collections.iequalitycomparer(v=vs.110).aspx">IEqualityComparer</a> for <span class="typeparamref">TKey</span> is used.</p>
+              <div class="markdown level1 remarks"><p>If <code data-dev-comment-type="paramref" class="paramref">comparer</code> is set to null, then the default <span class="xref">System.Collections.IEqualityComparer</span> for <code data-dev-comment-type="typeparamref" class="typeparamref">TKey</code> is used.</p>
 </div>
               <h5 class="exceptions">Exceptions</h5>
               <table class="table table-bordered table-striped table-condensed">
@@ -1630,9 +1652,9 @@ will contain in its internal dictionary.</p>
                 </thead>
                 <tbody>
                   <tr>
-                    <td><a class="xref" href="https://msdn.microsoft.com/en-us/library/system.invalidoperationexception(v=vs.110).aspx">InvalidOperationException</a></td>
-                    <td><p><span class="paramref">collectionFactory</span> must create collections with
-    IsReadOnly set to true by default.</p>
+                    <td><span class="xref">System.InvalidOperationException</span></td>
+                    <td><p><code data-dev-comment-type="paramref" class="paramref">collectionFactory</code> must create collections with
+IsReadOnly set to true by default.</p>
 </td>
                   </tr>
                 </tbody>
@@ -1642,20 +1664,22 @@ will contain in its internal dictionary.</p>
                 <a href="https://github.com/FubarDevelopment/WebDavServer/new/master/apiSpec/new?filename=System_Collections_Generic_MultiValueDictionary_2_Create__1_System_Func___0__.md&amp;value=---%0Auid%3A%20System.Collections.Generic.MultiValueDictionary%602.Create%60%601(System.Func%7B%60%600%7D)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
               </span>
               <span class="small pull-right mobile-hide">
-                <a href="https://github.com/FubarDevelopment/WebDavServer/blob/master/src/FubarDev.WebDavServer/Utils/MultiValueDictionary.cs/#L388">View Source</a>
+                <a href="https://github.com/FubarDevelopment/WebDavServer/blob/release/2.0/src/FubarDev.WebDavServer/Utils/MultiValueDictionary.cs/#L388">View Source</a>
               </span>
               <a id="System_Collections_Generic_MultiValueDictionary_2_Create_" data-uid="System.Collections.Generic.MultiValueDictionary`2.Create*"></a>
               <h4 id="System_Collections_Generic_MultiValueDictionary_2_Create__1_System_Func___0__" data-uid="System.Collections.Generic.MultiValueDictionary`2.Create``1(System.Func{``0})">Create&lt;TValueCollection&gt;(Func&lt;TValueCollection&gt;)</h4>
-              <div class="markdown level1 summary"><p>Creates a new new instance of the <a class="xref" href="System.Collections.Generic.MultiValueDictionary-2.html">MultiValueDictionary&lt;TKey, TValue&gt;</a> 
+              <div class="markdown level1 summary"><p>Creates a new new instance of the <a class="xref" href="System.Collections.Generic.MultiValueDictionary-2.html">MultiValueDictionary&lt;TKey, TValue&gt;</a>
 class that is empty, has the default initial capacity, and uses the default
-<a class="xref" href="https://msdn.microsoft.com/en-us/library/ms132151(v=vs.110).aspx">IEqualityComparer&lt;T&gt;</a> for <span class="typeparamref">TKey</span>. The 
-internal dictionary will use instances of the <span class="typeparamref">TValueCollection</span>
+<a class="xref" href="https://docs.microsoft.com/dotnet/api/system.collections.generic.iequalitycomparer-1">IEqualityComparer&lt;T&gt;</a> for <code data-dev-comment-type="typeparamref" class="typeparamref">TKey</code>. The
+internal dictionary will use instances of the <code data-dev-comment-type="typeparamref" class="typeparamref">TValueCollection</code>
 class as its collection type.</p>
 </div>
               <div class="markdown level1 conceptual"></div>
               <h5 class="decalaration">Declaration</h5>
               <div class="codewrapper">
-                <pre><code class="lang-csharp hljs">public static MultiValueDictionary&lt;TKey, TValue&gt; Create&lt;TValueCollection&gt;(Func&lt;TValueCollection&gt; collectionFactory)where TValueCollection : ICollection&lt;TValue&gt;</code></pre>
+                <pre><code class="lang-csharp hljs">public static MultiValueDictionary&lt;TKey, TValue&gt; Create&lt;TValueCollection&gt;(Func&lt;TValueCollection&gt; collectionFactory)
+
+    where TValueCollection : ICollection&lt;TValue&gt;</code></pre>
               </div>
               <h5 class="parameters">Parameters</h5>
               <table class="table table-bordered table-striped table-condensed">
@@ -1668,9 +1692,9 @@ class as its collection type.</p>
                 </thead>
                 <tbody>
                   <tr>
-                    <td><a class="xref" href="https://msdn.microsoft.com/en-us/library/bb534960(v=vs.110).aspx">Func</a>&lt;TValueCollection&gt;</td>
+                    <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.func-1">Func</a>&lt;TValueCollection&gt;</td>
                     <td><span class="parametername">collectionFactory</span></td>
-                    <td><p>A function to create a new <a class="xref" href="https://msdn.microsoft.com/en-us/library/92t2ye13(v=vs.110).aspx">ICollection&lt;T&gt;</a> to use
+                    <td><p>A function to create a new <span class="xref">System.Collections.Generic.ICollection`1</span> to use
 in the internal dictionary store of this <a class="xref" href="System.Collections.Generic.MultiValueDictionary-2.html">MultiValueDictionary&lt;TKey, TValue&gt;</a>.</p>
 </td>
                   </tr>
@@ -1711,7 +1735,7 @@ will contain in its internal dictionary.</p>
                 </tbody>
               </table>
               <h5 id="System_Collections_Generic_MultiValueDictionary_2_Create__1_System_Func___0___remarks">Remarks</h5>
-              <div class="markdown level1 remarks"><p>Note that <span class="typeparamref">TValueCollection</span> must implement <a class="xref" href="https://msdn.microsoft.com/en-us/library/92t2ye13(v=vs.110).aspx">ICollection&lt;T&gt;</a>
+              <div class="markdown level1 remarks"><p>Note that <code data-dev-comment-type="typeparamref" class="typeparamref">TValueCollection</code> must implement <span class="xref">System.Collections.Generic.ICollection`1</span>
 in addition to being constructable through new(). The collection returned from the constructor
 must also not have IsReadOnly set to True by default.</p>
 </div>
@@ -1725,9 +1749,9 @@ must also not have IsReadOnly set to True by default.</p>
                 </thead>
                 <tbody>
                   <tr>
-                    <td><a class="xref" href="https://msdn.microsoft.com/en-us/library/system.invalidoperationexception(v=vs.110).aspx">InvalidOperationException</a></td>
-                    <td><p><span class="paramref">collectionFactory</span> must create collections with
-    IsReadOnly set to true by default.</p>
+                    <td><span class="xref">System.InvalidOperationException</span></td>
+                    <td><p><code data-dev-comment-type="paramref" class="paramref">collectionFactory</code> must create collections with
+IsReadOnly set to true by default.</p>
 </td>
                   </tr>
                 </tbody>
@@ -1737,20 +1761,22 @@ must also not have IsReadOnly set to True by default.</p>
                 <a href="https://github.com/FubarDevelopment/WebDavServer/new/master/apiSpec/new?filename=System_Collections_Generic_MultiValueDictionary_2_Create__1_System_Int32_.md&amp;value=---%0Auid%3A%20System.Collections.Generic.MultiValueDictionary%602.Create%60%601(System.Int32)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
               </span>
               <span class="small pull-right mobile-hide">
-                <a href="https://github.com/FubarDevelopment/WebDavServer/blob/master/src/FubarDev.WebDavServer/Utils/MultiValueDictionary.cs/#L200">View Source</a>
+                <a href="https://github.com/FubarDevelopment/WebDavServer/blob/release/2.0/src/FubarDev.WebDavServer/Utils/MultiValueDictionary.cs/#L200">View Source</a>
               </span>
               <a id="System_Collections_Generic_MultiValueDictionary_2_Create_" data-uid="System.Collections.Generic.MultiValueDictionary`2.Create*"></a>
               <h4 id="System_Collections_Generic_MultiValueDictionary_2_Create__1_System_Int32_" data-uid="System.Collections.Generic.MultiValueDictionary`2.Create``1(System.Int32)">Create&lt;TValueCollection&gt;(Int32)</h4>
-              <div class="markdown level1 summary"><p>Creates a new new instance of the <a class="xref" href="System.Collections.Generic.MultiValueDictionary-2.html">MultiValueDictionary&lt;TKey, TValue&gt;</a> 
+              <div class="markdown level1 summary"><p>Creates a new new instance of the <a class="xref" href="System.Collections.Generic.MultiValueDictionary-2.html">MultiValueDictionary&lt;TKey, TValue&gt;</a>
 class that is empty, has the specified initial capacity, and uses the default
-<a class="xref" href="https://msdn.microsoft.com/en-us/library/ms132151(v=vs.110).aspx">IEqualityComparer&lt;T&gt;</a> for <span class="typeparamref">TKey</span>. The 
-internal dictionary will use instances of the <span class="typeparamref">TValueCollection</span>
+<a class="xref" href="https://docs.microsoft.com/dotnet/api/system.collections.generic.iequalitycomparer-1">IEqualityComparer&lt;T&gt;</a> for <code data-dev-comment-type="typeparamref" class="typeparamref">TKey</code>. The
+internal dictionary will use instances of the <code data-dev-comment-type="typeparamref" class="typeparamref">TValueCollection</code>
 class as its collection type.</p>
 </div>
               <div class="markdown level1 conceptual"></div>
               <h5 class="decalaration">Declaration</h5>
               <div class="codewrapper">
-                <pre><code class="lang-csharp hljs">public static MultiValueDictionary&lt;TKey, TValue&gt; Create&lt;TValueCollection&gt;(int capacity)where TValueCollection : ICollection&lt;TValue&gt;, new ()</code></pre>
+                <pre><code class="lang-csharp hljs">public static MultiValueDictionary&lt;TKey, TValue&gt; Create&lt;TValueCollection&gt;(int capacity)
+
+    where TValueCollection : ICollection&lt;TValue&gt;, new()</code></pre>
               </div>
               <h5 class="parameters">Parameters</h5>
               <table class="table table-bordered table-striped table-condensed">
@@ -1763,7 +1789,7 @@ class as its collection type.</p>
                 </thead>
                 <tbody>
                   <tr>
-                    <td><a class="xref" href="https://msdn.microsoft.com/en-us/library/system.int32(v=vs.110).aspx">Int32</a></td>
+                    <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.int32">Int32</a></td>
                     <td><span class="parametername">capacity</span></td>
                     <td><p>Initial number of keys that the <a class="xref" href="System.Collections.Generic.MultiValueDictionary-2.html">MultiValueDictionary&lt;TKey, TValue&gt;</a> will allocate space for</p>
 </td>
@@ -1805,7 +1831,7 @@ will contain in its internal dictionary.</p>
                 </tbody>
               </table>
               <h5 id="System_Collections_Generic_MultiValueDictionary_2_Create__1_System_Int32__remarks">Remarks</h5>
-              <div class="markdown level1 remarks"><p>Note that <span class="typeparamref">TValueCollection</span> must implement <a class="xref" href="https://msdn.microsoft.com/en-us/library/92t2ye13(v=vs.110).aspx">ICollection&lt;T&gt;</a>
+              <div class="markdown level1 remarks"><p>Note that <code data-dev-comment-type="typeparamref" class="typeparamref">TValueCollection</code> must implement <span class="xref">System.Collections.Generic.ICollection`1</span>
 in addition to being constructable through new(). The collection returned from the constructor
 must also not have IsReadOnly set to True by default.</p>
 </div>
@@ -1819,14 +1845,14 @@ must also not have IsReadOnly set to True by default.</p>
                 </thead>
                 <tbody>
                   <tr>
-                    <td><a class="xref" href="https://msdn.microsoft.com/en-us/library/system.argumentoutofrangeexception(v=vs.110).aspx">ArgumentOutOfRangeException</a></td>
+                    <td><span class="xref">System.ArgumentOutOfRangeException</span></td>
                     <td><p>Capacity must be &gt;= 0</p>
 </td>
                   </tr>
                   <tr>
-                    <td><a class="xref" href="https://msdn.microsoft.com/en-us/library/system.invalidoperationexception(v=vs.110).aspx">InvalidOperationException</a></td>
-                    <td><p><span class="typeparamref">TValueCollection</span> must not have
-    IsReadOnly set to true by default.</p>
+                    <td><span class="xref">System.InvalidOperationException</span></td>
+                    <td><p><code data-dev-comment-type="typeparamref" class="typeparamref">TValueCollection</code> must not have
+IsReadOnly set to true by default.</p>
 </td>
                   </tr>
                 </tbody>
@@ -1836,20 +1862,22 @@ must also not have IsReadOnly set to True by default.</p>
                 <a href="https://github.com/FubarDevelopment/WebDavServer/new/master/apiSpec/new?filename=System_Collections_Generic_MultiValueDictionary_2_Create__1_System_Int32_System_Collections_Generic_IEqualityComparer__0__.md&amp;value=---%0Auid%3A%20System.Collections.Generic.MultiValueDictionary%602.Create%60%601(System.Int32%2CSystem.Collections.Generic.IEqualityComparer%7B%600%7D)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
               </span>
               <span class="small pull-right mobile-hide">
-                <a href="https://github.com/FubarDevelopment/WebDavServer/blob/master/src/FubarDev.WebDavServer/Utils/MultiValueDictionary.cs/#L270">View Source</a>
+                <a href="https://github.com/FubarDevelopment/WebDavServer/blob/release/2.0/src/FubarDev.WebDavServer/Utils/MultiValueDictionary.cs/#L270">View Source</a>
               </span>
               <a id="System_Collections_Generic_MultiValueDictionary_2_Create_" data-uid="System.Collections.Generic.MultiValueDictionary`2.Create*"></a>
               <h4 id="System_Collections_Generic_MultiValueDictionary_2_Create__1_System_Int32_System_Collections_Generic_IEqualityComparer__0__" data-uid="System.Collections.Generic.MultiValueDictionary`2.Create``1(System.Int32,System.Collections.Generic.IEqualityComparer{`0})">Create&lt;TValueCollection&gt;(Int32, IEqualityComparer&lt;TKey&gt;)</h4>
-              <div class="markdown level1 summary"><p>Creates a new new instance of the <a class="xref" href="System.Collections.Generic.MultiValueDictionary-2.html">MultiValueDictionary&lt;TKey, TValue&gt;</a> 
+              <div class="markdown level1 summary"><p>Creates a new new instance of the <a class="xref" href="System.Collections.Generic.MultiValueDictionary-2.html">MultiValueDictionary&lt;TKey, TValue&gt;</a>
 class that is empty, has the specified initial capacity, and uses the specified
-<a class="xref" href="https://msdn.microsoft.com/en-us/library/ms132151(v=vs.110).aspx">IEqualityComparer&lt;T&gt;</a> for <span class="typeparamref">TKey</span>. The 
-internal dictionary will use instances of the <span class="typeparamref">TValueCollection</span>
+<a class="xref" href="https://docs.microsoft.com/dotnet/api/system.collections.generic.iequalitycomparer-1">IEqualityComparer&lt;T&gt;</a> for <code data-dev-comment-type="typeparamref" class="typeparamref">TKey</code>. The
+internal dictionary will use instances of the <code data-dev-comment-type="typeparamref" class="typeparamref">TValueCollection</code>
 class as its collection type.</p>
 </div>
               <div class="markdown level1 conceptual"></div>
               <h5 class="decalaration">Declaration</h5>
               <div class="codewrapper">
-                <pre><code class="lang-csharp hljs">public static MultiValueDictionary&lt;TKey, TValue&gt; Create&lt;TValueCollection&gt;(int capacity, IEqualityComparer&lt;TKey&gt; comparer)where TValueCollection : ICollection&lt;TValue&gt;, new ()</code></pre>
+                <pre><code class="lang-csharp hljs">public static MultiValueDictionary&lt;TKey, TValue&gt; Create&lt;TValueCollection&gt;(int capacity, IEqualityComparer&lt;TKey&gt; comparer)
+
+    where TValueCollection : ICollection&lt;TValue&gt;, new()</code></pre>
               </div>
               <h5 class="parameters">Parameters</h5>
               <table class="table table-bordered table-striped table-condensed">
@@ -1862,15 +1890,15 @@ class as its collection type.</p>
                 </thead>
                 <tbody>
                   <tr>
-                    <td><a class="xref" href="https://msdn.microsoft.com/en-us/library/system.int32(v=vs.110).aspx">Int32</a></td>
+                    <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.int32">Int32</a></td>
                     <td><span class="parametername">capacity</span></td>
                     <td><p>Initial number of keys that the <a class="xref" href="System.Collections.Generic.MultiValueDictionary-2.html">MultiValueDictionary&lt;TKey, TValue&gt;</a> will allocate space for</p>
 </td>
                   </tr>
                   <tr>
-                    <td><a class="xref" href="https://msdn.microsoft.com/en-us/library/ms132151(v=vs.110).aspx">IEqualityComparer</a>&lt;TKey&gt;</td>
+                    <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.collections.generic.iequalitycomparer-1">IEqualityComparer</a>&lt;TKey&gt;</td>
                     <td><span class="parametername">comparer</span></td>
-                    <td><p>Specified comparer to use for the <span class="typeparamref">TKey</span>s</p>
+                    <td><p>Specified comparer to use for the <code data-dev-comment-type="typeparamref" class="typeparamref">TKey</code>s</p>
 </td>
                   </tr>
                 </tbody>
@@ -1910,7 +1938,7 @@ will contain in its internal dictionary.</p>
                 </tbody>
               </table>
               <h5 id="System_Collections_Generic_MultiValueDictionary_2_Create__1_System_Int32_System_Collections_Generic_IEqualityComparer__0___remarks">Remarks</h5>
-              <div class="markdown level1 remarks"><p>If <span class="paramref">comparer</span> is set to null, then the default <a class="xref" href="https://msdn.microsoft.com/en-us/library/system.collections.iequalitycomparer(v=vs.110).aspx">IEqualityComparer</a> for <span class="typeparamref">TKey</span> is used.</p>
+              <div class="markdown level1 remarks"><p>If <code data-dev-comment-type="paramref" class="paramref">comparer</code> is set to null, then the default <span class="xref">System.Collections.IEqualityComparer</span> for <code data-dev-comment-type="typeparamref" class="typeparamref">TKey</code> is used.</p>
 </div>
               <h5 class="exceptions">Exceptions</h5>
               <table class="table table-bordered table-striped table-condensed">
@@ -1922,13 +1950,13 @@ will contain in its internal dictionary.</p>
                 </thead>
                 <tbody>
                   <tr>
-                    <td><a class="xref" href="https://msdn.microsoft.com/en-us/library/system.invalidoperationexception(v=vs.110).aspx">InvalidOperationException</a></td>
-                    <td><p><span class="typeparamref">TValueCollection</span> must not have
-    IsReadOnly set to true by default.</p>
+                    <td><span class="xref">System.InvalidOperationException</span></td>
+                    <td><p><code data-dev-comment-type="typeparamref" class="typeparamref">TValueCollection</code> must not have
+IsReadOnly set to true by default.</p>
 </td>
                   </tr>
                   <tr>
-                    <td><a class="xref" href="https://msdn.microsoft.com/en-us/library/system.argumentoutofrangeexception(v=vs.110).aspx">ArgumentOutOfRangeException</a></td>
+                    <td><span class="xref">System.ArgumentOutOfRangeException</span></td>
                     <td><p>Capacity must be &gt;= 0</p>
 </td>
                   </tr>
@@ -1939,20 +1967,22 @@ will contain in its internal dictionary.</p>
                 <a href="https://github.com/FubarDevelopment/WebDavServer/new/master/apiSpec/new?filename=System_Collections_Generic_MultiValueDictionary_2_Create__1_System_Int32_System_Collections_Generic_IEqualityComparer__0__System_Func___0__.md&amp;value=---%0Auid%3A%20System.Collections.Generic.MultiValueDictionary%602.Create%60%601(System.Int32%2CSystem.Collections.Generic.IEqualityComparer%7B%600%7D%2CSystem.Func%7B%60%600%7D)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
               </span>
               <span class="small pull-right mobile-hide">
-                <a href="https://github.com/FubarDevelopment/WebDavServer/blob/master/src/FubarDev.WebDavServer/Utils/MultiValueDictionary.cs/#L497">View Source</a>
+                <a href="https://github.com/FubarDevelopment/WebDavServer/blob/release/2.0/src/FubarDev.WebDavServer/Utils/MultiValueDictionary.cs/#L497">View Source</a>
               </span>
               <a id="System_Collections_Generic_MultiValueDictionary_2_Create_" data-uid="System.Collections.Generic.MultiValueDictionary`2.Create*"></a>
               <h4 id="System_Collections_Generic_MultiValueDictionary_2_Create__1_System_Int32_System_Collections_Generic_IEqualityComparer__0__System_Func___0__" data-uid="System.Collections.Generic.MultiValueDictionary`2.Create``1(System.Int32,System.Collections.Generic.IEqualityComparer{`0},System.Func{``0})">Create&lt;TValueCollection&gt;(Int32, IEqualityComparer&lt;TKey&gt;, Func&lt;TValueCollection&gt;)</h4>
-              <div class="markdown level1 summary"><p>Creates a new new instance of the <a class="xref" href="System.Collections.Generic.MultiValueDictionary-2.html">MultiValueDictionary&lt;TKey, TValue&gt;</a> 
+              <div class="markdown level1 summary"><p>Creates a new new instance of the <a class="xref" href="System.Collections.Generic.MultiValueDictionary-2.html">MultiValueDictionary&lt;TKey, TValue&gt;</a>
 class that is empty, has the specified initial capacity, and uses the specified
-<a class="xref" href="https://msdn.microsoft.com/en-us/library/ms132151(v=vs.110).aspx">IEqualityComparer&lt;T&gt;</a> for <span class="typeparamref">TKey</span>. The 
-internal dictionary will use instances of the <span class="typeparamref">TValueCollection</span>
+<a class="xref" href="https://docs.microsoft.com/dotnet/api/system.collections.generic.iequalitycomparer-1">IEqualityComparer&lt;T&gt;</a> for <code data-dev-comment-type="typeparamref" class="typeparamref">TKey</code>. The
+internal dictionary will use instances of the <code data-dev-comment-type="typeparamref" class="typeparamref">TValueCollection</code>
 class as its collection type.</p>
 </div>
               <div class="markdown level1 conceptual"></div>
               <h5 class="decalaration">Declaration</h5>
               <div class="codewrapper">
-                <pre><code class="lang-csharp hljs">public static MultiValueDictionary&lt;TKey, TValue&gt; Create&lt;TValueCollection&gt;(int capacity, IEqualityComparer&lt;TKey&gt; comparer, Func&lt;TValueCollection&gt; collectionFactory)where TValueCollection : ICollection&lt;TValue&gt;</code></pre>
+                <pre><code class="lang-csharp hljs">public static MultiValueDictionary&lt;TKey, TValue&gt; Create&lt;TValueCollection&gt;(int capacity, IEqualityComparer&lt;TKey&gt; comparer, Func&lt;TValueCollection&gt; collectionFactory)
+
+    where TValueCollection : ICollection&lt;TValue&gt;</code></pre>
               </div>
               <h5 class="parameters">Parameters</h5>
               <table class="table table-bordered table-striped table-condensed">
@@ -1965,21 +1995,21 @@ class as its collection type.</p>
                 </thead>
                 <tbody>
                   <tr>
-                    <td><a class="xref" href="https://msdn.microsoft.com/en-us/library/system.int32(v=vs.110).aspx">Int32</a></td>
+                    <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.int32">Int32</a></td>
                     <td><span class="parametername">capacity</span></td>
                     <td><p>Initial number of keys that the <a class="xref" href="System.Collections.Generic.MultiValueDictionary-2.html">MultiValueDictionary&lt;TKey, TValue&gt;</a> will allocate space for</p>
 </td>
                   </tr>
                   <tr>
-                    <td><a class="xref" href="https://msdn.microsoft.com/en-us/library/ms132151(v=vs.110).aspx">IEqualityComparer</a>&lt;TKey&gt;</td>
+                    <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.collections.generic.iequalitycomparer-1">IEqualityComparer</a>&lt;TKey&gt;</td>
                     <td><span class="parametername">comparer</span></td>
-                    <td><p>Specified comparer to use for the <span class="typeparamref">TKey</span>s</p>
+                    <td><p>Specified comparer to use for the <code data-dev-comment-type="typeparamref" class="typeparamref">TKey</code>s</p>
 </td>
                   </tr>
                   <tr>
-                    <td><a class="xref" href="https://msdn.microsoft.com/en-us/library/bb534960(v=vs.110).aspx">Func</a>&lt;TValueCollection&gt;</td>
+                    <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.func-1">Func</a>&lt;TValueCollection&gt;</td>
                     <td><span class="parametername">collectionFactory</span></td>
-                    <td><p>A function to create a new <a class="xref" href="https://msdn.microsoft.com/en-us/library/92t2ye13(v=vs.110).aspx">ICollection&lt;T&gt;</a> to use
+                    <td><p>A function to create a new <span class="xref">System.Collections.Generic.ICollection`1</span> to use
 in the internal dictionary store of this <a class="xref" href="System.Collections.Generic.MultiValueDictionary-2.html">MultiValueDictionary&lt;TKey, TValue&gt;</a>.</p>
 </td>
                   </tr>
@@ -2020,7 +2050,7 @@ will contain in its internal dictionary.</p>
                 </tbody>
               </table>
               <h5 id="System_Collections_Generic_MultiValueDictionary_2_Create__1_System_Int32_System_Collections_Generic_IEqualityComparer__0__System_Func___0___remarks">Remarks</h5>
-              <div class="markdown level1 remarks"><p>If <span class="paramref">comparer</span> is set to null, then the default <a class="xref" href="https://msdn.microsoft.com/en-us/library/system.collections.iequalitycomparer(v=vs.110).aspx">IEqualityComparer</a> for <span class="typeparamref">TKey</span> is used.</p>
+              <div class="markdown level1 remarks"><p>If <code data-dev-comment-type="paramref" class="paramref">comparer</code> is set to null, then the default <span class="xref">System.Collections.IEqualityComparer</span> for <code data-dev-comment-type="typeparamref" class="typeparamref">TKey</code> is used.</p>
 </div>
               <h5 class="exceptions">Exceptions</h5>
               <table class="table table-bordered table-striped table-condensed">
@@ -2032,13 +2062,13 @@ will contain in its internal dictionary.</p>
                 </thead>
                 <tbody>
                   <tr>
-                    <td><a class="xref" href="https://msdn.microsoft.com/en-us/library/system.invalidoperationexception(v=vs.110).aspx">InvalidOperationException</a></td>
-                    <td><p><span class="paramref">collectionFactory</span> must create collections with
-    IsReadOnly set to true by default.</p>
+                    <td><span class="xref">System.InvalidOperationException</span></td>
+                    <td><p><code data-dev-comment-type="paramref" class="paramref">collectionFactory</code> must create collections with
+IsReadOnly set to true by default.</p>
 </td>
                   </tr>
                   <tr>
-                    <td><a class="xref" href="https://msdn.microsoft.com/en-us/library/system.argumentoutofrangeexception(v=vs.110).aspx">ArgumentOutOfRangeException</a></td>
+                    <td><span class="xref">System.ArgumentOutOfRangeException</span></td>
                     <td><p>Capacity must be &gt;= 0</p>
 </td>
                   </tr>
@@ -2049,20 +2079,22 @@ will contain in its internal dictionary.</p>
                 <a href="https://github.com/FubarDevelopment/WebDavServer/new/master/apiSpec/new?filename=System_Collections_Generic_MultiValueDictionary_2_Create__1_System_Int32_System_Func___0__.md&amp;value=---%0Auid%3A%20System.Collections.Generic.MultiValueDictionary%602.Create%60%601(System.Int32%2CSystem.Func%7B%60%600%7D)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
               </span>
               <span class="small pull-right mobile-hide">
-                <a href="https://github.com/FubarDevelopment/WebDavServer/blob/master/src/FubarDev.WebDavServer/Utils/MultiValueDictionary.cs/#L423">View Source</a>
+                <a href="https://github.com/FubarDevelopment/WebDavServer/blob/release/2.0/src/FubarDev.WebDavServer/Utils/MultiValueDictionary.cs/#L423">View Source</a>
               </span>
               <a id="System_Collections_Generic_MultiValueDictionary_2_Create_" data-uid="System.Collections.Generic.MultiValueDictionary`2.Create*"></a>
               <h4 id="System_Collections_Generic_MultiValueDictionary_2_Create__1_System_Int32_System_Func___0__" data-uid="System.Collections.Generic.MultiValueDictionary`2.Create``1(System.Int32,System.Func{``0})">Create&lt;TValueCollection&gt;(Int32, Func&lt;TValueCollection&gt;)</h4>
-              <div class="markdown level1 summary"><p>Creates a new new instance of the <a class="xref" href="System.Collections.Generic.MultiValueDictionary-2.html">MultiValueDictionary&lt;TKey, TValue&gt;</a> 
+              <div class="markdown level1 summary"><p>Creates a new new instance of the <a class="xref" href="System.Collections.Generic.MultiValueDictionary-2.html">MultiValueDictionary&lt;TKey, TValue&gt;</a>
 class that is empty, has the specified initial capacity, and uses the default
-<a class="xref" href="https://msdn.microsoft.com/en-us/library/ms132151(v=vs.110).aspx">IEqualityComparer&lt;T&gt;</a> for <span class="typeparamref">TKey</span>. The 
-internal dictionary will use instances of the <span class="typeparamref">TValueCollection</span>
+<a class="xref" href="https://docs.microsoft.com/dotnet/api/system.collections.generic.iequalitycomparer-1">IEqualityComparer&lt;T&gt;</a> for <code data-dev-comment-type="typeparamref" class="typeparamref">TKey</code>. The
+internal dictionary will use instances of the <code data-dev-comment-type="typeparamref" class="typeparamref">TValueCollection</code>
 class as its collection type.</p>
 </div>
               <div class="markdown level1 conceptual"></div>
               <h5 class="decalaration">Declaration</h5>
               <div class="codewrapper">
-                <pre><code class="lang-csharp hljs">public static MultiValueDictionary&lt;TKey, TValue&gt; Create&lt;TValueCollection&gt;(int capacity, Func&lt;TValueCollection&gt; collectionFactory)where TValueCollection : ICollection&lt;TValue&gt;</code></pre>
+                <pre><code class="lang-csharp hljs">public static MultiValueDictionary&lt;TKey, TValue&gt; Create&lt;TValueCollection&gt;(int capacity, Func&lt;TValueCollection&gt; collectionFactory)
+
+    where TValueCollection : ICollection&lt;TValue&gt;</code></pre>
               </div>
               <h5 class="parameters">Parameters</h5>
               <table class="table table-bordered table-striped table-condensed">
@@ -2075,15 +2107,15 @@ class as its collection type.</p>
                 </thead>
                 <tbody>
                   <tr>
-                    <td><a class="xref" href="https://msdn.microsoft.com/en-us/library/system.int32(v=vs.110).aspx">Int32</a></td>
+                    <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.int32">Int32</a></td>
                     <td><span class="parametername">capacity</span></td>
                     <td><p>Initial number of keys that the <a class="xref" href="System.Collections.Generic.MultiValueDictionary-2.html">MultiValueDictionary&lt;TKey, TValue&gt;</a> will allocate space for</p>
 </td>
                   </tr>
                   <tr>
-                    <td><a class="xref" href="https://msdn.microsoft.com/en-us/library/bb534960(v=vs.110).aspx">Func</a>&lt;TValueCollection&gt;</td>
+                    <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.func-1">Func</a>&lt;TValueCollection&gt;</td>
                     <td><span class="parametername">collectionFactory</span></td>
-                    <td><p>A function to create a new <a class="xref" href="https://msdn.microsoft.com/en-us/library/92t2ye13(v=vs.110).aspx">ICollection&lt;T&gt;</a> to use
+                    <td><p>A function to create a new <span class="xref">System.Collections.Generic.ICollection`1</span> to use
 in the internal dictionary store of this <a class="xref" href="System.Collections.Generic.MultiValueDictionary-2.html">MultiValueDictionary&lt;TKey, TValue&gt;</a>.</p>
 </td>
                   </tr>
@@ -2124,7 +2156,7 @@ will contain in its internal dictionary.</p>
                 </tbody>
               </table>
               <h5 id="System_Collections_Generic_MultiValueDictionary_2_Create__1_System_Int32_System_Func___0___remarks">Remarks</h5>
-              <div class="markdown level1 remarks"><p>Note that <span class="typeparamref">TValueCollection</span> must implement <a class="xref" href="https://msdn.microsoft.com/en-us/library/92t2ye13(v=vs.110).aspx">ICollection&lt;T&gt;</a>
+              <div class="markdown level1 remarks"><p>Note that <code data-dev-comment-type="typeparamref" class="typeparamref">TValueCollection</code> must implement <span class="xref">System.Collections.Generic.ICollection`1</span>
 in addition to being constructable through new(). The collection returned from the constructor
 must also not have IsReadOnly set to True by default.</p>
 </div>
@@ -2138,14 +2170,14 @@ must also not have IsReadOnly set to True by default.</p>
                 </thead>
                 <tbody>
                   <tr>
-                    <td><a class="xref" href="https://msdn.microsoft.com/en-us/library/system.argumentoutofrangeexception(v=vs.110).aspx">ArgumentOutOfRangeException</a></td>
+                    <td><span class="xref">System.ArgumentOutOfRangeException</span></td>
                     <td><p>Capacity must be &gt;= 0</p>
 </td>
                   </tr>
                   <tr>
-                    <td><a class="xref" href="https://msdn.microsoft.com/en-us/library/system.invalidoperationexception(v=vs.110).aspx">InvalidOperationException</a></td>
-                    <td><p><span class="paramref">collectionFactory</span> must create collections with
-    IsReadOnly set to true by default.</p>
+                    <td><span class="xref">System.InvalidOperationException</span></td>
+                    <td><p><code data-dev-comment-type="paramref" class="paramref">collectionFactory</code> must create collections with
+IsReadOnly set to true by default.</p>
 </td>
                   </tr>
                 </tbody>
@@ -2155,11 +2187,11 @@ must also not have IsReadOnly set to True by default.</p>
                 <a href="https://github.com/FubarDevelopment/WebDavServer/new/master/apiSpec/new?filename=System_Collections_Generic_MultiValueDictionary_2_GetEnumerator.md&amp;value=---%0Auid%3A%20System.Collections.Generic.MultiValueDictionary%602.GetEnumerator%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
               </span>
               <span class="small pull-right mobile-hide">
-                <a href="https://github.com/FubarDevelopment/WebDavServer/blob/master/src/FubarDev.WebDavServer/Utils/MultiValueDictionary.cs/#L882">View Source</a>
+                <a href="https://github.com/FubarDevelopment/WebDavServer/blob/release/2.0/src/FubarDev.WebDavServer/Utils/MultiValueDictionary.cs/#L882">View Source</a>
               </span>
               <a id="System_Collections_Generic_MultiValueDictionary_2_GetEnumerator_" data-uid="System.Collections.Generic.MultiValueDictionary`2.GetEnumerator*"></a>
               <h4 id="System_Collections_Generic_MultiValueDictionary_2_GetEnumerator" data-uid="System.Collections.Generic.MultiValueDictionary`2.GetEnumerator">GetEnumerator()</h4>
-              <div class="markdown level1 summary"><p>Get an Enumerator over the <span class="typeparamref">TKey</span>-<a class="xref" href="https://msdn.microsoft.com/en-us/library/hh881542(v=vs.110).aspx">IReadOnlyCollection&lt;T&gt;</a>
+              <div class="markdown level1 summary"><p>Get an Enumerator over the <code data-dev-comment-type="typeparamref" class="typeparamref">TKey</code>-<a class="xref" href="https://docs.microsoft.com/dotnet/api/system.collections.generic.ireadonlycollection-1">IReadOnlyCollection&lt;T&gt;</a>
 pairs in this <a class="xref" href="System.Collections.Generic.MultiValueDictionary-2.html">MultiValueDictionary&lt;TKey, TValue&gt;</a>.</p>
 </div>
               <div class="markdown level1 conceptual"></div>
@@ -2177,25 +2209,25 @@ pairs in this <a class="xref" href="System.Collections.Generic.MultiValueDiction
                 </thead>
                 <tbody>
                   <tr>
-                    <td><a class="xref" href="https://msdn.microsoft.com/en-us/library/78dfe2yb(v=vs.110).aspx">IEnumerator</a>&lt;<span class="xref">System.Collections.Generic.KeyValuePair</span>&lt;TKey, <a class="xref" href="https://msdn.microsoft.com/en-us/library/hh881542(v=vs.110).aspx">IReadOnlyCollection</a>&lt;TValue&gt;&gt;&gt;</td>
-                    <td><p>an Enumerator over the <span class="typeparamref">TKey</span>-<a class="xref" href="https://msdn.microsoft.com/en-us/library/hh881542(v=vs.110).aspx">IReadOnlyCollection&lt;T&gt;</a>
+                    <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.collections.generic.ienumerator-1">IEnumerator</a>&lt;<span class="xref">System.Collections.Generic.KeyValuePair</span>&lt;TKey, <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.collections.generic.ireadonlycollection-1">IReadOnlyCollection</a>&lt;TValue&gt;&gt;&gt;</td>
+                    <td><p>an Enumerator over the <code data-dev-comment-type="typeparamref" class="typeparamref">TKey</code>-<a class="xref" href="https://docs.microsoft.com/dotnet/api/system.collections.generic.ireadonlycollection-1">IReadOnlyCollection&lt;T&gt;</a>
 pairs in this <a class="xref" href="System.Collections.Generic.MultiValueDictionary-2.html">MultiValueDictionary&lt;TKey, TValue&gt;</a>.</p>
 </td>
                   </tr>
                 </tbody>
               </table>
               <h5 class="implements">Implements</h5>
-                  <div><a class="xref" href="https://msdn.microsoft.com/en-us/library/s793z9y2(v=vs.110).aspx">IEnumerable&lt;T&gt;.GetEnumerator()</a></div>
+                  <div><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1.getenumerator#System_Collections_Generic_IEnumerable_1_GetEnumerator">IEnumerable&lt;T&gt;.GetEnumerator()</a></div>
               <span class="small pull-right mobile-hide">
                 <span class="divider">|</span>
                 <a href="https://github.com/FubarDevelopment/WebDavServer/new/master/apiSpec/new?filename=System_Collections_Generic_MultiValueDictionary_2_Remove__0_.md&amp;value=---%0Auid%3A%20System.Collections.Generic.MultiValueDictionary%602.Remove(%600)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
               </span>
               <span class="small pull-right mobile-hide">
-                <a href="https://github.com/FubarDevelopment/WebDavServer/blob/master/src/FubarDev.WebDavServer/Utils/MultiValueDictionary.cs/#L665">View Source</a>
+                <a href="https://github.com/FubarDevelopment/WebDavServer/blob/release/2.0/src/FubarDev.WebDavServer/Utils/MultiValueDictionary.cs/#L665">View Source</a>
               </span>
               <a id="System_Collections_Generic_MultiValueDictionary_2_Remove_" data-uid="System.Collections.Generic.MultiValueDictionary`2.Remove*"></a>
               <h4 id="System_Collections_Generic_MultiValueDictionary_2_Remove__0_" data-uid="System.Collections.Generic.MultiValueDictionary`2.Remove(`0)">Remove(TKey)</h4>
-              <div class="markdown level1 summary"><p>Removes every <span class="typeparamref">TValue</span> associated with the given <span class="typeparamref">TKey</span>
+              <div class="markdown level1 summary"><p>Removes every <code data-dev-comment-type="typeparamref" class="typeparamref">TValue</code> associated with the given <code data-dev-comment-type="typeparamref" class="typeparamref">TKey</code>
 from the <a class="xref" href="System.Collections.Generic.MultiValueDictionary-2.html">MultiValueDictionary&lt;TKey, TValue&gt;</a>.</p>
 </div>
               <div class="markdown level1 conceptual"></div>
@@ -2216,7 +2248,7 @@ from the <a class="xref" href="System.Collections.Generic.MultiValueDictionary-2
                   <tr>
                     <td><span class="xref">TKey</span></td>
                     <td><span class="parametername">key</span></td>
-                    <td><p>The <span class="typeparamref">TKey</span> of the elements to remove</p>
+                    <td><p>The <code data-dev-comment-type="typeparamref" class="typeparamref">TKey</code> of the elements to remove</p>
 </td>
                   </tr>
                 </tbody>
@@ -2231,7 +2263,7 @@ from the <a class="xref" href="System.Collections.Generic.MultiValueDictionary-2
                 </thead>
                 <tbody>
                   <tr>
-                    <td><a class="xref" href="https://msdn.microsoft.com/en-us/library/system.boolean(v=vs.110).aspx">Boolean</a></td>
+                    <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.boolean">Boolean</a></td>
                     <td><p><code>true</code> if the removal was successful; otherwise <code>false</code></p>
 </td>
                   </tr>
@@ -2247,8 +2279,8 @@ from the <a class="xref" href="System.Collections.Generic.MultiValueDictionary-2
                 </thead>
                 <tbody>
                   <tr>
-                    <td><a class="xref" href="https://msdn.microsoft.com/en-us/library/system.argumentnullexception(v=vs.110).aspx">ArgumentNullException</a></td>
-                    <td><p><span class="paramref">key</span> is <code>null</code>.</p>
+                    <td><span class="xref">System.ArgumentNullException</span></td>
+                    <td><p><code data-dev-comment-type="paramref" class="paramref">key</code> is <code>null</code>.</p>
 </td>
                   </tr>
                 </tbody>
@@ -2258,12 +2290,12 @@ from the <a class="xref" href="System.Collections.Generic.MultiValueDictionary-2
                 <a href="https://github.com/FubarDevelopment/WebDavServer/new/master/apiSpec/new?filename=System_Collections_Generic_MultiValueDictionary_2_Remove__0__1_.md&amp;value=---%0Auid%3A%20System.Collections.Generic.MultiValueDictionary%602.Remove(%600%2C%601)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
               </span>
               <span class="small pull-right mobile-hide">
-                <a href="https://github.com/FubarDevelopment/WebDavServer/blob/master/src/FubarDev.WebDavServer/Utils/MultiValueDictionary.cs/#L693">View Source</a>
+                <a href="https://github.com/FubarDevelopment/WebDavServer/blob/release/2.0/src/FubarDev.WebDavServer/Utils/MultiValueDictionary.cs/#L693">View Source</a>
               </span>
               <a id="System_Collections_Generic_MultiValueDictionary_2_Remove_" data-uid="System.Collections.Generic.MultiValueDictionary`2.Remove*"></a>
               <h4 id="System_Collections_Generic_MultiValueDictionary_2_Remove__0__1_" data-uid="System.Collections.Generic.MultiValueDictionary`2.Remove(`0,`1)">Remove(TKey, TValue)</h4>
-              <div class="markdown level1 summary"><p>Removes the first instance (if any) of the given <span class="typeparamref">TKey</span>-<span class="typeparamref">TValue</span> 
-pair from this <a class="xref" href="System.Collections.Generic.MultiValueDictionary-2.html">MultiValueDictionary&lt;TKey, TValue&gt;</a>. </p>
+              <div class="markdown level1 summary"><p>Removes the first instance (if any) of the given <code data-dev-comment-type="typeparamref" class="typeparamref">TKey</code>-<code data-dev-comment-type="typeparamref" class="typeparamref">TValue</code>
+pair from this <a class="xref" href="System.Collections.Generic.MultiValueDictionary-2.html">MultiValueDictionary&lt;TKey, TValue&gt;</a>.</p>
 </div>
               <div class="markdown level1 conceptual"></div>
               <h5 class="decalaration">Declaration</h5>
@@ -2283,13 +2315,13 @@ pair from this <a class="xref" href="System.Collections.Generic.MultiValueDictio
                   <tr>
                     <td><span class="xref">TKey</span></td>
                     <td><span class="parametername">key</span></td>
-                    <td><p>The <span class="typeparamref">TKey</span> of the element to remove</p>
+                    <td><p>The <code data-dev-comment-type="typeparamref" class="typeparamref">TKey</code> of the element to remove</p>
 </td>
                   </tr>
                   <tr>
                     <td><span class="xref">TValue</span></td>
                     <td><span class="parametername">value</span></td>
-                    <td><p>The <span class="typeparamref">TValue</span> of the element to remove</p>
+                    <td><p>The <code data-dev-comment-type="typeparamref" class="typeparamref">TValue</code> of the element to remove</p>
 </td>
                   </tr>
                 </tbody>
@@ -2304,16 +2336,16 @@ pair from this <a class="xref" href="System.Collections.Generic.MultiValueDictio
                 </thead>
                 <tbody>
                   <tr>
-                    <td><a class="xref" href="https://msdn.microsoft.com/en-us/library/system.boolean(v=vs.110).aspx">Boolean</a></td>
+                    <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.boolean">Boolean</a></td>
                     <td><p><code>true</code> if the removal was successful; otherwise <code>false</code></p>
 </td>
                   </tr>
                 </tbody>
               </table>
               <h5 id="System_Collections_Generic_MultiValueDictionary_2_Remove__0__1__remarks">Remarks</h5>
-              <div class="markdown level1 remarks"><p>If the <span class="typeparamref">TValue</span> being removed is the last one associated with its <span class="typeparamref">TKey</span>, then that 
-<span class="typeparamref">TKey</span> will be removed from the <a class="xref" href="System.Collections.Generic.MultiValueDictionary-2.html">MultiValueDictionary&lt;TKey, TValue&gt;</a> and its 
-associated <a class="xref" href="https://msdn.microsoft.com/en-us/library/hh881542(v=vs.110).aspx">IReadOnlyCollection&lt;T&gt;</a> will be freed as if a call to <a class="xref" href="System.Collections.Generic.MultiValueDictionary-2.html#System_Collections_Generic_MultiValueDictionary_2_Remove__0_">Remove(TKey)</a>
+              <div class="markdown level1 remarks"><p>If the <code data-dev-comment-type="typeparamref" class="typeparamref">TValue</code> being removed is the last one associated with its <code data-dev-comment-type="typeparamref" class="typeparamref">TKey</code>, then that
+<code data-dev-comment-type="typeparamref" class="typeparamref">TKey</code> will be removed from the <a class="xref" href="System.Collections.Generic.MultiValueDictionary-2.html">MultiValueDictionary&lt;TKey, TValue&gt;</a> and its
+associated <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.collections.generic.ireadonlycollection-1">IReadOnlyCollection&lt;T&gt;</a> will be freed as if a call to <a class="xref" href="System.Collections.Generic.MultiValueDictionary-2.html#System_Collections_Generic_MultiValueDictionary_2_Remove__0_">Remove(TKey)</a>
 had been made.</p>
 </div>
               <h5 class="exceptions">Exceptions</h5>
@@ -2326,8 +2358,8 @@ had been made.</p>
                 </thead>
                 <tbody>
                   <tr>
-                    <td><a class="xref" href="https://msdn.microsoft.com/en-us/library/system.argumentnullexception(v=vs.110).aspx">ArgumentNullException</a></td>
-                    <td><p><span class="paramref">key</span> must be non-null</p>
+                    <td><span class="xref">System.ArgumentNullException</span></td>
+                    <td><p><code data-dev-comment-type="paramref" class="paramref">key</code> must be non-null</p>
 </td>
                   </tr>
                 </tbody>
@@ -2337,12 +2369,12 @@ had been made.</p>
                 <a href="https://github.com/FubarDevelopment/WebDavServer/new/master/apiSpec/new?filename=System_Collections_Generic_MultiValueDictionary_2_TryGetValue__0_System_Collections_Generic_IReadOnlyCollection__1___.md&amp;value=---%0Auid%3A%20System.Collections.Generic.MultiValueDictionary%602.TryGetValue(%600%2CSystem.Collections.Generic.IReadOnlyCollection%7B%601%7D%40)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
               </span>
               <span class="small pull-right mobile-hide">
-                <a href="https://github.com/FubarDevelopment/WebDavServer/blob/master/src/FubarDev.WebDavServer/Utils/MultiValueDictionary.cs/#L805">View Source</a>
+                <a href="https://github.com/FubarDevelopment/WebDavServer/blob/release/2.0/src/FubarDev.WebDavServer/Utils/MultiValueDictionary.cs/#L805">View Source</a>
               </span>
               <a id="System_Collections_Generic_MultiValueDictionary_2_TryGetValue_" data-uid="System.Collections.Generic.MultiValueDictionary`2.TryGetValue*"></a>
               <h4 id="System_Collections_Generic_MultiValueDictionary_2_TryGetValue__0_System_Collections_Generic_IReadOnlyCollection__1___" data-uid="System.Collections.Generic.MultiValueDictionary`2.TryGetValue(`0,System.Collections.Generic.IReadOnlyCollection{`1}@)">TryGetValue(TKey, out IReadOnlyCollection&lt;TValue&gt;)</h4>
-              <div class="markdown level1 summary"><p>Attempts to get the <span class="typeparamref">TValue</span> associated with the given
-<span class="typeparamref">TKey</span> and place it into <span class="paramref">value</span>.</p>
+              <div class="markdown level1 summary"><p>Attempts to get the <code data-dev-comment-type="typeparamref" class="typeparamref">TValue</code> associated with the given
+<code data-dev-comment-type="typeparamref" class="typeparamref">TKey</code> and place it into <code data-dev-comment-type="paramref" class="paramref">value</code>.</p>
 </div>
               <div class="markdown level1 conceptual"></div>
               <h5 class="decalaration">Declaration</h5>
@@ -2362,14 +2394,14 @@ had been made.</p>
                   <tr>
                     <td><span class="xref">TKey</span></td>
                     <td><span class="parametername">key</span></td>
-                    <td><p>The <span class="typeparamref">TKey</span> of the element to retrieve</p>
+                    <td><p>The <code data-dev-comment-type="typeparamref" class="typeparamref">TKey</code> of the element to retrieve</p>
 </td>
                   </tr>
                   <tr>
-                    <td><a class="xref" href="https://msdn.microsoft.com/en-us/library/hh881542(v=vs.110).aspx">IReadOnlyCollection</a>&lt;TValue&gt;</td>
+                    <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.collections.generic.ireadonlycollection-1">IReadOnlyCollection</a>&lt;TValue&gt;</td>
                     <td><span class="parametername">value</span></td>
-                    <td><p>When this method returns, contains the <span class="typeparamref">TValue</span> associated with the specified
-<span class="typeparamref">TKey</span> if it is found; otherwise contains the default value of <span class="typeparamref">TValue</span>.</p>
+                    <td><p>When this method returns, contains the <code data-dev-comment-type="typeparamref" class="typeparamref">TValue</code> associated with the specified
+<code data-dev-comment-type="typeparamref" class="typeparamref">TKey</code> if it is found; otherwise contains the default value of <code data-dev-comment-type="typeparamref" class="typeparamref">TValue</code>.</p>
 </td>
                   </tr>
                 </tbody>
@@ -2384,15 +2416,15 @@ had been made.</p>
                 </thead>
                 <tbody>
                   <tr>
-                    <td><a class="xref" href="https://msdn.microsoft.com/en-us/library/system.boolean(v=vs.110).aspx">Boolean</a></td>
-                    <td><p><code>true</code> if the <a class="xref" href="System.Collections.Generic.MultiValueDictionary-2.html">MultiValueDictionary&lt;TKey, TValue&gt;</a> contains an element with the specified 
-<span class="typeparamref">TKey</span>; otherwise, <code>false</code>.</p>
+                    <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.boolean">Boolean</a></td>
+                    <td><p><code>true</code> if the <a class="xref" href="System.Collections.Generic.MultiValueDictionary-2.html">MultiValueDictionary&lt;TKey, TValue&gt;</a> contains an element with the specified
+<code data-dev-comment-type="typeparamref" class="typeparamref">TKey</code>; otherwise, <code>false</code>.</p>
 </td>
                   </tr>
                 </tbody>
               </table>
               <h5 class="implements">Implements</h5>
-                  <div><a class="xref" href="https://msdn.microsoft.com/en-us/library/hh192400(v=vs.110).aspx">IReadOnlyDictionary&lt;TKey, TValue&gt;.TryGetValue(TKey, TValue)</a></div>
+                  <div><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.collections.generic.ireadonlydictionary-2.trygetvalue#System_Collections_Generic_IReadOnlyDictionary_2_TryGetValue__0__1__">IReadOnlyDictionary&lt;TKey,TValue&gt;.TryGetValue(TKey, TValue)</a></div>
               <h5 class="exceptions">Exceptions</h5>
               <table class="table table-bordered table-striped table-condensed">
                 <thead>
@@ -2403,8 +2435,8 @@ had been made.</p>
                 </thead>
                 <tbody>
                   <tr>
-                    <td><a class="xref" href="https://msdn.microsoft.com/en-us/library/system.argumentnullexception(v=vs.110).aspx">ArgumentNullException</a></td>
-                    <td><p><span class="paramref">key</span> must be non-null</p>
+                    <td><span class="xref">System.ArgumentNullException</span></td>
+                    <td><p><code data-dev-comment-type="paramref" class="paramref">key</code> must be non-null</p>
 </td>
                   </tr>
                 </tbody>
@@ -2416,7 +2448,7 @@ had been made.</p>
                 <a href="https://github.com/FubarDevelopment/WebDavServer/new/master/apiSpec/new?filename=System_Collections_Generic_MultiValueDictionary_2_System_Collections_IEnumerable_GetEnumerator.md&amp;value=---%0Auid%3A%20System.Collections.Generic.MultiValueDictionary%602.System%23Collections%23IEnumerable%23GetEnumerator%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
               </span>
               <span class="small pull-right mobile-hide">
-                <a href="https://github.com/FubarDevelopment/WebDavServer/blob/master/src/FubarDev.WebDavServer/Utils/MultiValueDictionary.cs/#L887">View Source</a>
+                <a href="https://github.com/FubarDevelopment/WebDavServer/blob/release/2.0/src/FubarDev.WebDavServer/Utils/MultiValueDictionary.cs/#L887">View Source</a>
               </span>
               <a id="System_Collections_Generic_MultiValueDictionary_2_System_Collections_IEnumerable_GetEnumerator_" data-uid="System.Collections.Generic.MultiValueDictionary`2.System#Collections#IEnumerable#GetEnumerator*"></a>
               <h4 id="System_Collections_Generic_MultiValueDictionary_2_System_Collections_IEnumerable_GetEnumerator" data-uid="System.Collections.Generic.MultiValueDictionary`2.System#Collections#IEnumerable#GetEnumerator">IEnumerable.GetEnumerator()</h4>
@@ -2436,13 +2468,13 @@ had been made.</p>
                 </thead>
                 <tbody>
                   <tr>
-                    <td><a class="xref" href="https://msdn.microsoft.com/en-us/library/system.collections.ienumerator(v=vs.110).aspx">IEnumerator</a></td>
+                    <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.collections.ienumerator">IEnumerator</a></td>
                     <td></td>
                   </tr>
                 </tbody>
               </table>
               <h5 class="implements">Implements</h5>
-                  <div><a class="xref" href="https://msdn.microsoft.com/en-us/library/5zae5365(v=vs.110).aspx">IEnumerable.GetEnumerator()</a></div>
+                  <div><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.collections.ienumerable.getenumerator#System_Collections_IEnumerable_GetEnumerator">IEnumerable.GetEnumerator()</a></div>
                         </article>
           </div>
           
@@ -2454,7 +2486,7 @@ had been made.</p>
                     <a href="https://github.com/FubarDevelopment/WebDavServer/new/master/apiSpec/new?filename=System_Collections_Generic_MultiValueDictionary_2.md&amp;value=---%0Auid%3A%20System.Collections.Generic.MultiValueDictionary%602%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A" class="contribution-link">Improve this Doc</a>
                   </li>
                   <li>
-                    <a href="https://github.com/FubarDevelopment/WebDavServer/blob/master/src/FubarDev.WebDavServer/Utils/MultiValueDictionary.cs/#L26" class="contribution-link">View Source</a>
+                    <a href="https://github.com/FubarDevelopment/WebDavServer/blob/release/2.0/src/FubarDev.WebDavServer/Utils/MultiValueDictionary.cs/#L26" class="contribution-link">View Source</a>
                   </li>
                 </ul>
               </div>
@@ -2473,7 +2505,7 @@ had been made.</p>
             <span class="pull-right">
               <a href="#top">Back to top</a>
             </span>
-            <span>Copyright © 2016-2017 Fubar Development Junker<br>Generated by <strong>DocFX</strong></span>
+            <span>Copyright © 2016-2019 Fubar Development Junker<br>Generated by <strong>DocFX</strong></span>
             
           </div>
         </div>

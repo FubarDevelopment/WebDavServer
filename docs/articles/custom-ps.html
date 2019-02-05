@@ -5,10 +5,10 @@
   <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-    <title>How to develop your own property store </title>
+    <title>How to develop your own property store | WebDAV Server documentation </title>
     <meta name="viewport" content="width=device-width">
-    <meta name="title" content="How to develop your own property store ">
-    <meta name="generator" content="docfx 2.16.2.2">
+    <meta name="title" content="How to develop your own property store | WebDAV Server documentation ">
+    <meta name="generator" content="docfx 2.35.4.0">
     
     <link rel="shortcut icon" href="../favicon.ico">
     <link rel="stylesheet" href="../styles/docfx.vendor.css">
@@ -16,7 +16,7 @@
     <link rel="stylesheet" href="../styles/main.css">
     <meta property="docfx:navrel" content="../toc.html">
     <meta property="docfx:tocrel" content="toc.html">
-    
+    <meta property="docfx:rel" content="../">
     
   </head>
   <body data-spy="scroll" data-target="#affix">
@@ -55,6 +55,14 @@
           </div>
         </div>
       </header>
+      <div class="container body-content">
+        
+        <div id="search-results">
+          <div class="search-list"></div>
+          <div class="sr-items"></div>
+          <ul id="pagination"></ul>
+        </div>
+      </div>
       <div role="main" class="container body-content hide-when-search">
         
         <div class="sidenav hide-when-search">
@@ -88,17 +96,17 @@
 </thead>
 <tbody>
 <tr>
-<td><a class="xref" href="https://msdn.microsoft.com/en-us/library/system.string(v=vs.110).aspx">String</a></td>
+<td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a></td>
 <td><a class="xref" href="../api/FubarDev.WebDavServer.Props.Converters.StringConverter.html">StringConverter</a></td>
 <td><a class="xref" href="../api/FubarDev.WebDavServer.Props.Generic.GenericStringProperty.html">GenericStringProperty</a></td>
 </tr>
 <tr>
-<td><a class="xref" href="https://msdn.microsoft.com/en-us/library/system.int64(v=vs.110).aspx">long (Int64)</a></td>
+<td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.int64">long (Int64)</a></td>
 <td><a class="xref" href="../api/FubarDev.WebDavServer.Props.Converters.LongConverter.html">LongConverter</a></td>
 <td>No implementation, derive from <a class="xref" href="../api/FubarDev.WebDavServer.Props.SimpleTypedProperty-1.html">SimpleTypedProperty&lt;T&gt;</a></td>
 </tr>
 <tr>
-<td><a class="xref" href="https://msdn.microsoft.com/en-us/library/system.datetime(v=vs.110).aspx">DateTime</a></td>
+<td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.datetime">DateTime</a></td>
 <td><a class="xref" href="../api/FubarDev.WebDavServer.Props.Converters.DateTimeRfc1123Converter.html">DateTimeRfc1123Converter</a></td>
 <td><a class="xref" href="../api/FubarDev.WebDavServer.Props.Generic.GenericDateTimeRfc1123Property.html">GenericDateTimeRfc1123Property</a></td>
 </tr>
@@ -108,19 +116,19 @@
 <td><a class="xref" href="../api/FubarDev.WebDavServer.Props.Dead.GetETagProperty.html">GetETagProperty</a></td>
 </tr>
 <tr>
-<td><a class="xref" href="https://msdn.microsoft.com/en-us/library/system.object(v=vs.110).aspx">Object (XML)</a></td>
+<td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object">Object (XML)</a></td>
 <td><a class="xref" href="../api/FubarDev.WebDavServer.Props.Converters.XmlConverter-1.html">XmlConverter&lt;T&gt;</a></td>
 <td>No implementation, derive from <a class="xref" href="../api/FubarDev.WebDavServer.Props.SimpleTypedProperty-1.html">SimpleTypedProperty&lt;T&gt;</a></td>
 </tr>
 </tbody>
 </table>
-<p>When you use <a class="xref" href="../api/FubarDev.WebDavServer.Props.SimpleTypedProperty-1.html">SimpleTypedProperty</a>, then you also have to ensure that you preservere the <code>xml:lang</code> attribute. You can access its value using the <a class="xref" href="../api/FubarDev.WebDavServer.Props.SimpleUntypedProperty.html#FubarDev_WebDavServer_Props_SimpleUntypedProperty_Language">SimpleUntypedProperty.Language</a> property.</p>
+<p>When you use <a class="xref" href="../api/FubarDev.WebDavServer.Props.SimpleTypedProperty-1.html">SimpleTypedProperty<t></t></a>, then you also have to ensure that you preservere the <code>xml:lang</code> attribute. You can access its value using the <a class="xref" href="../api/FubarDev.WebDavServer.Props.SimpleUntypedProperty.html#FubarDev_WebDavServer_Props_SimpleUntypedProperty_Language">SimpleUntypedProperty.Language</a> property.</p>
 <h1 id="property-store">Property store</h1>
 <p>A property store only stores dead properties. The entity tags must nut be stored by the property store when the file system supports entity tags natively. Instead, it should pass the entity tags to the file system entry.</p>
 <h2 id="interfaces-1">Interfaces</h2>
 <p>The most important interfaces are <a class="xref" href="../api/FubarDev.WebDavServer.Props.Store.IPropertyStoreFactory.html">IPropertyStoreFactory</a> and <a class="xref" href="../api/FubarDev.WebDavServer.Props.Store.IPropertyStore.html">IPropertyStore</a>. The factory is used to create a <code>IPropertyStore</code> instance for a given <a class="xref" href="../api/FubarDev.WebDavServer.FileSystem.IFileSystem.html">IFileSystem</a>.</p>
 <h1 id="example-implementation">Example implementation</h1>
-<p>In this example, we&#39;ll show you how to implement a property store using SQLite. You can simplify the implementation of a property store by using <a class="xref" href="../api/FubarDev.WebDavServer.Props.Store.PropertyStoreBase.html">PropertyStoreBase</a>.</p>
+<p>In this example, we'll show you how to implement a property store using SQLite. You can simplify the implementation of a property store by using <a class="xref" href="../api/FubarDev.WebDavServer.Props.Store.PropertyStoreBase.html">PropertyStoreBase</a>.</p>
 <h2 id="factory">Factory</h2>
 <p>The factory is quite simple and consists of the following parts:</p>
 <ul>
@@ -146,15 +154,15 @@
 <p>This function removes the specified dead properties. It <strong>must not</strong> remove the stored entity tags!</p>
 </li>
 <li><p><a class="xref" href="../api/FubarDev.WebDavServer.Props.Store.PropertyStoreBase.html#FubarDev_WebDavServer_Props_Store_PropertyStoreBase_GetDeadETagAsync_FubarDev_WebDavServer_FileSystem_IEntry_System_Threading_CancellationToken_">PropertyStoreBase.GetDeadETagAsync</a></p>
-<p>This function gets the entity tag for an entry when the file system of the entity tag doesn&#39;t support entity tags natively.</p>
+<p>This function gets the entity tag for an entry when the file system of the entity tag doesn't support entity tags natively.</p>
 </li>
 <li><p><a class="xref" href="../api/FubarDev.WebDavServer.Props.Store.PropertyStoreBase.html#FubarDev_WebDavServer_Props_Store_PropertyStoreBase_UpdateDeadETagAsync_FubarDev_WebDavServer_FileSystem_IEntry_System_Threading_CancellationToken_">PropertyStoreBase.UpdateDeadETagAsync</a></p>
-<p>This function ensures that the entity tag of an entry gets updated (regenerated). This is manually triggered when a file system entry gets changed and the file system doesn&#39;t have native support for entity tags.</p>
+<p>This function ensures that the entity tag of an entry gets updated (regenerated). This is manually triggered when a file system entry gets changed and the file system doesn't have native support for entity tags.</p>
 </li>
 </ul>
-<p>The functions <code>GetDeadETagAsync</code> and <code>UpdateDeadETagAsync</code> are only called when the file system itself doesn&#39;t support entity tags. A file system that supports entity tags must implement the <a class="xref" href="../api/FubarDev.WebDavServer.FileSystem.IEntityTagEntry.html">IEntityTagEntry</a>.</p>
+<p>The functions <code>GetDeadETagAsync</code> and <code>UpdateDeadETagAsync</code> are only called when the file system itself doesn't support entity tags. A file system that supports entity tags must implement the <a class="xref" href="../api/FubarDev.WebDavServer.FileSystem.IEntityTagEntry.html">IEntityTagEntry</a>.</p>
 <h3 id="entity-tag-property-handling">Entity Tag property handling</h3>
-<p>The entity tags must not be modifiable by <a class="xref" href="../api/FubarDev.WebDavServer.Props.Store.PropertyStoreBase.html#FubarDev_WebDavServer_Props_Store_PropertyStoreBase_RemoveAsync_FubarDev_WebDavServer_FileSystem_IEntry_System_Collections_Generic_IEnumerable_System_Xml_Linq_XName__System_Threading_CancellationToken_">PropertyStoreBase.RemoveAsync(IEntry, IEnumerable, CancellationToken)</a> and <a class="xref" href="../api/FubarDev.WebDavServer.Props.Store.PropertyStoreBase.html#FubarDev_WebDavServer_Props_Store_PropertyStoreBase_SetAsync_FubarDev_WebDavServer_FileSystem_IEntry_System_Collections_Generic_IEnumerable_System_Xml_Linq_XElement__System_Threading_CancellationToken_">PropertyStoreBase.SetAsync</a>. When the user tries this, then the property store implementation should silently ignore this (<code>SetAsync</code>) or should return false (<code>RemoveAsync</code>).</p>
+<p>The entity tags must not be modifiable by <a class="xref" href="../api/FubarDev.WebDavServer.Props.Store.PropertyStoreBase.html#FubarDev_WebDavServer_Props_Store_PropertyStoreBase_RemoveAsync_FubarDev_WebDavServer_FileSystem_IEntry_System_Collections_Generic_IEnumerable_System_Xml_Linq_XName__System_Threading_CancellationToken_">PropertyStoreBase.RemoveAsync(IEntry, IEnumerable<xname>, CancellationToken)</xname></a> and <a class="xref" href="../api/FubarDev.WebDavServer.Props.Store.PropertyStoreBase.html#FubarDev_WebDavServer_Props_Store_PropertyStoreBase_SetAsync_FubarDev_WebDavServer_FileSystem_IEntry_System_Collections_Generic_IEnumerable_System_Xml_Linq_XElement__System_Threading_CancellationToken_">PropertyStoreBase.SetAsync</a>. When the user tries this, then the property store implementation should silently ignore this (<code>SetAsync</code>) or should return false (<code>RemoveAsync</code>).</p>
 
             </article>
           </div>
@@ -164,7 +172,7 @@
               <div class="contribution">
                 <ul class="nav">
                   <li>
-                    <a href="https://github.com/FubarDevelopment/WebDavServer/blob/master/articles/custom-ps.md/#L1" class="contribution-link">Improve this Doc</a>
+                    <a href="https://github.com/FubarDevelopment/WebDavServer/blob/master/docfx_project/articles/custom-ps.md/#L1" class="contribution-link">Improve this Doc</a>
                   </li>
                 </ul>
               </div>
@@ -183,7 +191,7 @@
             <span class="pull-right">
               <a href="#top">Back to top</a>
             </span>
-            <span>Copyright © 2016-2017 Fubar Development Junker<br>Generated by <strong>DocFX</strong></span>
+            <span>Copyright © 2016-2019 Fubar Development Junker<br>Generated by <strong>DocFX</strong></span>
             
           </div>
         </div>
