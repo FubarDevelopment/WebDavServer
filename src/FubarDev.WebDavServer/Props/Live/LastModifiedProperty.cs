@@ -43,6 +43,27 @@ namespace FubarDev.WebDavServer.Props.Live
         {
         }
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="LastModifiedProperty"/> class.
+        /// </summary>
+        /// <param name="getValueAsyncFunc">The delegate to get the value asynchronously.</param>
+        /// <param name="setValueAsyncFunc">The delegate to set the value asynchronously.</param>
+        public LastModifiedProperty(GetPropertyValueAsyncDelegate<DateTime> getValueAsyncFunc, SetPropertyValueAsyncDelegate<DateTime> setValueAsyncFunc)
+            : base(PropertyName, 0, getValueAsyncFunc, setValueAsyncFunc, WebDavXml.Dav + "lastmodified")
+        {
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="LastModifiedProperty"/> class.
+        /// </summary>
+        /// <param name="getValueAsyncFunc">The delegate to get the value asynchronously.</param>
+        /// <param name="cost">The cost to query the properties value.</param>
+        /// <param name="setValueAsyncFunc">The delegate to set the value asynchronously.</param>
+        public LastModifiedProperty(GetPropertyValueAsyncDelegate<DateTime> getValueAsyncFunc, int cost, SetPropertyValueAsyncDelegate<DateTime> setValueAsyncFunc)
+            : base(PropertyName, cost, getValueAsyncFunc, setValueAsyncFunc, WebDavXml.Dav + "lastmodified")
+        {
+        }
+
         /// <inheritdoc />
         public async Task<bool> IsValidAsync(CancellationToken cancellationToken)
         {

@@ -43,6 +43,27 @@ namespace FubarDev.WebDavServer.Props.Live
         {
         }
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="CreationDateProperty"/> class.
+        /// </summary>
+        /// <param name="getValueAsyncFunc">The delegate to get the value asynchronously.</param>
+        /// <param name="setValueAsyncFunc">The delegate to set the value asynchronously.</param>
+        public CreationDateProperty(GetPropertyValueAsyncDelegate<DateTimeOffset> getValueAsyncFunc, SetPropertyValueAsyncDelegate<DateTimeOffset> setValueAsyncFunc)
+            : base(PropertyName, 0, getValueAsyncFunc, setValueAsyncFunc)
+        {
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="CreationDateProperty"/> class.
+        /// </summary>
+        /// <param name="getValueAsyncFunc">The delegate to get the value asynchronously.</param>
+        /// <param name="cost">The cost to query the properties value.</param>
+        /// <param name="setValueAsyncFunc">The delegate to set the value asynchronously.</param>
+        public CreationDateProperty(GetPropertyValueAsyncDelegate<DateTimeOffset> getValueAsyncFunc, int cost, SetPropertyValueAsyncDelegate<DateTimeOffset> setValueAsyncFunc)
+            : base(PropertyName, cost, getValueAsyncFunc, setValueAsyncFunc)
+        {
+        }
+
         /// <inheritdoc />
         public async Task<bool> IsValidAsync(CancellationToken cancellationToken)
         {
