@@ -88,6 +88,19 @@ namespace FubarDev.WebDavServer.Tests.FileSystem
         }
 
         [Fact]
+        public async Task DocumentInMountPointBySelect()
+        {
+            var ct = CancellationToken.None;
+            var selectionResult = await FileSystem.SelectAsync("test/test.txt", ct).ConfigureAwait(false);
+            Assert.False(selectionResult.IsMissing);
+            Assert.NotNull(selectionResult.Document);
+            Assert.NotSame(FileSystem, selectionResult.Document.FileSystem);
+            var testText = selectionResult.Document;
+            Assert.NotNull(testText);
+            Assert.Equal("Hello!", await testText.ReadAllAsync(ct));
+        }
+
+        [Fact]
         public async Task CanRemoveDocumentInMountPoint()
         {
             var ct = CancellationToken.None;
