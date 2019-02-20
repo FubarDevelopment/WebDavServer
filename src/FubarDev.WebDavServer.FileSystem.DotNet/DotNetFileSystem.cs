@@ -48,7 +48,7 @@ namespace FubarDev.WebDavServer.FileSystem.DotNet
             Options = options;
             PropertyStore = propertyStoreFactory?.Create(this);
             var rootPath = mountPoint?.Path ?? new Uri(string.Empty, UriKind.Relative);
-            var rootDir = new DotNetDirectory(this, mountPoint, new DirectoryInfo(rootFolder), rootPath, mountPoint?.Name ?? rootPath.GetName(), true);
+            var rootDir = new DotNetDirectory(this, mountPoint?.Parent, new DirectoryInfo(rootFolder), rootPath, mountPoint?.Name ?? rootPath.GetName(), true);
             Root = new AsyncLazy<ICollection>(() => Task.FromResult<ICollection>(rootDir));
         }
 

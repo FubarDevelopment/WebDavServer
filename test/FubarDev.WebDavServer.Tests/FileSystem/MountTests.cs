@@ -66,6 +66,16 @@ namespace FubarDev.WebDavServer.Tests.FileSystem
         }
 
         [Fact]
+        public async Task ResolvedMountPointsParentPointsToRoot()
+        {
+            var ct = CancellationToken.None;
+            var root = await FileSystem.Root.ConfigureAwait(false);
+            var test = await root.GetChildAsync("test", ct) as ICollection;
+            Assert.NotNull(test);
+            Assert.Same(root, test.Parent);
+        }
+
+        [Fact]
         public async Task DocumentInMountPoint()
         {
             var ct = CancellationToken.None;

@@ -1,4 +1,4 @@
-﻿// <copyright file="InMemoryFileSystem.cs" company="Fubar Development Junker">
+// <copyright file="InMemoryFileSystem.cs" company="Fubar Development Junker">
 // Copyright (c) Fubar Development Junker. All rights reserved.
 // </copyright>
 
@@ -43,7 +43,7 @@ namespace FubarDev.WebDavServer.FileSystem.InMemory
             LockManager = lockManager;
             _pathTraversalEngine = pathTraversalEngine;
             var rootPath = mountPoint?.Path ?? new Uri(string.Empty, UriKind.Relative);
-            RootCollection = new InMemoryDirectory(this, mountPoint, rootPath, mountPoint?.Name ?? rootPath.GetName(), true);
+            RootCollection = new InMemoryDirectory(this, mountPoint?.Parent, rootPath, mountPoint?.Name ?? rootPath.GetName(), true);
             Root = new AsyncLazy<ICollection>(() => Task.FromResult<ICollection>(RootCollection));
             PropertyStore = propertyStoreFactory?.Create(this);
         }
