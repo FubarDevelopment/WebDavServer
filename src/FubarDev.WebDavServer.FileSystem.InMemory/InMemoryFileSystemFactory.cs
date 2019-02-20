@@ -25,9 +25,6 @@ namespace FubarDev.WebDavServer.FileSystem.InMemory
         [NotNull]
         private readonly IPathTraversalEngine _pathTraversalEngine;
 
-        [NotNull]
-        private readonly ISystemClock _systemClock;
-
         [CanBeNull]
         private readonly ILockManager _lockManager;
 
@@ -48,7 +45,6 @@ namespace FubarDev.WebDavServer.FileSystem.InMemory
             IPropertyStoreFactory propertyStoreFactory = null)
         {
             _pathTraversalEngine = pathTraversalEngine;
-            _systemClock = systemClock;
             _lockManager = lockManager;
             _propertyStoreFactory = propertyStoreFactory;
         }
@@ -64,7 +60,7 @@ namespace FubarDev.WebDavServer.FileSystem.InMemory
             InMemoryFileSystem fileSystem;
             if (!_fileSystems.TryGetValue(key, out fileSystem))
             {
-                fileSystem = new InMemoryFileSystem(mountPoint, _pathTraversalEngine, _systemClock, _lockManager, _propertyStoreFactory);
+                fileSystem = new InMemoryFileSystem(mountPoint, _pathTraversalEngine, _lockManager, _propertyStoreFactory);
                 _fileSystems.Add(key, fileSystem);
                 InitializeFileSystem(mountPoint, principal, fileSystem);
             }

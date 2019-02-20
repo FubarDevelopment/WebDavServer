@@ -1,4 +1,4 @@
-// <copyright file="InMemoryFileSystem.cs" company="Fubar Development Junker">
+﻿// <copyright file="InMemoryFileSystem.cs" company="Fubar Development Junker">
 // Copyright (c) Fubar Development Junker. All rights reserved.
 // </copyright>
 
@@ -29,17 +29,14 @@ namespace FubarDev.WebDavServer.FileSystem.InMemory
         /// </summary>
         /// <param name="mountPoint">The mount point where this file system should be included.</param>
         /// <param name="pathTraversalEngine">The engine to traverse paths.</param>
-        /// <param name="systemClock">Interface for the access to the systems clock.</param>
         /// <param name="lockManager">The global lock manager.</param>
         /// <param name="propertyStoreFactory">The store for dead properties.</param>
         public InMemoryFileSystem(
             [CanBeNull] ICollection mountPoint,
             [NotNull] IPathTraversalEngine pathTraversalEngine,
-            [NotNull] ISystemClock systemClock,
             ILockManager lockManager = null,
             IPropertyStoreFactory propertyStoreFactory = null)
         {
-            SystemClock = systemClock;
             LockManager = lockManager;
             _pathTraversalEngine = pathTraversalEngine;
             var rootPath = mountPoint?.Path ?? new Uri(string.Empty, UriKind.Relative);
@@ -53,11 +50,6 @@ namespace FubarDev.WebDavServer.FileSystem.InMemory
         /// </summary>
         [NotNull]
         public InMemoryDirectory RootCollection { get; }
-
-        /// <summary>
-        /// Gets the systems clock.
-        /// </summary>
-        public ISystemClock SystemClock { get; }
 
         /// <inheritdoc />
         public AsyncLazy<ICollection> Root { get; }
