@@ -40,8 +40,11 @@ namespace FubarDev.WebDavServer.FileSystem
         ICollection Parent { get; }
 
         /// <summary>
-        /// Gets the path of the entry.
+        /// Gets the path of the entry relative to the root file system.
         /// </summary>
+        /// <remarks>
+        /// The root file system may be different than the file system of this entry.
+        /// </remarks>
         [NotNull]
         Uri Path { get; }
 
