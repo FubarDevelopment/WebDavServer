@@ -25,7 +25,7 @@ namespace FubarDev.WebDavServer.Props.Dead
         /// <summary>
         /// The XML name of the property.
         /// </summary>
-        public static readonly XName PropertyName = WebDavXml.Dav + "getetag";
+        public static readonly XName PropertyName = EntityTag.PropertyName;
 
         [CanBeNull]
         private readonly IPropertyStore _propertyStore;
