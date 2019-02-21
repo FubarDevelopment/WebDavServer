@@ -281,16 +281,11 @@ namespace FubarDev.WebDavServer.Handlers.Impl
                 }
 
                 var propElements = new List<XElement>();
-                using (var propsEnumerator = entry.GetProperties(_host.Dispatcher, maxCost).GetEnumerator())
+                using (var propsEnumerator = entry.GetProperties(_host.Dispatcher, property => _filters.All(x => x.IsAllowed(property))).GetEnumerator())
                 {
                     while (await propsEnumerator.MoveNext(cancellationToken).ConfigureAwait(false))
                     {
                         var property = propsEnumerator.Current;
-
-                        if (!_filters.All(x => x.IsAllowed(property)))
-                        {
-                            continue;
-                        }
 
                         foreach (var filter in _filters)
                         {
