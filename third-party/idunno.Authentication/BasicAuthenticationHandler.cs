@@ -98,8 +98,13 @@ namespace idunno.Authentication
 
                 if (validateCredentialsContext.Result != null)
                 {
-                    var ticket = new AuthenticationTicket(validateCredentialsContext.Principal, Scheme.Name);
-                    return AuthenticateResult.Success(ticket);
+                    if (validateCredentialsContext.Result.Succeeded)
+                    {
+                        var ticket = new AuthenticationTicket(validateCredentialsContext.Principal, Scheme.Name);
+                        return AuthenticateResult.Success(ticket);
+                    }
+
+                    return validateCredentialsContext.Result;
                 }
 
                 return AuthenticateResult.NoResult();
@@ -110,8 +115,13 @@ namespace idunno.Authentication
                 {
                     Exception = ex
                 };
-
+                
                 await Options.Events.AuthenticationFailed(authenticationFailedContext);
+
+                if (authenticationFailedContext.Result == null)
+                {
+                    return AuthenticateResult.NoResult();
+                }
 
                 if (authenticationFailedContext.Result.Succeeded)
                 {
