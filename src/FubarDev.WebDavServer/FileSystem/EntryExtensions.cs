@@ -50,7 +50,7 @@ namespace FubarDev.WebDavServer.FileSystem
         /// <param name="dispatcher">The dispatcher that provides the predefined properties.</param>
         /// <param name="predicate">A predicate used to filter the returned properties.</param>
         /// <param name="returnInvalidProperties">Indicates whether we want to get invalid live properties.</param>
-        /// <returns>The async enumerable of all property (including the property store when the <paramref name="maxCost"/> allows it).</returns>
+        /// <returns>The async enumerable of all property (including the property store when the <paramref name="predicate"/> allows it).</returns>
         public static IAsyncEnumerable<IUntypedReadableProperty> GetProperties(
             this IEntry entry,
             IWebDavDispatcher dispatcher,

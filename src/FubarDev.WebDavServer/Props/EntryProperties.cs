@@ -136,7 +136,7 @@ namespace FubarDev.WebDavServer.Props
                         continue;
                     }
 
-                    if (!(_predicate?.Invoke(result) ?? false))
+                    if (!(_predicate?.Invoke(result) ?? true))
                     {
                         // Caller doesn't want this property.
                         continue;
@@ -174,6 +174,8 @@ namespace FubarDev.WebDavServer.Props
                     {
                         return _predefinedPropertiesEnumerator.Current;
                     }
+
+                    _predefinedPropertiesFinished = true;
 
                     var deadProperties = await _propertyStore.LoadAsync(_entry, cancellationToken).ConfigureAwait(false);
                     _deadPropertiesEnumerator = deadProperties.GetEnumerator();
