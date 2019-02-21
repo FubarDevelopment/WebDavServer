@@ -12,6 +12,7 @@ using System.Threading.Tasks;
 
 using FubarDev.WebDavServer.FileSystem;
 using FubarDev.WebDavServer.Model;
+using FubarDev.WebDavServer.Model.Headers;
 using FubarDev.WebDavServer.Props;
 using FubarDev.WebDavServer.Props.Dead;
 using FubarDev.WebDavServer.Props.Live;
@@ -45,7 +46,9 @@ namespace FubarDev.WebDavServer.Handlers.Impl.GetResults
             }
 
             var properties = await _document.GetProperties(response.Dispatcher).ToList(ct).ConfigureAwait(false);
-            var etagProperty = properties.OfType<GetETagProperty>().FirstOrDefault();
+            var etagProperty = properties
+                .OfType<ITypedReadableProperty<EntityTag>>()
+                .FirstOrDefault(x => x.Name == GetETagProperty.PropertyName);
             if (etagProperty != null)
             {
                 var propValue = await etagProperty.GetValueAsync(ct).ConfigureAwait(false);
