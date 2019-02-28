@@ -106,17 +106,32 @@ namespace FubarDev.WebDavServer.AspNetCore.Logging
                     {
                         temp.Position = 0;
 
-                        try
+                        bool showBody;
+                        if (HttpMethods.IsPut(context.Request.Method))
                         {
-                            using (var reader = new StreamReader(temp, encoding, false, 1000, true))
+                            showBody = true;
+                        }
+                        else
+                        {
+                            try
                             {
-                                var doc = XDocument.Load(reader);
-                                info.Add($"Body: {doc}");
+                                using (var reader = new StreamReader(temp, encoding, false, 1000, true))
+                                {
+                                    var doc = XDocument.Load(reader);
+                                    info.Add($"Body: {doc}");
+                                }
+
+                                showBody = false;
+                            }
+                            catch (Exception ex)
+                            {
+                                _logger.LogWarning(EventIds.Unspecified, ex, ex.Message);
+                                showBody = true;
                             }
                         }
-                        catch (Exception ex)
+
+                        if (showBody)
                         {
-                            _logger.LogWarning(EventIds.Unspecified, ex, ex.Message);
                             temp.Position = 0;
                             using (var reader = new StreamReader(temp, encoding, false, 1000, true))
                             {
