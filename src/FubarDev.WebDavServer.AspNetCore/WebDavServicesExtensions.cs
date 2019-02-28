@@ -56,6 +56,7 @@ namespace Microsoft.Extensions.DependencyInjection
         /// <returns>the <paramref name="services"/>.</returns>
         public static IServiceCollection AddWebDav(this IServiceCollection services)
         {
+            services.TryAddScoped<IImplicitLockFactory, DefaultImplicitLockFactory>();
             services.TryAddEnumerable(ServiceDescriptor.Transient<IConfigureOptions<MvcOptions>, WebDavXmlSerializerMvcOptionsSetup>());
             services.TryAddEnumerable(ServiceDescriptor.Transient<IConfigureOptions<MvcOptions>, WebDavExceptionFilterMvcOptionsSetup>());
             services.TryAddSingleton<IHttpContextAccessor, HttpContextAccessor>();

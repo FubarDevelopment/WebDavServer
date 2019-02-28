@@ -19,6 +19,8 @@ using FubarDev.WebDavServer.Model.Headers;
 using FubarDev.WebDavServer.Props;
 using FubarDev.WebDavServer.Utils;
 
+using JetBrains.Annotations;
+
 using Microsoft.Extensions.Logging;
 
 namespace FubarDev.WebDavServer.Handlers.Impl
@@ -28,10 +30,22 @@ namespace FubarDev.WebDavServer.Handlers.Impl
     /// </summary>
     public class PutHandler : IPutHandler
     {
+        [NotNull]
         private readonly IFileSystem _fileSystem;
+
+        [NotNull]
         private readonly IWebDavContext _context;
+
+        [NotNull]
+        private readonly IImplicitLockFactory _implicitLockFactory;
+
+        [NotNull]
         private readonly IEntryPropertyInitializer _entryPropertyInitializer;
+
+        [NotNull]
         private readonly IBufferPoolFactory _bufferPoolFactory;
+
+        [NotNull]
         private readonly ILogger<PutHandler> _logger;
 
         /// <summary>
@@ -39,13 +53,21 @@ namespace FubarDev.WebDavServer.Handlers.Impl
         /// </summary>
         /// <param name="fileSystem">The root file system.</param>
         /// <param name="context">The WebDAV request context.</param>
+        /// <param name="implicitLockFactory">A factory to create implicit locks.</param>
         /// <param name="entryPropertyInitializer">The property initializer.</param>
         /// <param name="bufferPoolFactory">A buffer pool factory.</param>
         /// <param name="logger">The logger.</param>
-        public PutHandler(IFileSystem fileSystem, IWebDavContext context, IEntryPropertyInitializer entryPropertyInitializer, IBufferPoolFactory bufferPoolFactory, ILogger<PutHandler> logger)
+        public PutHandler(
+            [NotNull] IFileSystem fileSystem,
+            [NotNull] IWebDavContext context,
+            [NotNull] IImplicitLockFactory implicitLockFactory,
+            [NotNull] IEntryPropertyInitializer entryPropertyInitializer,
+            [NotNull] IBufferPoolFactory bufferPoolFactory,
+            [NotNull] ILogger<PutHandler> logger)
         {
             _fileSystem = fileSystem;
             _context = context;
+            _implicitLockFactory = implicitLockFactory;
             _entryPropertyInitializer = entryPropertyInitializer;
             _bufferPoolFactory = bufferPoolFactory;
             _logger = logger;
@@ -89,15 +111,7 @@ namespace FubarDev.WebDavServer.Handlers.Impl
                 LockAccessType.Write,
                 LockShareMode.Shared,
                 TimeoutHeader.Infinite);
-            var lockManager = _fileSystem.LockManager;
-            var tempLock = lockManager == null
-                ? new ImplicitLock(true)
-                : await lockManager.LockImplicitAsync(
-                        _fileSystem,
-                        _context.RequestHeaders.If?.Lists,
-                        lockRequirements,
-                        cancellationToken)
-                    .ConfigureAwait(false);
+            var tempLock = await _implicitLockFactory.CreateAsync(lockRequirements, cancellationToken).ConfigureAwait(false);
             if (!tempLock.IsSuccessful)
             {
                 return tempLock.CreateErrorResponse();

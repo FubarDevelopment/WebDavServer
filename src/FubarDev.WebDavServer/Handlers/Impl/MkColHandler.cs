@@ -16,6 +16,8 @@ using FubarDev.WebDavServer.Model;
 using FubarDev.WebDavServer.Model.Headers;
 using FubarDev.WebDavServer.Props;
 
+using JetBrains.Annotations;
+
 namespace FubarDev.WebDavServer.Handlers.Impl
 {
     /// <summary>
@@ -23,8 +25,16 @@ namespace FubarDev.WebDavServer.Handlers.Impl
     /// </summary>
     public class MkColHandler : IMkColHandler
     {
+        [NotNull]
         private readonly IFileSystem _rootFileSystem;
+
+        [NotNull]
         private readonly IWebDavContext _context;
+
+        [NotNull]
+        private readonly IImplicitLockFactory _implicitLockFactory;
+
+        [NotNull]
         private readonly IEntryPropertyInitializer _entryPropertyInitializer;
 
         /// <summary>
@@ -32,11 +42,17 @@ namespace FubarDev.WebDavServer.Handlers.Impl
         /// </summary>
         /// <param name="rootFileSystem">The root file system.</param>
         /// <param name="context">The WebDAV request context.</param>
+        /// <param name="implicitLockFactory">A factory to create implicit locks.</param>
         /// <param name="entryPropertyInitializer">The property initializer.</param>
-        public MkColHandler(IFileSystem rootFileSystem, IWebDavContext context, IEntryPropertyInitializer entryPropertyInitializer)
+        public MkColHandler(
+            [NotNull] IFileSystem rootFileSystem,
+            [NotNull] IWebDavContext context,
+            [NotNull] IImplicitLockFactory implicitLockFactory,
+            [NotNull] IEntryPropertyInitializer entryPropertyInitializer)
         {
             _rootFileSystem = rootFileSystem;
             _context = context;
+            _implicitLockFactory = implicitLockFactory;
             _entryPropertyInitializer = entryPropertyInitializer;
         }
 
@@ -71,11 +87,7 @@ namespace FubarDev.WebDavServer.Handlers.Impl
                 LockAccessType.Write,
                 LockShareMode.Shared,
                 TimeoutHeader.Infinite);
-            var lockManager = _rootFileSystem.LockManager;
-            var tempLock = lockManager == null
-                ? new ImplicitLock(true)
-                : await lockManager.LockImplicitAsync(_rootFileSystem, _context.RequestHeaders.If?.Lists, lockRequirements, cancellationToken)
-                                   .ConfigureAwait(false);
+            var tempLock = await _implicitLockFactory.CreateAsync(lockRequirements, cancellationToken).ConfigureAwait(false);
             if (!tempLock.IsSuccessful)
             {
                 return tempLock.CreateErrorResponse();

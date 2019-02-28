@@ -26,6 +26,12 @@ namespace FubarDev.WebDavServer
         string RequestProtocol { get; }
 
         /// <summary>
+        /// Gets the HTTP request method (<c>GET</c>, etc...).
+        /// </summary>
+        [NotNull]
+        string RequestMethod { get; }
+
+        /// <summary>
         /// Gets the relative request URL (e.g. <c>/webdav/path-to-controller/test.txt</c>).
         /// </summary>
         [NotNull]

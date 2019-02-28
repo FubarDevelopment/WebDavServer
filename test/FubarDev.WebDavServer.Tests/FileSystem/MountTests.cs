@@ -142,7 +142,7 @@ namespace FubarDev.WebDavServer.Tests.FileSystem
                                 new DefaultLockTimeRounding(DefaultLockTimeRoundingMode.OneHundredMilliseconds);
                         })
                     .AddScoped<ILockManager, InMemoryLockManager>()
-                    .AddScoped<IWebDavContext>(sp => new TestHost(sp, new Uri("http://localhost/")))
+                    .AddScoped<IWebDavContext>(sp => new TestHost(sp, new Uri("http://localhost/"), (string)null))
                     .AddScoped<InMemoryFileSystemFactory>()
                     .AddScoped<IFileSystemFactory, MyVirtualRootFileSystemFactory>()
                     .AddScoped(

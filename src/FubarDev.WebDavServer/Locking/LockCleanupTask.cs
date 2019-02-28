@@ -99,6 +99,16 @@ namespace FubarDev.WebDavServer.Locking
         /// <param name="activeLock">The active lock to remove.</param>
         public void Remove(IActiveLock activeLock)
         {
+            if (activeLock.Timeout == TimeSpan.MaxValue)
+            {
+                if (_logger.IsEnabled(LogLevel.Debug))
+                {
+                    _logger.LogDebug($"{activeLock.StateToken} had infinite timeout - don't try to remove it.");
+                }
+
+                return;
+            }
+
             if (_logger.IsEnabled(LogLevel.Trace))
             {
                 _logger.LogTrace($"Try removing lock {activeLock}");

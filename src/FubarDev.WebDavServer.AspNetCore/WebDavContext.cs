@@ -154,6 +154,9 @@ namespace FubarDev.WebDavServer.AspNetCore
         /// <inheritdoc />
         public IWebDavDispatcher Dispatcher => _dispatcher.Value;
 
+        /// <inheritdoc />
+        public string RequestMethod => _httpContextAccessor.HttpContext.Request.Method;
+
         private static Uri BuildAbsoluteServiceUrl(HttpContext httpContext)
         {
             var request = httpContext.Request;

@@ -36,7 +36,7 @@ namespace FubarDev.WebDavServer.Tests.Support.ServiceBuilders
                 })
                 .AddScoped<ILockManager, InMemoryLockManager>()
                 .AddScoped<IDeadPropertyFactory, DeadPropertyFactory>()
-                .AddScoped<IWebDavContext>(sp => new TestHost(sp, new Uri("http://localhost/")))
+                .AddScoped<IWebDavContext>(sp => new TestHost(sp, new Uri("http://localhost/"), (string)null))
                 .AddScoped<IFileSystemFactory, InMemoryFileSystemFactory>()
                 .AddSingleton<IPropertyStoreFactory, InMemoryPropertyStoreFactory>()
                 .AddWebDav();

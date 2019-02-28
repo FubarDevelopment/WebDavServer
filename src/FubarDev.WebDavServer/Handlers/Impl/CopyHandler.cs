@@ -11,6 +11,7 @@ using FubarDev.WebDavServer.Engines;
 using FubarDev.WebDavServer.Engines.Local;
 using FubarDev.WebDavServer.Engines.Remote;
 using FubarDev.WebDavServer.FileSystem;
+using FubarDev.WebDavServer.Locking;
 using FubarDev.WebDavServer.Model.Headers;
 
 using Microsoft.Extensions.DependencyInjection;
@@ -32,11 +33,18 @@ namespace FubarDev.WebDavServer.Handlers.Impl
         /// </summary>
         /// <param name="rootFileSystem">The root file system.</param>
         /// <param name="host">The WebDAV server context.</param>
+        /// <param name="implicitLockFactory">A factory to create implicit locks.</param>
         /// <param name="options">The options for the <c>COPY</c> handler.</param>
         /// <param name="logger">The logger for this handler.</param>
         /// <param name="serviceProvider">The service provider used to lazily query the <see cref="IRemoteCopyTargetActionsFactory"/> implementation.</param>
-        public CopyHandler(IFileSystem rootFileSystem, IWebDavContext host, IOptions<CopyHandlerOptions> options, ILogger<CopyHandler> logger, IServiceProvider serviceProvider)
-            : base(rootFileSystem, host, logger)
+        public CopyHandler(
+            IFileSystem rootFileSystem,
+            IWebDavContext host,
+            IImplicitLockFactory implicitLockFactory,
+            IOptions<CopyHandlerOptions> options,
+            ILogger<CopyHandler> logger,
+            IServiceProvider serviceProvider)
+            : base(rootFileSystem, host, implicitLockFactory, logger)
         {
             _serviceProvider = serviceProvider;
             _options = options?.Value ?? new CopyHandlerOptions();

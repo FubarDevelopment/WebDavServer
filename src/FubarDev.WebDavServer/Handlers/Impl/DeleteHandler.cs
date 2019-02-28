@@ -15,6 +15,8 @@ using FubarDev.WebDavServer.Model;
 using FubarDev.WebDavServer.Model.Headers;
 using FubarDev.WebDavServer.Utils;
 
+using JetBrains.Annotations;
+
 namespace FubarDev.WebDavServer.Handlers.Impl
 {
     /// <summary>
@@ -22,19 +24,29 @@ namespace FubarDev.WebDavServer.Handlers.Impl
     /// </summary>
     public class DeleteHandler : IDeleteHandler
     {
+        [NotNull]
         private readonly IFileSystem _rootFileSystem;
 
+        [NotNull]
         private readonly IWebDavContext _context;
+
+        [NotNull]
+        private readonly IImplicitLockFactory _implicitLockFactory;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="DeleteHandler"/> class.
         /// </summary>
         /// <param name="rootFileSystem">The root file system.</param>
         /// <param name="context">The current WebDAV context.</param>
-        public DeleteHandler(IFileSystem rootFileSystem, IWebDavContext context)
+        /// <param name="implicitLockFactory">A factory to create implicit locks.</param>
+        public DeleteHandler(
+            [NotNull] IFileSystem rootFileSystem,
+            [NotNull] IWebDavContext context,
+            [NotNull] IImplicitLockFactory implicitLockFactory)
         {
             _rootFileSystem = rootFileSystem;
             _context = context;
+            _implicitLockFactory = implicitLockFactory;
         }
 
         /// <inheritdoc />
@@ -68,11 +80,7 @@ namespace FubarDev.WebDavServer.Handlers.Impl
                 LockAccessType.Write,
                 LockShareMode.Exclusive,
                 TimeoutHeader.Infinite);
-            var lockManager = _rootFileSystem.LockManager;
-            var tempLock = lockManager == null
-                ? new ImplicitLock(true)
-                : await lockManager.LockImplicitAsync(_rootFileSystem, _context.RequestHeaders.If?.Lists, lockRequirements, cancellationToken)
-                                   .ConfigureAwait(false);
+            var tempLock = await _implicitLockFactory.CreateAsync(lockRequirements, cancellationToken).ConfigureAwait(false);
             if (!tempLock.IsSuccessful)
             {
                 return tempLock.CreateErrorResponse();
@@ -115,6 +123,7 @@ namespace FubarDev.WebDavServer.Handlers.Impl
                     },
                 };
 
+                var lockManager = _rootFileSystem.LockManager;
                 if (lockManager != null)
                 {
                     var locksToRemove = await lockManager

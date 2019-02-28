@@ -34,16 +34,22 @@ namespace FubarDev.WebDavServer.Handlers.Impl
 
         [NotNull]
         private readonly IWebDavContext _context;
+        private readonly IImplicitLockFactory _implicitLockFactory;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="PropPatchHandler"/> class.
         /// </summary>
         /// <param name="fileSystem">The root file system.</param>
         /// <param name="context">The WebDAV request context.</param>
-        public PropPatchHandler([NotNull] IFileSystem fileSystem, [NotNull] IWebDavContext context)
+        /// <param name="implicitLockFactory">A factory to create implicit locks.</param>
+        public PropPatchHandler(
+            [NotNull] IFileSystem fileSystem,
+            [NotNull] IWebDavContext context,
+            [NotNull] IImplicitLockFactory implicitLockFactory)
         {
             _fileSystem = fileSystem;
             _context = context;
+            _implicitLockFactory = implicitLockFactory;
         }
 
         private enum ChangeStatus
@@ -92,15 +98,7 @@ namespace FubarDev.WebDavServer.Handlers.Impl
                 LockAccessType.Write,
                 LockShareMode.Shared,
                 TimeoutHeader.Infinite);
-            var lockManager = _fileSystem.LockManager;
-            var tempLock = lockManager == null
-                ? new ImplicitLock(true)
-                : await lockManager.LockImplicitAsync(
-                        _fileSystem,
-                        _context.RequestHeaders.If?.Lists,
-                        lockRequirements,
-                        cancellationToken)
-                    .ConfigureAwait(false);
+            var tempLock = await _implicitLockFactory.CreateAsync(lockRequirements, cancellationToken).ConfigureAwait(false);
             if (!tempLock.IsSuccessful)
             {
                 return tempLock.CreateErrorResponse();
