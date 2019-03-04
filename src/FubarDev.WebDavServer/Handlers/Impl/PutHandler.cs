@@ -3,7 +3,6 @@
 // </copyright>
 
 using System;
-using System.Buffers;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
@@ -88,6 +87,12 @@ namespace FubarDev.WebDavServer.Handlers.Impl
             if (selectionResult.ResultType == SelectionResultType.FoundCollection)
             {
                 throw new WebDavException(WebDavStatusCode.MethodNotAllowed);
+            }
+
+            if (selectionResult.ResultType == SelectionResultType.MissingDocumentOrCollection &&
+                selectionResult.MissingNames.Count > 1)
+            {
+                throw new WebDavException(WebDavStatusCode.NotFound);
             }
 
             if (selectionResult.IsMissing)
