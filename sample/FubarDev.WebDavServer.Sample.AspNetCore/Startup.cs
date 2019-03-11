@@ -127,6 +127,7 @@ namespace FubarDev.WebDavServer.Sample.AspNetCore
                 case PropertyStoreType.SQLite:
                     services
                         .AddScoped<IPropertyStoreFactory, SQLitePropertyStoreFactory>();
+                    services.Configure<SQLitePropertyStoreOptions>(opt => opt.EstimatedCost = 0);
                     break;
                 default:
                     throw new NotSupportedException();
