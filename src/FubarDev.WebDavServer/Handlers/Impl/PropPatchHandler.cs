@@ -502,8 +502,22 @@ namespace FubarDev.WebDavServer.Handlers.Impl
                     else
                     {
                         var newProperty = new DeadProperty(entry.FileSystem.PropertyStore, entry, element);
-                        properties.Add(newProperty.Name, newProperty);
-                        result.Add(ChangeItem.Added(newProperty, element));
+
+                        ChangeItem changeItem;
+                        try
+                        {
+                            await newProperty.SetXmlValueAsync(element, cancellationToken).ConfigureAwait(false);
+
+                            properties.Add(newProperty.Name, newProperty);
+                            changeItem = ChangeItem.Added(newProperty, element);
+                        }
+                        catch (Exception ex)
+                        {
+                            changeItem = ChangeItem.Failed(property, ex.Message);
+                        }
+
+                        failed = !changeItem.IsSuccess;
+                        result.Add(changeItem);
                     }
                 }
             }
