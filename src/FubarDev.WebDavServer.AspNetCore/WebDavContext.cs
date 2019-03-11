@@ -83,7 +83,8 @@ namespace FubarDev.WebDavServer.AspNetCore
                     string remaining;
                     if (path != null)
                     {
-                        var pattern = string.Format("{0}$", Regex.Escape(path));
+                        var uriPath = path.UriEscape();
+                        var pattern = string.Format("{0}$", Regex.Escape(uriPath));
                         remaining = Regex.Replace(input, pattern, string.Empty);
                     }
                     else
