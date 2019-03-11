@@ -25,6 +25,7 @@ using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpOverrides;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Options;
@@ -87,7 +88,7 @@ namespace FubarDev.WebDavServer.Sample.AspNetCore
             services.Configure<WebDavHostOptions>(cfg => Configuration.Bind("Host", cfg));
 
             services
-                .AddMvcCore()
+                .AddMvcCore().SetCompatibilityVersion(CompatibilityVersion.Version_2_2)
                 .AddAuthorization()
                 .AddWebDav();
 
