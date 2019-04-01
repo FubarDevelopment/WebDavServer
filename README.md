@@ -8,3 +8,11 @@ the following points:
 - Virtual file system
 - Property store (for dead properties)
 - WebDAV implementation (down to the HTTP verb level)
+
+# Documentation
+
+A documentation is available via [GitHub Pages](https://fubardevelopment.github.io/WebDavServer/).
+
+# Support the development
+
+[![Patreon](https://img.shields.io/endpoint.svg?url=https:%2F%2Fshieldsio-patreon.herokuapp.com%2FFubarDevelopment&style=for-the-badge)](https://www.patreon.com/FubarDevelopment)
