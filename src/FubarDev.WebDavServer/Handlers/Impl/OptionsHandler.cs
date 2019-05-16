@@ -72,6 +72,8 @@ namespace FubarDev.WebDavServer.Handlers.Impl
                     Headers[header.Key] = header.Value;
                 }
 
+                Headers["MS-Author-Via"] = new[] { "DAV" };
+
                 return base.ExecuteResultAsync(response, ct);
             }
         }

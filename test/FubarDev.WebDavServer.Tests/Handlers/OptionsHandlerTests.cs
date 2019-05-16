@@ -24,6 +24,10 @@ namespace FubarDev.WebDavServer.Tests.Handlers
                 davValues,
                 v => Assert.Equal("1", v),
                 v => Assert.Equal("2", v));
+            Assert.True(result.Headers.TryGetValues("MS-Author-Via", out davValues));
+            Assert.Collection(
+                davValues,
+                v => Assert.Equal("DAV", v));
         }
     }
 }
