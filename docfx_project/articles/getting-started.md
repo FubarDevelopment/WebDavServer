@@ -99,7 +99,7 @@ The [IWebDavContext](xref:FubarDev.WebDavServer.IWebDavContext) is the request c
 
 The [IWebDavDispatcher](xref:FubarDev.WebDavServer.IWebDavDispatcher) is the interface to the main WebDAV server functionality.
 
-# Configure the servies
+# Configure the services
 
 Replace in `Startup.cs` the `.AddMvc()` in function `ConfigureServices` with the following code:
 
