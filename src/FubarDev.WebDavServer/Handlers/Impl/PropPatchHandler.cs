@@ -475,6 +475,8 @@ namespace FubarDev.WebDavServer.Handlers.Impl
                     {
                         var newProperty = new DeadProperty(entry.FileSystem.PropertyStore, entry, element);
                         properties.Add(newProperty.Name, newProperty);
+                        await newProperty.SetXmlValueAsync(element, cancellationToken)
+                            .ConfigureAwait(false);
                         result.Add(ChangeItem.Added(newProperty, element));
                     }
                 }
