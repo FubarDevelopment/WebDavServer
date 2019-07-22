@@ -11,6 +11,9 @@ using JetBrains.Annotations;
 
 namespace FubarDev.WebDavServer.Props.Converters
 {
+    /// <summary>
+    /// Converts a <see cref="DateTimeOffset"/> to/from a timestamp in ISO-8601 format.
+    /// </summary>
     public class DateTimeOffsetIso8601Converter : IPropertyConverter<DateTimeOffset>
     {
         private static readonly char[] _dateTimeSeparators = { 'T', ' ', 't' };
