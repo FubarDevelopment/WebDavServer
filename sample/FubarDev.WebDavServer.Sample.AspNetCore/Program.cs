@@ -85,6 +85,9 @@ namespace FubarDev.WebDavServer.Sample.AspNetCore
                 builder = builder
                     .UseKestrel(opt => opt.Limits.MaxRequestBodySize = null);
                 IsKestrel = true;
+                builder = builder
+                    .UseKestrel(
+                        opt => { opt.Limits.MaxRequestBodySize = null; });
             }
 
             return builder;
