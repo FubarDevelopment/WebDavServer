@@ -91,63 +91,66 @@ namespace FubarDev.WebDavServer.Handlers.Impl.GetResults
                     contentType = MimeTypesMap.DefaultMimeType;
                 }
 
-                HttpContent content;
                 if (_rangeItems.Count == 1)
                 {
                     // No multipart content
                     var rangeItem = _rangeItems.Single();
                     var streamView = views.Single();
-                    content = new StreamContent(streamView);
-                    try
+                    using (var streamContent = new StreamContent(streamView))
                     {
-                        content.Headers.ContentRange = new ContentRangeHeaderValue(rangeItem.From, rangeItem.To, _document.Length);
-                        content.Headers.ContentLength = rangeItem.Length;
-                    }
-                    catch
-                    {
-                        content.Dispose();
-                        throw;
-                    }
+                        streamContent.Headers.ContentRange = new ContentRangeHeaderValue(
+                            rangeItem.From,
+                            rangeItem.To,
+                            _document.Length);
+                        streamContent.Headers.ContentLength = rangeItem.Length;
 
-                    content.Headers.ContentType = MediaTypeHeaderValue.Parse(contentType);
+                        streamContent.Headers.ContentType = MediaTypeHeaderValue.Parse(contentType);
+
+                        await SetPropertiesToContentHeaderAsync(streamContent, properties, ct)
+                            .ConfigureAwait(false);
+
+                        foreach (var header in streamContent.Headers)
+                        {
+                            response.Headers.Add(header.Key, header.Value.ToArray());
+                        }
+
+                        // Use the CopyToAsync function of the stream itself, because
+                        // we're able to pass the cancellation token. This is a workaround
+                        // for issue dotnet/corefx#9071 and fixes FubarDevelopment/WebDavServer#47.
+                        await streamView.CopyToAsync(response.Body, 81920, ct)
+                            .ConfigureAwait(false);
+                    }
                 }
                 else
                 {
                     // Multipart content
-                    var multipart = new MultipartContent("byteranges");
-                    try
+                    using (var multipart = new MultipartContent("byteranges"))
                     {
                         var index = 0;
                         foreach (var rangeItem in _rangeItems)
                         {
                             var streamView = views[index++];
                             var partContent = new StreamContent(streamView);
-                            partContent.Headers.ContentRange = new ContentRangeHeaderValue(rangeItem.From, rangeItem.To, _document.Length);
+                            partContent.Headers.ContentRange = new ContentRangeHeaderValue(
+                                rangeItem.From,
+                                rangeItem.To,
+                                _document.Length);
                             partContent.Headers.ContentType = MediaTypeHeaderValue.Parse(contentType);
                             partContent.Headers.ContentLength = rangeItem.Length;
                             multipart.Add(partContent);
                         }
+
+                        await SetPropertiesToContentHeaderAsync(multipart, properties, ct)
+                            .ConfigureAwait(false);
+
+                        foreach (var header in multipart.Headers)
+                        {
+                            response.Headers.Add(header.Key, header.Value.ToArray());
+                        }
+
+                        // TODO: Workaround for issue dotnet/corefx#9071
+                        await multipart.CopyToAsync(response.Body).ConfigureAwait(false);
                     }
-                    catch
-                    {
-                        multipart.Dispose();
-                        throw;
-                    }
-
-                    content = multipart;
-                }
-
-                using (content)
-                {
-                    await SetPropertiesToContentHeaderAsync(content, properties, ct)
-                        .ConfigureAwait(false);
-
-                    foreach (var header in content.Headers)
-                    {
-                        response.Headers.Add(header.Key, header.Value.ToArray());
-                    }
-
-                    await content.CopyToAsync(response.Body).ConfigureAwait(false);
                 }
             }
             finally

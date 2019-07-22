@@ -1,4 +1,4 @@
-﻿// <copyright file="WebDavIndirectResult.cs" company="Fubar Development Junker">
+// <copyright file="WebDavIndirectResult.cs" company="Fubar Development Junker">
 // Copyright (c) Fubar Development Junker. All rights reserved.
 // </copyright>
 
@@ -65,7 +65,7 @@ namespace FubarDev.WebDavServer.AspNetCore
             if (_logger?.IsEnabled(LogLevel.Debug) ?? false)
             {
                 var loggingResponse = new LoggingWebDavResponse(_dispatcher);
-                await _result.ExecuteResultAsync(loggingResponse, CancellationToken.None).ConfigureAwait(false);
+                await _result.ExecuteResultAsync(loggingResponse, context.HttpContext.RequestAborted).ConfigureAwait(false);
                 if (!string.IsNullOrEmpty(loggingResponse.ContentType))
                 {
                     var mediaType = new MediaType(loggingResponse.ContentType);
@@ -79,7 +79,7 @@ namespace FubarDev.WebDavServer.AspNetCore
             }
 
             // Writes the XML response
-            await _result.ExecuteResultAsync(new WebDavResponse(_dispatcher, response), CancellationToken.None).ConfigureAwait(false);
+            await _result.ExecuteResultAsync(new WebDavResponse(_dispatcher, response), context.HttpContext.RequestAborted).ConfigureAwait(false);
         }
     }
 }
