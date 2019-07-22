@@ -49,11 +49,15 @@ namespace FubarDev.WebDavServer.Sample.AspNetCore
                         {
                             opt.Authentication.Schemes = AuthenticationSchemes.NTLM;
                             opt.Authentication.AllowAnonymous = true;
+                            opt.MaxRequestBodySize = null;
                         });
             }
             else
             {
                 IsKestrel = true;
+                builder = builder
+                    .UseKestrel(
+                        opt => { opt.Limits.MaxRequestBodySize = null; });
             }
 
             return builder;
