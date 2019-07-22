@@ -9,13 +9,14 @@
     <Copyright>Fubar Development Junker 2016-2018</Copyright>
     <Company>Fubar Development Junker</Company>
     <Authors>Fubar Development Junker</Authors>
-    <PackageLicenseUrl>https://github.com/FubarDevelopment/WebDavServer/blob/master/LICENSE</PackageLicenseUrl>
+    <PackageLicenseExpression>MIT</PackageLicenseExpression>
     <PackageProjectUrl>https://github.com/FubarDevelopment/WebDavServer</PackageProjectUrl>
     <RepositoryUrl>https://github.com/FubarDevelopment/WebDavServer.git</RepositoryUrl>
     <PackageReleaseNotes>https://github.com/FubarDevelopment/WebDavServer/releases</PackageReleaseNotes>
     <RepositoryType>git</RepositoryType>
     <MinClientVersion>3.5</MinClientVersion>
     <CodeAnalysisRuleSet>$(MSBuildThisFileDirectory)WebDavServer.ruleset</CodeAnalysisRuleSet>
+    <SuppressNETCoreSdkPreviewMessage>true</SuppressNETCoreSdkPreviewMessage>
   </PropertyGroup>
 
   <ItemGroup>
