@@ -64,13 +64,23 @@ namespace FubarDev.WebDavServer.Handlers.Impl.GetResults
 
             using (var stream = await _document.OpenReadAsync(ct).ConfigureAwait(false))
             {
-                var content = new StreamContent(stream);
-                await SetPropertiesToContentHeaderAsync(content, properties, ct).ConfigureAwait(false);
+                using (var content = new StreamContent(stream))
+                {
+                    // I'm storing the headers in the content, because I'm too lazy to
+                    // look up the header names and the formatting of its values.
+                    await SetPropertiesToContentHeaderAsync(content, properties, ct).ConfigureAwait(false);
 
-                foreach (var header in content.Headers)
-                    response.Headers.Add(header.Key, header.Value.ToArray());
+                    foreach (var header in content.Headers)
+                    {
+                        response.Headers.Add(header.Key, header.Value.ToArray());
+                    }
 
-                await content.CopyToAsync(response.Body).ConfigureAwait(false);
+                    // Use the CopyToAsync function of the stream itself, because
+                    // we're able to pass the cancellation token. This is a workaround
+                    // for issue dotnet/corefx#9071 and fixes FubarDevelopment/WebDavServer#47.
+                    await stream.CopyToAsync(response.Body, 81920, ct)
+                        .ConfigureAwait(false);
+                }
             }
         }
 
