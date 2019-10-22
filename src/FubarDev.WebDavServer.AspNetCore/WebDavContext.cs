@@ -7,10 +7,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Security.Principal;
 using System.Text;
-using System.Text.RegularExpressions;
-
 using FubarDev.WebDavServer.Utils.UAParser;
-
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Routing;
 using Microsoft.Extensions.DependencyInjection;
@@ -79,17 +76,15 @@ namespace FubarDev.WebDavServer.AspNetCore
                 () =>
                 {
                     var path = httpContextAccessor.HttpContext.GetRouteValue("path")?.ToString();
-                    var input = ServiceAbsoluteRequestUrl.ToString();
-                    string remaining;
+                    var input = Uri.UnescapeDataString(ServiceAbsoluteRequestUrl.ToString());
+                    string remaining = input;
                     if (path != null)
                     {
-                        var uriPath = path.UriEscape();
-                        var pattern = string.Format("{0}$", Regex.Escape(uriPath));
-                        remaining = Regex.Replace(input, pattern, string.Empty);
-                    }
-                    else
-                    {
-                        remaining = input;
+                        int pathIndex = input.LastIndexOf(path, StringComparison.Ordinal);
+                        if (pathIndex != -1)
+                        {
+                            remaining = input.Substring(0, pathIndex);
+                        }
                     }
 
                     var serviceControllerAbsoluteUrl = new Uri(remaining);
