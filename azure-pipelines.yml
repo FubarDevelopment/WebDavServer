@@ -21,7 +21,7 @@ variables:
 jobs:
 - job: prepare
   pool:
-    vmImage: 'windows-latest'
+    vmImage: 'linux-latest'
   steps:
   - task: UseGitVersion@5
     displayName: 'GitVersion'
