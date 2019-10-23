@@ -45,20 +45,6 @@ jobs:
   pool:
     vmImage: 'windows-latest'
   steps:
-  - task: NuGetToolInstaller@1
-  - task: NuGetCommand@2
-    inputs:
-      restoreSolution: '$(solution)'
-  - task: VSBuild@1
-    inputs:
-      solution: '$(solution)'
-      msbuildArgs: '/p:Version="$(build.buildNumber)"'
-      platform: '$(buildPlatform)'
-      configuration: '$(buildConfiguration)'
-  - task: VSTest@2
-    inputs:
-      platform: '$(buildPlatform)'
-      configuration: '$(buildConfiguration)'
   - task: DotNetCoreCLI@2
     inputs:
       command: pack
@@ -69,14 +55,22 @@ jobs:
   - task: PublishPipelineArtifact@1
     inputs:
       targetPath: $(Build.ArtifactStagingDirectory)
-      artifact: webdav-server
+      artifact: drop
+
+- job: test
+  dependsOn: prepare
+  steps:
+  - task: VSTest@2
+    inputs:
+      platform: '$(buildPlatform)'
+      configuration: '$(buildConfiguration)'
 
 - job: publish
   dependsOn: build
   steps:
   - task: DownloadPipelineArtifact@2
     inputs:
-      artifactName: webdav-server
+      artifactName: drop
       targetPath: $(Build.ArtifactStagingDirectory)
   - task: PublishBuildArtifacts@1
     inputs:
