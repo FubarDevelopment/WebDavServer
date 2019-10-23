@@ -35,8 +35,6 @@ jobs:
 
 - job: build
   dependsOn: prepare
-  pool:
-    vmImage: 'windows-latest'
   steps:
   - task: DotNetCoreCLI@2
     inputs:
@@ -44,8 +42,12 @@ jobs:
       projects: FubarDev.WebDavServer.sln
       packDirectory: $(Build.ArtifactStagingDirectory)
       includesource: true
+      includesymbols: true
       versioningScheme: byBuildNumber
       verbosityPack: Minimal
+      versionEnvVar: PackageVersion
+    env:
+      PackageVersion: $(build.buildNumber)
   - task: PublishPipelineArtifact@1
     inputs:
       targetPath: $(Build.ArtifactStagingDirectory)
@@ -56,6 +58,12 @@ jobs:
   pool:
     vmImage: 'windows-latest'
   steps:
+  - task: VSBuild@1
+    inputs:
+      solution: '$(solution)'
+      platform: '$(buildPlatform)'
+      configuration: '$(buildConfiguration)'
+      msbuildArgs: '/p:Version="$(build.buildNumber)"'
   - task: VSTest@2
     inputs:
       platform: '$(buildPlatform)'
