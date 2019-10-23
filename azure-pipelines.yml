@@ -20,6 +20,8 @@ variables:
 
 jobs:
 - job: prepare
+  pool:
+    vmImage: 'windows-latest'
   steps:
   - task: UseGitVersion@5
     displayName: 'GitVersion'
@@ -28,7 +30,7 @@ jobs:
       includePrerelease: true
       updateAssemblyInfo: false
   - script: |
-      echo "##vso[build.updatebuildnumber]$(GitVersion.SemVer)
+      echo "##vso[build.updatebuildnumber]$(GitVersion.SemVer)""
     displayName: 'Set build version'
 
 - job: build
