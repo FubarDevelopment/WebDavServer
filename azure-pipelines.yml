@@ -13,61 +13,73 @@ trigger:
     include:
     - v*
 
-pool:
-  vmImage: 'windows-latest'
-
 variables:
   solution: '**/*.sln'
   buildPlatform: 'Any CPU'
   buildConfiguration: 'Release'
 
-steps:
-- task: NuGetToolInstaller@1
+jobs:
+- job: prepare
+  steps:
+  - task: UseGitVersion@5
+    displayName: 'GitVersion'
+    inputs:
+      versionSpec: '5.0.2-beta1.130'
+      includePrerelease: true
+      updateAssemblyInfo: false
 
-- task: GitVersion@5
-  displayName: 'GitVersion'
-  inputs:
-    runtime: core
-    updateAssemblyInfo: false
+  - script: |
+      echo ##vso[build.updatebuildnumber]$(GitVersion.SemVer)
+      echo ##vso[task.setvariable variable=assemblyVersion]$(GitVersion.AssemblySemVer)
+      echo ##vso[task.setvariable variable=assemblyFileVersion]$(GitVersion.MajorMinorPatch).0
+    displayName: 'Set build version'
 
-- script: |
-    echo "##vso[build.updatebuildnumber]$(GitVersion.SemVer)"
-    echo "##vso[task.setvariable variable=assemblyVersion]$(GitVersion.AssemblySemVer)"
-    echo "##vso[task.setvariable variable=assemblyFileVersion]$(GitVersion.MajorMinorPatch).0"
-  displayName: 'Set build version'
+  - script: |
+      echo The build number is: $(build.buildNumber)
+      echo Assembly version is: $(assemblyVersion)
+      echo Assembly file version is: $(assemblyFileVersion)
+    displayName: 'Show build version'
 
-- script: |
-    echo "The build number is:" $(build.buildNumber)
-    echo "Assembly version is:" $(assemblyVersion)
-    echo "Assembly file version is:" $(assemblyFileVersion)
-  displayName: 'Show build version'
+- job: build
+  dependsOn: prepare
+  pool:
+    vmImage: 'windows-latest'
+  steps:
+  - task: NuGetToolInstaller@1
+  - task: NuGetCommand@2
+    inputs:
+      restoreSolution: '$(solution)'
+  - task: VSBuild@1
+    inputs:
+      solution: '$(solution)'
+      msbuildArgs: '/p:Version="$(build.buildNumber)"'
+      platform: '$(buildPlatform)'
+      configuration: '$(buildConfiguration)'
+  - task: VSTest@2
+    inputs:
+      platform: '$(buildPlatform)'
+      configuration: '$(buildConfiguration)'
+  - task: DotNetCoreCLI@2
+    inputs:
+      command: pack
+      projects: FubarDev.WebDavServer.sln
+      packDirectory: $(Build.ArtifactStagingDirectory)
+      includesource: true
+      versioningScheme: byBuildNumber
+  - task: PublishPipelineArtifact@1
+    inputs:
+      targetPath: $(Build.ArtifactStagingDirectory)
+      artifact: webdav-server
 
-- task: NuGetCommand@2
-  inputs:
-    restoreSolution: '$(solution)'
-
-- task: VSBuild@1
-  inputs:
-    solution: '$(solution)'
-    msbuildArgs: '/p:Version="$(build.buildNumber)"'
-    platform: '$(buildPlatform)'
-    configuration: '$(buildConfiguration)'
-
-- task: VSTest@2
-  inputs:
-    platform: '$(buildPlatform)'
-    configuration: '$(buildConfiguration)'
-
-- task: DotNetCoreCLI@2
-  inputs:
-    command: pack
-    projects: FubarDev.WebDavServer.sln
-    packDirectory: $(Build.ArtifactStagingDirectory)
-    includesource: true
-    versioningScheme: byBuildNumber
-
-- task: PublishBuildArtifacts@1
-  inputs:
-    PathtoPublish: '$(Build.ArtifactStagingDirectory)'
-    ArtifactName: 'webdav-server'
-    publishLocation: 'Container'
+- job: publish
+  dependsOn: build
+  steps:
+  - task: DownloadPipelineArtifact@2
+    inputs:
+      artifactName: webdav-server
+      targetPath: $(Build.ArtifactStagingDirectory)
+  - task: PublishBuildArtifacts@1
+    inputs:
+      PathtoPublish: $(Build.ArtifactStagingDirectory)
+      ArtifactName: 'webdav-server'
+      publishLocation: 'Container'
