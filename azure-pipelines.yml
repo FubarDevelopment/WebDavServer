@@ -27,18 +27,9 @@ jobs:
       versionSpec: '5.0.2-beta1.130'
       includePrerelease: true
       updateAssemblyInfo: false
-
   - script: |
-      echo ##vso[build.updatebuildnumber]$(GitVersion.SemVer)
-      echo ##vso[task.setvariable variable=assemblyVersion]$(GitVersion.AssemblySemVer)
-      echo ##vso[task.setvariable variable=assemblyFileVersion]$(GitVersion.MajorMinorPatch).0
+      echo "##vso[build.updatebuildnumber]$(GitVersion.SemVer)
     displayName: 'Set build version'
-
-  - script: |
-      echo The build number is: $(build.buildNumber)
-      echo Assembly version is: $(assemblyVersion)
-      echo Assembly file version is: $(assemblyFileVersion)
-    displayName: 'Show build version'
 
 - job: build
   dependsOn: prepare
@@ -52,6 +43,7 @@ jobs:
       packDirectory: $(Build.ArtifactStagingDirectory)
       includesource: true
       versioningScheme: byBuildNumber
+      verbosityPack: Minimal
   - task: PublishPipelineArtifact@1
     inputs:
       targetPath: $(Build.ArtifactStagingDirectory)
@@ -59,6 +51,8 @@ jobs:
 
 - job: test
   dependsOn: prepare
+  pool:
+    vmImage: 'windows-latest'
   steps:
   - task: VSTest@2
     inputs:
