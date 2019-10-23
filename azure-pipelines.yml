@@ -75,7 +75,9 @@ jobs:
       configuration: '$(buildConfiguration)'
 
 - job: publish
-  dependsOn: build
+  dependsOn:
+  - build
+  - test
   steps:
   - task: DownloadPipelineArtifact@2
     inputs:
