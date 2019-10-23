@@ -39,6 +39,14 @@ jobs:
   steps:
   - task: DotNetCoreCLI@2
     inputs:
+      command: 'restore'
+      projects: 'FubarDev.WebDavServer.sln'
+  - task: DotNetCoreCLI@2
+    inputs:
+      command: build
+      projects: 'FubarDev.WebDavServer.sln'
+  - task: DotNetCoreCLI@2
+    inputs:
       command: custom
       custom: pack $(Build.SourcesDirectory)/FubarDev.WebDavServer.sln --output $(Build.ArtifactStagingDirectory) --include-symbols /p:Configuration=$(buildConfiguration) /p:Version=$(build.buildNumber) --verbosity Minimal
   - task: PublishPipelineArtifact@1
