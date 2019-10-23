@@ -68,12 +68,6 @@ jobs:
     inputs:
       artifactName: drop
       targetPath: $(Build.ArtifactStagingDirectory)
-
-- job: build
-  dependsOn: prepare
-  pool:
-    vmImage: 'windows-latest'
-  steps:
   - task: NuGetToolInstaller@1
   - task: NuGetCommand@2
     inputs:
