@@ -18,10 +18,11 @@ variables:
   buildPlatform: 'Any CPU'
   buildConfiguration: 'Release'
 
+pool:
+  vmImage: 'ubuntu-latest'
+
 jobs:
 - job: prepare
-  pool:
-    vmImage: 'ubuntu-latest'
   steps:
   - task: UseGitVersion@5
     displayName: 'GitVersion'
@@ -38,16 +39,8 @@ jobs:
   steps:
   - task: DotNetCoreCLI@2
     inputs:
-      command: pack
-      projects: FubarDev.WebDavServer.sln
-      packDirectory: $(Build.ArtifactStagingDirectory)
-      includesource: true
-      includesymbols: true
-      versioningScheme: byBuildNumber
-      verbosityPack: Minimal
-      versionEnvVar: PackageVersion
-    env:
-      PackageVersion: $(build.buildNumber)
+      command: custom
+      custom: FubarDev.WebDavServer.sln --output $(Build.ArtifactStagingDirectory) --include-symbols /p:Configuration=$(buildConfiguration) /p:Version=$(build.buildNumber) --verbosity Minimal
   - task: PublishPipelineArtifact@1
     inputs:
       targetPath: $(Build.ArtifactStagingDirectory)
@@ -55,24 +48,11 @@ jobs:
 
 - job: test
   dependsOn: prepare
-  pool:
-    vmImage: 'windows-latest'
   steps:
-  - task: NuGetToolInstaller@1
-  - task: NuGetCommand@2
+  - task: DotNetCoreCLI@2
     inputs:
-      command: restore
-      restoreSolution: '$(solution)'
-  - task: VSBuild@1
-    inputs:
-      solution: '$(solution)'
-      platform: '$(buildPlatform)'
-      configuration: '$(buildConfiguration)'
-      msbuildArgs: '/p:Version="$(build.buildNumber)"'
-  - task: VSTest@2
-    inputs:
-      platform: '$(buildPlatform)'
-      configuration: '$(buildConfiguration)'
+      command: 'test'
+      projects: 'test/FubarDev.WebDavServer.Tests/FubarDev.WebDavServer.Tests.csproj'
 
 - job: publish
   dependsOn:
