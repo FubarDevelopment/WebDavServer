@@ -60,14 +60,6 @@ jobs:
     inputs:
       artifactName: drop
       targetPath: $(Build.ArtifactStagingDirectory)
-  - task: NuGetToolInstaller@1
-  - task: NuGetCommand@2
-    inputs:
-      command: 'push'
-      packagesToPush: '$(Build.ArtifactStagingDirectory)/**/*.nupkg;!$(Build.ArtifactStagingDirectory)/**/*.symbols.nupkg'
-      nuGetFeedType: 'internal'
-      publishVstsFeed: '3ec8d457-77ef-4e53-b502-600334c12af0/6dd43457-b016-4824-bd52-e44f7757379a'
-      allowPackageConflicts: true
   - task: PublishBuildArtifacts@1
     inputs:
       PathtoPublish: $(Build.ArtifactStagingDirectory)
