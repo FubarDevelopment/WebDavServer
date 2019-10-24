@@ -6,8 +6,17 @@
 trigger:
   branches:
     include:
+    - master
     - release/*
     - develop
+  tags:
+    include:
+    - v*
+
+pr:
+  branches:
+    include:
+    - '*'  # must quote since "*" is a YAML reserved character; we want a string
 
 variables:
   solution: '**/*.sln'
