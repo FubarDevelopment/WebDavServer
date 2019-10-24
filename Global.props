@@ -3,10 +3,10 @@
   <Import Project="DotNetSdkMono.props" />
 
   <PropertyGroup>
-    <LangVersion>latest</LangVersion>
+    <LangVersion>8.0</LangVersion>
     <VersionPrefix Condition=" '$(VersionPrefix)' == '' ">1.0</VersionPrefix>
     <Product>WebDAV Server</Product>
-    <Copyright>Fubar Development Junker 2016-2018</Copyright>
+    <Copyright>Fubar Development Junker 2016-2019</Copyright>
     <Company>Fubar Development Junker</Company>
     <Authors>Fubar Development Junker</Authors>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
@@ -19,9 +19,15 @@
     <SuppressNETCoreSdkPreviewMessage>true</SuppressNETCoreSdkPreviewMessage>
   </PropertyGroup>
 
-  <ItemGroup>
-    <PackageReference Include="JetBrains.Annotations" Version="2018.3.0" PrivateAssets="All" />
-  </ItemGroup>
+  <PropertyGroup Condition=" '$(TargetFramework)' == 'netstandard2.1' or '$(TargetFramework)' == 'netcoreapp3.0' ">
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+  <PropertyGroup Condition=" '$(TargetFramework)' == 'netstandard2.0' or '$(TargetFramework)' == 'net461' ">
+    <Nullable>annotations</Nullable>
+  </PropertyGroup>
+
+  <Import Condition=" '$(TargetFramework)' == 'netstandard2.0' or '$(TargetFramework)' == 'net461' " Project="$(MSBuildThisFileDirectory)third-party\System.Diagnostics.CodeAnalysis\System.Diagnostics.CodeAnalysis.projitems" Label="Shared" />
 
   <PropertyGroup Condition="'$(TargetFramework)'=='net461'">
     <DefineConstants>$(DefineConstants);NETFRAMEWORK</DefineConstants>

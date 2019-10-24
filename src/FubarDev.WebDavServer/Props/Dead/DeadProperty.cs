@@ -11,8 +11,6 @@ using System.Xml.Linq;
 using FubarDev.WebDavServer.FileSystem;
 using FubarDev.WebDavServer.Props.Store;
 
-using JetBrains.Annotations;
-
 namespace FubarDev.WebDavServer.Props.Dead
 {
     /// <summary>
@@ -24,7 +22,7 @@ namespace FubarDev.WebDavServer.Props.Dead
 
         private readonly IEntry _entry;
 
-        private XElement _cachedValue;
+        private XElement? _cachedValue;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="DeadProperty"/> class.
@@ -32,7 +30,7 @@ namespace FubarDev.WebDavServer.Props.Dead
         /// <param name="store">The property store for the dead properties.</param>
         /// <param name="entry">The file system entry.</param>
         /// <param name="name">The XML name of the dead property.</param>
-        public DeadProperty([NotNull] IPropertyStore store, [NotNull] IEntry entry, [NotNull] XName name)
+        public DeadProperty(IPropertyStore store, IEntry entry, XName name)
         {
             Name = name;
             _store = store;
@@ -59,7 +57,7 @@ namespace FubarDev.WebDavServer.Props.Dead
         public XName Name { get; }
 
         /// <inheritdoc />
-        public string Language { get; private set; }
+        public string? Language { get; private set; }
 
         /// <inheritdoc />
         public IReadOnlyCollection<XName> AlternativeNames { get; } = new XName[0];
@@ -77,7 +75,7 @@ namespace FubarDev.WebDavServer.Props.Dead
         /// <inheritdoc />
         public async Task<XElement> GetXmlValueAsync(CancellationToken ct)
         {
-            XElement result;
+            XElement? result;
             if (_cachedValue == null)
             {
                 result = await _store.GetAsync(_entry, Name, ct).ConfigureAwait(false);

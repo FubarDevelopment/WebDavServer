@@ -6,8 +6,6 @@ using System.Threading;
 using System.Threading.Tasks;
 using System.Xml.Linq;
 
-using JetBrains.Annotations;
-
 namespace FubarDev.WebDavServer.Props
 {
     /// <summary>
@@ -25,8 +23,6 @@ namespace FubarDev.WebDavServer.Props
         /// </summary>
         /// <param name="ct">The cancellation token.</param>
         /// <returns>The <see cref="XElement"/> for this property.</returns>
-        [NotNull]
-        [ItemNotNull]
         Task<XElement> GetXmlValueAsync(CancellationToken ct);
     }
 }

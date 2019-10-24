@@ -10,8 +10,6 @@ using System.Threading.Tasks;
 
 using FubarDev.WebDavServer.Model;
 
-using JetBrains.Annotations;
-
 namespace FubarDev.WebDavServer.Locking
 {
     /// <summary>
@@ -19,7 +17,9 @@ namespace FubarDev.WebDavServer.Locking
     /// </summary>
     public class ImplicitLock : IImplicitLock
     {
-        private readonly ILockManager _lockManager;
+        private readonly ILockManager? _lockManager;
+        private readonly IReadOnlyCollection<IActiveLock>? _ownedLocks;
+        private readonly IReadOnlyCollection<IActiveLock>? _conflictingLocks;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="ImplicitLock"/> class.
@@ -35,9 +35,9 @@ namespace FubarDev.WebDavServer.Locking
         /// Initializes a new instance of the <see cref="ImplicitLock"/> class.
         /// </summary>
         /// <param name="ownedLocks">The locks matched by the <c>If</c> header.</param>
-        public ImplicitLock([NotNull] [ItemNotNull] IReadOnlyCollection<IActiveLock> ownedLocks)
+        public ImplicitLock(IReadOnlyCollection<IActiveLock> ownedLocks)
         {
-            OwnedLocks = ownedLocks;
+            _ownedLocks = ownedLocks;
             IsSuccessful = true;
             IsTemporaryLock = false;
         }
@@ -47,24 +47,26 @@ namespace FubarDev.WebDavServer.Locking
         /// </summary>
         /// <param name="lockManager">The lock manager.</param>
         /// <param name="lockResult">Either the implicit lock or the conflicting locks.</param>
-        public ImplicitLock([NotNull] ILockManager lockManager, [NotNull] LockResult lockResult)
+        public ImplicitLock(ILockManager lockManager, LockResult lockResult)
         {
             _lockManager = lockManager;
             if (lockResult.Lock != null)
             {
-                OwnedLocks = new[] { lockResult.Lock };
+                _ownedLocks = new[] { lockResult.Lock };
             }
 
             IsSuccessful = lockResult.Lock != null;
-            ConflictingLocks = lockResult.ConflictingLocks?.GetLocks().ToList();
+            _conflictingLocks = lockResult.ConflictingLocks?.GetLocks().ToList();
             IsTemporaryLock = true;
         }
 
         /// <inheritdoc />
-        public IReadOnlyCollection<IActiveLock> OwnedLocks { get; }
+        public IReadOnlyCollection<IActiveLock> OwnedLocks =>
+            _ownedLocks ?? throw new InvalidOperationException("Not a temporary lock.");
 
         /// <inheritdoc />
-        public IReadOnlyCollection<IActiveLock> ConflictingLocks { get; }
+        public IReadOnlyCollection<IActiveLock> ConflictingLocks =>
+            _conflictingLocks ?? throw new InvalidOperationException("Not a temporary lock.");
 
         /// <inheritdoc />
         public bool IsTemporaryLock { get; }
@@ -106,9 +108,9 @@ namespace FubarDev.WebDavServer.Locking
         /// <inheritdoc />
         public Task DisposeAsync(CancellationToken cancellationToken)
         {
-            if (!IsTemporaryLock)
+            if (!IsTemporaryLock || _lockManager == null)
             {
-                return Task.FromResult(0);
+                return Task.CompletedTask;
             }
 
             // A temporary lock is always on its own

@@ -5,8 +5,6 @@
 using System.Threading;
 using System.Threading.Tasks;
 
-using JetBrains.Annotations;
-
 namespace FubarDev.WebDavServer.Engines
 {
     /// <summary>
@@ -25,8 +23,6 @@ namespace FubarDev.WebDavServer.Engines
         /// </summary>
         /// <param name="cancellationToken">The cancellation token.</param>
         /// <returns>The created collection target.</returns>
-        [NotNull]
-        [ItemNotNull]
         Task<TCollection> CreateCollectionAsync(CancellationToken cancellationToken);
     }
 }

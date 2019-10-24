@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Authentication;
 
 using idunno.Authentication;
 
+// ReSharper disable once CheckNamespace
 namespace Microsoft.AspNetCore.Builder
 {
     /// <summary>

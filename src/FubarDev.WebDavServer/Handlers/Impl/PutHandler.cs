@@ -18,8 +18,6 @@ using FubarDev.WebDavServer.Model.Headers;
 using FubarDev.WebDavServer.Props;
 using FubarDev.WebDavServer.Utils;
 
-using JetBrains.Annotations;
-
 using Microsoft.Extensions.Logging;
 
 namespace FubarDev.WebDavServer.Handlers.Impl
@@ -29,22 +27,16 @@ namespace FubarDev.WebDavServer.Handlers.Impl
     /// </summary>
     public class PutHandler : IPutHandler
     {
-        [NotNull]
         private readonly IFileSystem _fileSystem;
 
-        [NotNull]
         private readonly IWebDavContext _context;
 
-        [NotNull]
         private readonly IImplicitLockFactory _implicitLockFactory;
 
-        [NotNull]
         private readonly IEntryPropertyInitializer _entryPropertyInitializer;
 
-        [NotNull]
         private readonly IBufferPoolFactory _bufferPoolFactory;
 
-        [NotNull]
         private readonly ILogger<PutHandler> _logger;
 
         /// <summary>
@@ -57,12 +49,12 @@ namespace FubarDev.WebDavServer.Handlers.Impl
         /// <param name="bufferPoolFactory">A buffer pool factory.</param>
         /// <param name="logger">The logger.</param>
         public PutHandler(
-            [NotNull] IFileSystem fileSystem,
-            [NotNull] IWebDavContext context,
-            [NotNull] IImplicitLockFactory implicitLockFactory,
-            [NotNull] IEntryPropertyInitializer entryPropertyInitializer,
-            [NotNull] IBufferPoolFactory bufferPoolFactory,
-            [NotNull] ILogger<PutHandler> logger)
+            IFileSystem fileSystem,
+            IWebDavContext context,
+            IImplicitLockFactory implicitLockFactory,
+            IEntryPropertyInitializer entryPropertyInitializer,
+            IBufferPoolFactory bufferPoolFactory,
+            ILogger<PutHandler> logger)
         {
             _fileSystem = fileSystem;
             _context = context;

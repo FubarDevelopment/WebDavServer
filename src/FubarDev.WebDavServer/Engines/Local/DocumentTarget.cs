@@ -9,8 +9,6 @@ using System.Threading.Tasks;
 
 using FubarDev.WebDavServer.FileSystem;
 
-using JetBrains.Annotations;
-
 namespace FubarDev.WebDavServer.Engines.Local
 {
     /// <summary>
@@ -26,10 +24,10 @@ namespace FubarDev.WebDavServer.Engines.Local
         /// <param name="document">The underlying document.</param>
         /// <param name="targetActions">The target actions implementation to use.</param>
         public DocumentTarget(
-            [NotNull] CollectionTarget parent,
-            [NotNull] Uri destinationUrl,
-            [NotNull] IDocument document,
-            [NotNull] ITargetActions<CollectionTarget, DocumentTarget, MissingTarget> targetActions)
+            CollectionTarget parent,
+            Uri destinationUrl,
+            IDocument document,
+            ITargetActions<CollectionTarget, DocumentTarget, MissingTarget> targetActions)
             : base(targetActions, parent, destinationUrl, document)
         {
             Document = document;
@@ -38,7 +36,6 @@ namespace FubarDev.WebDavServer.Engines.Local
         /// <summary>
         /// Gets the underlying document.
         /// </summary>
-        [NotNull]
         public IDocument Document { get; }
 
         /// <summary>
@@ -48,11 +45,10 @@ namespace FubarDev.WebDavServer.Engines.Local
         /// <param name="document">The underlying document.</param>
         /// <param name="targetActions">The target actions implementation to use.</param>
         /// <returns>The created document target object.</returns>
-        [NotNull]
         public static DocumentTarget NewInstance(
-            [NotNull] Uri destinationUrl,
-            [NotNull] IDocument document,
-            [NotNull] ITargetActions<CollectionTarget, DocumentTarget, MissingTarget> targetActions)
+            Uri destinationUrl,
+            IDocument document,
+            ITargetActions<CollectionTarget, DocumentTarget, MissingTarget> targetActions)
         {
             var collUrl = destinationUrl.GetCollectionUri();
             Debug.Assert(document.Parent != null, "document.Parent != null");
@@ -69,6 +65,11 @@ namespace FubarDev.WebDavServer.Engines.Local
         /// <inheritdoc />
         public async Task<MissingTarget> DeleteAsync(CancellationToken cancellationToken)
         {
+            if (Parent == null)
+            {
+                throw new InvalidOperationException("Cannot delete entry, because the collection is unspecified.");
+            }
+
             await Document.DeleteAsync(cancellationToken).ConfigureAwait(false);
             return new MissingTarget(DestinationUrl, Name, Parent, TargetActions);
         }

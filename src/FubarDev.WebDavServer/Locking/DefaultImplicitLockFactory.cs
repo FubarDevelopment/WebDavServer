@@ -7,8 +7,6 @@ using System.Threading.Tasks;
 
 using FubarDev.WebDavServer.FileSystem;
 
-using JetBrains.Annotations;
-
 namespace FubarDev.WebDavServer.Locking
 {
     /// <summary>
@@ -16,14 +14,9 @@ namespace FubarDev.WebDavServer.Locking
     /// </summary>
     public class DefaultImplicitLockFactory : IImplicitLockFactory
     {
-        [NotNull]
         private readonly IFileSystem _rootFileSystem;
-
-        [NotNull]
         private readonly IWebDavContext _webDavContext;
-
-        [CanBeNull]
-        private readonly ILockManager _lockManager;
+        private readonly ILockManager? _lockManager;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="DefaultImplicitLockFactory"/> class.
@@ -31,8 +24,8 @@ namespace FubarDev.WebDavServer.Locking
         /// <param name="rootFileSystem">The root file system.</param>
         /// <param name="webDavContext">The current WebDAV context.</param>
         public DefaultImplicitLockFactory(
-            [NotNull] IFileSystem rootFileSystem,
-            [NotNull] IWebDavContext webDavContext)
+            IFileSystem rootFileSystem,
+            IWebDavContext webDavContext)
         {
             _rootFileSystem = rootFileSystem;
             _webDavContext = webDavContext;
@@ -40,7 +33,7 @@ namespace FubarDev.WebDavServer.Locking
         }
 
         /// <inheritdoc />
-        public Task<IImplicitLock> CreateAsync([CanBeNull] ILock lockRequirements, CancellationToken cancellationToken)
+        public Task<IImplicitLock> CreateAsync(ILock? lockRequirements, CancellationToken cancellationToken)
         {
             var useFakeLock = _lockManager == null
                 || lockRequirements == null
@@ -50,10 +43,10 @@ namespace FubarDev.WebDavServer.Locking
                 return Task.FromResult<IImplicitLock>(new ImplicitLock(true));
             }
 
-            return _lockManager.LockImplicitAsync(
+            return _lockManager!.LockImplicitAsync(
                 _rootFileSystem,
                 _webDavContext.RequestHeaders.If?.Lists,
-                lockRequirements,
+                lockRequirements!,
                 cancellationToken);
         }
 

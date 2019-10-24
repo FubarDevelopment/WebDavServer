@@ -5,8 +5,6 @@
 using System.Threading;
 using System.Threading.Tasks;
 
-using JetBrains.Annotations;
-
 namespace FubarDev.WebDavServer.Locking
 {
     /// <summary>
@@ -25,8 +23,6 @@ namespace FubarDev.WebDavServer.Locking
         /// <param name="lockRequirements">The lock requirements.</param>
         /// <param name="cancellationToken">The cancellation token.</param>
         /// <returns>A new instance of the created implicit lock.</returns>
-        [NotNull]
-        [ItemNotNull]
-        Task<IImplicitLock> CreateAsync([CanBeNull] ILock lockRequirements, CancellationToken cancellationToken);
+        Task<IImplicitLock> CreateAsync(ILock? lockRequirements, CancellationToken cancellationToken);
     }
 }

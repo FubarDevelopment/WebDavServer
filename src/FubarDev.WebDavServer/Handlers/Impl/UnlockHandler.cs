@@ -11,8 +11,6 @@ using FubarDev.WebDavServer.Locking;
 using FubarDev.WebDavServer.Model;
 using FubarDev.WebDavServer.Model.Headers;
 
-using JetBrains.Annotations;
-
 namespace FubarDev.WebDavServer.Handlers.Impl
 {
     /// <summary>
@@ -20,18 +18,15 @@ namespace FubarDev.WebDavServer.Handlers.Impl
     /// </summary>
     public class UnlockHandler : IUnlockHandler
     {
-        [NotNull]
         private readonly IWebDavContext _context;
-
-        [CanBeNull]
-        private readonly ILockManager _lockManager;
+        private readonly ILockManager? _lockManager;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="UnlockHandler"/> class.
         /// </summary>
         /// <param name="context">The WebDAV request context.</param>
         /// <param name="lockManager">The global lock manager.</param>
-        public UnlockHandler([NotNull] IWebDavContext context, [CanBeNull] ILockManager lockManager = null)
+        public UnlockHandler(IWebDavContext context, ILockManager? lockManager = null)
         {
             _context = context;
             _lockManager = lockManager;

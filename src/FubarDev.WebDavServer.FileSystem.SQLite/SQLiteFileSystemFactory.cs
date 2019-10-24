@@ -9,8 +9,6 @@ using System.Security.Principal;
 using FubarDev.WebDavServer.Locking;
 using FubarDev.WebDavServer.Props.Store;
 
-using JetBrains.Annotations;
-
 using Microsoft.Extensions.Options;
 
 using sqlite3 = SQLite.SQLite3;
@@ -23,16 +21,9 @@ namespace FubarDev.WebDavServer.FileSystem.SQLite
     /// </summary>
     public class SQLiteFileSystemFactory : IFileSystemFactory
     {
-        [NotNull]
         private readonly IPathTraversalEngine _pathTraversalEngine;
-
-        [CanBeNull]
-        private readonly IPropertyStoreFactory _propertyStoreFactory;
-
-        [CanBeNull]
-        private readonly ILockManager _lockManager;
-
-        [NotNull]
+        private readonly IPropertyStoreFactory? _propertyStoreFactory;
+        private readonly ILockManager? _lockManager;
         private readonly SQLiteFileSystemOptions _options;
 
         /// <summary>
@@ -43,10 +34,10 @@ namespace FubarDev.WebDavServer.FileSystem.SQLite
         /// <param name="propertyStoreFactory">The store for dead properties.</param>
         /// <param name="lockManager">The global lock manager.</param>
         public SQLiteFileSystemFactory(
-            [NotNull] IOptions<SQLiteFileSystemOptions> options,
-            [NotNull] IPathTraversalEngine pathTraversalEngine,
-            [CanBeNull] IPropertyStoreFactory propertyStoreFactory = null,
-            [CanBeNull] ILockManager lockManager = null)
+            IOptions<SQLiteFileSystemOptions> options,
+            IPathTraversalEngine pathTraversalEngine,
+            IPropertyStoreFactory? propertyStoreFactory = null,
+            ILockManager? lockManager = null)
         {
             _pathTraversalEngine = pathTraversalEngine;
             _propertyStoreFactory = propertyStoreFactory;
@@ -94,7 +85,7 @@ namespace FubarDev.WebDavServer.FileSystem.SQLite
         }
 
         /// <inheritdoc />
-        public virtual IFileSystem CreateFileSystem(ICollection mountPoint, IPrincipal principal)
+        public virtual IFileSystem CreateFileSystem(ICollection? mountPoint, IPrincipal principal)
         {
             var userHomePath = Utils.SystemInfo.GetUserHomePath(
                 principal,

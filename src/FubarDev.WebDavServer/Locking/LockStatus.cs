@@ -5,8 +5,6 @@
 using System.Collections.Generic;
 using System.Linq;
 
-using JetBrains.Annotations;
-
 namespace FubarDev.WebDavServer.Locking
 {
     /// <summary>
@@ -21,9 +19,9 @@ namespace FubarDev.WebDavServer.Locking
         /// <param name="parentLocks">The locks found at positions higher in the hierarchy.</param>
         /// <param name="childLocks">The locks found at positions lower in the hierarchy.</param>
         public LockStatus(
-            [NotNull] [ItemNotNull] IReadOnlyCollection<IActiveLock> referenceLocks,
-            [NotNull] [ItemNotNull] IReadOnlyCollection<IActiveLock> parentLocks,
-            [NotNull] [ItemNotNull] IReadOnlyCollection<IActiveLock> childLocks)
+            IReadOnlyCollection<IActiveLock> referenceLocks,
+            IReadOnlyCollection<IActiveLock> parentLocks,
+            IReadOnlyCollection<IActiveLock> childLocks)
         {
             ReferenceLocks = referenceLocks;
             ParentLocks = parentLocks;
@@ -38,22 +36,16 @@ namespace FubarDev.WebDavServer.Locking
         /// <summary>
         /// Gets the locks found at the reference position.
         /// </summary>
-        [NotNull]
-        [ItemNotNull]
         public IReadOnlyCollection<IActiveLock> ReferenceLocks { get; }
 
         /// <summary>
         /// Gets the locks found at positions higher in the hierarchy.
         /// </summary>
-        [NotNull]
-        [ItemNotNull]
         public IReadOnlyCollection<IActiveLock> ParentLocks { get; }
 
         /// <summary>
         /// Gets the locks found at positions lower in the hierarchy.
         /// </summary>
-        [NotNull]
-        [ItemNotNull]
         public IReadOnlyCollection<IActiveLock> ChildLocks { get; }
 
         /// <summary>

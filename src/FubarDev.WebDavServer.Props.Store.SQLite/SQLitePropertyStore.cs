@@ -12,8 +12,6 @@ using FubarDev.WebDavServer.FileSystem;
 using FubarDev.WebDavServer.Model.Headers;
 using FubarDev.WebDavServer.Props.Dead;
 
-using JetBrains.Annotations;
-
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 
@@ -28,10 +26,8 @@ namespace FubarDev.WebDavServer.Props.Store.SQLite
     {
         internal const string PropDbFileName = ".properties.db";
 
-        [NotNull]
         private readonly ILogger<SQLitePropertyStore> _logger;
 
-        [NotNull]
         private readonly SQLitePropertyStoreOptions _options;
 
         private readonly sqlitenet.SQLiteConnection _connection;
@@ -43,7 +39,7 @@ namespace FubarDev.WebDavServer.Props.Store.SQLite
         /// <param name="dbFileName">The file name of the SQLite database.</param>
         /// <param name="options">The options for this property store.</param>
         /// <param name="logger">The logger.</param>
-        public SQLitePropertyStore([NotNull] IDeadPropertyFactory deadPropertyFactory, [NotNull] string dbFileName, [CanBeNull] IOptions<SQLitePropertyStoreOptions> options, [NotNull] ILogger<SQLitePropertyStore> logger)
+        public SQLitePropertyStore(IDeadPropertyFactory deadPropertyFactory, string dbFileName, IOptions<SQLitePropertyStoreOptions>? options, ILogger<SQLitePropertyStore> logger)
             : base(deadPropertyFactory)
         {
             _options = options?.Value ?? new SQLitePropertyStoreOptions();
@@ -113,8 +109,7 @@ namespace FubarDev.WebDavServer.Props.Store.SQLite
                 .ToDictionary(x => x.Name);
             foreach (var key in keys)
             {
-                XElement element;
-                if (!entries.TryGetValue(key, out element))
+                if (!entries.TryGetValue(key, out _))
                 {
                     continue;
                 }

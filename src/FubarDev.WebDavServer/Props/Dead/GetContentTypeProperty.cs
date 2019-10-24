@@ -8,33 +8,28 @@ using System.Xml.Linq;
 
 using FubarDev.WebDavServer.FileSystem;
 using FubarDev.WebDavServer.Model;
-using FubarDev.WebDavServer.Props.Generic;
+using FubarDev.WebDavServer.Props.Converters;
 using FubarDev.WebDavServer.Props.Store;
-
-using JetBrains.Annotations;
 
 namespace FubarDev.WebDavServer.Props.Dead
 {
     /// <summary>
     /// The implementation of the <c>getcontenttype</c> property.
     /// </summary>
-    public class GetContentTypeProperty : GenericStringProperty, IDeadProperty
+    public class GetContentTypeProperty : SimpleConvertingProperty<string>, IDeadProperty
     {
         /// <summary>
         /// The XML name of the property.
         /// </summary>
         public static readonly XName PropertyName = WebDavXml.Dav + "getcontenttype";
 
-        [CanBeNull]
-        private readonly IMimeTypeDetector _mimeTypeDetector;
+        private readonly IMimeTypeDetector? _mimeTypeDetector;
 
-        [NotNull]
         private readonly IEntry _entry;
 
-        [NotNull]
         private readonly IPropertyStore _store;
 
-        private string _value;
+        private string? _value;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="GetContentTypeProperty"/> class.
@@ -43,8 +38,8 @@ namespace FubarDev.WebDavServer.Props.Dead
         /// <param name="store">The property store to store this property.</param>
         /// <param name="mimeTypeDetector">The mime type detector.</param>
         /// <param name="cost">The cost of querying the display names property.</param>
-        public GetContentTypeProperty([NotNull] IEntry entry, [NotNull] IPropertyStore store, [CanBeNull] IMimeTypeDetector mimeTypeDetector = null, int? cost = null)
-            : base(PropertyName, null, cost ?? store.Cost, null, null, WebDavXml.Dav + "contenttype")
+        public GetContentTypeProperty(IEntry entry, IPropertyStore store, IMimeTypeDetector? mimeTypeDetector = null, int? cost = null)
+            : base(PropertyName, null, cost ?? store.Cost, new StringConverter(), WebDavXml.Dav + "contenttype")
         {
             _mimeTypeDetector = mimeTypeDetector;
             _entry = entry;

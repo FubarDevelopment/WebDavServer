@@ -7,8 +7,6 @@ using System.Threading.Tasks;
 
 using FubarDev.WebDavServer.Model;
 
-using JetBrains.Annotations;
-
 namespace FubarDev.WebDavServer
 {
     /// <summary>
@@ -27,7 +25,6 @@ namespace FubarDev.WebDavServer
         /// <param name="response">The response object to write to.</param>
         /// <param name="ct">The cancellation token.</param>
         /// <returns>The async task.</returns>
-        [NotNull]
-        Task ExecuteResultAsync([NotNull] IWebDavResponse response, CancellationToken ct);
+        Task ExecuteResultAsync(IWebDavResponse response, CancellationToken ct);
     }
 }

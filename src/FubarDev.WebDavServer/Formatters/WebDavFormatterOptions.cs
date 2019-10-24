@@ -2,8 +2,6 @@
 // Copyright (c) Fubar Development Junker. All rights reserved.
 // </copyright>
 
-using JetBrains.Annotations;
-
 namespace FubarDev.WebDavServer.Formatters
 {
     /// <summary>
@@ -14,13 +12,11 @@ namespace FubarDev.WebDavServer.Formatters
         /// <summary>
         /// Gets or sets the content type to send.
         /// </summary>
-        [CanBeNull]
-        public string ContentType { get; set; }
+        public string? ContentType { get; set; }
 
         /// <summary>
         /// Gets or sets the namespace prefix to use.
         /// </summary>
-        [NotNull]
         public string NamespacePrefix { get; set; } = "D";
     }
 }

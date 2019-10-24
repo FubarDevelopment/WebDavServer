@@ -8,8 +8,6 @@ using System.Xml.Linq;
 
 using FubarDev.WebDavServer.Model;
 
-using JetBrains.Annotations;
-
 namespace FubarDev.WebDavServer
 {
     /// <summary>
@@ -17,7 +15,6 @@ namespace FubarDev.WebDavServer
     /// </summary>
     public class WebDavXmlResult : WebDavResult
     {
-        [NotNull]
         private readonly XElement _element;
 
         /// <summary>
@@ -25,7 +22,7 @@ namespace FubarDev.WebDavServer
         /// </summary>
         /// <param name="statusCode">The WebDAV status code.</param>
         /// <param name="element">The element to be serialized as the response body.</param>
-        public WebDavXmlResult(WebDavStatusCode statusCode, [NotNull] XElement element)
+        public WebDavXmlResult(WebDavStatusCode statusCode, XElement element)
             : base(statusCode)
         {
             _element = element;
@@ -35,7 +32,7 @@ namespace FubarDev.WebDavServer
         public override async Task ExecuteResultAsync(IWebDavResponse response, CancellationToken ct)
         {
             await base.ExecuteResultAsync(response, ct).ConfigureAwait(false);
-            response.Dispatcher.Formatter.Serialize(response.Body, _element);
+            await response.Dispatcher.Formatter.SerializeAsync(response.Body, _element, ct).ConfigureAwait(false);
         }
     }
 }

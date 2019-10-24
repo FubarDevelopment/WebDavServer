@@ -12,8 +12,6 @@ using FubarDev.WebDavServer.FileSystem;
 using FubarDev.WebDavServer.Model.Headers;
 using FubarDev.WebDavServer.Props.Dead;
 
-using JetBrains.Annotations;
-
 namespace FubarDev.WebDavServer.Props.Store
 {
     /// <summary>
@@ -25,7 +23,7 @@ namespace FubarDev.WebDavServer.Props.Store
         /// Initializes a new instance of the <see cref="PropertyStoreBase"/> class.
         /// </summary>
         /// <param name="deadPropertyFactory">The factory to create dead properties.</param>
-        protected PropertyStoreBase([NotNull] IDeadPropertyFactory deadPropertyFactory)
+        protected PropertyStoreBase(IDeadPropertyFactory deadPropertyFactory)
         {
             DeadPropertyFactory = deadPropertyFactory;
         }
@@ -36,11 +34,10 @@ namespace FubarDev.WebDavServer.Props.Store
         /// <summary>
         /// Gets the dead property factory.
         /// </summary>
-        [NotNull]
         protected IDeadPropertyFactory DeadPropertyFactory { get; }
 
         /// <inheritdoc />
-        public virtual async Task<XElement> GetAsync(IEntry entry, XName name, CancellationToken cancellationToken)
+        public virtual async Task<XElement?> GetAsync(IEntry entry, XName name, CancellationToken cancellationToken)
         {
             var elements = await GetAsync(entry, cancellationToken).ConfigureAwait(false);
             return elements.FirstOrDefault(x => x.Name == name);

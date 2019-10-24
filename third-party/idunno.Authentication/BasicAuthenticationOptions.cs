@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Authentication;
 
 using idunno.Authentication;
 
+// ReSharper disable once CheckNamespace
 namespace Microsoft.AspNetCore.Builder
 {
     /// <summary>
@@ -17,13 +18,6 @@ namespace Microsoft.AspNetCore.Builder
     public class BasicAuthenticationOptions : AuthenticationSchemeOptions
     {
         private string _realm;
-
-        /// <summary>
-        /// Create an instance of the options initialized with the default values
-        /// </summary>
-        public BasicAuthenticationOptions()
-        {
-        }
 
         /// <summary>
         /// Gets or sets the Realm sent in the WWW-Authenticate header.
@@ -46,7 +40,7 @@ namespace Microsoft.AspNetCore.Builder
             {
                 if (!string.IsNullOrEmpty(value) && !IsAscii(value))
                 {
-                    throw new ArgumentOutOfRangeException("Realm", "Realm must be US ASCII");
+                    throw new ArgumentOutOfRangeException(nameof(Realm), "Realm must be US ASCII");
                 }
 
                 _realm = value;

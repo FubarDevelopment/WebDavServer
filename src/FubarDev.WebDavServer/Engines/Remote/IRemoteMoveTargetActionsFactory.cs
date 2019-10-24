@@ -6,8 +6,6 @@ using System;
 using System.Threading;
 using System.Threading.Tasks;
 
-using JetBrains.Annotations;
-
 namespace FubarDev.WebDavServer.Engines.Remote
 {
     /// <summary>
@@ -21,8 +19,6 @@ namespace FubarDev.WebDavServer.Engines.Remote
         /// <param name="destinationUrl">The destination URL.</param>
         /// <param name="cancellationToken">The cancellation token.</param>
         /// <returns>The remote target action implementation.</returns>
-        [NotNull]
-        [ItemCanBeNull]
-        Task<IRemoteMoveTargetActions> CreateMoveTargetActionsAsync(Uri destinationUrl, CancellationToken cancellationToken);
+        Task<IRemoteMoveTargetActions?> CreateMoveTargetActionsAsync(Uri destinationUrl, CancellationToken cancellationToken);
     }
 }

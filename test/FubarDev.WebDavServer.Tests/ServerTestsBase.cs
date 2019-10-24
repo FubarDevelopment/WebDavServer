@@ -12,7 +12,6 @@ using DecaTec.WebDav;
 
 using FubarDev.WebDavServer.AspNetCore;
 using FubarDev.WebDavServer.AspNetCore.Logging;
-using FubarDev.WebDavServer.Engines.Remote;
 using FubarDev.WebDavServer.FileSystem;
 using FubarDev.WebDavServer.FileSystem.InMemory;
 using FubarDev.WebDavServer.Handlers.Impl;
@@ -22,14 +21,14 @@ using FubarDev.WebDavServer.Props.Store;
 using FubarDev.WebDavServer.Props.Store.InMemory;
 using FubarDev.WebDavServer.Tests.Support;
 
-using JetBrains.Annotations;
-
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.TestHost;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
+
+using IHttpMessageHandlerFactory = FubarDev.WebDavServer.Engines.Remote.IHttpMessageHandlerFactory;
 
 namespace FubarDev.WebDavServer.Tests
 {
@@ -68,16 +67,12 @@ namespace FubarDev.WebDavServer.Tests
             FileSystem = _scope.ServiceProvider.GetRequiredService<IFileSystem>();
         }
 
-        [NotNull]
         protected IFileSystem FileSystem { get; }
 
-        [NotNull]
         protected TestServer Server { get; }
 
-        [NotNull]
         protected WebDavClient Client { get; }
 
-        [NotNull]
         protected IServiceProvider ServiceProvider => _scope.ServiceProvider;
 
         public void Dispose()
@@ -89,8 +84,8 @@ namespace FubarDev.WebDavServer.Tests
 
         private void ConfigureServices(ServerTestsBase container, RecursiveProcessingMode processingMode, IServiceCollection services)
         {
-            IFileSystemFactory fileSystemFactory = null;
-            IPropertyStoreFactory propertyStoreFactory = null;
+            IFileSystemFactory? fileSystemFactory = null;
+            IPropertyStoreFactory? propertyStoreFactory = null;
             services
                 .AddOptions()
                 .AddLogging()
@@ -114,20 +109,19 @@ namespace FubarDev.WebDavServer.Tests
                 .AddWebDav();
         }
 
-        [UsedImplicitly]
         private class TestStartup
         {
-            [UsedImplicitly]
             public IServiceProvider ConfigureServices(IServiceCollection services)
             {
                 return services.BuildServiceProvider(true);
             }
 
-            [UsedImplicitly]
-            public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory)
+            public void Configure(IApplicationBuilder app)
             {
                 app.UseMiddleware<RequestLogMiddleware>();
-                app.UseMvc();
+                app.UseRouting();
+                app.UseEndpoints(
+                    routes => { routes.MapControllers(); });
             }
         }
 

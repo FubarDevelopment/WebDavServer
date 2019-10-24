@@ -4,8 +4,6 @@
 
 using System.Collections.Generic;
 
-using JetBrains.Annotations;
-
 namespace FubarDev.WebDavServer.Handlers
 {
     /// <summary>
@@ -16,8 +14,6 @@ namespace FubarDev.WebDavServer.Handlers
         /// <summary>
         /// Gets the HTTP methods that are processed by this handler.
         /// </summary>
-        [NotNull]
-        [ItemNotNull]
         IEnumerable<string> HttpMethods { get; }
     }
 }

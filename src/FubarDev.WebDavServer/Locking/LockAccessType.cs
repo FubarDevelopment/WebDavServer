@@ -7,8 +7,6 @@ using System.Xml.Linq;
 
 using FubarDev.WebDavServer.Model;
 
-using JetBrains.Annotations;
-
 namespace FubarDev.WebDavServer.Locking
 {
     /// <summary>
@@ -26,7 +24,7 @@ namespace FubarDev.WebDavServer.Locking
 
         private const string WriteId = "write";
 
-        private LockAccessType([NotNull] string id, [NotNull] locktype xmlValue)
+        private LockAccessType(string id, locktype xmlValue)
         {
             if (id == null)
             {
@@ -40,13 +38,11 @@ namespace FubarDev.WebDavServer.Locking
         /// <summary>
         /// Gets the XML name of the lock access type.
         /// </summary>
-        [NotNull]
         public XName Name { get; }
 
         /// <summary>
         /// Gets the <see cref="locktype"/> element for this lock access type.
         /// </summary>
-        [NotNull]
         public locktype XmlValue { get; }
 
         /// <summary>
@@ -76,7 +72,7 @@ namespace FubarDev.WebDavServer.Locking
         /// </summary>
         /// <param name="accessType">The access type to parse.</param>
         /// <returns>The corresponding <see cref="LockAccessType"/>.</returns>
-        public static LockAccessType Parse([NotNull] string accessType)
+        public static LockAccessType Parse(string accessType)
         {
             if (accessType == null)
             {

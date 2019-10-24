@@ -4,6 +4,7 @@
 using System;
 using System.Threading.Tasks;
 
+// ReSharper disable once CheckNamespace
 namespace idunno.Authentication
 {
     /// <summary>

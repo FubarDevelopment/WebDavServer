@@ -4,8 +4,6 @@
 
 using System;
 
-using JetBrains.Annotations;
-
 namespace FubarDev.WebDavServer.Locking
 {
     /// <summary>
@@ -19,7 +17,6 @@ namespace FubarDev.WebDavServer.Locking
         /// <remarks>
         /// This is always a valid URI (might be relative).
         /// </remarks>
-        [NotNull]
         string StateToken { get; }
 
         /// <summary>

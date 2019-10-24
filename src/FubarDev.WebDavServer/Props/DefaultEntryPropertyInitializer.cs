@@ -10,8 +10,6 @@ using FubarDev.WebDavServer.FileSystem;
 using FubarDev.WebDavServer.Props.Dead;
 using FubarDev.WebDavServer.Props.Store;
 
-using JetBrains.Annotations;
-
 namespace FubarDev.WebDavServer.Props
 {
     /// <summary>
@@ -50,9 +48,9 @@ namespace FubarDev.WebDavServer.Props
         /// <param name="cancellationToken">The cancellation token.</param>
         /// <returns>The task.</returns>
         protected virtual Task CreateGenericPropertiesAsync(
-            [NotNull] IEntry entry,
-            [NotNull] IPropertyStore propertyStore,
-            [NotNull] IWebDavContext context,
+            IEntry entry,
+            IPropertyStore propertyStore,
+            IWebDavContext context,
             CancellationToken cancellationToken)
         {
             return Task.CompletedTask;

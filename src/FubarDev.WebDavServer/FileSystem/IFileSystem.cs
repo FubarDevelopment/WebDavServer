@@ -8,8 +8,6 @@ using System.Threading.Tasks;
 using FubarDev.WebDavServer.Locking;
 using FubarDev.WebDavServer.Props.Store;
 
-using JetBrains.Annotations;
-
 namespace FubarDev.WebDavServer.FileSystem
 {
     /// <summary>
@@ -20,7 +18,6 @@ namespace FubarDev.WebDavServer.FileSystem
         /// <summary>
         /// Gets the root collection.
         /// </summary>
-        [NotNull]
         AsyncLazy<ICollection> Root { get; }
 
         /// <summary>
@@ -31,14 +28,12 @@ namespace FubarDev.WebDavServer.FileSystem
         /// <summary>
         /// Gets the property store to be used for the file system.
         /// </summary>
-        [CanBeNull]
-        IPropertyStore PropertyStore { get; }
+        IPropertyStore? PropertyStore { get; }
 
         /// <summary>
         /// Gets the global lock manager.
         /// </summary>
-        [CanBeNull]
-        ILockManager LockManager { get; }
+        ILockManager? LockManager { get; }
 
         /// <summary>
         /// Finds an entry for a given path.
@@ -46,8 +41,6 @@ namespace FubarDev.WebDavServer.FileSystem
         /// <param name="path">The root-relative path.</param>
         /// <param name="ct">The cancellation token.</param>
         /// <returns>The result of the search operation.</returns>
-        [NotNull]
-        [ItemNotNull]
-        Task<SelectionResult> SelectAsync([NotNull] string path, CancellationToken ct);
+        Task<SelectionResult> SelectAsync(string path, CancellationToken ct);
     }
 }

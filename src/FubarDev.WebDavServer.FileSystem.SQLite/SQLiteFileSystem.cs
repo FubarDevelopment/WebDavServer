@@ -13,8 +13,6 @@ using FubarDev.WebDavServer.FileSystem.Mount;
 using FubarDev.WebDavServer.Locking;
 using FubarDev.WebDavServer.Props.Store;
 
-using JetBrains.Annotations;
-
 using db = SQLite;
 
 namespace FubarDev.WebDavServer.FileSystem.SQLite
@@ -24,10 +22,8 @@ namespace FubarDev.WebDavServer.FileSystem.SQLite
     /// </summary>
     public class SQLiteFileSystem : ILocalFileSystem, IDisposable, IMountPointManager
     {
-        [NotNull]
         private readonly db::SQLiteConnection _connection;
 
-        [NotNull]
         private readonly IPathTraversalEngine _pathTraversalEngine;
 
         private readonly Dictionary<Uri, IFileSystem> _mountPoints = new Dictionary<Uri, IFileSystem>();
@@ -42,12 +38,12 @@ namespace FubarDev.WebDavServer.FileSystem.SQLite
         /// <param name="lockManager">The global lock manager.</param>
         /// <param name="propertyStoreFactory">The store for dead properties.</param>
         public SQLiteFileSystem(
-            [NotNull] SQLiteFileSystemOptions options,
-            [CanBeNull] ICollection mountPoint,
-            [NotNull] db::SQLiteConnection connection,
-            [NotNull] IPathTraversalEngine pathTraversalEngine,
-            [CanBeNull] ILockManager lockManager = null,
-            [CanBeNull] IPropertyStoreFactory propertyStoreFactory = null)
+            SQLiteFileSystemOptions options,
+            ICollection? mountPoint,
+            db::SQLiteConnection connection,
+            IPathTraversalEngine pathTraversalEngine,
+            ILockManager? lockManager = null,
+            IPropertyStoreFactory? propertyStoreFactory = null)
         {
             RootDirectoryPath = Path.GetDirectoryName(connection.DatabasePath);
             LockManager = lockManager;
@@ -78,10 +74,10 @@ namespace FubarDev.WebDavServer.FileSystem.SQLite
         public bool SupportsRangedRead { get; } = true;
 
         /// <inheritdoc />
-        public IPropertyStore PropertyStore { get; }
+        public IPropertyStore? PropertyStore { get; }
 
         /// <inheritdoc />
-        public ILockManager LockManager { get; }
+        public ILockManager? LockManager { get; }
 
         /// <inheritdoc />
         public string RootDirectoryPath { get; }

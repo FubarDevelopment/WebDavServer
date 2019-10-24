@@ -8,8 +8,6 @@ using System.Threading.Tasks;
 using FubarDev.WebDavServer.FileSystem;
 using FubarDev.WebDavServer.Props.Store;
 
-using JetBrains.Annotations;
-
 namespace FubarDev.WebDavServer.Props
 {
     /// <summary>
@@ -25,11 +23,10 @@ namespace FubarDev.WebDavServer.Props
         /// <param name="context">The PUT request context.</param>
         /// <param name="cancellationToken">The cancellation token.</param>
         /// <returns>the task.</returns>
-        [NotNull]
         Task CreatePropertiesAsync(
-            [NotNull] IDocument document,
-            [NotNull] IPropertyStore propertyStore,
-            [NotNull] IWebDavContext context,
+            IDocument document,
+            IPropertyStore propertyStore,
+            IWebDavContext context,
             CancellationToken cancellationToken);
 
         /// <summary>
@@ -40,11 +37,10 @@ namespace FubarDev.WebDavServer.Props
         /// <param name="context">The MKCOL request context.</param>
         /// <param name="cancellationToken">The cancellation token.</param>
         /// <returns>the task.</returns>
-        [NotNull]
         Task CreatePropertiesAsync(
-            [NotNull] ICollection collection,
-            [NotNull] IPropertyStore propertyStore,
-            [NotNull] IWebDavContext context,
+            ICollection collection,
+            IPropertyStore propertyStore,
+            IWebDavContext context,
             CancellationToken cancellationToken);
     }
 }

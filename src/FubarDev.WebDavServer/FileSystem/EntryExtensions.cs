@@ -28,8 +28,7 @@ namespace FubarDev.WebDavServer.FileSystem
         /// <returns>The entity tag for the entry.</returns>
         public static async Task<EntityTag?> GetEntityTagAsync(this IEntry entry, CancellationToken cancellationToken)
         {
-            var etagEntry = entry as IEntityTagEntry;
-            if (etagEntry != null)
+            if (entry is IEntityTagEntry etagEntry)
             {
                 return etagEntry.ETag;
             }
@@ -54,7 +53,7 @@ namespace FubarDev.WebDavServer.FileSystem
         public static IAsyncEnumerable<IUntypedReadableProperty> GetProperties(
             this IEntry entry,
             IWebDavDispatcher dispatcher,
-            Predicate<IUntypedReadableProperty> predicate = null,
+            Predicate<IUntypedReadableProperty>? predicate = null,
             bool returnInvalidProperties = false)
         {
             var properties = new List<IUntypedReadableProperty>();

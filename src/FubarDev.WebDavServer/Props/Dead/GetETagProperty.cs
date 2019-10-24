@@ -13,8 +13,6 @@ using FubarDev.WebDavServer.Model.Headers;
 using FubarDev.WebDavServer.Props.Converters;
 using FubarDev.WebDavServer.Props.Store;
 
-using JetBrains.Annotations;
-
 namespace FubarDev.WebDavServer.Props.Dead
 {
     /// <summary>
@@ -27,14 +25,13 @@ namespace FubarDev.WebDavServer.Props.Dead
         /// </summary>
         public static readonly XName PropertyName = EntityTag.PropertyName;
 
-        [CanBeNull]
-        private readonly IPropertyStore _propertyStore;
+        private readonly IPropertyStore? _propertyStore;
 
         private readonly IEntry _entry;
 
-        private readonly IEntityTagEntry _etagEntry;
+        private readonly IEntityTagEntry? _etagEntry;
 
-        private XElement _element;
+        private XElement? _element;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="GetETagProperty"/> class.
@@ -42,7 +39,7 @@ namespace FubarDev.WebDavServer.Props.Dead
         /// <param name="propertyStore">The property store to store this property.</param>
         /// <param name="entry">The entry to instantiate this property for.</param>
         /// <param name="cost">The cost of querying the display names property.</param>
-        public GetETagProperty([CanBeNull] IPropertyStore propertyStore, IEntry entry, int? cost = null)
+        public GetETagProperty(IPropertyStore? propertyStore, IEntry entry, int? cost = null)
         {
             _propertyStore = propertyStore;
             _entry = entry;
@@ -55,7 +52,7 @@ namespace FubarDev.WebDavServer.Props.Dead
         public XName Name { get; }
 
         /// <inheritdoc />
-        public string Language { get; } = null;
+        public string? Language { get; } = null;
 
         /// <inheritdoc />
         public IReadOnlyCollection<XName> AlternativeNames { get; } = new[] { WebDavXml.Dav + "etag" };

@@ -21,13 +21,13 @@ namespace FubarDev.WebDavServer.Props.Live
         /// </summary>
         public static readonly XName PropertyName = WebDavXml.Dav + "resourcetype";
 
-        private readonly XElement _element;
+        private readonly XElement? _element;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="ResourceTypeProperty"/> class.
         /// </summary>
         /// <param name="element">The element of this resource type.</param>
-        protected ResourceTypeProperty(XElement element)
+        protected ResourceTypeProperty(XElement? element)
         {
             _element = element;
         }
@@ -36,7 +36,7 @@ namespace FubarDev.WebDavServer.Props.Live
         public XName Name { get; } = PropertyName;
 
         /// <inheritdoc />
-        public string Language { get; } = null;
+        public string? Language { get; } = null;
 
         /// <inheritdoc />
         public IReadOnlyCollection<XName> AlternativeNames { get; } = new XName[0];

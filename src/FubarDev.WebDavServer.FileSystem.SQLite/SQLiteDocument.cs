@@ -10,8 +10,6 @@ using System.Threading.Tasks;
 
 using FubarDev.WebDavServer.Model;
 
-using JetBrains.Annotations;
-
 using SQLitePCL;
 
 namespace FubarDev.WebDavServer.FileSystem.SQLite
@@ -24,12 +22,12 @@ namespace FubarDev.WebDavServer.FileSystem.SQLite
         /// <summary>
         /// Initializes a new instance of the <see cref="SQLiteDocument"/> class.
         /// </summary>
-        /// <param name="fileSystem">The file system this document belongs to.</param>
+        /// <param name="dbFileSystem">The file system this document belongs to.</param>
         /// <param name="parent">The parent collection.</param>
         /// <param name="info">The file information.</param>
         /// <param name="path">The root-relative path of this document.</param>
-        public SQLiteDocument(SQLiteFileSystem fileSystem, ICollection parent, FileEntry info, Uri path)
-            : base(fileSystem, parent, info, path, null)
+        public SQLiteDocument(SQLiteFileSystem dbFileSystem, ICollection parent, FileEntry info, Uri path)
+            : base(dbFileSystem, parent, info, path, null)
         {
         }
 
@@ -116,7 +114,7 @@ namespace FubarDev.WebDavServer.FileSystem.SQLite
                     .ExecuteNonQuery();
             });
 
-            var doc = new SQLiteDocument(dir.SQLiteFileSystem, dir, targetEntry, dir.Path.Append(name, false));
+            var doc = new SQLiteDocument(dir.DbFileSystem, dir, targetEntry, dir.Path.Append(name, false));
 
             var sourcePropStore = FileSystem.PropertyStore;
             var destPropStore = collection.FileSystem.PropertyStore;
@@ -145,12 +143,8 @@ namespace FubarDev.WebDavServer.FileSystem.SQLite
         // ReSharper disable once ClassNeverInstantiated.Local
         private class RowIdTemp
         {
-            public long RowId
-            {
-                get;
-                [UsedImplicitly]
-                set;
-            }
+            // ReSharper disable once UnusedAutoPropertyAccessor.Local
+            public long RowId { get; set; }
         }
     }
 }

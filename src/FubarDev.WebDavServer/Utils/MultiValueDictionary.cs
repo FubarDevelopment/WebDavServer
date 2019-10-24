@@ -893,7 +893,7 @@ namespace System.Collections.Generic
 
         /// <summary>
         /// The Enumerator class for a <see cref="MultiValueDictionary{TKey, TValue}"/>
-        /// that iterates over <typeparamref name="TKey"/>-<see cref="IReadOnlyCollection{TValue}"/>
+        /// that iterates over "TKey"-<see cref="IReadOnlyCollection{TValue}"/>
         /// pairs.
         /// </summary>
         private class Enumerator :

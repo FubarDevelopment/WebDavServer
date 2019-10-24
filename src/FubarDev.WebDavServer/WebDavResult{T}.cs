@@ -38,7 +38,7 @@ namespace FubarDev.WebDavServer
             var formatter = response.Dispatcher.Formatter;
             response.ContentType = formatter.ContentType;
             await base.ExecuteResultAsync(response, ct).ConfigureAwait(false);
-            formatter.Serialize(response.Body, Data);
+            await formatter.SerializeAsync(response.Body, Data, ct).ConfigureAwait(false);
         }
     }
 }

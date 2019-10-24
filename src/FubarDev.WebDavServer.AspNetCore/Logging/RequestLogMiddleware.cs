@@ -95,7 +95,7 @@ namespace FubarDev.WebDavServer.AspNetCore.Logging
                     IsXmlContentType(context.Request)
                     || (context.Request.Body != null && IsMicrosoftWebDavClient(context.Request));
 
-                if (shouldTryReadingBody)
+                if (shouldTryReadingBody && context.Request.Body != null)
                 {
                     var encoding = GetEncoding(context.Request);
 

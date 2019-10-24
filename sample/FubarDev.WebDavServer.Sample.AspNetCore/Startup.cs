@@ -25,9 +25,9 @@ using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpOverrides;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Options;
 
 using Npam.Interop;
@@ -88,7 +88,7 @@ namespace FubarDev.WebDavServer.Sample.AspNetCore
             services.Configure<WebDavHostOptions>(cfg => Configuration.Bind("Host", cfg));
 
             services
-                .AddMvcCore().SetCompatibilityVersion(CompatibilityVersion.Version_2_2)
+                .AddMvcCore()
                 .AddAuthorization()
                 .AddWebDav();
 
@@ -151,7 +151,7 @@ namespace FubarDev.WebDavServer.Sample.AspNetCore
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env)
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
             if (env.IsDevelopment())
             {
@@ -175,13 +175,20 @@ namespace FubarDev.WebDavServer.Sample.AspNetCore
                 ForwardedHeaders = ForwardedHeaders.XForwardedFor | ForwardedHeaders.XForwardedProto
             });
 
-            app.UseMvc();
+            app.UseRouting();
+
+            app.UseAuthorization();
+
+            app.UseEndpoints(
+                routes => { routes.MapControllers(); });
         }
 
         private Task ValidateCredentialsAsync(ValidateCredentialsContext context)
         {
             if (Program.IsWindows)
+            {
                 return ValidateWindowsTestCredentialsAsync(context);
+            }
 
             return ValidateLinuxTestCredentialsAsync(context);
         }

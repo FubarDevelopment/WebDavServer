@@ -9,8 +9,6 @@ using System.Security.Principal;
 
 using FubarDev.WebDavServer.Utils.UAParser;
 
-using JetBrains.Annotations;
-
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -26,12 +24,11 @@ namespace FubarDev.WebDavServer.Tests.Support
 
         private readonly Lazy<IWebDavDispatcher> _dispatcher;
 
-        [CanBeNull]
-        private readonly Lazy<string> _httpMethod;
+        private readonly Lazy<string?> _httpMethod;
 
-        public TestHost(IServiceProvider serviceProvider, Uri baseUrl, [CanBeNull] string httpMethod)
+        public TestHost(IServiceProvider serviceProvider, Uri baseUrl, string? httpMethod)
         {
-            _httpMethod = new Lazy<string>(() => httpMethod);
+            _httpMethod = new Lazy<string?>(() => httpMethod);
             PublicBaseUrl = baseUrl;
             PublicRootUrl = new Uri(baseUrl, "/");
             RequestProtocol = "HTTP/1.1";
@@ -49,7 +46,7 @@ namespace FubarDev.WebDavServer.Tests.Support
 
         public TestHost(IServiceProvider serviceProvider, Uri baseUrl, IHttpContextAccessor httpContextAccessor)
         {
-            _httpMethod = new Lazy<string>(() => httpContextAccessor.HttpContext.Request.Method);
+            _httpMethod = new Lazy<string?>(() => httpContextAccessor.HttpContext.Request.Method);
             PublicBaseUrl = baseUrl;
             PublicRootUrl = new Uri(baseUrl, "/");
             RequestProtocol = "HTTP/1.1";

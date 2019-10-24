@@ -11,8 +11,6 @@ using System.Threading.Tasks;
 using FubarDev.WebDavServer.Model;
 using FubarDev.WebDavServer.Props.Store;
 
-using JetBrains.Annotations;
-
 namespace FubarDev.WebDavServer.FileSystem.DotNet
 {
     /// <summary>
@@ -20,7 +18,7 @@ namespace FubarDev.WebDavServer.FileSystem.DotNet
     /// </summary>
     public class DotNetDirectory : DotNetEntry, ICollection, IRecursiveChildrenCollector
     {
-        private readonly IFileSystemPropertyStore _fileSystemPropertyStore;
+        private readonly IFileSystemPropertyStore? _fileSystemPropertyStore;
 
         private readonly bool _isRoot;
 
@@ -34,11 +32,11 @@ namespace FubarDev.WebDavServer.FileSystem.DotNet
         /// <param name="name">The entry name (<see langword="null"/> when <see cref="FileSystemInfo.Name"/> of <see cref="DotNetEntry.Info"/> should be used).</param>
         /// <param name="isRoot">Indicates whether this is the file systems root directory.</param>
         public DotNetDirectory(
-            [NotNull] DotNetFileSystem fileSystem,
-            [CanBeNull] ICollection parent,
-            [NotNull] DirectoryInfo info,
-            [NotNull] Uri path,
-            [CanBeNull] string name,
+            DotNetFileSystem fileSystem,
+            ICollection? parent,
+            DirectoryInfo info,
+            Uri path,
+            string? name,
             bool isRoot = false)
             : base(fileSystem, parent, info, path, name)
         {
@@ -53,7 +51,7 @@ namespace FubarDev.WebDavServer.FileSystem.DotNet
         public DirectoryInfo DirectoryInfo { get; }
 
         /// <inheritdoc />
-        public Task<IEntry> GetChildAsync(string name, CancellationToken ct)
+        public async Task<IEntry?> GetChildAsync(string name, CancellationToken ct)
         {
             var newPath = System.IO.Path.Combine(DirectoryInfo.FullName, name);
 
@@ -65,18 +63,17 @@ namespace FubarDev.WebDavServer.FileSystem.DotNet
 
             if (!item.Exists)
             {
-                return Task.FromResult<IEntry>(null);
+                return null;
             }
 
             var entry = CreateEntry(item);
 
-            var coll = entry as ICollection;
-            if (coll != null)
+            if (entry is ICollection coll)
             {
-                return coll.GetMountTargetEntryAsync(DotNetFileSystem);
+                return await coll.GetMountTargetEntryAsync(DotNetFileSystem);
             }
 
-            return Task.FromResult(entry);
+            return entry;
         }
 
         /// <inheritdoc />

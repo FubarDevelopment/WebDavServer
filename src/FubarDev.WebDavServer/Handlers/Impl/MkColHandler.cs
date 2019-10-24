@@ -16,8 +16,6 @@ using FubarDev.WebDavServer.Model;
 using FubarDev.WebDavServer.Model.Headers;
 using FubarDev.WebDavServer.Props;
 
-using JetBrains.Annotations;
-
 namespace FubarDev.WebDavServer.Handlers.Impl
 {
     /// <summary>
@@ -25,16 +23,12 @@ namespace FubarDev.WebDavServer.Handlers.Impl
     /// </summary>
     public class MkColHandler : IMkColHandler
     {
-        [NotNull]
         private readonly IFileSystem _rootFileSystem;
 
-        [NotNull]
         private readonly IWebDavContext _context;
 
-        [NotNull]
         private readonly IImplicitLockFactory _implicitLockFactory;
 
-        [NotNull]
         private readonly IEntryPropertyInitializer _entryPropertyInitializer;
 
         /// <summary>
@@ -45,10 +39,10 @@ namespace FubarDev.WebDavServer.Handlers.Impl
         /// <param name="implicitLockFactory">A factory to create implicit locks.</param>
         /// <param name="entryPropertyInitializer">The property initializer.</param>
         public MkColHandler(
-            [NotNull] IFileSystem rootFileSystem,
-            [NotNull] IWebDavContext context,
-            [NotNull] IImplicitLockFactory implicitLockFactory,
-            [NotNull] IEntryPropertyInitializer entryPropertyInitializer)
+            IFileSystem rootFileSystem,
+            IWebDavContext context,
+            IImplicitLockFactory implicitLockFactory,
+            IEntryPropertyInitializer entryPropertyInitializer)
         {
             _rootFileSystem = rootFileSystem;
             _context = context;

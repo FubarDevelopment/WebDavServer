@@ -12,8 +12,6 @@ using FubarDev.WebDavServer.Props;
 using FubarDev.WebDavServer.Props.Dead;
 using FubarDev.WebDavServer.Props.Live;
 
-using JetBrains.Annotations;
-
 namespace FubarDev.WebDavServer.FileSystem.DotNet
 {
     /// <summary>
@@ -29,7 +27,7 @@ namespace FubarDev.WebDavServer.FileSystem.DotNet
         /// <param name="info">The file system information.</param>
         /// <param name="path">The root-relative path of this entry.</param>
         /// <param name="name">The entry name (<see langword="null"/> when <see cref="FileSystemInfo.Name"/> of <see cref="Info"/> should be used).</param>
-        protected DotNetEntry(DotNetFileSystem fileSystem, ICollection parent, FileSystemInfo info, Uri path, [CanBeNull] string name)
+        protected DotNetEntry(DotNetFileSystem fileSystem, ICollection? parent, FileSystemInfo info, Uri path, string? name)
         {
             Parent = parent;
             Info = info;
@@ -55,7 +53,7 @@ namespace FubarDev.WebDavServer.FileSystem.DotNet
         public IFileSystem FileSystem => DotNetFileSystem;
 
         /// <inheritdoc />
-        public ICollection Parent { get; }
+        public ICollection? Parent { get; }
 
         /// <inheritdoc />
         public Uri Path { get; }
@@ -79,7 +77,6 @@ namespace FubarDev.WebDavServer.FileSystem.DotNet
         /// <param name="lastWriteTime">The new last write time.</param>
         /// <param name="cancellationToken">The cancellation token.</param>
         /// <returns>The async task.</returns>
-        [NotNull]
         public Task SetLastWriteTimeUtcAsync(DateTime lastWriteTime, CancellationToken cancellationToken)
         {
             Info.LastWriteTimeUtc = lastWriteTime;
@@ -92,7 +89,6 @@ namespace FubarDev.WebDavServer.FileSystem.DotNet
         /// <param name="creationTime">The new creation time.</param>
         /// <param name="cancellationToken">The cancellation token.</param>
         /// <returns>The async task.</returns>
-        [NotNull]
         public Task SetCreationTimeUtcAsync(DateTime creationTime, CancellationToken cancellationToken)
         {
             Info.CreationTimeUtc = creationTime;

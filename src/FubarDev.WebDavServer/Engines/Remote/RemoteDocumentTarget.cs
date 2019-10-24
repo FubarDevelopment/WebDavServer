@@ -10,8 +10,6 @@ using System.Xml.Linq;
 
 using FubarDev.WebDavServer.Props;
 
-using JetBrains.Annotations;
-
 namespace FubarDev.WebDavServer.Engines.Remote
 {
     /// <summary>
@@ -19,7 +17,6 @@ namespace FubarDev.WebDavServer.Engines.Remote
     /// </summary>
     public class RemoteDocumentTarget : IDocumentTarget<RemoteCollectionTarget, RemoteDocumentTarget, RemoteMissingTarget>
     {
-        [NotNull]
         private readonly IRemoteTargetActions _targetActions;
 
         /// <summary>
@@ -29,7 +26,7 @@ namespace FubarDev.WebDavServer.Engines.Remote
         /// <param name="name">The name of the remote document.</param>
         /// <param name="destinationUrl">The destination URL.</param>
         /// <param name="targetActions">The target actions implementation to use.</param>
-        public RemoteDocumentTarget([NotNull] RemoteCollectionTarget parent, [NotNull] string name, [NotNull] Uri destinationUrl, [NotNull] IRemoteTargetActions targetActions)
+        public RemoteDocumentTarget(RemoteCollectionTarget parent, string name, Uri destinationUrl, IRemoteTargetActions targetActions)
         {
             _targetActions = targetActions;
             Parent = parent;
@@ -46,7 +43,6 @@ namespace FubarDev.WebDavServer.Engines.Remote
         /// <summary>
         /// Gets the parent remote collection.
         /// </summary>
-        [NotNull]
         public RemoteCollectionTarget Parent { get; }
 
         /// <inheritdoc />

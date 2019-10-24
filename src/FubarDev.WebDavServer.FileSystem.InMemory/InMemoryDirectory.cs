@@ -11,8 +11,6 @@ using System.Threading.Tasks;
 using FubarDev.WebDavServer.Model;
 using FubarDev.WebDavServer.Model.Headers;
 
-using JetBrains.Annotations;
-
 namespace FubarDev.WebDavServer.FileSystem.InMemory
 {
     /// <summary>
@@ -33,10 +31,10 @@ namespace FubarDev.WebDavServer.FileSystem.InMemory
         /// <param name="name">The name of the collection.</param>
         /// <param name="isRoot">Indicates whether this is the file systems root directory.</param>
         public InMemoryDirectory(
-            [NotNull] InMemoryFileSystem fileSystem,
-            [CanBeNull] ICollection parent,
-            [NotNull] Uri path,
-            [NotNull] string name,
+            InMemoryFileSystem fileSystem,
+            ICollection? parent,
+            Uri path,
+            string name,
             bool isRoot = false)
             : base(fileSystem, parent, path, name)
         {
@@ -76,18 +74,16 @@ namespace FubarDev.WebDavServer.FileSystem.InMemory
         }
 
         /// <inheritdoc />
-        public Task<IEntry> GetChildAsync(string name, CancellationToken ct)
+        public async Task<IEntry?> GetChildAsync(string name, CancellationToken ct)
         {
-            InMemoryEntry entry;
-            _children.TryGetValue(name, out entry);
+            _children.TryGetValue(name, out var entry);
 
-            var coll = entry as ICollection;
-            if (coll != null)
+            if (entry is ICollection coll)
             {
-                return coll.GetMountTargetEntryAsync(InMemoryFileSystem);
+                return await coll.GetMountTargetEntryAsync(InMemoryFileSystem);
             }
 
-            return Task.FromResult<IEntry>(entry);
+            return entry;
         }
 
         /// <inheritdoc />

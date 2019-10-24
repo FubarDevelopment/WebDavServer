@@ -137,7 +137,7 @@ namespace FubarDev.WebDavServer.FileSystem.InMemory
             var sourcePropStore = FileSystem.PropertyStore;
             var destPropStore = collection.FileSystem.PropertyStore;
 
-            IReadOnlyCollection<XElement> sourceProps;
+            IReadOnlyCollection<XElement>? sourceProps;
             if (sourcePropStore != null && destPropStore != null)
             {
                 sourceProps = await sourcePropStore.GetAsync(this, cancellationToken).ConfigureAwait(false);

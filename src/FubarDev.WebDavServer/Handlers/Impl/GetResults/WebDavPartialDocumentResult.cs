@@ -18,21 +18,17 @@ using FubarDev.WebDavServer.Props.Dead;
 using FubarDev.WebDavServer.Props.Live;
 using FubarDev.WebDavServer.Utils;
 
-using JetBrains.Annotations;
-
 namespace FubarDev.WebDavServer.Handlers.Impl.GetResults
 {
     internal class WebDavPartialDocumentResult : WebDavResult
     {
-        [NotNull]
         private readonly IDocument _document;
 
         private readonly bool _returnFile;
 
-        [NotNull]
         private readonly IReadOnlyCollection<NormalizedRangeItem> _rangeItems;
 
-        public WebDavPartialDocumentResult([NotNull] IDocument document, bool returnFile, [NotNull] IReadOnlyCollection<NormalizedRangeItem> rangeItems)
+        public WebDavPartialDocumentResult(IDocument document, bool returnFile, IReadOnlyCollection<NormalizedRangeItem> rangeItems)
             : base(WebDavStatusCode.PartialContent)
         {
             _document = document;
@@ -46,7 +42,7 @@ namespace FubarDev.WebDavServer.Handlers.Impl.GetResults
 
             response.Headers["Accept-Ranges"] = new[] { "bytes" };
 
-            var properties = await _document.GetProperties(response.Dispatcher).ToList(ct).ConfigureAwait(false);
+            var properties = await _document.GetProperties(response.Dispatcher).ToListAsync(ct).ConfigureAwait(false);
             var etagProperty = properties
                 .OfType<ITypedReadableProperty<EntityTag>>()
                 .FirstOrDefault(x => x.Name == GetETagProperty.PropertyName);
@@ -178,8 +174,8 @@ namespace FubarDev.WebDavServer.Handlers.Impl.GetResults
             if (contentLanguageProp != null)
             {
                 var propValue = await contentLanguageProp.TryGetValueAsync(ct).ConfigureAwait(false);
-                if (propValue.Item1)
-                    content.Headers.ContentLanguage.Add(propValue.Item2);
+                if (propValue.wasSet)
+                    content.Headers.ContentLanguage.Add(propValue.value);
             }
         }
     }

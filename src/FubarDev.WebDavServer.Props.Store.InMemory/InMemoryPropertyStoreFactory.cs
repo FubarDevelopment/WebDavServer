@@ -5,8 +5,6 @@
 using FubarDev.WebDavServer.FileSystem;
 using FubarDev.WebDavServer.Props.Dead;
 
-using JetBrains.Annotations;
-
 using Microsoft.Extensions.Logging;
 
 namespace FubarDev.WebDavServer.Props.Store.InMemory
@@ -16,10 +14,8 @@ namespace FubarDev.WebDavServer.Props.Store.InMemory
     /// </summary>
     public class InMemoryPropertyStoreFactory : IPropertyStoreFactory
     {
-        [NotNull]
-        private readonly ILogger<InMemoryPropertyStore> _logger;
+        private readonly ILogger<InMemoryPropertyStore>? _logger;
 
-        [NotNull]
         private readonly IDeadPropertyFactory _deadPropertyFactory;
 
         /// <summary>
@@ -27,7 +23,7 @@ namespace FubarDev.WebDavServer.Props.Store.InMemory
         /// </summary>
         /// <param name="logger">The logger for the property store factory.</param>
         /// <param name="deadPropertyFactory">The factory for dead properties.</param>
-        public InMemoryPropertyStoreFactory([NotNull] ILogger<InMemoryPropertyStore> logger, [NotNull] IDeadPropertyFactory deadPropertyFactory)
+        public InMemoryPropertyStoreFactory(ILogger<InMemoryPropertyStore>? logger, IDeadPropertyFactory deadPropertyFactory)
         {
             _logger = logger;
             _deadPropertyFactory = deadPropertyFactory;

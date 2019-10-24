@@ -7,8 +7,6 @@ using System.Xml.Linq;
 using FubarDev.WebDavServer.FileSystem;
 using FubarDev.WebDavServer.Props.Store;
 
-using JetBrains.Annotations;
-
 namespace FubarDev.WebDavServer.Props.Dead
 {
     /// <summary>
@@ -23,8 +21,7 @@ namespace FubarDev.WebDavServer.Props.Dead
         /// <param name="entry">The entry to instantiate this property for.</param>
         /// <param name="name">The name of the dead property to create.</param>
         /// <returns>The created dead property instance.</returns>
-        [NotNull]
-        IDeadProperty Create([NotNull] IPropertyStore store, [NotNull] IEntry entry, [NotNull] XName name);
+        IDeadProperty Create(IPropertyStore store, IEntry entry, XName name);
 
         /// <summary>
         /// Creates a new dead property instance.
@@ -33,7 +30,6 @@ namespace FubarDev.WebDavServer.Props.Dead
         /// <param name="entry">The entry to instantiate this property for.</param>
         /// <param name="element">The element to initialize the dead property with.</param>
         /// <returns>The created dead property instance.</returns>
-        [NotNull]
-        IDeadProperty Create([NotNull] IPropertyStore store, [NotNull] IEntry entry, [NotNull] XElement element);
+        IDeadProperty Create(IPropertyStore store, IEntry entry, XElement element);
     }
 }

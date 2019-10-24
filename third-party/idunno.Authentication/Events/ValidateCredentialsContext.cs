@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
 
+// ReSharper disable once CheckNamespace
 namespace idunno.Authentication
 {
     public class ValidateCredentialsContext : ResultContext<BasicAuthenticationOptions>

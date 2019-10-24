@@ -6,8 +6,6 @@ using System.IO;
 using System.Threading;
 using System.Threading.Tasks;
 
-using JetBrains.Annotations;
-
 namespace FubarDev.WebDavServer.FileSystem
 {
     /// <summary>
@@ -25,8 +23,6 @@ namespace FubarDev.WebDavServer.FileSystem
         /// </summary>
         /// <param name="cancellationToken">The cancellation token.</param>
         /// <returns>The stream used to read the document.</returns>
-        [NotNull]
-        [ItemNotNull]
         Task<Stream> OpenReadAsync(CancellationToken cancellationToken);
 
         /// <summary>
@@ -34,8 +30,6 @@ namespace FubarDev.WebDavServer.FileSystem
         /// </summary>
         /// <param name="cancellationToken">The cancellation token.</param>
         /// <returns>The stream used to write to the document.</returns>
-        [NotNull]
-        [ItemNotNull]
         Task<Stream> CreateAsync(CancellationToken cancellationToken);
 
         /// <summary>
@@ -45,9 +39,7 @@ namespace FubarDev.WebDavServer.FileSystem
         /// <param name="name">The new name of the document.</param>
         /// <param name="cancellationToken">The cancellation token.</param>
         /// <returns>The created document.</returns>
-        [NotNull]
-        [ItemNotNull]
-        Task<IDocument> CopyToAsync([NotNull] ICollection collection, [NotNull] string name, CancellationToken cancellationToken);
+        Task<IDocument> CopyToAsync(ICollection collection, string name, CancellationToken cancellationToken);
 
         /// <summary>
         /// Moves the document to a new location within the same file system.
@@ -56,8 +48,6 @@ namespace FubarDev.WebDavServer.FileSystem
         /// <param name="name">The new name of the document.</param>
         /// <param name="cancellationToken">The cancellation token.</param>
         /// <returns>The created document.</returns>
-        [NotNull]
-        [ItemNotNull]
-        Task<IDocument> MoveToAsync([NotNull] ICollection collection, [NotNull] string name, CancellationToken cancellationToken);
+        Task<IDocument> MoveToAsync(ICollection collection, string name, CancellationToken cancellationToken);
     }
 }

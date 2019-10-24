@@ -5,8 +5,6 @@
 using System.Threading;
 using System.Threading.Tasks;
 
-using JetBrains.Annotations;
-
 namespace FubarDev.WebDavServer.Handlers
 {
     /// <summary>
@@ -23,8 +21,6 @@ namespace FubarDev.WebDavServer.Handlers
         /// <param name="path">The root-relataive file system path to query the options for.</param>
         /// <param name="cancellationToken">The cancellation token.</param>
         /// <returns>The result of the operation.</returns>
-        [NotNull]
-        [ItemNotNull]
-        Task<IWebDavResult> OptionsAsync([NotNull] string path, CancellationToken cancellationToken);
+        Task<IWebDavResult> OptionsAsync(string path, CancellationToken cancellationToken);
     }
 }

@@ -5,8 +5,6 @@
 using System.Threading;
 using System.Threading.Tasks;
 
-using JetBrains.Annotations;
-
 namespace FubarDev.WebDavServer.Handlers
 {
     /// <summary>
@@ -20,8 +18,6 @@ namespace FubarDev.WebDavServer.Handlers
         /// <param name="path">The path to the collection to create.</param>
         /// <param name="cancellationToken">The cancellation token.</param>
         /// <returns>The result of the operation.</returns>
-        [NotNull]
-        [ItemNotNull]
-        Task<IWebDavResult> MkColAsync([NotNull] string path, CancellationToken cancellationToken);
+        Task<IWebDavResult> MkColAsync(string path, CancellationToken cancellationToken);
     }
 }

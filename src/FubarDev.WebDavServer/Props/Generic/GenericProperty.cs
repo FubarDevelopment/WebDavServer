@@ -9,8 +9,6 @@ using System.Xml.Linq;
 
 using FubarDev.WebDavServer.Props.Converters;
 
-using JetBrains.Annotations;
-
 namespace FubarDev.WebDavServer.Props.Generic
 {
     /// <summary>
@@ -33,7 +31,7 @@ namespace FubarDev.WebDavServer.Props.Generic
         /// <param name="getValueAsyncFunc">The function to get the property value.</param>
         /// <param name="setValueAsyncFunc">The function to set the property value.</param>
         /// <param name="alternativeNames">Alternative property names.</param>
-        public GenericProperty([NotNull] XName name, [CanBeNull] string language, int cost, [NotNull] IPropertyConverter<T> converter, GetPropertyValueAsyncDelegate<T> getValueAsyncFunc, SetPropertyValueAsyncDelegate<T> setValueAsyncFunc, params XName[] alternativeNames)
+        public GenericProperty(XName name, string? language, int cost, IPropertyConverter<T> converter, GetPropertyValueAsyncDelegate<T> getValueAsyncFunc, SetPropertyValueAsyncDelegate<T> setValueAsyncFunc, params XName[] alternativeNames)
             : base(name, language, cost, converter, alternativeNames)
         {
             _getValueAsyncFunc = getValueAsyncFunc;
@@ -41,13 +39,13 @@ namespace FubarDev.WebDavServer.Props.Generic
         }
 
         /// <inheritdoc />
-        public override Task<T> GetValueAsync(CancellationToken ct)
+        public sealed override Task<T> GetValueAsync(CancellationToken ct)
         {
             return _getValueAsyncFunc(ct);
         }
 
         /// <inheritdoc />
-        public override Task SetValueAsync(T value, CancellationToken ct)
+        public sealed override Task SetValueAsync(T value, CancellationToken ct)
         {
             if (_setValueAsyncFunc == null)
                 throw new NotSupportedException();

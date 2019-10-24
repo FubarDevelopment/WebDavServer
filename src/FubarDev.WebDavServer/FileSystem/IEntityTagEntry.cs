@@ -12,7 +12,7 @@ namespace FubarDev.WebDavServer.FileSystem
     /// <summary>
     /// Is implemented when a <see cref="IDocument"/> or <see cref="ICollection"/> allows native <see cref="EntityTag"/> support.
     /// </summary>
-    public interface IEntityTagEntry
+    public interface IEntityTagEntry : IEntry
     {
         /// <summary>
         /// Gets the <see cref="EntityTag"/> for a <see cref="IDocument"/> or <see cref="ICollection"/>.

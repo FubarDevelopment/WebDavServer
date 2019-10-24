@@ -22,8 +22,6 @@ using FubarDev.WebDavServer.Model.Headers;
 using FubarDev.WebDavServer.Props;
 using FubarDev.WebDavServer.Props.Dead;
 
-using JetBrains.Annotations;
-
 namespace FubarDev.WebDavServer.Engines.Remote
 {
     /// <summary>
@@ -31,28 +29,13 @@ namespace FubarDev.WebDavServer.Engines.Remote
     /// </summary>
     public abstract class RemoteHttpClientTargetActions : IRemoteTargetActions
     {
-        [NotNull]
         private static readonly Encoding _defaultEncoding = new UTF8Encoding(false);
-
-        [NotNull]
         private static readonly HttpMethod _propFindHttpMethod = new HttpMethod("PROPFIND");
-
-        [NotNull]
         private static readonly HttpMethod _propPatchHttpMethod = new HttpMethod("PROPPATCH");
-
-        [NotNull]
         private static readonly HttpMethod _mkColHttpMethod = new HttpMethod("MKCOL");
-
-        [NotNull]
         private static readonly XmlSerializer _errorSerializer = new XmlSerializer(typeof(error));
-
-        [NotNull]
         private static readonly XmlSerializer _multiStatusSerializer = new XmlSerializer(typeof(multistatus));
-
-        [NotNull]
         private static readonly XmlSerializer _propFindSerializer = new XmlSerializer(typeof(propfind));
-
-        [NotNull]
         private static readonly XmlSerializer _propertyUpdateSerializer = new XmlSerializer(typeof(propertyupdate));
 
         /// <summary>
@@ -60,14 +43,13 @@ namespace FubarDev.WebDavServer.Engines.Remote
         /// </summary>
         /// <param name="dispatcher">The WebDAV dispatcher.</param>
         /// <param name="httpClient">The <see cref="HttpClient"/> to use for the communication with the remote server.</param>
-        protected RemoteHttpClientTargetActions([NotNull] IWebDavDispatcher dispatcher, [NotNull] HttpClient httpClient)
+        protected RemoteHttpClientTargetActions(IWebDavDispatcher dispatcher, HttpClient httpClient)
         {
             Dispatcher = dispatcher;
             Client = httpClient;
         }
 
         /// <inheritdoc />
-        [NotNull]
         public IWebDavDispatcher Dispatcher { get; }
 
         /// <inheritdoc />
@@ -76,7 +58,6 @@ namespace FubarDev.WebDavServer.Engines.Remote
         /// <summary>
         /// Gets the <see cref="HttpClient"/> to communicate with the remote server.
         /// </summary>
-        [NotNull]
         protected HttpClient Client { get; }
 
         /// <inheritdoc />
@@ -247,7 +228,7 @@ namespace FubarDev.WebDavServer.Engines.Remote
             }
 
             var propStat = (propstat)response.Items[propStatIndex];
-            var location = string.IsNullOrEmpty(propStat.location?.href) ? targetUrl : new Uri(propStat.location.href, UriKind.RelativeOrAbsolute);
+            var location = string.IsNullOrEmpty(propStat.location?.href) ? targetUrl : new Uri(propStat.location!.href, UriKind.RelativeOrAbsolute);
             var propStatus = GetStatusCode(propStat.error, propStat.status, location, hrefs);
             if (propStatus == (int)WebDavStatusCode.NotFound)
             {
@@ -296,8 +277,7 @@ namespace FubarDev.WebDavServer.Engines.Remote
         /// <param name="requestUrl">The request URL.</param>
         /// <param name="error">The error object.</param>
         /// <returns>The new remote target exception.</returns>
-        [NotNull]
-        protected static RemoteTargetException CreateException([NotNull] Uri requestUrl, [NotNull] error error)
+        protected static RemoteTargetException CreateException(Uri requestUrl, error error)
         {
             var hrefs = new List<Uri>();
             string message = "Unknown error";
@@ -350,11 +330,11 @@ namespace FubarDev.WebDavServer.Engines.Remote
         /// <summary>
         /// Parse the response for a request.
         /// </summary>
-        /// <param name="requrestUrl">The request URL.</param>
+        /// <param name="requestUrl">The request URL.</param>
         /// <param name="responseMessage">The response message.</param>
         /// <param name="document">The response document.</param>
-        /// <returns>The multistatus created from the <paramref name="document"/>.</returns>
-        protected multistatus Parse([NotNull] Uri requrestUrl, [NotNull] HttpResponseMessage responseMessage, [CanBeNull] XDocument document)
+        /// <returns>The <see cref="multistatus"/> created from the <paramref name="document"/>.</returns>
+        protected multistatus Parse(Uri requestUrl, HttpResponseMessage responseMessage, XDocument? document)
         {
             if (document == null)
             {
@@ -365,7 +345,7 @@ namespace FubarDev.WebDavServer.Engines.Remote
                     {
                         new response()
                         {
-                            href = requrestUrl.ToString(),
+                            href = requestUrl.ToString(),
                             ItemsElementName = new[] { ItemsChoiceType2.status, },
                             Items = new object[] { status.ToString() },
                         },
@@ -375,6 +355,11 @@ namespace FubarDev.WebDavServer.Engines.Remote
 
             var errorName = WebDavXml.Dav + "error";
             Debug.Assert(document.Root != null, "document.Root != null");
+            if (document.Root == null)
+            {
+                throw new InvalidOperationException("Invalid response. The document root element is missing.");
+            }
+
             if (document.Root.Name == errorName)
             {
                 var error = (error)_errorSerializer.Deserialize(document.Root.CreateReader());
@@ -385,7 +370,7 @@ namespace FubarDev.WebDavServer.Engines.Remote
                     {
                         new response()
                         {
-                            href = requrestUrl.ToString(),
+                            href = requestUrl.ToString(),
                             ItemsElementName = new[] { ItemsChoiceType2.status, },
                             Items = new object[] { status.ToString() },
                             error = error,
@@ -403,9 +388,7 @@ namespace FubarDev.WebDavServer.Engines.Remote
         /// </summary>
         /// <param name="responseMessage">The response to read the <see cref="XDocument"/> from.</param>
         /// <returns>The <see cref="XDocument"/>.</returns>
-        [NotNull]
-        [ItemCanBeNull]
-        protected async Task<XDocument> ReadResponseAsync([NotNull] HttpResponseMessage responseMessage)
+        protected async Task<XDocument?> ReadResponseAsync(HttpResponseMessage responseMessage)
         {
             var content = responseMessage.Content;
             if (content == null)
@@ -413,7 +396,7 @@ namespace FubarDev.WebDavServer.Engines.Remote
                 return null;
             }
 
-            Encoding encoding = null;
+            Encoding? encoding = null;
             if (content.Headers.ContentType != null)
             {
                 switch (content.Headers.ContentType.MediaType)
@@ -437,21 +420,17 @@ namespace FubarDev.WebDavServer.Engines.Remote
                 return null;
             }
 
-            using (var input = new MemoryStream(buffer))
+            using var input = new MemoryStream(buffer);
+            if (encoding == null)
             {
-                if (encoding == null)
-                {
-                    return XDocument.Load(input);
-                }
-
-                using (var reader = new StreamReader(input, encoding))
-                {
-                    return XDocument.Load(reader);
-                }
+                return XDocument.Load(input);
             }
+
+            using var reader = new StreamReader(input, encoding);
+            return XDocument.Load(reader);
         }
 
-        private static int GetStatusCode([CanBeNull] error error, [CanBeNull] string statusLine, [NotNull] Uri targetUrl, [NotNull][ItemNotNull] IReadOnlyCollection<Uri> hrefs)
+        private static int GetStatusCode(error? error, string? statusLine, Uri targetUrl, IReadOnlyCollection<Uri> hrefs)
         {
             if (error != null)
             {
@@ -472,7 +451,7 @@ namespace FubarDev.WebDavServer.Engines.Remote
             return status.StatusCode;
         }
 
-        private static HttpContent CreateContent([NotNull] XmlSerializer serializer, [NotNull] object requestData)
+        private static HttpContent CreateContent(XmlSerializer serializer, object requestData)
         {
             byte[] data;
             using (var requestStream = new MemoryStream())
@@ -496,7 +475,7 @@ namespace FubarDev.WebDavServer.Engines.Remote
             return content;
         }
 
-        private async Task<IReadOnlyCollection<XName>> SetPropertiesAsync([NotNull] Uri targetUrl, [NotNull][ItemNotNull] IEnumerable<IUntypedWriteableProperty> properties, CancellationToken cancellationToken)
+        private async Task<IReadOnlyCollection<XName>> SetPropertiesAsync(Uri targetUrl, IEnumerable<IUntypedWriteableProperty> properties, CancellationToken cancellationToken)
         {
             var elements = new List<XElement>();
 

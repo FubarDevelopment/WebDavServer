@@ -13,7 +13,10 @@ namespace FubarDev.WebDavServer.Tests.Support
     /* [Authorize] */
     public class TestWebDavController : WebDavControllerBase
     {
-        public TestWebDavController(IWebDavContext context, IWebDavDispatcher dispatcher, ILogger<WebDavIndirectResult> responseLogger = null)
+        public TestWebDavController(
+            IWebDavContext context,
+            IWebDavDispatcher dispatcher,
+            ILogger<WebDavIndirectResult>? responseLogger = null)
             : base(context, dispatcher, responseLogger)
         {
         }

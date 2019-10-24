@@ -7,8 +7,6 @@ using System.Threading;
 using System.Threading.Tasks;
 using System.Xml.Linq;
 
-using JetBrains.Annotations;
-
 namespace FubarDev.WebDavServer.Props
 {
     /// <summary>
@@ -23,7 +21,7 @@ namespace FubarDev.WebDavServer.Props
         /// <param name="language">The language for the property value.</param>
         /// <param name="cost">The cost to get the properties value.</param>
         /// <param name="alternativeNames">The alternative names.</param>
-        protected SimpleUntypedProperty([NotNull] XName name, [CanBeNull] string language, int cost, [NotNull][ItemNotNull] params XName[] alternativeNames)
+        protected SimpleUntypedProperty(XName name, string? language, int cost, params XName[] alternativeNames)
         {
             Name = name;
             Cost = cost;
@@ -35,7 +33,7 @@ namespace FubarDev.WebDavServer.Props
         public XName Name { get; }
 
         /// <inheritdoc />
-        public string Language { get; protected set; }
+        public string? Language { get; protected set; }
 
         /// <inheritdoc />
         public IReadOnlyCollection<XName> AlternativeNames { get; }

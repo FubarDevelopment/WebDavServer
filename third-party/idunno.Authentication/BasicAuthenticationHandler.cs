@@ -17,7 +17,7 @@ namespace idunno.Authentication
 {
     internal class BasicAuthenticationHandler : AuthenticationHandler<BasicAuthenticationOptions>
     {
-        private const string _Scheme = "Basic";
+        private const string SchemeName = "Basic";
 
         public BasicAuthenticationHandler(
             IOptionsMonitor<BasicAuthenticationOptions> options,
@@ -51,12 +51,12 @@ namespace idunno.Authentication
                 return AuthenticateResult.NoResult();
             }
 
-            if (!authorizationHeader.StartsWith(_Scheme + ' ', StringComparison.OrdinalIgnoreCase))
+            if (!authorizationHeader.StartsWith(SchemeName + ' ', StringComparison.OrdinalIgnoreCase))
             {
                 return AuthenticateResult.NoResult();
             }
 
-            string encodedCredentials = authorizationHeader.Substring(_Scheme.Length).Trim();
+            string encodedCredentials = authorizationHeader.Substring(SchemeName.Length).Trim();
 
             if (string.IsNullOrEmpty(encodedCredentials))
             {
@@ -115,7 +115,7 @@ namespace idunno.Authentication
                 {
                     Exception = ex
                 };
-                
+
                 await Options.Events.AuthenticationFailed(authenticationFailedContext);
 
                 if (authenticationFailedContext.Result == null)
@@ -151,7 +151,7 @@ namespace idunno.Authentication
             {
                 Response.StatusCode = 401;
 
-                var headerValue = _Scheme + $" realm=\"{Options.Realm}\"";
+                var headerValue = SchemeName + $" realm=\"{Options.Realm}\"";
                 Response.Headers.Append(HeaderNames.WWWAuthenticate, headerValue);
             }
 

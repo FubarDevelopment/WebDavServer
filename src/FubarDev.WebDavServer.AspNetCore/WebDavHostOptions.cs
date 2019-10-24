@@ -16,7 +16,7 @@ namespace FubarDev.WebDavServer.AspNetCore
         /// This is usually required when run behind a proxy server. When it is set,
         /// then it must point to the <see cref="IWebDavContext.ServiceBaseUrl"/>.
         /// </remarks>
-        public string BaseUrl { get; set; }
+        public string? BaseUrl { get; set; }
 
         /// <summary>
         /// Gets or sets a value indicating whether anonymous WebDAV access is allowed.
@@ -26,6 +26,6 @@ namespace FubarDev.WebDavServer.AspNetCore
         /// <summary>
         /// Gets or sets the home path for the unauthenticated user.
         /// </summary>
-        public string AnonymousHomePath { get; set; }
+        public string? AnonymousHomePath { get; set; }
     }
 }

@@ -5,8 +5,6 @@
 using System;
 using System.Xml.Linq;
 
-using JetBrains.Annotations;
-
 namespace FubarDev.WebDavServer.Locking
 {
     /// <summary>
@@ -25,10 +23,10 @@ namespace FubarDev.WebDavServer.Locking
         /// <param name="shareMode">The <see cref="LockShareMode"/> of the lock.</param>
         /// <param name="timeout">The lock timeout.</param>
         public Lock(
-            [NotNull] Uri path,
-            [NotNull] Uri href,
+            Uri path,
+            Uri href,
             bool recursive,
-            [CanBeNull] XElement owner,
+            XElement? owner,
             LockAccessType accessType,
             LockShareMode shareMode,
             TimeSpan timeout)
@@ -54,10 +52,10 @@ namespace FubarDev.WebDavServer.Locking
         /// <param name="shareMode">The <see cref="LockShareMode"/> of the lock.</param>
         /// <param name="timeout">The lock timeout.</param>
         public Lock(
-            [NotNull] string path,
-            [NotNull] string href,
+            string path,
+            string href,
             bool recursive,
-            [CanBeNull] XElement owner,
+            XElement? owner,
             LockAccessType accessType,
             LockShareMode shareMode,
             TimeSpan timeout)
@@ -83,12 +81,12 @@ namespace FubarDev.WebDavServer.Locking
         /// <param name="shareMode">The <see cref="LockShareMode"/> of the lock.</param>
         /// <param name="timeout">The lock timeout.</param>
         protected Lock(
-            [NotNull] string path,
-            [NotNull] string href,
+            string path,
+            string href,
             bool recursive,
-            [CanBeNull] XElement owner,
-            [NotNull] string accessType,
-            [NotNull] string shareMode,
+            XElement? owner,
+            string accessType,
+            string shareMode,
             TimeSpan timeout)
         {
             Path = path;
@@ -112,7 +110,7 @@ namespace FubarDev.WebDavServer.Locking
         /// <summary>
         /// Gets the XML specifying the owner of the lock.
         /// </summary>
-        public XElement Owner { get; }
+        public XElement? Owner { get; }
 
         /// <inheritdoc />
         public string AccessType { get; }
@@ -124,7 +122,7 @@ namespace FubarDev.WebDavServer.Locking
         public TimeSpan Timeout { get; }
 
         /// <inheritdoc />
-        public XElement GetOwner()
+        public XElement? GetOwner()
             => Owner;
 
         /// <inheritdoc />

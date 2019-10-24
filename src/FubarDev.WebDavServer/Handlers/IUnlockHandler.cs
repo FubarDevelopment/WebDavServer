@@ -7,8 +7,6 @@ using System.Threading.Tasks;
 
 using FubarDev.WebDavServer.Model.Headers;
 
-using JetBrains.Annotations;
-
 namespace FubarDev.WebDavServer.Handlers
 {
     /// <summary>
@@ -23,8 +21,6 @@ namespace FubarDev.WebDavServer.Handlers
         /// <param name="stateToken">The state token of the lock to remove.</param>
         /// <param name="cancellationToken">The cancellation token.</param>
         /// <returns>The result of the operation.</returns>
-        [NotNull]
-        [ItemNotNull]
-        Task<IWebDavResult> UnlockAsync([NotNull] string path, [NotNull] LockTokenHeader stateToken, CancellationToken cancellationToken);
+        Task<IWebDavResult> UnlockAsync(string path, LockTokenHeader stateToken, CancellationToken cancellationToken);
     }
 }

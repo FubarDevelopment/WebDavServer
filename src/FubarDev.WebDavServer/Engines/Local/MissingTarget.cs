@@ -8,8 +8,6 @@ using System.Threading.Tasks;
 
 using FubarDev.WebDavServer.FileSystem;
 
-using JetBrains.Annotations;
-
 namespace FubarDev.WebDavServer.Engines.Local
 {
     /// <summary>
@@ -53,12 +51,11 @@ namespace FubarDev.WebDavServer.Engines.Local
         /// <param name="name">The name of the missing target.</param>
         /// <param name="targetActions">The target actions implementation to use.</param>
         /// <returns>The newly created missing target object.</returns>
-        [NotNull]
         public static MissingTarget NewInstance(
-            [NotNull] Uri destinationUrl,
-            [NotNull] ICollection parent,
-            [NotNull] string name,
-            [NotNull] ITargetActions<CollectionTarget, DocumentTarget, MissingTarget> targetActions)
+            Uri destinationUrl,
+            ICollection parent,
+            string name,
+            ITargetActions<CollectionTarget, DocumentTarget, MissingTarget> targetActions)
         {
             var collUrl = destinationUrl.GetCollectionUri();
             var collTarget = new CollectionTarget(collUrl, null, parent, false, targetActions);

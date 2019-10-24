@@ -35,7 +35,7 @@ namespace FubarDev.WebDavServer.Sample.AspNetCore.Authentication
             {
                 return AuthenticateResult.NoResult();
             }
-            
+
             var hostOptions = Context.RequestServices.GetRequiredService<IOptions<WebDavHostOptions>>();
             var allowAnonAccess = allowAnonymousAccess ?? hostOptions.Value.AllowAnonymousAccess;
             if (!allowAnonAccess)

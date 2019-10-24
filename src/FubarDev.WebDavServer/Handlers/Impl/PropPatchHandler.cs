@@ -20,8 +20,6 @@ using FubarDev.WebDavServer.Props.Dead;
 using FubarDev.WebDavServer.Props.Live;
 using FubarDev.WebDavServer.Utils;
 
-using JetBrains.Annotations;
-
 namespace FubarDev.WebDavServer.Handlers.Impl
 {
     /// <summary>
@@ -29,10 +27,8 @@ namespace FubarDev.WebDavServer.Handlers.Impl
     /// </summary>
     public class PropPatchHandler : IPropPatchHandler
     {
-        [NotNull]
         private readonly IFileSystem _fileSystem;
 
-        [NotNull]
         private readonly IWebDavContext _context;
         private readonly IImplicitLockFactory _implicitLockFactory;
 
@@ -43,9 +39,9 @@ namespace FubarDev.WebDavServer.Handlers.Impl
         /// <param name="context">The WebDAV request context.</param>
         /// <param name="implicitLockFactory">A factory to create implicit locks.</param>
         public PropPatchHandler(
-            [NotNull] IFileSystem fileSystem,
-            [NotNull] IWebDavContext context,
-            [NotNull] IImplicitLockFactory implicitLockFactory)
+            IFileSystem fileSystem,
+            IWebDavContext context,
+            IImplicitLockFactory implicitLockFactory)
         {
             _fileSystem = fileSystem;
             _context = context;
@@ -106,14 +102,9 @@ namespace FubarDev.WebDavServer.Handlers.Impl
 
             try
             {
-                var propertiesList = new List<IUntypedReadableProperty>();
-                using (var propEnum = targetEntry.GetProperties(_context.Dispatcher, returnInvalidProperties: true).GetEnumerator())
-                {
-                    while (await propEnum.MoveNext(cancellationToken).ConfigureAwait(false))
-                    {
-                        propertiesList.Add(propEnum.Current);
-                    }
-                }
+                var propertiesList = await targetEntry.GetProperties(_context.Dispatcher, returnInvalidProperties: true)
+                    .ToListAsync(cancellationToken)
+                    .ConfigureAwait(false);
 
                 var properties = propertiesList.ToDictionary(x => x.Name);
                 var changes =
@@ -190,11 +181,9 @@ namespace FubarDev.WebDavServer.Handlers.Impl
             }
         }
 
-        [CanBeNull]
-        private static IUntypedReadableProperty FindProperty([NotNull] IReadOnlyDictionary<XName, IUntypedReadableProperty> properties, [NotNull] XName propertyKey)
+        private static IUntypedReadableProperty? FindProperty(IReadOnlyDictionary<XName, IUntypedReadableProperty> properties, XName propertyKey)
         {
-            IUntypedReadableProperty foundProperty;
-            if (properties.TryGetValue(propertyKey, out foundProperty))
+            if (properties.TryGetValue(propertyKey, out var foundProperty))
             {
                 return foundProperty;
             }
@@ -210,9 +199,7 @@ namespace FubarDev.WebDavServer.Handlers.Impl
             return null;
         }
 
-        [NotNull]
-        [ItemNotNull]
-        private IEnumerable<propstat> CreatePropStats([NotNull][ItemNotNull] IEnumerable<ChangeItem> changes, [CanBeNull] error error)
+        private IEnumerable<propstat> CreatePropStats(IEnumerable<ChangeItem> changes, error? error)
         {
             var changesByStatusCodes = changes.GroupBy(x => x.StatusCode);
             foreach (var changesByStatusCode in changesByStatusCodes)
@@ -237,9 +224,7 @@ namespace FubarDev.WebDavServer.Handlers.Impl
             }
         }
 
-        [NotNull]
-        [ItemNotNull]
-        private async Task<IReadOnlyCollection<ChangeItem>> RevertChangesAsync([NotNull] IEntry entry, [NotNull][ItemNotNull] IReadOnlyCollection<ChangeItem> changes, [NotNull] IDictionary<XName, IUntypedReadableProperty> properties, CancellationToken cancellationToken)
+        private async Task<IReadOnlyCollection<ChangeItem>> RevertChangesAsync(IEntry entry, IReadOnlyCollection<ChangeItem> changes, IDictionary<XName, IUntypedReadableProperty> properties, CancellationToken cancellationToken)
         {
             if (entry.FileSystem.PropertyStore == null || _fileSystem.PropertyStore == null)
             {
@@ -304,9 +289,7 @@ namespace FubarDev.WebDavServer.Handlers.Impl
             return newChangeItems;
         }
 
-        [NotNull]
-        [ItemNotNull]
-        private async Task<IReadOnlyCollection<ChangeItem>> ApplyChangesAsync([NotNull] IEntry entry, [NotNull] Dictionary<XName, IUntypedReadableProperty> properties, [NotNull] propertyupdate request, CancellationToken cancellationToken)
+        private async Task<IReadOnlyCollection<ChangeItem>> ApplyChangesAsync(IEntry entry, Dictionary<XName, IUntypedReadableProperty> properties, propertyupdate request, CancellationToken cancellationToken)
         {
             var result = new List<ChangeItem>();
             if (request.Items == null)
@@ -318,8 +301,7 @@ namespace FubarDev.WebDavServer.Handlers.Impl
             foreach (var item in request.Items)
             {
                 IReadOnlyCollection<ChangeItem> changeItems;
-                var set = item as propset;
-                if (set != null)
+                if (item is propset set)
                 {
                     changeItems = await ApplySetAsync(entry, properties, set, failed, cancellationToken).ConfigureAwait(false);
                 }
@@ -340,9 +322,7 @@ namespace FubarDev.WebDavServer.Handlers.Impl
             return result;
         }
 
-        [NotNull]
-        [ItemNotNull]
-        private async Task<IReadOnlyCollection<ChangeItem>> ApplyRemoveAsync([NotNull] IEntry entry, [NotNull] IReadOnlyDictionary<XName, IUntypedReadableProperty> properties, [NotNull] propremove remove, bool previouslyFailed, CancellationToken cancellationToken)
+        private async Task<IReadOnlyCollection<ChangeItem>> ApplyRemoveAsync(IEntry entry, IReadOnlyDictionary<XName, IUntypedReadableProperty> properties, propremove remove, bool previouslyFailed, CancellationToken cancellationToken)
         {
             var result = new List<ChangeItem>();
 
@@ -426,9 +406,7 @@ namespace FubarDev.WebDavServer.Handlers.Impl
             return result;
         }
 
-        [NotNull]
-        [ItemNotNull]
-        private async Task<IReadOnlyCollection<ChangeItem>> ApplySetAsync([NotNull] IEntry entry, [NotNull] Dictionary<XName, IUntypedReadableProperty> properties, [NotNull] propset set, bool previouslyFailed, CancellationToken cancellationToken)
+        private async Task<IReadOnlyCollection<ChangeItem>> ApplySetAsync(IEntry entry, Dictionary<XName, IUntypedReadableProperty> properties, propset set, bool previouslyFailed, CancellationToken cancellationToken)
         {
             var result = new List<ChangeItem>();
 
@@ -461,8 +439,7 @@ namespace FubarDev.WebDavServer.Handlers.Impl
                     ChangeItem changeItem;
                     try
                     {
-                        var writeableProperty = property as IUntypedWriteableProperty;
-                        if (writeableProperty != null)
+                        if (property is IUntypedWriteableProperty writeableProperty)
                         {
                             if (entry.FileSystem.PropertyStore == null && writeableProperty is IDeadProperty)
                             {
@@ -513,7 +490,7 @@ namespace FubarDev.WebDavServer.Handlers.Impl
                         }
                         catch (Exception ex)
                         {
-                            changeItem = ChangeItem.Failed(property, ex.Message);
+                            changeItem = ChangeItem.Failed(newProperty, ex.Message);
                         }
 
                         failed = !changeItem.IsSuccess;
@@ -530,7 +507,7 @@ namespace FubarDev.WebDavServer.Handlers.Impl
         [SuppressMessage("ReSharper", "UnusedMember.Local", Justification = "Reviewed. Might be used when locking is implemented.")]
         private class ChangeItem
         {
-            private ChangeItem(ChangeStatus status, IUntypedReadableProperty property, XElement newValue, XElement oldValue, XName key, string description)
+            private ChangeItem(ChangeStatus status, IUntypedReadableProperty? property, XElement? newValue, XElement? oldValue, XName key, string? description)
             {
                 Status = status;
                 Property = property;
@@ -542,18 +519,15 @@ namespace FubarDev.WebDavServer.Handlers.Impl
 
             public ChangeStatus Status { get; }
 
-            [CanBeNull]
-            public IUntypedReadableProperty Property { get; }
+            public IUntypedReadableProperty? Property { get; }
 
-            [CanBeNull]
-            public XElement NewValue { get; }
+            public XElement? NewValue { get; }
 
-            [CanBeNull]
-            public XElement OldValue { get; }
+            public XElement? OldValue { get; }
 
             public XName Key { get; }
 
-            public string Description { get; }
+            public string? Description { get; }
 
             public bool IsSuccess => Status == ChangeStatus.Added || Status == ChangeStatus.Modified || Status == ChangeStatus.Removed;
 
@@ -584,47 +558,47 @@ namespace FubarDev.WebDavServer.Handlers.Impl
                 }
             }
 
-            public static ChangeItem Added([NotNull] IUntypedReadableProperty property, [NotNull] XElement newValue)
+            public static ChangeItem Added(IUntypedReadableProperty property, XElement newValue)
             {
                 return new ChangeItem(ChangeStatus.Added, property, newValue, null, property.Name, null);
             }
 
-            public static ChangeItem Modified([NotNull] IUntypedReadableProperty property, [NotNull] XElement newValue, [NotNull] XElement oldValue)
+            public static ChangeItem Modified(IUntypedReadableProperty property, XElement newValue, XElement oldValue)
             {
                 return new ChangeItem(ChangeStatus.Modified, property, newValue, oldValue, property.Name, null);
             }
 
-            public static ChangeItem Removed([NotNull] IUntypedReadableProperty property, [NotNull] XElement oldValue)
+            public static ChangeItem Removed(IUntypedReadableProperty property, XElement oldValue)
             {
                 return new ChangeItem(ChangeStatus.Removed, property, null, oldValue, property.Name, null);
             }
 
-            public static ChangeItem Removed([NotNull] XName key)
+            public static ChangeItem Removed(XName key)
             {
                 return new ChangeItem(ChangeStatus.Removed, null, null, null, key, null);
             }
 
-            public static ChangeItem Failed([NotNull] IUntypedReadableProperty property, string description)
+            public static ChangeItem Failed(IUntypedReadableProperty property, string description)
             {
                 return new ChangeItem(ChangeStatus.Failed, property, null, null, property.Name, description);
             }
 
-            public static ChangeItem Conflict([NotNull] IUntypedReadableProperty property, [NotNull] XElement oldValue, string description)
+            public static ChangeItem Conflict(IUntypedReadableProperty property, XElement oldValue, string description)
             {
                 return new ChangeItem(ChangeStatus.Conflict, property, null, oldValue, property.Name, description);
             }
 
-            public static ChangeItem FailedDependency([NotNull] XName key, string description = "Failed dependency")
+            public static ChangeItem FailedDependency(XName key, string description = "Failed dependency")
             {
                 return new ChangeItem(ChangeStatus.FailedDependency, null, null, null, key, description);
             }
 
-            public static ChangeItem InsufficientStorage([NotNull] XElement newValue, string description)
+            public static ChangeItem InsufficientStorage(XElement newValue, string description)
             {
                 return new ChangeItem(ChangeStatus.InsufficientStorage, null, newValue, null, newValue.Name, description);
             }
 
-            public static ChangeItem ReadOnly([NotNull] IUntypedReadableProperty property, XElement newValue, string description)
+            public static ChangeItem ReadOnly(IUntypedReadableProperty property, XElement newValue, string description)
             {
                 return new ChangeItem(ChangeStatus.ReadOnlyProperty, property, newValue, null, property.Name, description);
             }

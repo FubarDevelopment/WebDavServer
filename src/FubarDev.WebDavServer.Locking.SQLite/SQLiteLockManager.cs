@@ -11,8 +11,6 @@ using System.Threading;
 using System.Threading.Tasks;
 using System.Xml.Linq;
 
-using JetBrains.Annotations;
-
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 
@@ -25,7 +23,6 @@ namespace FubarDev.WebDavServer.Locking.SQLite
     /// </summary>
     public class SQLiteLockManager : LockManagerBase, IDisposable
     {
-        [NotNull]
         private readonly sqlitenet.SQLiteConnection _connection;
 
         private readonly SemaphoreSlim _semaphore = new SemaphoreSlim(1);
@@ -42,10 +39,10 @@ namespace FubarDev.WebDavServer.Locking.SQLite
         /// <param name="systemClock">The system clock interface.</param>
         /// <param name="logger">The logger.</param>
         public SQLiteLockManager(
-            [NotNull] IOptions<SQLiteLockManagerOptions> sqliteOptions,
-            [NotNull] ILockCleanupTask cleanupTask,
-            [NotNull] ISystemClock systemClock,
-            [NotNull] ILogger<SQLiteLockManager> logger)
+            IOptions<SQLiteLockManagerOptions> sqliteOptions,
+            ILockCleanupTask cleanupTask,
+            ISystemClock systemClock,
+            ILogger<SQLiteLockManager> logger)
             : this(sqliteOptions.Value, cleanupTask, systemClock, logger)
         {
         }
@@ -58,10 +55,10 @@ namespace FubarDev.WebDavServer.Locking.SQLite
         /// <param name="systemClock">The system clock interface.</param>
         /// <param name="logger">The logger.</param>
         public SQLiteLockManager(
-            [NotNull] SQLiteLockManagerOptions sqliteOptions,
-            [NotNull] ILockCleanupTask cleanupTask,
-            [NotNull] ISystemClock systemClock,
-            [NotNull] ILogger<SQLiteLockManager> logger)
+            SQLiteLockManagerOptions sqliteOptions,
+            ILockCleanupTask cleanupTask,
+            ISystemClock systemClock,
+            ILogger<SQLiteLockManager> logger)
             : base(cleanupTask, systemClock, logger, sqliteOptions)
         {
             if (string.IsNullOrEmpty(sqliteOptions.DatabaseFileName))
@@ -156,26 +153,26 @@ namespace FubarDev.WebDavServer.Locking.SQLite
 
         private class SQLiteLockManagerTransaction : ILockManagerTransaction
         {
-            [NotNull]
             private readonly sqlitenet.SQLiteConnection _connection;
 
-            [NotNull]
             private readonly SemaphoreSlim _semaphore;
 
             private bool _committed;
 
-            public SQLiteLockManagerTransaction([NotNull] sqlitenet.SQLiteConnection connection, [NotNull] SemaphoreSlim semaphore)
+            public SQLiteLockManagerTransaction(sqlitenet.SQLiteConnection connection, SemaphoreSlim semaphore)
             {
                 _connection = connection;
                 _semaphore = semaphore;
             }
 
+            /// <inheritdoc />
             public Task<IReadOnlyCollection<IActiveLock>> GetActiveLocksAsync(CancellationToken cancellationToken)
             {
                 var locks = _connection.Table<ActiveLockEntry>().Cast<IActiveLock>().ToList();
                 return Task.FromResult<IReadOnlyCollection<IActiveLock>>(locks);
             }
 
+            /// <inheritdoc />
             public Task<bool> AddAsync(IActiveLock activeLock, CancellationToken cancellationToken)
             {
                 var entry = ToEntry(activeLock);
@@ -183,6 +180,7 @@ namespace FubarDev.WebDavServer.Locking.SQLite
                 return Task.FromResult(affectedRows != 0);
             }
 
+            /// <inheritdoc />
             public Task<bool> UpdateAsync(IActiveLock activeLock, CancellationToken cancellationToken)
             {
                 var entry = ToEntry(activeLock);
@@ -190,18 +188,21 @@ namespace FubarDev.WebDavServer.Locking.SQLite
                 return Task.FromResult(true);
             }
 
+            /// <inheritdoc />
             public Task<bool> RemoveAsync(string stateToken, CancellationToken cancellationToken)
             {
                 var affectedRows = _connection.Table<ActiveLockEntry>().Delete(x => x.StateToken == stateToken);
                 return Task.FromResult(affectedRows != 0);
             }
 
-            public Task<IActiveLock> GetAsync(string stateToken, CancellationToken cancellationToken)
+            /// <inheritdoc />
+            public Task<IActiveLock?> GetAsync(string stateToken, CancellationToken cancellationToken)
             {
                 var l = _connection.Table<ActiveLockEntry>().FirstOrDefault(x => x.StateToken == stateToken);
-                return Task.FromResult<IActiveLock>(l);
+                return Task.FromResult<IActiveLock?>(l);
             }
 
+            /// <inheritdoc />
             public Task CommitAsync(CancellationToken cancellationToken)
             {
                 _connection.Commit();
@@ -209,6 +210,7 @@ namespace FubarDev.WebDavServer.Locking.SQLite
                 return Task.CompletedTask;
             }
 
+            /// <inheritdoc />
             public void Dispose()
             {
                 if (!_committed)

@@ -72,22 +72,21 @@ namespace FubarDev.WebDavServer.Sample.AspNetCore
             if (!forceKestrelUse && IsWindows)
             {
                 builder = builder
-                    .UseHttpSys(
-                        opt =>
-                        {
-                            opt.Authentication.Schemes = AuthenticationSchemes.NTLM;
-                            opt.Authentication.AllowAnonymous = true;
-                            opt.MaxRequestBodySize = null;
-                        });
+                    .UseIIS();
+                /*
+                .UseHttpSys(
+                    opt =>
+                    {
+                        opt.Authentication.Schemes = AuthenticationSchemes.NTLM;
+                        opt.Authentication.AllowAnonymous = true;
+                        opt.MaxRequestBodySize = null;
+                    }); */
             }
             else
             {
                 builder = builder
                     .UseKestrel(opt => opt.Limits.MaxRequestBodySize = null);
                 IsKestrel = true;
-                builder = builder
-                    .UseKestrel(
-                        opt => { opt.Limits.MaxRequestBodySize = null; });
             }
 
             return builder;

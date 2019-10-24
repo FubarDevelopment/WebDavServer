@@ -142,14 +142,13 @@ namespace FubarDev.WebDavServer.AspNetCore
 
             public bool TryGetValue(string key, out string[] value)
             {
-                StringValues values;
-                if (_headers.TryGetValue(key, out values))
+                if (_headers.TryGetValue(key, out var values))
                 {
                     value = values.ToArray();
                     return true;
                 }
 
-                value = null;
+                value = null!;
                 return false;
             }
         }

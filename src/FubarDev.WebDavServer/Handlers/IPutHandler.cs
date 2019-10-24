@@ -6,8 +6,6 @@ using System.IO;
 using System.Threading;
 using System.Threading.Tasks;
 
-using JetBrains.Annotations;
-
 namespace FubarDev.WebDavServer.Handlers
 {
     /// <summary>
@@ -22,8 +20,6 @@ namespace FubarDev.WebDavServer.Handlers
         /// <param name="data">The data to write to the new or existing document.</param>
         /// <param name="cancellationToken">The cancellation token.</param>
         /// <returns>The result of the operation.</returns>
-        [NotNull]
-        [ItemNotNull]
-        Task<IWebDavResult> PutAsync([NotNull] string path, [NotNull] Stream data, CancellationToken cancellationToken);
+        Task<IWebDavResult> PutAsync(string path, Stream data, CancellationToken cancellationToken);
     }
 }

@@ -2,41 +2,34 @@
 // Copyright (c) Fubar Development Junker. All rights reserved.
 // </copyright>
 
-using System;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Xml.Linq;
 
 using FubarDev.WebDavServer.FileSystem;
 using FubarDev.WebDavServer.Model;
-using FubarDev.WebDavServer.Props.Generic;
+using FubarDev.WebDavServer.Props.Converters;
 using FubarDev.WebDavServer.Props.Store;
-
-using JetBrains.Annotations;
 
 namespace FubarDev.WebDavServer.Props.Dead
 {
     /// <summary>
     /// The implementation of the <c>getcontentlanguage</c> property.
     /// </summary>
-    public class GetContentLanguageProperty : GenericStringProperty, IDeadProperty
+    public class GetContentLanguageProperty : SimpleConvertingProperty<string>, IDeadProperty
     {
         /// <summary>
         /// The XML name of the property
         /// </summary>
         public static readonly XName PropertyName = WebDavXml.Dav + "getcontentlanguage";
 
-        [NotNull]
         private readonly IEntry _entry;
 
-        [NotNull]
         private readonly IPropertyStore _store;
 
-        [NotNull]
         private readonly string _defaultContentLanguage;
 
-        [CanBeNull]
-        private string _value;
+        private string? _value;
 
         private bool _isLoaded;
 
@@ -47,8 +40,8 @@ namespace FubarDev.WebDavServer.Props.Dead
         /// <param name="store">The property store to store this property.</param>
         /// <param name="defaultContentLanguage">The content language to return when none was specified.</param>
         /// <param name="cost">The cost of querying the display names property.</param>
-        public GetContentLanguageProperty([NotNull] IEntry entry, [NotNull] IPropertyStore store, [NotNull] string defaultContentLanguage = "en", int? cost = null)
-            : base(PropertyName, null, cost ?? store.Cost, null, null, WebDavXml.Dav + "contentlanguage")
+        public GetContentLanguageProperty(IEntry entry, IPropertyStore store, string defaultContentLanguage = "en", int? cost = null)
+            : base(PropertyName, null, cost ?? store.Cost, new StringConverter(), WebDavXml.Dav + "contentlanguage")
         {
             _entry = entry;
             _store = store;
@@ -61,10 +54,10 @@ namespace FubarDev.WebDavServer.Props.Dead
         /// <param name="ct">The cancellation token.</param>
         /// <returns>A tuple where the first item indicates whether the value was read from the property store and
         /// the second item is the value to be returned as value for this property.</returns>
-        public async Task<ValueTuple<bool, string>> TryGetValueAsync(CancellationToken ct)
+        public async Task<(bool wasSet, string value)> TryGetValueAsync(CancellationToken ct)
         {
             var result = await GetValueAsync(ct).ConfigureAwait(false);
-            return ValueTuple.Create(_value != null, result);
+            return (_value != null, result);
         }
 
         /// <inheritdoc />

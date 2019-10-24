@@ -65,7 +65,7 @@ namespace FubarDev.WebDavServer.BufferPools
         public void Dispose()
         {
             _arrayPool.Return(_buffer);
-            _buffer = null;
+            _buffer = Array.Empty<byte>();
         }
     }
 }

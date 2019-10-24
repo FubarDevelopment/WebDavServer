@@ -17,8 +17,6 @@ using FubarDev.WebDavServer.Props.Filters;
 using FubarDev.WebDavServer.Props.Live;
 using FubarDev.WebDavServer.Utils;
 
-using JetBrains.Annotations;
-
 using Microsoft.Extensions.Options;
 
 namespace FubarDev.WebDavServer.Handlers.Impl
@@ -28,10 +26,8 @@ namespace FubarDev.WebDavServer.Handlers.Impl
     /// </summary>
     public class PropFindHandler : IPropFindHandler
     {
-        [NotNull]
         private readonly IWebDavContext _context;
 
-        [NotNull]
         private readonly PropFindHandlerOptions _options;
 
         /// <summary>
@@ -40,7 +36,7 @@ namespace FubarDev.WebDavServer.Handlers.Impl
         /// <param name="fileSystem">The root file system.</param>
         /// <param name="context">The WebDAV request context.</param>
         /// <param name="options">The options for this handler.</param>
-        public PropFindHandler([NotNull]IFileSystem fileSystem, [NotNull]IWebDavContext context, [CanBeNull] IOptions<PropFindHandlerOptions> options)
+        public PropFindHandler(IFileSystem fileSystem, IWebDavContext context, IOptions<PropFindHandlerOptions>? options)
         {
             _options = options?.Value ?? new PropFindHandlerOptions();
             _context = context;
@@ -53,11 +49,10 @@ namespace FubarDev.WebDavServer.Handlers.Impl
         /// <summary>
         /// Gets the root file system.
         /// </summary>
-        [NotNull]
         public IFileSystem FileSystem { get; }
 
         /// <inheritdoc />
-        public async Task<IWebDavResult> PropFindAsync(string path, propfind request, CancellationToken cancellationToken)
+        public async Task<IWebDavResult> PropFindAsync(string path, propfind? request, CancellationToken cancellationToken)
         {
             var selectionResult = await FileSystem.SelectAsync(path, cancellationToken).ConfigureAwait(false);
             if (selectionResult.IsMissing)
@@ -102,13 +97,9 @@ namespace FubarDev.WebDavServer.Handlers.Impl
                     }
 
                     var remainingDepth = depth.OrderValue - (depth != DepthHeader.Infinity ? 1 : 0);
-                    using (var entriesEnumerator = collector.GetEntries(remainingDepth).GetEnumerator())
-                    {
-                        while (await entriesEnumerator.MoveNext(cancellationToken).ConfigureAwait(false))
-                        {
-                            entries.Add(entriesEnumerator.Current);
-                        }
-                    }
+                    var subEntries = await collector.GetEntries(remainingDepth)
+                        .ToListAsync(cancellationToken).ConfigureAwait(false);
+                    entries.AddRange(subEntries);
                 }
             }
 
@@ -133,9 +124,7 @@ namespace FubarDev.WebDavServer.Handlers.Impl
             throw new WebDavException(WebDavStatusCode.Forbidden);
         }
 
-        [NotNull]
-        [ItemNotNull]
-        private async Task<IWebDavResult> HandlePropAsync([NotNull] prop prop, [NotNull][ItemNotNull] IReadOnlyCollection<IEntry> entries, CancellationToken cancellationToken)
+        private async Task<IWebDavResult> HandlePropAsync(prop prop, IReadOnlyCollection<IEntry> entries, CancellationToken cancellationToken)
         {
             var responses = new List<response>();
             foreach (var entry in entries)
@@ -168,25 +157,19 @@ namespace FubarDev.WebDavServer.Handlers.Impl
             return new WebDavResult<multistatus>(WebDavStatusCode.MultiStatus, result);
         }
 
-        [NotNull]
-        [ItemNotNull]
-        private Task<IWebDavResult> HandleAllPropAsync([NotNull] propfind request, [NotNull][ItemNotNull] IEnumerable<IEntry> entries, CancellationToken cancellationToken)
+        private Task<IWebDavResult> HandleAllPropAsync(propfind request, IEnumerable<IEntry> entries, CancellationToken cancellationToken)
         {
             var include = request.ItemsElementName.Select((x, i) => Tuple.Create(x, i)).Where(x => x.Item1 == ItemsChoiceType1.include).Select(x => (include)request.Items[x.Item2]).FirstOrDefault();
             return HandleAllPropAsync(include, entries, cancellationToken);
         }
 
-        [NotNull]
-        [ItemNotNull]
-        private Task<IWebDavResult> HandleAllPropAsync([NotNull][ItemNotNull] IEnumerable<IEntry> entries, CancellationToken cancellationToken)
+        private Task<IWebDavResult> HandleAllPropAsync(IEnumerable<IEntry> entries, CancellationToken cancellationToken)
         {
-            return HandleAllPropAsync((include)null, entries, cancellationToken);
+            return HandleAllPropAsync((include?)null, entries, cancellationToken);
         }
 
         // ReSharper disable once UnusedParameter.Local
-        [NotNull]
-        [ItemNotNull]
-        private async Task<IWebDavResult> HandleAllPropAsync([CanBeNull] include include, [NotNull][ItemNotNull] IEnumerable<IEntry> entries, CancellationToken cancellationToken)
+        private async Task<IWebDavResult> HandleAllPropAsync(include? include, IEnumerable<IEntry> entries, CancellationToken cancellationToken)
         {
             var responses = new List<response>();
             foreach (var entry in entries)
@@ -219,9 +202,7 @@ namespace FubarDev.WebDavServer.Handlers.Impl
             return new WebDavResult<multistatus>(WebDavStatusCode.MultiStatus, result);
         }
 
-        [NotNull]
-        [ItemNotNull]
-        private async Task<IWebDavResult> HandlePropNameAsync([NotNull][ItemNotNull] IEnumerable<IEntry> entries, CancellationToken cancellationToken)
+        private async Task<IWebDavResult> HandlePropNameAsync(IEnumerable<IEntry> entries, CancellationToken cancellationToken)
         {
             var responses = new List<response>();
             foreach (var entry in entries)
@@ -256,24 +237,20 @@ namespace FubarDev.WebDavServer.Handlers.Impl
 
         private class PropertyCollector
         {
-            [NotNull]
             private readonly PropFindHandler _handler;
 
-            [NotNull]
             private readonly IWebDavContext _host;
 
-            [NotNull]
-            [ItemNotNull]
             private readonly IPropertyFilter[] _filters;
 
-            public PropertyCollector([NotNull] PropFindHandler handler, [NotNull] IWebDavContext host, [NotNull][ItemNotNull] params IPropertyFilter[] filters)
+            public PropertyCollector(PropFindHandler handler, IWebDavContext host, params IPropertyFilter[] filters)
             {
                 _handler = handler;
                 _host = host;
                 _filters = filters;
             }
 
-            public async Task<IReadOnlyCollection<propstat>> GetPropertiesAsync([NotNull] IEntry entry, int maxCost, CancellationToken cancellationToken)
+            public async Task<IReadOnlyCollection<propstat>> GetPropertiesAsync(IEntry entry, int maxCost, CancellationToken cancellationToken)
             {
                 foreach (var filter in _filters)
                 {
@@ -281,33 +258,31 @@ namespace FubarDev.WebDavServer.Handlers.Impl
                 }
 
                 var propElements = new List<XElement>();
-                using (var propsEnumerator = entry.GetProperties(_host.Dispatcher, property => _filters.All(x => x.IsAllowed(property))).GetEnumerator())
+                var properties = entry.GetProperties(
+                        _host.Dispatcher,
+                        property => _filters.All(x => x.IsAllowed(property)))
+                    .Where(x => x.Cost <= maxCost);
+                await foreach (var property in properties.WithCancellation(cancellationToken).ConfigureAwait(false))
                 {
-                    while (await propsEnumerator.MoveNext(cancellationToken).ConfigureAwait(false))
+                    foreach (var filter in _filters)
                     {
-                        var property = propsEnumerator.Current;
-
-                        foreach (var filter in _filters)
-                        {
-                            filter.NotifyOfSelection(property);
-                        }
-
-                        XElement element;
-                        var lockDiscoveryProp = property as LockDiscoveryProperty;
-                        if (lockDiscoveryProp != null)
-                        {
-                            element = await lockDiscoveryProp.GetXmlValueAsync(
-                                _handler._options.OmitLockOwner,
-                                _handler._options.OmitLockToken,
-                                cancellationToken).ConfigureAwait(false);
-                        }
-                        else
-                        {
-                            element = await property.GetXmlValueAsync(cancellationToken).ConfigureAwait(false);
-                        }
-
-                        propElements.Add(element);
+                        filter.NotifyOfSelection(property);
                     }
+
+                    XElement element;
+                    if (property is LockDiscoveryProperty lockDiscoveryProp)
+                    {
+                        element = await lockDiscoveryProp.GetXmlValueAsync(
+                            _handler._options.OmitLockOwner,
+                            _handler._options.OmitLockToken,
+                            cancellationToken).ConfigureAwait(false);
+                    }
+                    else
+                    {
+                        element = await property.GetXmlValueAsync(cancellationToken).ConfigureAwait(false);
+                    }
+
+                    propElements.Add(element);
                 }
 
                 var result = new List<propstat>();
@@ -344,9 +319,7 @@ namespace FubarDev.WebDavServer.Handlers.Impl
                 return result;
             }
 
-            [NotNull]
-            [ItemNotNull]
-            public async Task<IReadOnlyCollection<propstat>> GetPropertyNamesAsync([NotNull] IEntry entry, CancellationToken cancellationToken)
+            public async Task<IReadOnlyCollection<propstat>> GetPropertyNamesAsync(IEntry entry, CancellationToken cancellationToken)
             {
                 foreach (var filter in _filters)
                 {
@@ -354,26 +327,22 @@ namespace FubarDev.WebDavServer.Handlers.Impl
                 }
 
                 var propElements = new List<XElement>();
-                using (var propsEnumerator = entry.GetProperties(_host.Dispatcher).GetEnumerator())
+                var properties = entry.GetProperties(_host.Dispatcher);
+                await foreach (var property in properties.WithCancellation(cancellationToken).ConfigureAwait(false))
                 {
-                    while (await propsEnumerator.MoveNext(cancellationToken).ConfigureAwait(false))
+                    if (!_filters.All(x => x.IsAllowed(property)))
                     {
-                        var property = propsEnumerator.Current;
-
-                        if (!_filters.All(x => x.IsAllowed(property)))
-                        {
-                            continue;
-                        }
-
-                        foreach (var filter in _filters)
-                        {
-                            filter.NotifyOfSelection(property);
-                        }
-
-                        var readableProp = property;
-                        var element = new XElement(readableProp.Name);
-                        propElements.Add(element);
+                        continue;
                     }
+
+                    foreach (var filter in _filters)
+                    {
+                        filter.NotifyOfSelection(property);
+                    }
+
+                    var readableProp = property;
+                    var element = new XElement(readableProp.Name);
+                    propElements.Add(element);
                 }
 
                 var result = new List<propstat>();

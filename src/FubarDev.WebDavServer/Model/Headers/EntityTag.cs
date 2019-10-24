@@ -11,8 +11,6 @@ using System.Xml.Linq;
 using FubarDev.WebDavServer.Props.Dead;
 using FubarDev.WebDavServer.Utils;
 
-using JetBrains.Annotations;
-
 namespace FubarDev.WebDavServer.Model.Headers
 {
     /// <summary>
@@ -34,7 +32,7 @@ namespace FubarDev.WebDavServer.Model.Headers
         {
         }
 
-        internal EntityTag(bool isWeak, [NotNull] string value)
+        private EntityTag(bool isWeak, string value)
         {
             IsWeak = isWeak;
             Value = value;
@@ -48,7 +46,6 @@ namespace FubarDev.WebDavServer.Model.Headers
         /// <summary>
         /// Gets the entity tag.
         /// </summary>
-        [NotNull]
         public string Value { get; }
 
         /// <summary>
@@ -86,7 +83,7 @@ namespace FubarDev.WebDavServer.Model.Headers
         /// <remarks>
         /// Returns a new strong entity tag when <paramref name="element"/> is <see langword="null"/>.
         /// </remarks>
-        public static EntityTag FromXml([CanBeNull] XElement element)
+        public static EntityTag FromXml(XElement? element)
         {
             if (element == null)
             {
@@ -101,13 +98,13 @@ namespace FubarDev.WebDavServer.Model.Headers
         /// </summary>
         /// <param name="s">The textual entity tag representation.</param>
         /// <returns>The found entity tags.</returns>
-        public static IEnumerable<EntityTag> Parse([NotNull] string s)
+        public static IEnumerable<EntityTag> Parse(string s)
         {
             var source = new StringSource(s);
             var result = Parse(source).ToList();
             if (!source.Empty)
             {
-                throw new ArgumentException($"{source.Remaining} is not a valid ETag", nameof(source));
+                throw new ArgumentException($@"{source.Remaining} is not a valid ETag", nameof(source));
             }
 
             return result;
@@ -144,7 +141,6 @@ namespace FubarDev.WebDavServer.Model.Headers
         /// Creates a <see cref="GetETagProperty"/> XML from this entity tag.
         /// </summary>
         /// <returns>The new <see cref="XElement"/>.</returns>
-        [NotNull]
         public XElement ToXml()
         {
             return new XElement(GetETagProperty.PropertyName, ToString());
@@ -172,7 +168,7 @@ namespace FubarDev.WebDavServer.Model.Headers
         /// <inheritdoc />
         public override bool Equals(object obj)
         {
-            return obj is EntityTag && Equals((EntityTag)obj);
+            return obj is EntityTag tag && Equals(tag);
         }
 
         /// <inheritdoc />
@@ -182,8 +178,7 @@ namespace FubarDev.WebDavServer.Model.Headers
                 ^ IsWeak.GetHashCode();
         }
 
-        [NotNull]
-        internal static IEnumerable<EntityTag> Parse([NotNull] StringSource source)
+        internal static IEnumerable<EntityTag> Parse(StringSource source)
         {
             while (!source.SkipWhiteSpace())
             {
@@ -204,7 +199,7 @@ namespace FubarDev.WebDavServer.Model.Headers
                 var etagText = source.GetUntil('"');
                 if (etagText == null)
                 {
-                    throw new ArgumentException($"{source.Remaining} is not a valid ETag", nameof(source));
+                    throw new ArgumentException($@"{source.Remaining} is not a valid ETag", nameof(source));
                 }
 
                 yield return new EntityTag(isWeak, etagText);

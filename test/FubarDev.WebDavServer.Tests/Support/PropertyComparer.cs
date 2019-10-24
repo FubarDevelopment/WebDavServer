@@ -20,8 +20,7 @@ namespace FubarDev.WebDavServer.Tests.Support
             var rightItems = right.ToDictionary(x => x.Name);
             foreach (var leftItem in left.Where(x => !propsToIgnore.Contains(x.Name)))
             {
-                XElement rightItem;
-                if (rightItems.TryGetValue(leftItem.Name, out rightItem))
+                if (rightItems.TryGetValue(leftItem.Name, out var rightItem))
                 {
                     var leftText = leftItem.ToString(SaveOptions.OmitDuplicateNamespaces | SaveOptions.DisableFormatting);
                     var rightText = rightItem.ToString(SaveOptions.OmitDuplicateNamespaces | SaveOptions.DisableFormatting);

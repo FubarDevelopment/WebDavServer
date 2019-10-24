@@ -2,6 +2,7 @@
 // Copyright (c) Fubar Development Junker. All rights reserved.
 // </copyright>
 
+using System;
 using System.Xml.Linq;
 
 namespace FubarDev.WebDavServer.Tests.Support
@@ -10,22 +11,22 @@ namespace FubarDev.WebDavServer.Tests.Support
     {
         private PropertyChangeItem(
             PropertyChange change,
-            XElement left,
-            XElement right)
+            XElement? left,
+            XElement? right)
         {
             Change = change;
             Left = left;
             Right = right;
-            Name = (left ?? right).Name;
+            Name = (left ?? right)?.Name ?? throw new InvalidOperationException("No name specified.");
         }
 
         public PropertyChange Change { get; }
 
         public XName Name { get; }
 
-        public XElement Left { get; }
+        public XElement? Left { get; }
 
-        public XElement Right { get; }
+        public XElement? Right { get; }
 
         public static PropertyChangeItem Added(XElement element)
         {

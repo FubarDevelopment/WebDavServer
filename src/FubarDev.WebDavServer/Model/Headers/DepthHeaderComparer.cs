@@ -4,8 +4,6 @@
 
 using System.Collections.Generic;
 
-using JetBrains.Annotations;
-
 namespace FubarDev.WebDavServer.Model.Headers
 {
     /// <summary>
@@ -16,7 +14,6 @@ namespace FubarDev.WebDavServer.Model.Headers
         /// <summary>
         /// Gets the default depth header comparer.
         /// </summary>
-        [NotNull]
         public static DepthHeaderComparer Default { get; } = new DepthHeaderComparer();
 
         /// <inheritdoc />

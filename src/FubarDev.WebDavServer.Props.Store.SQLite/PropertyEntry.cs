@@ -2,6 +2,9 @@
 // Copyright (c) Fubar Development Junker. All rights reserved.
 // </copyright>
 
+#nullable disable warnings
+#nullable enable annotations
+
 using SQLite;
 
 namespace FubarDev.WebDavServer.Props.Store.SQLite
@@ -38,7 +41,7 @@ namespace FubarDev.WebDavServer.Props.Store.SQLite
         /// Gets or sets the XML language identifier.
         /// </summary>
         [Column("lang")]
-        public string Language { get; set; }
+        public string? Language { get; set; }
 
         /// <summary>
         /// Gets or sets the XML element.

@@ -11,8 +11,6 @@ using FubarDev.WebDavServer.FileSystem.Mount;
 using FubarDev.WebDavServer.Locking;
 using FubarDev.WebDavServer.Props.Store;
 
-using JetBrains.Annotations;
-
 namespace FubarDev.WebDavServer.FileSystem.InMemory
 {
     /// <summary>
@@ -32,10 +30,10 @@ namespace FubarDev.WebDavServer.FileSystem.InMemory
         /// <param name="lockManager">The global lock manager.</param>
         /// <param name="propertyStoreFactory">The store for dead properties.</param>
         public InMemoryFileSystem(
-            [CanBeNull] ICollection mountPoint,
-            [NotNull] IPathTraversalEngine pathTraversalEngine,
-            ILockManager lockManager = null,
-            IPropertyStoreFactory propertyStoreFactory = null)
+            ICollection? mountPoint,
+            IPathTraversalEngine pathTraversalEngine,
+            ILockManager? lockManager = null,
+            IPropertyStoreFactory? propertyStoreFactory = null)
         {
             LockManager = lockManager;
             _pathTraversalEngine = pathTraversalEngine;
@@ -48,17 +46,16 @@ namespace FubarDev.WebDavServer.FileSystem.InMemory
         /// <summary>
         /// Gets the root collection.
         /// </summary>
-        [NotNull]
         public InMemoryDirectory RootCollection { get; }
 
         /// <inheritdoc />
         public AsyncLazy<ICollection> Root { get; }
 
         /// <inheritdoc />
-        public IPropertyStore PropertyStore { get; }
+        public IPropertyStore? PropertyStore { get; }
 
         /// <inheritdoc />
-        public ILockManager LockManager { get; }
+        public ILockManager? LockManager { get; }
 
         /// <inheritdoc />
         public bool SupportsRangedRead { get; } = true;

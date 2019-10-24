@@ -6,8 +6,6 @@ using System;
 using System.Collections.Generic;
 using System.Xml.Linq;
 
-using JetBrains.Annotations;
-
 namespace FubarDev.WebDavServer.Engines
 {
     /// <summary>
@@ -20,7 +18,7 @@ namespace FubarDev.WebDavServer.Engines
         /// </summary>
         /// <param name="status">The status of the action.</param>
         /// <param name="target">The element this status is for.</param>
-        public ActionResult(ActionStatus status, [NotNull] ITarget target)
+        public ActionResult(ActionStatus status, ITarget target)
         {
             Status = status;
             Target = target;
@@ -35,27 +33,22 @@ namespace FubarDev.WebDavServer.Engines
         /// <summary>
         /// Gets the target entry this action status is for.
         /// </summary>
-        [NotNull]
         public ITarget Target { get; }
 
         /// <summary>
         /// Gets or sets the destination URL for the <see cref="Target"/>.
         /// </summary>
-        [NotNull]
         public Uri Href { get; set; }
 
         /// <summary>
         /// Gets or sets the exception that occurred during the execution of the action.
         /// </summary>
-        [CanBeNull]
-        public Exception Exception { get; set; }
+        public Exception? Exception { get; set; }
 
         /// <summary>
         /// Gets or sets the names of properties that couldn't be set.
         /// </summary>
-        [CanBeNull]
-        [ItemNotNull]
-        public IReadOnlyCollection<XName> FailedProperties { get; set; }
+        public IReadOnlyCollection<XName>? FailedProperties { get; set; }
 
         /// <summary>
         /// Gets a value indicating whether the action failed.

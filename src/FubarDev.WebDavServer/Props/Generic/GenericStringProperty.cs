@@ -6,8 +6,6 @@ using System.Xml.Linq;
 
 using FubarDev.WebDavServer.Props.Converters;
 
-using JetBrains.Annotations;
-
 namespace FubarDev.WebDavServer.Props.Generic
 {
     /// <summary>
@@ -24,7 +22,7 @@ namespace FubarDev.WebDavServer.Props.Generic
         /// <param name="getValueAsyncFunc">The function to get the property value.</param>
         /// <param name="setValueAsyncFunc">The function to set the property value.</param>
         /// <param name="alternativeNames">Alternative property names.</param>
-        public GenericStringProperty([NotNull] XName name, [CanBeNull] string language, int cost, GetPropertyValueAsyncDelegate<string> getValueAsyncFunc, SetPropertyValueAsyncDelegate<string> setValueAsyncFunc, params XName[] alternativeNames)
+        public GenericStringProperty(XName name, string? language, int cost, GetPropertyValueAsyncDelegate<string> getValueAsyncFunc, SetPropertyValueAsyncDelegate<string> setValueAsyncFunc, params XName[] alternativeNames)
             : base(name, language, cost, new StringConverter(), getValueAsyncFunc, setValueAsyncFunc, alternativeNames)
         {
         }

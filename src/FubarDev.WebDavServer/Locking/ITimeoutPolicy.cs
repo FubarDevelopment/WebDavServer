@@ -5,8 +5,6 @@
 using System;
 using System.Collections.Generic;
 
-using JetBrains.Annotations;
-
 namespace FubarDev.WebDavServer.Locking
 {
     /// <summary>
@@ -19,6 +17,6 @@ namespace FubarDev.WebDavServer.Locking
         /// </summary>
         /// <param name="timeouts">The timeouts requested by the client.</param>
         /// <returns>The timeout to use.</returns>
-        TimeSpan SelectTimeout([NotNull] IReadOnlyCollection<TimeSpan> timeouts);
+        TimeSpan SelectTimeout(IReadOnlyCollection<TimeSpan> timeouts);
     }
 }

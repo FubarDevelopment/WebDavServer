@@ -3,6 +3,7 @@
 // </copyright>
 
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Xml.Linq;
@@ -10,39 +11,29 @@ using System.Xml.Linq;
 using FubarDev.WebDavServer.FileSystem;
 using FubarDev.WebDavServer.Props.Dead;
 
-using JetBrains.Annotations;
-
 namespace FubarDev.WebDavServer.Tests.Support
 {
     public static class EntryExtensions
     {
         public static Task<IReadOnlyCollection<XElement>> GetPropertyElementsAsync(
-            [NotNull] this IEntry entry,
-            [NotNull] IWebDavDispatcher dispatcher,
+            this IEntry entry,
+            IWebDavDispatcher dispatcher,
             CancellationToken ct)
         {
             return GetPropertyElementsAsync(entry, dispatcher, false, ct);
         }
 
         public static async Task<IReadOnlyCollection<XElement>> GetPropertyElementsAsync(
-            [NotNull] this IEntry entry,
-            [NotNull] IWebDavDispatcher dispatcher,
+            this IEntry entry,
+            IWebDavDispatcher dispatcher,
             bool skipEtag,
             CancellationToken ct)
         {
-            var result = new List<XElement>();
-            using (var propEnum = entry.GetProperties(dispatcher).GetEnumerator())
-            {
-                while (await propEnum.MoveNext(ct).ConfigureAwait(false))
-                {
-                    var prop = propEnum.Current;
-                    if (skipEtag && prop.Name == GetETagProperty.PropertyName)
-                        continue;
-                    var element = await prop.GetXmlValueAsync(ct).ConfigureAwait(false);
-                    result.Add(element);
-                }
-            }
-
+            var result = await entry.GetProperties(dispatcher)
+                .Where(x => !skipEtag || x.Name != GetETagProperty.PropertyName)
+                .SelectAwait(async x => await x.GetXmlValueAsync(ct).ConfigureAwait(false))
+                .ToListAsync(ct)
+                .ConfigureAwait(false);
             return result;
         }
     }

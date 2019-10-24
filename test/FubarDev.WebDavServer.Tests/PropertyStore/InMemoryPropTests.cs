@@ -12,8 +12,6 @@ using FubarDev.WebDavServer.Props.Dead;
 using FubarDev.WebDavServer.Props.Store;
 using FubarDev.WebDavServer.Tests.Support.ServiceBuilders;
 
-using JetBrains.Annotations;
-
 using Microsoft.Extensions.DependencyInjection;
 
 using Xunit;
@@ -36,13 +34,12 @@ namespace FubarDev.WebDavServer.Tests.PropertyStore
 
         public IFileSystem FileSystem { get; }
 
-        [NotNull]
         public IPropertyStore PropertyStore
         {
             get
             {
                 Assert.NotNull(FileSystem.PropertyStore);
-                return FileSystem.PropertyStore;
+                return FileSystem.PropertyStore!;
             }
         }
 
@@ -119,7 +116,9 @@ namespace FubarDev.WebDavServer.Tests.PropertyStore
 
         private async Task<DisplayNameProperty> GetDisplayNamePropertyAsync(IEntry entry, CancellationToken ct)
         {
-            var untypedDisplayNameProperty = await entry.GetProperties(Dispatcher).Single(x => x.Name == DisplayNameProperty.PropertyName, ct).ConfigureAwait(false);
+            var untypedDisplayNameProperty = await entry.GetProperties(Dispatcher)
+                .SingleAsync(x => x.Name == DisplayNameProperty.PropertyName, ct)
+                .ConfigureAwait(false);
             Assert.NotNull(untypedDisplayNameProperty);
             var displayNameProperty = Assert.IsType<DisplayNameProperty>(untypedDisplayNameProperty);
             return displayNameProperty;
@@ -127,7 +126,9 @@ namespace FubarDev.WebDavServer.Tests.PropertyStore
 
         private async Task<GetContentTypeProperty> GetContentTypePropertyAsync(IEntry entry, CancellationToken ct)
         {
-            var untypedContentTypeProperty = await entry.GetProperties(Dispatcher).Single(x => x.Name == GetContentTypeProperty.PropertyName, ct).ConfigureAwait(false);
+            var untypedContentTypeProperty = await entry.GetProperties(Dispatcher)
+                .SingleAsync(x => x.Name == GetContentTypeProperty.PropertyName, ct)
+                .ConfigureAwait(false);
             Assert.NotNull(untypedContentTypeProperty);
             var contentTypeProperty = Assert.IsType<GetContentTypeProperty>(untypedContentTypeProperty);
             return contentTypeProperty;

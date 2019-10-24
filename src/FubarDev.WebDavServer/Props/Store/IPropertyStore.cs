@@ -11,8 +11,6 @@ using FubarDev.WebDavServer.FileSystem;
 using FubarDev.WebDavServer.Model.Headers;
 using FubarDev.WebDavServer.Props.Dead;
 
-using JetBrains.Annotations;
-
 namespace FubarDev.WebDavServer.Props.Store
 {
     /// <summary>
@@ -33,9 +31,7 @@ namespace FubarDev.WebDavServer.Props.Store
         /// <param name="cancellationToken">The cancellation token</param>
         /// <returns>The <see cref="XElement"/> for the given dead property</returns>
         /// <remarks>A <see cref="GetETagProperty"/> will not be returned by this function.</remarks>
-        [NotNull]
-        [ItemCanBeNull]
-        Task<XElement> GetAsync([NotNull] IEntry entry, [NotNull] XName name, CancellationToken cancellationToken);
+        Task<XElement?> GetAsync(IEntry entry, XName name, CancellationToken cancellationToken);
 
         /// <summary>
         /// Sets a dead property for the given <paramref name="entry"/> to the given <paramref name="element"/>
@@ -45,8 +41,7 @@ namespace FubarDev.WebDavServer.Props.Store
         /// <param name="cancellationToken">The cancellation token</param>
         /// <returns>The async task</returns>
         /// <remarks>A <see cref="GetETagProperty"/> cannot be updated by this function.</remarks>
-        [NotNull]
-        Task SetAsync([NotNull] IEntry entry, [NotNull] XElement element, CancellationToken cancellationToken);
+        Task SetAsync(IEntry entry, XElement element, CancellationToken cancellationToken);
 
         /// <summary>
         /// Removes a dead property with a given <paramref name="name"/> from the given <paramref name="entry"/>
@@ -56,8 +51,7 @@ namespace FubarDev.WebDavServer.Props.Store
         /// <param name="cancellationToken">The cancellation token</param>
         /// <returns><see langword="true"/> when there was a dead property with the given <paramref name="name"/> that could be removed</returns>
         /// <remarks>A <see cref="GetETagProperty"/> cannot be removed by this function.</remarks>
-        [NotNull]
-        Task<bool> RemoveAsync([NotNull] IEntry entry, [NotNull] XName name, CancellationToken cancellationToken);
+        Task<bool> RemoveAsync(IEntry entry, XName name, CancellationToken cancellationToken);
 
         /// <summary>
         /// Gets all dead properties for a given <paramref name="entry"/>
@@ -66,9 +60,7 @@ namespace FubarDev.WebDavServer.Props.Store
         /// <param name="cancellationToken">The cancellation token</param>
         /// <returns>The collection of all dead properties</returns>
         /// <remarks>A <see cref="GetETagProperty"/> will not be returned by this function.</remarks>
-        [NotNull]
-        [ItemNotNull]
-        Task<IReadOnlyCollection<XElement>> GetAsync([NotNull] IEntry entry, CancellationToken cancellationToken);
+        Task<IReadOnlyCollection<XElement>> GetAsync(IEntry entry, CancellationToken cancellationToken);
 
         /// <summary>
         /// Sets all given dead <paramref name="properties"/> for the given <paramref name="entry"/>
@@ -78,8 +70,7 @@ namespace FubarDev.WebDavServer.Props.Store
         /// <param name="cancellationToken">The cancellation token</param>
         /// <returns>The async task</returns>
         /// <remarks>A <see cref="GetETagProperty"/> cannot be updated using this method</remarks>
-        [NotNull]
-        Task SetAsync([NotNull] IEntry entry, [NotNull] [ItemNotNull] IEnumerable<XElement> properties, CancellationToken cancellationToken);
+        Task SetAsync(IEntry entry, IEnumerable<XElement> properties, CancellationToken cancellationToken);
 
         /// <summary>
         /// Remove multiple dead properties by its name at once from the given <paramref name="entry"/>
@@ -90,9 +81,7 @@ namespace FubarDev.WebDavServer.Props.Store
         /// <returns>A collection of booleans where a <see langword="true"/> value indicates that there was a dead property for a given
         /// name that could be removed from the <paramref name="entry"/>. A <see cref="GetETagProperty"/> cannot be removed
         /// by this function.</returns>
-        [NotNull]
-        [ItemNotNull]
-        Task<IReadOnlyCollection<bool>> RemoveAsync([NotNull] IEntry entry, [NotNull] IEnumerable<XName> names, CancellationToken cancellationToken);
+        Task<IReadOnlyCollection<bool>> RemoveAsync(IEntry entry, IEnumerable<XName> names, CancellationToken cancellationToken);
 
         /// <summary>
         /// Remove all dead propertied (including a probably exting <see cref="GetETagProperty"/>) from a given <paramref name="entry"/>
@@ -100,8 +89,7 @@ namespace FubarDev.WebDavServer.Props.Store
         /// <param name="entry">The entry to remove all the dead properties from</param>
         /// <param name="cancellationToken">The cancellation token</param>
         /// <returns>The async task</returns>
-        [NotNull]
-        Task RemoveAsync([NotNull] IEntry entry, CancellationToken cancellationToken);
+        Task RemoveAsync(IEntry entry, CancellationToken cancellationToken);
 
         /// <summary>
         /// Creates a dead property by its <paramref name="name"/> for a given <paramref name="entry"/>
@@ -109,8 +97,7 @@ namespace FubarDev.WebDavServer.Props.Store
         /// <param name="entry">The entry to create the dead property with the given <paramref name="name"/> for</param>
         /// <param name="name">The name of the dead property to create for the given <paramref name="entry"/> for</param>
         /// <returns>The created dead property with the given <paramref name="name"/> for the given <paramref name="entry"/></returns>
-        [NotNull]
-        IDeadProperty Create([NotNull] IEntry entry, [NotNull] XName name);
+        IDeadProperty Create(IEntry entry, XName name);
 
         /// <summary>
         /// Loads the dead property with the given <paramref name="name"/> into a <see cref="IDeadProperty"/> implementation
@@ -119,9 +106,7 @@ namespace FubarDev.WebDavServer.Props.Store
         /// <param name="name">The name of the dead property</param>
         /// <param name="cancellationToken">The cancellation token</param>
         /// <returns>The implementation of the dead property</returns>
-        [NotNull]
-        [ItemNotNull]
-        Task<IDeadProperty> LoadAsync([NotNull] IEntry entry, [NotNull] XName name, CancellationToken cancellationToken);
+        Task<IDeadProperty> LoadAsync(IEntry entry, XName name, CancellationToken cancellationToken);
 
         /// <summary>
         /// Loads all dead properties for a given <paramref name="entry"/> into <see cref="IDeadProperty"/> implementations
@@ -129,9 +114,7 @@ namespace FubarDev.WebDavServer.Props.Store
         /// <param name="entry">The entry to load the dead properties for</param>
         /// <param name="cancellationToken">The cancellation token</param>
         /// <returns>The collection of the loaded dead properties</returns>
-        [NotNull]
-        [ItemNotNull]
-        Task<IReadOnlyCollection<IDeadProperty>> LoadAsync([NotNull] IEntry entry, CancellationToken cancellationToken);
+        Task<IReadOnlyCollection<IDeadProperty>> LoadAsync(IEntry entry, CancellationToken cancellationToken);
 
         /// <summary>
         /// Gets the entity tag for a given <paramref name="entry"/>
@@ -139,8 +122,7 @@ namespace FubarDev.WebDavServer.Props.Store
         /// <param name="entry">The entry to get the entity tag for</param>
         /// <param name="cancellationToken">The cancellation token</param>
         /// <returns>The loaded entity tag</returns>
-        [NotNull]
-        Task<EntityTag> GetETagAsync([NotNull] IEntry entry, CancellationToken cancellationToken);
+        Task<EntityTag> GetETagAsync(IEntry entry, CancellationToken cancellationToken);
 
         /// <summary>
         /// Updates an entity tag for a given <paramref name="entry"/>
@@ -148,7 +130,6 @@ namespace FubarDev.WebDavServer.Props.Store
         /// <param name="entry">The entry to get the entity tag for</param>
         /// <param name="cancellationToken">The cancellation token</param>
         /// <returns>The updated entity tag</returns>
-        [NotNull]
-        Task<EntityTag> UpdateETagAsync([NotNull] IEntry entry, CancellationToken cancellationToken);
+        Task<EntityTag> UpdateETagAsync(IEntry entry, CancellationToken cancellationToken);
     }
 }

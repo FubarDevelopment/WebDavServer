@@ -17,7 +17,7 @@ namespace FubarDev.WebDavServer.Props.Store.TextFile
         /// <summary>
         /// Gets or sets the root folder where the properties are stored.
         /// </summary>
-        public string RootFolder { get; set; }
+        public string? RootFolder { get; set; }
 
         /// <summary>
         /// Gets or sets a value indicating whether the properties are stored in the same place as the

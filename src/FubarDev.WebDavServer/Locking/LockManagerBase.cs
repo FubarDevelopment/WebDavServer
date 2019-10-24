@@ -6,6 +6,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Diagnostics.Contracts;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
@@ -13,8 +14,6 @@ using System.Threading.Tasks;
 using FubarDev.WebDavServer.FileSystem;
 using FubarDev.WebDavServer.Model;
 using FubarDev.WebDavServer.Model.Headers;
-
-using JetBrains.Annotations;
 
 using Microsoft.Extensions.Logging;
 
@@ -31,16 +30,12 @@ namespace FubarDev.WebDavServer.Locking
     {
         private static readonly Uri _baseUrl = new Uri("http://localhost/");
 
-        [NotNull]
         private readonly ILockCleanupTask _cleanupTask;
 
-        [NotNull]
         private readonly ISystemClock _systemClock;
 
-        [NotNull]
         private readonly ILogger _logger;
 
-        [NotNull]
         private readonly ILockTimeRounding _rounding;
 
         /// <summary>
@@ -50,7 +45,7 @@ namespace FubarDev.WebDavServer.Locking
         /// <param name="systemClock">The system clock interface.</param>
         /// <param name="logger">The logger.</param>
         /// <param name="options">The options of the lock manager.</param>
-        protected LockManagerBase([NotNull] ILockCleanupTask cleanupTask, [NotNull] ISystemClock systemClock, [NotNull] ILogger logger, [CanBeNull] ILockManagerOptions options = null)
+        protected LockManagerBase(ILockCleanupTask cleanupTask, ISystemClock systemClock, ILogger logger, ILockManagerOptions? options = null)
         {
             _rounding = options?.Rounding ?? new DefaultLockTimeRounding(DefaultLockTimeRoundingMode.OneSecond);
             _cleanupTask = cleanupTask;
@@ -59,10 +54,10 @@ namespace FubarDev.WebDavServer.Locking
         }
 
         /// <inheritdoc />
-        public event EventHandler<LockEventArgs> LockAdded;
+        public event EventHandler<LockEventArgs>? LockAdded;
 
         /// <inheritdoc />
-        public event EventHandler<LockEventArgs> LockReleased;
+        public event EventHandler<LockEventArgs>? LockReleased;
 
         private enum LockCompareResult
         {
@@ -82,8 +77,6 @@ namespace FubarDev.WebDavServer.Locking
             /// </summary>
             /// <param name="cancellationToken">The cancellation token.</param>
             /// <returns>The collection of all active locks.</returns>
-            [NotNull]
-            [ItemNotNull]
             Task<IReadOnlyCollection<IActiveLock>> GetActiveLocksAsync(CancellationToken cancellationToken);
 
             /// <summary>
@@ -92,8 +85,7 @@ namespace FubarDev.WebDavServer.Locking
             /// <param name="activeLock">The active lock to add.</param>
             /// <param name="cancellationToken">The cancellation token.</param>
             /// <returns><see langword="true"/> when adding the lock succeeded.</returns>
-            [NotNull]
-            Task<bool> AddAsync([NotNull] IActiveLock activeLock, CancellationToken cancellationToken);
+            Task<bool> AddAsync(IActiveLock activeLock, CancellationToken cancellationToken);
 
             /// <summary>
             /// Updates the active lock.
@@ -101,8 +93,7 @@ namespace FubarDev.WebDavServer.Locking
             /// <param name="activeLock">The active lock with the updated values.</param>
             /// <param name="cancellationToken">The cancellation token.</param>
             /// <returns><see langword="true"/> when the lock was updated, <see langword="false"/> when the lock was added instead.</returns>
-            [NotNull]
-            Task<bool> UpdateAsync([NotNull] IActiveLock activeLock, CancellationToken cancellationToken);
+            Task<bool> UpdateAsync(IActiveLock activeLock, CancellationToken cancellationToken);
 
             /// <summary>
             /// Removes an active lock with the given <paramref name="stateToken"/>.
@@ -110,8 +101,7 @@ namespace FubarDev.WebDavServer.Locking
             /// <param name="stateToken">The state token of the active lock to remove.</param>
             /// <param name="cancellationToken">The cancellation token.</param>
             /// <returns><see langword="true"/> when a lock with the given <paramref name="stateToken"/> existed and could be removed.</returns>
-            [NotNull]
-            Task<bool> RemoveAsync([NotNull] string stateToken, CancellationToken cancellationToken);
+            Task<bool> RemoveAsync(string stateToken, CancellationToken cancellationToken);
 
             /// <summary>
             /// Gets an active lock by its <paramref name="stateToken"/>.
@@ -119,16 +109,13 @@ namespace FubarDev.WebDavServer.Locking
             /// <param name="stateToken">The state token to search for.</param>
             /// <param name="cancellationToken">The cancellation token.</param>
             /// <returns>The active lock for the state token or <see langword="null"/> when the lock wasn't found.</returns>
-            [NotNull]
-            [ItemCanBeNull]
-            Task<IActiveLock> GetAsync([NotNull] string stateToken, CancellationToken cancellationToken);
+            Task<IActiveLock?> GetAsync(string stateToken, CancellationToken cancellationToken);
 
             /// <summary>
             /// Commits the changes made during the transaction.
             /// </summary>
             /// <param name="cancellationToken">The cancellation token.</param>
             /// <returns>The async task.</returns>
-            [NotNull]
             Task CommitAsync(CancellationToken cancellationToken);
         }
 
@@ -138,7 +125,6 @@ namespace FubarDev.WebDavServer.Locking
         /// <summary>
         /// Gets the lock cleanup task.
         /// </summary>
-        [NotNull]
         protected ILockCleanupTask LockCleanupTask => _cleanupTask;
 
         /// <inheritdoc />
@@ -177,7 +163,7 @@ namespace FubarDev.WebDavServer.Locking
         /// <inheritdoc />
         public async Task<IImplicitLock> LockImplicitAsync(
             IFileSystem rootFileSystem,
-            IReadOnlyCollection<IfHeaderList> ifHeaderLists,
+            IReadOnlyCollection<IfHeaderList>? ifHeaderLists,
             ILock lockRequirements,
             CancellationToken cancellationToken)
         {
@@ -199,13 +185,14 @@ namespace FubarDev.WebDavServer.Locking
                 return new ImplicitLock(this, newLock);
             }
 
-            var firstConditionWithStateToken = successfulConditions.FirstOrDefault(x => x.Item2.RequiresStateToken);
-            if (firstConditionWithStateToken != null)
+            var firstConditionWithStateToken = successfulConditions.FirstOrDefault(x => x.Conditions.RequiresStateToken);
+            if (firstConditionWithStateToken != null && firstConditionWithStateToken.Path.TokenToLock != null)
             {
                 // Returns the list of locks matched by the first if list
                 var usedLocks = firstConditionWithStateToken
-                    .Item2.Conditions.Where(x => x.StateToken != null && !x.Not)
-                    .Select(x => firstConditionWithStateToken.Item1.TokenToLock[x.StateToken]).ToList();
+                    .Conditions.Conditions
+                    .Where(x => x.StateToken != null && !x.Not)
+                    .Select(x => firstConditionWithStateToken.Path.TokenToLock[x.StateToken!]).ToList();
                 return new ImplicitLock(usedLocks);
             }
 
@@ -332,7 +319,7 @@ namespace FubarDev.WebDavServer.Locking
         /// <inheritdoc />
         public async Task<LockReleaseStatus> ReleaseAsync(string path, Uri stateToken, CancellationToken cancellationToken)
         {
-            IActiveLock activeLock;
+            IActiveLock? activeLock;
             using (var transaction = await BeginTransactionAsync(cancellationToken).ConfigureAwait(false))
             {
                 activeLock = await transaction.GetAsync(stateToken.OriginalString, cancellationToken).ConfigureAwait(false);
@@ -481,12 +468,11 @@ namespace FubarDev.WebDavServer.Locking
         }
 
 #if USE_VARIANT_1
-        [NotNull]
         [ItemCanBeNull]
-        private async Task<IReadOnlyCollection<Tuple<PathInfo, IfHeaderList>>> FindMatchingIfConditionListAsync(
-            [NotNull] IFileSystem rootFileSystem,
-            [NotNull] [ItemNotNull] IReadOnlyCollection<IfHeaderList> ifHeaderLists,
-            [NotNull] ILock lockRequirements,
+        private async Task<IReadOnlyCollection<PathConditions>> FindMatchingIfConditionListAsync(
+            IFileSystem rootFileSystem,
+            IReadOnlyCollection<IfHeaderList> ifHeaderLists,
+            ILock lockRequirements,
             CancellationToken cancellationToken)
         {
             var lockRequirementUrl = BuildUrl(lockRequirements.Path);
@@ -531,7 +517,7 @@ namespace FubarDev.WebDavServer.Locking
             if (supportedIfConditions.Count == 0)
                 return null;
 
-            var successfulConditions = new List<Tuple<PathInfo, IfHeaderList>>();
+            var successfulConditions = new List<PathConditions>();
             lock (_syncRoot)
             {
                 foreach (var ifHeaderList in supportedIfConditions)
@@ -549,7 +535,7 @@ namespace FubarDev.WebDavServer.Locking
 
                     if (ifHeaderList.IsMatch(pathInfo.EntityTag, pathInfo.LockTokens))
                     {
-                        successfulConditions.Add(Tuple.Create(pathInfo, ifHeaderList));
+                        successfulConditions.Add(new PathConditions(pathInfo, ifHeaderList));
                     }
                 }
             }
@@ -559,12 +545,10 @@ namespace FubarDev.WebDavServer.Locking
 #endif
 
 #if USE_VARIANT_2
-        [NotNull]
-        [ItemCanBeNull]
-        private async Task<IReadOnlyCollection<Tuple<PathInfo, IfHeaderList>>> FindMatchingIfConditionListAsync(
-            [NotNull] IFileSystem rootFileSystem,
-            [NotNull] [ItemNotNull] IReadOnlyCollection<IfHeaderList> ifHeaderLists,
-            [NotNull] ILock lockRequirements,
+        private async Task<IReadOnlyCollection<PathConditions>?> FindMatchingIfConditionListAsync(
+            IFileSystem rootFileSystem,
+            IReadOnlyCollection<IfHeaderList> ifHeaderLists,
+            ILock lockRequirements,
             CancellationToken cancellationToken)
         {
             var lockRequirementUrl = BuildUrl(lockRequirements.Path);
@@ -592,7 +576,7 @@ namespace FubarDev.WebDavServer.Locking
                 .ToDictionary(x => x.Item1, x => x.Item2);
 
             // List of matches between path info and if header lists
-            var successfulConditions = new List<Tuple<PathInfo, IfHeaderList>>();
+            var successfulConditions = new List<PathConditions>();
             if (ifListLocks.Count == 0)
             {
                 return null;
@@ -630,9 +614,9 @@ namespace FubarDev.WebDavServer.Locking
                     }
                 }
 
-                if (ifHeaderList.IsMatch(pathInfo.EntityTag, pathInfo.LockTokens))
+                if (pathInfo.LockTokens != null && ifHeaderList.IsMatch(pathInfo.EntityTag, pathInfo.LockTokens))
                 {
-                    successfulConditions.Add(Tuple.Create(pathInfo, ifHeaderList));
+                    successfulConditions.Add(new PathConditions(pathInfo, ifHeaderList));
                 }
             }
 
@@ -704,11 +688,24 @@ namespace FubarDev.WebDavServer.Locking
         {
             public EntityTag? EntityTag { get; set; }
 
-            public IReadOnlyCollection<IActiveLock> ActiveLocks { get; set; }
+            public IReadOnlyCollection<IActiveLock>? ActiveLocks { get; set; }
 
-            public IDictionary<Uri, IActiveLock> TokenToLock { get; set; }
+            public IDictionary<Uri, IActiveLock>? TokenToLock { get; set; }
 
-            public IReadOnlyCollection<Uri> LockTokens { get; set; }
+            public IReadOnlyCollection<Uri>? LockTokens { get; set; }
+        }
+
+        private class PathConditions
+        {
+            public PathConditions(PathInfo path, IfHeaderList conditions)
+            {
+                Path = path;
+                Conditions = conditions;
+            }
+
+            public PathInfo Path { get; }
+
+            public IfHeaderList Conditions { get; }
         }
     }
 }

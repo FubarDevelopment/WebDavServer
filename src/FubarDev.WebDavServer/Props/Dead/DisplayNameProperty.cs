@@ -9,17 +9,15 @@ using System.Xml.Linq;
 
 using FubarDev.WebDavServer.FileSystem;
 using FubarDev.WebDavServer.Model;
-using FubarDev.WebDavServer.Props.Generic;
+using FubarDev.WebDavServer.Props.Converters;
 using FubarDev.WebDavServer.Props.Store;
-
-using JetBrains.Annotations;
 
 namespace FubarDev.WebDavServer.Props.Dead
 {
     /// <summary>
     /// The <c>displayname</c> property.
     /// </summary>
-    public class DisplayNameProperty : GenericStringProperty, IDeadProperty
+    public class DisplayNameProperty : SimpleConvertingProperty<string>, IDeadProperty
     {
         /// <summary>
         /// The XML name of the property.
@@ -32,7 +30,7 @@ namespace FubarDev.WebDavServer.Props.Dead
 
         private readonly bool _hideExtension;
 
-        private string _value;
+        private string? _value;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="DisplayNameProperty"/> class.
@@ -41,8 +39,8 @@ namespace FubarDev.WebDavServer.Props.Dead
         /// <param name="store">The property store to store this property.</param>
         /// <param name="hideExtension">Hide the extension from the display name.</param>
         /// <param name="cost">The cost of querying the display names property.</param>
-        public DisplayNameProperty([NotNull] IEntry entry, [NotNull] IPropertyStore store, bool hideExtension, int? cost = null)
-            : base(PropertyName, null, cost ?? store.Cost, null, null)
+        public DisplayNameProperty(IEntry entry, IPropertyStore store, bool hideExtension, int? cost = null)
+            : base(PropertyName, null, cost ?? store.Cost, new StringConverter())
         {
             _entry = entry;
             _store = store;

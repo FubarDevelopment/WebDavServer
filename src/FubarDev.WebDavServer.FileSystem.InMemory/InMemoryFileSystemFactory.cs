@@ -10,8 +10,6 @@ using FubarDev.WebDavServer.Locking;
 using FubarDev.WebDavServer.Props.Store;
 using FubarDev.WebDavServer.Utils;
 
-using JetBrains.Annotations;
-
 namespace FubarDev.WebDavServer.FileSystem.InMemory
 {
     /// <summary>
@@ -19,30 +17,21 @@ namespace FubarDev.WebDavServer.FileSystem.InMemory
     /// </summary>
     public class InMemoryFileSystemFactory : IFileSystemFactory
     {
-        [NotNull]
         private readonly Dictionary<FileSystemKey, InMemoryFileSystem> _fileSystems = new Dictionary<FileSystemKey, InMemoryFileSystem>();
-
-        [NotNull]
         private readonly IPathTraversalEngine _pathTraversalEngine;
-
-        [CanBeNull]
-        private readonly ILockManager _lockManager;
-
-        [CanBeNull]
-        private readonly IPropertyStoreFactory _propertyStoreFactory;
+        private readonly ILockManager? _lockManager;
+        private readonly IPropertyStoreFactory? _propertyStoreFactory;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="InMemoryFileSystemFactory"/> class.
         /// </summary>
         /// <param name="pathTraversalEngine">The engine to traverse paths.</param>
-        /// <param name="systemClock">Interface for the access to the systems clock.</param>
         /// <param name="lockManager">The global lock manager.</param>
         /// <param name="propertyStoreFactory">The store for dead properties.</param>
         public InMemoryFileSystemFactory(
-            [NotNull] IPathTraversalEngine pathTraversalEngine,
-            [NotNull] ISystemClock systemClock,
-            ILockManager lockManager = null,
-            IPropertyStoreFactory propertyStoreFactory = null)
+            IPathTraversalEngine pathTraversalEngine,
+            ILockManager? lockManager = null,
+            IPropertyStoreFactory? propertyStoreFactory = null)
         {
             _pathTraversalEngine = pathTraversalEngine;
             _lockManager = lockManager;
@@ -50,15 +39,14 @@ namespace FubarDev.WebDavServer.FileSystem.InMemory
         }
 
         /// <inheritdoc />
-        public virtual IFileSystem CreateFileSystem(ICollection mountPoint, IPrincipal principal)
+        public virtual IFileSystem CreateFileSystem(ICollection? mountPoint, IPrincipal principal)
         {
             var userName = !principal.Identity.IsAnonymous()
                 ? principal.Identity.Name
                 : string.Empty;
 
             var key = new FileSystemKey(userName, mountPoint?.Path.OriginalString ?? string.Empty);
-            InMemoryFileSystem fileSystem;
-            if (!_fileSystems.TryGetValue(key, out fileSystem))
+            if (!_fileSystems.TryGetValue(key, out var fileSystem))
             {
                 fileSystem = new InMemoryFileSystem(mountPoint, _pathTraversalEngine, _lockManager, _propertyStoreFactory);
                 _fileSystems.Add(key, fileSystem);
@@ -78,7 +66,7 @@ namespace FubarDev.WebDavServer.FileSystem.InMemory
         /// <param name="mountPoint">The mount point.</param>
         /// <param name="principal">The principal the file system was created for.</param>
         /// <param name="fileSystem">The created file system.</param>
-        protected virtual void InitializeFileSystem([CanBeNull] ICollection mountPoint, [NotNull] IPrincipal principal, [NotNull] InMemoryFileSystem fileSystem)
+        protected virtual void InitializeFileSystem(ICollection? mountPoint, IPrincipal principal, InMemoryFileSystem fileSystem)
         {
         }
 
@@ -88,7 +76,7 @@ namespace FubarDev.WebDavServer.FileSystem.InMemory
         /// <param name="mountPoint">The mount point.</param>
         /// <param name="principal">The principal the file system was created for.</param>
         /// <param name="fileSystem">The created file system.</param>
-        protected virtual void UpdateFileSystem([CanBeNull] ICollection mountPoint, [NotNull] IPrincipal principal, [NotNull] InMemoryFileSystem fileSystem)
+        protected virtual void UpdateFileSystem(ICollection? mountPoint, IPrincipal principal, InMemoryFileSystem fileSystem)
         {
         }
 

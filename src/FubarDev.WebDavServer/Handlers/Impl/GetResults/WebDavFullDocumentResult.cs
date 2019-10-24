@@ -18,18 +18,15 @@ using FubarDev.WebDavServer.Props.Dead;
 using FubarDev.WebDavServer.Props.Live;
 using FubarDev.WebDavServer.Utils;
 
-using JetBrains.Annotations;
-
 namespace FubarDev.WebDavServer.Handlers.Impl.GetResults
 {
     internal class WebDavFullDocumentResult : WebDavResult
     {
-        [NotNull]
         private readonly IDocument _document;
 
         private readonly bool _returnFile;
 
-        public WebDavFullDocumentResult([NotNull] IDocument document, bool returnFile)
+        public WebDavFullDocumentResult(IDocument document, bool returnFile)
             : base(WebDavStatusCode.OK)
         {
             _document = document;
@@ -45,7 +42,7 @@ namespace FubarDev.WebDavServer.Handlers.Impl.GetResults
                 response.Headers["Accept-Ranges"] = new[] { "bytes" };
             }
 
-            var properties = await _document.GetProperties(response.Dispatcher).ToList(ct).ConfigureAwait(false);
+            var properties = await _document.GetProperties(response.Dispatcher).ToListAsync(ct).ConfigureAwait(false);
             var etagProperty = properties
                 .OfType<ITypedReadableProperty<EntityTag>>()
                 .FirstOrDefault(x => x.Name == GetETagProperty.PropertyName);
@@ -89,7 +86,7 @@ namespace FubarDev.WebDavServer.Handlers.Impl.GetResults
             }
         }
 
-        private async Task SetPropertiesToContentHeaderAsync([NotNull] HttpContent content, [NotNull][ItemNotNull] IReadOnlyCollection<IUntypedReadableProperty> properties, CancellationToken ct)
+        private async Task SetPropertiesToContentHeaderAsync(HttpContent content, IReadOnlyCollection<IUntypedReadableProperty> properties, CancellationToken ct)
         {
             var lastModifiedProp = properties.OfType<LastModifiedProperty>().FirstOrDefault();
             if (lastModifiedProp != null)
@@ -102,9 +99,9 @@ namespace FubarDev.WebDavServer.Handlers.Impl.GetResults
             if (contentLanguageProp != null)
             {
                 var propValue = await contentLanguageProp.TryGetValueAsync(ct).ConfigureAwait(false);
-                if (propValue.Item1)
+                if (propValue.wasSet)
                 {
-                    content.Headers.ContentLanguage.Add(propValue.Item2);
+                    content.Headers.ContentLanguage.Add(propValue.value);
                 }
             }
 

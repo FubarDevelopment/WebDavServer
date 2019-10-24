@@ -12,16 +12,14 @@ using FubarDev.WebDavServer.Props;
 using FubarDev.WebDavServer.Props.Dead;
 using FubarDev.WebDavServer.Props.Live;
 
-using JetBrains.Annotations;
-
 namespace FubarDev.WebDavServer.FileSystem.InMemory
 {
     /// <summary>
     /// Am in-memory implementation of a WebDAV entry (collection or document).
     /// </summary>
-    public abstract class InMemoryEntry : IEntry, IEntityTagEntry
+    public abstract class InMemoryEntry : IEntityTagEntry
     {
-        private readonly ICollection _parent;
+        private readonly ICollection? _parent;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="InMemoryEntry"/> class.
@@ -30,7 +28,7 @@ namespace FubarDev.WebDavServer.FileSystem.InMemory
         /// <param name="parent">The parent collection.</param>
         /// <param name="path">The root-relative path of this entry.</param>
         /// <param name="name">The name of the entry.</param>
-        protected InMemoryEntry(InMemoryFileSystem fileSystem, ICollection parent, Uri path, string name)
+        protected InMemoryEntry(InMemoryFileSystem fileSystem, ICollection? parent, Uri path, string name)
         {
             _parent = parent;
             Name = name;
@@ -46,7 +44,7 @@ namespace FubarDev.WebDavServer.FileSystem.InMemory
         public IFileSystem FileSystem { get; }
 
         /// <inheritdoc />
-        public ICollection Parent => _parent;
+        public ICollection? Parent => _parent;
 
         /// <inheritdoc />
         public Uri Path { get; }
@@ -67,14 +65,12 @@ namespace FubarDev.WebDavServer.FileSystem.InMemory
         /// <summary>
         /// Gets the file system.
         /// </summary>
-        [NotNull]
         protected InMemoryFileSystem InMemoryFileSystem { get; }
 
         /// <summary>
         /// Gets the parent collection.
         /// </summary>
-        [CanBeNull]
-        protected InMemoryDirectory InMemoryParent => _parent as InMemoryDirectory;
+        protected InMemoryDirectory? InMemoryParent => _parent as InMemoryDirectory;
 
         /// <inheritdoc />
         public Task<EntityTag> UpdateETagAsync(CancellationToken cancellationToken)
@@ -96,7 +92,6 @@ namespace FubarDev.WebDavServer.FileSystem.InMemory
         /// <param name="lastWriteTime">The new last write time.</param>
         /// <param name="cancellationToken">The cancellation token.</param>
         /// <returns>The async task.</returns>
-        [NotNull]
         public Task SetLastWriteTimeUtcAsync(DateTime lastWriteTime, CancellationToken cancellationToken)
         {
             if (InMemoryFileSystem.IsReadOnly)
@@ -114,7 +109,6 @@ namespace FubarDev.WebDavServer.FileSystem.InMemory
         /// <param name="creationTime">The new creation time.</param>
         /// <param name="cancellationToken">The cancellation token.</param>
         /// <returns>The async task.</returns>
-        [NotNull]
         public Task SetCreationTimeUtcAsync(DateTime creationTime, CancellationToken cancellationToken)
         {
             if (InMemoryFileSystem.IsReadOnly)

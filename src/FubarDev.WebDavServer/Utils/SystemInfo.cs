@@ -8,8 +8,6 @@ using System.Linq;
 using System.Security.Claims;
 using System.Security.Principal;
 
-using JetBrains.Annotations;
-
 namespace FubarDev.WebDavServer.Utils
 {
     /// <summary>
@@ -29,11 +27,9 @@ namespace FubarDev.WebDavServer.Utils
         /// <param name="homePath">The home path to use.</param>
         /// <param name="anonymousUserName">The user name for the unauthenticated user.</param>
         /// <returns>The home path of the user.</returns>
-        [NotNull]
-        public static string GetUserHomePath([NotNull] IPrincipal principal, string homePath = null, string anonymousUserName = null)
+        public static string GetUserHomePath(IPrincipal principal, string? homePath = null, string? anonymousUserName = null)
         {
-            var homePathPrinciple = principal as ClaimsPrincipal;
-            if (principal.Identity.IsAuthenticated && homePathPrinciple != null)
+            if (principal.Identity.IsAuthenticated && principal is ClaimsPrincipal homePathPrinciple)
             {
                 var homePathClaim = homePathPrinciple
                     .Claims
@@ -58,7 +54,6 @@ namespace FubarDev.WebDavServer.Utils
         /// Gets the home path information.
         /// </summary>
         /// <returns>The found home path.</returns>
-        [NotNull]
         public static HomePathInfo GetHomePath()
         {
             var homeEnvVars = new[] { "HOME", "USERPROFILE", "PUBLIC" };

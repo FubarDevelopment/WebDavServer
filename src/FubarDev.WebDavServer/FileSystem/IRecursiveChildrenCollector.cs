@@ -4,8 +4,6 @@
 
 using System.Collections.Generic;
 
-using JetBrains.Annotations;
-
 namespace FubarDev.WebDavServer.FileSystem
 {
     /// <summary>
@@ -18,7 +16,6 @@ namespace FubarDev.WebDavServer.FileSystem
         /// </summary>
         /// <param name="maxDepth">The maximum depth (<see cref="int.MaxValue"/> as infinity).</param>
         /// <returns>All found child entries.</returns>
-        [NotNull]
         IAsyncEnumerable<IEntry> GetEntries(int maxDepth);
     }
 }

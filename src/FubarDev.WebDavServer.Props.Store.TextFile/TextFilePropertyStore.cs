@@ -353,7 +353,6 @@ namespace FubarDev.WebDavServer.Props.Store.TextFile
             return result;
         }
 
-        // ReSharper disable once ClassNeverInstantiated.Local
         private class StoreData
         {
             public IDictionary<string, EntryInfo> Entries { get; } = new Dictionary<string, EntryInfo>();

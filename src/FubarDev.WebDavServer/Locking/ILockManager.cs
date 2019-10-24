@@ -10,8 +10,6 @@ using System.Threading.Tasks;
 using FubarDev.WebDavServer.FileSystem;
 using FubarDev.WebDavServer.Model.Headers;
 
-using JetBrains.Annotations;
-
 namespace FubarDev.WebDavServer.Locking
 {
     /// <summary>
@@ -22,12 +20,12 @@ namespace FubarDev.WebDavServer.Locking
         /// <summary>
         /// Gets called when a lock was added
         /// </summary>
-        event EventHandler<LockEventArgs> LockAdded;
+        event EventHandler<LockEventArgs>? LockAdded;
 
         /// <summary>
         /// Gets called when a lock was released
         /// </summary>
-        event EventHandler<LockEventArgs> LockReleased;
+        event EventHandler<LockEventArgs>? LockReleased;
 
         /// <summary>
         /// Gets the cost of a LOCK/UNLOCK or lock discovery operation.
@@ -40,8 +38,6 @@ namespace FubarDev.WebDavServer.Locking
         /// <param name="l">The lock to issue.</param>
         /// <param name="cancellationToken">The cancellation token.</param>
         /// <returns>Either the list of locks preventing issuing a lock or the active lock created.</returns>
-        [NotNull]
-        [ItemNotNull]
         Task<LockResult> LockAsync(ILock l, CancellationToken cancellationToken);
 
         /// <summary>
@@ -52,9 +48,7 @@ namespace FubarDev.WebDavServer.Locking
         /// <param name="lockRequirements">The requirements the found lock must meet.</param>
         /// <param name="cancellationToken">The cancellation token.</param>
         /// <returns>Either the list of locks preventing issuing a lock or the active lock created or reused.</returns>
-        [NotNull]
-        [ItemNotNull]
-        Task<IImplicitLock> LockImplicitAsync([NotNull] IFileSystem rootFileSystem, [CanBeNull] [ItemNotNull] IReadOnlyCollection<IfHeaderList> ifHeaderLists, ILock lockRequirements, CancellationToken cancellationToken);
+        Task<IImplicitLock> LockImplicitAsync(IFileSystem rootFileSystem, IReadOnlyCollection<IfHeaderList>? ifHeaderLists, ILock lockRequirements, CancellationToken cancellationToken);
 
         /// <summary>
         /// Tries to refresh a lock.
@@ -64,9 +58,7 @@ namespace FubarDev.WebDavServer.Locking
         /// <param name="timeout">The header containing the new timeouts.</param>
         /// <param name="cancellationToken">The cancellation token.</param>
         /// <returns>Either the list of locks preventing refreshing a lock or the refreshed lock.</returns>
-        [NotNull]
-        [ItemNotNull]
-        Task<LockRefreshResult> RefreshLockAsync([NotNull] IFileSystem rootFileSystem, [NotNull] IfHeader ifHeader, TimeSpan timeout, CancellationToken cancellationToken);
+        Task<LockRefreshResult> RefreshLockAsync(IFileSystem rootFileSystem, IfHeader ifHeader, TimeSpan timeout, CancellationToken cancellationToken);
 
         /// <summary>
         /// Releases a lock with the given state token.
@@ -75,8 +67,7 @@ namespace FubarDev.WebDavServer.Locking
         /// <param name="stateToken">The state token of the lock to release.</param>
         /// <param name="cancellationToken">The cancellation token.</param>
         /// <returns><see langword="true" /> when there was a lock to remove.</returns>
-        [NotNull]
-        Task<LockReleaseStatus> ReleaseAsync([NotNull] string path, [NotNull] Uri stateToken, CancellationToken cancellationToken);
+        Task<LockReleaseStatus> ReleaseAsync(string path, Uri stateToken, CancellationToken cancellationToken);
 
         /// <summary>
         /// Gets all active locks.
@@ -87,8 +78,6 @@ namespace FubarDev.WebDavServer.Locking
         /// </remarks>
         /// <param name="cancellationToken">The cancellation token.</param>
         /// <returns>Returns all active locks.</returns>
-        [NotNull]
-        [ItemNotNull]
         Task<IEnumerable<IActiveLock>> GetLocksAsync(CancellationToken cancellationToken);
 
         /// <summary>
@@ -103,8 +92,6 @@ namespace FubarDev.WebDavServer.Locking
         /// <param name="findParents">Indicates whether all locks that are a parent of the given <paramref name="path"/> should be returned.</param>
         /// <param name="cancellationToken">The cancellation token.</param>
         /// <returns>Returns all active locks.</returns>
-        [NotNull]
-        [ItemNotNull]
-        Task<IEnumerable<IActiveLock>> GetAffectedLocksAsync([NotNull] string path, bool findChildren, bool findParents, CancellationToken cancellationToken);
+        Task<IEnumerable<IActiveLock>> GetAffectedLocksAsync(string path, bool findChildren, bool findParents, CancellationToken cancellationToken);
     }
 }

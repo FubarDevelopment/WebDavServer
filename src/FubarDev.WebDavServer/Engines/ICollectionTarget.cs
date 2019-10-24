@@ -5,8 +5,6 @@
 using System.Threading;
 using System.Threading.Tasks;
 
-using JetBrains.Annotations;
-
 namespace FubarDev.WebDavServer.Engines
 {
     /// <summary>
@@ -30,8 +28,6 @@ namespace FubarDev.WebDavServer.Engines
         /// </summary>
         /// <param name="cancellationToken">The cancellation token.</param>
         /// <returns>The collection that's now a missing target (because it was deleted by this function).</returns>
-        [NotNull]
-        [ItemNotNull]
         Task<TMissing> DeleteAsync(CancellationToken cancellationToken);
 
         /// <summary>
@@ -40,16 +36,13 @@ namespace FubarDev.WebDavServer.Engines
         /// <param name="name">The name of the child element.</param>
         /// <param name="cancellationToken">The cancellation token.</param>
         /// <returns>The target which might be missing or a collection or document.</returns>
-        [NotNull]
-        [ItemNotNull]
-        Task<ITarget> GetAsync([NotNull] string name, CancellationToken cancellationToken);
+        Task<ITarget> GetAsync(string name, CancellationToken cancellationToken);
 
         /// <summary>
         /// Creates a missing child element with the given <paramref name="name"/>.
         /// </summary>
         /// <param name="name">The name of the new child element.</param>
         /// <returns>The missing target.</returns>
-        [NotNull]
-        TMissing NewMissing([NotNull] string name);
+        TMissing NewMissing(string name);
     }
 }

@@ -2,6 +2,9 @@
 // Copyright (c) Fubar Development Junker. All rights reserved.
 // </copyright>
 
+#nullable disable warnings
+#nullable enable annotations
+
 using SQLite;
 
 namespace FubarDev.WebDavServer.FileSystem.SQLite

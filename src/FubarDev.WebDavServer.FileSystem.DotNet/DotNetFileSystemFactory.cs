@@ -8,8 +8,6 @@ using System.Security.Principal;
 using FubarDev.WebDavServer.Locking;
 using FubarDev.WebDavServer.Props.Store;
 
-using JetBrains.Annotations;
-
 using Microsoft.Extensions.Options;
 
 namespace FubarDev.WebDavServer.FileSystem.DotNet
@@ -19,16 +17,9 @@ namespace FubarDev.WebDavServer.FileSystem.DotNet
     /// </summary>
     public class DotNetFileSystemFactory : IFileSystemFactory
     {
-        [NotNull]
         private readonly IPathTraversalEngine _pathTraversalEngine;
-
-        [CanBeNull]
-        private readonly IPropertyStoreFactory _propertyStoreFactory;
-
-        [CanBeNull]
-        private readonly ILockManager _lockManager;
-
-        [NotNull]
+        private readonly IPropertyStoreFactory? _propertyStoreFactory;
+        private readonly ILockManager? _lockManager;
         private readonly DotNetFileSystemOptions _options;
 
         /// <summary>
@@ -39,10 +30,10 @@ namespace FubarDev.WebDavServer.FileSystem.DotNet
         /// <param name="propertyStoreFactory">The store for dead properties.</param>
         /// <param name="lockManager">The global lock manager.</param>
         public DotNetFileSystemFactory(
-            [NotNull] IOptions<DotNetFileSystemOptions> options,
-            [NotNull] IPathTraversalEngine pathTraversalEngine,
-            IPropertyStoreFactory propertyStoreFactory = null,
-            ILockManager lockManager = null)
+            IOptions<DotNetFileSystemOptions> options,
+            IPathTraversalEngine pathTraversalEngine,
+            IPropertyStoreFactory? propertyStoreFactory = null,
+            ILockManager? lockManager = null)
         {
             _pathTraversalEngine = pathTraversalEngine;
             _propertyStoreFactory = propertyStoreFactory;
@@ -51,7 +42,7 @@ namespace FubarDev.WebDavServer.FileSystem.DotNet
         }
 
         /// <inheritdoc />
-        public virtual IFileSystem CreateFileSystem(ICollection mountPoint, IPrincipal principal)
+        public virtual IFileSystem CreateFileSystem(ICollection? mountPoint, IPrincipal principal)
         {
             var rootFileSystemPath = Utils.SystemInfo.GetUserHomePath(
                 principal,

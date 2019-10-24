@@ -4,18 +4,15 @@
 
 using System;
 
-using JetBrains.Annotations;
-
 namespace FubarDev.WebDavServer.Utils
 {
     internal class StringSource
     {
-        [NotNull]
         private readonly string _s;
 
         private int _currentIndex;
 
-        public StringSource([NotNull] string s)
+        public StringSource(string s)
         {
             _s = s;
         }
@@ -34,12 +31,12 @@ namespace FubarDev.WebDavServer.Utils
             _currentIndex -= 1;
         }
 
-        public bool AdvanceIf([NotNull] string text)
+        public bool AdvanceIf(string text)
         {
             return AdvanceIf(text, StringComparison.Ordinal);
         }
 
-        public bool AdvanceIf([NotNull] string text, StringComparison comparer)
+        public bool AdvanceIf(string text, StringComparison comparer)
         {
             if (!_s.Substring(_currentIndex).StartsWith(text, comparer))
                 return false;
@@ -48,7 +45,6 @@ namespace FubarDev.WebDavServer.Utils
             return true;
         }
 
-        [NotNull]
         public StringSource Advance(int count)
         {
             _currentIndex += count;
@@ -67,8 +63,7 @@ namespace FubarDev.WebDavServer.Utils
             return Empty;
         }
 
-        [CanBeNull]
-        public string GetUntil(char ch)
+        public string? GetUntil(char ch)
         {
             var index = _s.IndexOf(ch, _currentIndex);
             if (index == -1)

@@ -14,8 +14,6 @@ using FubarDev.WebDavServer.Handlers.Impl.GetResults;
 using FubarDev.WebDavServer.Model;
 using FubarDev.WebDavServer.Utils;
 
-using JetBrains.Annotations;
-
 namespace FubarDev.WebDavServer.Handlers.Impl
 {
     /// <summary>
@@ -23,7 +21,6 @@ namespace FubarDev.WebDavServer.Handlers.Impl
     /// </summary>
     public class GetHeadHandler : IGetHandler, IHeadHandler
     {
-        [NotNull]
         private readonly IWebDavContext _context;
 
         /// <summary>
@@ -31,7 +28,7 @@ namespace FubarDev.WebDavServer.Handlers.Impl
         /// </summary>
         /// <param name="fileSystem">The root file system.</param>
         /// <param name="context">The WebDAV context.</param>
-        public GetHeadHandler([NotNull] IFileSystem fileSystem, [NotNull] IWebDavContext context)
+        public GetHeadHandler(IFileSystem fileSystem, IWebDavContext context)
         {
             _context = context;
             FileSystem = fileSystem;
@@ -43,7 +40,6 @@ namespace FubarDev.WebDavServer.Handlers.Impl
         /// <summary>
         /// Gets the root file system.
         /// </summary>
-        [NotNull]
         public IFileSystem FileSystem { get; }
 
         /// <inheritdoc />
@@ -59,7 +55,7 @@ namespace FubarDev.WebDavServer.Handlers.Impl
         }
 
         private async Task<IWebDavResult> HandleAsync(
-            [NotNull] string path,
+            string path,
             bool returnFile,
             CancellationToken cancellationToken)
         {

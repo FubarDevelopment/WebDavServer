@@ -62,7 +62,7 @@ namespace FubarDev.WebDavServer.Handlers.Impl
         }
 
         /// <inheritdoc />
-        protected override async Task<IRemoteTargetActions> CreateRemoteTargetActionsAsync(Uri destinationUrl, CancellationToken cancellationToken)
+        protected override async Task<IRemoteTargetActions?> CreateRemoteTargetActionsAsync(Uri destinationUrl, CancellationToken cancellationToken)
         {
             var remoteTargetActionsFactory = _serviceProvider.GetService<IRemoteCopyTargetActionsFactory>();
             if (remoteTargetActionsFactory != null)

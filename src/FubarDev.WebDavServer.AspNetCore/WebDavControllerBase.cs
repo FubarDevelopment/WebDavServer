@@ -22,7 +22,7 @@ namespace FubarDev.WebDavServer.AspNetCore
     {
         private readonly IWebDavContext _context;
         private readonly IWebDavDispatcher _dispatcher;
-        private readonly ILogger<WebDavIndirectResult> _responseLogger;
+        private readonly ILogger<WebDavIndirectResult>? _responseLogger;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="WebDavControllerBase"/> class.
@@ -30,7 +30,7 @@ namespace FubarDev.WebDavServer.AspNetCore
         /// <param name="context">The WebDAV request context.</param>
         /// <param name="dispatcher">The WebDAV HTTP method dispatcher.</param>
         /// <param name="responseLogger">The logger for the <see cref="WebDavIndirectResult"/>.</param>
-        public WebDavControllerBase(IWebDavContext context, IWebDavDispatcher dispatcher, ILogger<WebDavIndirectResult> responseLogger = null)
+        public WebDavControllerBase(IWebDavContext context, IWebDavDispatcher dispatcher, ILogger<WebDavIndirectResult>? responseLogger = null)
         {
             _context = context;
             _dispatcher = dispatcher;

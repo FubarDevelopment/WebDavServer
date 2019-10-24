@@ -15,8 +15,6 @@ using FubarDev.WebDavServer.Model;
 using FubarDev.WebDavServer.Model.Headers;
 using FubarDev.WebDavServer.Utils;
 
-using JetBrains.Annotations;
-
 namespace FubarDev.WebDavServer.Handlers.Impl
 {
     /// <summary>
@@ -24,13 +22,10 @@ namespace FubarDev.WebDavServer.Handlers.Impl
     /// </summary>
     public class DeleteHandler : IDeleteHandler
     {
-        [NotNull]
         private readonly IFileSystem _rootFileSystem;
 
-        [NotNull]
         private readonly IWebDavContext _context;
 
-        [NotNull]
         private readonly IImplicitLockFactory _implicitLockFactory;
 
         /// <summary>
@@ -40,9 +35,9 @@ namespace FubarDev.WebDavServer.Handlers.Impl
         /// <param name="context">The current WebDAV context.</param>
         /// <param name="implicitLockFactory">A factory to create implicit locks.</param>
         public DeleteHandler(
-            [NotNull] IFileSystem rootFileSystem,
-            [NotNull] IWebDavContext context,
-            [NotNull] IImplicitLockFactory implicitLockFactory)
+            IFileSystem rootFileSystem,
+            IWebDavContext context,
+            IImplicitLockFactory implicitLockFactory)
         {
             _rootFileSystem = rootFileSystem;
             _context = context;

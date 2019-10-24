@@ -5,13 +5,10 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 
 using FubarDev.WebDavServer.Model;
-
-using JetBrains.Annotations;
 
 namespace FubarDev.WebDavServer.FileSystem.SQLite
 {
@@ -25,43 +22,42 @@ namespace FubarDev.WebDavServer.FileSystem.SQLite
         /// <summary>
         /// Initializes a new instance of the <see cref="SQLiteCollection"/> class.
         /// </summary>
-        /// <param name="fileSystem">The file system this collection belongs to.</param>
+        /// <param name="dbFileSystem">The file system this collection belongs to.</param>
         /// <param name="parent">The parent collection.</param>
         /// <param name="info">The directory information.</param>
         /// <param name="path">The root-relative path of this collection.</param>
         /// <param name="name">The entry name (<see langword="null"/> when <see cref="FileEntry.Name"/> of <see cref="SQLiteEntry.Info"/> should be used).</param>
         /// <param name="isRoot">Indicates whether this is the file systems root directory.</param>
         public SQLiteCollection(
-            [NotNull] SQLiteFileSystem fileSystem,
-            [CanBeNull] ICollection parent,
-            [NotNull] FileEntry info,
-            [NotNull] Uri path,
-            [CanBeNull] string name,
+            SQLiteFileSystem dbFileSystem,
+            ICollection? parent,
+            FileEntry info,
+            Uri path,
+            string? name,
             bool isRoot = false)
-            : base(fileSystem, parent, info, path, name)
+            : base(dbFileSystem, parent, info, path, name)
         {
             _isRoot = isRoot;
         }
 
         /// <inheritdoc />
-        public Task<IEntry> GetChildAsync(string name, CancellationToken ct)
+        public async Task<IEntry?> GetChildAsync(string name, CancellationToken ct)
         {
             var childId = Path.Append(name, false).OriginalString.ToLowerInvariant();
             var childEntry = Connection.Table<FileEntry>().FirstOrDefault(x => x.Id == childId);
             if (childEntry == null)
             {
-                return Task.FromResult<IEntry>(null);
+                return null;
             }
 
             var entry = CreateEntry(childEntry);
 
-            var coll = entry as ICollection;
-            if (coll != null)
+            if (entry is ICollection coll)
             {
-                return coll.GetMountTargetEntryAsync(SQLiteFileSystem);
+                return await coll.GetMountTargetEntryAsync(DbFileSystem);
             }
 
-            return Task.FromResult(entry);
+            return entry;
         }
 
         /// <inheritdoc />
@@ -74,10 +70,9 @@ namespace FubarDev.WebDavServer.FileSystem.SQLite
             {
                 ct.ThrowIfCancellationRequested();
                 var entry = CreateEntry(info);
-                var coll = entry as ICollection;
-                if (coll != null)
+                if (entry is ICollection coll)
                 {
-                    entry = await coll.GetMountTargetEntryAsync(SQLiteFileSystem);
+                    entry = await coll.GetMountTargetEntryAsync(DbFileSystem);
                 }
 
                 result.Add(entry);
@@ -170,10 +165,10 @@ namespace FubarDev.WebDavServer.FileSystem.SQLite
         {
             if (!entry.IsCollection)
             {
-                return new SQLiteDocument(SQLiteFileSystem, this, entry, Path.Append(entry.Name, false));
+                return new SQLiteDocument(DbFileSystem, this, entry, Path.Append(entry.Name, false));
             }
 
-            return new SQLiteCollection(SQLiteFileSystem, this, entry, Path.AppendDirectory(entry.Name), null);
+            return new SQLiteCollection(DbFileSystem, this, entry, Path.AppendDirectory(entry.Name), null);
         }
     }
 }

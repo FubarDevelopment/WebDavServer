@@ -6,8 +6,6 @@ using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Text;
 
-using JetBrains.Annotations;
-
 namespace FubarDev.WebDavServer.Model
 {
     /// <summary>
@@ -15,7 +13,6 @@ namespace FubarDev.WebDavServer.Model
     /// </summary>
     public static class WebDavStatusCodeExtensions
     {
-        [NotNull]
         private static readonly ConcurrentDictionary<WebDavStatusCode, string> _reasonPhrases = new ConcurrentDictionary<WebDavStatusCode, string>()
         {
             [WebDavStatusCode.MultiStatus] = "Multi-Status",
@@ -28,8 +25,7 @@ namespace FubarDev.WebDavServer.Model
         /// <param name="statusCode">The status code to build the reason phrase for.</param>
         /// <param name="additionalMessage">The additional message for the reason phrase.</param>
         /// <returns>The built reason phrase.</returns>
-        [NotNull]
-        public static string GetReasonPhrase(this WebDavStatusCode statusCode, [CanBeNull] string additionalMessage = null)
+        public static string GetReasonPhrase(this WebDavStatusCode statusCode, string? additionalMessage = null)
         {
             var reasonPhrase = _reasonPhrases.GetOrAdd(
                 statusCode,
@@ -62,9 +58,7 @@ namespace FubarDev.WebDavServer.Model
             return $"{reasonPhrase} ({additionalMessage})";
         }
 
-        [NotNull]
-        [ItemNotNull]
-        private static IEnumerable<string> GetParts([NotNull] string name)
+        private static IEnumerable<string> GetParts(string name)
         {
             var startIndex = 0;
             var currentIndex = 1;

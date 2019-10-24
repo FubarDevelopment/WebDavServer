@@ -3,13 +3,10 @@
 // </copyright>
 
 using System;
-using System.Diagnostics;
 using System.Threading;
 using System.Threading.Tasks;
 
 using FubarDev.WebDavServer.FileSystem;
-
-using JetBrains.Annotations;
 
 namespace FubarDev.WebDavServer.Engines.Local
 {
@@ -22,7 +19,7 @@ namespace FubarDev.WebDavServer.Engines.Local
         /// Initializes a new instance of the <see cref="CopyInFileSystemTargetAction"/> class.
         /// </summary>
         /// <param name="dispatcher">The WebDAV dispatcher.</param>
-        public CopyInFileSystemTargetAction([NotNull] IWebDavDispatcher dispatcher)
+        public CopyInFileSystemTargetAction(IWebDavDispatcher dispatcher)
         {
             Dispatcher = dispatcher;
         }
@@ -45,7 +42,11 @@ namespace FubarDev.WebDavServer.Engines.Local
         {
             try
             {
-                Debug.Assert(destination.Parent != null, "destination.Parent != null");
+                if (destination.Parent == null)
+                {
+                    throw new InvalidOperationException("Cannot copy to destination. Target element is unspecified.");
+                }
+
                 await source.CopyToAsync(destination.Parent.Collection, destination.Name, cancellationToken).ConfigureAwait(false);
                 return new ActionResult(ActionStatus.Overwritten, destination);
             }

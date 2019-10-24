@@ -4,8 +4,6 @@
 
 using System;
 
-using JetBrains.Annotations;
-
 namespace FubarDev.WebDavServer.Model.Headers
 {
     /// <summary>
@@ -17,7 +15,7 @@ namespace FubarDev.WebDavServer.Model.Headers
         /// Initializes a new instance of the <see cref="LockTokenHeader"/> class.
         /// </summary>
         /// <param name="stateToken">The lock token.</param>
-        public LockTokenHeader([NotNull] Uri stateToken)
+        public LockTokenHeader(Uri stateToken)
         {
             StateToken = stateToken;
         }
@@ -25,7 +23,6 @@ namespace FubarDev.WebDavServer.Model.Headers
         /// <summary>
         /// Gets the lock token.
         /// </summary>
-        [NotNull]
         public Uri StateToken { get; }
 
         /// <summary>
@@ -33,11 +30,9 @@ namespace FubarDev.WebDavServer.Model.Headers
         /// </summary>
         /// <param name="s">The header string to parse.</param>
         /// <returns>The new instance of the <see cref="LockTokenHeader"/> class.</returns>
-        [NotNull]
         public static LockTokenHeader Parse(string s)
         {
-            Uri stateToken;
-            if (!CodedUrlParser.TryParse(s, out stateToken))
+            if (!CodedUrlParser.TryParse(s, out var stateToken))
             {
                 throw new ArgumentException($"{s} is not a valid lock token", nameof(s));
             }

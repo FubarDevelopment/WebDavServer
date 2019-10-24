@@ -6,8 +6,6 @@ using System;
 
 using FubarDev.WebDavServer.Model;
 
-using JetBrains.Annotations;
-
 namespace FubarDev.WebDavServer
 {
     /// <summary>
@@ -30,7 +28,7 @@ namespace FubarDev.WebDavServer
         /// </summary>
         /// <param name="statusCode">The WebDAV status code.</param>
         /// <param name="innerException">The inner exception.</param>
-        public WebDavException(WebDavStatusCode statusCode, [NotNull] Exception innerException)
+        public WebDavException(WebDavStatusCode statusCode, Exception innerException)
             : base(statusCode.GetReasonPhrase(innerException.Message), innerException)
         {
             StatusCode = statusCode;

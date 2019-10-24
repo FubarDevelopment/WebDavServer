@@ -8,8 +8,6 @@ using System.Xml.Linq;
 
 using FubarDev.WebDavServer.Props.Converters;
 
-using JetBrains.Annotations;
-
 namespace FubarDev.WebDavServer.Props
 {
     /// <summary>
@@ -26,7 +24,7 @@ namespace FubarDev.WebDavServer.Props
         /// <param name="cost">The cost to get the properties value.</param>
         /// <param name="converter">The converter to copy the value to/from an <see cref="XElement"/>.</param>
         /// <param name="alternativeNames">The alternative names.</param>
-        protected SimpleConvertingProperty([NotNull] XName name, [CanBeNull] string language, int cost, [NotNull] IPropertyConverter<T> converter, params XName[] alternativeNames)
+        protected SimpleConvertingProperty(XName name, string? language, int cost, IPropertyConverter<T> converter, params XName[] alternativeNames)
             : base(name, language, cost, alternativeNames)
         {
             Converter = converter;
@@ -35,7 +33,6 @@ namespace FubarDev.WebDavServer.Props
         /// <summary>
         /// Gets the converter to be used to copy to/from an <see cref="XElement"/>.
         /// </summary>
-        [NotNull]
         protected IPropertyConverter<T> Converter { get; }
 
         /// <inheritdoc />

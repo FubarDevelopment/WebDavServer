@@ -7,8 +7,6 @@ using System.Threading.Tasks;
 
 using FubarDev.WebDavServer.FileSystem;
 
-using JetBrains.Annotations;
-
 namespace FubarDev.WebDavServer.Engines
 {
     /// <summary>
@@ -42,9 +40,7 @@ namespace FubarDev.WebDavServer.Engines
         /// <param name="destination">The target where the document should be copied or moved to.</param>
         /// <param name="cancellationToken">The cancellation token.</param>
         /// <returns>The created document target.</returns>
-        [NotNull]
-        [ItemNotNull]
-        Task<TDocument> ExecuteAsync([NotNull] IDocument source, [NotNull] TMissing destination, CancellationToken cancellationToken);
+        Task<TDocument> ExecuteAsync(IDocument source, TMissing destination, CancellationToken cancellationToken);
 
         /// <summary>
         /// Copies or moves a document to an existing target.
@@ -57,8 +53,7 @@ namespace FubarDev.WebDavServer.Engines
         /// <param name="destination">The destination document to overwrite.</param>
         /// <param name="cancellationToken">The cancellation token.</param>
         /// <returns>The result information about this action.</returns>
-        [NotNull]
-        Task<ActionResult> ExecuteAsync([NotNull] IDocument source, [NotNull] TDocument destination, CancellationToken cancellationToken);
+        Task<ActionResult> ExecuteAsync(IDocument source, TDocument destination, CancellationToken cancellationToken);
 
         /// <summary>
         /// Do some cleanup after all child elements of the <paramref name="source"/> are processed (copied or moved).
@@ -70,7 +65,6 @@ namespace FubarDev.WebDavServer.Engines
         /// <param name="destination">The destination collection.</param>
         /// <param name="cancellationToken">The cancellation token.</param>
         /// <returns>The task for async execution.</returns>
-        [NotNull]
-        Task ExecuteAsync([NotNull] ICollection source, TCollection destination, CancellationToken cancellationToken);
+        Task ExecuteAsync(ICollection source, TCollection destination, CancellationToken cancellationToken);
     }
 }

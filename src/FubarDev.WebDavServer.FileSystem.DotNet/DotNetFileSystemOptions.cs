@@ -28,7 +28,7 @@ namespace FubarDev.WebDavServer.FileSystem.DotNet
         /// <summary>
         /// Gets or sets the path name for the anonymous user.
         /// </summary>
-        public string AnonymousUserName { get; set; }
+        public string? AnonymousUserName { get; set; }
 
         /// <summary>
         /// Gets or sets a value indicating whether infinite path depth is allowed.

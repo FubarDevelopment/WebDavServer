@@ -18,7 +18,7 @@ namespace FubarDev.WebDavServer.Tests.ModelTests
         [Fact]
         public void IfMatchAllNullTest()
         {
-            var matcher = IfMatchHeader.Parse((string)null);
+            var matcher = IfMatchHeader.Parse((string?)null);
             Assert.All(_entityTags, etag => Assert.True(matcher.IsMatch(etag)));
         }
 
@@ -74,7 +74,7 @@ namespace FubarDev.WebDavServer.Tests.ModelTests
         [Fact]
         public void IfNoneMatchAllNullTest()
         {
-            var matcher = IfNoneMatchHeader.Parse((string)null);
+            var matcher = IfNoneMatchHeader.Parse((string?)null);
             Assert.All(_entityTags, etag => Assert.False(matcher.IsMatch(etag)));
         }
 

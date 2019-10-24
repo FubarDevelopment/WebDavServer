@@ -56,7 +56,7 @@ namespace FubarDev.WebDavServer.Tests.FileSystem
                     Assert.Equal(test1.Path, coll.Path);
                     Assert.Equal("test1", coll.Name);
                     Assert.NotNull(coll.Parent);
-                    Assert.Equal(root.Path, coll.Parent.Path);
+                    Assert.Equal(root.Path, coll.Parent!.Path);
                 });
         }
 
@@ -77,7 +77,7 @@ namespace FubarDev.WebDavServer.Tests.FileSystem
                     Assert.Equal(test1.Path, coll.Path);
                     Assert.Equal("test1", coll.Name);
                     Assert.NotNull(coll.Parent);
-                    Assert.Equal(root.Path, coll.Parent.Path);
+                    Assert.Equal(root.Path, coll.Parent!.Path);
                 },
                 child =>
                 {
@@ -86,7 +86,7 @@ namespace FubarDev.WebDavServer.Tests.FileSystem
                     Assert.Equal(test2.Path, coll.Path);
                     Assert.Equal("test2", coll.Name);
                     Assert.NotNull(coll.Parent);
-                    Assert.Equal(root.Path, coll.Parent.Path);
+                    Assert.Equal(root.Path, coll.Parent!.Path);
                 });
         }
 

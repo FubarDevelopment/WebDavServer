@@ -15,7 +15,7 @@ namespace FubarDev.WebDavServer
         /// <summary>
         /// Gets the buffer for the next block.
         /// </summary>
-        /// <param name="readCount">The number of bytes read by the previous <see cref="Stream.Read"/> operation.</param>
+        /// <param name="readCount">The number of bytes read by the previous <see cref="Stream.Read(byte[], int, int)"/> operation.</param>
         /// <returns>The buffer to be used for the operation.</returns>
         byte[] GetBuffer(int readCount);
     }

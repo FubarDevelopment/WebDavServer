@@ -22,7 +22,7 @@ namespace FubarDev.WebDavServer.Props.Store.InMemory
     /// </summary>
     public class InMemoryPropertyStore : PropertyStoreBase
     {
-        private readonly ILogger<InMemoryPropertyStore> _logger;
+        private readonly ILogger<InMemoryPropertyStore>? _logger;
         private readonly IDictionary<Uri, IDictionary<XName, XElement>> _properties = new Dictionary<Uri, IDictionary<XName, XElement>>();
 
         /// <summary>
@@ -30,7 +30,7 @@ namespace FubarDev.WebDavServer.Props.Store.InMemory
         /// </summary>
         /// <param name="deadPropertyFactory">The factory to create dead properties.</param>
         /// <param name="logger">The logger.</param>
-        public InMemoryPropertyStore(IDeadPropertyFactory deadPropertyFactory, ILogger<InMemoryPropertyStore> logger)
+        public InMemoryPropertyStore(IDeadPropertyFactory deadPropertyFactory, ILogger<InMemoryPropertyStore>? logger)
             : base(deadPropertyFactory)
         {
             _logger = logger;
@@ -56,7 +56,7 @@ namespace FubarDev.WebDavServer.Props.Store.InMemory
             {
                 if (element.Name == GetETagProperty.PropertyName)
                 {
-                    _logger.LogWarning("The ETag property must not be set using the property store.");
+                    _logger?.LogWarning("The ETag property must not be set using the property store.");
                     continue;
                 }
 
@@ -90,7 +90,7 @@ namespace FubarDev.WebDavServer.Props.Store.InMemory
                 {
                     if (key == GetETagProperty.PropertyName)
                     {
-                        _logger.LogWarning("The ETag property must not be set using the property store.");
+                        _logger?.LogWarning("The ETag property must not be set using the property store.");
                         result.Add(false);
                     }
                     else
@@ -111,9 +111,8 @@ namespace FubarDev.WebDavServer.Props.Store.InMemory
         /// <inheritdoc />
         protected override Task<EntityTag> GetDeadETagAsync(IEntry entry, CancellationToken cancellationToken)
         {
-            XElement etagElement;
-            IDictionary<XName, XElement> properties;
-            if (_properties.TryGetValue(entry.Path, out properties))
+            XElement? etagElement;
+            if (_properties.TryGetValue(entry.Path, out var properties))
             {
                 properties.TryGetValue(GetETagProperty.PropertyName, out etagElement);
             }
@@ -186,7 +185,7 @@ namespace FubarDev.WebDavServer.Props.Store.InMemory
             {
                 if (isEtagEntry && element.Name == GetETagProperty.PropertyName)
                 {
-                    _logger.LogWarning("The ETag property must not be set using the property store.");
+                    _logger?.LogWarning("The ETag property must not be set using the property store.");
                     continue;
                 }
 

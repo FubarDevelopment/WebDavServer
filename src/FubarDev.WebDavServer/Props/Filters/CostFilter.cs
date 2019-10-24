@@ -15,7 +15,7 @@ namespace FubarDev.WebDavServer.Props.Filters
     {
         private readonly int _maximumCost;
 
-        private readonly IPropertyFilter _exceptionFilter;
+        private readonly IPropertyFilter? _exceptionFilter;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="CostFilter"/> class.
@@ -31,7 +31,7 @@ namespace FubarDev.WebDavServer.Props.Filters
         /// </summary>
         /// <param name="maximumCost">The maximum allowed cost.</param>
         /// <param name="exceptionFilter">A filter that allows an exception to this rule.</param>
-        public CostFilter(int maximumCost, IPropertyFilter exceptionFilter)
+        public CostFilter(int maximumCost, IPropertyFilter? exceptionFilter)
         {
             _maximumCost = maximumCost;
             _exceptionFilter = exceptionFilter;

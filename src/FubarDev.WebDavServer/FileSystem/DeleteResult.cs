@@ -4,8 +4,6 @@
 
 using FubarDev.WebDavServer.Model;
 
-using JetBrains.Annotations;
-
 namespace FubarDev.WebDavServer.FileSystem
 {
     /// <summary>
@@ -18,7 +16,7 @@ namespace FubarDev.WebDavServer.FileSystem
         /// </summary>
         /// <param name="statusCode">The status code for the operation.</param>
         /// <param name="failedEntry">The entry of the failed operation.</param>
-        public DeleteResult(WebDavStatusCode statusCode, [CanBeNull] IEntry failedEntry)
+        public DeleteResult(WebDavStatusCode statusCode, IEntry? failedEntry)
         {
             FailedEntry = failedEntry;
             StatusCode = statusCode;
@@ -32,7 +30,6 @@ namespace FubarDev.WebDavServer.FileSystem
         /// <summary>
         /// Gets the failed entry.
         /// </summary>
-        [CanBeNull]
-        public IEntry FailedEntry { get; }
+        public IEntry? FailedEntry { get; }
     }
 }

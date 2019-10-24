@@ -103,19 +103,19 @@ namespace FubarDev.WebDavServer.Model.Headers
         /// <returns>The normalized range item.</returns>
         public NormalizedRangeItem Normalize(long totalLength)
         {
-            if (!From.HasValue && !To.HasValue)
+            if (!To.HasValue)
             {
-                return new NormalizedRangeItem(0, totalLength - 1);
-            }
+                if (!From.HasValue)
+                {
+                    return new NormalizedRangeItem(0, totalLength - 1);
+                }
 
-            if (From.HasValue && To.HasValue)
-            {
-                return new NormalizedRangeItem(From.Value, To.Value);
+                return new NormalizedRangeItem(From.Value, totalLength - 1);
             }
 
             if (From.HasValue)
             {
-                return new NormalizedRangeItem(From.Value, totalLength - 1);
+                return new NormalizedRangeItem(From.Value, To.Value);
             }
 
             return new NormalizedRangeItem(totalLength - To.Value, totalLength - 1);

@@ -12,8 +12,6 @@ using FubarDev.WebDavServer.Locking;
 using FubarDev.WebDavServer.Model;
 using FubarDev.WebDavServer.Props.Converters;
 
-using JetBrains.Annotations;
-
 namespace FubarDev.WebDavServer.Props.Live
 {
     /// <summary>
@@ -24,20 +22,17 @@ namespace FubarDev.WebDavServer.Props.Live
         /// <summary>
         /// The XML name of the property.
         /// </summary>
-        [NotNull]
         public static readonly XName PropertyName = WebDavXml.Dav + "supportedlock";
 
-        [NotNull]
         private static readonly XmlConverter<supportedlock> _converter = new XmlConverter<supportedlock>();
 
-        [CanBeNull]
-        private readonly ILockManager _lockManager;
+        private readonly ILockManager? _lockManager;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="SupportedLockProperty"/> class.
         /// </summary>
         /// <param name="entry">The file system entry this property is for.</param>
-        public SupportedLockProperty([NotNull] IEntry entry)
+        public SupportedLockProperty(IEntry entry)
         {
             _lockManager = entry.FileSystem.LockManager;
             Cost = 0;
@@ -48,7 +43,7 @@ namespace FubarDev.WebDavServer.Props.Live
         public XName Name { get; }
 
         /// <inheritdoc />
-        public string Language { get; } = null;
+        public string? Language { get; } = null;
 
         /// <inheritdoc />
         public IReadOnlyCollection<XName> AlternativeNames { get; } = new[] { WebDavXml.Dav + "contentlength" };

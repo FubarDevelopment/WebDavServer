@@ -18,8 +18,6 @@ using FubarDev.WebDavServer.Props.Dead;
 using FubarDev.WebDavServer.Props.Live;
 using FubarDev.WebDavServer.Props.Store;
 
-using JetBrains.Annotations;
-
 namespace FubarDev.WebDavServer.Dispatchers
 {
     /// <summary>
@@ -27,18 +25,15 @@ namespace FubarDev.WebDavServer.Dispatchers
     /// </summary>
     public class WebDavDispatcherClass2 : IWebDavClass2
     {
-        [CanBeNull]
-        private readonly ILockHandler _lockHandler;
-
-        [CanBeNull]
-        private readonly IUnlockHandler _unlockHandler;
+        private readonly ILockHandler? _lockHandler;
+        private readonly IUnlockHandler? _unlockHandler;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="WebDavDispatcherClass2"/> class.
         /// </summary>
         /// <param name="handlers">The WebDAV class 2 handlers.</param>
         /// <param name="context">The WebDAV context.</param>
-        public WebDavDispatcherClass2([NotNull] [ItemNotNull] IEnumerable<IClass2Handler> handlers, [NotNull] IWebDavContext context)
+        public WebDavDispatcherClass2(IEnumerable<IClass2Handler> handlers, IWebDavContext context)
         {
             var httpMethods = new HashSet<string>();
 
@@ -107,7 +102,7 @@ namespace FubarDev.WebDavServer.Dispatchers
         }
 
         /// <inheritdoc />
-        public Task<IWebDavResult> RefreshLockAsync(string path, IfHeader ifHeader, TimeoutHeader timeoutHeader, CancellationToken cancellationToken)
+        public Task<IWebDavResult> RefreshLockAsync(string path, IfHeader ifHeader, TimeoutHeader? timeoutHeader, CancellationToken cancellationToken)
         {
             if (_lockHandler == null)
             {
@@ -136,7 +131,7 @@ namespace FubarDev.WebDavServer.Dispatchers
         }
 
         /// <inheritdoc />
-        public bool TryCreateDeadProperty(IPropertyStore store, IEntry entry, XName name, out IDeadProperty deadProperty)
+        public bool TryCreateDeadProperty(IPropertyStore store, IEntry entry, XName name, out IDeadProperty? deadProperty)
         {
             deadProperty = null;
             return false;

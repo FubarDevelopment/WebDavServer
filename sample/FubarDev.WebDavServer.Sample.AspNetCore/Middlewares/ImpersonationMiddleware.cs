@@ -14,7 +14,6 @@ namespace FubarDev.WebDavServer.Sample.AspNetCore.Middlewares
             _next = next;
         }
 
-        // ReSharper disable once UnusedMember.Local
         public async Task Invoke(HttpContext context)
         {
             if (!(context.User.Identity is WindowsIdentity identity) || !identity.IsAuthenticated)

@@ -23,13 +23,11 @@ namespace FubarDev.WebDavServer.Tests.Handlers
     public class PropsTests : ServerTestsBase
     {
         private readonly XName[] _propsToIgnoreDocument;
-        private readonly XName[] _propsToIgnoreCollection;
 
         public PropsTests()
             : base(RecursiveProcessingMode.PreferFastest)
         {
             _propsToIgnoreDocument = new[] { LockDiscoveryProperty.PropertyName, DisplayNameProperty.PropertyName, GetETagProperty.PropertyName };
-            _propsToIgnoreCollection = new[] { LockDiscoveryProperty.PropertyName, DisplayNameProperty.PropertyName, GetETagProperty.PropertyName };
             Dispatcher = ServiceProvider.GetRequiredService<IWebDavDispatcher>();
         }
 
@@ -54,7 +52,7 @@ namespace FubarDev.WebDavServer.Tests.Handlers
                     requestUri,
                     new PropertyUpdate
                     {
-                        Items = new[]
+                        Items = new object[]
                         {
                             new Set
                             {

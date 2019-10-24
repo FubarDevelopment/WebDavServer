@@ -7,8 +7,6 @@ using System.Xml.Linq;
 
 using FubarDev.WebDavServer.Model.Headers;
 
-using JetBrains.Annotations;
-
 namespace FubarDev.WebDavServer.Locking
 {
     /// <summary>
@@ -25,7 +23,7 @@ namespace FubarDev.WebDavServer.Locking
         /// </summary>
         /// <param name="l">The lock to create this active lock from.</param>
         /// <param name="issued">The date/time when this lock was issued.</param>
-        internal ActiveLock([NotNull] ILock l, DateTime issued)
+        internal ActiveLock(ILock l, DateTime issued)
             : this(
                 l.Path,
                 l.Href,
@@ -45,7 +43,7 @@ namespace FubarDev.WebDavServer.Locking
         /// <param name="l">The lock to create this active lock from.</param>
         /// <param name="issued">The date/time when this lock was issued.</param>
         /// <param name="timeout">Override the timeout from the original lock (to enforce rounding).</param>
-        internal ActiveLock([NotNull] ILock l, DateTime issued, TimeSpan timeout)
+        internal ActiveLock(ILock l, DateTime issued, TimeSpan timeout)
             : this(
                 l.Path,
                 l.Href,
@@ -72,10 +70,10 @@ namespace FubarDev.WebDavServer.Locking
         /// <param name="issued">The date/time when this lock was issued.</param>
         /// <param name="lastRefresh">The date/time of the last refresh.</param>
         internal ActiveLock(
-            [NotNull] string path,
-            [NotNull] string href,
+            string path,
+            string href,
             bool recursive,
-            [CanBeNull] XElement owner,
+            XElement? owner,
             LockAccessType accessType,
             LockShareMode shareMode,
             TimeSpan timeout,
@@ -110,16 +108,16 @@ namespace FubarDev.WebDavServer.Locking
         /// <param name="lastRefresh">The date/time of the last refresh.</param>
         /// <param name="stateToken">The state token.</param>
         internal ActiveLock(
-            [NotNull] string path,
-            [NotNull] string href,
+            string path,
+            string href,
             bool recursive,
-            [CanBeNull] XElement owner,
+            XElement? owner,
             LockAccessType accessType,
             LockShareMode shareMode,
             TimeSpan timeout,
             DateTime issued,
             DateTime? lastRefresh,
-            [NotNull] string stateToken)
+            string stateToken)
             : base(
                 path,
                 href,

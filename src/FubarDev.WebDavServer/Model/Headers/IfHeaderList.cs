@@ -10,8 +10,6 @@ using FubarDev.WebDavServer.FileSystem;
 using FubarDev.WebDavServer.Locking;
 using FubarDev.WebDavServer.Utils;
 
-using JetBrains.Annotations;
-
 namespace FubarDev.WebDavServer.Model.Headers
 {
     /// <summary>
@@ -20,13 +18,13 @@ namespace FubarDev.WebDavServer.Model.Headers
     public class IfHeaderList
     {
         private IfHeaderList(
-            [NotNull] Uri resourceTag,
-            [NotNull] Uri relateiveHref,
-            [NotNull] Uri path,
-            [NotNull] [ItemNotNull] IReadOnlyCollection<IfHeaderCondition> conditions)
+            Uri resourceTag,
+            Uri relativeHref,
+            Uri path,
+            IReadOnlyCollection<IfHeaderCondition> conditions)
         {
             ResourceTag = resourceTag;
-            RelativeHref = relateiveHref;
+            RelativeHref = relativeHref;
             Path = path;
             Conditions = conditions;
         }
@@ -38,7 +36,6 @@ namespace FubarDev.WebDavServer.Model.Headers
         /// When a relative URI gets sent from the client, then it gets converted into an
         /// absolute URI.
         /// </remarks>
-        [NotNull]
         public Uri ResourceTag { get; }
 
         /// <summary>
@@ -47,7 +44,6 @@ namespace FubarDev.WebDavServer.Model.Headers
         /// <remarks>
         /// Might be an absolute URL when the host or scheme don't match.
         /// </remarks>
-        [NotNull]
         public Uri RelativeHref { get; }
 
         /// <summary>
@@ -56,14 +52,11 @@ namespace FubarDev.WebDavServer.Model.Headers
         /// <remarks>
         /// Might be an absolute URL when the host or scheme don't match.
         /// </remarks>
-        [NotNull]
         public Uri Path { get; }
 
         /// <summary>
         /// Gets the collection of conditions that must be satisfied by this list.
         /// </summary>
-        [NotNull]
-        [ItemNotNull]
         public IReadOnlyCollection<IfHeaderCondition> Conditions { get; }
 
         /// <summary>
@@ -88,9 +81,7 @@ namespace FubarDev.WebDavServer.Model.Headers
             return Conditions.All(x => x.IsMatch(etag, stateTokens));
         }
 
-        [NotNull]
-        [ItemNotNull]
-        internal static IEnumerable<IfHeaderList> Parse([NotNull] StringSource source, [NotNull] EntityTagComparer etagComparer, [NotNull] IWebDavContext context)
+        internal static IEnumerable<IfHeaderList> Parse(StringSource source, EntityTagComparer etagComparer, IWebDavContext context)
         {
             Uri previousResourceTag = context.PublicAbsoluteRequestUrl;
             while (!source.SkipWhiteSpace())

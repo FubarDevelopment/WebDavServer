@@ -11,8 +11,6 @@ using System.Xml.Linq;
 using FubarDev.WebDavServer.Locking;
 using FubarDev.WebDavServer.Tests.Support.ServiceBuilders;
 
-using JetBrains.Annotations;
-
 using Microsoft.Extensions.DependencyInjection;
 
 using Xunit;
@@ -111,7 +109,7 @@ namespace FubarDev.WebDavServer.Tests.Locking
             Assert.Null(result2.Lock);
             Assert.NotNull(result2.ConflictingLocks);
             Assert.Collection(
-                result2.ConflictingLocks.GetLocks(),
+                result2.ConflictingLocks!.GetLocks(),
                 cl =>
                 {
                     Assert.Equal(lock1.StateToken, cl.StateToken);
@@ -186,7 +184,7 @@ namespace FubarDev.WebDavServer.Tests.Locking
             Assert.Null(result2.Lock);
             Assert.NotNull(result2.ConflictingLocks);
             Assert.Collection(
-                result2.ConflictingLocks.GetLocks(),
+                result2.ConflictingLocks!.GetLocks(),
                 cl =>
                 {
                     Assert.Equal(lock1.StateToken, cl.StateToken);
@@ -227,7 +225,7 @@ namespace FubarDev.WebDavServer.Tests.Locking
             Assert.Null(result2.Lock);
             Assert.NotNull(result2.ConflictingLocks);
             Assert.Collection(
-                result2.ConflictingLocks.GetLocks(),
+                result2.ConflictingLocks!.GetLocks(),
                 cl =>
                 {
                     Assert.Equal(lock1.StateToken, cl.StateToken);
@@ -390,7 +388,7 @@ namespace FubarDev.WebDavServer.Tests.Locking
                 .ConfigureAwait(false);
             Assert.NotNull(result1.Lock);
             ValidateLockResult(result1);
-            var resultRelease1 = await lockManager.ReleaseAsync(result1.Lock.Path, new Uri(result1.Lock.StateToken), ct).ConfigureAwait(false);
+            var resultRelease1 = await lockManager.ReleaseAsync(result1.Lock!.Path, new Uri(result1.Lock.StateToken), ct).ConfigureAwait(false);
             Assert.Equal(LockReleaseStatus.Success, resultRelease1);
             var result2 = await lockManager
                 .LockAsync(
@@ -407,7 +405,6 @@ namespace FubarDev.WebDavServer.Tests.Locking
             ValidateLockResult(result2);
         }
 
-        [NotNull]
         private IActiveLock ValidateLockResult(LockResult result)
         {
             if (result.Lock != null)

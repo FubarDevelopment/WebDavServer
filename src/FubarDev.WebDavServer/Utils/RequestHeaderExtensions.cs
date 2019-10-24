@@ -10,14 +10,11 @@ using FubarDev.WebDavServer.FileSystem;
 using FubarDev.WebDavServer.Model;
 using FubarDev.WebDavServer.Props.Live;
 
-using JetBrains.Annotations;
-
 namespace FubarDev.WebDavServer.Utils
 {
     internal static class RequestHeaderExtensions
     {
-        [NotNull]
-        public static async Task ValidateAsync([NotNull] this IWebDavRequestHeaders headers, [NotNull] IEntry entry, CancellationToken cancellationToken)
+        public static async Task ValidateAsync(this IWebDavRequestHeaders headers, IEntry entry, CancellationToken cancellationToken)
         {
             if (headers.IfMatch != null || headers.IfNoneMatch != null)
             {
