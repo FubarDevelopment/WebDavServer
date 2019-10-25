@@ -28,7 +28,7 @@ namespace FubarDev.WebDavServer
         string RequestMethod { get; }
 
         /// <summary>
-        /// Gets the relative request URL (e.g. <c>/webdav/path-to-controller/test.txt</c>).
+        /// Gets the request URL (e.g. <c>/webdav/path-to-controller/test.txt</c>) relative to <see cref="PublicRootUrl"/>.
         /// </summary>
         Uri PublicRelativeRequestUrl { get; }
 
