@@ -111,7 +111,11 @@ namespace FubarDev.WebDavServer.Tests
                 .AddSingleton<ILockManager, InMemoryLockManager>()
                 .AddMvcCore()
                 .ConfigureApplicationPartManager(
-                    apm => { apm.ApplicationParts.Add(new TestControllerPart(ControllerTypes)); })
+                    apm =>
+                    {
+                        apm.ApplicationParts.Clear();
+                        apm.ApplicationParts.Add(new TestControllerPart(ControllerTypes));
+                    })
                 .AddWebDav();
         }
 
