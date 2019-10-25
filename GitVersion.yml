@@ -1,9 +1,5 @@
 assembly-versioning-scheme: MajorMinorPatch
-# next-version: 3.0.0
-branches:
-  release:
-    mode: ContinuousDeployment
-  hotfix:
-    mode: ContinuousDeployment
+next-version: 2.0.0
+mode: ContinuousDeployment
 ignore:
-  sha: []
+  sha: [ae5fdeeb332b1e1312eca38a188f7c0ed15056c3, a9030adca082bfeded880f0bb0c87155909eeaa1, f8b9f77a2dec62182be9a4b6df8bce0f1e9e10a9]
