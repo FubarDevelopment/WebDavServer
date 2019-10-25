@@ -2,7 +2,6 @@
 // Copyright (c) Fubar Development Junker. All rights reserved.
 // </copyright>
 
-using System.Collections.Generic;
 using System.Net.Http;
 using System.Threading.Tasks;
 
@@ -18,15 +17,14 @@ namespace FubarDev.WebDavServer.Tests.Handlers
             var optionsRequest = new HttpRequestMessage(HttpMethod.Options, "/");
             var result = await Client.SendAsync(optionsRequest).ConfigureAwait(false);
             result.EnsureSuccessStatusCode();
-            IEnumerable<string> davValues;
-            Assert.True(result.Headers.TryGetValues("DAV", out davValues));
+            Assert.True(result.Headers.TryGetValues("DAV", out var davValues));
             Assert.Collection(
                 davValues,
                 v => Assert.Equal("1", v),
                 v => Assert.Equal("2", v));
-            Assert.True(result.Headers.TryGetValues("MS-Author-Via", out davValues));
+            Assert.True(result.Headers.TryGetValues("MS-Author-Via", out var msAuthorViaValues));
             Assert.Collection(
-                davValues,
+                msAuthorViaValues,
                 v => Assert.Equal("DAV", v));
         }
     }
