@@ -1,4 +1,4 @@
-// <copyright file="WebDavContext.cs" company="Fubar Development Junker">
+﻿// <copyright file="WebDavContext.cs" company="Fubar Development Junker">
 // Copyright (c) Fubar Development Junker. All rights reserved.
 // </copyright>
 
@@ -70,7 +70,7 @@ namespace FubarDev.WebDavServer.AspNetCore
             _serviceRelativeRequestUrl = new Lazy<Uri>(() => ServiceRootUrl.MakeRelativeUri(ServiceAbsoluteRequestUrl));
             _publicAbsoluteRequestUrl = new Lazy<Uri>(() => new Uri(PublicBaseUrl, ServiceBaseUrl.MakeRelativeUri(ServiceAbsoluteRequestUrl)));
             _actionUrl = new Lazy<Uri>(() => new Uri(httpContextAccessor.HttpContext.GetRouteValue("path")?.ToString() ?? string.Empty, UriKind.RelativeOrAbsolute));
-            _publicRelativeRequestUrl = new Lazy<Uri>(() => new Uri(PublicBaseUrl, ActionUrl));
+            _publicRelativeRequestUrl = new Lazy<Uri>(() => PublicRootUrl.MakeRelativeUri(PublicAbsoluteRequestUrl));
             _publicControllerUrl = new Lazy<Uri>(() => new Uri(PublicBaseUrl, ControllerRelativeUrl));
             _controllerRelativeUrl = new Lazy<Uri>(
                 () =>
