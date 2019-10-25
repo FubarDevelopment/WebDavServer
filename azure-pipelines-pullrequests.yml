@@ -1,0 +1,50 @@
+# ASP.NET Core (.NET Framework)
+# Build and test ASP.NET Core projects targeting the full .NET Framework.
+# Add steps that publish symbols, save build artifacts, and more:
+# https://docs.microsoft.com/azure/devops/pipelines/languages/dotnet-core
+
+pr:
+  branches:
+    include:
+      - '*'  # must quote since "*" is a YAML reserved character; we want a string
+
+variables:
+  solution: '**/*.sln'
+  buildPlatform: 'Any CPU'
+
+pool:
+  vmImage: 'ubuntu-latest'
+
+jobs:
+- job: prepare
+  steps:
+  - task: UseGitVersion@5
+    displayName: 'GitVersion'
+    inputs:
+      versionSpec: '5.0.2-beta1.130'
+      includePrerelease: true
+      updateAssemblyInfo: false
+  - script: |
+      echo "##vso[build.updatebuildnumber]$(GitVersion.FullSemVer)"
+    displayName: 'Set build version'
+
+- job: build
+  dependsOn: prepare
+  variables:
+    buildConfiguration: 'Release'
+  steps:
+  - task: DotNetCoreCLI@2
+    inputs:
+      command: custom
+      custom: build
+      arguments: FubarDev.WebDavServer.sln /p:Configuration=$(buildConfiguration) /p:Version=$(build.buildNumber) --verbosity Minimal
+
+- job: test
+  dependsOn: prepare
+  variables:
+    buildConfiguration: 'Debug'
+  steps:
+  - task: DotNetCoreCLI@2
+    inputs:
+      command: 'test'
+      projects: 'test/FubarDev.WebDavServer.Tests/FubarDev.WebDavServer.Tests.csproj'
