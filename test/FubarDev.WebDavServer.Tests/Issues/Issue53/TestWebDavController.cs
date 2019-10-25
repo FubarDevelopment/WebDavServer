@@ -7,7 +7,7 @@ using FubarDev.WebDavServer.AspNetCore;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 
-namespace FubarDev.WebDavServer.Tests.Issues.Issue0
+namespace FubarDev.WebDavServer.Tests.Issues.Issue53
 {
     /// <summary>
     /// The WebDAV controller.

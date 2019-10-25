@@ -12,10 +12,12 @@ using DecaTec.WebDav.Headers;
 
 using Xunit;
 
-namespace FubarDev.WebDavServer.Tests.Issues.Issue0
+namespace FubarDev.WebDavServer.Tests.Issues.Issue53
 {
     public class IssueTests : ServerTestsBase, IAsyncLifetime
     {
+        private const string NameTest1 = "test%201";
+
         public IssueTests()
         {
             Client.BaseAddress = new Uri(Client.BaseAddress, new Uri("_dav/", UriKind.Relative));
@@ -30,8 +32,7 @@ namespace FubarDev.WebDavServer.Tests.Issues.Issue0
         public async Task InitializeAsync()
         {
             var root = await FileSystem.Root;
-            var test1 = await root.CreateCollectionAsync("test1", CancellationToken.None);
-            await test1.CreateCollectionAsync("test2", CancellationToken.None);
+            await root.CreateCollectionAsync(NameTest1, CancellationToken.None);
         }
 
         public Task DisposeAsync()
@@ -49,32 +50,19 @@ namespace FubarDev.WebDavServer.Tests.Issues.Issue0
             Assert.Collection(
                 multiStatus.Response,
                 response => { Assert.Equal("/", response.Href); },
-                response => { Assert.Equal("/test1/", response.Href); });
+                response => { Assert.Equal(Uri.EscapeUriString($"/{NameTest1}/"), response.Href); });
         }
 
         [Fact]
         public async Task CheckTest1()
         {
-            var propFindResponse = await Client.PropFindAsync("test1", WebDavDepthHeaderValue.One);
+            var propFindResponse = await Client.PropFindAsync(Uri.EscapeUriString(NameTest1), WebDavDepthHeaderValue.One);
             Assert.Equal(WebDavStatusCode.MultiStatus, propFindResponse.StatusCode);
             var multiStatus = await WebDavResponseContentParser
                 .ParseMultistatusResponseContentAsync(propFindResponse.Content).ConfigureAwait(false);
             Assert.Collection(
                 multiStatus.Response,
-                response => { Assert.Equal("/test1/", response.Href); },
-                response => { Assert.Equal("/test1/test2/", response.Href); });
-        }
-
-        [Fact]
-        public async Task CheckTest2()
-        {
-            var propFindResponse = await Client.PropFindAsync("test1/test2", WebDavDepthHeaderValue.One);
-            Assert.Equal(WebDavStatusCode.MultiStatus, propFindResponse.StatusCode);
-            var multiStatus = await WebDavResponseContentParser
-                .ParseMultistatusResponseContentAsync(propFindResponse.Content).ConfigureAwait(false);
-            Assert.Collection(
-                multiStatus.Response,
-                response => { Assert.Equal("/test1/test2/", response.Href); });
+                response => { Assert.Equal(Uri.EscapeUriString($"/{NameTest1}/"), response.Href); });
         }
     }
 }

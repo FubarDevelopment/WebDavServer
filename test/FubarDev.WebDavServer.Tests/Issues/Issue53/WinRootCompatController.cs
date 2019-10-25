@@ -4,7 +4,7 @@
 
 using Microsoft.AspNetCore.Mvc;
 
-namespace FubarDev.WebDavServer.Tests.Issues.Issue0
+namespace FubarDev.WebDavServer.Tests.Issues.Issue53
 {
     /// <summary>
     /// Restores compatibility with the Windows 7 WebDAV client.

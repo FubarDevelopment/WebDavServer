@@ -69,7 +69,7 @@ namespace FubarDev.WebDavServer.AspNetCore
             _serviceRootUrl = new Lazy<Uri>(() => new Uri(ServiceAbsoluteRequestUrl, "/"));
             _serviceRelativeRequestUrl = new Lazy<Uri>(() => ServiceRootUrl.MakeRelativeUri(ServiceAbsoluteRequestUrl));
             _publicAbsoluteRequestUrl = new Lazy<Uri>(() => new Uri(PublicBaseUrl, ServiceBaseUrl.MakeRelativeUri(ServiceAbsoluteRequestUrl)));
-            _actionUrl = new Lazy<Uri>(() => new Uri(httpContextAccessor.HttpContext.GetRouteValue("path")?.ToString() ?? string.Empty, UriKind.RelativeOrAbsolute));
+            _actionUrl = new Lazy<Uri>(() => new Uri(Uri.EscapeUriString(httpContextAccessor.HttpContext.GetRouteValue("path")?.ToString() ?? string.Empty), UriKind.RelativeOrAbsolute));
             _publicRelativeRequestUrl = new Lazy<Uri>(() => PublicRootUrl.MakeRelativeUri(PublicAbsoluteRequestUrl));
             _publicControllerUrl = new Lazy<Uri>(() => new Uri(PublicBaseUrl, ControllerRelativeUrl));
             _controllerRelativeUrl = new Lazy<Uri>(
@@ -157,8 +157,8 @@ namespace FubarDev.WebDavServer.AspNetCore
         {
             var request = httpContext.Request;
             var result = new StringBuilder();
-            var basePath = request.PathBase.ToString();
-            var path = request.Path.ToString();
+            var basePath = request.PathBase.Value ?? string.Empty;
+            var path = request.Path.Value ?? string.Empty;
             if (!basePath.EndsWith("/") && !path.StartsWith("/"))
             {
                 basePath += "/";
@@ -166,9 +166,10 @@ namespace FubarDev.WebDavServer.AspNetCore
 
             result.Append(request.Scheme).Append("://").Append(request.Host)
                 .Append(basePath)
-                .Append(path);
+                .Append(Uri.EscapeUriString(path));
 
-            return new Uri(result.ToString());
+            var resultUrl = new Uri(result.ToString());
+            return resultUrl;
         }
 
         private static Uri BuildPublicBaseUrl(HttpContext httpContext, WebDavHostOptions options)

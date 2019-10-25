@@ -64,7 +64,7 @@ namespace FubarDev.WebDavServer.FileSystem
             {
                 var isDirectory = pathPart.EndsWith("/");
                 var name = isDirectory ? pathPart.Substring(0, pathPart.Length - 1) : pathPart;
-                yield return new PathElement(pathPart, Uri.UnescapeDataString(name), isDirectory);
+                yield return new PathElement(pathPart, name, isDirectory);
             }
         }
 
