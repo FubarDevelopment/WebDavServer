@@ -9,6 +9,8 @@ trigger:
     - release/*
     - develop
 
+pr: none
+
 variables:
   solution: '**/*.sln'
   buildPlatform: 'Any CPU'
