@@ -167,7 +167,12 @@ namespace FubarDev.WebDavServer.Handlers.Impl
                 else
                 {
                     // Copy or move from one known file system to another
-                    var destinationPath = WebDavContext.PublicControllerUrl.MakeRelativeUri(destinationUrl).ToString();
+                    var destinationPath = WebDavContext.PublicControllerUrl
+                        .MakeRelativeUri(destinationUrl)
+                        .OriginalString;
+
+                    // Unescape to get the real path
+                    destinationPath = Uri.UnescapeDataString(destinationPath);
 
                     // For error reporting
                     sourceUrl = WebDavContext.PublicRootUrl.MakeRelativeUri(sourceUrl);
