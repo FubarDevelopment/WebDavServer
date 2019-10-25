@@ -3,6 +3,8 @@
 // </copyright>
 
 using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Net.Http;
 using System.Reflection;
 using System.Threading;
@@ -24,6 +26,7 @@ using FubarDev.WebDavServer.Tests.Support;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc.ApplicationParts;
 using Microsoft.AspNetCore.TestHost;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
@@ -75,6 +78,11 @@ namespace FubarDev.WebDavServer.Tests
 
         protected IServiceProvider ServiceProvider => _scope.ServiceProvider;
 
+        /// <summary>
+        /// Gets the types of the controllers to be registered.
+        /// </summary>
+        protected virtual IEnumerable<Type> ControllerTypes { get; } = new[] { typeof(TestWebDavController) };
+
         public void Dispose()
         {
             Server.Dispose();
@@ -90,23 +98,35 @@ namespace FubarDev.WebDavServer.Tests
                 .AddOptions()
                 .AddLogging()
                 .Configure<CopyHandlerOptions>(
-                    opt =>
-                    {
-                        opt.Mode = processingMode;
-                    })
+                    opt => { opt.Mode = processingMode; })
                 .Configure<MoveHandlerOptions>(
-                    opt =>
-                    {
-                        opt.Mode = processingMode;
-                    })
-                .AddScoped<IWebDavContext>(sp => new TestHost(sp, container.Server.BaseAddress, sp.GetRequiredService<IHttpContextAccessor>()))
+                    opt => { opt.Mode = processingMode; })
+                .AddScoped<IWebDavContext>(
+                    sp => new TestHost(sp, container.Server.BaseAddress, sp.GetRequiredService<IHttpContextAccessor>()))
                 .AddScoped<IHttpMessageHandlerFactory>(sp => new TestHttpMessageHandlerFactory(container.Server))
-                .AddScoped(sp => fileSystemFactory ?? (fileSystemFactory = ActivatorUtilities.CreateInstance<InMemoryFileSystemFactory>(sp)))
-                .AddScoped(sp => propertyStoreFactory ?? (propertyStoreFactory = ActivatorUtilities.CreateInstance<InMemoryPropertyStoreFactory>(sp)))
+                .AddScoped(
+                    sp => fileSystemFactory ??= ActivatorUtilities.CreateInstance<InMemoryFileSystemFactory>(sp))
+                .AddScoped(
+                    sp => propertyStoreFactory ??= ActivatorUtilities.CreateInstance<InMemoryPropertyStoreFactory>(sp))
                 .AddSingleton<ILockManager, InMemoryLockManager>()
                 .AddMvcCore()
-                .AddApplicationPart(typeof(TestWebDavController).GetTypeInfo().Assembly)
+                .ConfigureApplicationPartManager(
+                    apm => { apm.ApplicationParts.Add(new TestControllerPart(ControllerTypes)); })
                 .AddWebDav();
+        }
+
+        private class TestControllerPart : ApplicationPart, IApplicationPartTypeProvider
+        {
+            public TestControllerPart(IEnumerable<Type> types)
+            {
+                Types = types.Select(x => x.GetTypeInfo()).ToList();
+            }
+
+            /// <inheritdoc />
+            public override string Name { get; } = "Test";
+
+            /// <inheritdoc />
+            public IEnumerable<TypeInfo> Types { get; }
         }
 
         private class TestStartup
