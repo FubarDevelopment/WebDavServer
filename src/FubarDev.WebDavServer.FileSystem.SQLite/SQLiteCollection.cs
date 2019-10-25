@@ -90,7 +90,7 @@ namespace FubarDev.WebDavServer.FileSystem.SQLite
                 Id = childId,
                 IsCollection = false,
                 Name = name,
-                Path = Path.OriginalString,
+                Path = Path.OriginalString.ToLowerInvariant(),
             };
             Connection.Insert(newEntry);
             return Task.FromResult((IDocument)CreateEntry(newEntry));
@@ -105,7 +105,7 @@ namespace FubarDev.WebDavServer.FileSystem.SQLite
                 Id = childId,
                 IsCollection = true,
                 Name = name,
-                Path = Path.OriginalString,
+                Path = Path.OriginalString.ToLowerInvariant(),
             };
             try
             {

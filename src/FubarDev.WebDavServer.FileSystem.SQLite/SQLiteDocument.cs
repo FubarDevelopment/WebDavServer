@@ -96,7 +96,7 @@ namespace FubarDev.WebDavServer.FileSystem.SQLite
             {
                 Id = targetId,
                 Name = name,
-                Path = collection.Path.OriginalString,
+                Path = collection.Path.OriginalString.ToLowerInvariant(),
                 CreationTimeUtc = Info.CreationTimeUtc,
                 LastWriteTimeUtc = Info.LastWriteTimeUtc,
                 ETag = Info.ETag,
