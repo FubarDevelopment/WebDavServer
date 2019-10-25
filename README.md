@@ -1,5 +1,7 @@
 # WebDAV-Server
 
+[![Build Status](https://dev.azure.com/fubar-development/webdav-server/_apis/build/status/FubarDevelopment.WebDavServer?branchName=release%2F2.0)](https://dev.azure.com/fubar-development/webdav-server/_build/latest?definitionId=1&branchName=release%2F2.0)
+
 This is a WebDAV server that provides an integration for ASP.NET Core. It's main goal is to be easily usable
 and extensible. The extensibility is provided by making extension use of dependency injection and covers
 the following points:
