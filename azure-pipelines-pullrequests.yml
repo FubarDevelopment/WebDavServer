@@ -35,9 +35,9 @@ jobs:
   steps:
   - task: DotNetCoreCLI@2
     inputs:
-      command: custom
-      custom: build
-      arguments: FubarDev.WebDavServer.sln /p:Configuration=$(buildConfiguration) /p:Version=$(build.buildNumber) --verbosity Minimal
+      command: 'build'
+      projects: 'FubarDev.WebDavServer.sln'
+      arguments: '/p:Configuration=$(buildConfiguration) /p:Version=$(build.buildNumber) --verbosity Minimal'
 
 - job: test
   dependsOn: prepare
