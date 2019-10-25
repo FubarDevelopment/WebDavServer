@@ -2,7 +2,7 @@
 // Copyright (c) Microsoft. All rights reserved.
 // Licensed under the MIT license. See LICENSE file in the project root for full license information.
 
-using Properties = FubarDev.WebDavServer.Properties;
+using Props = FubarDev.WebDavServer.Properties;
 // ReSharper disable All
 
 namespace System.Collections.Generic
@@ -75,7 +75,7 @@ namespace System.Collections.Generic
         public MultiValueDictionary(int capacity)
         {
             if (capacity < 0)
-                throw new ArgumentOutOfRangeException("capacity", Properties.Resources.ArgumentOutOfRange_NeedNonNegNum);
+                throw new ArgumentOutOfRangeException("capacity", Props.Resources.ArgumentOutOfRange_NeedNonNegNum);
             dictionary = new Dictionary<TKey, InnerCollectionView>(capacity);
         }
 
@@ -103,7 +103,7 @@ namespace System.Collections.Generic
         public MultiValueDictionary(int capacity, IEqualityComparer<TKey> comparer)
         {
             if (capacity < 0)
-                throw new ArgumentOutOfRangeException("capacity", Properties.Resources.ArgumentOutOfRange_NeedNonNegNum);
+                throw new ArgumentOutOfRangeException("capacity", Props.Resources.ArgumentOutOfRange_NeedNonNegNum);
             dictionary = new Dictionary<TKey, InnerCollectionView>(capacity, comparer);
         }
 
@@ -168,7 +168,7 @@ namespace System.Collections.Generic
             where TValueCollection : ICollection<TValue>, new()
         {
             if (new TValueCollection().IsReadOnly)
-                throw new InvalidOperationException(Properties.Resources.Create_TValueCollectionReadOnly);
+                throw new InvalidOperationException(Props.Resources.Create_TValueCollectionReadOnly);
 
             var multiValueDictionary = new MultiValueDictionary<TKey, TValue>();
             multiValueDictionary.NewCollectionFactory = () => new TValueCollection();
@@ -201,9 +201,9 @@ namespace System.Collections.Generic
             where TValueCollection : ICollection<TValue>, new()
         {
             if (capacity < 0)
-                throw new ArgumentOutOfRangeException("capacity", Properties.Resources.ArgumentOutOfRange_NeedNonNegNum);
+                throw new ArgumentOutOfRangeException("capacity", Props.Resources.ArgumentOutOfRange_NeedNonNegNum);
             if (new TValueCollection().IsReadOnly)
-                throw new InvalidOperationException(Properties.Resources.Create_TValueCollectionReadOnly);
+                throw new InvalidOperationException(Props.Resources.Create_TValueCollectionReadOnly);
 
             var multiValueDictionary = new MultiValueDictionary<TKey, TValue>(capacity);
             multiValueDictionary.NewCollectionFactory = () => new TValueCollection();
@@ -236,7 +236,7 @@ namespace System.Collections.Generic
             where TValueCollection : ICollection<TValue>, new()
         {
             if (new TValueCollection().IsReadOnly)
-                throw new InvalidOperationException(Properties.Resources.Create_TValueCollectionReadOnly);
+                throw new InvalidOperationException(Props.Resources.Create_TValueCollectionReadOnly);
 
             var multiValueDictionary = new MultiValueDictionary<TKey, TValue>(comparer);
             multiValueDictionary.NewCollectionFactory = () => new TValueCollection();
@@ -271,9 +271,9 @@ namespace System.Collections.Generic
             where TValueCollection : ICollection<TValue>, new()
         {
             if (capacity < 0)
-                throw new ArgumentOutOfRangeException("capacity", Properties.Resources.ArgumentOutOfRange_NeedNonNegNum);
+                throw new ArgumentOutOfRangeException("capacity", Props.Resources.ArgumentOutOfRange_NeedNonNegNum);
             if (new TValueCollection().IsReadOnly)
-                throw new InvalidOperationException(Properties.Resources.Create_TValueCollectionReadOnly);
+                throw new InvalidOperationException(Props.Resources.Create_TValueCollectionReadOnly);
 
             var multiValueDictionary = new MultiValueDictionary<TKey, TValue>(capacity, comparer);
             multiValueDictionary.NewCollectionFactory = () => new TValueCollection();
@@ -308,7 +308,7 @@ namespace System.Collections.Generic
             if (enumerable == null)
                 throw new ArgumentNullException("enumerable");
             if (new TValueCollection().IsReadOnly)
-                throw new InvalidOperationException(Properties.Resources.Create_TValueCollectionReadOnly);
+                throw new InvalidOperationException(Props.Resources.Create_TValueCollectionReadOnly);
 
             var multiValueDictionary = new MultiValueDictionary<TKey, TValue>();
             multiValueDictionary.NewCollectionFactory = () => new TValueCollection();
@@ -347,7 +347,7 @@ namespace System.Collections.Generic
             if (enumerable == null)
                 throw new ArgumentNullException("enumerable");
             if (new TValueCollection().IsReadOnly)
-                throw new InvalidOperationException(Properties.Resources.Create_TValueCollectionReadOnly);
+                throw new InvalidOperationException(Props.Resources.Create_TValueCollectionReadOnly);
 
             var multiValueDictionary = new MultiValueDictionary<TKey, TValue>(comparer);
             multiValueDictionary.NewCollectionFactory = () => new TValueCollection();
@@ -389,7 +389,7 @@ namespace System.Collections.Generic
             where TValueCollection : ICollection<TValue>
         {
             if (collectionFactory().IsReadOnly)
-                throw new InvalidOperationException((Properties.Resources.Create_TValueCollectionReadOnly));
+                throw new InvalidOperationException((Props.Resources.Create_TValueCollectionReadOnly));
 
             var multiValueDictionary = new MultiValueDictionary<TKey, TValue>();
             multiValueDictionary.NewCollectionFactory = (Func<ICollection<TValue>>)(Delegate)collectionFactory;
@@ -424,9 +424,9 @@ namespace System.Collections.Generic
             where TValueCollection : ICollection<TValue>
         {
             if (capacity < 0)
-                throw new ArgumentOutOfRangeException("capacity", Properties.Resources.ArgumentOutOfRange_NeedNonNegNum);
+                throw new ArgumentOutOfRangeException("capacity", Props.Resources.ArgumentOutOfRange_NeedNonNegNum);
             if (collectionFactory().IsReadOnly)
-                throw new InvalidOperationException((Properties.Resources.Create_TValueCollectionReadOnly));
+                throw new InvalidOperationException((Props.Resources.Create_TValueCollectionReadOnly));
 
             var multiValueDictionary = new MultiValueDictionary<TKey, TValue>(capacity);
             multiValueDictionary.NewCollectionFactory = (Func<ICollection<TValue>>)(Delegate)collectionFactory;
@@ -461,7 +461,7 @@ namespace System.Collections.Generic
             where TValueCollection : ICollection<TValue>
         {
             if (collectionFactory().IsReadOnly)
-                throw new InvalidOperationException((Properties.Resources.Create_TValueCollectionReadOnly));
+                throw new InvalidOperationException((Props.Resources.Create_TValueCollectionReadOnly));
 
             var multiValueDictionary = new MultiValueDictionary<TKey, TValue>(comparer);
             multiValueDictionary.NewCollectionFactory = (Func<ICollection<TValue>>)(Delegate)collectionFactory;
@@ -498,9 +498,9 @@ namespace System.Collections.Generic
             where TValueCollection : ICollection<TValue>
         {
             if (capacity < 0)
-                throw new ArgumentOutOfRangeException("capacity", Properties.Resources.ArgumentOutOfRange_NeedNonNegNum);
+                throw new ArgumentOutOfRangeException("capacity", Props.Resources.ArgumentOutOfRange_NeedNonNegNum);
             if (collectionFactory().IsReadOnly)
-                throw new InvalidOperationException((Properties.Resources.Create_TValueCollectionReadOnly));
+                throw new InvalidOperationException((Props.Resources.Create_TValueCollectionReadOnly));
 
             var multiValueDictionary = new MultiValueDictionary<TKey, TValue>(capacity, comparer);
             multiValueDictionary.NewCollectionFactory = (Func<ICollection<TValue>>)(Delegate)collectionFactory;
@@ -537,7 +537,7 @@ namespace System.Collections.Generic
             if (enumerable == null)
                 throw new ArgumentNullException("enumerable");
             if (collectionFactory().IsReadOnly)
-                throw new InvalidOperationException((Properties.Resources.Create_TValueCollectionReadOnly));
+                throw new InvalidOperationException((Props.Resources.Create_TValueCollectionReadOnly));
 
             var multiValueDictionary = new MultiValueDictionary<TKey, TValue>();
             multiValueDictionary.NewCollectionFactory = (Func<ICollection<TValue>>)(Delegate)collectionFactory;
@@ -578,7 +578,7 @@ namespace System.Collections.Generic
             if (enumerable == null)
                 throw new ArgumentNullException("enumerable");
             if (collectionFactory().IsReadOnly)
-                throw new InvalidOperationException((Properties.Resources.Create_TValueCollectionReadOnly));
+                throw new InvalidOperationException((Props.Resources.Create_TValueCollectionReadOnly));
 
             var multiValueDictionary = new MultiValueDictionary<TKey, TValue>(comparer);
             multiValueDictionary.NewCollectionFactory = (Func<ICollection<TValue>>)(Delegate)collectionFactory;
@@ -931,9 +931,9 @@ namespace System.Collections.Generic
                     switch (state)
                     {
                         case EnumerationState.BeforeFirst:
-                            throw new InvalidOperationException((Properties.Resources.InvalidOperation_EnumNotStarted));
+                            throw new InvalidOperationException((Props.Resources.InvalidOperation_EnumNotStarted));
                         case EnumerationState.AfterLast:
-                            throw new InvalidOperationException((Properties.Resources.InvalidOperation_EnumEnded));
+                            throw new InvalidOperationException((Props.Resources.InvalidOperation_EnumEnded));
                         default:
                             return current;
                     }
@@ -951,7 +951,7 @@ namespace System.Collections.Generic
             {
                 if (version != multiValueDictionary.version)
                 {
-                    throw new InvalidOperationException(Properties.Resources.InvalidOperation_EnumFailedVersion);
+                    throw new InvalidOperationException(Props.Resources.InvalidOperation_EnumFailedVersion);
                 }
                 else if (enumerator.MoveNext())
                 {
@@ -974,7 +974,7 @@ namespace System.Collections.Generic
             public void Reset()
             {
                 if (version != multiValueDictionary.version)
-                    throw new InvalidOperationException(Properties.Resources.InvalidOperation_EnumFailedVersion);
+                    throw new InvalidOperationException(Props.Resources.InvalidOperation_EnumFailedVersion);
                 enumerator.Dispose();
                 enumerator = multiValueDictionary.dictionary.GetEnumerator();
                 current = default(KeyValuePair<TKey, IReadOnlyCollection<TValue>>);
@@ -1038,11 +1038,11 @@ namespace System.Collections.Generic
                 if (array == null)
                     throw new ArgumentNullException("array");
                 if (arrayIndex < 0)
-                    throw new ArgumentOutOfRangeException("arrayIndex", Properties.Resources.ArgumentOutOfRange_NeedNonNegNum);
+                    throw new ArgumentOutOfRangeException("arrayIndex", Props.Resources.ArgumentOutOfRange_NeedNonNegNum);
                 if (arrayIndex > array.Length)
-                    throw new ArgumentOutOfRangeException("arrayIndex", Properties.Resources.ArgumentOutOfRange_Index);
+                    throw new ArgumentOutOfRangeException("arrayIndex", Props.Resources.ArgumentOutOfRange_Index);
                 if (array.Length - arrayIndex < collection.Count)
-                    throw new ArgumentException(Properties.Resources.CopyTo_ArgumentsTooSmall, "arrayIndex");
+                    throw new ArgumentException(Props.Resources.CopyTo_ArgumentsTooSmall, "arrayIndex");
 
                 collection.CopyTo(array, arrayIndex);
             }
@@ -1087,17 +1087,17 @@ namespace System.Collections.Generic
 
             void ICollection<TValue>.Add(TValue item)
             {
-                throw new NotSupportedException(Properties.Resources.ReadOnly_Modification);
+                throw new NotSupportedException(Props.Resources.ReadOnly_Modification);
             }
 
             void ICollection<TValue>.Clear()
             {
-                throw new NotSupportedException(Properties.Resources.ReadOnly_Modification);
+                throw new NotSupportedException(Props.Resources.ReadOnly_Modification);
             }
 
             bool ICollection<TValue>.Remove(TValue item)
             {
-                throw new NotSupportedException(Properties.Resources.ReadOnly_Modification);
+                throw new NotSupportedException(Props.Resources.ReadOnly_Modification);
             }
 
             #endregion

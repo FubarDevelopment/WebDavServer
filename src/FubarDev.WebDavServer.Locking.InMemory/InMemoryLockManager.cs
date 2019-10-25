@@ -104,6 +104,8 @@ namespace FubarDev.WebDavServer.Locking.InMemory
             public Task<IActiveLock?> GetAsync(string stateToken, CancellationToken cancellationToken)
             {
                 _locks.TryGetValue(stateToken, out var activeLock);
+
+                // ReSharper disable once RedundantTypeArgumentsOfMethod
                 return Task.FromResult<IActiveLock?>(activeLock);
             }
 

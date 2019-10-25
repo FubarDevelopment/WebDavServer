@@ -3,7 +3,6 @@
 // </copyright>
 
 using System.Collections.Generic;
-using System.Linq;
 
 using FubarDev.WebDavServer.Dispatchers;
 using FubarDev.WebDavServer.Formatters;
@@ -26,7 +25,14 @@ namespace FubarDev.WebDavServer
             Formatter = formatter;
             Class1 = webDavClass1;
             Class2 = webDavClass2;
-            SupportedClasses = new IWebDavClass?[] { webDavClass1, webDavClass2 }.Where(x => x != null).Cast<IWebDavClass>().ToList();
+
+            var supportedClasses = new List<IWebDavClass>() { webDavClass1 };
+            if (webDavClass2 != null)
+            {
+                supportedClasses.Add(webDavClass2);
+            }
+
+            SupportedClasses = supportedClasses;
         }
 
         /// <inheritdoc />
