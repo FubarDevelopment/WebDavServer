@@ -158,24 +158,24 @@ namespace FubarDev.WebDavServer.Sample.AspNetCore
                 app.UseDeveloperExceptionPage();
             }
 
-            if (!Program.IsKestrel || !Program.DisableBasicAuth)
-            {
-                app.UseAuthentication();
-            }
-
-            app.UseMiddleware<RequestLogMiddleware>();
-
-            if (!Program.IsKestrel)
-            {
-                app.UseMiddleware<ImpersonationMiddleware>();
-            }
-
             app.UseForwardedHeaders(new ForwardedHeadersOptions()
             {
                 ForwardedHeaders = ForwardedHeaders.XForwardedFor | ForwardedHeaders.XForwardedProto
             });
 
+            app.UseMiddleware<RequestLogMiddleware>();
+
             app.UseRouting();
+
+            if (!Program.IsKestrel || !Program.DisableBasicAuth)
+            {
+                app.UseAuthentication();
+            }
+
+            if (!Program.IsKestrel)
+            {
+                app.UseMiddleware<ImpersonationMiddleware>();
+            }
 
             app.UseAuthorization();
 
