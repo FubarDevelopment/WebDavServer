@@ -55,12 +55,6 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 EndProject
 Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "System.Diagnostics.CodeAnalysis", "third-party\System.Diagnostics.CodeAnalysis\System.Diagnostics.CodeAnalysis.shproj", "{89E8B7DB-B769-4F82-B5D3-07D5901CB32E}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Azure DevOps", "Azure DevOps", "{A3BA3CC1-BAC2-4961-958E-3A862EA42356}"
-ProjectSection(SolutionItems) = preProject
-	azure-pipelines-prerelease.yml = azure-pipelines-prerelease.yml
-	azure-pipelines-pullrequests.yml = azure-pipelines-pullrequests.yml
-EndProjectSection
-EndProject
 Global
 	GlobalSection(SharedMSBuildProjectFiles) = preSolution
 		third-party\System.Diagnostics.CodeAnalysis\System.Diagnostics.CodeAnalysis.projitems*{89e8b7db-b769-4f82-b5d3-07d5901cb32e}*SharedItemsImports = 13
@@ -170,7 +164,6 @@ Global
 		{B80FF6EE-2136-410D-B5BE-E8F2A032189E} = {E1DB9590-0D33-42F8-9F3B-EB379EC00F9D}
 		{8950120E-82E4-43DA-958B-858B88D9CA9B} = {48040D3B-35E8-45CE-A3E8-E3971F98C892}
 		{89E8B7DB-B769-4F82-B5D3-07D5901CB32E} = {E1DB9590-0D33-42F8-9F3B-EB379EC00F9D}
-		{A3BA3CC1-BAC2-4961-958E-3A862EA42356} = {7740DEB8-8645-4C76-8B8E-7D3A36A9D06A}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {E470F174-9A96-43E0-9676-5CEDE1E7B89A}
