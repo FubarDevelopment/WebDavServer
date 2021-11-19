@@ -20,6 +20,7 @@ using FubarDev.WebDavServer.Props.Store.TextFile;
 using FubarDev.WebDavServer.Sample.AspNetCore.Middlewares;
 
 using idunno.Authentication;
+using idunno.Authentication.Basic;
 
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Builder;
@@ -69,7 +70,7 @@ namespace FubarDev.WebDavServer.Sample.AspNetCore
                     {
                         if (!Program.IsKestrel || !Program.DisableBasicAuth)
                         {
-                            opt.DefaultScheme = "Basic";
+                            opt.DefaultScheme = BasicAuthenticationDefaults.AuthenticationScheme;
                         }
                         else
                         {
@@ -81,7 +82,11 @@ namespace FubarDev.WebDavServer.Sample.AspNetCore
                 .AddBasic(
                     opt =>
                     {
-                        opt.Events.OnValidateCredentials = ValidateCredentialsAsync;
+                        opt.Events = new BasicAuthenticationEvents()
+                        {
+                            OnValidateCredentials = ValidateCredentialsAsync,
+                        };
+
                         opt.AllowInsecureProtocol = true;
                     });
 
