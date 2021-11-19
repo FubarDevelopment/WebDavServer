@@ -4,6 +4,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
@@ -131,7 +132,7 @@ namespace FubarDev.WebDavServer.Dispatchers
         }
 
         /// <inheritdoc />
-        public bool TryCreateDeadProperty(IPropertyStore store, IEntry entry, XName name, out IDeadProperty? deadProperty)
+        public bool TryCreateDeadProperty(IPropertyStore store, IEntry entry, XName name, [NotNullWhen(true)] out IDeadProperty? deadProperty)
         {
             deadProperty = null;
             return false;

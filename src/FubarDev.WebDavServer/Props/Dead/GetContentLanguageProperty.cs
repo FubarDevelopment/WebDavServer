@@ -54,7 +54,7 @@ namespace FubarDev.WebDavServer.Props.Dead
         /// <param name="ct">The cancellation token.</param>
         /// <returns>A tuple where the first item indicates whether the value was read from the property store and
         /// the second item is the value to be returned as value for this property.</returns>
-        public async Task<(bool wasSet, string value)> TryGetValueAsync(CancellationToken ct)
+        public async Task<(bool WasSet, string Value)> TryGetValueAsync(CancellationToken ct)
         {
             var result = await GetValueAsync(ct).ConfigureAwait(false);
             return (_value != null, result);

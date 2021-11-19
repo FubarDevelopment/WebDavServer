@@ -27,7 +27,7 @@ namespace FubarDev.WebDavServer
         {
             Headers = headers.ToDictionary(x => x.Key, x => (IReadOnlyCollection<string>)x.Value.ToList(), StringComparer.OrdinalIgnoreCase);
             Depth = ParseHeader("Depth", args => DepthHeader.Parse(args.Single()));
-            Overwrite = ParseHeader("Overwrite", args => OverwriteHeader.Parse(args.Single()));
+            Overwrite = ParseValueHeader("Overwrite", args => OverwriteHeader.Parse(args.Single()));
             Range = ParseHeader("Range", RangeHeader.Parse);
             If = ParseHeader("If", args => IfHeader.Parse(args.Single(), EntityTagComparer.Strong, context));
             IfMatch = ParseHeader("If-Match", IfMatchHeader.Parse);
@@ -35,7 +35,7 @@ namespace FubarDev.WebDavServer
             IfModifiedSince = ParseHeader("If-Modified-Since", args => IfModifiedSinceHeader.Parse(args.Single()));
             IfUnmodifiedSince = ParseHeader("If-Unmodified-Since", args => IfUnmodifiedSinceHeader.Parse(args.Single()));
             Timeout = ParseHeader("Timeout", TimeoutHeader.Parse);
-            ContentLength = ParseHeader("Content-Length", args => (long?)XmlConvert.ToInt64(args.Single()));
+            ContentLength = ParseValueHeader("Content-Length", args => (long?)XmlConvert.ToInt64(args.Single()));
         }
 
         /// <inheritdoc />
@@ -76,8 +76,7 @@ namespace FubarDev.WebDavServer
         {
             get
             {
-                IReadOnlyCollection<string> v;
-                if (Headers.TryGetValue(name, out v))
+                if (Headers.TryGetValue(name, out var v))
                 {
                     return v;
                 }
@@ -86,10 +85,24 @@ namespace FubarDev.WebDavServer
             }
         }
 
-        private T ParseHeader<T>(string name, Func<IReadOnlyCollection<string>, T> createFunc, T defaultValue = default(T))
+        private T? ParseValueHeader<T>(string name, Func<IReadOnlyCollection<string>, T?> createFunc, T? defaultValue = default)
+            where T : struct
         {
-            IReadOnlyCollection<string> v;
-            if (Headers.TryGetValue(name, out v))
+            if (Headers.TryGetValue(name, out var v))
+            {
+                if (v.Count != 0)
+                {
+                    return createFunc(v);
+                }
+            }
+
+            return defaultValue;
+        }
+
+        private T? ParseHeader<T>(string name, Func<IReadOnlyCollection<string>, T> createFunc, T? defaultValue = default)
+            where T : class
+        {
+            if (Headers.TryGetValue(name, out var v))
             {
                 if (v.Count != 0)
                 {

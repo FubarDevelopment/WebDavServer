@@ -39,7 +39,7 @@ namespace FubarDev.WebDavServer.Props.Converters
         }
 
         /// <inheritdoc />
-        public bool IsValidValue(T value)
+        public bool IsValidValue(T? value)
         {
             return value != null;
         }

@@ -99,9 +99,9 @@ namespace FubarDev.WebDavServer.Handlers.Impl.GetResults
             if (contentLanguageProp != null)
             {
                 var propValue = await contentLanguageProp.TryGetValueAsync(ct).ConfigureAwait(false);
-                if (propValue.wasSet)
+                if (propValue.WasSet)
                 {
-                    content.Headers.ContentLanguage.Add(propValue.value);
+                    content.Headers.ContentLanguage.Add(propValue.Value);
                 }
             }
 

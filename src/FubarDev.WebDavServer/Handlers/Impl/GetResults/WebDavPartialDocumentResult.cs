@@ -174,8 +174,8 @@ namespace FubarDev.WebDavServer.Handlers.Impl.GetResults
             if (contentLanguageProp != null)
             {
                 var propValue = await contentLanguageProp.TryGetValueAsync(ct).ConfigureAwait(false);
-                if (propValue.wasSet)
-                    content.Headers.ContentLanguage.Add(propValue.value);
+                if (propValue.WasSet)
+                    content.Headers.ContentLanguage.Add(propValue.Value);
             }
         }
     }

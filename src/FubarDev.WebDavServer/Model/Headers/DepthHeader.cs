@@ -10,7 +10,7 @@ namespace FubarDev.WebDavServer.Model.Headers
     /// <summary>
     /// The representation of the <c>Depth</c> header.
     /// </summary>
-    public struct DepthHeader : IComparable<DepthHeader>, IEquatable<DepthHeader>
+    public class DepthHeader : IComparable<DepthHeader>, IEquatable<DepthHeader>
     {
         /// <summary>
         /// Gets the default <c>0</c> depth header.
