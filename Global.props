@@ -6,7 +6,7 @@
     <LangVersion>8.0</LangVersion>
     <VersionPrefix Condition=" '$(VersionPrefix)' == '' ">1.0</VersionPrefix>
     <Product>WebDAV Server</Product>
-    <Copyright>Fubar Development Junker 2016-2019</Copyright>
+    <Copyright>Fubar Development Junker 2016-2021</Copyright>
     <Company>Fubar Development Junker</Company>
     <Authors>Fubar Development Junker</Authors>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
@@ -19,7 +19,7 @@
     <SuppressNETCoreSdkPreviewMessage>true</SuppressNETCoreSdkPreviewMessage>
   </PropertyGroup>
 
-  <PropertyGroup Condition=" '$(TargetFramework)' == 'netstandard2.1' or '$(TargetFramework)' == 'netcoreapp3.0' ">
+  <PropertyGroup Condition=" '$(TargetFramework)' == 'netstandard2.1' or '$(TargetFramework)' == 'netcoreapp3.1' ">
     <Nullable>enable</Nullable>
   </PropertyGroup>
 

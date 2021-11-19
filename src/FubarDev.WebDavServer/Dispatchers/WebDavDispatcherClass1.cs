@@ -5,6 +5,7 @@
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Diagnostics.CodeAnalysis;
 using System.IO;
 using System.Linq;
 using System.Threading;
@@ -320,7 +321,7 @@ namespace FubarDev.WebDavServer.Dispatchers
         }
 
         /// <inheritdoc />
-        public bool TryCreateDeadProperty(IPropertyStore store, IEntry entry, XName name, out IDeadProperty? deadProperty)
+        public bool TryCreateDeadProperty(IPropertyStore store, IEntry entry, XName name, [NotNullWhen(true)] out IDeadProperty? deadProperty)
         {
             if (!_defaultCreationMap.Value.TryGetValue(name, out var createDeadProp))
             {

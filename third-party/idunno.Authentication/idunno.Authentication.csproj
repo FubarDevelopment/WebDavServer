@@ -3,7 +3,7 @@
 
   <PropertyGroup>
     <Description>ASP.NET 5 middleware that enables an application to support Basic authentication workflow.</Description>
-    <TargetFrameworks>netcoreapp3.0</TargetFrameworks>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
     <AssemblyName>idunno.Authentication</AssemblyName>
     <PackageId>idunno.Authentication</PackageId>
@@ -19,6 +19,6 @@
   </PropertyGroup>
   <ItemGroup>
     <FrameworkReference Include="Microsoft.AspNetCore.App" />
-    <PackageReference Include="Microsoft.Extensions.Options.ConfigurationExtensions" Version="3.0.0" />
+    <PackageReference Include="Microsoft.Extensions.Options.ConfigurationExtensions" Version="3.1.0" />
   </ItemGroup>
 </Project>
