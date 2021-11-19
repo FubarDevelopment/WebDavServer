@@ -94,7 +94,7 @@ namespace FubarDev.WebDavServer.FileSystem.InMemory
                 _mountPoint = mountPoint;
             }
 
-            public bool Equals(FileSystemKey other)
+            public bool Equals(FileSystemKey? other)
             {
                 if (ReferenceEquals(null, other))
                 {
@@ -109,7 +109,7 @@ namespace FubarDev.WebDavServer.FileSystem.InMemory
                 return _comparer.Equals(_userName, other._userName) && _comparer.Equals(_mountPoint, other._mountPoint);
             }
 
-            public override bool Equals(object obj)
+            public override bool Equals(object? obj)
             {
                 if (ReferenceEquals(null, obj))
                 {
@@ -133,7 +133,7 @@ namespace FubarDev.WebDavServer.FileSystem.InMemory
             {
                 unchecked
                 {
-                    return ((_userName != null ? _comparer.GetHashCode(_userName) : 0) * 397) ^ (_mountPoint != null ? _comparer.GetHashCode(_mountPoint) : 0);
+                    return (_comparer.GetHashCode(_userName) * 397) ^ _comparer.GetHashCode(_mountPoint);
                 }
             }
         }

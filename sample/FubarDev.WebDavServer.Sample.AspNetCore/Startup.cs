@@ -19,7 +19,6 @@ using FubarDev.WebDavServer.Props.Store.SQLite;
 using FubarDev.WebDavServer.Props.Store.TextFile;
 using FubarDev.WebDavServer.Sample.AspNetCore.Middlewares;
 
-using idunno.Authentication;
 using idunno.Authentication.Basic;
 
 using Microsoft.AspNetCore.Authentication;
@@ -60,7 +59,7 @@ namespace FubarDev.WebDavServer.Sample.AspNetCore
             Configuration = configuration;
         }
 
-        public IConfiguration Configuration { get; }
+        private IConfiguration Configuration { get; }
 
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)

@@ -82,7 +82,7 @@ namespace FubarDev.WebDavServer.Locking
                 throw new InvalidOperationException("No error to create a response for.");
             }
 
-            if (ConflictingLocks == null)
+            if (_conflictingLocks == null)
             {
                 // No "If" header condition succeeded, but we didn't ask for a lock
                 return new WebDavResult(WebDavStatusCode.NotFound);

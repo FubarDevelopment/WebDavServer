@@ -34,7 +34,9 @@ namespace FubarDev.WebDavServer.Model.Headers
         {
             if (!CodedUrlParser.TryParse(s, out var stateToken))
             {
-                throw new ArgumentException($"{s} is not a valid lock token", nameof(s));
+                throw new ArgumentException(
+                    $"{s} is not a valid lock token",
+                    nameof(s));
             }
 
             return new LockTokenHeader(stateToken);

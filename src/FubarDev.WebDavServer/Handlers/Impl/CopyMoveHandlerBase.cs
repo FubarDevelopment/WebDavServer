@@ -135,7 +135,10 @@ namespace FubarDev.WebDavServer.Handlers.Impl
 
                     if (Logger.IsEnabled(LogLevel.Debug))
                     {
-                        Logger.LogDebug($"{WebDavContext.PublicControllerUrl} is not a base of {destinationUrl}");
+                        Logger.LogDebug(
+                            "{PublicControllerUrl} is not a base of {DestinationUrl}",
+                            WebDavContext.PublicControllerUrl,
+                            destinationUrl);
                     }
 
                     using (var remoteHandler = await CreateRemoteTargetActionsAsync(
@@ -183,7 +186,9 @@ namespace FubarDev.WebDavServer.Handlers.Impl
                     if (destinationSelectionResult.IsMissing && destinationSelectionResult.MissingNames.Count != 1)
                     {
                         Logger.LogDebug(
-                            $"{destinationUrl}: The target is missing with the following path parts: {string.Join(", ", destinationSelectionResult.MissingNames)}");
+                            "{DestinationUrl}: The target is missing with the following path parts: {MissingPathFragment}",
+                            destinationUrl,
+                            string.Join("/", destinationSelectionResult.MissingNames));
                         throw new WebDavException(WebDavStatusCode.Conflict);
                     }
 
@@ -300,7 +305,10 @@ namespace FubarDev.WebDavServer.Handlers.Impl
 
             if (Logger.IsEnabled(LogLevel.Trace))
             {
-                Logger.LogTrace($"Copy or move from {sourceUrl} to {targetItem.DestinationUrl}");
+                Logger.LogTrace(
+                    "Copy or move from {SourceUrl} to {DestinationUrl}",
+                    sourceUrl,
+                    targetItem.DestinationUrl);
             }
 
             if (sourceSelectionResult.ResultType == SelectionResultType.FoundDocument)

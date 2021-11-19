@@ -146,7 +146,9 @@ namespace FubarDev.WebDavServer.Handlers.Impl
                     }
                     else
                     {
-                        _logger.LogInformation("Writing data with content length {0}", contentLength.Value);
+                        _logger.LogInformation(
+                            "Writing data with content length {ContentLength}",
+                            contentLength.Value);
                         await Copy(data, fileStream, contentLength.Value, cancellationToken).ConfigureAwait(false);
                     }
                 }
@@ -208,7 +210,7 @@ namespace FubarDev.WebDavServer.Handlers.Impl
                     totalReadCount += readCount;
                     if (_logger.IsEnabled(LogLevel.Trace))
                     {
-                        _logger.LogTrace("Wrote {0} bytes", totalReadCount);
+                        _logger.LogTrace("Wrote {Count} bytes", totalReadCount);
                     }
                 }
             }

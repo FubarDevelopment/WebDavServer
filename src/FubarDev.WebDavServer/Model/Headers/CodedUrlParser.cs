@@ -70,7 +70,9 @@ namespace FubarDev.WebDavServer.Model.Headers
             var codedUrlText = source.GetUntil('>');
             if (codedUrlText == null)
             {
-                throw new ArgumentException($"{source.Remaining} is not a valid Coded-URL (not ending with '>')", nameof(source));
+                throw new ArgumentException(
+                    $"{source.Remaining} is not a valid Coded-URL (not ending with '>')",
+                    nameof(source));
             }
 
             source.Advance(1);

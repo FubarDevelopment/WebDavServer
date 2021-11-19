@@ -47,7 +47,7 @@ namespace FubarDev.WebDavServer.Model.Headers
         {
             if (rangeItem == "*")
             {
-                return default(RangeHeaderItem);
+                return default;
             }
 
             var match = _rangePattern.Match(rangeItem);

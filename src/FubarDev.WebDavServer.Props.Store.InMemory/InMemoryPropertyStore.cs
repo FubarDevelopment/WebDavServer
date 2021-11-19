@@ -56,7 +56,8 @@ namespace FubarDev.WebDavServer.Props.Store.InMemory
             {
                 if (element.Name == GetETagProperty.PropertyName)
                 {
-                    _logger?.LogWarning("The ETag property must not be set using the property store.");
+                    _logger?.LogWarning(
+                        "The ETag property must not be set using the property store");
                     continue;
                 }
 
@@ -90,7 +91,8 @@ namespace FubarDev.WebDavServer.Props.Store.InMemory
                 {
                     if (key == GetETagProperty.PropertyName)
                     {
-                        _logger?.LogWarning("The ETag property must not be set using the property store.");
+                        _logger?.LogWarning(
+                            "The ETag property must not be set using the property store");
                         result.Add(false);
                     }
                     else
@@ -185,7 +187,8 @@ namespace FubarDev.WebDavServer.Props.Store.InMemory
             {
                 if (isEtagEntry && element.Name == GetETagProperty.PropertyName)
                 {
-                    _logger?.LogWarning("The ETag property must not be set using the property store.");
+                    _logger?.LogWarning(
+                        "The ETag property must not be set using the property store");
                     continue;
                 }
 

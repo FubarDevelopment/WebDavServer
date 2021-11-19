@@ -64,7 +64,7 @@ namespace FubarDev.WebDavServer.Formatters
             using var temp = new MemoryStream();
             using (var writer = XmlWriter.Create(temp, writerSettings))
             {
-                SerializerInstance<T>.Serializer.Serialize(writer, data, ns);
+                SerializerInstance<T>.Serializer.Serialize(writer, data!, ns);
             }
 
             temp.Position = 0;

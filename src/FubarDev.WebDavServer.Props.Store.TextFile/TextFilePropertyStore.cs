@@ -87,13 +87,12 @@ namespace FubarDev.WebDavServer.Props.Store.TextFile
         {
             if (_logger.IsEnabled(LogLevel.Trace))
             {
-                _logger.LogTrace($"Get properties for {entry.Path}");
+                _logger.LogTrace("Get properties for {Path}", entry.Path);
             }
 
             var storeData = Load(entry, false, cancellationToken);
-            EntryInfo info;
             IReadOnlyCollection<XElement> result;
-            if (storeData.Entries.TryGetValue(GetEntryKey(entry), out info))
+            if (storeData.Entries.TryGetValue(GetEntryKey(entry), out var info))
             {
                 result = info.Attributes
                     .Where(x => x.Key != GetETagProperty.PropertyName)
@@ -102,7 +101,7 @@ namespace FubarDev.WebDavServer.Props.Store.TextFile
             }
             else
             {
-                result = new XElement[0];
+                result = Array.Empty<XElement>();
             }
 
             return Task.FromResult(result);
@@ -113,15 +112,15 @@ namespace FubarDev.WebDavServer.Props.Store.TextFile
         {
             if (_logger.IsEnabled(LogLevel.Trace))
             {
-                _logger.LogTrace($"Set properties for {entry.Path}");
+                _logger.LogTrace("Set properties for {Path}", entry.Path);
             }
 
-            var info = GetInfo(entry, cancellationToken) ?? new EntryInfo();
+            var info = GetInfo(entry, cancellationToken);
             foreach (var element in elements)
             {
                 if (element.Name == GetETagProperty.PropertyName)
                 {
-                    _logger.LogWarning("The ETag property must not be set using the property store.");
+                    _logger.LogWarning("The ETag property must not be set using the property store");
                     continue;
                 }
 
@@ -137,16 +136,16 @@ namespace FubarDev.WebDavServer.Props.Store.TextFile
         {
             if (_logger.IsEnabled(LogLevel.Trace))
             {
-                _logger.LogTrace($"Remove properties for {entry.Path}");
+                _logger.LogTrace("Remove properties for {Path}", entry.Path);
             }
 
-            var info = GetInfo(entry, cancellationToken) ?? new EntryInfo();
+            var info = GetInfo(entry, cancellationToken);
             var result = new List<bool>();
             foreach (var key in keys)
             {
                 if (key == GetETagProperty.PropertyName)
                 {
-                    _logger.LogWarning("The ETag property must not be set using the property store.");
+                    _logger.LogWarning("The ETag property must not be set using the property store");
                     result.Add(false);
                 }
                 else
@@ -183,15 +182,13 @@ namespace FubarDev.WebDavServer.Props.Store.TextFile
         {
             var storeData = Load(entry, false, cancellationToken);
             var entryKey = GetEntryKey(entry);
-            EntryInfo info;
-            if (!storeData.Entries.TryGetValue(entryKey, out info))
+            if (!storeData.Entries.TryGetValue(entryKey, out var info))
             {
                 info = new EntryInfo();
                 storeData.Entries.Add(entryKey, info);
             }
 
-            XElement etagElement;
-            if (!info.Attributes.TryGetValue(_etagKey, out etagElement))
+            if (!info.Attributes.TryGetValue(_etagKey, out var etagElement))
             {
                 var etag = new EntityTag(false);
                 etagElement = etag.ToXml();
@@ -210,8 +207,7 @@ namespace FubarDev.WebDavServer.Props.Store.TextFile
         {
             var storeData = Load(entry, false, cancellationToken);
             var entryKey = GetEntryKey(entry);
-            EntryInfo info;
-            if (!storeData.Entries.TryGetValue(entryKey, out info))
+            if (!storeData.Entries.TryGetValue(entryKey, out var info))
             {
                 info = new EntryInfo();
                 storeData.Entries.Add(entryKey, info);
@@ -248,8 +244,7 @@ namespace FubarDev.WebDavServer.Props.Store.TextFile
         {
             var storeData = Load(entry, false, cancellationToken);
 
-            EntryInfo info;
-            if (!storeData.Entries.TryGetValue(GetEntryKey(entry), out info))
+            if (!storeData.Entries.TryGetValue(GetEntryKey(entry), out var info))
             {
                 info = new EntryInfo();
             }
@@ -322,7 +317,10 @@ namespace FubarDev.WebDavServer.Props.Store.TextFile
 
             if (_logger.IsEnabled(LogLevel.Trace))
             {
-                _logger.LogTrace($"Property store file name for {entry.Path} is {result}");
+                _logger.LogTrace(
+                    "Property store file name for {Path} is {Result}",
+                    entry.Path,
+                    result);
             }
 
             return result;
@@ -347,7 +345,10 @@ namespace FubarDev.WebDavServer.Props.Store.TextFile
 
             if (_logger.IsEnabled(LogLevel.Trace))
             {
-                _logger.LogTrace($"File system path for {entry.Path} is {result}");
+                _logger.LogTrace(
+                    "File system path for {Path} is {Result}",
+                    entry.Path,
+                    result);
             }
 
             return result;

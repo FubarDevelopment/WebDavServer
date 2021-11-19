@@ -59,7 +59,7 @@ namespace FubarDev.WebDavServer.Utils
             var homeEnvVars = new[] { "HOME", "USERPROFILE", "PUBLIC" };
             var home = homeEnvVars.Select(x => Tuple.Create(x, Environment.GetEnvironmentVariable(x))).First(x => !string.IsNullOrEmpty(x.Item2));
             var rootDir = Path.GetDirectoryName(home.Item2);
-            return new HomePathInfo(rootDir, home.Item1 == "HOME");
+            return new HomePathInfo(rootDir!, home.Item1 == "HOME");
         }
 
         /// <summary>

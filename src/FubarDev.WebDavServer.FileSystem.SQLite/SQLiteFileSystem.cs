@@ -45,7 +45,7 @@ namespace FubarDev.WebDavServer.FileSystem.SQLite
             ILockManager? lockManager = null,
             IPropertyStoreFactory? propertyStoreFactory = null)
         {
-            RootDirectoryPath = Path.GetDirectoryName(connection.DatabasePath);
+            RootDirectoryPath = Path.GetDirectoryName(connection.DatabasePath)!;
             LockManager = lockManager;
             _connection = connection;
             _pathTraversalEngine = pathTraversalEngine;

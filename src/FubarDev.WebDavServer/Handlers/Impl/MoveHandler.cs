@@ -47,7 +47,7 @@ namespace FubarDev.WebDavServer.Handlers.Impl
             : base(rootFileSystem, host, implicitLockFactory, logger)
         {
             _serviceProvider = serviceProvider;
-            _options = options?.Value ?? new MoveHandlerOptions();
+            _options = options.Value;
         }
 
         /// <inheritdoc />

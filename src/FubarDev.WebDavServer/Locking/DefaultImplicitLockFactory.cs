@@ -65,7 +65,7 @@ namespace FubarDev.WebDavServer.Locking
         /// <returns><see langword="true"/> when the lock was most likely acquired - but only when the request was done by the Windows WebDAV client.</returns>
         protected bool IsMostLikelyLockedByWindows()
         {
-            var client = _webDavContext.DetectedClient?.UA?.Family;
+            var client = _webDavContext.DetectedClient.UA?.Family;
             if (client == null || client != "Microsoft-WebDAV-MiniRedir")
             {
                 return false;

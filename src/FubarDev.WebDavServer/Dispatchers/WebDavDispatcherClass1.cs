@@ -58,7 +58,7 @@ namespace FubarDev.WebDavServer.Dispatchers
             IWebDavContext context,
             IDeadPropertyFactory deadPropertyFactory,
             IMimeTypeDetector mimeTypeDetector,
-            IOptions<WebDavDispatcherClass1Options>? options)
+            IOptions<WebDavDispatcherClass1Options> options)
         {
             _deadPropertyFactory = deadPropertyFactory;
             _mimeTypeDetector = mimeTypeDetector;
@@ -152,7 +152,7 @@ namespace FubarDev.WebDavServer.Dispatchers
                 ["DAV"] = new[] { "1" },
             };
 
-            _defaultCreationMap = new Lazy<IReadOnlyDictionary<XName, CreateDeadPropertyDelegate>>(() => CreateDeadPropertiesMap(options?.Value ?? new WebDavDispatcherClass1Options()));
+            _defaultCreationMap = new Lazy<IReadOnlyDictionary<XName, CreateDeadPropertyDelegate>>(() => CreateDeadPropertiesMap(options.Value));
         }
 
         private delegate IDeadProperty CreateDeadPropertyDelegate(IPropertyStore store, IEntry entry, XName name);

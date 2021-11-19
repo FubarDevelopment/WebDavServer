@@ -26,7 +26,8 @@ namespace FubarDev.WebDavServer
         {
             if (collectionResult.Status == ActionStatus.Ignored)
             {
-                return new WebDavResult(GetWebDavStatusCode(collectionResult.DocumentActionResults.Select(x => x.Status).Single()));
+                return new WebDavResult(
+                    GetWebDavStatusCode(collectionResult.DocumentActionResults!.Select(x => x.Status).Single()));
             }
 
             var resultsByStatus = collectionResult

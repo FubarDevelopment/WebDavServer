@@ -16,8 +16,8 @@ namespace FubarDev.WebDavServer.Tests.Support
         public TestWebDavController(
             IWebDavContext context,
             IWebDavDispatcher dispatcher,
-            ILogger<WebDavIndirectResult>? responseLogger = null)
-            : base(context, dispatcher, responseLogger)
+            ILoggerFactory? loggerFactory = null)
+            : base(context, dispatcher, loggerFactory)
         {
         }
     }

@@ -60,7 +60,9 @@ namespace FubarDev.WebDavServer.Model.Headers
                             timespans.Add(TimeSpan.FromSeconds(Convert.ToInt32(value, 10)));
                             break;
                         default:
-                            throw new ArgumentOutOfRangeException(nameof(args), $"Unknown unit {unit}");
+                            throw new ArgumentOutOfRangeException(
+                                nameof(args),
+                                $"Unknown unit {unit}");
                     }
                 }
             }

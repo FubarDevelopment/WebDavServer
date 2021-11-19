@@ -2,6 +2,7 @@
 // Copyright (c) Fubar Development Junker. All rights reserved.
 // </copyright>
 
+using System;
 using System.Diagnostics;
 using System.IO;
 
@@ -9,8 +10,7 @@ using FubarDev.WebDavServer.FileSystem;
 using FubarDev.WebDavServer.Props.Dead;
 using FubarDev.WebDavServer.Utils;
 
-using Microsoft.Extensions.Logging;
-using Microsoft.Extensions.Options;
+using Microsoft.Extensions.DependencyInjection;
 
 using sqlitenet = SQLite;
 
@@ -23,25 +23,24 @@ namespace FubarDev.WebDavServer.Props.Store.SQLite
     {
         private readonly IWebDavContext _webDavContext;
 
-        private readonly ILogger<SQLitePropertyStore> _logger;
-
         private readonly IDeadPropertyFactory _deadPropertyFactory;
 
-        private readonly IOptions<SQLitePropertyStoreOptions>? _options;
+        private readonly IServiceProvider _serviceProvider;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="SQLitePropertyStoreFactory"/> class.
         /// </summary>
         /// <param name="webDavContext">The WebDAV request context.</param>
-        /// <param name="logger">The logger for the property store factory.</param>
         /// <param name="deadPropertyFactory">The factory for dead properties.</param>
-        /// <param name="options">The options for this property store.</param>
-        public SQLitePropertyStoreFactory(IWebDavContext webDavContext, ILogger<SQLitePropertyStore> logger, IDeadPropertyFactory deadPropertyFactory, IOptions<SQLitePropertyStoreOptions>? options = null)
+        /// <param name="serviceProvider">The current service provider.</param>
+        public SQLitePropertyStoreFactory(
+            IWebDavContext webDavContext,
+            IDeadPropertyFactory deadPropertyFactory,
+            IServiceProvider serviceProvider)
         {
             _webDavContext = webDavContext;
-            _logger = logger;
             _deadPropertyFactory = deadPropertyFactory;
-            _options = options;
+            _serviceProvider = serviceProvider;
         }
 
         /// <summary>
@@ -52,10 +51,8 @@ namespace FubarDev.WebDavServer.Props.Store.SQLite
         {
             if (File.Exists(dbFileName))
             {
-                using (var conn = new sqlitenet.SQLiteConnection(dbFileName))
-                {
-                    CreateDatabaseTables(conn);
-                }
+                using var conn = new sqlitenet.SQLiteConnection(dbFileName);
+                CreateDatabaseTables(conn);
 
                 return;
             }
@@ -77,18 +74,15 @@ namespace FubarDev.WebDavServer.Props.Store.SQLite
             var dbFileFolder = Path.GetDirectoryName(dbFileName);
             Debug.Assert(dbFileFolder != null, "dbFileFolder != null");
             Directory.CreateDirectory(dbFileFolder);
-            using (var conn = new sqlitenet.SQLiteConnection(dbFileName))
-            {
-                CreateDatabaseTables(conn);
-            }
+            using var conn = new sqlitenet.SQLiteConnection(dbFileName);
+            CreateDatabaseTables(conn);
         }
 
         /// <inheritdoc />
         public IPropertyStore Create(IFileSystem fileSystem)
         {
             string dbPath;
-            var fs = fileSystem as ILocalFileSystem;
-            if (fs != null)
+            if (fileSystem is ILocalFileSystem fs)
             {
                 string dbFileName;
                 if (fs.HasSubfolders)
@@ -110,7 +104,10 @@ namespace FubarDev.WebDavServer.Props.Store.SQLite
 
             EnsureDatabaseExists(dbPath);
 
-            return new SQLitePropertyStore(_deadPropertyFactory, dbPath, _options, _logger);
+            return ActivatorUtilities.CreateInstance<SQLitePropertyStore>(
+                _serviceProvider,
+                _deadPropertyFactory,
+                dbPath);
         }
 
         /// <summary>

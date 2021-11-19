@@ -98,7 +98,9 @@ namespace FubarDev.WebDavServer.Locking
                     return Exclusive;
             }
 
-            throw new ArgumentOutOfRangeException(nameof(shareMode), $"The share mode {shareMode} is not supported.");
+            throw new ArgumentOutOfRangeException(
+                nameof(shareMode),
+                $"The share mode {shareMode} is not supported");
         }
 
         /// <inheritdoc />
@@ -108,7 +110,7 @@ namespace FubarDev.WebDavServer.Locking
         }
 
         /// <inheritdoc />
-        public override bool Equals(object obj)
+        public override bool Equals(object? obj)
         {
             if (ReferenceEquals(null, obj))
             {

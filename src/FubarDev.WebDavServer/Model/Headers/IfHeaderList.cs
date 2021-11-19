@@ -104,13 +104,17 @@ namespace FubarDev.WebDavServer.Model.Headers
 
                 if (!source.AdvanceIf("("))
                 {
-                    throw new ArgumentException($"{source.Remaining} is not a valid list (not starting with a '(')", nameof(source));
+                    throw new ArgumentException(
+                        $"{source.Remaining} is not a valid list (not starting with a '(')",
+                        nameof(source));
                 }
 
                 var conditions = IfHeaderCondition.Parse(source, etagComparer).ToList();
                 if (!source.AdvanceIf(")"))
                 {
-                    throw new ArgumentException($"{source.Remaining} is not a valid list (not ending with a ')')", nameof(source));
+                    throw new ArgumentException(
+                        $"{source.Remaining} is not a valid list (not ending with a ')')",
+                        nameof(source));
                 }
 
                 var relativeHref = context.PublicControllerUrl.IsBaseOf(resourceTag) ? AddRootSlashToUri(context.PublicControllerUrl.MakeRelativeUri(resourceTag)) : resourceTag;

@@ -91,7 +91,9 @@ namespace FubarDev.WebDavServer.Model.Headers
                     etag = EntityTag.Parse(source).Single();
                     if (!source.AdvanceIf("]"))
                     {
-                        throw new ArgumentException($"{source.Remaining} is not a valid condition (ETag not ending with ']')", nameof(source));
+                        throw new ArgumentException(
+                            $"{source.Remaining} is not a valid condition (ETag not ending with ']')",
+                            nameof(source));
                     }
                 }
                 else

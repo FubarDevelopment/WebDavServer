@@ -141,7 +141,10 @@ namespace FubarDev.WebDavServer.Locking
                 {
                     if (_logger.IsEnabled(LogLevel.Information))
                     {
-                        _logger.LogInformation($"Found conflicting locks for {l}: {string.Join(",", conflictingLocks.GetLocks().Select(x => x.ToString()))}");
+                        _logger.LogInformation(
+                            "Found conflicting locks for {Lock}: {ConflictingLocks}",
+                            l,
+                            string.Join(",", conflictingLocks.GetLocks().Select(x => x.ToString())));
                     }
 
                     return new LockResult(conflictingLocks);
@@ -327,7 +330,9 @@ namespace FubarDev.WebDavServer.Locking
                 {
                     if (_logger.IsEnabled(LogLevel.Information))
                     {
-                        _logger.LogInformation($"Tried to remove non-existent lock {stateToken}");
+                        _logger.LogInformation(
+                            "Tried to remove non-existent lock {StateToken}",
+                            stateToken);
                     }
 
                     return LockReleaseStatus.NoLock;

@@ -24,15 +24,11 @@ using Xunit;
 
 namespace FubarDev.WebDavServer.Tests.FileSystem
 {
-    public class MountTests : IClassFixture<MountTests.FileSystemServices>, IDisposable
+    public class MountTests : IClassFixture<MountTests.FileSystemServices>
     {
-        private readonly IServiceScope _serviceScope;
-
         public MountTests(FileSystemServices fsServices)
         {
-            var serviceScopeFactory = fsServices.ServiceProvider.GetRequiredService<IServiceScopeFactory>();
-            _serviceScope = serviceScopeFactory.CreateScope();
-            FileSystem = _serviceScope.ServiceProvider.GetRequiredService<IFileSystem>();
+            FileSystem = fsServices.ServiceProvider.GetRequiredService<IFileSystem>();
         }
 
         public IFileSystem FileSystem { get; }
@@ -108,11 +104,6 @@ namespace FubarDev.WebDavServer.Tests.FileSystem
             var testText = await test!.GetChildAsync("test.txt", ct) as IDocument;
             Assert.NotNull(testText);
             await testText!.DeleteAsync(ct).ConfigureAwait(false);
-        }
-
-        public void Dispose()
-        {
-            _serviceScope.Dispose();
         }
 
         public class FileSystemServices : IDisposable

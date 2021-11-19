@@ -20,12 +20,12 @@ namespace FubarDev.WebDavServer.Tests.Issues.Issue53
         /// </summary>
         /// <param name="context">The WebDAV context.</param>
         /// <param name="dispatcher">The WebDAV method dispatcher.</param>
-        /// <param name="responseLogger">The logger for the response messages.</param>
+        /// <param name="loggerFactory">The logger for the response messages.</param>
         public TestWebDavController(
             IWebDavContext context,
             IWebDavDispatcher dispatcher,
-            ILogger<WebDavIndirectResult>? responseLogger = null)
-            : base(context, dispatcher, responseLogger)
+            ILoggerFactory? loggerFactory = null)
+            : base(context, dispatcher, loggerFactory)
         {
         }
     }

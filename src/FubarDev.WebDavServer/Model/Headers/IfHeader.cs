@@ -38,7 +38,9 @@ namespace FubarDev.WebDavServer.Model.Headers
             var lists = IfHeaderList.Parse(source, etagComparer, context).ToList();
             if (!source.Empty)
             {
-                throw new ArgumentException("Not an accepted list of conditions", nameof(s));
+                throw new ArgumentException(
+                    "Not an accepted list of conditions",
+                    nameof(s));
             }
 
             return new IfHeader(lists);

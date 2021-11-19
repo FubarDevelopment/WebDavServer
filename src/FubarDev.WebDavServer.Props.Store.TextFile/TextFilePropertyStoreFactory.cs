@@ -32,9 +32,13 @@ namespace FubarDev.WebDavServer.Props.Store.TextFile
         /// <param name="deadPropertyFactory">The factory for the dead properties.</param>
         /// <param name="webDavContext">The WebDAV request context.</param>
         /// <param name="logger">The logger for the property store factory.</param>
-        public TextFilePropertyStoreFactory(IOptions<TextFilePropertyStoreOptions> options, IDeadPropertyFactory deadPropertyFactory, IWebDavContext webDavContext, ILogger<TextFilePropertyStore> logger)
+        public TextFilePropertyStoreFactory(
+            IOptions<TextFilePropertyStoreOptions> options,
+            IDeadPropertyFactory deadPropertyFactory,
+            IWebDavContext webDavContext,
+            ILogger<TextFilePropertyStore> logger)
         {
-            _options = options?.Value ?? new TextFilePropertyStoreOptions();
+            _options = options.Value;
             _logger = logger;
             _deadPropertyFactory = deadPropertyFactory;
             _webDavContext = webDavContext;

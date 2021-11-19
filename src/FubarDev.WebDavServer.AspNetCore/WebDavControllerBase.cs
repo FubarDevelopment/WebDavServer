@@ -29,12 +29,15 @@ namespace FubarDev.WebDavServer.AspNetCore
         /// </summary>
         /// <param name="context">The WebDAV request context.</param>
         /// <param name="dispatcher">The WebDAV HTTP method dispatcher.</param>
-        /// <param name="responseLogger">The logger for the <see cref="WebDavIndirectResult"/>.</param>
-        public WebDavControllerBase(IWebDavContext context, IWebDavDispatcher dispatcher, ILogger<WebDavIndirectResult>? responseLogger = null)
+        /// <param name="loggerFactory">The logger factory to create the logger for the <see cref="WebDavIndirectResult"/>.</param>
+        public WebDavControllerBase(
+            IWebDavContext context,
+            IWebDavDispatcher dispatcher,
+            ILoggerFactory? loggerFactory = null)
         {
             _context = context;
             _dispatcher = dispatcher;
-            _responseLogger = responseLogger;
+            _responseLogger = loggerFactory?.CreateLogger<WebDavIndirectResult>();
         }
 
         /// <summary>
@@ -44,9 +47,10 @@ namespace FubarDev.WebDavServer.AspNetCore
         /// <param name="cancellationToken">The cancellation token.</param>
         /// <returns>The action result.</returns>
         [HttpOptions]
-        public async Task<IActionResult> QueryOptionsAsync(string path, CancellationToken cancellationToken)
+        public async Task<IActionResult> QueryOptionsAsync(string? path, CancellationToken cancellationToken)
         {
-            var result = await _dispatcher.Class1.OptionsAsync(path ?? string.Empty, cancellationToken).ConfigureAwait(false);
+            var result = await _dispatcher.Class1.OptionsAsync(path ?? string.Empty, cancellationToken)
+                .ConfigureAwait(false);
             return new WebDavIndirectResult(_dispatcher, result, _responseLogger);
         }
 
@@ -57,9 +61,10 @@ namespace FubarDev.WebDavServer.AspNetCore
         /// <param name="cancellationToken">The cancellation token.</param>
         /// <returns>The action result.</returns>
         [HttpMkCol]
-        public async Task<IActionResult> MkColAsync(string path, CancellationToken cancellationToken)
+        public async Task<IActionResult> MkColAsync(string? path, CancellationToken cancellationToken)
         {
-            var result = await _dispatcher.Class1.MkColAsync(path ?? string.Empty, cancellationToken).ConfigureAwait(false);
+            var result = await _dispatcher.Class1.MkColAsync(path ?? string.Empty, cancellationToken)
+                .ConfigureAwait(false);
             return new WebDavIndirectResult(_dispatcher, result, _responseLogger);
         }
 
@@ -70,9 +75,10 @@ namespace FubarDev.WebDavServer.AspNetCore
         /// <param name="cancellationToken">The cancellation token.</param>
         /// <returns>The action result.</returns>
         [HttpGet]
-        public async Task<IActionResult> GetAsync(string path, CancellationToken cancellationToken)
+        public async Task<IActionResult> GetAsync(string? path, CancellationToken cancellationToken)
         {
-            var result = await _dispatcher.Class1.GetAsync(path ?? string.Empty, cancellationToken).ConfigureAwait(false);
+            var result = await _dispatcher.Class1.GetAsync(path ?? string.Empty, cancellationToken)
+                .ConfigureAwait(false);
             return new WebDavIndirectResult(_dispatcher, result, _responseLogger);
         }
 
@@ -83,9 +89,12 @@ namespace FubarDev.WebDavServer.AspNetCore
         /// <param name="cancellationToken">The cancellation token.</param>
         /// <returns>The action result.</returns>
         [HttpPut]
-        public async Task<IActionResult> PutAsync(string path, CancellationToken cancellationToken)
+        public async Task<IActionResult> PutAsync(
+            string? path,
+            CancellationToken cancellationToken = default)
         {
-            var result = await _dispatcher.Class1.PutAsync(path ?? string.Empty, HttpContext.Request.Body, cancellationToken).ConfigureAwait(false);
+            var result = await _dispatcher.Class1.PutAsync(path ?? string.Empty, Request.Body, cancellationToken)
+                .ConfigureAwait(false);
             return new WebDavIndirectResult(_dispatcher, result, _responseLogger);
         }
 
@@ -96,9 +105,10 @@ namespace FubarDev.WebDavServer.AspNetCore
         /// <param name="cancellationToken">The cancellation token.</param>
         /// <returns>The action result.</returns>
         [HttpDelete]
-        public async Task<IActionResult> DeleteAsync(string path, CancellationToken cancellationToken)
+        public async Task<IActionResult> DeleteAsync(string? path, CancellationToken cancellationToken)
         {
-            var result = await _dispatcher.Class1.DeleteAsync(path ?? string.Empty, cancellationToken).ConfigureAwait(false);
+            var result = await _dispatcher.Class1.DeleteAsync(path ?? string.Empty, cancellationToken)
+                .ConfigureAwait(false);
             return new WebDavIndirectResult(_dispatcher, result, _responseLogger);
         }
 
@@ -111,11 +121,12 @@ namespace FubarDev.WebDavServer.AspNetCore
         /// <returns>The action result.</returns>
         [HttpPropFind]
         public async Task<IActionResult> PropFindAsync(
-            string path,
+            string? path,
             [FromBody] propfind request,
-            CancellationToken cancellationToken = default(CancellationToken))
+            CancellationToken cancellationToken = default)
         {
-            var result = await _dispatcher.Class1.PropFindAsync(path ?? string.Empty, request, cancellationToken).ConfigureAwait(false);
+            var result = await _dispatcher.Class1.PropFindAsync(path ?? string.Empty, request, cancellationToken)
+                .ConfigureAwait(false);
             return new WebDavIndirectResult(_dispatcher, result, _responseLogger);
         }
 
@@ -127,9 +138,13 @@ namespace FubarDev.WebDavServer.AspNetCore
         /// <param name="cancellationToken">The cancellation token.</param>
         /// <returns>The action result.</returns>
         [HttpPropPatch]
-        public async Task<IActionResult> PropPatchAsync(string path, [FromBody] propertyupdate request, CancellationToken cancellationToken)
+        public async Task<IActionResult> PropPatchAsync(
+            string? path,
+            [FromBody] propertyupdate request,
+            CancellationToken cancellationToken)
         {
-            var result = await _dispatcher.Class1.PropPatchAsync(path ?? string.Empty, request, cancellationToken).ConfigureAwait(false);
+            var result = await _dispatcher.Class1.PropPatchAsync(path ?? string.Empty, request, cancellationToken)
+                .ConfigureAwait(false);
             return new WebDavIndirectResult(_dispatcher, result, _responseLogger);
         }
 
@@ -140,9 +155,10 @@ namespace FubarDev.WebDavServer.AspNetCore
         /// <param name="cancellationToken">The cancellation token.</param>
         /// <returns>The action result</returns>
         [HttpHead]
-        public async Task<IActionResult> HeadAsync(string path, CancellationToken cancellationToken)
+        public async Task<IActionResult> HeadAsync(string? path, CancellationToken cancellationToken)
         {
-            var result = await _dispatcher.Class1.HeadAsync(path ?? string.Empty, cancellationToken).ConfigureAwait(false);
+            var result = await _dispatcher.Class1.HeadAsync(path ?? string.Empty, cancellationToken)
+                .ConfigureAwait(false);
             return new WebDavIndirectResult(_dispatcher, result, _responseLogger);
         }
 
@@ -155,11 +171,14 @@ namespace FubarDev.WebDavServer.AspNetCore
         /// <returns>The action result.</returns>
         [HttpCopy]
         public async Task<IActionResult> CopyAsync(
-            string path,
+            string? path,
             [FromHeader(Name = "Destination")] string destination,
-            CancellationToken cancellationToken = default(CancellationToken))
+            CancellationToken cancellationToken = default)
         {
-            var result = await _dispatcher.Class1.CopyAsync(path ?? string.Empty, new Uri(destination, UriKind.RelativeOrAbsolute), cancellationToken).ConfigureAwait(false);
+            var result = await _dispatcher.Class1.CopyAsync(
+                path ?? string.Empty,
+                new Uri(destination, UriKind.RelativeOrAbsolute),
+                cancellationToken).ConfigureAwait(false);
             return new WebDavIndirectResult(_dispatcher, result, _responseLogger);
         }
 
@@ -172,11 +191,14 @@ namespace FubarDev.WebDavServer.AspNetCore
         /// <returns>The action result.</returns>
         [HttpMove]
         public async Task<IActionResult> MoveAsync(
-            string path,
+            string? path,
             [FromHeader(Name = "Destination")] string destination,
-            CancellationToken cancellationToken = default(CancellationToken))
+            CancellationToken cancellationToken = default)
         {
-            var result = await _dispatcher.Class1.MoveAsync(path ?? string.Empty, new Uri(destination, UriKind.RelativeOrAbsolute), cancellationToken).ConfigureAwait(false);
+            var result = await _dispatcher.Class1.MoveAsync(
+                path ?? string.Empty,
+                new Uri(destination, UriKind.RelativeOrAbsolute),
+                cancellationToken).ConfigureAwait(false);
             return new WebDavIndirectResult(_dispatcher, result, _responseLogger);
         }
 
@@ -189,9 +211,9 @@ namespace FubarDev.WebDavServer.AspNetCore
         /// <returns>The action result.</returns>
         [HttpLock]
         public async Task<IActionResult> LockAsync(
-            string path,
-            [FromBody] lockinfo lockinfo,
-            CancellationToken cancellationToken = default(CancellationToken))
+            string? path,
+            [FromBody] lockinfo? lockinfo,
+            CancellationToken cancellationToken = default)
         {
             if (_dispatcher.Class2 == null)
             {
@@ -209,12 +231,17 @@ namespace FubarDev.WebDavServer.AspNetCore
                 }
 
                 var timeoutHeader = _context.RequestHeaders.Timeout;
-                result = await _dispatcher.Class2.RefreshLockAsync(path ?? string.Empty, ifHeader, timeoutHeader, cancellationToken).ConfigureAwait(false);
+                result = await _dispatcher.Class2.RefreshLockAsync(
+                    path ?? string.Empty,
+                    ifHeader,
+                    timeoutHeader,
+                    cancellationToken).ConfigureAwait(false);
             }
             else
             {
                 // Lock
-                result = await _dispatcher.Class2.LockAsync(path ?? string.Empty, lockinfo, cancellationToken).ConfigureAwait(false);
+                result = await _dispatcher.Class2.LockAsync(path ?? string.Empty, lockinfo, cancellationToken)
+                    .ConfigureAwait(false);
             }
 
             return new WebDavIndirectResult(_dispatcher, result, _responseLogger);
@@ -229,9 +256,9 @@ namespace FubarDev.WebDavServer.AspNetCore
         /// <returns>The action result.</returns>
         [HttpUnlock]
         public async Task<IActionResult> UnlockAsync(
-            string path,
+            string? path,
             [FromHeader(Name = "Lock-Token")] string lockToken,
-            CancellationToken cancellationToken = default(CancellationToken))
+            CancellationToken cancellationToken = default)
         {
             if (_dispatcher.Class2 == null)
             {
@@ -240,11 +267,15 @@ namespace FubarDev.WebDavServer.AspNetCore
 
             if (string.IsNullOrEmpty(lockToken))
             {
-                return new WebDavIndirectResult(_dispatcher, new WebDavResult(WebDavStatusCode.BadRequest), _responseLogger);
+                return new WebDavIndirectResult(
+                    _dispatcher,
+                    new WebDavResult(WebDavStatusCode.BadRequest),
+                    _responseLogger);
             }
 
             var lt = LockTokenHeader.Parse(lockToken);
-            var result = await _dispatcher.Class2.UnlockAsync(path ?? string.Empty, lt, cancellationToken).ConfigureAwait(false);
+            var result = await _dispatcher.Class2.UnlockAsync(path ?? string.Empty, lt, cancellationToken)
+                .ConfigureAwait(false);
             return new WebDavIndirectResult(_dispatcher, result, _responseLogger);
         }
     }

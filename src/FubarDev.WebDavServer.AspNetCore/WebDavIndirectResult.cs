@@ -69,7 +69,11 @@ namespace FubarDev.WebDavServer.AspNetCore
                     {
                         var doc = loggingResponse.Load();
                         if (doc != null)
-                            _logger.LogDebug(doc.ToString(SaveOptions.OmitDuplicateNamespaces));
+                        {
+                            _logger.LogDebug(
+                                "WebDAV Response: {Response}",
+                                doc.ToString(SaveOptions.OmitDuplicateNamespaces));
+                        }
                     }
                 }
             }

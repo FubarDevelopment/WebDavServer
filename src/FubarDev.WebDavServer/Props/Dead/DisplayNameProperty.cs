@@ -55,14 +55,11 @@ namespace FubarDev.WebDavServer.Props.Dead
                 return _value;
             }
 
-            if (_store != null)
+            var storedValue = await _store.GetAsync(_entry, Name, ct).ConfigureAwait(false);
+            if (storedValue != null)
             {
-                var storedValue = await _store.GetAsync(_entry, Name, ct).ConfigureAwait(false);
-                if (storedValue != null)
-                {
-                    Language = storedValue.Attribute(XNamespace.Xml + "lang")?.Value;
-                    return _value = storedValue.Value;
-                }
+                Language = storedValue.Attribute(XNamespace.Xml + "lang")?.Value;
+                return _value = storedValue.Value;
             }
 
             var newName = _value = GetDefaultName();
@@ -84,7 +81,7 @@ namespace FubarDev.WebDavServer.Props.Dead
         }
 
         /// <inheritdoc />
-        public bool IsDefaultValue(XElement element)
+        public bool IsDefaultValue(XElement? element)
         {
             return element == null
                    || (!element.HasAttributes && Converter.FromElement(element) == GetDefaultName());

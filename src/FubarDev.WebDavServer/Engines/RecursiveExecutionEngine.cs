@@ -60,7 +60,10 @@ namespace FubarDev.WebDavServer.Engines
         {
             if (_logger.IsEnabled(LogLevel.Trace))
             {
-                _logger.LogTrace($"Collecting nodes for operation on collection {sourceUrl} with missing target {target.DestinationUrl}.");
+                _logger.LogTrace(
+                    "Collecting nodes for operation on collection {SourceUrl} with missing target {DestinationUrl}",
+                    sourceUrl,
+                    target.DestinationUrl);
             }
 
             var nodes = await source.GetNodeAsync(depth.OrderValue, cancellationToken).ConfigureAwait(false);
@@ -80,7 +83,10 @@ namespace FubarDev.WebDavServer.Engines
         {
             if (_logger.IsEnabled(LogLevel.Trace))
             {
-                _logger.LogTrace($"Collecting nodes for operation on collection {sourceUrl} with existing target {target.DestinationUrl}.");
+                _logger.LogTrace(
+                    "Collecting nodes for operation on collection {SourceUrl} with existing target {DestinationUrl}",
+                    sourceUrl,
+                    target.DestinationUrl);
             }
 
             var nodes = await source.GetNodeAsync(depth.OrderValue, cancellationToken).ConfigureAwait(false);
@@ -99,7 +105,10 @@ namespace FubarDev.WebDavServer.Engines
         {
             if (_logger.IsEnabled(LogLevel.Trace))
             {
-                _logger.LogTrace($"Perform operation on document {sourceUrl} with missing target {target.DestinationUrl}.");
+                _logger.LogTrace(
+                    "Perform operation on document {SourceUrl} with missing target {DestinationUrl}",
+                    sourceUrl,
+                    target.DestinationUrl);
             }
 
             try
@@ -111,7 +120,10 @@ namespace FubarDev.WebDavServer.Engines
                 var failedPropertyNames = await newDoc.SetPropertiesAsync(properties, cancellationToken).ConfigureAwait(false);
                 if (failedPropertyNames.Count != 0)
                 {
-                    _logger.LogDebug($"{target.DestinationUrl}: Failed setting properties {string.Join(", ", failedPropertyNames.Select(x => x.ToString()))}");
+                    _logger.LogDebug(
+                        "{DestinationUrl}: Failed setting properties {PropertyNames}",
+                        target.DestinationUrl,
+                        string.Join(", ", failedPropertyNames.Select(x => x.ToString())));
                     return new ActionResult(ActionStatus.PropSetFailed, target)
                     {
                         FailedProperties = failedPropertyNames,
@@ -122,7 +134,10 @@ namespace FubarDev.WebDavServer.Engines
             }
             catch (Exception ex)
             {
-                _logger.LogDebug($"{target.DestinationUrl}: Failed with exception {ex.Message}");
+                _logger.LogDebug(
+                    "{DestinationUrl}: Failed with exception {ErrorMessage}",
+                    target.DestinationUrl,
+                    ex.Message);
                 return new ActionResult(ActionStatus.CreateFailed, target)
                 {
                     Exception = ex,
@@ -142,12 +157,17 @@ namespace FubarDev.WebDavServer.Engines
         {
             if (_logger.IsEnabled(LogLevel.Trace))
             {
-                _logger.LogTrace($"Try to perform operation on document {sourceUrl} with existing target {target.DestinationUrl}.");
+                _logger.LogTrace(
+                    "Try to perform operation on document {SourceUrl} with existing target {DestinationUrl}",
+                    sourceUrl,
+                    target.DestinationUrl);
             }
 
             if (!_allowOverwrite)
             {
-                _logger.LogDebug($"{target.DestinationUrl}: Cannot overwrite because destination exists");
+                _logger.LogDebug(
+                    "{DestinationUrl}: Cannot overwrite because destination exists",
+                    target.DestinationUrl);
                 return new ActionResult(ActionStatus.CannotOverwrite, target);
             }
 
@@ -155,7 +175,10 @@ namespace FubarDev.WebDavServer.Engines
             {
                 if (_logger.IsEnabled(LogLevel.Trace))
                 {
-                    _logger.LogTrace($"Delete {target.DestinationUrl} before performing operation on document {sourceUrl}.");
+                    _logger.LogTrace(
+                        "Delete {DestinationUrl} before performing operation on document {SourceUrl}",
+                        target.DestinationUrl,
+                        sourceUrl);
                 }
 
                 TMissing missingTarget;
@@ -165,7 +188,10 @@ namespace FubarDev.WebDavServer.Engines
                 }
                 catch (Exception ex)
                 {
-                    _logger.LogDebug($"{target.DestinationUrl}: Delete failed with exception {ex.Message}");
+                    _logger.LogDebug(
+                        "{DestinationUrl}: Delete failed with exception {ErrorMessage}",
+                        target.DestinationUrl,
+                        ex.Message);
                     return new CollectionActionResult(ActionStatus.TargetDeleteFailed, target)
                     {
                         Exception = ex,
@@ -177,7 +203,10 @@ namespace FubarDev.WebDavServer.Engines
 
             if (_logger.IsEnabled(LogLevel.Trace))
             {
-                _logger.LogTrace($"Perform operation on document {sourceUrl} with existing target {target.DestinationUrl}.");
+                _logger.LogTrace(
+                    "Perform operation on document {SourceUrl} with existing target {DestinationUrl}",
+                    sourceUrl,
+                    target.DestinationUrl);
             }
 
             var properties = await GetWriteableProperties(source, cancellationToken).ConfigureAwait(false);
@@ -191,7 +220,10 @@ namespace FubarDev.WebDavServer.Engines
             var failedPropertyNames = await target.SetPropertiesAsync(properties, cancellationToken).ConfigureAwait(false);
             if (failedPropertyNames.Count != 0)
             {
-                _logger.LogDebug($"{target.DestinationUrl}: Failed setting properties {string.Join(", ", failedPropertyNames.Select(x => x.ToString()))}");
+                _logger.LogDebug(
+                    "{DestinationUrl}: Failed setting properties {PropertyNames}",
+                    target.DestinationUrl,
+                    string.Join(", ", failedPropertyNames.Select(x => x.ToString())));
                 return new ActionResult(ActionStatus.PropSetFailed, target)
                 {
                     FailedProperties = failedPropertyNames,
@@ -218,7 +250,10 @@ namespace FubarDev.WebDavServer.Engines
         {
             if (_logger.IsEnabled(LogLevel.Trace))
             {
-                _logger.LogTrace($"Collect properties for operation on collection {sourceUrl} and create target {target.DestinationUrl}.");
+                _logger.LogTrace(
+                    "Collect properties for operation on collection {SourceUrl} and create target {DestinationUrl}",
+                    sourceUrl,
+                    target.DestinationUrl);
             }
 
             var properties = await GetWriteableProperties(sourceNode.Collection, cancellationToken).ConfigureAwait(false);
@@ -230,7 +265,10 @@ namespace FubarDev.WebDavServer.Engines
             }
             catch (Exception ex)
             {
-                _logger.LogDebug($"{target.DestinationUrl}: Create failed with exception {ex.Message}");
+                _logger.LogDebug(
+                    "{DestinationUrl}: Create failed with exception {ErrorMessage}",
+                    target.DestinationUrl,
+                    ex.Message);
                 return new CollectionActionResult(ActionStatus.CreateFailed, target)
                 {
                     Exception = ex,
@@ -250,7 +288,10 @@ namespace FubarDev.WebDavServer.Engines
             {
                 if (_logger.IsEnabled(LogLevel.Trace))
                 {
-                    _logger.LogTrace($"Delete existing target {target.DestinationUrl} for operation on collection {sourceUrl}.");
+                    _logger.LogTrace(
+                        "Delete existing target {DestinationUrl} for operation on collection {SourceUrl}",
+                        target.DestinationUrl,
+                        sourceUrl);
                 }
 
                 // Only delete an existing collection when the client allows an overwrite
@@ -261,7 +302,10 @@ namespace FubarDev.WebDavServer.Engines
                 }
                 catch (Exception ex)
                 {
-                    _logger.LogDebug($"{target.DestinationUrl}: Delete failed with exception {ex.Message}");
+                    _logger.LogDebug(
+                        "{DestinationUrl}: Delete failed with exception {ErrorMessage}",
+                        target.DestinationUrl,
+                        ex.Message);
                     return new CollectionActionResult(ActionStatus.TargetDeleteFailed, target)
                     {
                         Exception = ex,
@@ -273,7 +317,10 @@ namespace FubarDev.WebDavServer.Engines
 
             if (_logger.IsEnabled(LogLevel.Trace))
             {
-                _logger.LogTrace($"Collect properties for operation on collection {sourceUrl} with existing target {target.DestinationUrl}.");
+                _logger.LogTrace(
+                    "Collect properties for operation on collection {SourceUrl} with existing target {DestinationUrl}",
+                    sourceUrl,
+                    target.DestinationUrl);
             }
 
             var properties = await GetWriteableProperties(sourceNode.Collection, cancellationToken).ConfigureAwait(false);
@@ -289,7 +336,10 @@ namespace FubarDev.WebDavServer.Engines
         {
             if (_logger.IsEnabled(LogLevel.Trace))
             {
-                _logger.LogTrace($"Perform operation on collection {sourceUrl} with existing target {target.DestinationUrl}.");
+                _logger.LogTrace(
+                    "Perform operation on collection {SourceUrl} with existing target {DestinationUrl}",
+                    sourceUrl,
+                    target.DestinationUrl);
             }
 
             var documentActionResults = ImmutableList<ActionResult>.Empty;
@@ -315,8 +365,7 @@ namespace FubarDev.WebDavServer.Engines
                 else
                 {
                     var foundTarget = await target.GetAsync(document.Name, cancellationToken).ConfigureAwait(false);
-                    var docTarget = foundTarget as TDocument;
-                    if (docTarget != null)
+                    if (foundTarget is TDocument docTarget)
                     {
                         // We found a document: Business as usual when we're allowed to overwrite it
                         var docResult = await ExecuteAsync(docUrl, document, docTarget, cancellationToken).ConfigureAwait(false);
@@ -324,11 +373,12 @@ namespace FubarDev.WebDavServer.Engines
                     }
                     else
                     {
-                        var collTarget = foundTarget as TCollection;
-                        if (collTarget != null)
+                        if (foundTarget is TCollection)
                         {
                             // We found a collection instead of a document
-                            _logger.LogDebug($"{target.DestinationUrl}: Found a collection instead of a document");
+                            _logger.LogDebug(
+                                "{DestinationUrl}: Found a collection instead of a document",
+                                target.DestinationUrl);
                             var docResult = new ActionResult(ActionStatus.OverwriteFailed, foundTarget);
                             documentActionResults = documentActionResults.Add(docResult);
                         }
@@ -360,18 +410,18 @@ namespace FubarDev.WebDavServer.Engines
                 {
                     // Test if the target node exists
                     var foundTarget = await target.GetAsync(collection.Name, cancellationToken).ConfigureAwait(false);
-                    var docTarget = foundTarget as TDocument;
-                    if (docTarget != null)
+                    if (foundTarget is TDocument)
                     {
                         // We found a document instead of a collection
-                        _logger.LogDebug($"{target.DestinationUrl}: Found a document instead of a collection");
+                        _logger.LogDebug(
+                            "{DestinationUrl}: Found a document instead of a collection",
+                            target.DestinationUrl);
                         var collResult = new CollectionActionResult(ActionStatus.OverwriteFailed, foundTarget);
                         collectionActionResults = collectionActionResults.Add(collResult);
                     }
                     else
                     {
-                        var collTarget = foundTarget as TCollection;
-                        if (collTarget != null)
+                        if (foundTarget is TCollection collTarget)
                         {
                             // We found a collection: Business as usual
                             var collResult = await ExecuteAsync(docUrl, childNode, collTarget, childProperties, cancellationToken).ConfigureAwait(false);
@@ -393,13 +443,18 @@ namespace FubarDev.WebDavServer.Engines
             {
                 if (_logger.IsEnabled(LogLevel.Trace))
                 {
-                    _logger.LogTrace($"Set properties on collection {target.DestinationUrl}.");
+                    _logger.LogTrace(
+                        "Set properties on collection {DestinationUrl}",
+                        target.DestinationUrl);
                 }
 
                 var failedPropertyNames = await target.SetPropertiesAsync(properties, cancellationToken).ConfigureAwait(false);
                 if (failedPropertyNames.Count != 0)
                 {
-                    _logger.LogDebug($"{target.DestinationUrl}: Failed setting properties {string.Join(", ", failedPropertyNames.Select(x => x.ToString()))}");
+                    _logger.LogDebug(
+                        "{DestinationUrl}: Failed setting properties {PropertyNames}",
+                        target.DestinationUrl,
+                        string.Join(", ", failedPropertyNames.Select(x => x.ToString())));
                     return new CollectionActionResult(ActionStatus.PropSetFailed, target)
                     {
                         FailedProperties = failedPropertyNames,
@@ -412,7 +467,10 @@ namespace FubarDev.WebDavServer.Engines
             }
             catch (Exception ex)
             {
-                _logger.LogDebug($"{sourceNode.Collection.Path}: Cleanup failed with exception {ex.Message}");
+                _logger.LogDebug(
+                    "{SourceCollectionPath}: Cleanup failed with exception {ErrorMessage}",
+                    sourceNode.Collection.Path,
+                    ex.Message);
                 return new CollectionActionResult(ActionStatus.CleanupFailed, target)
                 {
                     Exception = ex,

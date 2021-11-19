@@ -18,15 +18,15 @@ namespace FubarDev.WebDavServer.FileSystem.SQLite
     {
         [PrimaryKey]
         [Column("id")]
-        public string Id { get; set; }
+        public string Id { get; set; } = default!;
 
         [Indexed]
         [Column("path")]
-        public string Path { get; set; }
+        public string Path { get; set; } = default!;
 
         [Indexed("name_type", 0)]
         [Column("name")]
-        public string Name { get; set; }
+        public string Name { get; set; } = default!;
 
         [Indexed("name_type", 1)]
         [Column("collection")]

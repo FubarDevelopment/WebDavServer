@@ -20,18 +20,18 @@ namespace FubarDev.WebDavServer.AspNetCore.Filters
     /// </summary>
     public class WebDavExceptionFilter : IExceptionFilter
     {
-        private readonly ILogger _logger;
+        private readonly ILogger? _logger;
         private readonly ILogger<WebDavIndirectResult>? _responseLogger;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="WebDavExceptionFilter"/> class.
         /// </summary>
-        /// <param name="logger">The logger for this exception filter.</param>
-        /// <param name="responseLogger">The logger for the <see cref="WebDavIndirectResult"/>.</param>
-        public WebDavExceptionFilter(ILogger<WebDavExceptionFilter> logger, ILogger<WebDavIndirectResult>? responseLogger = null)
+        /// <param name="loggerFactory">The factory for the logger for this exception filter and the <see cref="WebDavIndirectResult"/>.</param>
+        public WebDavExceptionFilter(
+            ILoggerFactory? loggerFactory = null)
         {
-            _logger = logger;
-            _responseLogger = responseLogger;
+            _logger = loggerFactory?.CreateLogger<WebDavExceptionFilter>();
+            _responseLogger = loggerFactory?.CreateLogger<WebDavIndirectResult>();
         }
 
         /// <inheritdoc />
@@ -60,7 +60,11 @@ namespace FubarDev.WebDavServer.AspNetCore.Filters
                 return;
             }
 
-            _logger.LogError(Logging.EventIds.Unspecified, context.Exception, context.Exception.Message);
+            _logger?.LogError(
+                Logging.EventIds.Unspecified,
+                context.Exception,
+                "An unhandled exception occurred with the message {ExceptionMessage}",
+                context.Exception.Message);
         }
 
         private IActionResult BuildResultForStatusCode(ExceptionContext context, WebDavStatusCode statusCode, string optionalMessge)

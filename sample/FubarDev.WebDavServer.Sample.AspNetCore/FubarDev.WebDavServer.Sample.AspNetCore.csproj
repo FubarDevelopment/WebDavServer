@@ -25,6 +25,5 @@
     <ProjectReference Include="..\..\src\FubarDev.WebDavServer.Locking.SQLite\FubarDev.WebDavServer.Locking.SQLite.csproj" />
     <ProjectReference Include="..\..\src\FubarDev.WebDavServer.Props.Store.SQLite\FubarDev.WebDavServer.Props.Store.SQLite.csproj" />
     <ProjectReference Include="..\..\src\FubarDev.WebDavServer.Props.Store.TextFile\FubarDev.WebDavServer.Props.Store.TextFile.csproj" />
-    <ProjectReference Include="..\..\third-party\idunno.Authentication\idunno.Authentication.csproj" />
   </ItemGroup>
 </Project>

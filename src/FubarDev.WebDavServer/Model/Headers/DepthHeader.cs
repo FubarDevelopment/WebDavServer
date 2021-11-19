@@ -135,7 +135,9 @@ namespace FubarDev.WebDavServer.Model.Headers
         {
             if (!TryParse(depth, defaultDepth, out var result))
             {
-                throw new ArgumentException("Argument must be one of \"0\", \"1\", or \"infinity\"", nameof(depth));
+                throw new ArgumentException(
+                    "Argument must be one of \"0\", \"1\", or \"infinity\"",
+                    nameof(depth));
             }
 
             return result;

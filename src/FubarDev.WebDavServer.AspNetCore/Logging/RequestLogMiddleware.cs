@@ -22,7 +22,7 @@ namespace FubarDev.WebDavServer.AspNetCore.Logging
     /// </summary>
     public class RequestLogMiddleware
     {
-        internal static readonly IEnumerable<MediaType> XmlMediaTypes = new[]
+        private static readonly IEnumerable<MediaType> _xmlMediaTypes = new[]
         {
             "text/xml",
             "application/xml",
@@ -52,7 +52,7 @@ namespace FubarDev.WebDavServer.AspNetCore.Logging
         public static bool IsXml(string mediaType)
         {
             var contentType = new MediaType(mediaType);
-            var isXml = XmlMediaTypes.Any(x => contentType.IsSubsetOf(x));
+            var isXml = _xmlMediaTypes.Any(x => contentType.IsSubsetOf(x));
             return isXml;
         }
 
@@ -63,7 +63,7 @@ namespace FubarDev.WebDavServer.AspNetCore.Logging
         /// <returns><see langword="true"/> when the media type might be an XML type.</returns>
         public static bool IsXml(MediaType mediaType)
         {
-            var isXml = XmlMediaTypes.Any(mediaType.IsSubsetOf);
+            var isXml = _xmlMediaTypes.Any(mediaType.IsSubsetOf);
             return isXml;
         }
 
@@ -125,7 +125,7 @@ namespace FubarDev.WebDavServer.AspNetCore.Logging
                             }
                             catch (Exception ex)
                             {
-                                _logger.LogWarning(EventIds.Unspecified, ex, ex.Message);
+                                _logger.LogWarning(EventIds.Unspecified, ex, "Failed to read the request body as XML");
                                 showBody = true;
                             }
                         }
@@ -133,25 +133,23 @@ namespace FubarDev.WebDavServer.AspNetCore.Logging
                         if (showBody)
                         {
                             temp.Position = 0;
-                            using (var reader = new StreamReader(temp, encoding, false, 1000, true))
-                            {
-                                var content = await reader.ReadToEndAsync().ConfigureAwait(false);
-                                info.Add($"Body: {content}");
-                            }
+                            using var reader = new StreamReader(temp, encoding, false, 1000, true);
+                            var content = await reader.ReadToEndAsync().ConfigureAwait(false);
+                            info.Add($"Body: {content}");
                         }
 
                         if (!context.Request.Body.CanSeek)
                         {
                             var oldStream = context.Request.Body;
                             context.Request.Body = temp;
-                            oldStream.Dispose();
+                            await oldStream.DisposeAsync();
                         }
 
                         context.Request.Body.Position = 0;
                     }
                 }
 
-                _logger.LogInformation(string.Join("\r\n", info));
+                _logger.LogInformation("Request information: {Information}", string.Join("\r\n", info));
             }
 
             await _next(context).ConfigureAwait(false);

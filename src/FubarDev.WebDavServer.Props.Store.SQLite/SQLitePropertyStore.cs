@@ -39,10 +39,10 @@ namespace FubarDev.WebDavServer.Props.Store.SQLite
         /// <param name="dbFileName">The file name of the SQLite database.</param>
         /// <param name="options">The options for this property store.</param>
         /// <param name="logger">The logger.</param>
-        public SQLitePropertyStore(IDeadPropertyFactory deadPropertyFactory, string dbFileName, IOptions<SQLitePropertyStoreOptions>? options, ILogger<SQLitePropertyStore> logger)
+        public SQLitePropertyStore(IDeadPropertyFactory deadPropertyFactory, string dbFileName, IOptions<SQLitePropertyStoreOptions> options, ILogger<SQLitePropertyStore> logger)
             : base(deadPropertyFactory)
         {
-            _options = options?.Value ?? new SQLitePropertyStoreOptions();
+            _options = options.Value;
             _logger = logger;
             _connection = new sqlitenet.SQLiteConnection(dbFileName);
         }
@@ -73,7 +73,7 @@ namespace FubarDev.WebDavServer.Props.Store.SQLite
             {
                 if (element.Name == GetETagProperty.PropertyName)
                 {
-                    _logger.LogWarning("The ETag property must not be set using the property store.");
+                    _logger.LogWarning("The ETag property must not be set using the property store");
                     continue;
                 }
 
@@ -116,7 +116,7 @@ namespace FubarDev.WebDavServer.Props.Store.SQLite
 
                 if (key == GetETagProperty.PropertyName)
                 {
-                    _logger.LogWarning("The ETag property must not be set using the property store.");
+                    _logger.LogWarning("The ETag property must not be set using the property store");
                     result.Add(false);
                 }
                 else
@@ -200,7 +200,7 @@ namespace FubarDev.WebDavServer.Props.Store.SQLite
                     {
                         if (isEtagEntry && element.Name == GetETagProperty.PropertyName)
                         {
-                            _logger.LogWarning("The ETag property must not be set using the property store.");
+                            _logger.LogWarning("The ETag property must not be set using the property store");
                             continue;
                         }
 

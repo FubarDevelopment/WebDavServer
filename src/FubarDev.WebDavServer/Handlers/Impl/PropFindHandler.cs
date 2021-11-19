@@ -36,9 +36,9 @@ namespace FubarDev.WebDavServer.Handlers.Impl
         /// <param name="fileSystem">The root file system.</param>
         /// <param name="context">The WebDAV request context.</param>
         /// <param name="options">The options for this handler.</param>
-        public PropFindHandler(IFileSystem fileSystem, IWebDavContext context, IOptions<PropFindHandlerOptions>? options)
+        public PropFindHandler(IFileSystem fileSystem, IWebDavContext context, IOptions<PropFindHandlerOptions> options)
         {
-            _options = options?.Value ?? new PropFindHandlerOptions();
+            _options = options.Value;
             _context = context;
             FileSystem = fileSystem;
         }

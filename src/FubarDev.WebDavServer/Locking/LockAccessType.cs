@@ -85,7 +85,9 @@ namespace FubarDev.WebDavServer.Locking
                     return Write;
             }
 
-            throw new ArgumentOutOfRangeException(nameof(accessType), $"The access type {accessType} is not supported.");
+            throw new ArgumentOutOfRangeException(
+                nameof(accessType),
+                $"The access type {accessType} is not supported");
         }
 
         /// <inheritdoc />
@@ -95,7 +97,7 @@ namespace FubarDev.WebDavServer.Locking
         }
 
         /// <inheritdoc />
-        public override bool Equals(object obj)
+        public override bool Equals(object? obj)
         {
             if (ReferenceEquals(null, obj))
             {

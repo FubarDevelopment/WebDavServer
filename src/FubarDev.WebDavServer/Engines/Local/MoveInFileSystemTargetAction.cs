@@ -74,7 +74,7 @@ namespace FubarDev.WebDavServer.Engines.Local
 
             if (_logger.IsEnabled(LogLevel.Trace))
             {
-                _logger.LogTrace($"Try to delete {source.Path}");
+                _logger.LogTrace("Try to delete {Path}", source.Path);
             }
 
             await source.DeleteAsync(cancellationToken).ConfigureAwait(false);
@@ -89,7 +89,10 @@ namespace FubarDev.WebDavServer.Engines.Local
 
             if (_logger.IsEnabled(LogLevel.Trace))
             {
-                _logger.LogTrace($"Try to copy ETag from {source.Path} to {dest.Path}");
+                _logger.LogTrace(
+                    "Try to copy ETag from {SourcePath} to {DestinationPath}",
+                    source.Path,
+                    dest.Path);
             }
 
             var sourcePropStore = source.FileSystem.PropertyStore;

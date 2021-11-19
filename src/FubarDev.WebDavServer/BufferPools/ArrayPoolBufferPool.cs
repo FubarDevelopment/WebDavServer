@@ -51,7 +51,7 @@ namespace FubarDev.WebDavServer.BufferPools
                 _bufferSize *= 2;
                 if (_logger.IsEnabled(LogLevel.Trace))
                 {
-                    _logger.LogTrace("Increased buffer size to {0}", _bufferSize);
+                    _logger.LogTrace("Increased buffer size to {NewBufferSize}", _bufferSize);
                 }
 
                 _buffer = _arrayPool.Rent(_bufferSize);

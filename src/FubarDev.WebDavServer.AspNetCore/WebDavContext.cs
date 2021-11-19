@@ -60,7 +60,7 @@ namespace FubarDev.WebDavServer.AspNetCore
         /// <param name="options">The options for the <see cref="WebDavContext"/>.</param>
         public WebDavContext(IServiceProvider serviceProvider, IHttpContextAccessor httpContextAccessor, IOptions<WebDavHostOptions> options)
         {
-            var opt = options?.Value ?? new WebDavHostOptions();
+            var opt = options.Value;
             _httpContextAccessor = httpContextAccessor;
             _serviceBaseUrl = new Lazy<Uri>(() => BuildServiceBaseUrl(httpContextAccessor.HttpContext));
             _publicBaseUrl = new Lazy<Uri>(() => BuildPublicBaseUrl(httpContextAccessor.HttpContext, opt));

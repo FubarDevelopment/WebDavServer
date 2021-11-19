@@ -2,10 +2,11 @@
 // Copyright (c) Fubar Development Junker. All rights reserved.
 // </copyright>
 
-using FubarDev.WebDavServer.FileSystem;
-using FubarDev.WebDavServer.Props.Dead;
+using System;
 
-using Microsoft.Extensions.Logging;
+using FubarDev.WebDavServer.FileSystem;
+
+using Microsoft.Extensions.DependencyInjection;
 
 namespace FubarDev.WebDavServer.Props.Store.InMemory
 {
@@ -14,25 +15,21 @@ namespace FubarDev.WebDavServer.Props.Store.InMemory
     /// </summary>
     public class InMemoryPropertyStoreFactory : IPropertyStoreFactory
     {
-        private readonly ILogger<InMemoryPropertyStore>? _logger;
-
-        private readonly IDeadPropertyFactory _deadPropertyFactory;
+        private readonly IServiceProvider _serviceProvider;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="InMemoryPropertyStoreFactory"/> class.
         /// </summary>
-        /// <param name="logger">The logger for the property store factory.</param>
-        /// <param name="deadPropertyFactory">The factory for dead properties.</param>
-        public InMemoryPropertyStoreFactory(ILogger<InMemoryPropertyStore>? logger, IDeadPropertyFactory deadPropertyFactory)
+        /// <param name="serviceProvider">The service provider.</param>
+        public InMemoryPropertyStoreFactory(IServiceProvider serviceProvider)
         {
-            _logger = logger;
-            _deadPropertyFactory = deadPropertyFactory;
+            _serviceProvider = serviceProvider;
         }
 
         /// <inheritdoc />
         public IPropertyStore Create(IFileSystem fileSystem)
         {
-            return new InMemoryPropertyStore(_deadPropertyFactory, _logger);
+            return ActivatorUtilities.CreateInstance<InMemoryPropertyStore>(_serviceProvider);
         }
     }
 }

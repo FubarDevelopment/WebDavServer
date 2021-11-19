@@ -24,7 +24,7 @@ namespace FubarDev.WebDavServer.Locking
         /// <param name="options">The options to configure this <see cref="ITimeoutPolicy"/> implementation.</param>
         public DefaultTimeoutPolicy(IOptions<DefaultTimeoutPolicyOptions> options)
         {
-            _options = options?.Value ?? new DefaultTimeoutPolicyOptions();
+            _options = options.Value;
         }
 
         /// <inheritdoc />

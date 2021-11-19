@@ -20,7 +20,7 @@ namespace FubarDev.WebDavServer.Props.Store.SQLite
         /// </summary>
         [PrimaryKey]
         [Column("id")]
-        public string Id { get; set; }
+        public string Id { get; set; } = default!;
 
         /// <summary>
         /// Gets or sets the serialized XML name.
@@ -28,14 +28,14 @@ namespace FubarDev.WebDavServer.Props.Store.SQLite
         [Column("path")]
         [Unique(Name = "unq_idx", Order = 0)]
         [Indexed]
-        public string Path { get; set; }
+        public string Path { get; set; } = default!;
 
         /// <summary>
         /// Gets or sets the serialized XML name.
         /// </summary>
         [Column("name")]
         [Unique(Name = "unq_idx", Order = 1)]
-        public string XmlName { get; set; }
+        public string XmlName { get; set; } = default!;
 
         /// <summary>
         /// Gets or sets the XML language identifier.
@@ -47,6 +47,6 @@ namespace FubarDev.WebDavServer.Props.Store.SQLite
         /// Gets or sets the XML element.
         /// </summary>
         [Column("value")]
-        public string Value { get; set; }
+        public string Value { get; set; } = default!;
     }
 }
