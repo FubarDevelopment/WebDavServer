@@ -47,18 +47,20 @@ namespace FubarDev.WebDavServer.Props.Store.TextFile
         /// </summary>
         /// <param name="options">The options for the text file property store.</param>
         /// <param name="deadPropertyFactory">The factory for the dead properties.</param>
-        /// <param name="rootFolder">The root folder where the properties will be stored.</param>
-        /// <param name="storeInRootOnly">Store all properties in the same JSON text file.</param>
-        /// <param name="storeEntryName">The name of the JSON text file.</param>
+        /// <param name="settings">The settings for this store.</param>
         /// <param name="logger">The logger for the property store.</param>
-        public TextFilePropertyStore(TextFilePropertyStoreOptions options, IDeadPropertyFactory deadPropertyFactory, string rootFolder, bool storeInRootOnly, string storeEntryName, ILogger<TextFilePropertyStore> logger)
+        public TextFilePropertyStore(
+            TextFilePropertyStoreOptions options,
+            IDeadPropertyFactory deadPropertyFactory,
+            TextFilePropertyStoreSettings settings,
+            ILogger<TextFilePropertyStore> logger)
             : base(deadPropertyFactory)
         {
             _logger = logger;
             _options = options;
-            _storeInRootOnly = storeInRootOnly;
-            _storeEntryName = storeEntryName;
-            RootPath = rootFolder;
+            _storeInRootOnly = settings.StoreInRootOnly;
+            _storeEntryName = settings.StoreEntryName;
+            RootPath = settings.RootFolder;
             var rnd = new Random();
             _fileReadPolicy = Policy<string>
                 .Handle<IOException>()

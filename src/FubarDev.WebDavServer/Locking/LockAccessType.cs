@@ -87,7 +87,7 @@ namespace FubarDev.WebDavServer.Locking
 
             throw new ArgumentOutOfRangeException(
                 nameof(accessType),
-                $"The access type {accessType} is not supported");
+                string.Format(Properties.Resources.UnsupportedAccessType, accessType));
         }
 
         /// <inheritdoc />

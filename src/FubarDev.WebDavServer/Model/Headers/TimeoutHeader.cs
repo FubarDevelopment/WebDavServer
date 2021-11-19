@@ -6,6 +6,8 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 
+using FubarDev.WebDavServer.Properties;
+
 namespace FubarDev.WebDavServer.Model.Headers
 {
     /// <summary>
@@ -62,7 +64,7 @@ namespace FubarDev.WebDavServer.Model.Headers
                         default:
                             throw new ArgumentOutOfRangeException(
                                 nameof(args),
-                                $"Unknown unit {unit}");
+                                string.Format(Resources.UnknownUnit, unit));
                     }
                 }
             }

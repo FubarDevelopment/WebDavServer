@@ -5,6 +5,8 @@
 using System;
 using System.Diagnostics;
 
+using FubarDev.WebDavServer.Properties;
+
 namespace FubarDev.WebDavServer.Model.Headers
 {
     /// <summary>
@@ -136,7 +138,7 @@ namespace FubarDev.WebDavServer.Model.Headers
             if (!TryParse(depth, defaultDepth, out var result))
             {
                 throw new ArgumentException(
-                    "Argument must be one of \"0\", \"1\", or \"infinity\"",
+                    Resources.InvalidDepthHeaderValue,
                     nameof(depth));
             }
 

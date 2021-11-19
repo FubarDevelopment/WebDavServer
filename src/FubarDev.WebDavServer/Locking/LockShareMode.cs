@@ -100,7 +100,7 @@ namespace FubarDev.WebDavServer.Locking
 
             throw new ArgumentOutOfRangeException(
                 nameof(shareMode),
-                $"The share mode {shareMode} is not supported");
+                string.Format(Properties.Resources.UnsupportedShareMode, shareMode));
         }
 
         /// <inheritdoc />

@@ -5,6 +5,7 @@
 using System;
 using System.Diagnostics.CodeAnalysis;
 
+using FubarDev.WebDavServer.Properties;
 using FubarDev.WebDavServer.Utils;
 
 namespace FubarDev.WebDavServer.Model.Headers
@@ -71,7 +72,7 @@ namespace FubarDev.WebDavServer.Model.Headers
             if (codedUrlText == null)
             {
                 throw new ArgumentException(
-                    $"{source.Remaining} is not a valid Coded-URL (not ending with '>')",
+                    string.Format(Resources.InvalidCodedUrl, source.Remaining),
                     nameof(source));
             }
 

@@ -8,6 +8,7 @@ using System.Linq;
 
 using FubarDev.WebDavServer.FileSystem;
 using FubarDev.WebDavServer.Locking;
+using FubarDev.WebDavServer.Properties;
 using FubarDev.WebDavServer.Utils;
 
 namespace FubarDev.WebDavServer.Model.Headers
@@ -105,7 +106,7 @@ namespace FubarDev.WebDavServer.Model.Headers
                 if (!source.AdvanceIf("("))
                 {
                     throw new ArgumentException(
-                        $"{source.Remaining} is not a valid list (not starting with a '(')",
+                        string.Format(Resources.ListNotStartingWithBracket, source.Remaining),
                         nameof(source));
                 }
 
@@ -113,7 +114,7 @@ namespace FubarDev.WebDavServer.Model.Headers
                 if (!source.AdvanceIf(")"))
                 {
                     throw new ArgumentException(
-                        $"{source.Remaining} is not a valid list (not ending with a ')')",
+                        string.Format(Resources.ListNotEndingWithBracket, source.Remaining),
                         nameof(source));
                 }
 

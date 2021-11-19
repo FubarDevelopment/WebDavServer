@@ -237,4 +237,34 @@
   <data name="ReadOnly_Modification" xml:space="preserve">
     <value>The collection is read-only</value>
   </data>
+  <data name="UnsupportedAccessType" xml:space="preserve">
+    <value>The access type {0} is not supported</value>
+  </data>
+  <data name="UnsupportedShareMode" xml:space="preserve">
+    <value>The share mode {0} is not supported</value>
+  </data>
+  <data name="InvalidCodedUrl" xml:space="preserve">
+    <value>{0} is not a valid Coded-URL (not ending with '&gt;')</value>
+  </data>
+  <data name="InvalidDepthHeaderValue" xml:space="preserve">
+    <value>Argument must be one of "0", "1", or "infinity"</value>
+  </data>
+  <data name="ConditionListNotAcceptible" xml:space="preserve">
+    <value>Not an accepted list of conditions</value>
+  </data>
+  <data name="ETagNotEndingWithBracket" xml:space="preserve">
+    <value>{0} is not a valid condition (ETag not ending with ']')</value>
+  </data>
+  <data name="ListNotStartingWithBracket" xml:space="preserve">
+    <value>{0} is not a valid list (not starting with a '(')</value>
+  </data>
+  <data name="ListNotEndingWithBracket" xml:space="preserve">
+    <value>{0} is not a valid list (not ending with a ')')</value>
+  </data>
+  <data name="InvalidLockTokenFormat" xml:space="preserve">
+    <value>{0} is not a valid lock token</value>
+  </data>
+  <data name="UnknownUnit" xml:space="preserve">
+    <value>Unknown unit {0}</value>
+  </data>
 </root>

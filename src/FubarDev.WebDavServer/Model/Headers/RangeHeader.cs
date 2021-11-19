@@ -22,19 +22,18 @@ namespace FubarDev.WebDavServer.Model.Headers
         /// <param name="unit">The unit of the range (currently only <c>bytes</c> is allowed).</param>
         /// <param name="rangeItems">The HTTP range items for this range.</param>
         public RangeHeader(string unit, params RangeHeaderItem[] rangeItems)
-            : this(unit, false, rangeItems)
+            : this(unit, (IReadOnlyCollection<RangeHeaderItem>)rangeItems)
         {
-        }
-
-        private RangeHeader(string unit, bool ignoreInvalidUnit, IReadOnlyCollection<RangeHeaderItem> rangeItems)
-        {
-            if (!ignoreInvalidUnit && !string.IsNullOrEmpty(unit) && unit != "bytes")
+            if (!string.IsNullOrEmpty(unit) && unit != "bytes")
             {
                 throw new NotSupportedException();
             }
+        }
 
+        private RangeHeader(string unit, IReadOnlyCollection<RangeHeaderItem> rangeItems)
+        {
             Unit = string.IsNullOrEmpty(unit) ? "bytes" : unit;
-            RangeItems = rangeItems.ToList();
+            RangeItems = rangeItems;
         }
 
         /// <summary>
@@ -103,7 +102,7 @@ namespace FubarDev.WebDavServer.Model.Headers
                 }
             }
 
-            return new RangeHeader(unit ?? "bytes", true, rangeItems);
+            return new RangeHeader(unit ?? "bytes", rangeItems);
         }
 
         /// <summary>
@@ -140,7 +139,7 @@ namespace FubarDev.WebDavServer.Model.Headers
         /// <param name="rangeItem">The <see cref="RangeHeaderItem"/> to get the textual representation for.</param>
         /// <param name="length">The length value to be used in the textual representation.</param>
         /// <returns>The textual representation of <paramref name="rangeItem"/>.</returns>
-        public virtual string ToString(RangeHeaderItem rangeItem, long? length)
+        public string ToString(RangeHeaderItem rangeItem, long? length)
         {
             return $"{Unit} {rangeItem}/{length?.ToString(CultureInfo.InvariantCulture) ?? "*"}";
         }

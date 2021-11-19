@@ -4,6 +4,8 @@
 
 using System;
 
+using FubarDev.WebDavServer.Properties;
+
 namespace FubarDev.WebDavServer.Model.Headers
 {
     /// <summary>
@@ -35,7 +37,7 @@ namespace FubarDev.WebDavServer.Model.Headers
             if (!CodedUrlParser.TryParse(s, out var stateToken))
             {
                 throw new ArgumentException(
-                    $"{s} is not a valid lock token",
+                    string.Format(Resources.InvalidLockTokenFormat, s),
                     nameof(s));
             }
 

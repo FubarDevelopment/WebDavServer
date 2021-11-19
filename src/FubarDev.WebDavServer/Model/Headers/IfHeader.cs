@@ -6,6 +6,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 
+using FubarDev.WebDavServer.Properties;
 using FubarDev.WebDavServer.Utils;
 
 namespace FubarDev.WebDavServer.Model.Headers
@@ -39,7 +40,7 @@ namespace FubarDev.WebDavServer.Model.Headers
             if (!source.Empty)
             {
                 throw new ArgumentException(
-                    "Not an accepted list of conditions",
+                    Resources.ConditionListNotAcceptible,
                     nameof(s));
             }
 

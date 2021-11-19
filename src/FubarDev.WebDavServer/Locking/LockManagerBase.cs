@@ -266,7 +266,7 @@ namespace FubarDev.WebDavServer.Locking
                         pathInfo.LockTokens = pathInfo.TokenToLock.Keys.ToList();
                     }
 
-                    var foundLock = pathInfo.TokenToLock.Where(x => ifHeaderList.IsMatch(pathInfo.EntityTag, new[] { x.Key })).Select(x => x.Value).SingleOrDefault();
+                    var foundLock = pathInfo.TokenToLock?.Where(x => ifHeaderList.IsMatch(pathInfo.EntityTag, new[] { x.Key })).Select(x => x.Value).SingleOrDefault();
                     if (foundLock != null)
                     {
                         var refreshedLock = Refresh(foundLock, _rounding.Round(_systemClock.UtcNow), _rounding.Round(timeout));

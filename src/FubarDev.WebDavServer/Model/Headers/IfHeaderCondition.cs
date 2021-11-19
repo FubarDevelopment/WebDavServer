@@ -7,6 +7,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 
+using FubarDev.WebDavServer.Properties;
 using FubarDev.WebDavServer.Utils;
 
 namespace FubarDev.WebDavServer.Model.Headers
@@ -92,7 +93,7 @@ namespace FubarDev.WebDavServer.Model.Headers
                     if (!source.AdvanceIf("]"))
                     {
                         throw new ArgumentException(
-                            $"{source.Remaining} is not a valid condition (ETag not ending with ']')",
+                            string.Format(Resources.ETagNotEndingWithBracket, source.Remaining),
                             nameof(source));
                     }
                 }
