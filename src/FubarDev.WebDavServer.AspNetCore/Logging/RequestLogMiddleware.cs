@@ -111,14 +111,21 @@ namespace FubarDev.WebDavServer.AspNetCore.Logging
                     {
                         try
                         {
-                            using (var reader = new StreamReader(context.Request.Body, encoding, false, 1000, true))
+                            var temp = new byte[1];
+                            var readCount = await context.Request.Body.ReadAsync(temp, context.RequestAborted);
+                            if (readCount != 0)
                             {
-                                var doc = await XDocument.LoadAsync(
-                                        reader,
-                                        LoadOptions.PreserveWhitespace,
-                                        context.RequestAborted)
-                                    .ConfigureAwait(false);
-                                info.Add($"Body: {doc}");
+                                context.Request.Body.Position = 0;
+
+                                using (var reader = new StreamReader(context.Request.Body, encoding, false, 1000, true))
+                                {
+                                    var doc = await XDocument.LoadAsync(
+                                            reader,
+                                            LoadOptions.PreserveWhitespace,
+                                            context.RequestAborted)
+                                        .ConfigureAwait(false);
+                                    info.Add($"Body: {doc}");
+                                }
                             }
 
                             showRawBody = false;
