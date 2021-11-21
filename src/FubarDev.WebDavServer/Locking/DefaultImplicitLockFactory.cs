@@ -79,6 +79,7 @@ namespace FubarDev.WebDavServer.Locking
                 {
                     case "PUT":
                     case "COPY":
+                    case "MOVE":
                     case "MKCOL":
                     case "PROPPATCH":
                         return true;
