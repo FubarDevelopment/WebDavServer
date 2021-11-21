@@ -293,7 +293,7 @@ namespace FubarDev.WebDavServer.AspNetCore
 
         private static bool IsContentExpected(HttpRequest request)
         {
-            if (request.ContentLength != 0)
+            if (request.ContentLength is not null && request.ContentLength != 0)
             {
                 return true;
             }
