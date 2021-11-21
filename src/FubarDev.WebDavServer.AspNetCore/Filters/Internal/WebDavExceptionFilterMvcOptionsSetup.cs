@@ -11,7 +11,8 @@ namespace FubarDev.WebDavServer.AspNetCore.Filters.Internal
     {
         public void Configure(MvcOptions options)
         {
-            options.Filters.AddService(typeof(WebDavExceptionFilter));
+            options.Filters.AddService<WebDavExceptionFilter>();
+            options.Filters.AddService<PropFindContentTypeFilter>();
         }
     }
 }

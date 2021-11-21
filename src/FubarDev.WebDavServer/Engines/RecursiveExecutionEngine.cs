@@ -73,6 +73,71 @@ namespace FubarDev.WebDavServer.Engines
         }
 
         /// <summary>
+        /// Operates on a collection and the given target document.
+        /// </summary>
+        /// <param name="sourceUrl">The root-relative source URL.</param>
+        /// <param name="source">The source collection.</param>
+        /// <param name="depth">The recursion depth.</param>
+        /// <param name="target">The target document.</param>
+        /// <param name="cancellationToken">The cancellation token.</param>
+        /// <returns>The result information of the current operation.</returns>
+        public async Task<CollectionActionResult> ExecuteAsync(Uri sourceUrl, ICollection source, DepthHeader depth, TDocument target, CancellationToken cancellationToken)
+        {
+            if (_logger.IsEnabled(LogLevel.Trace))
+            {
+                _logger.LogTrace(
+                    "Collecting nodes for operation on collection {SourceUrl} with existing target {DestinationUrl}",
+                    sourceUrl,
+                    target.DestinationUrl);
+            }
+
+            if (!_allowOverwrite)
+            {
+                _logger.LogDebug(
+                    "{DestinationUrl}: Cannot overwrite because destination exists",
+                    target.DestinationUrl);
+                return new CollectionActionResult(ActionStatus.CannotOverwrite, target);
+            }
+
+            if (_logger.IsEnabled(LogLevel.Trace))
+            {
+                _logger.LogTrace(
+                    "Delete {DestinationUrl} before performing operation on collection {SourceUrl}",
+                    target.DestinationUrl,
+                    sourceUrl);
+            }
+
+            TMissing missingTarget;
+            try
+            {
+                missingTarget = await target.DeleteAsync(cancellationToken).ConfigureAwait(false);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogDebug(
+                    "{DestinationUrl}: Delete failed with exception {ErrorMessage}",
+                    target.DestinationUrl,
+                    ex.Message);
+                return new CollectionActionResult(ActionStatus.TargetDeleteFailed, target)
+                {
+                    Exception = ex,
+                };
+            }
+
+            var nodes = await source.GetNodeAsync(depth.OrderValue, cancellationToken).ConfigureAwait(false);
+            var result = await ExecuteAsync(sourceUrl, nodes, missingTarget, cancellationToken).ConfigureAwait(false);
+            if (result.Status != ActionStatus.Created)
+            {
+                return result;
+            }
+
+            return result with
+            {
+                Status = ActionStatus.Overwritten,
+            };
+        }
+
+        /// <summary>
         /// Operates on a collection and the given target collection.
         /// </summary>
         /// <param name="sourceUrl">The root-relative source URL.</param>
@@ -192,7 +257,7 @@ namespace FubarDev.WebDavServer.Engines
                     "{DestinationUrl}: Delete failed with exception {ErrorMessage}",
                     target.DestinationUrl,
                     ex.Message);
-                return new CollectionActionResult(ActionStatus.TargetDeleteFailed, target)
+                return new ActionResult(ActionStatus.TargetDeleteFailed, target)
                 {
                     Exception = ex,
                 };
@@ -257,7 +322,7 @@ namespace FubarDev.WebDavServer.Engines
                         "{DestinationUrl}: Delete failed with exception {ErrorMessage}",
                         target.DestinationUrl,
                         ex.Message);
-                    return new CollectionActionResult(ActionStatus.TargetDeleteFailed, target)
+                    return new ActionResult(ActionStatus.TargetDeleteFailed, target)
                     {
                         Exception = ex,
                     };

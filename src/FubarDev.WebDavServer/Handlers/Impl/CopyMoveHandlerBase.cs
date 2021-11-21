@@ -18,6 +18,7 @@ using FubarDev.WebDavServer.Model.Headers;
 using FubarDev.WebDavServer.Utils;
 
 using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Options;
 
 namespace FubarDev.WebDavServer.Handlers.Impl
 {
@@ -32,22 +33,27 @@ namespace FubarDev.WebDavServer.Handlers.Impl
 
         private readonly IImplicitLockFactory _implicitLockFactory;
 
+        private readonly LitmusCompatibilityOptions _litmusCompatibilityOptions;
+
         /// <summary>
         /// Initializes a new instance of the <see cref="CopyMoveHandlerBase"/> class.
         /// </summary>
         /// <param name="rootFileSystem">The root file system.</param>
         /// <param name="contextAccessor">The WebDAV context accessor.</param>
         /// <param name="implicitLockFactory">A factory to create implicit locks.</param>
+        /// <param name="litmusCompatibilityOptions">Options for the compatibility with the litmus tool.</param>
         /// <param name="logger">The logger to use (either for COPY or MOVE).</param>
         protected CopyMoveHandlerBase(
             IFileSystem rootFileSystem,
             IWebDavContextAccessor contextAccessor,
             IImplicitLockFactory implicitLockFactory,
+            IOptions<LitmusCompatibilityOptions> litmusCompatibilityOptions,
             ILogger logger)
         {
             _rootFileSystem = rootFileSystem;
             _contextAccessor = contextAccessor;
             _implicitLockFactory = implicitLockFactory;
+            _litmusCompatibilityOptions = litmusCompatibilityOptions.Value;
             Logger = logger;
         }
 
@@ -143,31 +149,29 @@ namespace FubarDev.WebDavServer.Handlers.Impl
                             destinationUrl);
                     }
 
-                    using (var remoteHandler = await CreateRemoteTargetActionsAsync(
+                    using var remoteHandler = await CreateRemoteTargetActionsAsync(
                             destinationUrl,
                             cancellationToken)
-                        .ConfigureAwait(false))
+                        .ConfigureAwait(false);
+                    if (remoteHandler == null)
                     {
-                        if (remoteHandler == null)
-                        {
-                            throw new WebDavException(
-                                WebDavStatusCode.BadGateway,
-                                "No remote handler for given client");
-                        }
-
-                        // For error reporting
-                        sourceUrl = WebDavContext.PublicRootUrl.MakeRelativeUri(sourceUrl);
-
-                        var remoteTargetResult = await RemoteExecuteAsync(
-                            remoteHandler,
-                            sourceUrl,
-                            sourceSelectionResult,
-                            destinationUrl,
-                            depth,
-                            overwrite,
-                            cancellationToken).ConfigureAwait(false);
-                        result = remoteTargetResult.Evaluate(WebDavContext);
+                        throw new WebDavException(
+                            WebDavStatusCode.BadGateway,
+                            "No remote handler for given client");
                     }
+
+                    // For error reporting
+                    sourceUrl = WebDavContext.PublicRootUrl.MakeRelativeUri(sourceUrl);
+
+                    var remoteTargetResult = await RemoteExecuteAsync(
+                        remoteHandler,
+                        sourceUrl,
+                        sourceSelectionResult,
+                        destinationUrl,
+                        depth,
+                        overwrite,
+                        cancellationToken).ConfigureAwait(false);
+                    result = remoteTargetResult.Evaluate(WebDavContext);
                 }
                 else
                 {
@@ -318,12 +322,19 @@ namespace FubarDev.WebDavServer.Handlers.Impl
                 ActionResult docResult;
                 if (targetItem is TCollection targetCollection)
                 {
-                    // litmus: copymove: 4 (copy_overwrite)
-                    docResult = await engine.ExecuteAsync(
-                        sourceUrl,
-                        sourceSelectionResult.Document,
-                        targetCollection,
-                        cancellationToken).ConfigureAwait(false);
+                    if (_litmusCompatibilityOptions.ForbidOverwriteOfCollectionWithDocument)
+                    {
+                        docResult = new ActionResult(ActionStatus.OverwriteFailed, targetCollection);
+                    }
+                    else
+                    {
+                        // litmus: copymove: 4 (copy_overwrite)
+                        docResult = await engine.ExecuteAsync(
+                            sourceUrl,
+                            sourceSelectionResult.Document,
+                            targetCollection,
+                            cancellationToken).ConfigureAwait(false);
+                    }
                 }
                 else if (targetItem is TMissing missingTarget)
                 {
@@ -352,10 +363,22 @@ namespace FubarDev.WebDavServer.Handlers.Impl
             }
 
             Engines.CollectionActionResult collResult;
-            if (targetItem is TDocument)
+            if (targetItem is TDocument documentTarget)
             {
-                // Cannot overwrite document with collection
-                collResult = new Engines.CollectionActionResult(ActionStatus.OverwriteFailed, targetItem);
+                if (_litmusCompatibilityOptions.ForbidOverwriteOfDocumentWithCollection)
+                {
+                    collResult = new Engines.CollectionActionResult(ActionStatus.OverwriteFailed, documentTarget);
+                }
+                else
+                {
+                    // litmus: copymove: 10 (move_coll)
+                    collResult = await engine.ExecuteAsync(
+                        sourceUrl,
+                        sourceSelectionResult.Collection,
+                        depth,
+                        documentTarget,
+                        cancellationToken).ConfigureAwait(false);
+                }
             }
             else if (targetItem is TMissing missingTarget)
             {

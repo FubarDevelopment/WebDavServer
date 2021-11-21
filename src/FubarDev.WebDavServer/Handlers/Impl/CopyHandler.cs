@@ -13,6 +13,7 @@ using FubarDev.WebDavServer.Engines.Remote;
 using FubarDev.WebDavServer.FileSystem;
 using FubarDev.WebDavServer.Locking;
 using FubarDev.WebDavServer.Model.Headers;
+using FubarDev.WebDavServer.Utils;
 
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
@@ -35,6 +36,7 @@ namespace FubarDev.WebDavServer.Handlers.Impl
         /// <param name="contextAccessor">The WebDAV context accessor.</param>
         /// <param name="implicitLockFactory">A factory to create implicit locks.</param>
         /// <param name="options">The options for the <c>COPY</c> handler.</param>
+        /// <param name="litmusCompatibilityOptions">Options for the compatibility with the litmus tool.</param>
         /// <param name="logger">The logger for this handler.</param>
         /// <param name="serviceProvider">The service provider used to lazily query the <see cref="IRemoteCopyTargetActionsFactory"/> implementation.</param>
         public CopyHandler(
@@ -42,9 +44,10 @@ namespace FubarDev.WebDavServer.Handlers.Impl
             IWebDavContextAccessor contextAccessor,
             IImplicitLockFactory implicitLockFactory,
             IOptions<CopyHandlerOptions> options,
+            IOptions<LitmusCompatibilityOptions> litmusCompatibilityOptions,
             ILogger<CopyHandler> logger,
             IServiceProvider serviceProvider)
-            : base(rootFileSystem, contextAccessor, implicitLockFactory, logger)
+            : base(rootFileSystem, contextAccessor, implicitLockFactory, litmusCompatibilityOptions, logger)
         {
             _serviceProvider = serviceProvider;
             _options = options.Value;

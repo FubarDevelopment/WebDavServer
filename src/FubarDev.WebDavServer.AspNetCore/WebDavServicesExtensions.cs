@@ -77,6 +77,7 @@ namespace Microsoft.Extensions.DependencyInjection
                 .AddScoped(sp => sp.GetRequiredService<IWebDavContextAccessor>().WebDavContext)
                 .AddScoped<IWebDavDispatcher, WebDavServer>()
                 .AddSingleton<WebDavExceptionFilter>()
+                .AddSingleton<PropFindContentTypeFilter>()
                 .AddScoped<IWebDavOutputFormatter, WebDavXmlOutputFormatter>()
                 .AddSingleton<LockCleanupTask>()
                 .AddScoped(sp => sp.GetRequiredService<IBufferPoolFactory>().CreatePool());
