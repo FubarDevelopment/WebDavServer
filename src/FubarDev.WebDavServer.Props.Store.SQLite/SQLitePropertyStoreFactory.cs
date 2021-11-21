@@ -93,9 +93,7 @@ namespace FubarDev.WebDavServer.Props.Store.SQLite
                 }
                 else
                 {
-                    dbFileName = context.User.Identity.IsAnonymous()
-                        ? "anonymous.db"
-                        : $"{context.User.Identity.Name}.db";
+                    dbFileName = "properties.db";
                 }
 
                 dbPath = Path.Combine(fs.RootDirectoryPath, dbFileName);
