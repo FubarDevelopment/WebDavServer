@@ -204,7 +204,7 @@ namespace FubarDev.WebDavServer.Handlers.Impl
                         isMove || depth != DepthHeader.Zero,
                         new XElement(WebDavXml.Dav + "owner", WebDavContext.User.Identity.Name),
                         LockAccessType.Write,
-                        LockShareMode.Shared,
+                        LockShareMode.Exclusive,
                         TimeoutHeader.Infinite);
                     var destTempLock = await _implicitLockFactory.CreateAsync(destLockRequirements, cancellationToken).ConfigureAwait(false);
                     if (!destTempLock.IsSuccessful)

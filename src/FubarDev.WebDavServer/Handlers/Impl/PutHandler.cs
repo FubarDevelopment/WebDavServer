@@ -107,7 +107,7 @@ namespace FubarDev.WebDavServer.Handlers.Impl
                 false,
                 new XElement(WebDavXml.Dav + "owner", context.User.Identity.Name),
                 LockAccessType.Write,
-                LockShareMode.Shared,
+                LockShareMode.Exclusive,
                 TimeoutHeader.Infinite);
             var tempLock = await _implicitLockFactory.CreateAsync(lockRequirements, cancellationToken).ConfigureAwait(false);
             if (!tempLock.IsSuccessful)
