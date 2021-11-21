@@ -148,7 +148,8 @@ namespace FubarDev.WebDavServer.AspNetCore
             if (request.RouteValues.TryGetValue("path", out var actionPath))
             {
                 // We have an action path...
-                if (string.IsNullOrEmpty(actionPath?.ToString()))
+                if (string.IsNullOrEmpty(actionPath?.ToString())
+                    && !path.EndsWith("/"))
                 {
                     // The path for the action is empty, which means that
                     // the WebDAV client queried the root entry of the file
