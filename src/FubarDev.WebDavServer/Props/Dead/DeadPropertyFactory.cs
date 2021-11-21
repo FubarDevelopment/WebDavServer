@@ -2,13 +2,12 @@
 // Copyright (c) Fubar Development Junker. All rights reserved.
 // </copyright>
 
-using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Xml.Linq;
 
 using FubarDev.WebDavServer.FileSystem;
 using FubarDev.WebDavServer.Props.Store;
-
-using Microsoft.Extensions.DependencyInjection;
 
 namespace FubarDev.WebDavServer.Props.Dead
 {
@@ -20,23 +19,23 @@ namespace FubarDev.WebDavServer.Props.Dead
     /// </remarks>
     public class DeadPropertyFactory : IDeadPropertyFactory
     {
-        private readonly Lazy<IWebDavDispatcher> _webDavDispatcher;
+        private readonly IReadOnlyCollection<IDefaultDeadPropertyFactory> _defaultDeadPropertyFactories;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="DeadPropertyFactory"/> class.
         /// </summary>
-        /// <param name="serviceProvider">The service provider used to query the <see cref="Dispatchers.IWebDavClass"/> implementations.</param>
-        public DeadPropertyFactory(IServiceProvider serviceProvider)
+        /// <param name="defaultDeadPropertyFactories">Factories for well-known (default) dead properties.</param>
+        public DeadPropertyFactory(IEnumerable<IDefaultDeadPropertyFactory> defaultDeadPropertyFactories)
         {
-            _webDavDispatcher = new Lazy<IWebDavDispatcher>(serviceProvider.GetRequiredService<IWebDavDispatcher>);
+            _defaultDeadPropertyFactories = defaultDeadPropertyFactories.ToList();
         }
 
         /// <inheritdoc />
         public virtual IDeadProperty Create(IPropertyStore store, IEntry entry, XName name)
         {
-            foreach (var webDavClass in _webDavDispatcher.Value.SupportedClasses)
+            foreach (var deadPropertyFactory in _defaultDeadPropertyFactories)
             {
-                if (webDavClass.TryCreateDeadProperty(store, entry, name, out var deadProp))
+                if (deadPropertyFactory.TryCreateDeadProperty(store, entry, name, out var deadProp))
                 {
                     return deadProp;
                 }
@@ -51,6 +50,13 @@ namespace FubarDev.WebDavServer.Props.Dead
             var result = Create(store, entry, element.Name);
             result.Init(element);
             return result;
+        }
+
+        /// <inheritdoc />
+        public IEnumerable<IUntypedReadableProperty> GetProperties(IEntry entry)
+        {
+            return _defaultDeadPropertyFactories
+                .SelectMany(factory => factory.GetProperties(entry));
         }
     }
 }

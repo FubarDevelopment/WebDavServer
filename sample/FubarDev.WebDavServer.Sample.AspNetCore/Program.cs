@@ -1,9 +1,13 @@
 ﻿using System;
+using System.Reflection;
+using System.Runtime.InteropServices;
 
 using Microsoft.AspNetCore;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+
+using Mono.DllMap;
 
 using Serilog;
 using Serilog.Events;
@@ -17,9 +21,12 @@ namespace FubarDev.WebDavServer.Sample.AspNetCore
         public static bool DisableBasicAuth { get; private set; }
 
         public static bool IsWindows => Environment.OSVersion.Platform == PlatformID.Win32NT;
+        
+        private static readonly DllMapResolver _dllMapResolver = new DllMapResolver();
 
         public static void Main(string[] args)
         {
+            NativeLibrary.SetDllImportResolver(typeof(Npam.NpamSession).Assembly, Resolver);
             Log.Logger = new LoggerConfiguration()
 #if DEBUG
                 .MinimumLevel.Debug()
@@ -45,6 +52,15 @@ namespace FubarDev.WebDavServer.Sample.AspNetCore
             {
                 Log.CloseAndFlush();
             }
+        }
+
+        private static IntPtr Resolver(
+            string libraryname,
+            Assembly assembly,
+            DllImportSearchPath? searchpath)
+        {
+            var resolvedLibraryName = _dllMapResolver.MapLibraryName<Program>(libraryname);
+            return NativeLibrary.Load(resolvedLibraryName, assembly, searchpath);
         }
 
         private static IWebHost BuildWebHost(string[] args)

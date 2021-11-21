@@ -32,19 +32,19 @@ namespace FubarDev.WebDavServer.Handlers.Impl
         /// Initializes a new instance of the <see cref="MoveHandler"/> class.
         /// </summary>
         /// <param name="rootFileSystem">The root file system.</param>
-        /// <param name="host">The WebDAV server context.</param>
+        /// <param name="contextAccessor">The WebDAV context accessor.</param>
         /// <param name="implicitLockFactory">A factory to create implicit locks.</param>
         /// <param name="options">The options for the <c>MOVE</c> handler.</param>
         /// <param name="logger">The logger for this handler.</param>
         /// <param name="serviceProvider">The service provider used to lazily query the <see cref="IRemoteMoveTargetActionsFactory"/> implementation.</param>
         public MoveHandler(
             IFileSystem rootFileSystem,
-            IWebDavContext host,
+            IWebDavContextAccessor contextAccessor,
             IImplicitLockFactory implicitLockFactory,
             IOptions<MoveHandlerOptions> options,
             ILogger<MoveHandler> logger,
             IServiceProvider serviceProvider)
-            : base(rootFileSystem, host, implicitLockFactory, logger)
+            : base(rootFileSystem, contextAccessor, implicitLockFactory, logger)
         {
             _serviceProvider = serviceProvider;
             _options = options.Value;
@@ -82,10 +82,10 @@ namespace FubarDev.WebDavServer.Handlers.Impl
         {
             if (mode == RecursiveProcessingMode.PreferFastest)
             {
-                return new MoveInFileSystemTargetAction(WebDavContext.Dispatcher, Logger);
+                return new MoveInFileSystemTargetAction(WebDavContext, Logger);
             }
 
-            return new MoveBetweenFileSystemsTargetAction(WebDavContext.Dispatcher);
+            return new MoveBetweenFileSystemsTargetAction(WebDavContext);
         }
     }
 }

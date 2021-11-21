@@ -9,6 +9,7 @@ using System.Threading.Tasks;
 
 using FubarDev.WebDavServer.Model.Headers;
 using FubarDev.WebDavServer.Props;
+using FubarDev.WebDavServer.Props.Dead;
 
 namespace FubarDev.WebDavServer.FileSystem
 {
@@ -43,24 +44,22 @@ namespace FubarDev.WebDavServer.FileSystem
         }
 
         /// <summary>
-        /// Gets all predefined properties for the given <paramref name="entry"/>, provided by the given <paramref name="dispatcher"/>.
+        /// Gets all predefined properties for the given <paramref name="entry"/>, provided by the given <paramref name="deadPropertyFactory"/>.
         /// </summary>
         /// <param name="entry">The entry to get the properties for.</param>
-        /// <param name="dispatcher">The dispatcher that provides the predefined properties.</param>
+        /// <param name="deadPropertyFactory">Factory for well-known (default) dead properties.</param>
         /// <param name="predicate">A predicate used to filter the returned properties.</param>
         /// <param name="returnInvalidProperties">Indicates whether we want to get invalid live properties.</param>
         /// <returns>The async enumerable of all property (including the property store when the <paramref name="predicate"/> allows it).</returns>
         public static IAsyncEnumerable<IUntypedReadableProperty> GetProperties(
             this IEntry entry,
-            IWebDavDispatcher dispatcher,
+            IDeadPropertyFactory deadPropertyFactory,
             Predicate<IUntypedReadableProperty>? predicate = null,
             bool returnInvalidProperties = false)
         {
             var properties = new List<IUntypedReadableProperty>();
-            foreach (var webDavClass in dispatcher.SupportedClasses)
-            {
-                properties.AddRange(webDavClass.GetProperties(entry));
-            }
+
+            properties.AddRange(deadPropertyFactory.GetProperties(entry));
 
             return new EntryProperties(
                 entry,

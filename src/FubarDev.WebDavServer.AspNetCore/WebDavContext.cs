@@ -3,7 +3,6 @@
 // </copyright>
 
 using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Security.Principal;
 using System.Text;
@@ -18,140 +17,119 @@ namespace FubarDev.WebDavServer.AspNetCore
     /// <summary>
     /// The ASP.NET core specific implementation of the <see cref="IWebDavContext"/> interface.
     /// </summary>
-    public sealed class WebDavContext : IWebDavContext
+    internal sealed class WebDavContext : IWebDavContext
     {
-        private readonly IHttpContextAccessor _httpContextAccessor;
+        private readonly HttpContext _httpContext;
 
-        private readonly Lazy<Uri> _serviceAbsoluteRequestUrl;
+        private readonly Uri _serviceAbsoluteRequestUrl;
 
-        private readonly Lazy<Uri> _serviceRelativeRequestUrl;
+        private readonly Uri _serviceRelativeRequestUrl;
 
-        private readonly Lazy<Uri> _serviceBaseUrl;
+        private readonly Uri _serviceBaseUrl;
 
-        private readonly Lazy<Uri> _serviceRootUrl;
+        private readonly Uri _serviceRootUrl;
 
-        private readonly Lazy<Uri> _publicRelativeRequestUrl;
+        private readonly Uri _publicRelativeRequestUrl;
 
-        private readonly Lazy<Uri> _publicAbsoluteRequestUrl;
+        private readonly Uri _publicAbsoluteRequestUrl;
 
-        private readonly Lazy<Uri> _publicBaseUrl;
+        private readonly Uri _publicBaseUrl;
 
-        private readonly Lazy<Uri> _publicRootUrl;
+        private readonly Uri _publicRootUrl;
 
-        private readonly Lazy<Uri> _publicControllerUrl;
+        private readonly Uri _publicControllerUrl;
 
-        private readonly Lazy<Uri> _controllerRelativeUrl;
+        private readonly Uri _controllerRelativeUrl;
 
-        private readonly Lazy<Uri> _actionUrl;
+        private readonly Uri _actionUrl;
 
-        private readonly Lazy<WebDavRequestHeaders> _requestHeaders;
+        private readonly WebDavRequestHeaders _requestHeaders;
 
-        private readonly Lazy<IUAParserOutput> _detectedClient;
+        private readonly IUAParserOutput _detectedClient;
 
-        private readonly Lazy<IPrincipal> _principal;
+        private readonly IPrincipal _principal;
 
         private readonly Lazy<IWebDavDispatcher> _dispatcher;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="WebDavContext"/> class.
         /// </summary>
-        /// <param name="serviceProvider">The service provider used to get the <see cref="IWebDavDispatcher"/> with.</param>
-        /// <param name="httpContextAccessor">The <see cref="HttpContext"/> accessor.</param>
+        /// <param name="httpContext">The <see cref="HttpContext"/>.</param>
         /// <param name="options">The options for the <see cref="WebDavContext"/>.</param>
-        public WebDavContext(IServiceProvider serviceProvider, IHttpContextAccessor httpContextAccessor, IOptions<WebDavHostOptions> options)
+        public WebDavContext(HttpContext httpContext, IOptions<WebDavHostOptions> options)
         {
             var opt = options.Value;
-            _httpContextAccessor = httpContextAccessor;
-            _serviceBaseUrl = new Lazy<Uri>(() => BuildServiceBaseUrl(httpContextAccessor.HttpContext));
-            _publicBaseUrl = new Lazy<Uri>(() => BuildPublicBaseUrl(httpContextAccessor.HttpContext, opt));
-            _publicRootUrl = new Lazy<Uri>(() => new Uri(PublicBaseUrl, "/"));
-            _serviceAbsoluteRequestUrl = new Lazy<Uri>(() => BuildAbsoluteServiceUrl(httpContextAccessor.HttpContext));
-            _serviceRootUrl = new Lazy<Uri>(() => new Uri(ServiceAbsoluteRequestUrl, "/"));
-            _serviceRelativeRequestUrl = new Lazy<Uri>(() => ServiceRootUrl.MakeRelativeUri(ServiceAbsoluteRequestUrl));
-            _publicAbsoluteRequestUrl = new Lazy<Uri>(() => new Uri(PublicBaseUrl, ServiceBaseUrl.MakeRelativeUri(ServiceAbsoluteRequestUrl)));
-            _actionUrl = new Lazy<Uri>(() => new Uri(Uri.EscapeUriString(httpContextAccessor.HttpContext.GetRouteValue("path")?.ToString() ?? string.Empty), UriKind.RelativeOrAbsolute));
-            _publicRelativeRequestUrl = new Lazy<Uri>(() => PublicRootUrl.MakeRelativeUri(PublicAbsoluteRequestUrl));
-            _publicControllerUrl = new Lazy<Uri>(() => new Uri(PublicBaseUrl, ControllerRelativeUrl));
-            _controllerRelativeUrl = new Lazy<Uri>(
-                () =>
-                {
-                    var path = httpContextAccessor.HttpContext.GetRouteValue("path")?.ToString();
-                    var input = Uri.UnescapeDataString(ServiceAbsoluteRequestUrl.ToString());
-                    string remaining = input;
-                    if (path != null)
-                    {
-                        int pathIndex = input.LastIndexOf(path, StringComparison.Ordinal);
-                        if (pathIndex != -1)
-                        {
-                            remaining = input.Substring(0, pathIndex);
-                        }
-                    }
-
-                    var serviceControllerAbsoluteUrl = new Uri(remaining);
-                    var result = ServiceBaseUrl.MakeRelativeUri(serviceControllerAbsoluteUrl);
-                    return result;
-                });
-            _requestHeaders = new Lazy<WebDavRequestHeaders>(() =>
-            {
-                var request = httpContextAccessor.HttpContext.Request;
-                var headerItems = request.Headers.Select(x => new KeyValuePair<string, IEnumerable<string>>(x.Key, x.Value));
-                return new WebDavRequestHeaders(headerItems, this);
-            });
-            _detectedClient = new Lazy<IUAParserOutput>(() => DetectClient(httpContextAccessor.HttpContext));
-            _principal = new Lazy<IPrincipal>(() => httpContextAccessor.HttpContext.User);
-            _dispatcher = new Lazy<IWebDavDispatcher>(serviceProvider.GetRequiredService<IWebDavDispatcher>);
+            _httpContext = httpContext;
+            _serviceBaseUrl = BuildServiceBaseUrl(httpContext);
+            _publicBaseUrl = BuildPublicBaseUrl(httpContext, opt);
+            _publicRootUrl = new Uri(PublicBaseUrl, "/");
+            _serviceAbsoluteRequestUrl = BuildAbsoluteServiceUrl(httpContext);
+            _serviceRootUrl = new Uri(_serviceAbsoluteRequestUrl, "/");
+            _serviceRelativeRequestUrl = ServiceRootUrl.MakeRelativeUri(_serviceAbsoluteRequestUrl);
+            _publicAbsoluteRequestUrl = new Uri(_publicBaseUrl, _serviceBaseUrl.MakeRelativeUri(_serviceAbsoluteRequestUrl));
+            _actionUrl = new Uri(Uri.EscapeUriString(httpContext.GetRouteValue("path")?.ToString() ?? string.Empty), UriKind.RelativeOrAbsolute);
+            _publicRelativeRequestUrl = _publicRootUrl.MakeRelativeUri(_publicAbsoluteRequestUrl);
+            _controllerRelativeUrl = GetControllerRelativeUrl(httpContext, _serviceBaseUrl, _serviceAbsoluteRequestUrl);
+            _publicControllerUrl = new Uri(_publicBaseUrl, _controllerRelativeUrl);
+            _requestHeaders = new WebDavRequestHeaders(httpContext.Request.Headers, this);
+            _detectedClient = DetectClient(httpContext);
+            _principal = httpContext.User;
+            _dispatcher = new Lazy<IWebDavDispatcher>(_httpContext.RequestServices.GetRequiredService<IWebDavDispatcher>);
         }
 
         /// <inheritdoc />
-        public Uri ServiceRelativeRequestUrl => _serviceRelativeRequestUrl.Value;
+        public Uri ServiceRelativeRequestUrl => _serviceRelativeRequestUrl;
 
         /// <inheritdoc />
-        public Uri ServiceAbsoluteRequestUrl => _serviceAbsoluteRequestUrl.Value;
+        public Uri ServiceAbsoluteRequestUrl => _serviceAbsoluteRequestUrl;
 
         /// <inheritdoc />
-        public Uri ServiceBaseUrl => _serviceBaseUrl.Value;
+        public Uri ServiceBaseUrl => _serviceBaseUrl;
 
         /// <inheritdoc />
-        public Uri ServiceRootUrl => _serviceRootUrl.Value;
+        public Uri ServiceRootUrl => _serviceRootUrl;
 
         /// <inheritdoc />
-        public Uri PublicRelativeRequestUrl => _publicRelativeRequestUrl.Value;
+        public Uri PublicRelativeRequestUrl => _publicRelativeRequestUrl;
 
         /// <inheritdoc />
-        public Uri PublicAbsoluteRequestUrl => _publicAbsoluteRequestUrl.Value;
+        public Uri PublicAbsoluteRequestUrl => _publicAbsoluteRequestUrl;
 
         /// <inheritdoc />
-        public Uri PublicControllerUrl => _publicControllerUrl.Value;
+        public Uri PublicControllerUrl => _publicControllerUrl;
 
         /// <inheritdoc />
-        public Uri PublicBaseUrl => _publicBaseUrl.Value;
+        public Uri PublicBaseUrl => _publicBaseUrl;
 
         /// <inheritdoc />
-        public Uri PublicRootUrl => _publicRootUrl.Value;
+        public Uri PublicRootUrl => _publicRootUrl;
 
         /// <inheritdoc />
-        public Uri ControllerRelativeUrl => _controllerRelativeUrl.Value;
+        public Uri ControllerRelativeUrl => _controllerRelativeUrl;
 
         /// <inheritdoc />
-        public Uri ActionUrl => _actionUrl.Value;
+        public Uri ActionUrl => _actionUrl;
 
         /// <inheritdoc />
-        public IPrincipal User => _principal.Value;
+        public IPrincipal User => _principal;
 
         /// <inheritdoc />
-        public string RequestProtocol => _httpContextAccessor.HttpContext.Request.Protocol;
+        public IServiceProvider RequestServices => _httpContext.RequestServices;
 
         /// <inheritdoc />
-        public IWebDavRequestHeaders RequestHeaders => _requestHeaders.Value;
+        public string RequestProtocol => _httpContext.Request.Protocol;
 
         /// <inheritdoc />
-        public IUAParserOutput DetectedClient => _detectedClient.Value;
+        public IWebDavRequestHeaders RequestHeaders => _requestHeaders;
+
+        /// <inheritdoc />
+        public IUAParserOutput DetectedClient => _detectedClient;
 
         /// <inheritdoc />
         public IWebDavDispatcher Dispatcher => _dispatcher.Value;
 
         /// <inheritdoc />
-        public string RequestMethod => _httpContextAccessor.HttpContext.Request.Method;
+        public string RequestMethod => _httpContext.Request.Method;
 
         private static Uri BuildAbsoluteServiceUrl(HttpContext httpContext)
         {
@@ -211,6 +189,28 @@ namespace FubarDev.WebDavServer.AspNetCore
         {
             var userAgent = httpContext.Request.Headers["User-Agent"].FirstOrDefault();
             return Parser.GetDefault().Parse(userAgent ?? string.Empty);
+        }
+
+        private static Uri GetControllerRelativeUrl(
+            HttpContext httpContext,
+            Uri serviceBaseUrl,
+            Uri serviceAbsoluteRequestUrl)
+        {
+            var path = httpContext.GetRouteValue("path")?.ToString();
+            var input = Uri.UnescapeDataString(serviceAbsoluteRequestUrl.ToString());
+            string remaining = input;
+            if (path != null)
+            {
+                int pathIndex = input.LastIndexOf(path, StringComparison.Ordinal);
+                if (pathIndex != -1)
+                {
+                    remaining = input.Substring(0, pathIndex);
+                }
+            }
+
+            var serviceControllerAbsoluteUrl = new Uri(remaining);
+            var result = serviceBaseUrl.MakeRelativeUri(serviceControllerAbsoluteUrl);
+            return result;
         }
     }
 }

@@ -350,7 +350,8 @@ namespace FubarDev.WebDavServer.Tests.Locking
                 });
 
             var ct = CancellationToken.None;
-            var root = await FileSystem.Root;
+            var fileSystem = GetFileSystem();
+            var root = await fileSystem.Root;
             var doc = await root.GetChildAsync("test1.txt", ct).ConfigureAwait(false);
             Assert.NotNull(doc);
         }

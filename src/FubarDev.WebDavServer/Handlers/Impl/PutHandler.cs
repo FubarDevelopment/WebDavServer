@@ -29,7 +29,7 @@ namespace FubarDev.WebDavServer.Handlers.Impl
     {
         private readonly IFileSystem _fileSystem;
 
-        private readonly IWebDavContext _context;
+        private readonly IWebDavContextAccessor _contextAccessor;
 
         private readonly IImplicitLockFactory _implicitLockFactory;
 
@@ -43,21 +43,21 @@ namespace FubarDev.WebDavServer.Handlers.Impl
         /// Initializes a new instance of the <see cref="PutHandler"/> class.
         /// </summary>
         /// <param name="fileSystem">The root file system.</param>
-        /// <param name="context">The WebDAV request context.</param>
+        /// <param name="contextAccessor">The WebDAV request context accessor.</param>
         /// <param name="implicitLockFactory">A factory to create implicit locks.</param>
         /// <param name="entryPropertyInitializer">The property initializer.</param>
         /// <param name="bufferPoolFactory">A buffer pool factory.</param>
         /// <param name="logger">The logger.</param>
         public PutHandler(
             IFileSystem fileSystem,
-            IWebDavContext context,
+            IWebDavContextAccessor contextAccessor,
             IImplicitLockFactory implicitLockFactory,
             IEntryPropertyInitializer entryPropertyInitializer,
             IBufferPoolFactory bufferPoolFactory,
             ILogger<PutHandler> logger)
         {
             _fileSystem = fileSystem;
-            _context = context;
+            _contextAccessor = contextAccessor;
             _implicitLockFactory = implicitLockFactory;
             _entryPropertyInitializer = entryPropertyInitializer;
             _bufferPoolFactory = bufferPoolFactory;
@@ -87,24 +87,25 @@ namespace FubarDev.WebDavServer.Handlers.Impl
                 throw new WebDavException(WebDavStatusCode.NotFound);
             }
 
+            var context = _contextAccessor.WebDavContext;
             if (selectionResult.IsMissing)
             {
-                if (_context.RequestHeaders.IfNoneMatch != null)
+                if (context.RequestHeaders.IfNoneMatch != null)
                 {
                     throw new WebDavException(WebDavStatusCode.PreconditionFailed);
                 }
             }
             else
             {
-                await _context.RequestHeaders
+                await context.RequestHeaders
                     .ValidateAsync(selectionResult.TargetEntry, cancellationToken).ConfigureAwait(false);
             }
 
             var lockRequirements = new Lock(
                 new Uri(path, UriKind.Relative),
-                _context.PublicRelativeRequestUrl,
+                context.PublicRelativeRequestUrl,
                 false,
-                new XElement(WebDavXml.Dav + "owner", _context.User.Identity.Name),
+                new XElement(WebDavXml.Dav + "owner", context.User.Identity.Name),
                 LockAccessType.Write,
                 LockShareMode.Shared,
                 TimeoutHeader.Infinite);
@@ -138,7 +139,7 @@ namespace FubarDev.WebDavServer.Handlers.Impl
                 Debug.Assert(document != null, nameof(document) + " != null");
                 using (var fileStream = await document.CreateAsync(cancellationToken).ConfigureAwait(false))
                 {
-                    var contentLength = _context.RequestHeaders.ContentLength;
+                    var contentLength = context.RequestHeaders.ContentLength;
                     if (contentLength == null)
                     {
                         _logger.LogInformation("Writing data without content length");
@@ -168,7 +169,7 @@ namespace FubarDev.WebDavServer.Handlers.Impl
                     await _entryPropertyInitializer.CreatePropertiesAsync(
                             document,
                             docPropertyStore,
-                            _context,
+                            context,
                             cancellationToken)
                         .ConfigureAwait(false);
                 }

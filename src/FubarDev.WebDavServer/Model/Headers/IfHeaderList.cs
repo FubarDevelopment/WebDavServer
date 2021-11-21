@@ -82,7 +82,10 @@ namespace FubarDev.WebDavServer.Model.Headers
             return Conditions.All(x => x.IsMatch(etag, stateTokens));
         }
 
-        internal static IEnumerable<IfHeaderList> Parse(StringSource source, EntityTagComparer etagComparer, IWebDavContext context)
+        internal static IEnumerable<IfHeaderList> Parse(
+            StringSource source,
+            EntityTagComparer etagComparer,
+            IWebDavContext context)
         {
             Uri previousResourceTag = context.PublicAbsoluteRequestUrl;
             while (!source.SkipWhiteSpace())

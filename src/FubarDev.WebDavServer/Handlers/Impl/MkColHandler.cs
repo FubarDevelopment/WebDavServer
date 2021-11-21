@@ -25,7 +25,7 @@ namespace FubarDev.WebDavServer.Handlers.Impl
     {
         private readonly IFileSystem _rootFileSystem;
 
-        private readonly IWebDavContext _context;
+        private readonly IWebDavContextAccessor _contextAccessor;
 
         private readonly IImplicitLockFactory _implicitLockFactory;
 
@@ -35,17 +35,17 @@ namespace FubarDev.WebDavServer.Handlers.Impl
         /// Initializes a new instance of the <see cref="MkColHandler"/> class.
         /// </summary>
         /// <param name="rootFileSystem">The root file system.</param>
-        /// <param name="context">The WebDAV request context.</param>
+        /// <param name="contextAccessor">The WebDAV request context.</param>
         /// <param name="implicitLockFactory">A factory to create implicit locks.</param>
         /// <param name="entryPropertyInitializer">The property initializer.</param>
         public MkColHandler(
             IFileSystem rootFileSystem,
-            IWebDavContext context,
+            IWebDavContextAccessor contextAccessor,
             IImplicitLockFactory implicitLockFactory,
             IEntryPropertyInitializer entryPropertyInitializer)
         {
             _rootFileSystem = rootFileSystem;
-            _context = context;
+            _contextAccessor = contextAccessor;
             _implicitLockFactory = implicitLockFactory;
             _entryPropertyInitializer = entryPropertyInitializer;
         }
@@ -68,16 +68,17 @@ namespace FubarDev.WebDavServer.Handlers.Impl
                 throw new WebDavException(WebDavStatusCode.Conflict);
             }
 
-            if (_context.RequestHeaders.IfNoneMatch != null)
+            var context = _contextAccessor.WebDavContext;
+            if (context.RequestHeaders.IfNoneMatch != null)
             {
                 throw new WebDavException(WebDavStatusCode.PreconditionFailed);
             }
 
             var lockRequirements = new Lock(
                 new Uri(path, UriKind.Relative),
-                _context.PublicRelativeRequestUrl,
+                context.PublicRelativeRequestUrl,
                 false,
-                new XElement(WebDavXml.Dav + "owner", _context.User.Identity.Name),
+                new XElement(WebDavXml.Dav + "owner", context.User.Identity.Name),
                 LockAccessType.Write,
                 LockShareMode.Shared,
                 TimeoutHeader.Infinite);
@@ -101,7 +102,7 @@ namespace FubarDev.WebDavServer.Handlers.Impl
                         await _entryPropertyInitializer.CreatePropertiesAsync(
                                 newCollection,
                                 newCollection.FileSystem.PropertyStore,
-                                _context,
+                                context,
                                 cancellationToken)
                             .ConfigureAwait(false);
                     }

@@ -5,6 +5,7 @@
 using System;
 using System.IO;
 using System.Linq;
+using System.Security.Principal;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -17,16 +18,18 @@ using Xunit;
 
 namespace FubarDev.WebDavServer.Tests.FileSystem
 {
-    public abstract class SimpleFsTests<T> : IClassFixture<T>, IDisposable
+    public abstract class SimpleFsTests<T> : IClassFixture<T>
         where T : class, IFileSystemServices
     {
-        private readonly IServiceScope _serviceScope;
-
         protected SimpleFsTests(T fsServices)
         {
-            var serviceScopeFactory = fsServices.ServiceProvider.GetRequiredService<IServiceScopeFactory>();
-            _serviceScope = serviceScopeFactory.CreateScope();
-            FileSystem = _serviceScope.ServiceProvider.GetRequiredService<IFileSystem>();
+            var fsFactory = fsServices.ServiceProvider.GetRequiredService<IFileSystemFactory>();
+            var principal = new GenericPrincipal(
+                new GenericIdentity(Guid.NewGuid().ToString()),
+                Array.Empty<string>());
+            FileSystem = fsFactory.CreateFileSystem(
+                null,
+                principal);
         }
 
         public IFileSystem FileSystem { get; }
@@ -97,11 +100,6 @@ namespace FubarDev.WebDavServer.Tests.FileSystem
             var root = await FileSystem.Root.ConfigureAwait(false);
             await root.CreateCollectionAsync("test1", ct).ConfigureAwait(false);
             await Assert.ThrowsAnyAsync<IOException>(async () => await root.CreateCollectionAsync("test1", ct).ConfigureAwait(false)).ConfigureAwait(false);
-        }
-
-        public void Dispose()
-        {
-            _serviceScope.Dispose();
         }
     }
 }

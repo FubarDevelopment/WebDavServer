@@ -35,7 +35,7 @@ namespace FubarDev.WebDavServer
         /// <inheritdoc />
         public override async Task ExecuteResultAsync(IWebDavResponse response, CancellationToken ct)
         {
-            var formatter = response.Dispatcher.Formatter;
+            var formatter = response.Context.Dispatcher.Formatter;
             response.ContentType = formatter.ContentType;
             await base.ExecuteResultAsync(response, ct).ConfigureAwait(false);
             await formatter.SerializeAsync(response.Body, Data, ct).ConfigureAwait(false);

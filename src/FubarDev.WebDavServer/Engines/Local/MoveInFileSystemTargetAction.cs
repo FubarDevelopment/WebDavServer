@@ -23,16 +23,16 @@ namespace FubarDev.WebDavServer.Engines.Local
         /// <summary>
         /// Initializes a new instance of the <see cref="MoveInFileSystemTargetAction"/> class.
         /// </summary>
-        /// <param name="dispatcher">The WebDAV dispatcher.</param>
+        /// <param name="context">The current WebDAV context.</param>
         /// <param name="logger">The logger.</param>
-        public MoveInFileSystemTargetAction(IWebDavDispatcher dispatcher, ILogger logger)
+        public MoveInFileSystemTargetAction(IWebDavContext context, ILogger logger)
         {
-            Dispatcher = dispatcher;
+            Context = context;
             _logger = logger;
         }
 
         /// <inheritdoc />
-        public IWebDavDispatcher Dispatcher { get; }
+        public IWebDavContext Context { get; }
 
         /// <inheritdoc />
         public RecursiveTargetBehaviour ExistingTargetBehaviour { get; } = RecursiveTargetBehaviour.Overwrite;

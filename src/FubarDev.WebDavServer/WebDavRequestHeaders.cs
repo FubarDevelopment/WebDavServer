@@ -9,6 +9,8 @@ using System.Xml;
 
 using FubarDev.WebDavServer.Model.Headers;
 
+using Microsoft.AspNetCore.Http;
+
 namespace FubarDev.WebDavServer
 {
     /// <summary>
@@ -16,14 +18,14 @@ namespace FubarDev.WebDavServer
     /// </summary>
     public class WebDavRequestHeaders : IWebDavRequestHeaders
     {
-        private static readonly string[] _empty = new string[0];
+        private static readonly string[] _empty = Array.Empty<string>();
 
         /// <summary>
         /// Initializes a new instance of the <see cref="WebDavRequestHeaders"/> class.
         /// </summary>
         /// <param name="headers">The headers to parse.</param>
         /// <param name="context">The WebDAV request context.</param>
-        public WebDavRequestHeaders(IEnumerable<KeyValuePair<string, IEnumerable<string>>> headers, IWebDavContext context)
+        public WebDavRequestHeaders(IHeaderDictionary headers, IWebDavContext context)
         {
             Headers = headers.ToDictionary(x => x.Key, x => (IReadOnlyCollection<string>)x.Value.ToList(), StringComparer.OrdinalIgnoreCase);
             Depth = ParseHeader("Depth", args => DepthHeader.Parse(args.Single()));

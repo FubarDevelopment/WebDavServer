@@ -18,15 +18,15 @@ namespace FubarDev.WebDavServer.AspNetCore
         /// <summary>
         /// Initializes a new instance of the <see cref="LoggingWebDavResponse"/> class.
         /// </summary>
-        /// <param name="dispatcher">The dispatcher implementation for the WebDAV server.</param>
-        public LoggingWebDavResponse(IWebDavDispatcher dispatcher)
+        /// <param name="context">The current WebDAV context.</param>
+        public LoggingWebDavResponse(IWebDavContext context)
         {
-            Dispatcher = dispatcher;
+            Context = context;
             ContentType = "text/xml";
         }
 
         /// <inheritdoc />
-        public IWebDavDispatcher Dispatcher { get; }
+        public IWebDavContext Context { get; }
 
         /// <inheritdoc />
         public IDictionary<string, string[]> Headers { get; } = new Dictionary<string, string[]>();

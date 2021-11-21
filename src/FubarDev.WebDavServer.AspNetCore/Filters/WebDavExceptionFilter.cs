@@ -67,7 +67,10 @@ namespace FubarDev.WebDavServer.AspNetCore.Filters
                 context.Exception.Message);
         }
 
-        private IActionResult BuildResultForStatusCode(ExceptionContext context, WebDavStatusCode statusCode, string optionalMessge)
+        private IActionResult BuildResultForStatusCode(
+            ExceptionContext context,
+            WebDavStatusCode statusCode,
+            string optionalMessage)
         {
             switch (statusCode)
             {
@@ -86,12 +89,15 @@ namespace FubarDev.WebDavServer.AspNetCore.Filters
                         {
                             href = context.HttpContext.Request.GetEncodedUrl(),
                             ItemsElementName = new[] { ItemsChoiceType2.status, },
-                            Items = new object[] { new Status(context.HttpContext.Request.Protocol, statusCode, optionalMessge).ToString() },
+                            Items = new object[]
+                            {
+                                new Status(context.HttpContext.Request.Protocol, statusCode, optionalMessage).ToString(),
+                            },
                         },
                     },
                 });
-            var dispatcher = context.HttpContext.RequestServices.GetService<IWebDavDispatcher>();
-            return new WebDavIndirectResult(dispatcher, result, _responseLogger);
+            var webDavContext = context.HttpContext.RequestServices.GetService<IWebDavContext>();
+            return new WebDavIndirectResult(webDavContext, result, _responseLogger);
         }
     }
 }

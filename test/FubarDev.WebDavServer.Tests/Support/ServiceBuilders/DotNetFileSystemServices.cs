@@ -40,10 +40,10 @@ namespace FubarDev.WebDavServer.Tests.Support.ServiceBuilders
                 {
                     opt.Rounding = new DefaultLockTimeRounding(DefaultLockTimeRoundingMode.OneHundredMilliseconds);
                 })
-                .AddScoped<ILockManager, InMemoryLockManager>()
-                .AddScoped<IDeadPropertyFactory, DeadPropertyFactory>()
-                .AddScoped<IWebDavContext>(sp => new TestHost(sp, new Uri("http://localhost/"), (string?)null))
-                .AddScoped<IFileSystemFactory>(
+                .AddSingleton<ILockManager, InMemoryLockManager>()
+                .AddSingleton<IDeadPropertyFactory, DeadPropertyFactory>()
+                .AddSingleton<IWebDavContextAccessor, TestWebDavContextAccessor>()
+                .AddSingleton<IFileSystemFactory>(
                     sp =>
                     {
                         var tempRootPath = Path.Combine(
@@ -80,6 +80,24 @@ namespace FubarDev.WebDavServer.Tests.Support.ServiceBuilders
             foreach (var tempDbRootPath in _tempDbRootPaths.Where(Directory.Exists))
             {
                 Directory.Delete(tempDbRootPath, true);
+            }
+        }
+
+        private class TestWebDavContextAccessor : IWebDavContextAccessor, IDisposable
+        {
+            private readonly IServiceScope _serviceScope;
+
+            public TestWebDavContextAccessor(IServiceProvider serviceProvider)
+            {
+                _serviceScope = serviceProvider.CreateScope();
+                WebDavContext = new TestHost(_serviceScope.ServiceProvider, new Uri("http://localhost/"), (string?)null);
+            }
+
+            public IWebDavContext WebDavContext { get; }
+
+            public void Dispose()
+            {
+                _serviceScope.Dispose();
             }
         }
     }

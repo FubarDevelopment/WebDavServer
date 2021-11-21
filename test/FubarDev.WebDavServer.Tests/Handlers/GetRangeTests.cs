@@ -45,7 +45,8 @@ namespace FubarDev.WebDavServer.Tests.Handlers
         public async Task GetWithoutRangeTest()
         {
             var ct = CancellationToken.None;
-            var root = await FileSystem.Root;
+            var fileSystem = GetFileSystem();
+            var root = await fileSystem.Root.ConfigureAwait(false);
             var testFile = await root.CreateDocumentAsync("test1.txt", ct).ConfigureAwait(false);
             await FillAsync(testFile, int.MaxValue, ct).ConfigureAwait(false);
 
@@ -71,7 +72,8 @@ namespace FubarDev.WebDavServer.Tests.Handlers
         public async Task GetWithSingleRangeTest()
         {
             var ct = CancellationToken.None;
-            var root = await FileSystem.Root;
+            var fileSystem = GetFileSystem();
+            var root = await fileSystem.Root.ConfigureAwait(false);
             var testFile = await root.CreateDocumentAsync("test1.txt", ct).ConfigureAwait(false);
             await FillAsync(testFile, int.MaxValue, ct).ConfigureAwait(false);
 
@@ -112,7 +114,8 @@ namespace FubarDev.WebDavServer.Tests.Handlers
         public async Task GetWithTwoOverlappingRangeTest()
         {
             var ct = CancellationToken.None;
-            var root = await FileSystem.Root;
+            var fileSystem = GetFileSystem();
+            var root = await fileSystem.Root.ConfigureAwait(false);
             var testFile = await root.CreateDocumentAsync("test1.txt", ct).ConfigureAwait(false);
             await FillAsync(testFile, int.MaxValue, ct).ConfigureAwait(false);
 
@@ -153,7 +156,8 @@ namespace FubarDev.WebDavServer.Tests.Handlers
         public async Task GetWithTwoRangesTest()
         {
             var ct = CancellationToken.None;
-            var root = await FileSystem.Root;
+            var fileSystem = GetFileSystem();
+            var root = await fileSystem.Root.ConfigureAwait(false);
             var testFile = await root.CreateDocumentAsync("test1.txt", ct).ConfigureAwait(false);
             await FillAsync(testFile, int.MaxValue, ct).ConfigureAwait(false);
 
@@ -200,7 +204,8 @@ namespace FubarDev.WebDavServer.Tests.Handlers
         public async Task GetWithUnsatisfiableRangeTest()
         {
             var ct = CancellationToken.None;
-            var root = await FileSystem.Root;
+            var fileSystem = GetFileSystem();
+            var root = await fileSystem.Root.ConfigureAwait(false);
             var testFile = await root.CreateDocumentAsync("test1.txt", ct).ConfigureAwait(false);
             await FillAsync(testFile, int.MaxValue, ct).ConfigureAwait(false);
 

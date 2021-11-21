@@ -83,7 +83,10 @@ namespace FubarDev.WebDavServer
             throw new NotSupportedException();
         }
 
-        private static response CreateResponse(ActionStatus status, IEnumerable<ActionResult> result, IWebDavContext host)
+        private static response CreateResponse(
+            ActionStatus status,
+            IEnumerable<ActionResult> result,
+            IWebDavContext host)
         {
             var hrefs = result.Select(x => x.Href.OriginalString).Distinct().ToList();
             var items = new List<Tuple<ItemsChoiceType2, object>>();
@@ -106,7 +109,8 @@ namespace FubarDev.WebDavServer
             }
 
             var statusCode = GetWebDavStatusCode(status);
-            items.Add(Tuple.Create(ItemsChoiceType2.status, (object)new Status(host.RequestProtocol, statusCode).ToString()));
+            items.Add(
+                Tuple.Create(ItemsChoiceType2.status, (object)new Status(host.RequestProtocol, statusCode).ToString()));
 
             response.ItemsElementName = items.Select(x => x.Item1).ToArray();
             response.Items = items.Select(x => x.Item2).ToArray();

@@ -12,7 +12,9 @@ using System.Threading.Tasks;
 using FubarDev.WebDavServer.FileSystem;
 using FubarDev.WebDavServer.Model.Headers;
 using FubarDev.WebDavServer.Props;
+using FubarDev.WebDavServer.Props.Dead;
 
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 
 namespace FubarDev.WebDavServer.Engines
@@ -235,8 +237,9 @@ namespace FubarDev.WebDavServer.Engines
 
         private async Task<List<IUntypedWriteableProperty>> GetWriteableProperties(IEntry entry, CancellationToken cancellationToken)
         {
+            var deadPropertyFactory = _handler.Context.RequestServices.GetRequiredService<IDeadPropertyFactory>();
             var properties = await entry
-                .GetProperties(_handler.Dispatcher)
+                .GetProperties(deadPropertyFactory)
                 .OfType<IUntypedWriteableProperty>()
                 .ToListAsync(cancellationToken).ConfigureAwait(false);
             return properties;

@@ -21,16 +21,16 @@ namespace FubarDev.WebDavServer.Handlers.Impl
     /// </summary>
     public class GetHeadHandler : IGetHandler, IHeadHandler
     {
-        private readonly IWebDavContext _context;
+        private readonly IWebDavContextAccessor _contextAccessor;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="GetHeadHandler"/> class.
         /// </summary>
         /// <param name="fileSystem">The root file system.</param>
-        /// <param name="context">The WebDAV context.</param>
-        public GetHeadHandler(IFileSystem fileSystem, IWebDavContext context)
+        /// <param name="contextAccessor">The WebDAV context accessor.</param>
+        public GetHeadHandler(IFileSystem fileSystem, IWebDavContextAccessor contextAccessor)
         {
-            _context = context;
+            _contextAccessor = contextAccessor;
             FileSystem = fileSystem;
         }
 
@@ -61,9 +61,10 @@ namespace FubarDev.WebDavServer.Handlers.Impl
         {
             var selectionResult = await FileSystem.SelectAsync(path, cancellationToken).ConfigureAwait(false);
 
+            var context = _contextAccessor.WebDavContext;
             if (selectionResult.IsMissing)
             {
-                if (_context.RequestHeaders.IfNoneMatch != null)
+                if (context.RequestHeaders.IfNoneMatch != null)
                 {
                     throw new WebDavException(WebDavStatusCode.PreconditionFailed);
                 }
@@ -71,7 +72,7 @@ namespace FubarDev.WebDavServer.Handlers.Impl
                 throw new WebDavException(WebDavStatusCode.NotFound);
             }
 
-            await _context.RequestHeaders
+            await context.RequestHeaders
                 .ValidateAsync(selectionResult.TargetEntry, cancellationToken).ConfigureAwait(false);
 
             if (selectionResult.ResultType == SelectionResultType.FoundCollection)
@@ -88,7 +89,7 @@ namespace FubarDev.WebDavServer.Handlers.Impl
             Debug.Assert(selectionResult.Document != null, "selectionResult.Document != null");
 
             var doc = selectionResult.Document;
-            var rangeHeader = _context.RequestHeaders.Range;
+            var rangeHeader = context.RequestHeaders.Range;
             if (rangeHeader != null)
             {
                 if (rangeHeader.Unit != "bytes")

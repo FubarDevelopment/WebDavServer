@@ -10,11 +10,13 @@ using FubarDev.WebDavServer.AspNetCore;
 using FubarDev.WebDavServer.AspNetCore.Logging;
 using FubarDev.WebDavServer.FileSystem;
 using FubarDev.WebDavServer.FileSystem.DotNet;
+using FubarDev.WebDavServer.FileSystem.InMemory;
 using FubarDev.WebDavServer.FileSystem.SQLite;
 using FubarDev.WebDavServer.Locking;
 using FubarDev.WebDavServer.Locking.InMemory;
 using FubarDev.WebDavServer.Locking.SQLite;
 using FubarDev.WebDavServer.Props.Store;
+using FubarDev.WebDavServer.Props.Store.InMemory;
 using FubarDev.WebDavServer.Props.Store.SQLite;
 using FubarDev.WebDavServer.Props.Store.TextFile;
 using FubarDev.WebDavServer.Sample.AspNetCore.Middlewares;
@@ -40,12 +42,14 @@ namespace FubarDev.WebDavServer.Sample.AspNetCore
         {
             DotNet,
             SQLite,
+            InMemory,
         }
 
         private enum PropertyStoreType
         {
             TextFile,
             SQLite,
+            InMemory,
         }
 
         private enum LockManagerType
@@ -110,13 +114,17 @@ namespace FubarDev.WebDavServer.Sample.AspNetCore
                                 opt.RootPath = Path.Combine(Path.GetTempPath(), "webdav");
                                 opt.AnonymousUserName = "anonymous";
                             })
-                        .AddScoped<IFileSystemFactory, DotNetFileSystemFactory>();
+                        .AddSingleton<IFileSystemFactory, DotNetFileSystemFactory>();
                     break;
                 case FileSystemType.SQLite:
                     services
                         .Configure<SQLiteFileSystemOptions>(
                             opt => opt.RootPath = Path.Combine(Path.GetTempPath(), "webdav"))
-                        .AddScoped<IFileSystemFactory, SQLiteFileSystemFactory>();
+                        .AddSingleton<IFileSystemFactory, SQLiteFileSystemFactory>();
+                    break;
+                case FileSystemType.InMemory:
+                    services
+                        .AddSingleton<IFileSystemFactory, InMemoryFileSystemFactory>();
                     break;
                 default:
                     throw new NotSupportedException();
@@ -126,12 +134,16 @@ namespace FubarDev.WebDavServer.Sample.AspNetCore
             {
                 case PropertyStoreType.TextFile:
                     services
-                        .AddScoped<IPropertyStoreFactory, TextFilePropertyStoreFactory>();
+                        .AddSingleton<IPropertyStoreFactory, TextFilePropertyStoreFactory>();
                     break;
                 case PropertyStoreType.SQLite:
                     services
-                        .AddScoped<IPropertyStoreFactory, SQLitePropertyStoreFactory>();
+                        .AddSingleton<IPropertyStoreFactory, SQLitePropertyStoreFactory>();
                     services.Configure<SQLitePropertyStoreOptions>(opt => opt.EstimatedCost = 0);
+                    break;
+                case PropertyStoreType.InMemory:
+                    services
+                        .AddSingleton<IPropertyStoreFactory, InMemoryPropertyStoreFactory>();
                     break;
                 default:
                     throw new NotSupportedException();

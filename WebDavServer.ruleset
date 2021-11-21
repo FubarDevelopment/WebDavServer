@@ -8,6 +8,8 @@
   </Rules>
   <Rules AnalyzerId="StyleCop.Analyzers" RuleNamespace="StyleCop.Analyzers">
     <Rule Id="SA0001" Action="None" />
+    <!-- Required, because StyleCop.Analyzers cannot handle the target-typed new(). -->
+    <Rule Id="SA1000" Action="None" />
     <!-- Required, because StyleCop.Analyzers cannot handle the "!" damn-it (null-forgiving) operator for nullable reference types -->
     <Rule Id="SA1003" Action="None" />
     <Rule Id="SA1117" Action="None" />

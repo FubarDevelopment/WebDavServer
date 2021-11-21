@@ -17,19 +17,19 @@ namespace FubarDev.WebDavServer.Tests.Support
     {
         public static Task<IReadOnlyCollection<XElement>> GetPropertyElementsAsync(
             this IEntry entry,
-            IWebDavDispatcher dispatcher,
+            IDeadPropertyFactory deadPropertyFactory,
             CancellationToken ct)
         {
-            return GetPropertyElementsAsync(entry, dispatcher, false, ct);
+            return GetPropertyElementsAsync(entry, deadPropertyFactory, false, ct);
         }
 
         public static async Task<IReadOnlyCollection<XElement>> GetPropertyElementsAsync(
             this IEntry entry,
-            IWebDavDispatcher dispatcher,
+            IDeadPropertyFactory deadPropertyFactory,
             bool skipEtag,
             CancellationToken ct)
         {
-            var result = await entry.GetProperties(dispatcher)
+            var result = await entry.GetProperties(deadPropertyFactory)
                 .Where(x => !skipEtag || x.Name != GetETagProperty.PropertyName)
                 .SelectAwait(async x => await x.GetXmlValueAsync(ct).ConfigureAwait(false))
                 .ToListAsync(ct)

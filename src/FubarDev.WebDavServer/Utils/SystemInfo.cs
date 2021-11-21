@@ -43,9 +43,7 @@ namespace FubarDev.WebDavServer.Utils
             var rootPathInfo = GetHomePath();
             var userName = !principal.Identity.IsAnonymous()
                 ? principal.Identity.Name
-                : (rootPathInfo.IsProbablyUnix
-                    ? (anonymousUserName ?? "anonymous")
-                    : (anonymousUserName ?? "Public"));
+                : GetAnonymousUserName(rootPathInfo.IsProbablyUnix);
             var rootPath = Path.Combine(homePath ?? rootPathInfo.RootPath, userName);
             return rootPath;
         }
@@ -60,6 +58,18 @@ namespace FubarDev.WebDavServer.Utils
             var home = homeEnvVars.Select(x => Tuple.Create(x, Environment.GetEnvironmentVariable(x))).First(x => !string.IsNullOrEmpty(x.Item2));
             var rootDir = Path.GetDirectoryName(home.Item2);
             return new HomePathInfo(rootDir!, home.Item1 == "HOME");
+        }
+
+        /// <summary>
+        /// Gets the default user name for the "anonymous" user.
+        /// </summary>
+        /// <param name="isProbablyUnix">Indication whether the platform is probably unix-ish.</param>
+        /// <returns>Might return "anonymous" or "Public", depending on the platform.</returns>
+        public static string GetAnonymousUserName(bool? isProbablyUnix = null)
+        {
+            return isProbablyUnix ?? GetHomePath().IsProbablyUnix
+                ? "anonymous"
+                : "Public";
         }
 
         /// <summary>

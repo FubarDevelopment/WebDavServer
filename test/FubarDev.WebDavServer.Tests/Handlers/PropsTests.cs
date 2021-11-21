@@ -14,8 +14,6 @@ using FubarDev.WebDavServer.Props.Dead;
 using FubarDev.WebDavServer.Props.Live;
 using FubarDev.WebDavServer.Tests.Support;
 
-using Microsoft.Extensions.DependencyInjection;
-
 using Xunit;
 
 namespace FubarDev.WebDavServer.Tests.Handlers
@@ -28,22 +26,20 @@ namespace FubarDev.WebDavServer.Tests.Handlers
             : base(RecursiveProcessingMode.PreferFastest)
         {
             _propsToIgnoreDocument = new[] { LockDiscoveryProperty.PropertyName, DisplayNameProperty.PropertyName, GetETagProperty.PropertyName };
-            Dispatcher = ServiceProvider.GetRequiredService<IWebDavDispatcher>();
         }
-
-        private IWebDavDispatcher Dispatcher { get; }
 
         [Fact]
         public async Task SetNewProp()
         {
             var ct = CancellationToken.None;
-            var root = await FileSystem.Root.ConfigureAwait(false);
+            var fileSystem = GetFileSystem();
+            var root = await fileSystem.Root.ConfigureAwait(false);
             const string resourceName = "text1.txt";
 
             var doc1 = await root.CreateDocumentAsync(resourceName, ct).ConfigureAwait(false);
-            await doc1.FillWithAsync("Dokument 1", ct).ConfigureAwait(false);
+            await doc1.FillWithAsync("Document 1", ct).ConfigureAwait(false);
 
-            var propsBefore = await doc1.GetPropertyElementsAsync(Dispatcher, ct).ConfigureAwait(false);
+            var propsBefore = await doc1.GetPropertyElementsAsync(DeadPropertyFactory, ct).ConfigureAwait(false);
 
             var requestUri = new Uri(Client.BaseAddress, new Uri(resourceName, UriKind.Relative));
             var propertyValue = "<testProp>someValue</testProp>";
@@ -73,7 +69,7 @@ namespace FubarDev.WebDavServer.Tests.Handlers
 
             var child = await root.GetChildAsync(resourceName, ct).ConfigureAwait(false);
             var doc2 = Assert.IsType<InMemoryFile>(child);
-            var props2 = await doc2.GetPropertyElementsAsync(Dispatcher, ct).ConfigureAwait(false);
+            var props2 = await doc2.GetPropertyElementsAsync(DeadPropertyFactory, ct).ConfigureAwait(false);
             var changes = PropertyComparer.FindChanges(propsBefore, props2, _propsToIgnoreDocument);
             var addedProperty = Assert.Single(changes);
 

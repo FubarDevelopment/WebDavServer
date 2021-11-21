@@ -1,10 +1,11 @@
-﻿<Project Sdk="Microsoft.NET.Sdk" ToolsVersion="15.0">
+﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <Description>A .NET WebDAV server</Description>
     <TargetFrameworks>netstandard2.0;net461;netstandard2.1</TargetFrameworks>
   </PropertyGroup>
   <Import Project="../../PackageLibrary.props" />
   <ItemGroup>
+    <PackageReference Include="FlakeyBit.DigestAuthentication.AspNetCore" Version="2021.8.15.2" />
     <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="3.1.0" />
     <PackageReference Include="Microsoft.Extensions.Options" Version="3.1.0" />
     <PackageReference Include="System.Buffers" Version="4.5.0" />

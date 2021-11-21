@@ -53,7 +53,7 @@ namespace FubarDev.WebDavServer.Handlers.Impl
             {
                 IImmutableDictionary<string, IEnumerable<string>> headers = ImmutableDictionary<string, IEnumerable<string>>.Empty;
 
-                foreach (var webDavClass in response.Dispatcher.SupportedClasses)
+                foreach (var webDavClass in response.Context.Dispatcher.SupportedClasses)
                 {
                     headers = AddHeaderValues(headers, webDavClass.OptionsResponseHeaders);
                 }

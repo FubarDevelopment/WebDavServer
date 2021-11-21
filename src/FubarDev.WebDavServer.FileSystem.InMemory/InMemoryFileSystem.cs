@@ -20,7 +20,7 @@ namespace FubarDev.WebDavServer.FileSystem.InMemory
     {
         private readonly IPathTraversalEngine _pathTraversalEngine;
 
-        private readonly Dictionary<Uri, IFileSystem> _mountPoints = new Dictionary<Uri, IFileSystem>();
+        private readonly Dictionary<Uri, IFileSystem> _mountPoints = new();
 
         /// <summary>
         /// Initializes a new instance of the <see cref="InMemoryFileSystem"/> class.

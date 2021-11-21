@@ -4,25 +4,13 @@
 
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
-using System.Diagnostics.CodeAnalysis;
 using System.IO;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
-using System.Xml.Linq;
 
-using FubarDev.WebDavServer.FileSystem;
 using FubarDev.WebDavServer.Handlers;
 using FubarDev.WebDavServer.Model;
-using FubarDev.WebDavServer.Model.Headers;
-using FubarDev.WebDavServer.Props;
-using FubarDev.WebDavServer.Props.Converters;
-using FubarDev.WebDavServer.Props.Dead;
-using FubarDev.WebDavServer.Props.Live;
-using FubarDev.WebDavServer.Props.Store;
-
-using Microsoft.Extensions.Options;
 
 namespace FubarDev.WebDavServer.Dispatchers
 {
@@ -31,9 +19,7 @@ namespace FubarDev.WebDavServer.Dispatchers
     /// </summary>
     public class WebDavDispatcherClass1 : IWebDavClass1
     {
-        private readonly Lazy<IReadOnlyDictionary<XName, CreateDeadPropertyDelegate>> _defaultCreationMap;
-        private readonly IDeadPropertyFactory _deadPropertyFactory;
-        private readonly IMimeTypeDetector _mimeTypeDetector;
+        private readonly IWebDavContextAccessor _contextAccessor;
         private readonly IPropFindHandler? _propFindHandler;
         private readonly IPropPatchHandler? _propPatchHandler;
         private readonly IMkColHandler? _mkColHandler;
@@ -49,19 +35,12 @@ namespace FubarDev.WebDavServer.Dispatchers
         /// Initializes a new instance of the <see cref="WebDavDispatcherClass1"/> class.
         /// </summary>
         /// <param name="class1Handlers">The WebDAV class 1 handlers.</param>
-        /// <param name="context">The WebDAV context.</param>
-        /// <param name="deadPropertyFactory">The factory to create dead properties.</param>
-        /// <param name="mimeTypeDetector">The mime type detector for the <c>getmimetype</c> property.</param>
-        /// <param name="options">The options for the WebDAV class 1 implementation.</param>
+        /// <param name="contextAccessor">The WebDAV context accessor.</param>
         public WebDavDispatcherClass1(
             IEnumerable<IClass1Handler> class1Handlers,
-            IWebDavContext context,
-            IDeadPropertyFactory deadPropertyFactory,
-            IMimeTypeDetector mimeTypeDetector,
-            IOptions<WebDavDispatcherClass1Options> options)
+            IWebDavContextAccessor contextAccessor)
         {
-            _deadPropertyFactory = deadPropertyFactory;
-            _mimeTypeDetector = mimeTypeDetector;
+            _contextAccessor = contextAccessor;
             var httpMethods = new HashSet<string>();
 
             foreach (var class1Handler in class1Handlers)
@@ -140,7 +119,6 @@ namespace FubarDev.WebDavServer.Dispatchers
             }
 
             HttpMethods = httpMethods.ToList();
-            WebDavContext = context;
 
             OptionsResponseHeaders = new Dictionary<string, IEnumerable<string>>()
             {
@@ -151,17 +129,13 @@ namespace FubarDev.WebDavServer.Dispatchers
             {
                 ["DAV"] = new[] { "1" },
             };
-
-            _defaultCreationMap = new Lazy<IReadOnlyDictionary<XName, CreateDeadPropertyDelegate>>(() => CreateDeadPropertiesMap(options.Value));
         }
-
-        private delegate IDeadProperty CreateDeadPropertyDelegate(IPropertyStore store, IEntry entry, XName name);
 
         /// <inheritdoc />
         public IEnumerable<string> HttpMethods { get; }
 
         /// <inheritdoc />
-        public IWebDavContext WebDavContext { get; }
+        public IWebDavContext WebDavContext => _contextAccessor.WebDavContext;
 
         /// <inheritdoc />
         public IReadOnlyDictionary<string, IEnumerable<string>> OptionsResponseHeaders { get; }
@@ -277,73 +251,6 @@ namespace FubarDev.WebDavServer.Dispatchers
             }
 
             return _moveHandler.MoveAsync(path, destination, cancellationToken);
-        }
-
-        /// <inheritdoc />
-        public IEnumerable<IUntypedReadableProperty> GetProperties(IEntry entry)
-        {
-            var propStore = entry.FileSystem.PropertyStore;
-
-            yield return entry.GetResourceTypeProperty();
-
-            foreach (var property in entry.GetLiveProperties())
-            {
-                yield return property;
-            }
-
-            if (propStore != null)
-            {
-                yield return _deadPropertyFactory.Create(propStore, entry, DisplayNameProperty.PropertyName);
-            }
-
-            if (entry is IDocument doc)
-            {
-                yield return new ContentLengthProperty(doc.Length);
-                if (propStore != null)
-                {
-                    yield return _deadPropertyFactory
-                        .Create(propStore, entry, GetContentLanguageProperty.PropertyName);
-                    yield return _deadPropertyFactory
-                        .Create(propStore, entry, GetContentTypeProperty.PropertyName);
-                }
-            }
-            else
-            {
-                Debug.Assert(entry is ICollection, "entry is ICollection");
-                yield return new ContentLengthProperty(0L);
-                if (propStore != null)
-                {
-                    var contentType = _deadPropertyFactory.Create(propStore, entry, GetContentTypeProperty.PropertyName);
-                    contentType.Init(new StringConverter().ToElement(GetContentTypeProperty.PropertyName, Utils.MimeTypesMap.FolderContentType));
-                    yield return contentType;
-                }
-            }
-        }
-
-        /// <inheritdoc />
-        public bool TryCreateDeadProperty(IPropertyStore store, IEntry entry, XName name, [NotNullWhen(true)] out IDeadProperty? deadProperty)
-        {
-            if (!_defaultCreationMap.Value.TryGetValue(name, out var createDeadProp))
-            {
-                deadProperty = null;
-                return false;
-            }
-
-            deadProperty = createDeadProp(store, entry, name);
-            return true;
-        }
-
-        private IReadOnlyDictionary<XName, CreateDeadPropertyDelegate> CreateDeadPropertiesMap(WebDavDispatcherClass1Options options)
-        {
-            var result = new Dictionary<XName, CreateDeadPropertyDelegate>()
-            {
-                [EntityTag.PropertyName] = (store, entry, name) => new GetETagProperty(store, entry),
-                [DisplayNameProperty.PropertyName] = (store, entry, name) => new DisplayNameProperty(entry, store, options.HideExtensionForDisplayName),
-                [GetContentLanguageProperty.PropertyName] = (store, entry, name) => new GetContentLanguageProperty(entry, store),
-                [GetContentTypeProperty.PropertyName] = (store, entry, name) => new GetContentTypeProperty(entry, store, _mimeTypeDetector),
-            };
-
-            return result;
         }
     }
 }

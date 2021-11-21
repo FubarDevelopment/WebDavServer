@@ -14,6 +14,8 @@ using FubarDev.WebDavServer.Props;
 using FubarDev.WebDavServer.Props.Dead;
 using FubarDev.WebDavServer.Props.Live;
 
+using Microsoft.Extensions.DependencyInjection;
+
 namespace FubarDev.WebDavServer.Engines.Local
 {
     /// <summary>
@@ -66,8 +68,7 @@ namespace FubarDev.WebDavServer.Engines.Local
             var deadProperties = new List<IDeadProperty>();
             foreach (var property in properties)
             {
-                var liveProp = property as ILiveProperty;
-                if (liveProp != null)
+                if (property is ILiveProperty liveProp)
                 {
                     liveProperties.Add(liveProp);
                 }
@@ -122,10 +123,11 @@ namespace FubarDev.WebDavServer.Engines.Local
 
             if (propNameToValue.Count == 0)
             {
-                return new XName[0];
+                return Array.Empty<XName>();
             }
 
-            var props = _entry.GetProperties(TargetActions.Dispatcher, returnInvalidProperties: true);
+            var deadPropertyFactory = TargetActions.Context.RequestServices.GetRequiredService<IDeadPropertyFactory>();
+            var props = _entry.GetProperties(deadPropertyFactory, returnInvalidProperties: true);
             await foreach (var prop in props.ConfigureAwait(false))
             {
                 var key = prop.Name;
@@ -143,7 +145,7 @@ namespace FubarDev.WebDavServer.Engines.Local
                 return unsetPropNames;
             }
 
-            return new XName[0];
+            return Array.Empty<XName>();
         }
     }
 }

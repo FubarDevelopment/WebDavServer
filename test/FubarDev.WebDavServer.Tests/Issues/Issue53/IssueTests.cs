@@ -31,7 +31,8 @@ namespace FubarDev.WebDavServer.Tests.Issues.Issue53
 
         public async Task InitializeAsync()
         {
-            var root = await FileSystem.Root;
+            var fileSystem = GetFileSystem();
+            var root = await fileSystem.Root;
             await root.CreateCollectionAsync(NameTest1, CancellationToken.None);
         }
 
@@ -49,7 +50,7 @@ namespace FubarDev.WebDavServer.Tests.Issues.Issue53
                 .ParseMultistatusResponseContentAsync(propFindResponse.Content).ConfigureAwait(false);
             Assert.Collection(
                 multiStatus.Response,
-                response => { Assert.Equal("/", response.Href); },
+                response => Assert.Equal("/", response.Href),
                 response => { Assert.Equal(Uri.EscapeUriString($"/{NameTest1}/"), response.Href); });
         }
 

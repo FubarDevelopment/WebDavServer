@@ -4,20 +4,13 @@
 
 using System;
 using System.Collections.Generic;
-using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
-using System.Xml.Linq;
 
-using FubarDev.WebDavServer.FileSystem;
 using FubarDev.WebDavServer.Handlers;
 using FubarDev.WebDavServer.Model;
 using FubarDev.WebDavServer.Model.Headers;
-using FubarDev.WebDavServer.Props;
-using FubarDev.WebDavServer.Props.Dead;
-using FubarDev.WebDavServer.Props.Live;
-using FubarDev.WebDavServer.Props.Store;
 
 namespace FubarDev.WebDavServer.Dispatchers
 {
@@ -26,6 +19,7 @@ namespace FubarDev.WebDavServer.Dispatchers
     /// </summary>
     public class WebDavDispatcherClass2 : IWebDavClass2
     {
+        private readonly IWebDavContextAccessor _contextAccessor;
         private readonly ILockHandler? _lockHandler;
         private readonly IUnlockHandler? _unlockHandler;
 
@@ -33,9 +27,12 @@ namespace FubarDev.WebDavServer.Dispatchers
         /// Initializes a new instance of the <see cref="WebDavDispatcherClass2"/> class.
         /// </summary>
         /// <param name="handlers">The WebDAV class 2 handlers.</param>
-        /// <param name="context">The WebDAV context.</param>
-        public WebDavDispatcherClass2(IEnumerable<IClass2Handler> handlers, IWebDavContext context)
+        /// <param name="contextAccessor">The WebDAV context accessor.</param>
+        public WebDavDispatcherClass2(
+            IEnumerable<IClass2Handler> handlers,
+            IWebDavContextAccessor contextAccessor)
         {
+            _contextAccessor = contextAccessor;
             var httpMethods = new HashSet<string>();
 
             foreach (var handler in handlers)
@@ -66,7 +63,6 @@ namespace FubarDev.WebDavServer.Dispatchers
             }
 
             HttpMethods = httpMethods.ToList();
-            WebDavContext = context;
 
             OptionsResponseHeaders = new Dictionary<string, IEnumerable<string>>()
             {
@@ -83,7 +79,7 @@ namespace FubarDev.WebDavServer.Dispatchers
         public IEnumerable<string> HttpMethods { get; }
 
         /// <inheritdoc />
-        public IWebDavContext WebDavContext { get; }
+        public IWebDavContext WebDavContext => _contextAccessor.WebDavContext;
 
         /// <inheritdoc />
         public IReadOnlyDictionary<string, IEnumerable<string>> OptionsResponseHeaders { get; }
@@ -122,20 +118,6 @@ namespace FubarDev.WebDavServer.Dispatchers
             }
 
             return _unlockHandler.UnlockAsync(path, stateToken, cancellationToken);
-        }
-
-        /// <inheritdoc />
-        public IEnumerable<IUntypedReadableProperty> GetProperties(IEntry entry)
-        {
-            yield return new LockDiscoveryProperty(entry);
-            yield return new SupportedLockProperty(entry);
-        }
-
-        /// <inheritdoc />
-        public bool TryCreateDeadProperty(IPropertyStore store, IEntry entry, XName name, [NotNullWhen(true)] out IDeadProperty? deadProperty)
-        {
-            deadProperty = null;
-            return false;
         }
     }
 }

@@ -19,10 +19,10 @@ namespace FubarDev.WebDavServer.Engines.Remote
         /// <summary>
         /// Initializes a new instance of the <see cref="CopyRemoteHttpClientTargetActions"/> class.
         /// </summary>
-        /// <param name="dispatcher">The WebDAV dispatcher.</param>
+        /// <param name="context">The current WebDAV context.</param>
         /// <param name="httpClient">The <see cref="HttpClient"/> to use.</param>
-        public CopyRemoteHttpClientTargetActions(IWebDavDispatcher dispatcher, HttpClient httpClient)
-            : base(dispatcher, httpClient)
+        public CopyRemoteHttpClientTargetActions(IWebDavContext context, HttpClient httpClient)
+            : base(context, httpClient)
         {
         }
 

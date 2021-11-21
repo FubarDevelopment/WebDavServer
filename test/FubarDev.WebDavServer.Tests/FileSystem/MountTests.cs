@@ -28,7 +28,13 @@ namespace FubarDev.WebDavServer.Tests.FileSystem
     {
         public MountTests(FileSystemServices fsServices)
         {
-            FileSystem = fsServices.ServiceProvider.GetRequiredService<IFileSystem>();
+            var fsFactory = fsServices.ServiceProvider.GetRequiredService<IFileSystemFactory>();
+            var principal = new GenericPrincipal(
+                new GenericIdentity(Guid.NewGuid().ToString()),
+                Array.Empty<string>());
+            FileSystem = fsFactory.CreateFileSystem(
+                null,
+                principal);
         }
 
         public IFileSystem FileSystem { get; }

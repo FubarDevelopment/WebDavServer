@@ -18,6 +18,11 @@ namespace FubarDev.WebDavServer
     public interface IWebDavContext
     {
         /// <summary>
+        /// Gets the request services.
+        /// </summary>
+        IServiceProvider RequestServices { get; }
+
+        /// <summary>
         /// Gets the request protocol (<c>http</c> or <c>https</c>).
         /// </summary>
         string RequestProtocol { get; }

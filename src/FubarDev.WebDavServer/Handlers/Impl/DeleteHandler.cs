@@ -24,7 +24,7 @@ namespace FubarDev.WebDavServer.Handlers.Impl
     {
         private readonly IFileSystem _rootFileSystem;
 
-        private readonly IWebDavContext _context;
+        private readonly IWebDavContextAccessor _contextAccessor;
 
         private readonly IImplicitLockFactory _implicitLockFactory;
 
@@ -32,15 +32,15 @@ namespace FubarDev.WebDavServer.Handlers.Impl
         /// Initializes a new instance of the <see cref="DeleteHandler"/> class.
         /// </summary>
         /// <param name="rootFileSystem">The root file system.</param>
-        /// <param name="context">The current WebDAV context.</param>
+        /// <param name="contextAccessor">The WebDAV context accessor.</param>
         /// <param name="implicitLockFactory">A factory to create implicit locks.</param>
         public DeleteHandler(
             IFileSystem rootFileSystem,
-            IWebDavContext context,
+            IWebDavContextAccessor contextAccessor,
             IImplicitLockFactory implicitLockFactory)
         {
             _rootFileSystem = rootFileSystem;
-            _context = context;
+            _contextAccessor = contextAccessor;
             _implicitLockFactory = implicitLockFactory;
         }
 
@@ -50,10 +50,11 @@ namespace FubarDev.WebDavServer.Handlers.Impl
         /// <inheritdoc />
         public async Task<IWebDavResult> DeleteAsync(string path, CancellationToken cancellationToken)
         {
+            var context = _contextAccessor.WebDavContext;
             var selectionResult = await _rootFileSystem.SelectAsync(path, cancellationToken).ConfigureAwait(false);
             if (selectionResult.IsMissing)
             {
-                if (_context.RequestHeaders.IfNoneMatch != null)
+                if (context.RequestHeaders.IfNoneMatch != null)
                 {
                     throw new WebDavException(WebDavStatusCode.PreconditionFailed);
                 }
@@ -64,14 +65,14 @@ namespace FubarDev.WebDavServer.Handlers.Impl
             var targetEntry = selectionResult.TargetEntry;
             Debug.Assert(targetEntry != null, "targetEntry != null");
 
-            await _context.RequestHeaders
+            await context.RequestHeaders
                 .ValidateAsync(selectionResult.TargetEntry, cancellationToken).ConfigureAwait(false);
 
             var lockRequirements = new Lock(
                 new Uri(path, UriKind.Relative),
-                _context.PublicRelativeRequestUrl,
+                context.PublicRelativeRequestUrl,
                 selectionResult.ResultType == SelectionResultType.FoundCollection,
-                new XElement(WebDavXml.Dav + "owner", _context.User.Identity.Name),
+                new XElement(WebDavXml.Dav + "owner", context.User.Identity.Name),
                 LockAccessType.Write,
                 LockShareMode.Exclusive,
                 TimeoutHeader.Infinite);
@@ -107,12 +108,12 @@ namespace FubarDev.WebDavServer.Handlers.Impl
                     {
                         new response()
                         {
-                            href = _context.PublicControllerUrl
+                            href = context.PublicControllerUrl
                                 .Append((deleteResult.FailedEntry ?? targetEntry).Path).OriginalString,
                             ItemsElementName = new[] { ItemsChoiceType2.status, },
                             Items = new object[]
                             {
-                                new Status(_context.RequestProtocol, deleteResult.StatusCode).ToString(),
+                                new Status(context.RequestProtocol, deleteResult.StatusCode).ToString(),
                             },
                         },
                     },

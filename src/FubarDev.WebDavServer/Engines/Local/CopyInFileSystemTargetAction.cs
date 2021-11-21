@@ -18,14 +18,14 @@ namespace FubarDev.WebDavServer.Engines.Local
         /// <summary>
         /// Initializes a new instance of the <see cref="CopyInFileSystemTargetAction"/> class.
         /// </summary>
-        /// <param name="dispatcher">The WebDAV dispatcher.</param>
-        public CopyInFileSystemTargetAction(IWebDavDispatcher dispatcher)
+        /// <param name="context">The current WebDAV context.</param>
+        public CopyInFileSystemTargetAction(IWebDavContext context)
         {
-            Dispatcher = dispatcher;
+            Context = context;
         }
 
         /// <inheritdoc />
-        public IWebDavDispatcher Dispatcher { get; }
+        public IWebDavContext Context { get; }
 
         /// <inheritdoc />
         public RecursiveTargetBehaviour ExistingTargetBehaviour { get; } = RecursiveTargetBehaviour.Overwrite;

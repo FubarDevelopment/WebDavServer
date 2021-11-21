@@ -41,16 +41,16 @@ namespace FubarDev.WebDavServer.Engines.Remote
         /// <summary>
         /// Initializes a new instance of the <see cref="RemoteHttpClientTargetActions"/> class.
         /// </summary>
-        /// <param name="dispatcher">The WebDAV dispatcher.</param>
+        /// <param name="context">The current WebDAV context.</param>
         /// <param name="httpClient">The <see cref="HttpClient"/> to use for the communication with the remote server.</param>
-        protected RemoteHttpClientTargetActions(IWebDavDispatcher dispatcher, HttpClient httpClient)
+        protected RemoteHttpClientTargetActions(IWebDavContext context, HttpClient httpClient)
         {
-            Dispatcher = dispatcher;
+            Context = context;
             Client = httpClient;
         }
 
         /// <inheritdoc />
-        public IWebDavDispatcher Dispatcher { get; }
+        public IWebDavContext Context { get; }
 
         /// <inheritdoc />
         public RecursiveTargetBehaviour ExistingTargetBehaviour { get; } = RecursiveTargetBehaviour.DeleteTarget;

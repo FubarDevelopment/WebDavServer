@@ -15,6 +15,17 @@ the following points:
 
 A documentation is available via [GitHub Pages](https://fubardevelopment.github.io/WebDavServer/).
 
+# Build instructions
+
+You need the following packages:
+
+- .NET Core SDK 3.1
+- .NET SDK 6.0
+
+The reason why both are required is that
+the WebDAV server is built with .NET 6.0
+while targeting .NET Core 3.1.
+
 # Support the development
 
 [![Patreon](https://img.shields.io/endpoint.svg?url=https:%2F%2Fshieldsio-patreon.herokuapp.com%2FFubarDevelopment&style=for-the-badge)](https://www.patreon.com/FubarDevelopment)

@@ -18,7 +18,11 @@ namespace FubarDev.WebDavServer.Props
     public class DefaultEntryPropertyInitializer : IEntryPropertyInitializer
     {
         /// <inheritdoc />
-        public virtual async Task CreatePropertiesAsync(IDocument document, IPropertyStore propertyStore, IWebDavContext context, CancellationToken cancellationToken)
+        public virtual async Task CreatePropertiesAsync(
+            IDocument document,
+            IPropertyStore propertyStore,
+            IWebDavContext context,
+            CancellationToken cancellationToken)
         {
             if (context.RequestHeaders.Headers.TryGetValue("Content-Type", out var contentTypeValues))
             {
@@ -34,7 +38,11 @@ namespace FubarDev.WebDavServer.Props
         }
 
         /// <inheritdoc />
-        public virtual Task CreatePropertiesAsync(ICollection collection, IPropertyStore propertyStore, IWebDavContext context, CancellationToken cancellationToken)
+        public virtual Task CreatePropertiesAsync(
+            ICollection collection,
+            IPropertyStore propertyStore,
+            IWebDavContext context,
+            CancellationToken cancellationToken)
         {
             return CreateGenericPropertiesAsync(collection, propertyStore, context, cancellationToken);
         }

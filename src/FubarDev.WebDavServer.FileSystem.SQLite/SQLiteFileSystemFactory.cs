@@ -53,11 +53,8 @@ namespace FubarDev.WebDavServer.FileSystem.SQLite
         {
             if (File.Exists(dbFileName))
             {
-                using (var conn = new sqlitenet.SQLiteConnection(dbFileName))
-                {
-                    CreateDatabaseTables(conn);
-                }
-
+                using var conn = new sqlitenet.SQLiteConnection(dbFileName);
+                CreateDatabaseTables(conn);
                 return;
             }
 
@@ -78,10 +75,8 @@ namespace FubarDev.WebDavServer.FileSystem.SQLite
             var dbFileFolder = Path.GetDirectoryName(dbFileName);
             Debug.Assert(dbFileFolder != null, "dbFileFolder != null");
             Directory.CreateDirectory(dbFileFolder);
-            using (var conn = new sqlitenet.SQLiteConnection(dbFileName))
-            {
-                CreateDatabaseTables(conn);
-            }
+            using var conn = new sqlitenet.SQLiteConnection(dbFileName);
+            CreateDatabaseTables(conn);
         }
 
         /// <inheritdoc />
@@ -92,9 +87,8 @@ namespace FubarDev.WebDavServer.FileSystem.SQLite
                 homePath: _options.RootPath,
                 anonymousUserName: "anonymous");
 
-            var dbDir = Path.GetDirectoryName(userHomePath);
-            Debug.Assert(dbDir != null, "dbDir != null");
-            var dbName = Path.GetFileName(userHomePath) + ".db";
+            var dbDir = Path.Combine(userHomePath, ".webdav");
+            var dbName = "filesystem.db";
             var dbFileName = Path.Combine(dbDir, dbName);
 
             Directory.CreateDirectory(dbDir);

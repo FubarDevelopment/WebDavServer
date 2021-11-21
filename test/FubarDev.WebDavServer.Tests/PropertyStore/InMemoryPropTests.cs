@@ -4,6 +4,7 @@
 
 using System;
 using System.Linq;
+using System.Security.Principal;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -18,23 +19,21 @@ using Xunit;
 
 namespace FubarDev.WebDavServer.Tests.PropertyStore
 {
-    public class InMemoryPropTests : IClassFixture<InMemoryFileSystemServices>, IDisposable
+    public class InMemoryPropTests : IClassFixture<InMemoryFileSystemServices>
     {
-        private readonly IServiceScope _serviceScope;
-
         public InMemoryPropTests(InMemoryFileSystemServices fsServices)
         {
-            var serviceScopeFactory = fsServices.ServiceProvider.GetRequiredService<IServiceScopeFactory>();
-            _serviceScope = serviceScopeFactory.CreateScope();
-            FileSystem = _serviceScope.ServiceProvider.GetRequiredService<IFileSystem>();
-            Dispatcher = _serviceScope.ServiceProvider.GetRequiredService<IWebDavDispatcher>();
+            var fileSystemFactory = fsServices.ServiceProvider.GetRequiredService<IFileSystemFactory>();
+            var principal = new GenericPrincipal(
+                new GenericIdentity(Guid.NewGuid().ToString()),
+                Array.Empty<string>());
+            FileSystem = fileSystemFactory.CreateFileSystem(null, principal);
+            DeadPropertyFactory = fsServices.ServiceProvider.GetRequiredService<IDeadPropertyFactory>();
         }
 
-        public IWebDavDispatcher Dispatcher { get; }
+        private IFileSystem FileSystem { get; }
 
-        public IFileSystem FileSystem { get; }
-
-        public IPropertyStore PropertyStore
+        private IPropertyStore PropertyStore
         {
             get
             {
@@ -42,6 +41,8 @@ namespace FubarDev.WebDavServer.Tests.PropertyStore
                 return FileSystem.PropertyStore!;
             }
         }
+
+        private IDeadPropertyFactory DeadPropertyFactory { get; }
 
         [Fact]
         public async Task Empty()
@@ -87,11 +88,11 @@ namespace FubarDev.WebDavServer.Tests.PropertyStore
             var doc = await root.CreateDocumentAsync("test1.txt", ct).ConfigureAwait(false);
             var displayNameProperty = await GetDisplayNamePropertyAsync(doc, ct).ConfigureAwait(false);
 
-            await displayNameProperty.SetValueAsync("test1-Dokument", ct).ConfigureAwait(false);
-            Assert.Equal("test1-Dokument", await displayNameProperty.GetValueAsync(ct).ConfigureAwait(false));
+            await displayNameProperty.SetValueAsync("test1-Document", ct).ConfigureAwait(false);
+            Assert.Equal("test1-Document", await displayNameProperty.GetValueAsync(ct).ConfigureAwait(false));
 
             displayNameProperty = await GetDisplayNamePropertyAsync(doc, ct).ConfigureAwait(false);
-            Assert.Equal("test1-Dokument", await displayNameProperty.GetValueAsync(ct).ConfigureAwait(false));
+            Assert.Equal("test1-Document", await displayNameProperty.GetValueAsync(ct).ConfigureAwait(false));
         }
 
         [Theory]
@@ -109,14 +110,9 @@ namespace FubarDev.WebDavServer.Tests.PropertyStore
             Assert.Equal(contentType, await contentTypeProperty.GetValueAsync(ct).ConfigureAwait(false));
         }
 
-        public void Dispose()
-        {
-            _serviceScope.Dispose();
-        }
-
         private async Task<DisplayNameProperty> GetDisplayNamePropertyAsync(IEntry entry, CancellationToken ct)
         {
-            var untypedDisplayNameProperty = await entry.GetProperties(Dispatcher)
+            var untypedDisplayNameProperty = await entry.GetProperties(DeadPropertyFactory)
                 .SingleAsync(x => x.Name == DisplayNameProperty.PropertyName, ct)
                 .ConfigureAwait(false);
             Assert.NotNull(untypedDisplayNameProperty);
@@ -126,9 +122,10 @@ namespace FubarDev.WebDavServer.Tests.PropertyStore
 
         private async Task<GetContentTypeProperty> GetContentTypePropertyAsync(IEntry entry, CancellationToken ct)
         {
-            var untypedContentTypeProperty = await entry.GetProperties(Dispatcher)
-                .SingleAsync(x => x.Name == GetContentTypeProperty.PropertyName, ct)
+            var properties = await entry.GetProperties(DeadPropertyFactory).ToListAsync(ct)
                 .ConfigureAwait(false);
+            var untypedContentTypeProperty = properties
+                .SingleOrDefault(x => x.Name == GetContentTypeProperty.PropertyName);
             Assert.NotNull(untypedContentTypeProperty);
             var contentTypeProperty = Assert.IsType<GetContentTypeProperty>(untypedContentTypeProperty);
             return contentTypeProperty;

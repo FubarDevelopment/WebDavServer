@@ -28,23 +28,25 @@ namespace FubarDev.WebDavServer.Handlers.Impl
     {
         private readonly IFileSystem _rootFileSystem;
 
+        private readonly IWebDavContextAccessor _contextAccessor;
+
         private readonly IImplicitLockFactory _implicitLockFactory;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="CopyMoveHandlerBase"/> class.
         /// </summary>
         /// <param name="rootFileSystem">The root file system.</param>
-        /// <param name="context">The WebDAV context.</param>
+        /// <param name="contextAccessor">The WebDAV context accessor.</param>
         /// <param name="implicitLockFactory">A factory to create implicit locks.</param>
         /// <param name="logger">The logger to use (either for COPY or MOVE).</param>
         protected CopyMoveHandlerBase(
             IFileSystem rootFileSystem,
-            IWebDavContext context,
+            IWebDavContextAccessor contextAccessor,
             IImplicitLockFactory implicitLockFactory,
             ILogger logger)
         {
             _rootFileSystem = rootFileSystem;
-            WebDavContext = context;
+            _contextAccessor = contextAccessor;
             _implicitLockFactory = implicitLockFactory;
             Logger = logger;
         }
@@ -52,7 +54,7 @@ namespace FubarDev.WebDavServer.Handlers.Impl
         /// <summary>
         /// Gets the WebDAV context.
         /// </summary>
-        protected IWebDavContext WebDavContext { get; }
+        protected IWebDavContext WebDavContext => _contextAccessor.WebDavContext;
 
         /// <summary>
         /// Gets the logger.

@@ -6,7 +6,7 @@
   </PropertyGroup>
   <Import Project="../../Global.props" />
   <ItemGroup>
-    <AdditionalFiles Include="$(ProjectDir)..\..\stylecop.json" Link="stylecop.json" />
+    <AdditionalFiles Include="$(ProjectDir)..\..\stylecop.json" Link="stylecop.json" Visible="false" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.TestHost" Version="3.1.21" />

@@ -18,19 +18,19 @@ namespace FubarDev.WebDavServer.Handlers.Impl
     /// </summary>
     public class UnlockHandler : IUnlockHandler
     {
-        private readonly IWebDavContext _context;
+        private readonly IWebDavContextAccessor _contextAccessor;
         private readonly ILockManager? _lockManager;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="UnlockHandler"/> class.
         /// </summary>
-        /// <param name="context">The WebDAV request context.</param>
+        /// <param name="contextAccessor">The WebDAV request context accessor.</param>
         /// <param name="lockManager">The global lock manager.</param>
-        public UnlockHandler(IWebDavContext context, ILockManager? lockManager = null)
+        public UnlockHandler(IWebDavContextAccessor contextAccessor, ILockManager? lockManager = null)
         {
-            _context = context;
+            _contextAccessor = contextAccessor;
             _lockManager = lockManager;
-            HttpMethods = _lockManager == null ? new string[0] : new[] { "UNLOCK" };
+            HttpMethods = _lockManager == null ? Array.Empty<string>() : new[] { "UNLOCK" };
         }
 
         /// <inheritdoc />
@@ -47,8 +47,9 @@ namespace FubarDev.WebDavServer.Handlers.Impl
             var releaseStatus = await _lockManager.ReleaseAsync(path, stateToken.StateToken, cancellationToken).ConfigureAwait(false);
             if (releaseStatus != LockReleaseStatus.Success)
             {
-                var href = new Uri(_context.PublicControllerUrl, path);
-                href = new Uri("/" + _context.PublicRootUrl.MakeRelativeUri(href).OriginalString);
+                var context = _contextAccessor.WebDavContext;
+                var href = new Uri(context.PublicControllerUrl, path);
+                href = new Uri("/" + context.PublicRootUrl.MakeRelativeUri(href).OriginalString);
                 return new WebDavResult<error>(
                     WebDavStatusCode.Conflict,
                     new error()

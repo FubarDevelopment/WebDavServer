@@ -15,7 +15,7 @@ namespace FubarDev.WebDavServer
         /// <summary>
         /// Gets the dispatcher that handles all WebDAV requests.
         /// </summary>
-        IWebDavDispatcher Dispatcher { get; }
+        IWebDavContext Context { get; }
 
         /// <summary>
         /// Gets the HTTP response headers.

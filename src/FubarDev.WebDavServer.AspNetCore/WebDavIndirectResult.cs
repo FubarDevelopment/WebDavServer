@@ -23,7 +23,7 @@ namespace FubarDev.WebDavServer.AspNetCore
     {
         private static readonly IEnumerable<MediaType> _supportedMediaTypes = new[] { "text/xml", "application/xml" }.Select(x => new MediaType(x)).ToList();
 
-        private readonly IWebDavDispatcher _dispatcher;
+        private readonly IWebDavContext _context;
 
         private readonly IWebDavResult _result;
 
@@ -32,13 +32,13 @@ namespace FubarDev.WebDavServer.AspNetCore
         /// <summary>
         /// Initializes a new instance of the <see cref="WebDavIndirectResult"/> class.
         /// </summary>
-        /// <param name="dispatcher">The WebDAV HTTP method dispatcher.</param>
+        /// <param name="context">The current WebDAV context.</param>
         /// <param name="result">The result of the WebDAV operation.</param>
         /// <param name="logger">The logger for a <see cref="WebDavIndirectResult"/>.</param>
-        public WebDavIndirectResult(IWebDavDispatcher dispatcher, IWebDavResult result, ILogger<WebDavIndirectResult>? logger)
+        public WebDavIndirectResult(IWebDavContext context, IWebDavResult result, ILogger<WebDavIndirectResult>? logger)
             : base((int)result.StatusCode)
         {
-            _dispatcher = dispatcher;
+            _context = context;
             _result = result;
             _logger = logger;
         }
@@ -60,7 +60,7 @@ namespace FubarDev.WebDavServer.AspNetCore
 
             if (_logger?.IsEnabled(LogLevel.Debug) ?? false)
             {
-                var loggingResponse = new LoggingWebDavResponse(_dispatcher);
+                var loggingResponse = new LoggingWebDavResponse(_context);
                 await _result.ExecuteResultAsync(loggingResponse, context.HttpContext.RequestAborted).ConfigureAwait(false);
                 if (!string.IsNullOrEmpty(loggingResponse.ContentType))
                 {
@@ -79,7 +79,7 @@ namespace FubarDev.WebDavServer.AspNetCore
             }
 
             // Writes the XML response
-            await _result.ExecuteResultAsync(new WebDavResponse(_dispatcher, response), context.HttpContext.RequestAborted).ConfigureAwait(false);
+            await _result.ExecuteResultAsync(new WebDavResponse(_context, response), context.HttpContext.RequestAborted).ConfigureAwait(false);
         }
     }
 }

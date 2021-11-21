@@ -3,7 +3,7 @@
   <Import Project="DotNetSdkMono.props" />
 
   <PropertyGroup>
-    <LangVersion>8.0</LangVersion>
+    <LangVersion>latest</LangVersion>
     <VersionPrefix Condition=" '$(VersionPrefix)' == '' ">1.0</VersionPrefix>
     <Product>WebDAV Server</Product>
     <Copyright>Fubar Development Junker 2016-2021</Copyright>

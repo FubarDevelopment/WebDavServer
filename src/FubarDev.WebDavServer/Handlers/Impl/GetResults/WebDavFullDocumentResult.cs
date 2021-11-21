@@ -18,6 +18,8 @@ using FubarDev.WebDavServer.Props.Dead;
 using FubarDev.WebDavServer.Props.Live;
 using FubarDev.WebDavServer.Utils;
 
+using Microsoft.Extensions.DependencyInjection;
+
 namespace FubarDev.WebDavServer.Handlers.Impl.GetResults
 {
     internal class WebDavFullDocumentResult : WebDavResult
@@ -42,7 +44,8 @@ namespace FubarDev.WebDavServer.Handlers.Impl.GetResults
                 response.Headers["Accept-Ranges"] = new[] { "bytes" };
             }
 
-            var properties = await _document.GetProperties(response.Dispatcher).ToListAsync(ct).ConfigureAwait(false);
+            var deadPropertyFactory = response.Context.RequestServices.GetRequiredService<IDeadPropertyFactory>();
+            var properties = await _document.GetProperties(deadPropertyFactory).ToListAsync(ct).ConfigureAwait(false);
             var etagProperty = properties
                 .OfType<ITypedReadableProperty<EntityTag>>()
                 .FirstOrDefault(x => x.Name == GetETagProperty.PropertyName);

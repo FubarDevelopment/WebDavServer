@@ -51,7 +51,7 @@ namespace FubarDev.WebDavServer.AspNetCore
         {
             var result = await _dispatcher.Class1.OptionsAsync(path ?? string.Empty, cancellationToken)
                 .ConfigureAwait(false);
-            return new WebDavIndirectResult(_dispatcher, result, _responseLogger);
+            return new WebDavIndirectResult(_context, result, _responseLogger);
         }
 
         /// <summary>
@@ -65,7 +65,7 @@ namespace FubarDev.WebDavServer.AspNetCore
         {
             var result = await _dispatcher.Class1.MkColAsync(path ?? string.Empty, cancellationToken)
                 .ConfigureAwait(false);
-            return new WebDavIndirectResult(_dispatcher, result, _responseLogger);
+            return new WebDavIndirectResult(_context, result, _responseLogger);
         }
 
         /// <summary>
@@ -79,7 +79,7 @@ namespace FubarDev.WebDavServer.AspNetCore
         {
             var result = await _dispatcher.Class1.GetAsync(path ?? string.Empty, cancellationToken)
                 .ConfigureAwait(false);
-            return new WebDavIndirectResult(_dispatcher, result, _responseLogger);
+            return new WebDavIndirectResult(_context, result, _responseLogger);
         }
 
         /// <summary>
@@ -95,7 +95,7 @@ namespace FubarDev.WebDavServer.AspNetCore
         {
             var result = await _dispatcher.Class1.PutAsync(path ?? string.Empty, Request.Body, cancellationToken)
                 .ConfigureAwait(false);
-            return new WebDavIndirectResult(_dispatcher, result, _responseLogger);
+            return new WebDavIndirectResult(_context, result, _responseLogger);
         }
 
         /// <summary>
@@ -109,7 +109,7 @@ namespace FubarDev.WebDavServer.AspNetCore
         {
             var result = await _dispatcher.Class1.DeleteAsync(path ?? string.Empty, cancellationToken)
                 .ConfigureAwait(false);
-            return new WebDavIndirectResult(_dispatcher, result, _responseLogger);
+            return new WebDavIndirectResult(_context, result, _responseLogger);
         }
 
         /// <summary>
@@ -127,7 +127,7 @@ namespace FubarDev.WebDavServer.AspNetCore
         {
             var result = await _dispatcher.Class1.PropFindAsync(path ?? string.Empty, request, cancellationToken)
                 .ConfigureAwait(false);
-            return new WebDavIndirectResult(_dispatcher, result, _responseLogger);
+            return new WebDavIndirectResult(_context, result, _responseLogger);
         }
 
         /// <summary>
@@ -145,7 +145,7 @@ namespace FubarDev.WebDavServer.AspNetCore
         {
             var result = await _dispatcher.Class1.PropPatchAsync(path ?? string.Empty, request, cancellationToken)
                 .ConfigureAwait(false);
-            return new WebDavIndirectResult(_dispatcher, result, _responseLogger);
+            return new WebDavIndirectResult(_context, result, _responseLogger);
         }
 
         /// <summary>
@@ -159,7 +159,7 @@ namespace FubarDev.WebDavServer.AspNetCore
         {
             var result = await _dispatcher.Class1.HeadAsync(path ?? string.Empty, cancellationToken)
                 .ConfigureAwait(false);
-            return new WebDavIndirectResult(_dispatcher, result, _responseLogger);
+            return new WebDavIndirectResult(_context, result, _responseLogger);
         }
 
         /// <summary>
@@ -179,7 +179,7 @@ namespace FubarDev.WebDavServer.AspNetCore
                 path ?? string.Empty,
                 new Uri(destination, UriKind.RelativeOrAbsolute),
                 cancellationToken).ConfigureAwait(false);
-            return new WebDavIndirectResult(_dispatcher, result, _responseLogger);
+            return new WebDavIndirectResult(_context, result, _responseLogger);
         }
 
         /// <summary>
@@ -199,7 +199,7 @@ namespace FubarDev.WebDavServer.AspNetCore
                 path ?? string.Empty,
                 new Uri(destination, UriKind.RelativeOrAbsolute),
                 cancellationToken).ConfigureAwait(false);
-            return new WebDavIndirectResult(_dispatcher, result, _responseLogger);
+            return new WebDavIndirectResult(_context, result, _responseLogger);
         }
 
         /// <summary>
@@ -244,7 +244,7 @@ namespace FubarDev.WebDavServer.AspNetCore
                     .ConfigureAwait(false);
             }
 
-            return new WebDavIndirectResult(_dispatcher, result, _responseLogger);
+            return new WebDavIndirectResult(_context, result, _responseLogger);
         }
 
         /// <summary>
@@ -268,7 +268,7 @@ namespace FubarDev.WebDavServer.AspNetCore
             if (string.IsNullOrEmpty(lockToken))
             {
                 return new WebDavIndirectResult(
-                    _dispatcher,
+                    _context,
                     new WebDavResult(WebDavStatusCode.BadRequest),
                     _responseLogger);
             }
@@ -276,7 +276,7 @@ namespace FubarDev.WebDavServer.AspNetCore
             var lt = LockTokenHeader.Parse(lockToken);
             var result = await _dispatcher.Class2.UnlockAsync(path ?? string.Empty, lt, cancellationToken)
                 .ConfigureAwait(false);
-            return new WebDavIndirectResult(_dispatcher, result, _responseLogger);
+            return new WebDavIndirectResult(_context, result, _responseLogger);
         }
     }
 }

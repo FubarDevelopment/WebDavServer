@@ -21,7 +21,7 @@ namespace FubarDev.WebDavServer.Props.Store.SQLite
     /// </summary>
     public class SQLitePropertyStoreFactory : IPropertyStoreFactory
     {
-        private readonly IWebDavContext _webDavContext;
+        private readonly IWebDavContextAccessor _webDavContextAccessor;
 
         private readonly IDeadPropertyFactory _deadPropertyFactory;
 
@@ -30,15 +30,15 @@ namespace FubarDev.WebDavServer.Props.Store.SQLite
         /// <summary>
         /// Initializes a new instance of the <see cref="SQLitePropertyStoreFactory"/> class.
         /// </summary>
-        /// <param name="webDavContext">The WebDAV request context.</param>
+        /// <param name="webDavContextAccessor">The WebDAV request context accessor.</param>
         /// <param name="deadPropertyFactory">The factory for dead properties.</param>
         /// <param name="serviceProvider">The current service provider.</param>
         public SQLitePropertyStoreFactory(
-            IWebDavContext webDavContext,
+            IWebDavContextAccessor webDavContextAccessor,
             IDeadPropertyFactory deadPropertyFactory,
             IServiceProvider serviceProvider)
         {
-            _webDavContext = webDavContext;
+            _webDavContextAccessor = webDavContextAccessor;
             _deadPropertyFactory = deadPropertyFactory;
             _serviceProvider = serviceProvider;
         }
@@ -81,6 +81,8 @@ namespace FubarDev.WebDavServer.Props.Store.SQLite
         /// <inheritdoc />
         public IPropertyStore Create(IFileSystem fileSystem)
         {
+            var context = _webDavContextAccessor.WebDavContext;
+
             string dbPath;
             if (fileSystem is ILocalFileSystem fs)
             {
@@ -91,14 +93,16 @@ namespace FubarDev.WebDavServer.Props.Store.SQLite
                 }
                 else
                 {
-                    dbFileName = _webDavContext.User.Identity.IsAnonymous() ? "anonymous.db" : $"{_webDavContext.User.Identity.Name}.db";
+                    dbFileName = context.User.Identity.IsAnonymous()
+                        ? "anonymous.db"
+                        : $"{context.User.Identity.Name}.db";
                 }
 
                 dbPath = Path.Combine(fs.RootDirectoryPath, dbFileName);
             }
             else
             {
-                var userHomePath = SystemInfo.GetUserHomePath(_webDavContext.User);
+                var userHomePath = SystemInfo.GetUserHomePath(context.User);
                 dbPath = Path.Combine(userHomePath, ".webdav", "properties.db");
             }
 

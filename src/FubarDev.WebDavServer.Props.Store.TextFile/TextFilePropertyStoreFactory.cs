@@ -17,7 +17,7 @@ namespace FubarDev.WebDavServer.Props.Store.TextFile
     /// </summary>
     public class TextFilePropertyStoreFactory : IPropertyStoreFactory
     {
-        private readonly IWebDavContext _webDavContext;
+        private readonly IWebDavContextAccessor _webDavContextAccessor;
 
         private readonly IServiceProvider _serviceProvider;
 
@@ -27,21 +27,23 @@ namespace FubarDev.WebDavServer.Props.Store.TextFile
         /// Initializes a new instance of the <see cref="TextFilePropertyStoreFactory"/> class.
         /// </summary>
         /// <param name="options">The options for the text file property store.</param>
-        /// <param name="webDavContext">The WebDAV request context.</param>
+        /// <param name="webDavContextAccessor">The WebDAV request context accessor.</param>
         /// <param name="serviceProvider">The service provider.</param>
         public TextFilePropertyStoreFactory(
             IOptions<TextFilePropertyStoreOptions> options,
-            IWebDavContext webDavContext,
+            IWebDavContextAccessor webDavContextAccessor,
             IServiceProvider serviceProvider)
         {
             _options = options.Value;
-            _webDavContext = webDavContext;
+            _webDavContextAccessor = webDavContextAccessor;
             _serviceProvider = serviceProvider;
         }
 
         /// <inheritdoc />
         public IPropertyStore Create(IFileSystem fileSystem)
         {
+            var user = _webDavContextAccessor.WebDavContext.User;
+
             string fileName = ".properties";
             bool storeInRoot;
             string rootPath;
@@ -52,8 +54,8 @@ namespace FubarDev.WebDavServer.Props.Store.TextFile
                 storeInRoot = !localFs.HasSubfolders;
                 if (storeInRoot)
                 {
-                    var userName = _webDavContext.User.Identity.IsAuthenticated
-                        ? _webDavContext.User.Identity.Name
+                    var userName = user.Identity.IsAuthenticated
+                        ? user.Identity.Name
                         : "anonymous";
                     var p = userName.IndexOf('\\');
                     if (p != -1)
@@ -66,15 +68,16 @@ namespace FubarDev.WebDavServer.Props.Store.TextFile
             }
             else if (string.IsNullOrEmpty(_options.RootFolder))
             {
-                var userHomePath = Utils.SystemInfo.GetUserHomePath(_webDavContext.User);
+                var userHomePath = Utils.SystemInfo.GetUserHomePath(user);
                 rootPath = Path.Combine(userHomePath, ".webdav");
                 storeInRoot = true;
             }
             else
             {
-                var userName = _webDavContext.User.Identity.IsAuthenticated
-                                   ? _webDavContext.User.Identity.Name
-                                   : "anonymous";
+                var userName =
+                    user.Identity.IsAuthenticated
+                        ? user.Identity.Name
+                        : "anonymous";
                 rootPath = Path.Combine(_options.RootFolder, userName);
                 storeInRoot = true;
             }

@@ -15,20 +15,20 @@ namespace FubarDev.WebDavServer.Locking
     public class DefaultImplicitLockFactory : IImplicitLockFactory
     {
         private readonly IFileSystem _rootFileSystem;
-        private readonly IWebDavContext _webDavContext;
+        private readonly IWebDavContextAccessor _webDavContextAccessor;
         private readonly ILockManager? _lockManager;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="DefaultImplicitLockFactory"/> class.
         /// </summary>
         /// <param name="rootFileSystem">The root file system.</param>
-        /// <param name="webDavContext">The current WebDAV context.</param>
+        /// <param name="webDavContextAccessor">The WebDAV context accessor.</param>
         public DefaultImplicitLockFactory(
             IFileSystem rootFileSystem,
-            IWebDavContext webDavContext)
+            IWebDavContextAccessor webDavContextAccessor)
         {
             _rootFileSystem = rootFileSystem;
-            _webDavContext = webDavContext;
+            _webDavContextAccessor = webDavContextAccessor;
             _lockManager = rootFileSystem.LockManager;
         }
 
@@ -45,7 +45,7 @@ namespace FubarDev.WebDavServer.Locking
 
             return _lockManager!.LockImplicitAsync(
                 _rootFileSystem,
-                _webDavContext.RequestHeaders.If?.Lists,
+                _webDavContextAccessor.WebDavContext.RequestHeaders.If?.Lists,
                 lockRequirements!,
                 cancellationToken);
         }
@@ -65,15 +65,16 @@ namespace FubarDev.WebDavServer.Locking
         /// <returns><see langword="true"/> when the lock was most likely acquired - but only when the request was done by the Windows WebDAV client.</returns>
         protected bool IsMostLikelyLockedByWindows()
         {
-            var client = _webDavContext.DetectedClient.UA?.Family;
-            if (client == null || client != "Microsoft-WebDAV-MiniRedir")
+            var context = _webDavContextAccessor.WebDavContext;
+            var client = context.DetectedClient.UA?.Family;
+            if (client is not "Microsoft-WebDAV-MiniRedir")
             {
                 return false;
             }
 
             try
             {
-                var method = _webDavContext.RequestMethod.ToUpperInvariant();
+                var method = context.RequestMethod.ToUpperInvariant();
                 switch (method)
                 {
                     case "PUT":

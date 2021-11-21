@@ -60,13 +60,13 @@ namespace Microsoft.Extensions.DependencyInjection
             services.TryAddEnumerable(ServiceDescriptor.Transient<IConfigureOptions<MvcOptions>, WebDavXmlSerializerMvcOptionsSetup>());
             services.TryAddEnumerable(ServiceDescriptor.Transient<IConfigureOptions<MvcOptions>, WebDavExceptionFilterMvcOptionsSetup>());
             services.TryAddSingleton<IHttpContextAccessor, HttpContextAccessor>();
-            services.TryAddScoped<IDeadPropertyFactory, DeadPropertyFactory>();
+            services.TryAddSingleton<IDeadPropertyFactory, DeadPropertyFactory>();
             services.TryAddScoped<IRemoteCopyTargetActionsFactory, DefaultRemoteTargetActionsFactory>();
             services.TryAddScoped<IRemoteMoveTargetActionsFactory, DefaultRemoteTargetActionsFactory>();
             services.TryAddSingleton<IHttpMessageHandlerFactory, DefaultHttpMessageHandlerFactory>();
             services.TryAddSingleton<ISystemClock, SystemClock>();
             services.TryAddSingleton<ITimeoutPolicy, DefaultTimeoutPolicy>();
-            services.TryAddScoped<IWebDavContext, WebDavContext>();
+            services.TryAddSingleton<IWebDavContextAccessor, WebDavContextAccessor>();
             services.TryAddSingleton<ILockCleanupTask, LockCleanupTask>();
             services.TryAddSingleton<IPathTraversalEngine, PathTraversalEngine>();
             services.TryAddSingleton<IMimeTypeDetector, DefaultMimeTypeDetector>();
@@ -74,6 +74,7 @@ namespace Microsoft.Extensions.DependencyInjection
             services.TryAddSingleton<IBufferPoolFactory, ArrayPoolBufferPoolFactory>();
             services
                 .AddOptions()
+                .AddScoped(sp => sp.GetRequiredService<IWebDavContextAccessor>().WebDavContext)
                 .AddScoped<IWebDavDispatcher, WebDavServer>()
                 .AddSingleton<WebDavExceptionFilter>()
                 .AddScoped<IWebDavOutputFormatter, WebDavXmlOutputFormatter>()
@@ -85,6 +86,12 @@ namespace Microsoft.Extensions.DependencyInjection
                     .AddClasses(classes => classes.AssignableToAny(typeof(IHandler), typeof(IWebDavClass)))
                     .AsImplementedInterfaces()
                     .WithTransientLifetime());
+            services.Scan(
+                scan => scan
+                    .FromAssemblyOf<IDefaultDeadPropertyFactory>()
+                    .AddClasses(classes => classes.AssignableToAny(typeof(IDefaultDeadPropertyFactory)))
+                    .AsImplementedInterfaces()
+                    .WithSingletonLifetime());
             services.AddScoped(
                 sp =>
                 {

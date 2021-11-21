@@ -32,7 +32,7 @@ namespace FubarDev.WebDavServer
         public override async Task ExecuteResultAsync(IWebDavResponse response, CancellationToken ct)
         {
             await base.ExecuteResultAsync(response, ct).ConfigureAwait(false);
-            await response.Dispatcher.Formatter.SerializeAsync(response.Body, _element, ct).ConfigureAwait(false);
+            await response.Context.Dispatcher.Formatter.SerializeAsync(response.Body, _element, ct).ConfigureAwait(false);
         }
     }
 }

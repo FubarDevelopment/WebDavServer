@@ -32,19 +32,19 @@ namespace FubarDev.WebDavServer.Handlers.Impl
         /// Initializes a new instance of the <see cref="CopyHandler"/> class.
         /// </summary>
         /// <param name="rootFileSystem">The root file system.</param>
-        /// <param name="host">The WebDAV server context.</param>
+        /// <param name="contextAccessor">The WebDAV context accessor.</param>
         /// <param name="implicitLockFactory">A factory to create implicit locks.</param>
         /// <param name="options">The options for the <c>COPY</c> handler.</param>
         /// <param name="logger">The logger for this handler.</param>
         /// <param name="serviceProvider">The service provider used to lazily query the <see cref="IRemoteCopyTargetActionsFactory"/> implementation.</param>
         public CopyHandler(
             IFileSystem rootFileSystem,
-            IWebDavContext host,
+            IWebDavContextAccessor contextAccessor,
             IImplicitLockFactory implicitLockFactory,
             IOptions<CopyHandlerOptions> options,
             ILogger<CopyHandler> logger,
             IServiceProvider serviceProvider)
-            : base(rootFileSystem, host, implicitLockFactory, logger)
+            : base(rootFileSystem, contextAccessor, implicitLockFactory, logger)
         {
             _serviceProvider = serviceProvider;
             _options = options.Value;
@@ -83,10 +83,10 @@ namespace FubarDev.WebDavServer.Handlers.Impl
         {
             if (mode == RecursiveProcessingMode.PreferFastest)
             {
-                return new CopyInFileSystemTargetAction(WebDavContext.Dispatcher);
+                return new CopyInFileSystemTargetAction(WebDavContext);
             }
 
-            return new CopyBetweenFileSystemsTargetAction(WebDavContext.Dispatcher);
+            return new CopyBetweenFileSystemsTargetAction(WebDavContext);
         }
     }
 }
