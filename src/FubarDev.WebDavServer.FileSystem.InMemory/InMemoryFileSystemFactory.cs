@@ -43,7 +43,7 @@ namespace FubarDev.WebDavServer.FileSystem.InMemory
         {
             var userName = !principal.Identity.IsAnonymous()
                 ? principal.Identity.Name
-                : string.Empty;
+                : SystemInfo.GetAnonymousUserName();
 
             var key = new FileSystemKey(userName, mountPoint?.Path.OriginalString ?? string.Empty);
             if (!_fileSystems.TryGetValue(key, out var fileSystem))
