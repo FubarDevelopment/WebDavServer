@@ -85,7 +85,7 @@ namespace FubarDev.WebDavServer.Locking
             if (_conflictingLocks == null)
             {
                 // No "If" header condition succeeded, but we didn't ask for a lock
-                return new WebDavResult(WebDavStatusCode.NotFound);
+                return new WebDavResult(WebDavStatusCode.PreconditionFailed);
             }
 
             // An "If" header condition succeeded, but we couldn't find a matching lock.
