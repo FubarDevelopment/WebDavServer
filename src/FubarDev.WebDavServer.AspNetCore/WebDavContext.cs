@@ -145,6 +145,17 @@ namespace FubarDev.WebDavServer.AspNetCore
             result.Append(request.Scheme).Append("://").Append(request.Host)
                 .Append(basePath)
                 .Append(Uri.EscapeUriString(path));
+            if (request.RouteValues.TryGetValue("path", out var actionPath))
+            {
+                // We have an action path...
+                if (string.IsNullOrEmpty(actionPath?.ToString()))
+                {
+                    // The path for the action is empty, which means that
+                    // the WebDAV client queried the root entry of the file
+                    // system.
+                    result.Append("/");
+                }
+            }
 
             var resultUrl = new Uri(result.ToString());
             return resultUrl;

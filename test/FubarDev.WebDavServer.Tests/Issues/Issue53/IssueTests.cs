@@ -42,6 +42,19 @@ namespace FubarDev.WebDavServer.Tests.Issues.Issue53
         }
 
         [Fact]
+        public async Task CheckRootWithoutSlash()
+        {
+            var requestUrl = new Uri(Client.BaseAddress.OriginalString.TrimEnd('/'));
+            var propFindResponse = await Client.PropFindAsync(requestUrl, WebDavDepthHeaderValue.Zero);
+            Assert.Equal(WebDavStatusCode.MultiStatus, propFindResponse.StatusCode);
+            var multiStatus = await WebDavResponseContentParser
+                .ParseMultistatusResponseContentAsync(propFindResponse.Content).ConfigureAwait(false);
+            Assert.Collection(
+                multiStatus.Response,
+                response => Assert.Equal("/_dav/", response.Href));
+        }
+
+        [Fact]
         public async Task CheckRoot()
         {
             var propFindResponse = await Client.PropFindAsync(string.Empty, WebDavDepthHeaderValue.One);
