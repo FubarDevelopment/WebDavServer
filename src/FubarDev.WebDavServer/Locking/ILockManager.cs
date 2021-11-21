@@ -35,10 +35,10 @@ namespace FubarDev.WebDavServer.Locking
         /// <summary>
         /// Tries to issue a lock.
         /// </summary>
-        /// <param name="l">The lock to issue.</param>
+        /// <param name="requestedLock">The lock to issue.</param>
         /// <param name="cancellationToken">The cancellation token.</param>
         /// <returns>Either the list of locks preventing issuing a lock or the active lock created.</returns>
-        Task<LockResult> LockAsync(ILock l, CancellationToken cancellationToken);
+        Task<LockResult> LockAsync(ILock requestedLock, CancellationToken cancellationToken);
 
         /// <summary>
         /// Tries to find a lock identified by the <paramref name="ifHeaderLists"/> or creates a new one if none was found.

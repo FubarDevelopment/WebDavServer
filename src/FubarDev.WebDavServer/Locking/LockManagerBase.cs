@@ -128,29 +128,29 @@ namespace FubarDev.WebDavServer.Locking
         protected ILockCleanupTask LockCleanupTask => _cleanupTask;
 
         /// <inheritdoc />
-        public async Task<LockResult> LockAsync(ILock l, CancellationToken cancellationToken)
+        public async Task<LockResult> LockAsync(ILock requestedLock, CancellationToken cancellationToken)
         {
             ActiveLock newActiveLock;
-            var destinationUrl = BuildUrl(l.Path);
+            var destinationUrl = BuildUrl(requestedLock.Path);
             using (var transaction = await BeginTransactionAsync(cancellationToken).ConfigureAwait(false))
             {
                 var locks = await transaction.GetActiveLocksAsync(cancellationToken).ConfigureAwait(false);
-                var status = Find(locks, destinationUrl, l.Recursive, true);
-                var conflictingLocks = GetConflictingLocks(status, LockShareMode.Parse(l.ShareMode));
+                var status = Find(locks, destinationUrl, requestedLock.Recursive, true);
+                var conflictingLocks = GetConflictingLocks(status, requestedLock);
                 if (conflictingLocks.Count != 0)
                 {
                     if (_logger.IsEnabled(LogLevel.Information))
                     {
                         _logger.LogInformation(
                             "Found conflicting locks for {Lock}: {ConflictingLocks}",
-                            l,
+                            requestedLock,
                             string.Join(",", conflictingLocks.GetLocks().Select(x => x.ToString())));
                     }
 
                     return new LockResult(conflictingLocks);
                 }
 
-                newActiveLock = new ActiveLock(l, _rounding.Round(_systemClock.UtcNow), _rounding.Round(l.Timeout));
+                newActiveLock = new ActiveLock(requestedLock, _rounding.Round(_systemClock.UtcNow), _rounding.Round(requestedLock.Timeout));
 
                 await transaction.AddAsync(newActiveLock, cancellationToken).ConfigureAwait(false);
                 await transaction.CommitAsync(cancellationToken).ConfigureAwait(false);
@@ -427,8 +427,9 @@ namespace FubarDev.WebDavServer.Locking
         /// <returns>The transaction to be used to update the active locks.</returns>
         protected abstract Task<ILockManagerTransaction> BeginTransactionAsync(CancellationToken cancellationToken);
 
-        private static LockStatus GetConflictingLocks(LockStatus affactingLocks, LockShareMode shareMode)
+        private static LockStatus GetConflictingLocks(LockStatus affactingLocks, ILock l)
         {
+            var shareMode = LockShareMode.Parse(l.ShareMode);
             if (shareMode == LockShareMode.Exclusive)
             {
                 return affactingLocks;
