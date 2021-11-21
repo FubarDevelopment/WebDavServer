@@ -111,7 +111,7 @@ namespace FubarDev.WebDavServer.Handlers.Impl
                     depth != DepthHeader.Zero,
                     new XElement(WebDavXml.Dav + "owner", WebDavContext.User.Identity.Name),
                     LockAccessType.Write,
-                    LockShareMode.Shared,
+                    LockShareMode.Exclusive,
                     TimeoutHeader.Infinite);
             }
             else
