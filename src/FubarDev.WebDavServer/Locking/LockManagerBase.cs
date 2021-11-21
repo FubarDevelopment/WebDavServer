@@ -249,10 +249,13 @@ namespace FubarDev.WebDavServer.Locking
                     if (pathInfo.ActiveLocks == null)
                     {
                         var destinationUrl = BuildUrl(ifHeaderList.Path.OriginalString);
-                        var entryLocks = (from l in await transaction.GetActiveLocksAsync(cancellationToken).ConfigureAwait(false)
-                                          let lockUrl = BuildUrl(l.Path)
-                                          where Compare(destinationUrl, false, lockUrl, false) == LockCompareResult.Reference
-                                          select l).ToList();
+                        var entryLocks =
+                            (from l in await transaction.GetActiveLocksAsync(cancellationToken).ConfigureAwait(false)
+                             let lockUrl = BuildUrl(l.Path)
+                             let compareResult = Compare(destinationUrl, false, lockUrl, l.Recursive)
+                             where compareResult == LockCompareResult.Reference
+                                   || compareResult == LockCompareResult.RightIsParent
+                             select l).ToList();
 
                         if (entryLocks.Count == 0)
                         {
