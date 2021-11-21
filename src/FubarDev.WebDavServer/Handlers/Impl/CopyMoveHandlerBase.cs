@@ -316,10 +316,14 @@ namespace FubarDev.WebDavServer.Handlers.Impl
             if (sourceSelectionResult.ResultType == SelectionResultType.FoundDocument)
             {
                 ActionResult docResult;
-                if (targetItem is TCollection)
+                if (targetItem is TCollection targetCollection)
                 {
-                    // Cannot overwrite collection with document
-                    docResult = new ActionResult(ActionStatus.OverwriteFailed, targetItem);
+                    // litmus: copymove: 4 (copy_overwrite)
+                    docResult = await engine.ExecuteAsync(
+                        sourceUrl,
+                        sourceSelectionResult.Document,
+                        targetCollection,
+                        cancellationToken).ConfigureAwait(false);
                 }
                 else if (targetItem is TMissing missingTarget)
                 {

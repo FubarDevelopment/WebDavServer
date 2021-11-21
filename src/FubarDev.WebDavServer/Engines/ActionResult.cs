@@ -11,34 +11,14 @@ namespace FubarDev.WebDavServer.Engines
     /// <summary>
     /// The result of an action.
     /// </summary>
-    public class ActionResult
+    /// <param name="Status">The status of the action.</param>
+    /// <param name="Target">The element this status is for.</param>
+    public record ActionResult(ActionStatus Status, ITarget Target)
     {
-        /// <summary>
-        /// Initializes a new instance of the <see cref="ActionResult"/> class.
-        /// </summary>
-        /// <param name="status">The status of the action.</param>
-        /// <param name="target">The element this status is for.</param>
-        public ActionResult(ActionStatus status, ITarget target)
-        {
-            Status = status;
-            Target = target;
-            Href = target.DestinationUrl;
-        }
-
-        /// <summary>
-        /// Gets the status of the action.
-        /// </summary>
-        public ActionStatus Status { get; }
-
-        /// <summary>
-        /// Gets the target entry this action status is for.
-        /// </summary>
-        public ITarget Target { get; }
-
         /// <summary>
         /// Gets or sets the destination URL for the <see cref="Target"/>.
         /// </summary>
-        public Uri Href { get; set; }
+        public Uri Href { get; set; } = Target.DestinationUrl;
 
         /// <summary>
         /// Gets or sets the exception that occurred during the execution of the action.

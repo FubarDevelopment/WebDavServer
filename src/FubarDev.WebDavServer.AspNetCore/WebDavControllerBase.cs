@@ -63,6 +63,12 @@ namespace FubarDev.WebDavServer.AspNetCore
         [HttpMkCol]
         public async Task<IActionResult> MkColAsync(string? path, CancellationToken cancellationToken)
         {
+            if (Request.ContentLength > 0 || !string.IsNullOrEmpty(Request.ContentType))
+            {
+                // litmus: basic 14 (mkcol_with_body)
+                throw new WebDavException(WebDavStatusCode.UnsupportedMediaType);
+            }
+
             var result = await _dispatcher.Class1.MkColAsync(path ?? string.Empty, cancellationToken)
                 .ConfigureAwait(false);
             return new WebDavIndirectResult(_context, result, _responseLogger);

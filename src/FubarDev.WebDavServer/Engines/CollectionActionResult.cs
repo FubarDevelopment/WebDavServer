@@ -9,18 +9,11 @@ namespace FubarDev.WebDavServer.Engines
     /// <summary>
     /// The result of an operation on a collection.
     /// </summary>
-    public class CollectionActionResult : ActionResult
+    /// <param name="Status">The status of the operation.</param>
+    /// <param name="Target">The target of the operation.</param>
+    public record CollectionActionResult(ActionStatus Status, ITarget Target)
+        : ActionResult(Status, Target)
     {
-        /// <summary>
-        /// Initializes a new instance of the <see cref="CollectionActionResult"/> class.
-        /// </summary>
-        /// <param name="status">The status of the operation.</param>
-        /// <param name="target">The target of the operation.</param>
-        public CollectionActionResult(ActionStatus status, ITarget target)
-            : base(status, target)
-        {
-        }
-
         /// <summary>
         /// Gets or sets the action results of the documents of this collection.
         /// </summary>

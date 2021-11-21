@@ -148,10 +148,73 @@ namespace FubarDev.WebDavServer.Engines
         }
 
         /// <summary>
-        /// Operates on a documentation and the given document target.
+        /// Operates on a document and the given collection target.
         /// </summary>
         /// <param name="sourceUrl">The root-relative source URL.</param>
-        /// <param name="source">The source documentation.</param>
+        /// <param name="source">The source document.</param>
+        /// <param name="target">The target collection of the operation.</param>
+        /// <param name="cancellationToken">The cancellation token.</param>
+        /// <returns>The result information of the current operation.</returns>
+        public async Task<ActionResult> ExecuteAsync(Uri sourceUrl, IDocument source, TCollection target, CancellationToken cancellationToken)
+        {
+            if (_logger.IsEnabled(LogLevel.Trace))
+            {
+                _logger.LogTrace(
+                    "Try to perform operation on document {SourceUrl} with existing target {DestinationUrl}",
+                    sourceUrl,
+                    target.DestinationUrl);
+            }
+
+            if (!_allowOverwrite)
+            {
+                _logger.LogDebug(
+                    "{DestinationUrl}: Cannot overwrite because destination exists",
+                    target.DestinationUrl);
+                return new ActionResult(ActionStatus.CannotOverwrite, target);
+            }
+
+            if (_logger.IsEnabled(LogLevel.Trace))
+            {
+                _logger.LogTrace(
+                    "Delete {DestinationUrl} before performing operation on document {SourceUrl}",
+                    target.DestinationUrl,
+                    sourceUrl);
+            }
+
+            TMissing missingTarget;
+            try
+            {
+                missingTarget = await target.DeleteAsync(cancellationToken).ConfigureAwait(false);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogDebug(
+                    "{DestinationUrl}: Delete failed with exception {ErrorMessage}",
+                    target.DestinationUrl,
+                    ex.Message);
+                return new CollectionActionResult(ActionStatus.TargetDeleteFailed, target)
+                {
+                    Exception = ex,
+                };
+            }
+
+            var result = await ExecuteAsync(sourceUrl, source, missingTarget, cancellationToken).ConfigureAwait(false);
+            if (result.Status != ActionStatus.Created)
+            {
+                return result;
+            }
+
+            return result with
+            {
+                Status = ActionStatus.Overwritten,
+            };
+        }
+
+        /// <summary>
+        /// Operates on a document and the given document target.
+        /// </summary>
+        /// <param name="sourceUrl">The root-relative source URL.</param>
+        /// <param name="source">The source document.</param>
         /// <param name="target">The target document of the operation.</param>
         /// <param name="cancellationToken">The cancellation token.</param>
         /// <returns>The result information of the current operation.</returns>
@@ -200,7 +263,16 @@ namespace FubarDev.WebDavServer.Engines
                     };
                 }
 
-                return await ExecuteAsync(sourceUrl, source, missingTarget, cancellationToken).ConfigureAwait(false);
+                var result = await ExecuteAsync(sourceUrl, source, missingTarget, cancellationToken).ConfigureAwait(false);
+                if (result.Status != ActionStatus.Created)
+                {
+                    return result;
+                }
+
+                return result with
+                {
+                    Status = ActionStatus.Overwritten,
+                };
             }
 
             if (_logger.IsEnabled(LogLevel.Trace))

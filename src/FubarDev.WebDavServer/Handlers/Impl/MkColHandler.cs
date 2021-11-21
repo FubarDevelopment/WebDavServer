@@ -59,7 +59,8 @@ namespace FubarDev.WebDavServer.Handlers.Impl
             var selectionResult = await _rootFileSystem.SelectAsync(path, cancellationToken).ConfigureAwait(false);
             if (!selectionResult.IsMissing)
             {
-                throw new WebDavException(WebDavStatusCode.Forbidden);
+                // litmus: basic 11 (mkcol_again)
+                throw new WebDavException(WebDavStatusCode.MethodNotAllowed);
             }
 
             Debug.Assert(selectionResult.MissingNames != null, "selectionResult.PathEntries != null");
