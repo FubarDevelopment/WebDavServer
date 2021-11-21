@@ -50,8 +50,8 @@ namespace FubarDev.WebDavServer.Tests.Issues.Issue53
                 .ParseMultistatusResponseContentAsync(propFindResponse.Content).ConfigureAwait(false);
             Assert.Collection(
                 multiStatus.Response,
-                response => Assert.Equal("/", response.Href),
-                response => { Assert.Equal(Uri.EscapeUriString($"/{NameTest1}/"), response.Href); });
+                response => Assert.Equal("/_dav/", response.Href),
+                response => { Assert.Equal(Uri.EscapeUriString($"/_dav/{NameTest1}/"), response.Href); });
         }
 
         [Fact]
@@ -63,7 +63,7 @@ namespace FubarDev.WebDavServer.Tests.Issues.Issue53
                 .ParseMultistatusResponseContentAsync(propFindResponse.Content).ConfigureAwait(false);
             Assert.Collection(
                 multiStatus.Response,
-                response => { Assert.Equal(Uri.EscapeUriString($"/{NameTest1}/"), response.Href); });
+                response => { Assert.Equal(Uri.EscapeUriString($"/_dav/{NameTest1}/"), response.Href); });
         }
     }
 }

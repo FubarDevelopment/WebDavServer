@@ -41,11 +41,10 @@ namespace FubarDev.WebDavServer.Tests.Handlers
 
             var propsBefore = await doc1.GetPropertyElementsAsync(DeadPropertyFactory, ct).ConfigureAwait(false);
 
-            var requestUri = new Uri(Client.BaseAddress, new Uri(resourceName, UriKind.Relative));
             var propertyValue = "<testProp>someValue</testProp>";
             var response = await Client
                 .PropPatchAsync(
-                    requestUri,
+                    resourceName,
                     new PropertyUpdate
                     {
                         Items = new object[]

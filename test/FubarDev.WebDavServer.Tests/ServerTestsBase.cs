@@ -28,7 +28,6 @@ using FubarDev.WebDavServer.Utils;
 
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc.ApplicationParts;
 using Microsoft.AspNetCore.TestHost;
 using Microsoft.Extensions.DependencyInjection;
@@ -38,15 +37,25 @@ using IHttpMessageHandlerFactory = FubarDev.WebDavServer.Engines.Remote.IHttpMes
 
 namespace FubarDev.WebDavServer.Tests
 {
+    /// <summary>
+    /// Base class for integration tests.
+    /// </summary>
     public abstract class ServerTestsBase : IDisposable
     {
         private readonly IServiceScope _serviceScope;
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="ServerTestsBase"/> class.
+        /// </summary>
         protected ServerTestsBase()
             : this(RecursiveProcessingMode.PreferFastest)
         {
         }
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="ServerTestsBase"/> class.
+        /// </summary>
+        /// <param name="processingMode">The processing mode for recursive actions.</param>
         protected ServerTestsBase(RecursiveProcessingMode processingMode)
         {
             var builder = new WebHostBuilder()
@@ -125,16 +134,6 @@ namespace FubarDev.WebDavServer.Tests
                     opt => { opt.Mode = processingMode; })
                 .Configure<MoveHandlerOptions>(
                     opt => { opt.Mode = processingMode; })
-                .AddSingleton<IWebDavContextAccessor>(sp =>
-                {
-                    var baseUrl = container.Server.BaseAddress;
-                    var httpContextAccessor = sp.GetRequiredService<IHttpContextAccessor>();
-                    return new TestWebDavContextAccessor(
-                        baseUrl,
-                        httpContextAccessor,
-                        container._serviceScope.ServiceProvider);
-                })
-                .AddScoped(sp => sp.GetRequiredService<IWebDavContextAccessor>().WebDavContext)
                 .AddScoped<IHttpMessageHandlerFactory>(_ => new TestHttpMessageHandlerFactory(container.Server))
                 .AddSingleton<IFileSystemFactory, InMemoryFileSystemFactory>()
                 .AddSingleton<IPropertyStoreFactory, InMemoryPropertyStoreFactory>()
@@ -147,36 +146,6 @@ namespace FubarDev.WebDavServer.Tests
                         apm.ApplicationParts.Add(new TestControllerPart(ControllerTypes));
                     })
                 .AddWebDav();
-        }
-
-        private class TestWebDavContextAccessor : IWebDavContextAccessor
-        {
-            private readonly Uri _baseUrl;
-            private readonly IHttpContextAccessor _httpContextAccessor;
-            private readonly IServiceProvider _serviceProvider;
-            private readonly AsyncLocal<IWebDavContext> _context = new();
-
-            public TestWebDavContextAccessor(
-                Uri baseUrl,
-                IHttpContextAccessor httpContextAccessor,
-                IServiceProvider serviceProvider)
-            {
-                _baseUrl = baseUrl;
-                _httpContextAccessor = httpContextAccessor;
-                _serviceProvider = serviceProvider;
-            }
-
-            public IWebDavContext WebDavContext => GetOrCreateContext();
-
-            private IWebDavContext GetOrCreateContext()
-            {
-                return _context.Value ??= CreateContext();
-            }
-
-            private IWebDavContext CreateContext()
-            {
-                return new TestHost(_serviceProvider, _baseUrl, _httpContextAccessor);
-            }
         }
 
         private class TestControllerPart : ApplicationPart, IApplicationPartTypeProvider
