@@ -10,6 +10,7 @@ using FubarDev.WebDavServer.AspNetCore.Routing;
 using FubarDev.WebDavServer.Model;
 using FubarDev.WebDavServer.Model.Headers;
 
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 
@@ -128,9 +129,14 @@ namespace FubarDev.WebDavServer.AspNetCore
         [HttpPropFind]
         public async Task<IActionResult> PropFindAsync(
             string? path,
-            [FromBody] propfind request,
+            [FromBody] propfind? request,
             CancellationToken cancellationToken = default)
         {
+            if (request == null && IsContentExpected(Request))
+            {
+                return BadRequest();
+            }
+
             var result = await _dispatcher.Class1.PropFindAsync(path ?? string.Empty, request, cancellationToken)
                 .ConfigureAwait(false);
             return new WebDavIndirectResult(_context, result, _responseLogger);
@@ -283,6 +289,26 @@ namespace FubarDev.WebDavServer.AspNetCore
             var result = await _dispatcher.Class2.UnlockAsync(path ?? string.Empty, lt, cancellationToken)
                 .ConfigureAwait(false);
             return new WebDavIndirectResult(_context, result, _responseLogger);
+        }
+
+        private static bool IsContentExpected(HttpRequest request)
+        {
+            if (request.ContentLength != 0)
+            {
+                return true;
+            }
+
+            if (!string.IsNullOrEmpty(request.ContentType))
+            {
+                return true;
+            }
+
+            if (request.Body.CanSeek && request.Body.Position != 0)
+            {
+                return true;
+            }
+
+            return false;
         }
     }
 }

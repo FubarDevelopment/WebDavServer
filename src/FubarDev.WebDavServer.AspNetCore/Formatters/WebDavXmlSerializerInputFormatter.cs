@@ -35,10 +35,17 @@ namespace FubarDev.WebDavServer.AspNetCore.Formatters
                     switch (request.Method)
                     {
                         case "LOCK":
-                            return true;
                         case "PROPFIND":
                             return true;
                     }
+                }
+
+                // The following HTTP methods should have an XML body
+                // even when the content-type wasn't set.
+                if (request.Method is "LOCK" or "PROPFIND" or "PROPPATCH")
+                {
+                    // Workaround for the litmus tool.
+                    return true;
                 }
             }
 

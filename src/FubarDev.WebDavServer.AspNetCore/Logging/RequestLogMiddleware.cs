@@ -93,59 +93,62 @@ namespace FubarDev.WebDavServer.AspNetCore.Logging
 
                 var shouldTryReadingBody =
                     IsXmlContentType(context.Request)
-                    || (context.Request.Body != null && IsMicrosoftWebDavClient(context.Request));
+                    || (context.Request.Body != null
+                        && (IsMicrosoftWebDavClient(context.Request)
+                            || IsLoggableMethod(context.Request)));
 
                 if (shouldTryReadingBody && context.Request.Body != null)
                 {
+                    context.Request.EnableBuffering();
+
                     var encoding = GetEncoding(context.Request);
-
-                    var temp = new MemoryStream();
-                    await context.Request.Body.CopyToAsync(temp, 65536).ConfigureAwait(false);
-
-                    if (temp.Length != 0)
+                    bool showRawBody;
+                    if (HttpMethods.IsPut(context.Request.Method))
                     {
-                        temp.Position = 0;
-
-                        bool showBody;
-                        if (HttpMethods.IsPut(context.Request.Method))
+                        showRawBody = true;
+                    }
+                    else
+                    {
+                        try
                         {
-                            showBody = true;
-                        }
-                        else
-                        {
-                            try
+                            using (var reader = new StreamReader(context.Request.Body, encoding, false, 1000, true))
                             {
-                                using (var reader = new StreamReader(temp, encoding, false, 1000, true))
-                                {
-                                    var doc = XDocument.Load(reader);
-                                    info.Add($"Body: {doc}");
-                                }
+                                var doc = await XDocument.LoadAsync(
+                                        reader,
+                                        LoadOptions.PreserveWhitespace,
+                                        context.RequestAborted)
+                                    .ConfigureAwait(false);
+                                info.Add($"Body: {doc}");
+                            }
 
-                                showBody = false;
-                            }
-                            catch (Exception ex)
-                            {
-                                _logger.LogWarning(EventIds.Unspecified, ex, "Failed to read the request body as XML");
-                                showBody = true;
-                            }
+                            showRawBody = false;
                         }
-
-                        if (showBody)
+                        catch (Exception ex)
                         {
-                            temp.Position = 0;
-                            using var reader = new StreamReader(temp, encoding, false, 1000, true);
+                            _logger.LogWarning(EventIds.Unspecified, ex, "Failed to read the request body as XML");
+                            showRawBody = true;
+                        }
+                        finally
+                        {
+                            context.Request.Body.Position = 0;
+                        }
+                    }
+
+                    if (showRawBody)
+                    {
+                        try
+                        {
+                            using var reader = new StreamReader(context.Request.Body, encoding, false, 1000, true);
                             var content = await reader.ReadToEndAsync().ConfigureAwait(false);
-                            info.Add($"Body: {content}");
+                            if (!string.IsNullOrEmpty(content))
+                            {
+                                info.Add($"Body: {content}");
+                            }
                         }
-
-                        if (!context.Request.Body.CanSeek)
+                        finally
                         {
-                            var oldStream = context.Request.Body;
-                            context.Request.Body = temp;
-                            await oldStream.DisposeAsync();
+                            context.Request.Body.Position = 0;
                         }
-
-                        context.Request.Body.Position = 0;
                     }
                 }
 
@@ -153,6 +156,17 @@ namespace FubarDev.WebDavServer.AspNetCore.Logging
             }
 
             await _next(context).ConfigureAwait(false);
+        }
+
+        private static bool IsLoggableMethod(HttpRequest request)
+        {
+            return request.Method switch
+            {
+                "PROPPATCH" => true,
+                "PROPFIND" => true,
+                "LOCK" => true,
+                _ => false,
+            };
         }
 
         private static bool IsXmlContentType(HttpRequest request)
