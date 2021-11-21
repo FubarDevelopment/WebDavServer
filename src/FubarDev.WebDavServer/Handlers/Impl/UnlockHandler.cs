@@ -54,7 +54,7 @@ namespace FubarDev.WebDavServer.Handlers.Impl
                     WebDavStatusCode.Conflict,
                     new error()
                     {
-                        ItemsElementName = new[] { ItemsChoiceType.locktokenmatchesrequesturi, },
+                        ItemsElementName = new[] { ItemsChoiceType.noconflictinglock, },
                         Items = new object[]
                         {
                             new errorNoconflictinglock()
