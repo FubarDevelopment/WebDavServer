@@ -26,6 +26,18 @@ The reason why both are required is that
 the WebDAV server is built with .NET 6.0
 while targeting .NET Core 3.1.
 
+# Troubleshooting
+
+## Windows: Credential dialog keeps appearing
+
+The HTTP Basic authentication is disabled for HTTP
+requests. To enable it for HTTP requests, you have to
+set the following regitry key value:
+
+```
+HKLM\SYSTEM\CurrentControlSet\Services\WebClient\Parameters\BasicAuthLevel = 2
+```
+
 # Support the development
 
 [![Patreon](https://img.shields.io/endpoint.svg?url=https:%2F%2Fshieldsio-patreon.herokuapp.com%2FFubarDevelopment&style=for-the-badge)](https://www.patreon.com/FubarDevelopment)
