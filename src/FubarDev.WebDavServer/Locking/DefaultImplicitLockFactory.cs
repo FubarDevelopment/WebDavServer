@@ -36,8 +36,7 @@ namespace FubarDev.WebDavServer.Locking
         public Task<IImplicitLock> CreateAsync(ILock? lockRequirements, CancellationToken cancellationToken)
         {
             var useFakeLock = _lockManager == null
-                || lockRequirements == null
-                || IsMostLikelyLockedByClient();
+                || lockRequirements == null;
             if (useFakeLock)
             {
                 return Task.FromResult<IImplicitLock>(new ImplicitLock(true));
@@ -48,50 +47,6 @@ namespace FubarDev.WebDavServer.Locking
                 _webDavContextAccessor.WebDavContext.RequestHeaders.If?.Lists,
                 lockRequirements!,
                 cancellationToken);
-        }
-
-        /// <summary>
-        /// Returns whether the lock was (most likely) already acquired by the client.
-        /// </summary>
-        /// <returns><see langword="true"/> when the lock was most likely acquired by the client.</returns>
-        protected virtual bool IsMostLikelyLockedByClient()
-        {
-            return IsMostLikelyLockedByWindows();
-        }
-
-        /// <summary>
-        /// Returns whether the lock was (most likely) already acquired by the Windows WebDAV client.
-        /// </summary>
-        /// <returns><see langword="true"/> when the lock was most likely acquired - but only when the request was done by the Windows WebDAV client.</returns>
-        protected bool IsMostLikelyLockedByWindows()
-        {
-            var context = _webDavContextAccessor.WebDavContext;
-            var client = context.DetectedClient.UA?.Family;
-            if (client is not "Microsoft-WebDAV-MiniRedir")
-            {
-                return false;
-            }
-
-            try
-            {
-                var method = context.RequestMethod.ToUpperInvariant();
-                switch (method)
-                {
-                    case "PUT":
-                    case "COPY":
-                    case "MOVE":
-                    case "MKCOL":
-                    case "PROPPATCH":
-                        return true;
-                }
-            }
-            catch
-            {
-                // We don't have a request method.
-                // Are we in a test environment?
-            }
-
-            return false;
         }
     }
 }
