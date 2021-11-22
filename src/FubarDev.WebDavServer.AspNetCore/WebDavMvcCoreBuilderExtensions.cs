@@ -2,6 +2,8 @@
 // Copyright (c) Fubar Development Junker. All rights reserved.
 // </copyright>
 
+using System;
+
 using Microsoft.Extensions.DependencyInjection;
 
 namespace FubarDev.WebDavServer.AspNetCore
@@ -32,13 +34,13 @@ namespace FubarDev.WebDavServer.AspNetCore
         /// </list>
         /// </remarks>
         /// <param name="builder">The <see cref="IMvcCoreBuilder"/></param>
-        /// <param name="disableLocking">A value that indicates whether locking should be disabled.</param>
+        /// <param name="configureOptions">WebDAV server options to configure.</param>
         /// <returns>The <paramref name="builder"/></returns>
         public static IMvcCoreBuilder AddWebDav(
             this IMvcCoreBuilder builder,
-            bool disableLocking = false)
+            Action<WebDavServerOptions>? configureOptions = null)
         {
-            builder.Services.AddWebDav(disableLocking);
+            builder.Services.AddWebDav(configureOptions);
             return builder;
         }
     }

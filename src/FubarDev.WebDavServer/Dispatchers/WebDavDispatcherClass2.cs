@@ -12,6 +12,8 @@ using FubarDev.WebDavServer.Handlers;
 using FubarDev.WebDavServer.Model;
 using FubarDev.WebDavServer.Model.Headers;
 
+using Microsoft.Extensions.Options;
+
 namespace FubarDev.WebDavServer.Dispatchers
 {
     /// <summary>
@@ -26,39 +28,46 @@ namespace FubarDev.WebDavServer.Dispatchers
         /// <summary>
         /// Initializes a new instance of the <see cref="WebDavDispatcherClass2"/> class.
         /// </summary>
+        /// <param name="options">Options for the WebDAV server.</param>
         /// <param name="handlers">The WebDAV class 2 handlers.</param>
         /// <param name="contextAccessor">The WebDAV context accessor.</param>
         public WebDavDispatcherClass2(
+            IOptions<WebDavServerOptions> options,
             IEnumerable<IClass2Handler> handlers,
             IWebDavContextAccessor contextAccessor)
         {
+            var enabled = options.Value.EnableClass2;
             _contextAccessor = contextAccessor;
             var httpMethods = new HashSet<string>();
 
-            foreach (var handler in handlers)
+            if (enabled)
             {
-                var handlerFound = false;
-
-                if (handler is ILockHandler lockHandler)
+                // Only add supported HTTP methods and handlers if Class 2 support is enabled
+                foreach (var handler in handlers)
                 {
-                    _lockHandler = lockHandler;
-                    handlerFound = true;
-                }
+                    var handlerFound = false;
 
-                if (handler is IUnlockHandler unlockHandler)
-                {
-                    _unlockHandler = unlockHandler;
-                    handlerFound = true;
-                }
+                    if (handler is ILockHandler lockHandler)
+                    {
+                        _lockHandler = lockHandler;
+                        handlerFound = true;
+                    }
 
-                if (!handlerFound)
-                {
-                    throw new NotSupportedException();
-                }
+                    if (handler is IUnlockHandler unlockHandler)
+                    {
+                        _unlockHandler = unlockHandler;
+                        handlerFound = true;
+                    }
 
-                foreach (var httpMethod in handler.HttpMethods)
-                {
-                    httpMethods.Add(httpMethod);
+                    if (!handlerFound)
+                    {
+                        throw new NotSupportedException();
+                    }
+
+                    foreach (var httpMethod in handler.HttpMethods)
+                    {
+                        httpMethods.Add(httpMethod);
+                    }
                 }
             }
 
@@ -69,10 +78,14 @@ namespace FubarDev.WebDavServer.Dispatchers
                 ["Allow"] = HttpMethods,
             };
 
-            DefaultResponseHeaders = new Dictionary<string, IEnumerable<string>>()
+            var defaultResponseHeaders = new Dictionary<string, IEnumerable<string>>();
+            if (enabled)
             {
-                ["DAV"] = new[] { "2" },
-            };
+                // Only add "DAV" header if Class 2 support is enabled
+                defaultResponseHeaders["DAV"] = new[] { "2" };
+            }
+
+            DefaultResponseHeaders = defaultResponseHeaders;
         }
 
         /// <inheritdoc />

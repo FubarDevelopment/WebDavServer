@@ -98,7 +98,7 @@ namespace FubarDev.WebDavServer.Sample.AspNetCore
             services
                 .AddMvcCore()
                 .AddAuthorization()
-                .AddWebDav(Program.DisableLocking);
+                .AddWebDav(opt => opt.EnableClass2 = !Program.DisableLocking);
 
             var serverConfig = new ServerConfiguration();
             var serverConfigSection = Configuration.GetSection("Server");

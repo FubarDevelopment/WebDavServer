@@ -2,6 +2,8 @@
 // Copyright (c) Fubar Development Junker. All rights reserved.
 // </copyright>
 
+using System;
+
 using FubarDev.WebDavServer;
 using FubarDev.WebDavServer.AspNetCore;
 using FubarDev.WebDavServer.AspNetCore.Filters;
@@ -53,12 +55,19 @@ namespace Microsoft.Extensions.DependencyInjection
         /// </list>
         /// </remarks>
         /// <param name="services">The service collection to add the WebDAV services to.</param>
-        /// <param name="disableLocking">A value that indicates whether locking should be disabled.</param>
+        /// <param name="configureOptions">WebDAV server options to configure.</param>
         /// <returns>the <paramref name="services"/>.</returns>
         public static IServiceCollection AddWebDav(
             this IServiceCollection services,
-            bool disableLocking = false)
+            Action<WebDavServerOptions>? configureOptions = null)
         {
+            var options = new WebDavServerOptions();
+            if (configureOptions != null)
+            {
+                configureOptions(options);
+                services.Configure(configureOptions);
+            }
+
             services.TryAddScoped<IImplicitLockFactory, DefaultImplicitLockFactory>();
             services.TryAddEnumerable(ServiceDescriptor.Transient<IConfigureOptions<MvcOptions>, WebDavXmlSerializerMvcOptionsSetup>());
             services.TryAddEnumerable(ServiceDescriptor.Transient<IConfigureOptions<MvcOptions>, WebDavExceptionFilterMvcOptionsSetup>());
@@ -88,7 +97,7 @@ namespace Microsoft.Extensions.DependencyInjection
                     .AddClasses(classes => classes.AssignableTo<IWebDavClass1>())
                     .AsImplementedInterfaces()
                     .WithScopedLifetime());
-            if (!disableLocking)
+            if (options.EnableClass2)
             {
                 services.TryAddSingleton<ILockCleanupTask, LockCleanupTask>();
                 services.Scan(
