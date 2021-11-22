@@ -15,6 +15,9 @@ using Microsoft.Extensions.Logging;
 
 namespace FubarDev.WebDavServer.AspNetCore.Filters
 {
+    /// <summary>
+    /// Attribute to handle exception filtering for WebDAV requests.
+    /// </summary>
     public class WebDavExceptionFilterAttribute : ExceptionFilterAttribute
     {
         /// <inheritdoc />
@@ -33,11 +36,11 @@ namespace FubarDev.WebDavServer.AspNetCore.Filters
                     context.ExceptionHandled = true;
                     return;
                 case WebDavException webDavException:
-                    context.Result = BuildResultForStatusCode(context, webDavException.StatusCode, webDavException.Message);
+                    context.Result = BuildResultForStatusCode(context, webDavException.StatusCode);
                     context.ExceptionHandled = true;
                     return;
-                case UnauthorizedAccessException unauthorizedAccessException:
-                    context.Result = BuildResultForStatusCode(context, WebDavStatusCode.Forbidden, unauthorizedAccessException.Message);
+                case UnauthorizedAccessException:
+                    context.Result = BuildResultForStatusCode(context, WebDavStatusCode.Forbidden);
                     context.ExceptionHandled = true;
                     return;
             }
@@ -50,10 +53,10 @@ namespace FubarDev.WebDavServer.AspNetCore.Filters
                 context.Exception.Message);
         }
 
-        private IActionResult BuildResultForStatusCode(
+        protected static IActionResult BuildResultForStatusCode(
             ExceptionContext context,
             WebDavStatusCode statusCode,
-            string optionalMessage)
+            string? optionalMessage = null)
         {
             switch (statusCode)
             {
@@ -74,7 +77,10 @@ namespace FubarDev.WebDavServer.AspNetCore.Filters
                             ItemsElementName = new[] { ItemsChoiceType2.status, },
                             Items = new object[]
                             {
-                                new Status(context.HttpContext.Request.Protocol, statusCode, optionalMessage).ToString(),
+                                new Status(
+                                    context.HttpContext.Request.Protocol,
+                                    statusCode,
+                                    optionalMessage ?? context.Exception.Message).ToString(),
                             },
                         },
                     },

@@ -102,6 +102,11 @@ namespace FubarDev.WebDavServer.Model
         FailedDependency = 424,
 
         /// <summary>
+        /// The <c>Internal Server Error</c> (500) status code
+        /// </summary>
+        InternalServerError = HttpStatusCode.InternalServerError,
+
+        /// <summary>
         /// The <c>Not Implemented</c> (501) status code
         /// </summary>
         NotImplemented = HttpStatusCode.NotImplemented,

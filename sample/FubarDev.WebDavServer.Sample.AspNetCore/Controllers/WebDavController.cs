@@ -1,4 +1,5 @@
 ﻿using FubarDev.WebDavServer.AspNetCore;
+using FubarDev.WebDavServer.AspNetCore.Filters;
 
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -8,6 +9,7 @@ namespace FubarDev.WebDavServer.Sample.AspNetCore.Controllers
 {
     [Route("_dav/{*path}")]
     [Authorize]
+    [WebDavAnyExceptionFilter]
     public class WebDavController : WebDavControllerBase
     {
         public WebDavController(
