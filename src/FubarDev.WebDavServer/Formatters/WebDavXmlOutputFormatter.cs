@@ -11,6 +11,7 @@ using System.Xml.Linq;
 using System.Xml.Serialization;
 
 using FubarDev.WebDavServer.Model;
+using FubarDev.WebDavServer.Utils;
 
 using Microsoft.Extensions.Options;
 
@@ -68,7 +69,7 @@ namespace FubarDev.WebDavServer.Formatters
             }
 
             temp.Position = 0;
-            await temp.CopyToAsync(output, 81920, cancellationToken).ConfigureAwait(false);
+            await temp.CopyToAsync(output, SystemInfo.CopyBufferSize, cancellationToken).ConfigureAwait(false);
         }
 
         private static class SerializerInstance<T>

@@ -179,10 +179,10 @@ namespace FubarDev.WebDavServer.Utils
 
         private static async Task SkipAsync(Stream baseStream, long count, CancellationToken ct)
         {
-            var buffer = new byte[65536];
+            var buffer = new byte[SystemInfo.CopyBufferSize];
             while (count != 0)
             {
-                var blockSize = Math.Min(65536, count);
+                var blockSize = Math.Min(SystemInfo.CopyBufferSize, count);
                 await baseStream.ReadAsync(buffer, 0, (int)blockSize, ct).ConfigureAwait(false);
                 count -= blockSize;
             }

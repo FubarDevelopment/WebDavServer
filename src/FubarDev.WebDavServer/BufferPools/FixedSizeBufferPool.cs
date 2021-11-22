@@ -2,6 +2,10 @@
 // Copyright (c) Fubar Development Junker. All rights reserved.
 // </copyright>
 
+#if !DEBUG
+using FubarDev.WebDavServer.Utils;
+#endif
+
 namespace FubarDev.WebDavServer.BufferPools
 {
     /// <summary>
@@ -12,7 +16,7 @@ namespace FubarDev.WebDavServer.BufferPools
 #if DEBUG
         public const int DefaultBufferSize = 4096;
 #else
-        public const int DefaultBufferSize = 65536;
+        public const int DefaultBufferSize = SystemInfo.CopyBufferSize;
 #endif
 
         private readonly byte[] _buffer;

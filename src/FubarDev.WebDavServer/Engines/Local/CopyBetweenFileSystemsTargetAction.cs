@@ -7,6 +7,7 @@ using System.Threading;
 using System.Threading.Tasks;
 
 using FubarDev.WebDavServer.FileSystem;
+using FubarDev.WebDavServer.Utils;
 
 namespace FubarDev.WebDavServer.Engines.Local
 {
@@ -68,13 +69,9 @@ namespace FubarDev.WebDavServer.Engines.Local
 
         private static async Task CopyAsync(IDocument source, IDocument destination, CancellationToken cancellationToken)
         {
-            using (var sourceStream = await source.OpenReadAsync(cancellationToken).ConfigureAwait(false))
-            {
-                using (var destinationStream = await destination.CreateAsync(cancellationToken).ConfigureAwait(false))
-                {
-                    await sourceStream.CopyToAsync(destinationStream, 65536, cancellationToken).ConfigureAwait(false);
-                }
-            }
+            using var sourceStream = await source.OpenReadAsync(cancellationToken).ConfigureAwait(false);
+            using var destinationStream = await destination.CreateAsync(cancellationToken).ConfigureAwait(false);
+            await sourceStream.CopyToAsync(destinationStream, SystemInfo.CopyBufferSize, cancellationToken).ConfigureAwait(false);
         }
 
         private static async Task CopyETagAsync(IEntry source, IEntry dest, CancellationToken cancellationToken)

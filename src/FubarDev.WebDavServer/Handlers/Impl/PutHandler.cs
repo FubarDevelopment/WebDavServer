@@ -211,7 +211,7 @@ namespace FubarDev.WebDavServer.Handlers.Impl
                     if (contentLength == null)
                     {
                         _logger.LogInformation("Writing data without content length");
-                        await data.CopyToAsync(fileStream, 65536, cancellationToken).ConfigureAwait(false);
+                        await data.CopyToAsync(fileStream, SystemInfo.CopyBufferSize, cancellationToken).ConfigureAwait(false);
                     }
                     else
                     {

@@ -116,7 +116,7 @@ namespace FubarDev.WebDavServer.Handlers.Impl.GetResults
                         // Use the CopyToAsync function of the stream itself, because
                         // we're able to pass the cancellation token. This is a workaround
                         // for issue dotnet/corefx#9071 and fixes FubarDevelopment/WebDavServer#47.
-                        await streamView.CopyToAsync(response.Body, 81920, ct)
+                        await streamView.CopyToAsync(response.Body, SystemInfo.CopyBufferSize, ct)
                             .ConfigureAwait(false);
                     }
                 }

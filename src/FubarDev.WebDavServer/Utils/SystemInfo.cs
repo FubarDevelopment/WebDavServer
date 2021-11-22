@@ -16,6 +16,11 @@ namespace FubarDev.WebDavServer.Utils
     public static class SystemInfo
     {
         /// <summary>
+        /// Gets the size of the buffer for copy operations.
+        /// </summary>
+        public const int CopyBufferSize = 81920;
+
+        /// <summary>
         /// The name of the claim for the user home path.
         /// </summary>
         public const string UserHomePathClaim = "DAV:user-home-path";

@@ -9,6 +9,7 @@ using System.Threading;
 using System.Threading.Tasks;
 
 using FubarDev.WebDavServer.Model;
+using FubarDev.WebDavServer.Utils;
 
 using SQLitePCL;
 
@@ -77,13 +78,13 @@ namespace FubarDev.WebDavServer.FileSystem.SQLite
             // Get the current data
             using (var current = await OpenReadAsync(cancellationToken))
             {
-                await current.CopyToAsync(temp, 65536, cancellationToken);
+                await current.CopyToAsync(temp, SystemInfo.CopyBufferSize, cancellationToken);
             }
 
             // Copy to the write-only stream
             temp.Position = 0;
             var stream = new SQLiteBlobWriteStream(Connection, Info, true);
-            await temp.CopyToAsync(stream, 65536, cancellationToken);
+            await temp.CopyToAsync(stream, SystemInfo.CopyBufferSize, cancellationToken);
 
             stream.Position = position;
             return stream;
