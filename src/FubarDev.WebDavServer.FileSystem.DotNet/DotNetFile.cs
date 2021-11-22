@@ -57,6 +57,14 @@ namespace FubarDev.WebDavServer.FileSystem.DotNet
         }
 
         /// <inheritdoc />
+        public Task<Stream> OpenWriteAsync(long position, CancellationToken cancellationToken)
+        {
+            var stream = FileInfo.OpenWrite();
+            stream.Position = position;
+            return Task.FromResult<Stream>(stream);
+        }
+
+        /// <inheritdoc />
         public override async Task<DeleteResult> DeleteAsync(CancellationToken cancellationToken)
         {
             FileInfo.Delete();

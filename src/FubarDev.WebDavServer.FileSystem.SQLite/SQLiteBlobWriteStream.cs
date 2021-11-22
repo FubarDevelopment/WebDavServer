@@ -16,16 +16,20 @@ namespace FubarDev.WebDavServer.FileSystem.SQLite
     {
         private readonly SQLiteConnection _connection;
         private readonly FileEntry _entry;
-        private readonly MemoryStream _baseStream = new MemoryStream();
+        private readonly MemoryStream _baseStream = new();
 
-        public SQLiteBlobWriteStream(SQLiteConnection connection, FileEntry entry)
+        public SQLiteBlobWriteStream(
+            SQLiteConnection connection,
+            FileEntry entry,
+            bool allowRead = false)
         {
             _connection = connection;
             _entry = entry;
+            CanRead = allowRead;
         }
 
         /// <inheritdoc />
-        public override bool CanRead { get; } = false;
+        public override bool CanRead { get; }
 
         /// <inheritdoc />
         public override bool CanSeek { get; } = true;
@@ -64,7 +68,7 @@ namespace FubarDev.WebDavServer.FileSystem.SQLite
         /// <inheritdoc />
         public override int Read(byte[] buffer, int offset, int count)
         {
-            throw new NotSupportedException();
+            return _baseStream.Read(buffer, offset, count);
         }
 
         /// <inheritdoc />

@@ -28,7 +28,7 @@ namespace FubarDev.WebDavServer.FileSystem.InMemory
         /// <param name="path">The root-relative path of this document.</param>
         /// <param name="name">The name of this document.</param>
         public InMemoryFile(InMemoryFileSystem fileSystem, ICollection parent, Uri path, string name)
-            : this(fileSystem, parent, path, name, new byte[0])
+            : this(fileSystem, parent, path, name, Array.Empty<byte>())
         {
         }
 
@@ -96,6 +96,28 @@ namespace FubarDev.WebDavServer.FileSystem.InMemory
             }
 
             return Task.FromResult<Stream>(Data = new MyMemoryStream(this));
+        }
+
+        /// <inheritdoc />
+        public async Task<Stream> OpenWriteAsync(long position, CancellationToken cancellationToken)
+        {
+            if (InMemoryFileSystem.IsReadOnly)
+            {
+                throw new UnauthorizedAccessException("Failed to modify a read-only file system");
+            }
+
+            // Create a copy of the current data
+            var oldData = Data.ToArray();
+            var newData = new MyMemoryStream(this);
+            await newData.WriteAsync(oldData, 0, oldData.Length, cancellationToken);
+
+            // Set the write position
+            newData.Position = position;
+
+            // The new stream becomes the file content (will be replaced on dispose)
+            Data = newData;
+
+            return newData;
         }
 
         /// <inheritdoc />

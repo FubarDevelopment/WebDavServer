@@ -101,5 +101,34 @@ namespace FubarDev.WebDavServer.Tests.FileSystem
             await root.CreateCollectionAsync("test1", ct).ConfigureAwait(false);
             await Assert.ThrowsAnyAsync<IOException>(async () => await root.CreateCollectionAsync("test1", ct).ConfigureAwait(false)).ConfigureAwait(false);
         }
+
+        [Fact]
+        public async Task SupportPartialChange()
+        {
+            var ct = CancellationToken.None;
+            var root = await FileSystem.Root.ConfigureAwait(false);
+            var doc = await root.CreateDocumentAsync("test1.txt", ct);
+            await using (var stream = await doc.CreateAsync(ct).ConfigureAwait(false))
+            {
+                await stream.WriteAsync(new byte[] { 0, 1 }, ct).ConfigureAwait(false);
+            }
+
+            await using (var stream = await doc.OpenWriteAsync(1, ct).ConfigureAwait(false))
+            {
+                await stream.WriteAsync(new byte[] { 2 }, ct).ConfigureAwait(false);
+            }
+
+            await using var temp = new MemoryStream();
+            await using (var stream = await doc.OpenReadAsync(ct).ConfigureAwait(false))
+            {
+                await stream.CopyToAsync(temp, ct).ConfigureAwait(false);
+            }
+
+            var data = temp.ToArray();
+            Assert.Collection(
+                data,
+                v => Assert.Equal(0, v),
+                v => Assert.Equal(2, v));
+        }
     }
 }

@@ -70,6 +70,26 @@ namespace FubarDev.WebDavServer.FileSystem.SQLite
         }
 
         /// <inheritdoc />
+        public async Task<Stream> OpenWriteAsync(long position, CancellationToken cancellationToken)
+        {
+            using var temp = new MemoryStream();
+
+            // Get the current data
+            using (var current = await OpenReadAsync(cancellationToken))
+            {
+                await current.CopyToAsync(temp, 65536, cancellationToken);
+            }
+
+            // Copy to the write-only stream
+            temp.Position = 0;
+            var stream = new SQLiteBlobWriteStream(Connection, Info, true);
+            await temp.CopyToAsync(stream, 65536, cancellationToken);
+
+            stream.Position = position;
+            return stream;
+        }
+
+        /// <inheritdoc />
         public override async Task<DeleteResult> DeleteAsync(CancellationToken cancellationToken)
         {
             Connection.RunInTransaction(() =>

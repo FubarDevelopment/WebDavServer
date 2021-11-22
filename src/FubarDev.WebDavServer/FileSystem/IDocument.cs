@@ -33,6 +33,14 @@ namespace FubarDev.WebDavServer.FileSystem
         Task<Stream> CreateAsync(CancellationToken cancellationToken);
 
         /// <summary>
+        /// Opens the document for writing.
+        /// </summary>
+        /// <param name="position">The position where the data should be written to.</param>
+        /// <param name="cancellationToken">The cancellation token.</param>
+        /// <returns>The stream used to write to the document.</returns>
+        Task<Stream> OpenWriteAsync(long position, CancellationToken cancellationToken);
+
+        /// <summary>
         /// Copies the document to a new location within the same file system.
         /// </summary>
         /// <param name="collection">The destination collection.</param>

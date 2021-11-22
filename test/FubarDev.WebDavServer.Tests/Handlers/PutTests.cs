@@ -5,7 +5,6 @@
 using System;
 using System.Net;
 using System.Net.Http;
-using System.Net.Http.Headers;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
@@ -13,6 +12,7 @@ using System.Threading.Tasks;
 using Xunit;
 
 using Encoding = System.Text.Encoding;
+using MediaTypeHeaderValue = System.Net.Http.Headers.MediaTypeHeaderValue;
 
 namespace FubarDev.WebDavServer.Tests.Handlers
 {
@@ -63,23 +63,57 @@ namespace FubarDev.WebDavServer.Tests.Handlers
         public async Task PutTextWithoutContentType()
         {
             var ct = CancellationToken.None;
-            using (var client = Server.CreateClient())
+            using var client = Server.CreateClient();
+            var sourceContent = new ByteArrayContent(_testBlock.Value);
+            using (var response = await client.PutAsync("test1.txt", sourceContent, ct).ConfigureAwait(false))
             {
-                var sourceContent = new ByteArrayContent(_testBlock.Value);
-                using (var response = await client.PutAsync("test1.txt", sourceContent, ct).ConfigureAwait(false))
-                {
-                    Assert.Equal(HttpStatusCode.Created, response.StatusCode);
-                }
+                Assert.Equal(HttpStatusCode.Created, response.StatusCode);
+            }
 
-                using (var response = await client.GetAsync("test1.txt", ct).ConfigureAwait(false))
-                {
-                    var content = response
-                        .EnsureSuccessStatusCode().Content;
+            using (var response = await client.GetAsync("test1.txt", ct).ConfigureAwait(false))
+            {
+                var content = response
+                    .EnsureSuccessStatusCode().Content;
 
-                    Assert.Equal(HttpStatusCode.OK, response.StatusCode);
-                    Assert.Equal(_testBlock.Value.Length, content.Headers.ContentLength);
-                    Assert.Equal("text/plain", content.Headers.ContentType.ToString());
-                }
+                Assert.Equal(HttpStatusCode.OK, response.StatusCode);
+                Assert.Equal(_testBlock.Value.Length, content.Headers.ContentLength);
+                Assert.Equal("text/plain", content.Headers.ContentType.ToString());
+            }
+        }
+
+        [Fact]
+        public async Task PutTextWithContentRange()
+        {
+            var ct = CancellationToken.None;
+            using var client = Server.CreateClient();
+            var sourceContent1 = new ByteArrayContent(Encoding.UTF8.GetBytes("ab"));
+            using (var response = await client.PutAsync("test1.txt", sourceContent1, ct).ConfigureAwait(false))
+            {
+                Assert.Equal(HttpStatusCode.Created, response.StatusCode);
+            }
+
+            var sourceContent2 = new ByteArrayContent(Encoding.UTF8.GetBytes("c"))
+            {
+                Headers =
+                {
+                    ContentRange = new(1, 1),
+                },
+            };
+            using (var response = await client.PutAsync("test1.txt", sourceContent2, ct).ConfigureAwait(false))
+            {
+                Assert.Equal(HttpStatusCode.OK, response.StatusCode);
+            }
+
+            using (var response = await client.GetAsync("test1.txt", ct).ConfigureAwait(false))
+            {
+                var content = response
+                    .EnsureSuccessStatusCode().Content;
+
+                Assert.Equal(HttpStatusCode.OK, response.StatusCode);
+                Assert.Equal(2, content.Headers.ContentLength);
+                Assert.Equal("text/plain", content.Headers.ContentType.ToString());
+                var text = await content.ReadAsStringAsync().ConfigureAwait(false);
+                Assert.Equal("ac", text);
             }
         }
     }

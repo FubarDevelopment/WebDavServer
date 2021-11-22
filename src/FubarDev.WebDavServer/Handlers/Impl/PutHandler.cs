@@ -19,6 +19,7 @@ using FubarDev.WebDavServer.Props;
 using FubarDev.WebDavServer.Utils;
 
 using Microsoft.Extensions.Logging;
+using Microsoft.Net.Http.Headers;
 
 namespace FubarDev.WebDavServer.Handlers.Impl
 {
@@ -64,11 +65,35 @@ namespace FubarDev.WebDavServer.Handlers.Impl
             _logger = logger;
         }
 
+        /// <summary>
+        /// The kind of PUT operation.
+        /// </summary>
+        private enum PutOperation
+        {
+            /// <summary>
+            /// A new document will be created.
+            /// </summary>
+            Create,
+
+            /// <summary>
+            /// The current document will be replaced.
+            /// </summary>
+            Overwrite,
+
+            /// <summary>
+            /// The existing document will be modified.
+            /// </summary>
+            Modify,
+        }
+
         /// <inheritdoc />
         public IEnumerable<string> HttpMethods { get; } = new[] { "PUT" };
 
         /// <inheritdoc />
-        public async Task<IWebDavResult> PutAsync(string path, Stream data, CancellationToken cancellationToken)
+        public async Task<IWebDavResult> PutAsync(
+            string path,
+            Stream data,
+            CancellationToken cancellationToken)
         {
             var selectionResult = await _fileSystem.SelectAsync(path, cancellationToken).ConfigureAwait(false);
             if (selectionResult.ResultType == SelectionResultType.MissingCollection)
@@ -109,22 +134,60 @@ namespace FubarDev.WebDavServer.Handlers.Impl
                 LockAccessType.Write,
                 LockShareMode.Exclusive,
                 TimeoutHeader.Infinite);
-            var tempLock = await _implicitLockFactory.CreateAsync(lockRequirements, cancellationToken).ConfigureAwait(false);
+            var tempLock = await _implicitLockFactory.CreateAsync(lockRequirements, cancellationToken)
+                .ConfigureAwait(false);
             if (!tempLock.IsSuccessful)
             {
                 return tempLock.CreateErrorResponse();
             }
 
+            PutOperation operation;
+            long? startPosition = null;
+            if (selectionResult.ResultType == SelectionResultType.FoundDocument)
+            {
+                if (context.RequestHeaders.Headers.TryGetValue(HeaderNames.ContentRange, out var range))
+                {
+                    if (range.Count > 1)
+                    {
+                        // We only allow 1 byte range (max)
+                        return new WebDavResult(WebDavStatusCode.RequestedRangeNotSatisfiable);
+                    }
+
+                    if (range.Count != 0)
+                    {
+                        var contentRange = ContentRangeHeaderValue.Parse(range.Single());
+                        startPosition = contentRange.HasRange
+                            ? contentRange.From
+                            : 0;
+                        operation = PutOperation.Modify;
+                    }
+                    else
+                    {
+                        operation = PutOperation.Overwrite;
+                    }
+                }
+                else
+                {
+                    operation = PutOperation.Overwrite;
+                }
+            }
+            else
+            {
+                operation = PutOperation.Create;
+            }
+
             try
             {
                 IDocument document;
-                if (selectionResult.ResultType == SelectionResultType.FoundDocument)
+                if (operation != PutOperation.Create)
                 {
+                    // Use the existing document
                     Debug.Assert(selectionResult.Document != null, "selectionResult.Document != null");
                     document = selectionResult.Document;
                 }
                 else
                 {
+                    // Create a new document
                     Debug.Assert(
                         selectionResult.ResultType == SelectionResultType.MissingDocumentOrCollection,
                         "selectionResult.ResultType == SelectionResultType.MissingDocumentOrCollection");
@@ -137,13 +200,18 @@ namespace FubarDev.WebDavServer.Handlers.Impl
                 }
 
                 Debug.Assert(document != null, nameof(document) + " != null");
-                using (var fileStream = await document.CreateAsync(cancellationToken).ConfigureAwait(false))
+                var fileStream = operation == PutOperation.Modify
+                    ? await document.OpenWriteAsync(startPosition ?? 0, cancellationToken)
+                        .ConfigureAwait(false)
+                    : await document.CreateAsync(cancellationToken)
+                        .ConfigureAwait(false);
+                using (fileStream)
                 {
                     var contentLength = context.RequestHeaders.ContentLength;
                     if (contentLength == null)
                     {
                         _logger.LogInformation("Writing data without content length");
-                        await data.CopyToAsync(fileStream).ConfigureAwait(false);
+                        await data.CopyToAsync(fileStream, 65536, cancellationToken).ConfigureAwait(false);
                     }
                     else
                     {
@@ -158,7 +226,7 @@ namespace FubarDev.WebDavServer.Handlers.Impl
                 if (docPropertyStore != null)
                 {
                     // Remove the old dead properties first
-                    if (selectionResult.ResultType == SelectionResultType.FoundDocument)
+                    if (operation == PutOperation.Overwrite)
                     {
                         Debug.Assert(selectionResult.Document != null, "selectionResult.Document != null");
                         await docPropertyStore.RemoveAsync(selectionResult.Document, cancellationToken)
@@ -174,18 +242,21 @@ namespace FubarDev.WebDavServer.Handlers.Impl
                         .ConfigureAwait(false);
                 }
 
-                var parent = document.Parent;
-                Debug.Assert(parent != null, "parent != null");
-                var parentPropStore = parent.FileSystem.PropertyStore;
-                if (parentPropStore != null)
+                // Update the ETag of the collection if the file was created
+                if (operation == PutOperation.Create)
                 {
-                    await parentPropStore.UpdateETagAsync(parent, cancellationToken).ConfigureAwait(false);
+                    var parent = document.Parent;
+                    Debug.Assert(parent != null, "parent != null");
+                    var parentPropStore = parent.FileSystem.PropertyStore;
+                    if (parentPropStore != null)
+                    {
+                        await parentPropStore.UpdateETagAsync(parent, cancellationToken).ConfigureAwait(false);
+                    }
+
+                    return new WebDavResult(WebDavStatusCode.Created);
                 }
 
-                return
-                    new WebDavResult(selectionResult.ResultType != SelectionResultType.FoundDocument
-                        ? WebDavStatusCode.Created
-                        : WebDavStatusCode.OK);
+                return new WebDavResult(WebDavStatusCode.OK);
             }
             finally
             {
@@ -195,24 +266,22 @@ namespace FubarDev.WebDavServer.Handlers.Impl
 
         private async Task Copy(Stream source, Stream destination, long contentLength, CancellationToken cancellationToken)
         {
-            using (var pool = _bufferPoolFactory.CreatePool())
+            using var pool = _bufferPoolFactory.CreatePool();
+            var readCount = 0;
+            var totalReadCount = 0L;
+            var remaining = contentLength;
+            while (remaining != 0)
             {
-                var readCount = 0;
-                var totalReadCount = 0L;
-                var remaining = contentLength;
-                while (remaining != 0)
-                {
-                    var buffer = pool.GetBuffer(readCount);
-                    var copySize = (int)Math.Min(remaining, buffer.Length);
-                    readCount = await source.ReadAsync(buffer, 0, copySize, cancellationToken).ConfigureAwait(false);
-                    await destination.WriteAsync(buffer, 0, readCount, cancellationToken).ConfigureAwait(false);
+                var buffer = pool.GetBuffer(readCount);
+                var copySize = (int)Math.Min(remaining, buffer.Length);
+                readCount = await source.ReadAsync(buffer, 0, copySize, cancellationToken).ConfigureAwait(false);
+                await destination.WriteAsync(buffer, 0, readCount, cancellationToken).ConfigureAwait(false);
 
-                    remaining -= readCount;
-                    totalReadCount += readCount;
-                    if (_logger.IsEnabled(LogLevel.Trace))
-                    {
-                        _logger.LogTrace("Wrote {Count} bytes", totalReadCount);
-                    }
+                remaining -= readCount;
+                totalReadCount += readCount;
+                if (_logger.IsEnabled(LogLevel.Trace))
+                {
+                    _logger.LogTrace("Wrote {Count} bytes", totalReadCount);
                 }
             }
         }
