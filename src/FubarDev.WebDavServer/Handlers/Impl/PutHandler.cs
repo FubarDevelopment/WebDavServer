@@ -256,7 +256,7 @@ namespace FubarDev.WebDavServer.Handlers.Impl
                     return new WebDavResult(WebDavStatusCode.Created);
                 }
 
-                return new WebDavResult(WebDavStatusCode.OK);
+                return new WebDavResult(WebDavStatusCode.NoContent);
             }
             finally
             {

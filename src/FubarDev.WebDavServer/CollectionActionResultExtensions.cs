@@ -65,6 +65,7 @@ namespace FubarDev.WebDavServer
             {
                 case ActionStatus.Created:
                     return WebDavStatusCode.Created;
+                case ActionStatus.Updated:
                 case ActionStatus.Overwritten:
                     return WebDavStatusCode.NoContent;
                 case ActionStatus.OverwriteFailed:

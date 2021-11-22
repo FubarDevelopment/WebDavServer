@@ -102,6 +102,29 @@ namespace FubarDev.WebDavServer.Handlers.Impl
                     deleteResult = new DeleteResult(WebDavStatusCode.Forbidden, targetEntry);
                 }
 
+                var lockManager = _rootFileSystem.LockManager;
+                if (lockManager != null)
+                {
+                    var locksToRemove = await lockManager
+                        .GetAffectedLocksAsync(path, true, false, cancellationToken)
+                        .ConfigureAwait(false);
+                    foreach (var activeLock in locksToRemove)
+                    {
+                        await lockManager.ReleaseAsync(
+                                activeLock.Path,
+                                new Uri(activeLock.StateToken),
+                                cancellationToken)
+                            .ConfigureAwait(false);
+                    }
+                }
+
+                // In the case of success: return 204 No Content
+                if (deleteResult.StatusCode == WebDavStatusCode.OK)
+                {
+                    return new WebDavResult(WebDavStatusCode.NoContent);
+                }
+
+                // Otherwise, return a multistatus with 207 Multi-Status.
                 var result = new multistatus()
                 {
                     response = new[]
@@ -118,22 +141,6 @@ namespace FubarDev.WebDavServer.Handlers.Impl
                         },
                     },
                 };
-
-                var lockManager = _rootFileSystem.LockManager;
-                if (lockManager != null)
-                {
-                    var locksToRemove = await lockManager
-                        .GetAffectedLocksAsync(path, true, false, cancellationToken)
-                        .ConfigureAwait(false);
-                    foreach (var activeLock in locksToRemove)
-                    {
-                        await lockManager.ReleaseAsync(
-                                activeLock.Path,
-                                new Uri(activeLock.StateToken),
-                                cancellationToken)
-                            .ConfigureAwait(false);
-                    }
-                }
 
                 return new WebDavResult<multistatus>(WebDavStatusCode.MultiStatus, result);
             }

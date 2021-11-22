@@ -58,7 +58,12 @@ namespace FubarDev.WebDavServer.Engines
         /// <param name="target">The target of the operation.</param>
         /// <param name="cancellationToken">The cancellation token.</param>
         /// <returns>The result information of the current operation.</returns>
-        public async Task<CollectionActionResult> ExecuteAsync(Uri sourceUrl, ICollection source, DepthHeader depth, TMissing target, CancellationToken cancellationToken)
+        public async Task<CollectionActionResult> ExecuteAsync(
+            Uri sourceUrl,
+            ICollection source,
+            DepthHeader depth,
+            TMissing target,
+            CancellationToken cancellationToken)
         {
             if (_logger.IsEnabled(LogLevel.Trace))
             {
@@ -415,7 +420,13 @@ namespace FubarDev.WebDavServer.Engines
                 };
             }
 
-            return await ExecuteAsync(sourceUrl, sourceNode, newColl, properties, cancellationToken).ConfigureAwait(false);
+            var result = await ExecuteAsync(sourceUrl, sourceNode, newColl, properties, cancellationToken).ConfigureAwait(false);
+            if (result.Status == ActionStatus.Updated)
+            {
+                result = result with { Status = ActionStatus.Created };
+            }
+
+            return result;
         }
 
         private async Task<CollectionActionResult> ExecuteAsync(
@@ -452,7 +463,13 @@ namespace FubarDev.WebDavServer.Engines
                     };
                 }
 
-                return await ExecuteAsync(sourceUrl, sourceNode, missing, cancellationToken).ConfigureAwait(false);
+                var replaceResult = await ExecuteAsync(sourceUrl, sourceNode, missing, cancellationToken).ConfigureAwait(false);
+                if (replaceResult.Status == ActionStatus.Created)
+                {
+                    replaceResult = replaceResult with { Status = ActionStatus.Overwritten };
+                }
+
+                return replaceResult;
             }
 
             if (_logger.IsEnabled(LogLevel.Trace))
@@ -544,6 +561,11 @@ namespace FubarDev.WebDavServer.Engines
                     var missingTarget = target.NewMissing(childNode.Name);
                     var newColl = await missingTarget.CreateCollectionAsync(cancellationToken).ConfigureAwait(false);
                     var collResult = await ExecuteAsync(docUrl, childNode, newColl, childProperties, cancellationToken).ConfigureAwait(false);
+                    if (collResult.Status == ActionStatus.Updated)
+                    {
+                        collResult = collResult with { Status = ActionStatus.Created };
+                    }
+
                     collectionActionResults = collectionActionResults.Add(collResult);
                 }
                 else
@@ -619,7 +641,7 @@ namespace FubarDev.WebDavServer.Engines
                 };
             }
 
-            return new CollectionActionResult(ActionStatus.Created, target)
+            return new CollectionActionResult(ActionStatus.Updated, target)
             {
                 CollectionActionResults = collectionActionResults,
                 DocumentActionResults = documentActionResults,

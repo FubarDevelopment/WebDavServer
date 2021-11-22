@@ -15,6 +15,11 @@ namespace FubarDev.WebDavServer.Engines
         Created,
 
         /// <summary>
+        /// The target collection was updated
+        /// </summary>
+        Updated,
+
+        /// <summary>
         /// The target entry was overwritten
         /// </summary>
         Overwritten,
