@@ -1,4 +1,4 @@
-﻿// <copyright file="WebDavExceptionFilter.cs" company="Fubar Development Junker">
+// <copyright file="WebDavExceptionFilterAttribute.cs" company="Fubar Development Junker">
 // Copyright (c) Fubar Development Junker. All rights reserved.
 // </copyright>
 
@@ -15,52 +15,35 @@ using Microsoft.Extensions.Logging;
 
 namespace FubarDev.WebDavServer.AspNetCore.Filters
 {
-    /// <summary>
-    /// An exception filter that handles exception of the WebDAV server.
-    /// </summary>
-    public class WebDavExceptionFilter : IExceptionFilter
+    public class WebDavExceptionFilterAttribute : ExceptionFilterAttribute
     {
-        private readonly ILogger? _logger;
-        private readonly ILogger<WebDavIndirectResult>? _responseLogger;
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="WebDavExceptionFilter"/> class.
-        /// </summary>
-        /// <param name="loggerFactory">The factory for the logger for this exception filter and the <see cref="WebDavIndirectResult"/>.</param>
-        public WebDavExceptionFilter(
-            ILoggerFactory? loggerFactory = null)
-        {
-            _logger = loggerFactory?.CreateLogger<WebDavExceptionFilter>();
-            _responseLogger = loggerFactory?.CreateLogger<WebDavIndirectResult>();
-        }
-
         /// <inheritdoc />
-        public void OnException(ExceptionContext context)
+        public override void OnException(ExceptionContext context)
         {
             if (context.ExceptionHandled)
             {
                 return;
             }
 
-            if (context.Exception is NotImplementedException || context.Exception is NotSupportedException)
+            switch (context.Exception)
             {
-                context.Result = new StatusCodeResult(StatusCodes.Status501NotImplemented);
-                return;
+                case NotImplementedException:
+                case NotSupportedException:
+                    context.Result = new StatusCodeResult(StatusCodes.Status501NotImplemented);
+                    context.ExceptionHandled = true;
+                    return;
+                case WebDavException webDavException:
+                    context.Result = BuildResultForStatusCode(context, webDavException.StatusCode, webDavException.Message);
+                    context.ExceptionHandled = true;
+                    return;
+                case UnauthorizedAccessException unauthorizedAccessException:
+                    context.Result = BuildResultForStatusCode(context, WebDavStatusCode.Forbidden, unauthorizedAccessException.Message);
+                    context.ExceptionHandled = true;
+                    return;
             }
 
-            if (context.Exception is WebDavException webDavException)
-            {
-                context.Result = BuildResultForStatusCode(context, webDavException.StatusCode, webDavException.Message);
-                return;
-            }
-
-            if (context.Exception is UnauthorizedAccessException unauthorizedAccessException)
-            {
-                context.Result = BuildResultForStatusCode(context, WebDavStatusCode.Forbidden, unauthorizedAccessException.Message);
-                return;
-            }
-
-            _logger?.LogError(
+            var logger = context.HttpContext.RequestServices.GetService<ILogger<WebDavExceptionFilterAttribute>>();
+            logger?.LogError(
                 Logging.EventIds.Unspecified,
                 context.Exception,
                 "An unhandled exception occurred with the message {ExceptionMessage}",
@@ -96,8 +79,10 @@ namespace FubarDev.WebDavServer.AspNetCore.Filters
                         },
                     },
                 });
+
+            var responseLogger = context.HttpContext.RequestServices.GetService<ILogger<WebDavIndirectResult>>();
             var webDavContext = context.HttpContext.RequestServices.GetService<IWebDavContext>();
-            return new WebDavIndirectResult(webDavContext, result, _responseLogger);
+            return new WebDavIndirectResult(webDavContext, result, responseLogger);
         }
     }
 }

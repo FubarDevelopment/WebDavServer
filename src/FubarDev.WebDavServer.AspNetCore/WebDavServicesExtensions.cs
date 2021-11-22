@@ -6,8 +6,6 @@ using System;
 
 using FubarDev.WebDavServer;
 using FubarDev.WebDavServer.AspNetCore;
-using FubarDev.WebDavServer.AspNetCore.Filters;
-using FubarDev.WebDavServer.AspNetCore.Filters.Internal;
 using FubarDev.WebDavServer.AspNetCore.Formatters.Internal;
 using FubarDev.WebDavServer.BufferPools;
 using FubarDev.WebDavServer.Dispatchers;
@@ -70,7 +68,6 @@ namespace Microsoft.Extensions.DependencyInjection
 
             services.TryAddScoped<IImplicitLockFactory, DefaultImplicitLockFactory>();
             services.TryAddEnumerable(ServiceDescriptor.Transient<IConfigureOptions<MvcOptions>, WebDavXmlSerializerMvcOptionsSetup>());
-            services.TryAddEnumerable(ServiceDescriptor.Transient<IConfigureOptions<MvcOptions>, WebDavExceptionFilterMvcOptionsSetup>());
             services.TryAddSingleton<IHttpContextAccessor, HttpContextAccessor>();
             services.TryAddSingleton<IDeadPropertyFactory, DeadPropertyFactory>();
             services.TryAddScoped<IRemoteCopyTargetActionsFactory, DefaultRemoteTargetActionsFactory>();
@@ -87,7 +84,6 @@ namespace Microsoft.Extensions.DependencyInjection
                 .AddOptions()
                 .AddScoped(sp => sp.GetRequiredService<IWebDavContextAccessor>().WebDavContext)
                 .AddScoped<IWebDavDispatcher, WebDavServer>()
-                .AddSingleton<WebDavExceptionFilter>()
                 .AddScoped<IWebDavOutputFormatter, WebDavXmlOutputFormatter>()
                 .AddSingleton<LockCleanupTask>()
                 .AddScoped(sp => sp.GetRequiredService<IBufferPoolFactory>().CreatePool());

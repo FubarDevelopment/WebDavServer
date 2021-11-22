@@ -6,6 +6,7 @@ using System;
 using System.Threading;
 using System.Threading.Tasks;
 
+using FubarDev.WebDavServer.AspNetCore.Filters;
 using FubarDev.WebDavServer.AspNetCore.Routing;
 using FubarDev.WebDavServer.Model;
 using FubarDev.WebDavServer.Model.Headers;
@@ -19,6 +20,7 @@ namespace FubarDev.WebDavServer.AspNetCore
     /// <summary>
     /// The default WebDAV controller.
     /// </summary>
+    [WebDavExceptionFilter]
     public class WebDavControllerBase : ControllerBase
     {
         private readonly IWebDavContext _context;
