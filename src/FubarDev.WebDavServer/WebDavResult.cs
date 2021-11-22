@@ -51,7 +51,7 @@ namespace FubarDev.WebDavServer
                 response.Headers[header.Key] = header.Value.ToArray();
             }
 
-            return Task.FromResult(0);
+            return Task.CompletedTask;
         }
 
         /// <summary>
