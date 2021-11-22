@@ -98,7 +98,7 @@ namespace FubarDev.WebDavServer.Sample.AspNetCore
             services
                 .AddMvcCore()
                 .AddAuthorization()
-                .AddWebDav();
+                .AddWebDav(Program.DisableLocking);
 
             var serverConfig = new ServerConfiguration();
             var serverConfigSection = Configuration.GetSection("Server");
@@ -149,20 +149,23 @@ namespace FubarDev.WebDavServer.Sample.AspNetCore
                     throw new NotSupportedException();
             }
 
-            switch (serverConfig.LockManager)
+            if (!Program.DisableLocking)
             {
-                case LockManagerType.InMemory:
-                    services
-                        .AddSingleton<ILockManager, InMemoryLockManager>();
-                    break;
-                case LockManagerType.SQLite:
-                    services
-                        .AddSingleton<ILockManager, SQLiteLockManager>()
-                        .Configure<SQLiteLockManagerOptions>(
-                            cfg => cfg.DatabaseFileName = Path.Combine(Path.GetTempPath(), "webdav", "locks.db"));
-                    break;
-                default:
-                    throw new NotSupportedException();
+                switch (serverConfig.LockManager)
+                {
+                    case LockManagerType.InMemory:
+                        services
+                            .AddSingleton<ILockManager, InMemoryLockManager>();
+                        break;
+                    case LockManagerType.SQLite:
+                        services
+                            .AddSingleton<ILockManager, SQLiteLockManager>()
+                            .Configure<SQLiteLockManagerOptions>(
+                                cfg => cfg.DatabaseFileName = Path.Combine(Path.GetTempPath(), "webdav", "locks.db"));
+                        break;
+                    default:
+                        throw new NotSupportedException();
+                }
             }
         }
 

@@ -32,10 +32,13 @@ namespace FubarDev.WebDavServer.AspNetCore
         /// </list>
         /// </remarks>
         /// <param name="builder">The <see cref="IMvcCoreBuilder"/></param>
+        /// <param name="disableLocking">A value that indicates whether locking should be disabled.</param>
         /// <returns>The <paramref name="builder"/></returns>
-        public static IMvcCoreBuilder AddWebDav(this IMvcCoreBuilder builder)
+        public static IMvcCoreBuilder AddWebDav(
+            this IMvcCoreBuilder builder,
+            bool disableLocking = false)
         {
-            builder.Services.AddWebDav();
+            builder.Services.AddWebDav(disableLocking);
             return builder;
         }
     }

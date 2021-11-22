@@ -16,6 +16,8 @@ namespace FubarDev.WebDavServer.Sample.AspNetCore
 {
     public class Program
     {
+        public static bool DisableLocking { get; private set; }
+
         public static bool IsKestrel { get; private set; }
 
         public static bool DisableBasicAuth { get; private set; }
@@ -69,6 +71,7 @@ namespace FubarDev.WebDavServer.Sample.AspNetCore
             var config = tempHost.Services.GetRequiredService<IConfiguration>();
 
             DisableBasicAuth = config.GetValue<bool>("disable-basic-auth");
+            DisableLocking = config.GetValue<bool>("disable-locking");
 
             return BuildWebHost(
                 args,

@@ -53,8 +53,11 @@ namespace Microsoft.Extensions.DependencyInjection
         /// </list>
         /// </remarks>
         /// <param name="services">The service collection to add the WebDAV services to.</param>
+        /// <param name="disableLocking">A value that indicates whether locking should be disabled.</param>
         /// <returns>the <paramref name="services"/>.</returns>
-        public static IServiceCollection AddWebDav(this IServiceCollection services)
+        public static IServiceCollection AddWebDav(
+            this IServiceCollection services,
+            bool disableLocking = false)
         {
             services.TryAddScoped<IImplicitLockFactory, DefaultImplicitLockFactory>();
             services.TryAddEnumerable(ServiceDescriptor.Transient<IConfigureOptions<MvcOptions>, WebDavXmlSerializerMvcOptionsSetup>());
@@ -67,7 +70,6 @@ namespace Microsoft.Extensions.DependencyInjection
             services.TryAddSingleton<ISystemClock, SystemClock>();
             services.TryAddSingleton<ITimeoutPolicy, DefaultTimeoutPolicy>();
             services.TryAddSingleton<IWebDavContextAccessor, WebDavContextAccessor>();
-            services.TryAddSingleton<ILockCleanupTask, LockCleanupTask>();
             services.TryAddSingleton<IPathTraversalEngine, PathTraversalEngine>();
             services.TryAddSingleton<IMimeTypeDetector, DefaultMimeTypeDetector>();
             services.TryAddSingleton<IEntryPropertyInitializer, DefaultEntryPropertyInitializer>();
@@ -82,10 +84,27 @@ namespace Microsoft.Extensions.DependencyInjection
                 .AddScoped(sp => sp.GetRequiredService<IBufferPoolFactory>().CreatePool());
             services.Scan(
                 scan => scan
-                    .FromAssemblyOf<IHandler>()
-                    .AddClasses(classes => classes.AssignableToAny(typeof(IHandler), typeof(IWebDavClass)))
+                    .FromAssemblyOf<IWebDavClass>()
+                    .AddClasses(classes => classes.AssignableTo<IWebDavClass1>())
                     .AsImplementedInterfaces()
-                    .WithTransientLifetime());
+                    .WithScopedLifetime());
+            if (!disableLocking)
+            {
+                services.TryAddSingleton<ILockCleanupTask, LockCleanupTask>();
+                services.Scan(
+                    scan => scan
+                        .FromAssemblyOf<IWebDavClass>()
+                        .AddClasses(classes => classes.AssignableTo<IWebDavClass2>())
+                        .AsImplementedInterfaces()
+                        .WithScopedLifetime());
+            }
+
+            services.Scan(
+                scan => scan
+                    .FromAssemblyOf<IHandler>()
+                    .AddClasses(classes => classes.AssignableToAny(typeof(IHandler)))
+                    .AsImplementedInterfaces()
+                    .WithScopedLifetime());
             services.Scan(
                 scan => scan
                     .FromAssemblyOf<IDefaultDeadPropertyFactory>()
