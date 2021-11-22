@@ -2,6 +2,8 @@
 // Copyright (c) Fubar Development Junker. All rights reserved.
 // </copyright>
 
+using System;
+using System.IO;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
@@ -9,10 +11,11 @@ using System.Threading.Tasks;
 using FubarDev.WebDavServer.FileSystem;
 using FubarDev.WebDavServer.Model;
 using FubarDev.WebDavServer.Props.Live;
+using FubarDev.WebDavServer.Utils;
 
 namespace FubarDev.WebDavServer.Handlers.Impl.GetResults
 {
-    internal class WebDavCollectionResult : WebDavResult
+    internal class WebDavCollectionResult : WebDavResult, IDisposable
     {
         private readonly ICollection _collection;
 
@@ -22,9 +25,12 @@ namespace FubarDev.WebDavServer.Handlers.Impl.GetResults
             _collection = collection;
         }
 
+        public Stream? ResponseStream { get; init; }
+
         public override async Task ExecuteResultAsync(IWebDavResponse response, CancellationToken ct)
         {
             await base.ExecuteResultAsync(response, ct).ConfigureAwait(false);
+
             var lastWriteTimeProperty = _collection
                 .GetLiveProperties().OfType<LastModifiedProperty>()
                 .SingleOrDefault();
@@ -33,6 +39,25 @@ namespace FubarDev.WebDavServer.Handlers.Impl.GetResults
                 var lastWriteTimeUtc = await lastWriteTimeProperty.GetValueAsync(ct).ConfigureAwait(false);
                 response.Headers["Last-Modified"] = new[] { lastWriteTimeUtc.ToString("R") };
             }
+
+            if (ResponseStream != null)
+            {
+                try
+                {
+                    await ResponseStream.CopyToAsync(response.Body, SystemInfo.CopyBufferSize, ct)
+                        .ConfigureAwait(false);
+                }
+                finally
+                {
+                    ResponseStream.Position = 0;
+                }
+            }
+        }
+
+        /// <inheritdoc />
+        public void Dispose()
+        {
+            ResponseStream?.Dispose();
         }
     }
 }

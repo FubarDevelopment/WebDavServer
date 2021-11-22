@@ -12,6 +12,7 @@ using FubarDev.WebDavServer.FileSystem;
 using FubarDev.WebDavServer.FileSystem.DotNet;
 using FubarDev.WebDavServer.FileSystem.InMemory;
 using FubarDev.WebDavServer.FileSystem.SQLite;
+using FubarDev.WebDavServer.Handlers;
 using FubarDev.WebDavServer.Locking;
 using FubarDev.WebDavServer.Locking.InMemory;
 using FubarDev.WebDavServer.Locking.SQLite;
@@ -20,6 +21,7 @@ using FubarDev.WebDavServer.Props.Store.InMemory;
 using FubarDev.WebDavServer.Props.Store.SQLite;
 using FubarDev.WebDavServer.Props.Store.TextFile;
 using FubarDev.WebDavServer.Sample.AspNetCore.Middlewares;
+using FubarDev.WebDavServer.Sample.AspNetCore.Services;
 
 using idunno.Authentication.Basic;
 
@@ -99,6 +101,9 @@ namespace FubarDev.WebDavServer.Sample.AspNetCore
                 .AddMvcCore()
                 .AddAuthorization()
                 .AddWebDav(opt => opt.EnableClass2 = !Program.DisableLocking);
+
+            services
+                .AddSingleton<IGetCollectionHandler, GetCollectionHandler>();
 
             var serverConfig = new ServerConfiguration();
             var serverConfigSection = Configuration.GetSection("Server");

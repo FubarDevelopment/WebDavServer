@@ -1,6 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk.Web">
   <PropertyGroup>
     <TargetFramework>netcoreapp3.1</TargetFramework>
+    <LangVersion>latest</LangVersion>
     <IsPackable>false</IsPackable>
     <NoWarn>NU1701;$(NoWarn)</NoWarn>
     <AppConfig>App.config</AppConfig>
@@ -11,9 +12,17 @@
     <Content Remove="wwwroot\**" />
     <EmbeddedResource Remove="wwwroot\**" />
     <None Remove="wwwroot\**" />
+    <None Update="Assets\collection-contents.liquid">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
   </ItemGroup>
   <ItemGroup>
+    <PackageReference Include="Fluid.Core" Version="2.2.2" />
     <PackageReference Include="idunno.Authentication.Basic" Version="2.2.2" />
+    <PackageReference Include="IsExternalInit" Version="1.0.1">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
     <PackageReference Include="Microsoft.Windows.Compatibility" Version="3.1.2" />
     <PackageReference Include="Mono.DllMap" Version="1.0.1" />
     <PackageReference Include="Npam" Version="1.0.2" />

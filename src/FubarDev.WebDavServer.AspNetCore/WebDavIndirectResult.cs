@@ -2,6 +2,7 @@
 // Copyright (c) Fubar Development Junker. All rights reserved.
 // </copyright>
 
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -47,6 +48,12 @@ namespace FubarDev.WebDavServer.AspNetCore
         public override async Task ExecuteResultAsync(ActionContext context)
         {
             var response = context.HttpContext.Response;
+
+            // Register the WebDAV response if it's disposable
+            if (_result is IDisposable disposableResult)
+            {
+                response.RegisterForDispose(disposableResult);
+            }
 
             // Sets the HTTP status code
             await base.ExecuteResultAsync(context).ConfigureAwait(false);

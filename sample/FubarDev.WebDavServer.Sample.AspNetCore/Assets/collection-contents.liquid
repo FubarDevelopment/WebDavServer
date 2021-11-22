@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <title>WebDAV: {{ Collection.Name }}</title>
+    </head>
+    <body>
+        <h1>Contents of {{ Collection.Path }}</h1>
+        <ul>
+            <li><a href="{{ Collection.HrefParent }}">..</a></li>
+            {% for item in Children %}
+                <li><a href="{{ item.Href }}">{{ item.Name }}</a></li>
+            {% endfor %}
+        </ul>
+    </body>
+</html>

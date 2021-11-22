@@ -22,15 +22,21 @@ namespace FubarDev.WebDavServer.Handlers.Impl
     public class GetHeadHandler : IGetHandler, IHeadHandler
     {
         private readonly IWebDavContextAccessor _contextAccessor;
+        private readonly IGetCollectionHandler? _getCollectionHandler;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="GetHeadHandler"/> class.
         /// </summary>
         /// <param name="fileSystem">The root file system.</param>
         /// <param name="contextAccessor">The WebDAV context accessor.</param>
-        public GetHeadHandler(IFileSystem fileSystem, IWebDavContextAccessor contextAccessor)
+        /// <param name="getCollectionHandler">The handler to get the contents of collections.</param>
+        public GetHeadHandler(
+            IFileSystem fileSystem,
+            IWebDavContextAccessor contextAccessor,
+            IGetCollectionHandler? getCollectionHandler = null)
         {
             _contextAccessor = contextAccessor;
+            _getCollectionHandler = getCollectionHandler;
             FileSystem = fileSystem;
         }
 
@@ -77,12 +83,24 @@ namespace FubarDev.WebDavServer.Handlers.Impl
 
             if (selectionResult.ResultType == SelectionResultType.FoundCollection)
             {
+                Debug.Assert(selectionResult.Collection != null, "selectionResult.Collection != null");
+
                 if (returnFile)
                 {
-                    throw new NotSupportedException();
+                    if (_getCollectionHandler == null)
+                    {
+                        throw new NotSupportedException();
+                    }
+
+                    // Gets the contents of the collection
+                    return new WebDavCollectionResult(selectionResult.Collection)
+                    {
+                        ResponseStream = await _getCollectionHandler.GetCollectionAsync(
+                            selectionResult.Collection,
+                            cancellationToken),
+                    };
                 }
 
-                Debug.Assert(selectionResult.Collection != null, "selectionResult.Collection != null");
                 return new WebDavCollectionResult(selectionResult.Collection);
             }
 
