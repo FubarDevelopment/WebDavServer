@@ -101,7 +101,7 @@ namespace FubarDev.WebDavServer.Tests.Handlers
             };
             using (var response = await client.PutAsync("test1.txt", sourceContent2, ct).ConfigureAwait(false))
             {
-                Assert.Equal(HttpStatusCode.OK, response.StatusCode);
+                Assert.Equal(HttpStatusCode.NoContent, response.StatusCode);
             }
 
             using (var response = await client.GetAsync("test1.txt", ct).ConfigureAwait(false))
