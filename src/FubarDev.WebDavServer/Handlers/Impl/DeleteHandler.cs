@@ -119,7 +119,7 @@ namespace FubarDev.WebDavServer.Handlers.Impl
                 }
 
                 // In the case of success: return 204 No Content
-                if (deleteResult.StatusCode == WebDavStatusCode.OK)
+                if (deleteResult.StatusCode is WebDavStatusCode.OK or WebDavStatusCode.NoContent)
                 {
                     return new WebDavResult(WebDavStatusCode.NoContent);
                 }
