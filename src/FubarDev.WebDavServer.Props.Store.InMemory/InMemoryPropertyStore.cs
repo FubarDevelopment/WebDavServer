@@ -83,7 +83,7 @@ namespace FubarDev.WebDavServer.Props.Store.InMemory
             IDictionary<XName, XElement> properties;
             if (!_properties.TryGetValue(entry.Path, out properties))
             {
-                result.AddRange(keys.Select(x => false));
+                result.AddRange(keys.Select(_ => false));
             }
             else
             {

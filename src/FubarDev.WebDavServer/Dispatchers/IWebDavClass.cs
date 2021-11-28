@@ -3,13 +3,6 @@
 // </copyright>
 
 using System.Collections.Generic;
-using System.Diagnostics.CodeAnalysis;
-using System.Xml.Linq;
-
-using FubarDev.WebDavServer.FileSystem;
-using FubarDev.WebDavServer.Props;
-using FubarDev.WebDavServer.Props.Dead;
-using FubarDev.WebDavServer.Props.Store;
 
 namespace FubarDev.WebDavServer.Dispatchers
 {

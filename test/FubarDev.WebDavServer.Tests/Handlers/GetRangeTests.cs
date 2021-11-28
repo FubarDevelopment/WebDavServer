@@ -98,7 +98,7 @@ namespace FubarDev.WebDavServer.Tests.Handlers
 
                     var contentRange = content.Headers.ContentRange;
                     Assert.NotNull(contentRange);
-                    Assert.Equal(0, contentRange.From);
+                    Assert.Equal(0, contentRange!.From);
                     Assert.Equal(1, contentRange.To);
                     Assert.Equal(_testBlock.Value.Length, contentRange.Length);
 
@@ -140,12 +140,12 @@ namespace FubarDev.WebDavServer.Tests.Handlers
 
                     var contentRange = content.Headers.ContentRange;
                     Assert.NotNull(contentRange);
-                    Assert.Equal(0, contentRange.From);
+                    Assert.Equal(0, contentRange!.From);
                     Assert.Equal(9, contentRange.To);
                     Assert.Equal(_testBlock.Value.Length, contentRange.Length);
 
                     var data = await content
-                        .ReadAsByteArrayAsync().ConfigureAwait(false);
+                        .ReadAsByteArrayAsync(ct).ConfigureAwait(false);
                     var s = Encoding.UTF8.GetString(data);
                     Assert.Equal("1234567890", s);
                 }

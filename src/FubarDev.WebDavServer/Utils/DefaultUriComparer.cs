@@ -41,7 +41,7 @@ namespace FubarDev.WebDavServer.Utils
 
             if (!IsSameHost(x, y))
             {
-                return UriComparisonResult.DifferentHost;
+                return UriComparisonResult.PrecedingDifferentHost;
             }
 
             var context = _contextAccessor?.WebDavContext;
@@ -122,6 +122,11 @@ namespace FubarDev.WebDavServer.Utils
             if (string.IsNullOrEmpty(path))
             {
                 return "/";
+            }
+
+            if (!path.StartsWith("/"))
+            {
+                return "/" + path;
             }
 
             return path;

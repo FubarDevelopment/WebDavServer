@@ -64,10 +64,10 @@ namespace FubarDev.WebDavServer.Props.Store.TextFile
             var rnd = new Random();
             _fileReadPolicy = Policy<string>
                 .Handle<IOException>()
-                .WaitAndRetry(100, n => TimeSpan.FromMilliseconds(100 + rnd.Next(-10, 10)));
+                .WaitAndRetry(100, _ => TimeSpan.FromMilliseconds(100 + rnd.Next(-10, 10)));
             _fileWritePolicy = Policy
                 .Handle<IOException>()
-                .WaitAndRetry(100, n => TimeSpan.FromMilliseconds(100 + rnd.Next(-10, 10)));
+                .WaitAndRetry(100, _ => TimeSpan.FromMilliseconds(100 + rnd.Next(-10, 10)));
         }
 
         /// <inheritdoc />
@@ -268,7 +268,7 @@ namespace FubarDev.WebDavServer.Props.Store.TextFile
         {
             try
             {
-                _fileWritePolicy.Execute(ct => File.WriteAllText(fileName, JsonConvert.SerializeObject(data)), cancellationToken);
+                _fileWritePolicy.Execute(_ => File.WriteAllText(fileName, JsonConvert.SerializeObject(data)), cancellationToken);
             }
             catch (Exception)
             {
@@ -286,12 +286,12 @@ namespace FubarDev.WebDavServer.Props.Store.TextFile
             if (!useCache)
             {
                 var result = JsonConvert.DeserializeObject<StoreData>(
-                    _fileReadPolicy.Execute(ct => File.ReadAllText(fileName), cancellationToken));
+                    _fileReadPolicy.Execute(_ => File.ReadAllText(fileName), cancellationToken));
                 return result;
             }
 
             return JsonConvert.DeserializeObject<StoreData>(
-                _fileReadPolicy.Execute(ct => File.ReadAllText(fileName), cancellationToken));
+                _fileReadPolicy.Execute(_ => File.ReadAllText(fileName), cancellationToken));
         }
 
         private string GetFileNameFor(IEntry entry)

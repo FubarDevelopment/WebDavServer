@@ -42,10 +42,11 @@ namespace FubarDev.WebDavServer.Tests.Handlers
             Assert.Equal("Document 1", await doc1.ReadAllAsync(ct).ConfigureAwait(false));
             var props1 = await doc1.GetPropertyElementsAsync(DeadPropertyFactory, ct).ConfigureAwait(false);
 
+            Assert.NotNull(Client.BaseAddress);
             var response = await Client
                 .CopyAsync(
-                    new Uri(Client.BaseAddress, new Uri("text1.txt", UriKind.Relative)),
-                    new Uri(Client.BaseAddress, new Uri("text2.txt", UriKind.Relative)))
+                    new Uri(Client.BaseAddress!, new Uri("text1.txt", UriKind.Relative)),
+                    new Uri(Client.BaseAddress!, new Uri("text2.txt", UriKind.Relative)))
                 .ConfigureAwait(false);
             Assert.True(response.IsSuccessStatusCode);
 
@@ -66,10 +67,11 @@ namespace FubarDev.WebDavServer.Tests.Handlers
             Assert.NotNull(coll1);
             var props1 = await coll1.GetPropertyElementsAsync(DeadPropertyFactory, ct).ConfigureAwait(false);
 
+            Assert.NotNull(Client.BaseAddress);
             var response = await Client
                 .CopyAsync(
-                    new Uri(Client.BaseAddress, new Uri("test1", UriKind.Relative)),
-                    new Uri(Client.BaseAddress, new Uri("test2", UriKind.Relative)))
+                    new Uri(Client.BaseAddress!, new Uri("test1", UriKind.Relative)),
+                    new Uri(Client.BaseAddress!, new Uri("test2", UriKind.Relative)))
                 .ConfigureAwait(false);
             Assert.True(response.IsSuccessStatusCode);
 
@@ -95,10 +97,11 @@ namespace FubarDev.WebDavServer.Tests.Handlers
 
             var props1 = await coll1.GetPropertyElementsAsync(DeadPropertyFactory, ct).ConfigureAwait(false);
 
+            Assert.NotNull(Client.BaseAddress);
             var response = await Client
                 .CopyAsync(
-                    new Uri(Client.BaseAddress, new Uri("test1", UriKind.Relative)),
-                    new Uri(Client.BaseAddress, new Uri("test2", UriKind.Relative)),
+                    new Uri(Client.BaseAddress!, new Uri("test1", UriKind.Relative)),
+                    new Uri(Client.BaseAddress!, new Uri("test2", UriKind.Relative)),
                     true,
                     WebDavDepthHeaderValue.Zero)
                 .ConfigureAwait(false);
@@ -130,10 +133,11 @@ namespace FubarDev.WebDavServer.Tests.Handlers
             var props1 = await coll1.GetPropertyElementsAsync(DeadPropertyFactory, ct).ConfigureAwait(false);
             var docProps1 = await doc1.GetPropertyElementsAsync(DeadPropertyFactory, ct).ConfigureAwait(false);
 
+            Assert.NotNull(Client.BaseAddress);
             var response = await Client
                 .CopyAsync(
-                    new Uri(Client.BaseAddress, new Uri("test1", UriKind.Relative)),
-                    new Uri(Client.BaseAddress, new Uri("test2", UriKind.Relative)),
+                    new Uri(Client.BaseAddress!, new Uri("test1", UriKind.Relative)),
+                    new Uri(Client.BaseAddress!, new Uri("test2", UriKind.Relative)),
                     false,
                     WebDavDepthHeaderValue.Infinity)
                 .ConfigureAwait(false);
@@ -165,10 +169,11 @@ namespace FubarDev.WebDavServer.Tests.Handlers
 
             var props1 = await coll1.GetPropertyElementsAsync(DeadPropertyFactory, ct).ConfigureAwait(false);
 
+            Assert.NotNull(Client.BaseAddress);
             var response = await Client
                 .CopyAsync(
-                    new Uri(Client.BaseAddress, new Uri("test1", UriKind.Relative)),
-                    new Uri(Client.BaseAddress, new Uri("test2", UriKind.Relative)),
+                    new Uri(Client.BaseAddress!, new Uri("test1", UriKind.Relative)),
+                    new Uri(Client.BaseAddress!, new Uri("test2", UriKind.Relative)),
                     true,
                     WebDavDepthHeaderValue.Zero)
                 .ConfigureAwait(false);
@@ -198,10 +203,11 @@ namespace FubarDev.WebDavServer.Tests.Handlers
             var props1 = await coll1.GetPropertyElementsAsync(DeadPropertyFactory, ct).ConfigureAwait(false);
             var subProps1 = await sub1.GetPropertyElementsAsync(DeadPropertyFactory, ct).ConfigureAwait(false);
 
+            Assert.NotNull(Client.BaseAddress);
             var response = await Client
                 .CopyAsync(
-                    new Uri(Client.BaseAddress, new Uri("test1", UriKind.Relative)),
-                    new Uri(Client.BaseAddress, new Uri("test2", UriKind.Relative)),
+                    new Uri(Client.BaseAddress!, new Uri("test1", UriKind.Relative)),
+                    new Uri(Client.BaseAddress!, new Uri("test2", UriKind.Relative)),
                     true,
                     WebDavDepthHeaderValue.Infinity)
                 .ConfigureAwait(false);
@@ -239,10 +245,11 @@ namespace FubarDev.WebDavServer.Tests.Handlers
             var docProps1 = await doc1.GetPropertyElementsAsync(DeadPropertyFactory, ct).ConfigureAwait(false);
             var subProps1 = await sub1.GetPropertyElementsAsync(DeadPropertyFactory, ct).ConfigureAwait(false);
 
+            Assert.NotNull(Client.BaseAddress);
             var response = await Client
                 .CopyAsync(
-                    new Uri(Client.BaseAddress, new Uri("test1", UriKind.Relative)),
-                    new Uri(Client.BaseAddress, new Uri("test2", UriKind.Relative)),
+                    new Uri(Client.BaseAddress!, new Uri("test1", UriKind.Relative)),
+                    new Uri(Client.BaseAddress!, new Uri("test2", UriKind.Relative)),
                     true,
                     WebDavDepthHeaderValue.Infinity)
                 .ConfigureAwait(false);
@@ -284,10 +291,11 @@ namespace FubarDev.WebDavServer.Tests.Handlers
 
             var props1 = await coll1.GetPropertyElementsAsync(DeadPropertyFactory, ct).ConfigureAwait(false);
 
+            Assert.NotNull(Client.BaseAddress);
             var response = await Client
                 .CopyAsync(
-                    new Uri(Client.BaseAddress, new Uri("test1", UriKind.Relative)),
-                    new Uri(Client.BaseAddress, new Uri("test2", UriKind.Relative)),
+                    new Uri(Client.BaseAddress!, new Uri("test1", UriKind.Relative)),
+                    new Uri(Client.BaseAddress!, new Uri("test2", UriKind.Relative)),
                     true,
                     WebDavDepthHeaderValue.Zero)
                 .ConfigureAwait(false);
@@ -325,10 +333,11 @@ namespace FubarDev.WebDavServer.Tests.Handlers
             var subProps1 = await sub1.GetPropertyElementsAsync(DeadPropertyFactory, ct).ConfigureAwait(false);
             var docProps1 = await doc1.GetPropertyElementsAsync(DeadPropertyFactory, ct).ConfigureAwait(false);
 
+            Assert.NotNull(Client.BaseAddress);
             var response = await Client
                 .CopyAsync(
-                    new Uri(Client.BaseAddress, new Uri("test1", UriKind.Relative)),
-                    new Uri(Client.BaseAddress, new Uri("test2", UriKind.Relative)),
+                    new Uri(Client.BaseAddress!, new Uri("test1", UriKind.Relative)),
+                    new Uri(Client.BaseAddress!, new Uri("test2", UriKind.Relative)),
                     true,
                     WebDavDepthHeaderValue.Infinity)
                 .ConfigureAwait(false);
@@ -367,10 +376,11 @@ namespace FubarDev.WebDavServer.Tests.Handlers
 
             var props1 = await coll1.GetPropertyElementsAsync(DeadPropertyFactory, ct).ConfigureAwait(false);
 
+            Assert.NotNull(Client.BaseAddress);
             var response = await Client
                 .CopyAsync(
-                    new Uri(Client.BaseAddress, new Uri("test1", UriKind.Relative)),
-                    new Uri(Client.BaseAddress, new Uri("test2", UriKind.Relative)),
+                    new Uri(Client.BaseAddress!, new Uri("test1", UriKind.Relative)),
+                    new Uri(Client.BaseAddress!, new Uri("test2", UriKind.Relative)),
                     true,
                     WebDavDepthHeaderValue.Zero)
                 .ConfigureAwait(false);
@@ -405,10 +415,11 @@ namespace FubarDev.WebDavServer.Tests.Handlers
             var subProps11 = await sub11.GetPropertyElementsAsync(DeadPropertyFactory, ct).ConfigureAwait(false);
             var subProps12 = await sub12.GetPropertyElementsAsync(DeadPropertyFactory, ct).ConfigureAwait(false);
 
+            Assert.NotNull(Client.BaseAddress);
             var response = await Client
                 .CopyAsync(
-                    new Uri(Client.BaseAddress, new Uri("test1", UriKind.Relative)),
-                    new Uri(Client.BaseAddress, new Uri("test2", UriKind.Relative)),
+                    new Uri(Client.BaseAddress!, new Uri("test1", UriKind.Relative)),
+                    new Uri(Client.BaseAddress!, new Uri("test2", UriKind.Relative)),
                     true,
                     WebDavDepthHeaderValue.Infinity)
                 .ConfigureAwait(false);
@@ -476,10 +487,11 @@ namespace FubarDev.WebDavServer.Tests.Handlers
             var docProps121 = await doc121.GetPropertyElementsAsync(DeadPropertyFactory, ct).ConfigureAwait(false);
             var docProps122 = await doc122.GetPropertyElementsAsync(DeadPropertyFactory, ct).ConfigureAwait(false);
 
+            Assert.NotNull(Client.BaseAddress);
             var response = await Client
                 .CopyAsync(
-                    new Uri(Client.BaseAddress, new Uri("test1", UriKind.Relative)),
-                    new Uri(Client.BaseAddress, new Uri("test2", UriKind.Relative)),
+                    new Uri(Client.BaseAddress!, new Uri("test1", UriKind.Relative)),
+                    new Uri(Client.BaseAddress!, new Uri("test2", UriKind.Relative)),
                     true,
                     WebDavDepthHeaderValue.Infinity)
                 .ConfigureAwait(false);

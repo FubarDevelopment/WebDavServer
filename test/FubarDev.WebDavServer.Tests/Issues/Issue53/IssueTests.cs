@@ -20,7 +20,8 @@ namespace FubarDev.WebDavServer.Tests.Issues.Issue53
 
         public IssueTests()
         {
-            Client.BaseAddress = new Uri(Client.BaseAddress, new Uri("_dav/", UriKind.Relative));
+            Assert.NotNull(Client.BaseAddress);
+            Client.BaseAddress = new Uri(Client.BaseAddress!, new Uri("_dav/", UriKind.Relative));
         }
 
         protected override IEnumerable<Type> ControllerTypes { get; } = new[]
@@ -44,7 +45,8 @@ namespace FubarDev.WebDavServer.Tests.Issues.Issue53
         [Fact]
         public async Task CheckRootWithoutSlash()
         {
-            var requestUrl = new Uri(Client.BaseAddress.OriginalString.TrimEnd('/'));
+            Assert.NotNull(Client.BaseAddress);
+            var requestUrl = new Uri(Client.BaseAddress!.OriginalString.TrimEnd('/'));
             var propFindResponse = await Client.PropFindAsync(requestUrl, WebDavDepthHeaderValue.Zero);
             Assert.Equal(WebDavStatusCode.MultiStatus, propFindResponse.StatusCode);
             var multiStatus = await WebDavResponseContentParser

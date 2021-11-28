@@ -28,7 +28,7 @@ namespace FubarDev.WebDavServer.Props.Live
         /// <param name="propValue">The initial property value.</param>
         /// <param name="setValueAsyncFunc">The delegate to set the value asynchronously.</param>
         public LastModifiedProperty(DateTime propValue, SetPropertyValueAsyncDelegate<DateTime> setValueAsyncFunc)
-            : base(PropertyName, 0, ct => Task.FromResult(propValue), setValueAsyncFunc, WebDavXml.Dav + "lastmodified")
+            : base(PropertyName, 0, _ => Task.FromResult(propValue), setValueAsyncFunc, WebDavXml.Dav + "lastmodified")
         {
         }
 
@@ -39,7 +39,7 @@ namespace FubarDev.WebDavServer.Props.Live
         /// <param name="cost">The cost to query the properties value.</param>
         /// <param name="setValueAsyncFunc">The delegate to set the value asynchronously.</param>
         public LastModifiedProperty(DateTime propValue, int cost, SetPropertyValueAsyncDelegate<DateTime> setValueAsyncFunc)
-            : base(PropertyName, cost, ct => Task.FromResult(propValue), setValueAsyncFunc, WebDavXml.Dav + "lastmodified")
+            : base(PropertyName, cost, _ => Task.FromResult(propValue), setValueAsyncFunc, WebDavXml.Dav + "lastmodified")
         {
         }
 

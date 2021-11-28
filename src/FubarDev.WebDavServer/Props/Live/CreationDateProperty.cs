@@ -28,7 +28,7 @@ namespace FubarDev.WebDavServer.Props.Live
         /// <param name="propValue">The initial property value.</param>
         /// <param name="setValueAsyncFunc">The delegate to set the value asynchronously.</param>
         public CreationDateProperty(DateTimeOffset propValue, SetPropertyValueAsyncDelegate<DateTimeOffset> setValueAsyncFunc)
-            : base(PropertyName, 0, ct => Task.FromResult(propValue), setValueAsyncFunc)
+            : base(PropertyName, 0, _ => Task.FromResult(propValue), setValueAsyncFunc)
         {
         }
 
@@ -39,7 +39,7 @@ namespace FubarDev.WebDavServer.Props.Live
         /// <param name="cost">The cost to query the properties value.</param>
         /// <param name="setValueAsyncFunc">The delegate to set the value asynchronously.</param>
         public CreationDateProperty(DateTimeOffset propValue, int cost, SetPropertyValueAsyncDelegate<DateTimeOffset> setValueAsyncFunc)
-            : base(PropertyName, cost, ct => Task.FromResult(propValue), setValueAsyncFunc)
+            : base(PropertyName, cost, _ => Task.FromResult(propValue), setValueAsyncFunc)
         {
         }
 

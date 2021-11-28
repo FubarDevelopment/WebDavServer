@@ -290,7 +290,7 @@ namespace FubarDev.WebDavServer.Locking
                     var hrefs = failedHrefs.ToList();
                     var href = hrefs.First().OriginalString;
                     var hrefItems = hrefs.Skip(1).Select(x => x.OriginalString).Cast<object>().ToArray();
-                    var hrefItemNames = hrefItems.Select(x => ItemsChoiceType2.href).ToArray();
+                    var hrefItemNames = hrefItems.Select(_ => ItemsChoiceType2.href).ToArray();
 
                     return new LockRefreshResult(
                         new response()

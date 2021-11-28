@@ -54,7 +54,8 @@ namespace FubarDev.WebDavServer.Tests.Handlers
 
                     Assert.Equal(HttpStatusCode.OK, response.StatusCode);
                     Assert.Equal(_testBlock.Value.Length, content.Headers.ContentLength);
-                    Assert.Equal("application/octet-stream", content.Headers.ContentType.ToString());
+                    Assert.NotNull(content.Headers.ContentType);
+                    Assert.Equal("application/octet-stream", content.Headers.ContentType!.ToString());
                 }
             }
         }
@@ -77,7 +78,8 @@ namespace FubarDev.WebDavServer.Tests.Handlers
 
                 Assert.Equal(HttpStatusCode.OK, response.StatusCode);
                 Assert.Equal(_testBlock.Value.Length, content.Headers.ContentLength);
-                Assert.Equal("text/plain", content.Headers.ContentType.ToString());
+                Assert.NotNull(content.Headers.ContentType);
+                Assert.Equal("text/plain", content.Headers.ContentType!.ToString());
             }
         }
 
@@ -111,8 +113,9 @@ namespace FubarDev.WebDavServer.Tests.Handlers
 
                 Assert.Equal(HttpStatusCode.OK, response.StatusCode);
                 Assert.Equal(2, content.Headers.ContentLength);
-                Assert.Equal("text/plain", content.Headers.ContentType.ToString());
-                var text = await content.ReadAsStringAsync().ConfigureAwait(false);
+                Assert.NotNull(content.Headers.ContentType);
+                Assert.Equal("text/plain", content.Headers.ContentType!.ToString());
+                var text = await content.ReadAsStringAsync(ct).ConfigureAwait(false);
                 Assert.Equal("ac", text);
             }
         }

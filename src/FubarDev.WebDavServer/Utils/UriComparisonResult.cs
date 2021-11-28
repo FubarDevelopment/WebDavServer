@@ -12,7 +12,12 @@ namespace FubarDev.WebDavServer.Utils
         /// <summary>
         /// The URL points to different host
         /// </summary>
-        DifferentHost = -3,
+        PrecedingDifferentHost = -4,
+
+        /// <summary>
+        /// The URL points to a different service on the same host
+        /// </summary>
+        PrecedingDifferentService,
 
         /// <summary>
         /// The URL points to a path that is a preceding sibling of the target path
@@ -38,5 +43,15 @@ namespace FubarDev.WebDavServer.Utils
         /// The URL points to a path that is a following sibling of the target path
         /// </summary>
         FollowingSibling,
+
+        /// <summary>
+        /// The URL points to a different service on the same host
+        /// </summary>
+        FollowingDifferentService,
+
+        /// <summary>
+        /// The URL points to different host
+        /// </summary>
+        FollowingDifferentHost,
     }
 }

@@ -49,21 +49,21 @@ namespace FubarDev.WebDavServer.Tests.Support
         public TestHost(IServiceProvider serviceProvider, Uri baseUrl, IHttpContextAccessor httpContextAccessor)
         {
             RequestServices = serviceProvider;
-            _httpMethod = new Lazy<string?>(() => httpContextAccessor.HttpContext.Request.Method);
+            _httpMethod = new Lazy<string?>(() => httpContextAccessor.HttpContext!.Request.Method);
             PublicBaseUrl = baseUrl;
             PublicRootUrl = new Uri(baseUrl, "/");
             RequestProtocol = "HTTP/1.1";
-            _absoluteRequestUrl = new Lazy<Uri>(() => new Uri(PublicRootUrl, httpContextAccessor.HttpContext.Request.Path.ToUriComponent()));
+            _absoluteRequestUrl = new Lazy<Uri>(() => new Uri(PublicRootUrl, httpContextAccessor.HttpContext!.Request.Path.ToUriComponent()));
             _relativeRequestUrl = new Lazy<Uri>(() =>
             {
-                var requestUrl = httpContextAccessor.HttpContext.Request.Path.ToUriComponent();
+                var requestUrl = httpContextAccessor.HttpContext!.Request.Path.ToUriComponent();
                 if (!requestUrl.StartsWith("/"))
                     requestUrl = "/" + requestUrl;
                 return new Uri(requestUrl, UriKind.Relative);
             });
             _requestHeaders = new Lazy<WebDavRequestHeaders>(() =>
             {
-                var request = httpContextAccessor.HttpContext.Request;
+                var request = httpContextAccessor.HttpContext!.Request;
                 return new WebDavRequestHeaders(request.Headers, this);
             });
             _dispatcher = new Lazy<IWebDavDispatcher>(serviceProvider.GetRequiredService<IWebDavDispatcher>);
