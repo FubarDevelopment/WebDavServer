@@ -76,6 +76,7 @@ namespace Microsoft.Extensions.DependencyInjection
             services.TryAddSingleton<ISystemClock, SystemClock>();
             services.TryAddSingleton<ITimeoutPolicy, DefaultTimeoutPolicy>();
             services.TryAddSingleton<IWebDavContextAccessor, WebDavContextAccessor>();
+            services.TryAddScoped<IUriComparer, DefaultUriComparer>();
             services.TryAddSingleton<IPathTraversalEngine, PathTraversalEngine>();
             services.TryAddSingleton<IMimeTypeDetector, DefaultMimeTypeDetector>();
             services.TryAddSingleton<IEntryPropertyInitializer, DefaultEntryPropertyInitializer>();

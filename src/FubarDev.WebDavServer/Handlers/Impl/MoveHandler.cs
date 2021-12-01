@@ -39,6 +39,7 @@ namespace FubarDev.WebDavServer.Handlers.Impl
         /// <param name="litmusCompatibilityOptions">Options for the compatibility with the litmus tool.</param>
         /// <param name="logger">The logger for this handler.</param>
         /// <param name="serviceProvider">The service provider used to lazily query the <see cref="IRemoteMoveTargetActionsFactory"/> implementation.</param>
+        /// <param name="uriComparer">The comparer for URIs.</param>
         public MoveHandler(
             IFileSystem rootFileSystem,
             IWebDavContextAccessor contextAccessor,
@@ -46,8 +47,15 @@ namespace FubarDev.WebDavServer.Handlers.Impl
             IOptions<MoveHandlerOptions> options,
             IOptions<LitmusCompatibilityOptions> litmusCompatibilityOptions,
             ILogger<MoveHandler> logger,
-            IServiceProvider serviceProvider)
-            : base(rootFileSystem, contextAccessor, implicitLockFactory, litmusCompatibilityOptions, logger)
+            IServiceProvider serviceProvider,
+            IUriComparer? uriComparer = null)
+            : base(
+                rootFileSystem,
+                contextAccessor,
+                implicitLockFactory,
+                litmusCompatibilityOptions,
+                logger,
+                uriComparer)
         {
             _serviceProvider = serviceProvider;
             _options = options.Value;

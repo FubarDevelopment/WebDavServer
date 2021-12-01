@@ -32,6 +32,7 @@ namespace FubarDev.WebDavServer.Handlers.Impl
         private readonly IWebDavContextAccessor _contextAccessor;
 
         private readonly IImplicitLockFactory _implicitLockFactory;
+        private readonly IUriComparer? _uriComparer;
 
         private readonly LitmusCompatibilityOptions _litmusCompatibilityOptions;
 
@@ -43,16 +44,19 @@ namespace FubarDev.WebDavServer.Handlers.Impl
         /// <param name="implicitLockFactory">A factory to create implicit locks.</param>
         /// <param name="litmusCompatibilityOptions">Options for the compatibility with the litmus tool.</param>
         /// <param name="logger">The logger to use (either for COPY or MOVE).</param>
+        /// <param name="uriComparer">The comparer for URIs.</param>
         protected CopyMoveHandlerBase(
             IFileSystem rootFileSystem,
             IWebDavContextAccessor contextAccessor,
             IImplicitLockFactory implicitLockFactory,
             IOptions<LitmusCompatibilityOptions> litmusCompatibilityOptions,
-            ILogger logger)
+            ILogger logger,
+            IUriComparer? uriComparer = null)
         {
             _rootFileSystem = rootFileSystem;
             _contextAccessor = contextAccessor;
             _implicitLockFactory = implicitLockFactory;
+            _uriComparer = uriComparer;
             _litmusCompatibilityOptions = litmusCompatibilityOptions.Value;
             Logger = logger;
         }
@@ -132,9 +136,10 @@ namespace FubarDev.WebDavServer.Handlers.Impl
             {
                 var sourceUrl = WebDavContext.PublicAbsoluteRequestUrl;
                 var destinationUrl = new Uri(sourceUrl, destination);
+                var uriComparer = _uriComparer ?? new DefaultUriComparer(_contextAccessor);
 
                 // Ignore different schemes
-                if (!WebDavContext.PublicControllerUrl.IsBaseOf(destinationUrl) || mode == RecursiveProcessingMode.PreferCrossServer)
+                if (!uriComparer.IsThisServer(destinationUrl) || mode == RecursiveProcessingMode.PreferCrossServer)
                 {
                     if (Logger.IsEnabled(LogLevel.Trace))
                     {
