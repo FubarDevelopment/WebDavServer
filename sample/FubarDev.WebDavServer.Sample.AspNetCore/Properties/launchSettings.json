@@ -20,6 +20,14 @@
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development"
       },
+      "applicationUrl": "https://localhost:5809/"
+    },
+    "SQLite/Kestrel/Negotiate": {
+      "commandName": "Project",
+      "commandLineArgs": "--use-kestrel=true --Server:FileSystem=SQLite --Server:PropertyStore=SQLite --Server:LockManager=SQLite --disable-basic-auth=true --use-negotiate=true",
+      "environmentVariables": {
+        "ASPNETCORE_ENVIRONMENT": "Development"
+      },
       "applicationUrl": "http://localhost:5809/"
     },
     "No Locking": {

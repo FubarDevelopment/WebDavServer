@@ -17,7 +17,7 @@ namespace FubarDev.WebDavServer.Sample.AspNetCore
     public class Program
     {
         public static bool DisableLocking { get; private set; }
-
+        public static bool UseNegotiate { get; private set; }
         public static bool IsKestrel { get; private set; }
 
         public static bool DisableBasicAuth { get; private set; }
@@ -72,7 +72,7 @@ namespace FubarDev.WebDavServer.Sample.AspNetCore
 
             DisableBasicAuth = config.GetValue<bool>("disable-basic-auth");
             DisableLocking = config.GetValue<bool>("disable-locking");
-
+            UseNegotiate = config.GetValue<bool>("use-negotiate");
             return BuildWebHost(
                 args,
                 builder => ConfigureHosting(builder, config));
