@@ -16,7 +16,7 @@
     },
     "SQLite/Kestrel": {
       "commandName": "Project",
-      "commandLineArgs": "--use-kestrel=true --Server:FileSystem=SQLite --Server:PropertyStore=SQLite --Server:LockManager=SQLite --disable-basic-auth=true",
+      "commandLineArgs": "--use-kestrel=true --Server:FileSystem=SQLite --Server:PropertyStore=SQLite --Server:LockManager=SQLite",
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development"
       },
