@@ -267,4 +267,10 @@
   <data name="UnknownUnit" xml:space="preserve">
     <value>Unknown unit {0}</value>
   </data>
+  <data name="UriMustBeAbsolute" xml:space="preserve">
+    <value>The URI must be absolute</value>
+  </data>
+  <data name="UriMustNotBeAbsolute" xml:space="preserve">
+    <value>The URI must not be absolute</value>
+  </data>
 </root>
