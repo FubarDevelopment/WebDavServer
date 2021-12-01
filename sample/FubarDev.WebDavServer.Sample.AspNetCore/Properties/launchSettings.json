@@ -45,15 +45,6 @@
         "ASPNETCORE_ENVIRONMENT": "Development"
       },
       "applicationUrl": "http://*:5809/"
-    },
-    "WSL": {
-      "commandName": "WSL2",
-      "launchUrl": "http://localhost:5809/",
-      "environmentVariables": {
-        "ASPNETCORE_ENVIRONMENT": "Development",
-        "ASPNETCORE_URLS": "http://localhost:5809/"
-      },
-      "distributionName": ""
     }
   }
 }
