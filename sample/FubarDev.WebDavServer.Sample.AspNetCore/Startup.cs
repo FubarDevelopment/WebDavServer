@@ -26,6 +26,7 @@ using FubarDev.WebDavServer.Sample.AspNetCore.Services;
 using idunno.Authentication.Basic;
 
 using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authentication.Negotiate;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpOverrides;
@@ -70,32 +71,41 @@ namespace FubarDev.WebDavServer.Sample.AspNetCore
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddAuthentication(
-                    opt =>
-                    {
-                        if (!Program.IsKestrel || !Program.DisableBasicAuth)
-                        {
-                            opt.DefaultScheme = BasicAuthenticationDefaults.AuthenticationScheme;
-                        }
-                        else
-                        {
-                            opt.DefaultScheme = "Anonymous";
-                        }
+            if (Program.UseNegotiate)
+            {
+                services.AddAuthentication(NegotiateDefaults.AuthenticationScheme).AddNegotiate();
+            }
+            else
+            {
 
-                        opt.AddScheme<Authentication.AnonymousAuthHandler>("Anonymous", null);
-                    })
-                .AddBasic(
-                    opt =>
-                    {
-                        opt.Events = new BasicAuthenticationEvents()
+                services.AddAuthentication(
+                        opt =>
                         {
-                            OnValidateCredentials = ValidateCredentialsAsync,
-                        };
+                            if (!Program.IsKestrel || !Program.DisableBasicAuth)
+                            {
+                                opt.DefaultScheme = BasicAuthenticationDefaults.AuthenticationScheme;
+                            }
+                            else
+                            {
+                                opt.DefaultScheme = "Anonymous";
+                            }
 
-                        opt.AllowInsecureProtocol = true;
-                    });
+                            opt.AddScheme<Authentication.AnonymousAuthHandler>("Anonymous", null);
+                        })
+                    .AddBasic(
+                        opt =>
+                        {
+                            opt.Events = new BasicAuthenticationEvents()
+                            {
+                                OnValidateCredentials = ValidateCredentialsAsync,
+                            };
 
-            services.Configure<WebDavHostOptions>(cfg => Configuration.Bind("Host", cfg));
+                            opt.AllowInsecureProtocol = true;
+                        });
+
+                services.Configure<WebDavHostOptions>(cfg => Configuration.Bind("Host", cfg));
+            }
+            
 
             services
                 .AddMvcCore()
@@ -191,7 +201,7 @@ namespace FubarDev.WebDavServer.Sample.AspNetCore
 
             app.UseRouting();
 
-            if (!Program.IsKestrel || !Program.DisableBasicAuth)
+            if (!Program.IsKestrel || !Program.DisableBasicAuth || Program.UseNegotiate)
             {
                 app.UseAuthentication();
             }
