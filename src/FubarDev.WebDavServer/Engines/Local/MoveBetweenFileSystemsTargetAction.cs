@@ -3,6 +3,8 @@
 // </copyright>
 
 using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -64,8 +66,17 @@ namespace FubarDev.WebDavServer.Engines.Local
         }
 
         /// <inheritdoc />
-        public async Task ExecuteAsync(ICollection source, CollectionTarget destination, CancellationToken cancellationToken)
+        public async Task CleanupAsync(
+            ICollection source,
+            CollectionTarget destination,
+            IEnumerable<ActionResult> childResults,
+            CancellationToken cancellationToken)
         {
+            if (childResults.Any(r => r.IsFailure))
+            {
+                return;
+            }
+
             await CopyETagAsync(source, destination.Collection, cancellationToken).ConfigureAwait(false);
             await source.DeleteAsync(cancellationToken).ConfigureAwait(false);
         }

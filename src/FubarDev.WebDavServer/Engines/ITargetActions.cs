@@ -2,6 +2,7 @@
 // Copyright (c) Fubar Development Junker. All rights reserved.
 // </copyright>
 
+using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -63,8 +64,13 @@ namespace FubarDev.WebDavServer.Engines
         /// </remarks>
         /// <param name="source">The source collection.</param>
         /// <param name="destination">The destination collection.</param>
+        /// <param name="childResults">The result of the child operations.</param>
         /// <param name="cancellationToken">The cancellation token.</param>
         /// <returns>The task for async execution.</returns>
-        Task ExecuteAsync(ICollection source, TCollection destination, CancellationToken cancellationToken);
+        Task CleanupAsync(
+            ICollection source,
+            TCollection destination,
+            IEnumerable<ActionResult> childResults,
+            CancellationToken cancellationToken);
     }
 }

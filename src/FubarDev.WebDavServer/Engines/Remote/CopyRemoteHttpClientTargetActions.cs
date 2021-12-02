@@ -3,6 +3,7 @@
 // </copyright>
 
 using System;
+using System.Collections.Generic;
 using System.Net.Http;
 using System.Threading;
 using System.Threading.Tasks;
@@ -80,7 +81,11 @@ namespace FubarDev.WebDavServer.Engines.Remote
         }
 
         /// <inheritdoc />
-        public override Task ExecuteAsync(ICollection source, RemoteCollectionTarget destination, CancellationToken cancellationToken)
+        public override Task CleanupAsync(
+            ICollection source,
+            RemoteCollectionTarget destination,
+            IEnumerable<ActionResult> childResults,
+            CancellationToken cancellationToken)
         {
             return Task.CompletedTask;
         }

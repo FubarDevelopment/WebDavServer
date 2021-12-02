@@ -625,7 +625,13 @@ namespace FubarDev.WebDavServer.Engines
                     };
                 }
 
-                await _handler.ExecuteAsync(sourceNode.Collection, target, cancellationToken).ConfigureAwait(false);
+                var actionResults = documentActionResults.Concat(collectionActionResults);
+                await _handler.CleanupAsync(
+                        sourceNode.Collection,
+                        target,
+                        actionResults,
+                        cancellationToken)
+                    .ConfigureAwait(false);
             }
             catch (Exception ex)
             {

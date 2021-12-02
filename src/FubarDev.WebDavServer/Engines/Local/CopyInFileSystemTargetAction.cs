@@ -3,6 +3,8 @@
 // </copyright>
 
 using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -60,7 +62,11 @@ namespace FubarDev.WebDavServer.Engines.Local
         }
 
         /// <inheritdoc />
-        public Task ExecuteAsync(ICollection source, CollectionTarget destination, CancellationToken cancellationToken)
+        public Task CleanupAsync(
+            ICollection source,
+            CollectionTarget destination,
+            IEnumerable<ActionResult> childResults,
+            CancellationToken cancellationToken)
         {
             return CopyETagAsync(source, destination.Collection, cancellationToken);
         }

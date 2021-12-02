@@ -67,7 +67,11 @@ namespace FubarDev.WebDavServer.Engines.Remote
         public abstract Task<ActionResult> ExecuteAsync(IDocument source, RemoteDocumentTarget destination, CancellationToken cancellationToken);
 
         /// <inheritdoc />
-        public abstract Task ExecuteAsync(ICollection source, RemoteCollectionTarget destination, CancellationToken cancellationToken);
+        public abstract Task CleanupAsync(
+            ICollection source,
+            RemoteCollectionTarget destination,
+            IEnumerable<ActionResult> childResults,
+            CancellationToken cancellationToken);
 
         /// <inheritdoc />
         public Task<IReadOnlyCollection<XName>> SetPropertiesAsync(RemoteCollectionTarget target, IEnumerable<IUntypedWriteableProperty> properties, CancellationToken cancellationToken)
