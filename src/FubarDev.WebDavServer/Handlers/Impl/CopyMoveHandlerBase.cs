@@ -209,6 +209,11 @@ namespace FubarDev.WebDavServer.Handlers.Impl
                             string.Join("/", destinationSelectionResult.MissingNames));
                         throw new WebDavException(WebDavStatusCode.Conflict);
                     }
+                    else if (!destinationSelectionResult.IsMissing && isMove && !overwrite)
+                    {
+                        // We're not allowed to overwrite existing collections
+                        throw new WebDavException(WebDavStatusCode.PreconditionFailed);
+                    }
 
                     var destLockRequirements = new Lock(
                         new Uri(destinationPath, UriKind.Relative),
