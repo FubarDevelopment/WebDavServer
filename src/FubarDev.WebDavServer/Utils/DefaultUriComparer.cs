@@ -31,25 +31,25 @@ namespace FubarDev.WebDavServer.Utils
         /// <inheritdoc />
         public UriComparisonResult Compare(Uri x, Uri y)
         {
-            var publicBaseUrl = _contextAccessor?.WebDavContext.PublicBaseUrl;
-            var infoX = new UriInfo(x, publicBaseUrl);
-            var infoY = new UriInfo(y, publicBaseUrl);
+            var publicControllerUrl = _contextAccessor?.WebDavContext.PublicControllerUrl;
+            var infoX = new UriInfo(x, publicControllerUrl);
+            var infoY = new UriInfo(y, publicControllerUrl);
             return Compare(infoX, infoY);
         }
 
         /// <inheritdoc />
         public bool IsSameHost(Uri x, Uri y)
         {
-            var publicBaseUrl = _contextAccessor?.WebDavContext.PublicBaseUrl;
-            var infoX = new UriInfo(x, publicBaseUrl);
-            var infoY = new UriInfo(y, publicBaseUrl);
+            var publicControllerUrl = _contextAccessor?.WebDavContext.PublicControllerUrl;
+            var infoX = new UriInfo(x, publicControllerUrl);
+            var infoY = new UriInfo(y, publicControllerUrl);
             return CompareHosts(infoX, infoY) == UriComparisonResult.Equal;
         }
 
         /// <inheritdoc />
         public bool IsThisServer(Uri uri)
         {
-            return IsThisServer(uri, _contextAccessor?.WebDavContext.PublicBaseUrl);
+            return IsThisServer(uri, _contextAccessor?.WebDavContext.PublicControllerUrl);
         }
 
         /// <inheritdoc />
@@ -267,7 +267,7 @@ namespace FubarDev.WebDavServer.Utils
             return CompareRelativePaths(infoX.PathWithSlash, infoY.PathWithSlash);
         }
 
-        private bool IsThisServer(Uri uri, Uri? publicBaseUrl)
+        private bool IsThisServer(Uri uri, Uri? publicControllerUrl)
         {
             if (_contextAccessor is null)
             {
@@ -275,20 +275,20 @@ namespace FubarDev.WebDavServer.Utils
                 return true;
             }
 
-            var uriInfo = new UriInfo(uri, publicBaseUrl);
-            if (!uriInfo.IsAbsolute || publicBaseUrl is null)
+            var uriInfo = new UriInfo(uri, publicControllerUrl);
+            if (!uriInfo.IsAbsolute || publicControllerUrl is null)
             {
                 // URL is not absolute
                 return true;
             }
 
-            if (!IsSameHost(publicBaseUrl, uriInfo.Uri))
+            if (!IsSameHost(publicControllerUrl, uriInfo.Uri))
             {
                 return false;
             }
 
             // This makes "http://localhost/_dav/" a base path of "/_dav/"
-            var basePath = "/" + publicBaseUrl.GetComponents(UriComponents.Path, UriFormat.UriEscaped);
+            var basePath = "/" + publicControllerUrl.GetComponents(UriComponents.Path, UriFormat.UriEscaped);
             if (!basePath.EndsWith("/"))
             {
                 basePath += "/";

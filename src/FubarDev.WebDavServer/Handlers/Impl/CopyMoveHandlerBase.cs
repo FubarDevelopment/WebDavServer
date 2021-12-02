@@ -105,6 +105,17 @@ namespace FubarDev.WebDavServer.Handlers.Impl
             await WebDavContext.RequestHeaders
                 .ValidateAsync(sourceSelectionResult.TargetEntry, cancellationToken).ConfigureAwait(false);
 
+            var sourceUrl = WebDavContext.PublicAbsoluteRequestUrl;
+            var destinationUrl = new Uri(sourceUrl, destination);
+            var uriComparer = _uriComparer ?? new DefaultUriComparer(_contextAccessor);
+
+            // Check if source and destination overlap
+            if (uriComparer.Compare(sourceUrl, destinationUrl)
+                is UriComparisonResult.Child or UriComparisonResult.Equal)
+            {
+                throw new WebDavException(WebDavStatusCode.Forbidden);
+            }
+
             ILock? sourceLockRequirements;
 
             if (isMove)
@@ -134,10 +145,6 @@ namespace FubarDev.WebDavServer.Handlers.Impl
 
             try
             {
-                var sourceUrl = WebDavContext.PublicAbsoluteRequestUrl;
-                var destinationUrl = new Uri(sourceUrl, destination);
-                var uriComparer = _uriComparer ?? new DefaultUriComparer(_contextAccessor);
-
                 // Ignore different schemes
                 if (!uriComparer.IsThisServer(destinationUrl) || mode == RecursiveProcessingMode.PreferCrossServer)
                 {

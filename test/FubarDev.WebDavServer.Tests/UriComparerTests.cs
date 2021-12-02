@@ -171,9 +171,9 @@ namespace FubarDev.WebDavServer.Tests
 
             private class TestWebDavContext : IWebDavContext
             {
-                public TestWebDavContext(Uri publicBaseUrl)
+                public TestWebDavContext(Uri publicControllerUrl)
                 {
-                    PublicBaseUrl = publicBaseUrl;
+                    PublicControllerUrl = publicControllerUrl;
                 }
 
                 /// <inheritdoc />
@@ -192,10 +192,10 @@ namespace FubarDev.WebDavServer.Tests
                 public Uri PublicAbsoluteRequestUrl => throw new NotImplementedException();
 
                 /// <inheritdoc />
-                public Uri PublicControllerUrl => throw new NotImplementedException();
+                public Uri PublicControllerUrl { get; }
 
                 /// <inheritdoc />
-                public Uri PublicBaseUrl { get; }
+                public Uri PublicBaseUrl => throw new NotImplementedException();
 
                 /// <inheritdoc />
                 public Uri PublicRootUrl => throw new NotImplementedException();
