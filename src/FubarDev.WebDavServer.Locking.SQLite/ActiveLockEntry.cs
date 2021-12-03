@@ -60,5 +60,11 @@ namespace FubarDev.WebDavServer.Locking.SQLite
 
             return XElement.Parse(Owner);
         }
+
+        /// <inheritdoc />
+        public override string ToString()
+        {
+            return $"Path={Path} [Href={Href}, Recursive={Recursive}, AccessType={AccessType}, ShareMode={ShareMode}, Timeout={Timeout}, Owner={Owner}, StateToken={StateToken}, Issued={Issued:O}, LastRefresh={LastRefresh:O}, Expiration={Expiration:O}]";
+        }
     }
 }

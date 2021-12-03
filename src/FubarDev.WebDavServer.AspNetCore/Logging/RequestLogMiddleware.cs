@@ -1,4 +1,4 @@
-﻿// <copyright file="RequestLogMiddleware.cs" company="Fubar Development Junker">
+// <copyright file="RequestLogMiddleware.cs" company="Fubar Development Junker">
 // Copyright (c) Fubar Development Junker. All rights reserved.
 // </copyright>
 
@@ -117,15 +117,13 @@ namespace FubarDev.WebDavServer.AspNetCore.Logging
                             {
                                 context.Request.Body.Position = 0;
 
-                                using (var reader = new StreamReader(context.Request.Body, encoding, false, 1000, true))
-                                {
-                                    var doc = await XDocument.LoadAsync(
-                                            reader,
-                                            LoadOptions.PreserveWhitespace,
-                                            context.RequestAborted)
-                                        .ConfigureAwait(false);
-                                    info.Add($"Body: {doc}");
-                                }
+                                using var reader = new StreamReader(context.Request.Body, encoding, false, 1000, true);
+                                var doc = await XDocument.LoadAsync(
+                                        reader,
+                                        LoadOptions.PreserveWhitespace,
+                                        context.RequestAborted)
+                                    .ConfigureAwait(false);
+                                info.Add($"Body: {doc}");
                             }
 
                             showRawBody = false;

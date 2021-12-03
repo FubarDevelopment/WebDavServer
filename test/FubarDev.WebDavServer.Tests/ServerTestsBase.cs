@@ -84,14 +84,19 @@ namespace FubarDev.WebDavServer.Tests
         }
 
         /// <summary>
+        /// Gets the scoped services.
+        /// </summary>
+        protected IServiceProvider ScopedServices => _serviceScope.ServiceProvider;
+
+        /// <summary>
         /// Gets the WebDAV server.
         /// </summary>
         protected TestServer Server { get; }
 
         /// <summary>
-        /// Gets the WebDAV client.
+        /// Gets or sets the WebDAV client.
         /// </summary>
-        protected WebDavClient Client { get; }
+        protected WebDavClient Client { get; set; }
 
         /// <summary>
         /// Gets the factory for dead properties.

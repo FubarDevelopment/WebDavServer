@@ -38,7 +38,7 @@ namespace FubarDev.WebDavServer.Locking
         /// <param name="requestedLock">The lock to issue.</param>
         /// <param name="cancellationToken">The cancellation token.</param>
         /// <returns>Either the list of locks preventing issuing a lock or the active lock created.</returns>
-        Task<LockResult> LockAsync(ILock requestedLock, CancellationToken cancellationToken);
+        Task<LockResult> LockAsync(ILock requestedLock, CancellationToken cancellationToken = default);
 
         /// <summary>
         /// Tries to find a lock identified by the <paramref name="ifHeaderLists"/> or creates a new one if none was found.
@@ -48,7 +48,11 @@ namespace FubarDev.WebDavServer.Locking
         /// <param name="lockRequirements">The requirements the found lock must meet.</param>
         /// <param name="cancellationToken">The cancellation token.</param>
         /// <returns>Either the list of locks preventing issuing a lock or the active lock created or reused.</returns>
-        Task<IImplicitLock> LockImplicitAsync(IFileSystem rootFileSystem, IReadOnlyCollection<IfHeaderList>? ifHeaderLists, ILock lockRequirements, CancellationToken cancellationToken);
+        Task<IImplicitLock> LockImplicitAsync(
+            IFileSystem rootFileSystem,
+            IReadOnlyCollection<IfHeaderList>? ifHeaderLists,
+            ILock lockRequirements,
+            CancellationToken cancellationToken = default);
 
         /// <summary>
         /// Tries to refresh a lock.
@@ -58,7 +62,11 @@ namespace FubarDev.WebDavServer.Locking
         /// <param name="timeout">The header containing the new timeouts.</param>
         /// <param name="cancellationToken">The cancellation token.</param>
         /// <returns>Either the list of locks preventing refreshing a lock or the refreshed lock.</returns>
-        Task<LockRefreshResult> RefreshLockAsync(IFileSystem rootFileSystem, IfHeader ifHeader, TimeSpan timeout, CancellationToken cancellationToken);
+        Task<LockRefreshResult> RefreshLockAsync(
+            IFileSystem rootFileSystem,
+            IfHeader ifHeader,
+            TimeSpan timeout,
+            CancellationToken cancellationToken = default);
 
         /// <summary>
         /// Releases a lock with the given state token.
@@ -67,7 +75,10 @@ namespace FubarDev.WebDavServer.Locking
         /// <param name="stateToken">The state token of the lock to release.</param>
         /// <param name="cancellationToken">The cancellation token.</param>
         /// <returns><see langword="true" /> when there was a lock to remove.</returns>
-        Task<LockReleaseStatus> ReleaseAsync(string path, Uri stateToken, CancellationToken cancellationToken);
+        Task<LockReleaseStatus> ReleaseAsync(
+            string path,
+            Uri stateToken,
+            CancellationToken cancellationToken = default);
 
         /// <summary>
         /// Gets all active locks.
@@ -78,7 +89,7 @@ namespace FubarDev.WebDavServer.Locking
         /// </remarks>
         /// <param name="cancellationToken">The cancellation token.</param>
         /// <returns>Returns all active locks.</returns>
-        Task<IEnumerable<IActiveLock>> GetLocksAsync(CancellationToken cancellationToken);
+        Task<IEnumerable<IActiveLock>> GetLocksAsync(CancellationToken cancellationToken = default);
 
         /// <summary>
         /// Gets all active locks.
@@ -92,6 +103,10 @@ namespace FubarDev.WebDavServer.Locking
         /// <param name="findParents">Indicates whether all locks that are a parent of the given <paramref name="path"/> should be returned.</param>
         /// <param name="cancellationToken">The cancellation token.</param>
         /// <returns>Returns all active locks.</returns>
-        Task<IEnumerable<IActiveLock>> GetAffectedLocksAsync(string path, bool findChildren, bool findParents, CancellationToken cancellationToken);
+        Task<IEnumerable<IActiveLock>> GetAffectedLocksAsync(
+            string path,
+            bool findChildren,
+            bool findParents,
+            CancellationToken cancellationToken = default);
     }
 }
