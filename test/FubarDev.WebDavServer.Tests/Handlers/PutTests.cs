@@ -29,11 +29,6 @@ namespace FubarDev.WebDavServer.Tests.Handlers
 
         private static readonly Lazy<byte[]> _testBlock = new Lazy<byte[]>(() => Encoding.UTF8.GetBytes(_testText.Value));
 
-        public PutTests()
-            : base(RecursiveProcessingMode.PreferFastest)
-        {
-        }
-
         [Fact]
         public async Task PutTextWithContentType()
         {
