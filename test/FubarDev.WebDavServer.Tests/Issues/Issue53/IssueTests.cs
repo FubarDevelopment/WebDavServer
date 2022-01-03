@@ -10,6 +10,8 @@ using System.Threading.Tasks;
 using DecaTec.WebDav;
 using DecaTec.WebDav.Headers;
 
+using FubarDev.WebDavServer.Tests.Support.Controllers;
+
 using Xunit;
 
 namespace FubarDev.WebDavServer.Tests.Issues.Issue53
@@ -27,7 +29,7 @@ namespace FubarDev.WebDavServer.Tests.Issues.Issue53
         protected override IEnumerable<Type> ControllerTypes { get; } = new[]
         {
             typeof(WinRootCompatController),
-            typeof(TestWebDavController),
+            typeof(WinCompatibleWebDavController),
         };
 
         public async Task InitializeAsync()

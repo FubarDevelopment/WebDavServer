@@ -1,4 +1,4 @@
-﻿// <copyright file="ServerTestsBase.cs" company="Fubar Development Junker">
+// <copyright file="ServerTestsBase.cs" company="Fubar Development Junker">
 // Copyright (c) Fubar Development Junker. All rights reserved.
 // </copyright>
 
@@ -24,6 +24,7 @@ using FubarDev.WebDavServer.Props.Dead;
 using FubarDev.WebDavServer.Props.Store;
 using FubarDev.WebDavServer.Props.Store.InMemory;
 using FubarDev.WebDavServer.Tests.Support;
+using FubarDev.WebDavServer.Tests.Support.Controllers;
 using FubarDev.WebDavServer.Utils;
 
 using Microsoft.AspNetCore.Builder;
@@ -106,7 +107,7 @@ namespace FubarDev.WebDavServer.Tests
         /// <summary>
         /// Gets the types of the controllers to be registered.
         /// </summary>
-        protected virtual IEnumerable<Type> ControllerTypes { get; } = new[] { typeof(TestWebDavController) };
+        protected virtual IEnumerable<Type> ControllerTypes { get; } = new[] { typeof(SimpleWebDavController) };
 
         /// <inheritdoc />
         public void Dispose()
