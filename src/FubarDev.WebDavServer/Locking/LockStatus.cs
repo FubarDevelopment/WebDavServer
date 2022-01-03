@@ -2,6 +2,7 @@
 // Copyright (c) Fubar Development Junker. All rights reserved.
 // </copyright>
 
+using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -31,7 +32,10 @@ namespace FubarDev.WebDavServer.Locking
         /// <summary>
         /// Gets the empty lock status.
         /// </summary>
-        public static LockStatus Empty { get; } = new LockStatus(new IActiveLock[0], new IActiveLock[0], new IActiveLock[0]);
+        public static LockStatus Empty { get; } = new(
+            Array.Empty<IActiveLock>(),
+            Array.Empty<IActiveLock>(),
+            Array.Empty<IActiveLock>());
 
         /// <summary>
         /// Gets the locks found at the reference position.
