@@ -1,4 +1,4 @@
-﻿// <copyright file="InMemoryPropTests.cs" company="Fubar Development Junker">
+// <copyright file="SQLitePropTests.cs" company="Fubar Development Junker">
 // Copyright (c) Fubar Development Junker. All rights reserved.
 // </copyright>
 
@@ -6,9 +6,9 @@ using FubarDev.WebDavServer.Tests.Support.ServiceBuilders;
 
 namespace FubarDev.WebDavServer.Tests.PropertyStore
 {
-    public class InMemoryPropTests : SimplePropTests<InMemoryFileSystemServices>
+    public class SQLitePropTests : SimplePropTests<SQLiteFileSystemAndPropertyServices>
     {
-        public InMemoryPropTests(InMemoryFileSystemServices fsServices)
+        public SQLitePropTests(SQLiteFileSystemAndPropertyServices fsServices)
             : base(fsServices)
         {
         }
