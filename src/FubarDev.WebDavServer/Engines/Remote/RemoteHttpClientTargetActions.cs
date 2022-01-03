@@ -407,9 +407,18 @@ namespace FubarDev.WebDavServer.Engines.Remote
                 {
                     case "application/xml":
                     case "text/xml":
-                        if (!string.IsNullOrEmpty(content.Headers.ContentType.CharSet))
+                        var charSet = content.Headers.ContentType.CharSet?.Trim();
+                        if (!string.IsNullOrEmpty(charSet))
                         {
-                            encoding = Encoding.GetEncoding(content.Headers.ContentType.CharSet);
+                            if (charSet.StartsWith("\""))
+                            {
+                                charSet = charSet.Substring(1, charSet.Length - 2).Trim();
+                            }
+
+                            if (!string.IsNullOrEmpty(charSet))
+                            {
+                                encoding = Encoding.GetEncoding(charSet);
+                            }
                         }
 
                         break;
