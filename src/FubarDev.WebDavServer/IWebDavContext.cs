@@ -33,6 +33,11 @@ namespace FubarDev.WebDavServer
         string RequestMethod { get; }
 
         /// <summary>
+        /// Gets the URL to be used as HREF.
+        /// </summary>
+        Uri HrefUrl { get; }
+
+        /// <summary>
         /// Gets the request URL (e.g. <c>/webdav/path-to-controller/test.txt</c>) relative to <see cref="PublicRootUrl"/>.
         /// </summary>
         Uri PublicRelativeRequestUrl { get; }

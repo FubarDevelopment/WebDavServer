@@ -562,23 +562,29 @@ namespace FubarDev.WebDavServer.Locking
         {
             var lockRequirementUrl = BuildUrl(lockRequirements.Path);
 
-            IReadOnlyCollection<IActiveLock> affectingLocks;
+            List<IActiveLock> affectingLocks = new();
             using (var transaction = await BeginTransactionAsync(cancellationToken).ConfigureAwait(false))
             {
                 var locks = await transaction.GetActiveLocksAsync(cancellationToken).ConfigureAwait(false);
-                var lockStatus = Find(locks, lockRequirementUrl, false, true);
-                affectingLocks = lockStatus.ParentLocks.Concat(lockStatus.ReferenceLocks).ToList();
+                var lockStatus = Find(locks, lockRequirementUrl, lockRequirements.Recursive, true);
+                affectingLocks.AddRange(lockStatus.ParentLocks);
+                affectingLocks.AddRange(lockStatus.ReferenceLocks);
+                if (lockRequirements.Recursive)
+                {
+                    affectingLocks.AddRange(lockStatus.ChildLocks);
+                }
             }
 
             // Get all If header lists together with all relevant active locks
             var ifListLocks =
                 (from list in ifHeaderLists
                  let listUrl = BuildUrl(list.Path.OriginalString)
-                 let compareResult = Compare(listUrl, true, lockRequirementUrl, false)
-                 where compareResult == LockCompareResult.LeftIsParent
-                       || compareResult == LockCompareResult.Reference
+                 let compareResult = Compare(listUrl, true, lockRequirementUrl, lockRequirements.Recursive)
+                 where compareResult != LockCompareResult.NoMatch
+                 let findRecursive = compareResult == LockCompareResult.LeftIsParent
+                                     || (compareResult == LockCompareResult.Reference && lockRequirements.Recursive)
                  let foundLocks = list.RequiresStateToken
-                     ? Find(affectingLocks, listUrl, compareResult == LockCompareResult.LeftIsParent, true)
+                     ? Find(affectingLocks, listUrl, findRecursive, true)
                      : LockStatus.Empty
                  let locksForIfConditions = foundLocks.GetLocks().ToList()
                  select Tuple.Create<IfHeaderList, IReadOnlyCollection<IActiveLock>>(list, locksForIfConditions))

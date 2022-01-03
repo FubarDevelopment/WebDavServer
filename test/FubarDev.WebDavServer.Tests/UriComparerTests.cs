@@ -186,6 +186,9 @@ namespace FubarDev.WebDavServer.Tests
                 public string RequestMethod => throw new NotImplementedException();
 
                 /// <inheritdoc />
+                public Uri HrefUrl => throw new NotImplementedException();
+
+                /// <inheritdoc />
                 public Uri PublicRelativeRequestUrl => throw new NotImplementedException();
 
                 /// <inheritdoc />

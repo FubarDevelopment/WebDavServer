@@ -16,6 +16,8 @@ namespace FubarDev.WebDavServer.Tests.Support
     {
         private readonly Lazy<Uri> _absoluteRequestUrl;
 
+        private readonly Lazy<Uri> _hrefUrl;
+
         private readonly Lazy<Uri> _relativeRequestUrl;
 
         private readonly Lazy<WebDavRequestHeaders> _requestHeaders;
@@ -34,6 +36,7 @@ namespace FubarDev.WebDavServer.Tests.Support
             PublicRootUrl = new Uri(baseUrl, "/");
             RequestProtocol = "HTTP/1.1";
             _absoluteRequestUrl = new Lazy<Uri>(() => PublicRootUrl);
+            _hrefUrl = new Lazy<Uri>(() => new Uri(_absoluteRequestUrl.Value.AbsolutePath, UriKind.RelativeOrAbsolute));
             _relativeRequestUrl = new Lazy<Uri>(() =>
             {
                 var requestUrl = PublicRootUrl.MakeRelativeUri(baseUrl);
@@ -54,6 +57,7 @@ namespace FubarDev.WebDavServer.Tests.Support
             PublicRootUrl = new Uri(baseUrl, "/");
             RequestProtocol = "HTTP/1.1";
             _absoluteRequestUrl = new Lazy<Uri>(() => new Uri(PublicRootUrl, httpContextAccessor.HttpContext!.Request.Path.ToUriComponent()));
+            _hrefUrl = new Lazy<Uri>(() => new Uri(_absoluteRequestUrl.Value.AbsolutePath, UriKind.RelativeOrAbsolute));
             _relativeRequestUrl = new Lazy<Uri>(() =>
             {
                 var requestUrl = httpContextAccessor.HttpContext!.Request.Path.ToUriComponent();
@@ -84,6 +88,9 @@ namespace FubarDev.WebDavServer.Tests.Support
         public Uri ControllerRelativeUrl { get; } = new Uri(string.Empty, UriKind.RelativeOrAbsolute);
 
         public Uri ActionUrl => PublicRelativeRequestUrl;
+
+        /// <inheritdoc />
+        public Uri HrefUrl => _hrefUrl.Value;
 
         public Uri PublicRelativeRequestUrl => _relativeRequestUrl.Value;
 

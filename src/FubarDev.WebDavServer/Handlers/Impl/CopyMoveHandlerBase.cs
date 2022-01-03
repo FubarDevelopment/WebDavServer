@@ -122,7 +122,7 @@ namespace FubarDev.WebDavServer.Handlers.Impl
             {
                 sourceLockRequirements = new Lock(
                     sourceSelectionResult.TargetEntry.Path,
-                    WebDavContext.PublicRelativeRequestUrl,
+                    WebDavContext.HrefUrl,
                     depth != DepthHeader.Zero,
                     new XElement(WebDavXml.Dav + "owner", WebDavContext.User.Identity.Name),
                     LockAccessType.Write,
