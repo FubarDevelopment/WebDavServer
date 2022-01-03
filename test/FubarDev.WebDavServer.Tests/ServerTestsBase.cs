@@ -1,4 +1,4 @@
-// <copyright file="ServerTestsBase.cs" company="Fubar Development Junker">
+﻿// <copyright file="ServerTestsBase.cs" company="Fubar Development Junker">
 // Copyright (c) Fubar Development Junker. All rights reserved.
 // </copyright>
 
@@ -164,6 +164,7 @@ namespace FubarDev.WebDavServer.Tests
             ConfigureServices(tempServices);
             tempServices
                 .AddMvcCore()
+                .AddAuthorization()
                 .ConfigureApplicationPartManager(
                     apm =>
                     {
@@ -198,6 +199,8 @@ namespace FubarDev.WebDavServer.Tests
             {
                 app.UseMiddleware<RequestLogMiddleware>();
                 app.UseRouting();
+                app.UseAuthentication();
+                app.UseAuthorization();
                 app.UseEndpoints(
                     routes => { routes.MapControllers(); });
             }

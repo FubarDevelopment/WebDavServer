@@ -9,6 +9,7 @@
     <AdditionalFiles Include="$(ProjectDir)..\..\stylecop.json" Link="stylecop.json" Visible="false" />
   </ItemGroup>
   <ItemGroup>
+    <PackageReference Include="idunno.Authentication.Basic" Version="2.2.2" />
     <PackageReference Include="Microsoft.AspNetCore.TestHost" Version="3.1.21" />
     <PackageReference Include="Microsoft.Extensions.Logging.Debug" Version="3.1.0" />
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.0.0" />
