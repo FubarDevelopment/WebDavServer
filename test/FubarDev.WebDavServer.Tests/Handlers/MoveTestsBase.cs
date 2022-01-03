@@ -8,6 +8,9 @@ using System.Threading;
 using System.Threading.Tasks;
 using System.Xml.Linq;
 
+using DecaTec.WebDav;
+using DecaTec.WebDav.Headers;
+
 using FubarDev.WebDavServer.FileSystem.InMemory;
 using FubarDev.WebDavServer.Props.Dead;
 using FubarDev.WebDavServer.Props.Live;
@@ -390,6 +393,31 @@ namespace FubarDev.WebDavServer.Tests.Handlers
             var docProps222 = await doc222.GetPropertyElementsAsync(DeadPropertyFactory, ct).ConfigureAwait(false);
             var docChanges22 = PropertyComparer.FindChanges(docProps122, docProps222, _propsToIgnoreDocument);
             Assert.Empty(docChanges22);
+        }
+
+        [Fact]
+        public async Task MoveShouldReplaceDestinationAsync()
+        {
+            var ct = CancellationToken.None;
+            var fileSystem = GetFileSystem();
+            var root = await fileSystem.Root.ConfigureAwait(false);
+
+            // Initialize the file system
+            var collX = await root.CreateCollectionAsync("collX", ct);
+            await collX.CreateDocumentAsync("docX", ct);
+            await root.CreateCollectionAsync("collY", ct);
+
+            Assert.NotNull(Client.BaseAddress);
+            (await Client
+                .MoveAsync(
+                    new Uri(Client.BaseAddress!, new Uri("collY", UriKind.Relative)),
+                    new Uri(Client.BaseAddress!, new Uri("collX", UriKind.Relative)),
+                    true,
+                    ct))
+                .EnsureSuccess();
+
+            (await Client.PropFindAsync("collX/docX", WebDavDepthHeaderValue.One))
+                .EnsureStatusCode(WebDavStatusCode.NotFound);
         }
     }
 }

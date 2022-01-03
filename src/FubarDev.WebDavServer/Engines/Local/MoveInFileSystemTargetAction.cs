@@ -37,7 +37,7 @@ namespace FubarDev.WebDavServer.Engines.Local
         public IWebDavContext Context { get; }
 
         /// <inheritdoc />
-        public RecursiveTargetBehaviour ExistingTargetBehaviour { get; } = RecursiveTargetBehaviour.Overwrite;
+        public RecursiveTargetBehaviour ExistingTargetBehaviour { get; } = RecursiveTargetBehaviour.DeleteTarget;
 
         /// <inheritdoc />
         public async Task<DocumentTarget> ExecuteAsync(IDocument source, MissingTarget destination, CancellationToken cancellationToken)
