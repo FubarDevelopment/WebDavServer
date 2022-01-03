@@ -66,7 +66,7 @@ namespace FubarDev.WebDavServer
         /// <summary>
         /// Gets all headers.
         /// </summary>
-        IReadOnlyDictionary<string, IReadOnlyCollection<string>> Headers { get; }
+        IReadOnlyDictionary<string, IReadOnlyList<string>> Headers { get; }
 
         /// <summary>
         /// Gets a headers values by name.

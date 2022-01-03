@@ -27,7 +27,10 @@ namespace FubarDev.WebDavServer
         /// <param name="context">The WebDAV request context.</param>
         public WebDavRequestHeaders(IHeaderDictionary headers, IWebDavContext context)
         {
-            Headers = headers.ToDictionary(x => x.Key, x => (IReadOnlyCollection<string>)x.Value.ToList(), StringComparer.OrdinalIgnoreCase);
+            Headers = headers.ToDictionary(
+                x => x.Key,
+                x => (IReadOnlyList<string>)x.Value.ToList(),
+                StringComparer.OrdinalIgnoreCase);
             Depth = ParseHeader("Depth", args => DepthHeader.Parse(args.Single()));
             Overwrite = ParseValueHeader("Overwrite", args => OverwriteHeader.Parse(args.Single()));
             Range = ParseHeader("Range", RangeHeader.Parse);
@@ -71,7 +74,7 @@ namespace FubarDev.WebDavServer
         public TimeoutHeader? Timeout { get; }
 
         /// <inheritdoc />
-        public IReadOnlyDictionary<string, IReadOnlyCollection<string>> Headers { get; }
+        public IReadOnlyDictionary<string, IReadOnlyList<string>> Headers { get; }
 
         /// <inheritdoc />
         public IReadOnlyCollection<string> this[string name]
