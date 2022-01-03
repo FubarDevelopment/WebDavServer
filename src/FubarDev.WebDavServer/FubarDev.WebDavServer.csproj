@@ -6,7 +6,7 @@
   <Import Project="../../PackageLibrary.props" />
   <ItemGroup>
     <PackageReference Include="FlakeyBit.DigestAuthentication.AspNetCore" Version="2021.8.15.2" />
-    <PackageReference Include="IsExternalInit" Version="1.0.1">
+    <PackageReference Include="IsExternalInit" Version="1.0.2">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>

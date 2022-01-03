@@ -17,9 +17,9 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="Fluid.Core" Version="2.2.2" />
+    <PackageReference Include="Fluid.Core" Version="2.2.8" />
     <PackageReference Include="idunno.Authentication.Basic" Version="2.2.2" />
-    <PackageReference Include="IsExternalInit" Version="1.0.1">
+    <PackageReference Include="IsExternalInit" Version="1.0.2">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
