@@ -113,7 +113,7 @@ namespace FubarDev.WebDavServer.Tests
 
             client2.UseAuthentication("user-b", "password-b");
             (await client2.DeleteAsync("coll/test.txt", lockToken, ct))
-                .EnsureStatusCode(WebDavStatusCode.PreconditionFailed);
+                .EnsureStatusCode(WebDavStatusCode.Locked);
         }
 
         /// <inheritdoc />
