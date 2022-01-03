@@ -217,14 +217,69 @@ namespace FubarDev.WebDavServer.Sample.AspNetCore
                 routes => { routes.MapControllers(); });
         }
 
-        private Task ValidateCredentialsAsync(ValidateCredentialsContext context)
+        private static string GetFakeAccountHomeDir()
         {
+            string result;
             if (Program.IsWindows)
             {
-                return ValidateWindowsTestCredentialsAsync(context);
+                result = Path.Combine(
+                    Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData),
+                    "WebDavServerTest");
+            }
+            else
+            {
+                result = Environment.ExpandEnvironmentVariables("%HOME%/.local/WebDavServerTest");
             }
 
-            return ValidateLinuxTestCredentialsAsync(context);
+            Directory.CreateDirectory(result);
+            return result;
+        }
+
+        private async Task ValidateCredentialsAsync(ValidateCredentialsContext context)
+        {
+            if (await ValidateFakeAccounts(context))
+            {
+                return;
+            }
+
+            if (Program.IsWindows)
+            {
+                await ValidateWindowsTestCredentialsAsync(context);
+            }
+            else
+            {
+                await ValidateLinuxTestCredentialsAsync(context);
+            }
+        }
+
+        private ValueTask<bool> ValidateFakeAccounts(ValidateCredentialsContext context)
+        {
+            var fakeAccountHomeDir = GetFakeAccountHomeDir();
+            var credentials = new List<AccountInfo>()
+            {
+                new() { Username = "tester", Password = "noGh2eefabohgohc", HomeDir = fakeAccountHomeDir },
+                new() { Username = "test2@limebits.com", Password = "qwerty", HomeDir = fakeAccountHomeDir },
+            }.ToDictionary(x => x.Username, StringComparer.OrdinalIgnoreCase);
+
+            if (!credentials.TryGetValue(context.Username, out var accountInfo))
+            {
+                return new ValueTask<bool>(false);
+            }
+
+            if (accountInfo.Password != context.Password)
+            {
+                context.Fail("Invalid password");
+                return new ValueTask<bool>(true);
+            }
+
+            var groups = Enumerable.Empty<Group>();
+
+            var ticket = CreateAuthenticationTicket(accountInfo, groups);
+            context.Principal = ticket.Principal;
+            context.Properties = ticket.Properties;
+            context.Success();
+
+            return new ValueTask<bool>(true);
         }
 
         private Task ValidateLinuxTestCredentialsAsync(ValidateCredentialsContext context)
@@ -245,28 +300,7 @@ namespace FubarDev.WebDavServer.Sample.AspNetCore
 
         private Task ValidateWindowsTestCredentialsAsync(ValidateCredentialsContext context)
         {
-            var credentials = new List<AccountInfo>()
-            {
-                new AccountInfo() { Username = "tester", Password = "noGh2eefabohgohc", HomeDir = "c:\\temp\\tester" },
-            }.ToDictionary(x => x.Username, StringComparer.OrdinalIgnoreCase);
-
-            if (!credentials.TryGetValue(context.Username, out var accountInfo))
-                return HandleFailedAuthenticationAsync(context);
-
-            if (accountInfo.Password != context.Password)
-            {
-                context.Fail("Invalid password");
-                return Task.CompletedTask;
-            }
-
-            var groups = Enumerable.Empty<Group>();
-
-            var ticket = CreateAuthenticationTicket(accountInfo, groups);
-            context.Principal = ticket.Principal;
-            context.Properties = ticket.Properties;
-            context.Success();
-
-            return Task.CompletedTask;
+            return HandleFailedAuthenticationAsync(context);
         }
 
         private static Task HandleFailedAuthenticationAsync(ValidateCredentialsContext context, bool? allowAnonymousAccess = null, string authenticationScheme = "Basic")
