@@ -111,9 +111,26 @@ namespace FubarDev.WebDavServer.Tests
         /// <inheritdoc />
         public void Dispose()
         {
-            Client.Dispose();
-            _serviceScope.Dispose();
-            Server.Dispose();
+            Dispose(true);
+            GC.SuppressFinalize(this);
+        }
+
+        /// <summary>
+        /// Extension point for custom service configuration.
+        /// </summary>
+        /// <param name="services">The service collection.</param>
+        protected virtual void ConfigureServices(IServiceCollection services)
+        {
+        }
+
+        protected virtual void Dispose(bool disposing)
+        {
+            if (disposing)
+            {
+                _serviceScope.Dispose();
+                Server.Dispose();
+                Client.Dispose();
+            }
         }
 
         /// <summary>
@@ -132,7 +149,7 @@ namespace FubarDev.WebDavServer.Tests
 
         private void ConfigureServices(ServerTestsBase container, RecursiveProcessingMode processingMode, IServiceCollection services)
         {
-            services
+            var tempServices = services
                 .AddOptions()
                 .AddLogging()
                 .Configure<CopyHandlerOptions>(
@@ -142,7 +159,9 @@ namespace FubarDev.WebDavServer.Tests
                 .AddScoped<IHttpMessageHandlerFactory>(_ => new TestHttpMessageHandlerFactory(container.Server))
                 .AddSingleton<IFileSystemFactory, InMemoryFileSystemFactory>()
                 .AddSingleton<IPropertyStoreFactory, InMemoryPropertyStoreFactory>()
-                .AddSingleton<ILockManager, InMemoryLockManager>()
+                .AddSingleton<ILockManager, InMemoryLockManager>();
+            ConfigureServices(tempServices);
+            tempServices
                 .AddMvcCore()
                 .ConfigureApplicationPartManager(
                     apm =>

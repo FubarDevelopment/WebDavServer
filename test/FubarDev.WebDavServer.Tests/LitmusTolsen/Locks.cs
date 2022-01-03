@@ -3,6 +3,7 @@
 // </copyright>
 
 using System;
+using System.IO;
 using System.Linq;
 using System.Net.Http;
 using System.Threading.Tasks;
@@ -12,7 +13,12 @@ using DecaTec.WebDav.Headers;
 using DecaTec.WebDav.Tools;
 using DecaTec.WebDav.WebDavArtifacts;
 
+using FubarDev.WebDavServer.FileSystem;
+using FubarDev.WebDavServer.FileSystem.SQLite;
 using FubarDev.WebDavServer.Locking;
+using FubarDev.WebDavServer.Locking.SQLite;
+using FubarDev.WebDavServer.Props.Store;
+using FubarDev.WebDavServer.Props.Store.SQLite;
 
 using Microsoft.Extensions.DependencyInjection;
 
@@ -38,6 +44,8 @@ foo
         private static readonly LockScope _exclusive = LockScope.CreateExclusiveLockScope();
 
         private static readonly LockType _write = LockType.CreateWriteLockType();
+
+        private readonly string _dataPath = CreateDataPath();
 
         [Fact]
         public async Task UnmapLockRoot()
@@ -95,8 +103,17 @@ foo
                         true))
                     .EnsureSuccess();
 
-                // The file must be gone
-                (await Client.PropFindAsync("collX/conflict.txt", WebDavDepthHeaderValue.Zero))
+                // The file (and its lock) must be gone
+                (await Client.PropFindAsync(
+                        "collX/conflict.txt",
+                        WebDavDepthHeaderValue.Zero,
+                        new PropFind()
+                        {
+                            Item = new Prop()
+                            {
+                                LockDiscovery = new LockDiscovery(),
+                            },
+                        }))
                     .EnsureStatusCode(WebDavStatusCode.NotFound);
             }
 
@@ -104,6 +121,42 @@ foo
             var lockManager = Server.Services.GetRequiredService<ILockManager>();
             var locks = (await lockManager.GetLocksAsync()).ToList();
             Assert.Empty(locks);
+        }
+
+        /// <inheritdoc />
+        protected override void Dispose(bool disposing)
+        {
+            base.Dispose(disposing);
+
+            try
+            {
+                Directory.Delete(_dataPath, true);
+            }
+            catch
+            {
+                // Ignore
+            }
+        }
+
+        /// <inheritdoc />
+        protected override void ConfigureServices(IServiceCollection services)
+        {
+            services
+                .Configure<SQLiteFileSystemOptions>(opt => opt.RootPath = _dataPath)
+                .Configure<SQLiteLockManagerOptions>(opt => opt.DatabaseFileName = Path.Combine(_dataPath, "locks.db"))
+                .AddSingleton<IFileSystemFactory, SQLiteFileSystemFactory>()
+                .AddSingleton<IPropertyStoreFactory, SQLitePropertyStoreFactory>()
+                .AddSingleton<ILockManager, SQLiteLockManager>();
+        }
+
+        private static string CreateDataPath()
+        {
+            var tempRootPath = Path.Combine(
+                Path.GetTempPath(),
+                "webdavserver-sqlite-tests",
+                Guid.NewGuid().ToString("N"));
+            Directory.CreateDirectory(tempRootPath);
+            return tempRootPath;
         }
 
         private async Task InitAsync(int index, string name, params string[] rootPathParts)
