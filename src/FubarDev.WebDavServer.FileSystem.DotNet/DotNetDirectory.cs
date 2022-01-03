@@ -5,6 +5,7 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -146,7 +147,15 @@ namespace FubarDev.WebDavServer.FileSystem.DotNet
             var propStore = FileSystem.PropertyStore;
             if (propStore != null)
             {
-                await propStore.RemoveAsync(this, cancellationToken).ConfigureAwait(false);
+                var entriesToDelete = await GetEntries(int.MaxValue)
+                    .Append(this)
+                    .ToListAsync(cancellationToken)
+                    .ConfigureAwait(false);
+
+                foreach (var entry in entriesToDelete)
+                {
+                    await propStore.RemoveAsync(entry, cancellationToken).ConfigureAwait(false);
+                }
             }
 
             DirectoryInfo.Delete(true);

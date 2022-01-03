@@ -5,6 +5,7 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -59,12 +60,19 @@ namespace FubarDev.WebDavServer.FileSystem.InMemory
                 throw new InvalidOperationException("The collection must belong to a collection");
             }
 
+            var entriesToDelete = await GetEntries(int.MaxValue)
+                .Append(this)
+                .ToListAsync(cancellationToken)
+                .ConfigureAwait(false);
             if (InMemoryParent.Remove(Name))
             {
                 var propStore = FileSystem.PropertyStore;
                 if (propStore != null)
                 {
-                    await propStore.RemoveAsync(this, cancellationToken).ConfigureAwait(false);
+                    foreach (var entry in entriesToDelete)
+                    {
+                        await propStore.RemoveAsync(entry, cancellationToken).ConfigureAwait(false);
+                    }
                 }
 
                 return new DeleteResult(WebDavStatusCode.OK, null);
@@ -92,8 +100,7 @@ namespace FubarDev.WebDavServer.FileSystem.InMemory
             var result = new List<IEntry>();
             foreach (var child in _children.Values)
             {
-                var coll = child as ICollection;
-                if (coll != null)
+                if (child is ICollection coll)
                 {
                     result.Add(await coll.GetMountTargetAsync(InMemoryFileSystem).ConfigureAwait(false));
                 }

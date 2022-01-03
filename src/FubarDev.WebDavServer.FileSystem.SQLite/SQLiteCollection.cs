@@ -5,6 +5,7 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -127,29 +128,38 @@ namespace FubarDev.WebDavServer.FileSystem.SQLite
                 throw new UnauthorizedAccessException("Cannot remove the file systems root collection");
             }
 
+            var entriesToDelete = await GetEntries(int.MaxValue)
+                .Append(this)
+                .ToListAsync(cancellationToken)
+                .ConfigureAwait(false);
+
             var propStore = FileSystem.PropertyStore;
             if (propStore != null)
             {
-                await propStore.RemoveAsync(this, cancellationToken).ConfigureAwait(false);
+                foreach (var entry in entriesToDelete)
+                {
+                    await propStore.RemoveAsync(entry, cancellationToken).ConfigureAwait(false);
+                }
             }
 
             Connection.RunInTransaction(() =>
             {
-                // Delete all data
-                Connection
-                    .CreateCommand(
-                        "delete from filesystementrydata where id in (select e.id from filesystementries e where e.id=? or e.path=?)",
-                        Info.Id,
-                        Path.OriginalString)
-                    .ExecuteNonQuery();
+                foreach (var entry in entriesToDelete.Cast<SQLiteEntry>())
+                {
+                    // Delete all data
+                    Connection
+                        .CreateCommand(
+                            "delete from filesystementrydata where id=?",
+                            entry.Info.Id)
+                        .ExecuteNonQuery();
 
-                // Delete the entries
-                Connection
-                    .CreateCommand(
-                        "delete from filesystementries where id=? or path=?",
-                        Info.Id,
-                        Path.OriginalString)
-                    .ExecuteNonQuery();
+                    // Delete the entries
+                    Connection
+                        .CreateCommand(
+                            "delete from filesystementries where id=?",
+                            entry.Info.Id)
+                        .ExecuteNonQuery();
+                }
             });
 
             return new DeleteResult(WebDavStatusCode.OK, null);
