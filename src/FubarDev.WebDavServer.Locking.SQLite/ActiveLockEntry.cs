@@ -50,21 +50,24 @@ namespace FubarDev.WebDavServer.Locking.SQLite
         [Column("owner")]
         public string? Owner { get; set; }
 
+        [Column("ownerHref")]
+        public string? OwnerHref { get; set; }
+
         /// <inheritdoc />
-        public XElement? GetOwner()
+        public XElement? GetOwnerHref()
         {
-            if (Owner == null)
+            if (OwnerHref == null)
             {
                 return null;
             }
 
-            return XElement.Parse(Owner);
+            return XElement.Parse(OwnerHref);
         }
 
         /// <inheritdoc />
         public override string ToString()
         {
-            return $"Path={Path} [Href={Href}, Recursive={Recursive}, AccessType={AccessType}, ShareMode={ShareMode}, Timeout={Timeout}, Owner={Owner}, StateToken={StateToken}, Issued={Issued:O}, LastRefresh={LastRefresh:O}, Expiration={Expiration:O}]";
+            return $"Path={Path} [Href={Href}, Recursive={Recursive}, AccessType={AccessType}, ShareMode={ShareMode}, Timeout={Timeout}, Owner={Owner}, OwnerHref={OwnerHref}, StateToken={StateToken}, Issued={Issued:O}, LastRefresh={LastRefresh:O}, Expiration={Expiration:O}]";
         }
     }
 }

@@ -57,7 +57,7 @@ namespace FubarDev.WebDavServer.Handlers.Impl
             }
 
             var context = _contextAccessor.WebDavContext;
-            var owner = info.owner;
+            var ownerHref = info.owner ?? context.User.Identity.GetOwnerHref();
             var recursive = (context.RequestHeaders.Depth ?? DepthHeader.Infinity) == DepthHeader.Infinity;
             var accessType = LockAccessType.Write;
             var shareType = info.lockscope.ItemElementName == ItemChoiceType.exclusive
@@ -72,7 +72,8 @@ namespace FubarDev.WebDavServer.Handlers.Impl
                 path,
                 href,
                 recursive,
-                owner,
+                context.User.Identity.GetOwner(),
+                ownerHref,
                 accessType,
                 shareType,
                 timeout);

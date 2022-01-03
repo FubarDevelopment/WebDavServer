@@ -363,11 +363,9 @@ namespace FubarDev.WebDavServer.Locking
         /// <inheritdoc />
         public async Task<IEnumerable<IActiveLock>> GetLocksAsync(CancellationToken cancellationToken)
         {
-            using (var transaction = await BeginTransactionAsync(cancellationToken).ConfigureAwait(false))
-            {
-                var locks = await transaction.GetActiveLocksAsync(cancellationToken).ConfigureAwait(false);
-                return locks;
-            }
+            using var transaction = await BeginTransactionAsync(cancellationToken).ConfigureAwait(false);
+            var locks = await transaction.GetActiveLocksAsync(cancellationToken).ConfigureAwait(false);
+            return locks;
         }
 
         /// <inheritdoc />
@@ -430,24 +428,24 @@ namespace FubarDev.WebDavServer.Locking
         /// <returns>The transaction to be used to update the active locks.</returns>
         protected abstract Task<ILockManagerTransaction> BeginTransactionAsync(CancellationToken cancellationToken);
 
-        private static LockStatus GetConflictingLocks(LockStatus affactingLocks, ILock l)
+        private static LockStatus GetConflictingLocks(LockStatus affectingLocks, ILock l)
         {
             var shareMode = LockShareMode.Parse(l.ShareMode);
             if (shareMode == LockShareMode.Exclusive)
             {
-                return affactingLocks;
+                return affectingLocks;
             }
 
             return new LockStatus(
-                affactingLocks
+                affectingLocks
                     .ReferenceLocks
                     .Where(x => LockShareMode.Parse(x.ShareMode) == LockShareMode.Exclusive)
                     .ToList(),
-                affactingLocks
+                affectingLocks
                     .ParentLocks
                     .Where(x => LockShareMode.Parse(x.ShareMode) == LockShareMode.Exclusive)
                     .ToList(),
-                affactingLocks
+                affectingLocks
                     .ChildLocks
                     .Where(x => LockShareMode.Parse(x.ShareMode) == LockShareMode.Exclusive)
                     .ToList());
@@ -467,7 +465,8 @@ namespace FubarDev.WebDavServer.Locking
                 activeLock.Path,
                 activeLock.Href,
                 activeLock.Recursive,
-                activeLock.GetOwner(),
+                activeLock.Owner,
+                activeLock.GetOwnerHref(),
                 LockAccessType.Parse(activeLock.AccessType),
                 LockShareMode.Parse(activeLock.ShareMode),
                 timeout,
@@ -586,9 +585,9 @@ namespace FubarDev.WebDavServer.Locking
                  let foundLocks = list.RequiresStateToken
                      ? Find(affectingLocks, listUrl, findRecursive, true)
                      : LockStatus.Empty
-                 let locksForIfConditions = foundLocks.GetLocks().ToList()
-                 select Tuple.Create<IfHeaderList, IReadOnlyCollection<IActiveLock>>(list, locksForIfConditions))
-                .ToDictionary(x => x.Item1, x => x.Item2);
+                 let locksForIfConditions = foundLocks.GetLocks().ToList().FindAll(l => l.IsSameOwner(lockRequirements))
+                 select (IfHeaderList: list, ActiveLocks: locksForIfConditions))
+                .ToDictionary(x => x.IfHeaderList, x => x.ActiveLocks);
 
             // List of matches between path info and if header lists
             var successfulConditions = new List<PathConditions>();
@@ -629,7 +628,8 @@ namespace FubarDev.WebDavServer.Locking
                     }
                 }
 
-                if (pathInfo.LockTokens != null && ifHeaderList.IsMatch(pathInfo.EntityTag, pathInfo.LockTokens))
+                if (pathInfo.LockTokens != null
+                    && ifHeaderList.IsMatch(pathInfo.EntityTag, pathInfo.LockTokens))
                 {
                     successfulConditions.Add(new PathConditions(pathInfo, ifHeaderList));
                 }

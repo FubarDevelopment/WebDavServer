@@ -9,7 +9,6 @@ using System.IO;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
-using System.Xml.Linq;
 
 using FubarDev.WebDavServer.FileSystem;
 using FubarDev.WebDavServer.Locking;
@@ -130,7 +129,8 @@ namespace FubarDev.WebDavServer.Handlers.Impl
                 new Uri(path, UriKind.Relative),
                 context.HrefUrl,
                 false,
-                new XElement(WebDavXml.Dav + "owner", context.User.Identity.Name),
+                context.User.Identity.GetOwner(),
+                context.User.Identity.GetOwnerHref(),
                 LockAccessType.Write,
                 LockShareMode.Exclusive,
                 TimeoutHeader.Infinite);

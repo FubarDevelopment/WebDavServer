@@ -8,13 +8,13 @@ using System.Diagnostics;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
-using System.Xml.Linq;
 
 using FubarDev.WebDavServer.FileSystem;
 using FubarDev.WebDavServer.Locking;
 using FubarDev.WebDavServer.Model;
 using FubarDev.WebDavServer.Model.Headers;
 using FubarDev.WebDavServer.Props;
+using FubarDev.WebDavServer.Utils;
 
 namespace FubarDev.WebDavServer.Handlers.Impl
 {
@@ -79,7 +79,8 @@ namespace FubarDev.WebDavServer.Handlers.Impl
                 new Uri(path, UriKind.Relative),
                 context.HrefUrl,
                 false,
-                new XElement(WebDavXml.Dav + "owner", context.User.Identity.Name),
+                context.User.Identity.GetOwner(),
+                context.User.Identity.GetOwnerHref(),
                 LockAccessType.Write,
                 LockShareMode.Exclusive,
                 TimeoutHeader.Infinite);

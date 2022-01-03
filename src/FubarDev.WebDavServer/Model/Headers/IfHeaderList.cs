@@ -77,7 +77,9 @@ namespace FubarDev.WebDavServer.Model.Headers
         /// <param name="etag">The entity tag.</param>
         /// <param name="stateTokens">The state tokens.</param>
         /// <returns><see langword="true"/> when this condition matches.</returns>
-        public bool IsMatch(EntityTag? etag, IReadOnlyCollection<Uri> stateTokens)
+        public bool IsMatch(
+            EntityTag? etag,
+            IReadOnlyCollection<Uri> stateTokens)
         {
             return Conditions.All(x => x.IsMatch(etag, stateTokens));
         }

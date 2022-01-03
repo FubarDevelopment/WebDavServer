@@ -48,11 +48,14 @@ namespace FubarDev.WebDavServer.Locking
         TimeSpan Timeout { get; }
 
         /// <summary>
+        /// Gets the name identifying the owner of the lock.
+        /// </summary>
+        string? Owner { get; }
+
+        /// <summary>
         /// Gets the XML identifying the owner of the lock.
         /// </summary>
-        /// <returns>
-        /// The XML identifying the owner of the lock.
-        /// </returns>
-        XElement? GetOwner();
+        /// <returns>The XML for the owner href.</returns>
+        XElement? GetOwnerHref();
     }
 }

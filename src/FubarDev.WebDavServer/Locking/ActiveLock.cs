@@ -28,7 +28,8 @@ namespace FubarDev.WebDavServer.Locking
                 l.Path,
                 l.Href,
                 l.Recursive,
-                l.GetOwner(),
+                l.Owner,
+                l.GetOwnerHref(),
                 LockAccessType.Parse(l.AccessType),
                 LockShareMode.Parse(l.ShareMode),
                 l.Timeout,
@@ -48,7 +49,8 @@ namespace FubarDev.WebDavServer.Locking
                 l.Path,
                 l.Href,
                 l.Recursive,
-                l.GetOwner(),
+                l.Owner,
+                l.GetOwnerHref(),
                 LockAccessType.Parse(l.AccessType),
                 LockShareMode.Parse(l.ShareMode),
                 timeout,
@@ -64,6 +66,7 @@ namespace FubarDev.WebDavServer.Locking
         /// <param name="href">The href this lock should be applied to (might be relative or absolute).</param>
         /// <param name="recursive">Indicates whether the lock must be applied recursively to all children.</param>
         /// <param name="owner">The owner of the lock.</param>
+        /// <param name="ownerHref">The owner href of the lock.</param>
         /// <param name="accessType">The <see cref="LockAccessType"/> of the lock.</param>
         /// <param name="shareMode">The <see cref="LockShareMode"/> of the lock.</param>
         /// <param name="timeout">The lock timeout.</param>
@@ -73,7 +76,8 @@ namespace FubarDev.WebDavServer.Locking
             string path,
             string href,
             bool recursive,
-            XElement? owner,
+            string? owner,
+            XElement? ownerHref,
             LockAccessType accessType,
             LockShareMode shareMode,
             TimeSpan timeout,
@@ -84,6 +88,7 @@ namespace FubarDev.WebDavServer.Locking
                 href,
                 recursive,
                 owner,
+                ownerHref,
                 accessType.Name.LocalName,
                 shareMode.Name.LocalName,
                 timeout)
@@ -101,6 +106,7 @@ namespace FubarDev.WebDavServer.Locking
         /// <param name="href">The href this lock should be applied to (might be relative or absolute).</param>
         /// <param name="recursive">Indicates whether the lock must be applied recursively to all children.</param>
         /// <param name="owner">The owner of the lock.</param>
+        /// <param name="ownerHref">The owner href of the lock.</param>
         /// <param name="accessType">The <see cref="LockAccessType"/> of the lock.</param>
         /// <param name="shareMode">The <see cref="LockShareMode"/> of the lock.</param>
         /// <param name="timeout">The lock timeout.</param>
@@ -111,7 +117,8 @@ namespace FubarDev.WebDavServer.Locking
             string path,
             string href,
             bool recursive,
-            XElement? owner,
+            string? owner,
+            XElement? ownerHref,
             LockAccessType accessType,
             LockShareMode shareMode,
             TimeSpan timeout,
@@ -123,6 +130,7 @@ namespace FubarDev.WebDavServer.Locking
                 href,
                 recursive,
                 owner,
+                ownerHref,
                 accessType.Name.LocalName,
                 shareMode.Name.LocalName,
                 timeout)

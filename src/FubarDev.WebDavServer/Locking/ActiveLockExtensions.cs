@@ -27,7 +27,7 @@ namespace FubarDev.WebDavServer.Locking
             var depth = l.Recursive ? DepthHeader.Infinity : DepthHeader.Zero;
             var lockScope = LockShareMode.Parse(l.ShareMode);
             var lockType = LockAccessType.Parse(l.AccessType);
-            var owner = l.GetOwner();
+            var owner = l.GetOwnerHref();
             var result = new XElement(
                 WebDavXml.Dav + "activelock",
                 new XElement(

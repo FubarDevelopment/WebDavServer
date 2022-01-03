@@ -6,7 +6,6 @@ using System;
 using System.Diagnostics;
 using System.Threading;
 using System.Threading.Tasks;
-using System.Xml.Linq;
 
 using FubarDev.WebDavServer.Engines;
 using FubarDev.WebDavServer.Engines.Local;
@@ -102,10 +101,11 @@ namespace FubarDev.WebDavServer.Handlers.Impl
                 throw new WebDavException(WebDavStatusCode.NotFound);
             }
 
-            await WebDavContext.RequestHeaders
+            var context = WebDavContext;
+            await context.RequestHeaders
                 .ValidateAsync(sourceSelectionResult.TargetEntry, cancellationToken).ConfigureAwait(false);
 
-            var sourceUrl = WebDavContext.PublicAbsoluteRequestUrl;
+            var sourceUrl = context.PublicAbsoluteRequestUrl;
             var destinationUrl = new Uri(sourceUrl, destination);
             var uriComparer = _uriComparer ?? new DefaultUriComparer(_contextAccessor);
 
@@ -122,9 +122,10 @@ namespace FubarDev.WebDavServer.Handlers.Impl
             {
                 sourceLockRequirements = new Lock(
                     sourceSelectionResult.TargetEntry.Path,
-                    WebDavContext.HrefUrl,
+                    context.HrefUrl,
                     depth != DepthHeader.Zero,
-                    new XElement(WebDavXml.Dav + "owner", WebDavContext.User.Identity.Name),
+                    context.User.Identity.GetOwner(),
+                    context.User.Identity.GetOwnerHref(),
                     LockAccessType.Write,
                     LockShareMode.Exclusive,
                     TimeoutHeader.Infinite);
@@ -157,7 +158,7 @@ namespace FubarDev.WebDavServer.Handlers.Impl
                     {
                         Logger.LogDebug(
                             "{PublicControllerUrl} is not a base of {DestinationUrl}",
-                            WebDavContext.PublicControllerUrl,
+                            context.PublicControllerUrl,
                             destinationUrl);
                     }
 
@@ -173,7 +174,7 @@ namespace FubarDev.WebDavServer.Handlers.Impl
                     }
 
                     // For error reporting
-                    sourceUrl = WebDavContext.PublicRootUrl.MakeRelativeUri(sourceUrl);
+                    sourceUrl = context.PublicRootUrl.MakeRelativeUri(sourceUrl);
 
                     var remoteTargetResult = await RemoteExecuteAsync(
                         remoteHandler,
@@ -183,12 +184,12 @@ namespace FubarDev.WebDavServer.Handlers.Impl
                         depth,
                         overwrite,
                         cancellationToken).ConfigureAwait(false);
-                    result = remoteTargetResult.Evaluate(WebDavContext);
+                    result = remoteTargetResult.Evaluate(context);
                 }
                 else
                 {
                     // Copy or move from one known file system to another
-                    var destinationPath = WebDavContext.PublicControllerUrl
+                    var destinationPath = context.PublicControllerUrl
                         .MakeRelativeUri(destinationUrl)
                         .OriginalString;
 
@@ -196,8 +197,8 @@ namespace FubarDev.WebDavServer.Handlers.Impl
                     destinationPath = Uri.UnescapeDataString(destinationPath);
 
                     // For error reporting
-                    sourceUrl = WebDavContext.PublicRootUrl.MakeRelativeUri(sourceUrl);
-                    destinationUrl = WebDavContext.PublicRootUrl.MakeRelativeUri(destinationUrl);
+                    sourceUrl = context.PublicRootUrl.MakeRelativeUri(sourceUrl);
+                    destinationUrl = context.PublicRootUrl.MakeRelativeUri(destinationUrl);
 
                     var destinationSelectionResult =
                         await _rootFileSystem.SelectAsync(destinationPath, cancellationToken).ConfigureAwait(false);
@@ -219,7 +220,8 @@ namespace FubarDev.WebDavServer.Handlers.Impl
                         new Uri(destinationPath, UriKind.Relative),
                         destinationUrl,
                         isMove || depth != DepthHeader.Zero,
-                        new XElement(WebDavXml.Dav + "owner", WebDavContext.User.Identity.Name),
+                        context.User.Identity.GetOwner(),
+                        context.User.Identity.GetOwnerHref(),
                         LockAccessType.Write,
                         LockShareMode.Exclusive,
                         TimeoutHeader.Infinite);
@@ -251,7 +253,7 @@ namespace FubarDev.WebDavServer.Handlers.Impl
                             depth,
                             overwrite,
                             cancellationToken).ConfigureAwait(false);
-                        result = targetResult.Evaluate(WebDavContext);
+                        result = targetResult.Evaluate(context);
                     }
                     finally
                     {
