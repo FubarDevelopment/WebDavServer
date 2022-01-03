@@ -2,7 +2,6 @@
 // Copyright (c) Fubar Development Junker. All rights reserved.
 // </copyright>
 
-using System;
 using System.Collections.Generic;
 using System.Security.Principal;
 
@@ -80,62 +79,6 @@ namespace FubarDev.WebDavServer.FileSystem.InMemory
         {
         }
 
-        private class FileSystemKey : IEquatable<FileSystemKey>
-        {
-            private static readonly IEqualityComparer<string> _comparer = StringComparer.OrdinalIgnoreCase;
-
-            private readonly string _userName;
-
-            private readonly string _mountPoint;
-
-            public FileSystemKey(string userName, string mountPoint)
-            {
-                _userName = userName;
-                _mountPoint = mountPoint;
-            }
-
-            public bool Equals(FileSystemKey? other)
-            {
-                if (ReferenceEquals(null, other))
-                {
-                    return false;
-                }
-
-                if (ReferenceEquals(this, other))
-                {
-                    return true;
-                }
-
-                return _comparer.Equals(_userName, other._userName) && _comparer.Equals(_mountPoint, other._mountPoint);
-            }
-
-            public override bool Equals(object? obj)
-            {
-                if (ReferenceEquals(null, obj))
-                {
-                    return false;
-                }
-
-                if (ReferenceEquals(this, obj))
-                {
-                    return true;
-                }
-
-                if (obj.GetType() != GetType())
-                {
-                    return false;
-                }
-
-                return Equals((FileSystemKey)obj);
-            }
-
-            public override int GetHashCode()
-            {
-                unchecked
-                {
-                    return (_comparer.GetHashCode(_userName) * 397) ^ _comparer.GetHashCode(_mountPoint);
-                }
-            }
-        }
+        private record FileSystemKey(string UserName, string MountPoint);
     }
 }
