@@ -94,6 +94,10 @@ foo
                         new Uri(secondClient.BaseAddress!, "collY"),
                         true))
                     .EnsureSuccess();
+
+                // The file must be gone
+                (await Client.PropFindAsync("collX/conflict.txt", WebDavDepthHeaderValue.Zero))
+                    .EnsureStatusCode(WebDavStatusCode.NotFound);
             }
 
             // Test if the lock was removed during the MOVE
