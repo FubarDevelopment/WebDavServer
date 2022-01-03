@@ -50,24 +50,8 @@ namespace FubarDev.WebDavServer.Tests.Support.ServiceBuilders
                 .AddSingleton<ILockManager, InMemoryLockManager>()
                 .AddSingleton<IDeadPropertyFactory, DeadPropertyFactory>()
                 .AddSingleton<IWebDavContextAccessor, TestWebDavContextAccessor>()
-                .AddSingleton<IFileSystemFactory, SQLiteFileSystemFactory>(
-                    sp =>
-                    {
-                        var opt = new SQLiteFileSystemOptions
-                        {
-                            RootPath = tempRootPath,
-                        };
-                        var pte = sp.GetRequiredService<IPathTraversalEngine>();
-                        var psf = sp.GetService<IPropertyStoreFactory>();
-                        var lm = sp.GetService<ILockManager>();
-
-                        var fsf = new SQLiteFileSystemFactory(
-                            new OptionsWrapper<SQLiteFileSystemOptions>(opt),
-                            pte,
-                            psf,
-                            lm);
-                        return fsf;
-                    })
+                .Configure<SQLiteFileSystemOptions>(opt => opt.RootPath = tempRootPath)
+                .AddSingleton<IFileSystemFactory, SQLiteFileSystemFactory>()
                 .AddSingleton<IPropertyStoreFactory, SQLitePropertyStoreFactory>()
                 .AddWebDav();
             ServiceProvider = serviceCollection.BuildServiceProvider();
