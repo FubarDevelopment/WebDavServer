@@ -4,6 +4,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -75,7 +76,7 @@ namespace FubarDev.WebDavServer.FileSystem.InMemory
         }
 
         /// <inheritdoc />
-        public bool TryGetMountPoint(Uri path, out IFileSystem destination)
+        public bool TryGetMountPoint(Uri path, [NotNullWhen(true)] out IFileSystem? destination)
         {
             return _mountPoints.TryGetValue(path, out destination);
         }

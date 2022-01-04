@@ -6,6 +6,7 @@ using System;
 using System.IO;
 
 using FubarDev.WebDavServer.FileSystem;
+using FubarDev.WebDavServer.Utils;
 
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Options;
@@ -54,9 +55,9 @@ namespace FubarDev.WebDavServer.Props.Store.TextFile
                 storeInRoot = !localFs.HasSubfolders;
                 if (storeInRoot)
                 {
-                    var userName = user.Identity.IsAuthenticated
-                        ? user.Identity.Name
-                        : "anonymous";
+                    var userName = !user.Identity.IsAnonymous()
+                        ? user.Identity?.Name ?? SystemInfo.GetAnonymousUserName()
+                        : SystemInfo.GetAnonymousUserName();
                     var p = userName.IndexOf('\\');
                     if (p != -1)
                     {
@@ -68,16 +69,15 @@ namespace FubarDev.WebDavServer.Props.Store.TextFile
             }
             else if (string.IsNullOrEmpty(_options.RootFolder))
             {
-                var userHomePath = Utils.SystemInfo.GetUserHomePath(user);
+                var userHomePath = SystemInfo.GetUserHomePath(user);
                 rootPath = Path.Combine(userHomePath, ".webdav");
                 storeInRoot = true;
             }
             else
             {
-                var userName =
-                    user.Identity.IsAuthenticated
-                        ? user.Identity.Name
-                        : "anonymous";
+                var userName = !user.Identity.IsAnonymous()
+                    ? user.Identity?.Name ?? SystemInfo.GetAnonymousUserName()
+                    : SystemInfo.GetAnonymousUserName();
                 rootPath = Path.Combine(_options.RootFolder, userName);
                 storeInRoot = true;
             }

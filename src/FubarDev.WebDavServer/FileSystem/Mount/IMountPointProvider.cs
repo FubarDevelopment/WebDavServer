@@ -4,6 +4,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 
 namespace FubarDev.WebDavServer.FileSystem.Mount
 {
@@ -23,6 +24,6 @@ namespace FubarDev.WebDavServer.FileSystem.Mount
         /// <param name="path">The path to get the destination file system for.</param>
         /// <param name="destination">The destination file system.</param>
         /// <returns><see langword="true"/> when there is a destination file system for a <paramref name="path"/>.</returns>
-        bool TryGetMountPoint(Uri path, out IFileSystem destination);
+        bool TryGetMountPoint(Uri path, [NotNullWhen(true)] out IFileSystem? destination);
     }
 }

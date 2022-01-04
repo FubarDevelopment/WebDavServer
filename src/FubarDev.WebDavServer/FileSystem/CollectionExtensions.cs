@@ -25,8 +25,7 @@ namespace FubarDev.WebDavServer.FileSystem
         /// <returns>The <paramref name="collection"/> or the destination collection if a mount point existed.</returns>
         public static async Task<ICollection> GetMountTargetAsync(this ICollection collection, IMountPointProvider? mountPointProvider)
         {
-            IFileSystem fileSystem;
-            if (mountPointProvider != null && mountPointProvider.TryGetMountPoint(collection.Path, out fileSystem))
+            if (mountPointProvider != null && mountPointProvider.TryGetMountPoint(collection.Path, out var fileSystem))
             {
                 return await fileSystem.Root;
             }

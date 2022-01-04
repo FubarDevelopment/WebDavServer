@@ -42,7 +42,7 @@ namespace FubarDev.WebDavServer.FileSystem.InMemory
         public virtual IFileSystem CreateFileSystem(ICollection? mountPoint, IPrincipal principal)
         {
             var userName = !principal.Identity.IsAnonymous()
-                ? principal.Identity.Name
+                ? principal.Identity?.Name ?? SystemInfo.GetAnonymousUserName()
                 : SystemInfo.GetAnonymousUserName();
 
             var key = new FileSystemKey(userName, mountPoint?.Path.OriginalString ?? string.Empty);
