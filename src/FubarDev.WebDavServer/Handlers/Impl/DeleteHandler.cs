@@ -78,8 +78,8 @@ namespace FubarDev.WebDavServer.Handlers.Impl
                 new Uri(path, UriKind.Relative),
                 context.HrefUrl,
                 selectionResult.ResultType == SelectionResultType.FoundCollection,
-                context.User.Identity.GetOwner(),
-                context.User.Identity.GetOwnerHref(),
+                context.User.Identity?.GetOwner(),
+                context.User.Identity?.GetOwnerHref(),
                 LockAccessType.Write,
                 LockShareMode.Exclusive,
                 TimeoutHeader.Infinite);

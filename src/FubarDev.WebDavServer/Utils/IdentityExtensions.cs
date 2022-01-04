@@ -21,9 +21,9 @@ namespace FubarDev.WebDavServer.Utils
         /// <param name="identity">The identity to check.</param>
         /// <returns><see langword="true"/> when <paramref name="identity"/> is anonymous.</returns>
         [Pure]
-        public static bool IsAnonymous(this IIdentity identity)
+        public static bool IsAnonymous(this IIdentity? identity)
         {
-            return string.IsNullOrEmpty(identity.Name) || !identity.IsAuthenticated || identity.AuthenticationType == "anonymous";
+            return string.IsNullOrEmpty(identity?.Name) || !identity.IsAuthenticated || identity.AuthenticationType == "anonymous";
         }
 
         /// <summary>

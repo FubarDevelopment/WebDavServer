@@ -366,7 +366,7 @@ namespace FubarDev.WebDavServer.Engines.Remote
 
             if (document.Root.Name == errorName)
             {
-                var error = (error)_errorSerializer.Deserialize(document.Root.CreateReader());
+                var error = (error)_errorSerializer.Deserialize(document.Root.CreateReader())!;
                 var status = new Status($"HTTP/{responseMessage.Version}", responseMessage.StatusCode, responseMessage.ReasonPhrase);
                 return new multistatus
                 {
@@ -383,7 +383,7 @@ namespace FubarDev.WebDavServer.Engines.Remote
                 };
             }
 
-            var result = (multistatus)_multiStatusSerializer.Deserialize(document.CreateReader());
+            var result = (multistatus)_multiStatusSerializer.Deserialize(document.CreateReader())!;
             return result;
         }
 

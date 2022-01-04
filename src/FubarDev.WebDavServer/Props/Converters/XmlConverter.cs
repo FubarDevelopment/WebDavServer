@@ -21,7 +21,7 @@ namespace FubarDev.WebDavServer.Props.Converters
         /// <inheritdoc />
         public T FromElement(XElement element)
         {
-            return (T)_serializer.Deserialize(element.CreateReader());
+            return (T)_serializer.Deserialize(element.CreateReader())!;
         }
 
         /// <inheritdoc />

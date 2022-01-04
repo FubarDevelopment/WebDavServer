@@ -174,7 +174,7 @@ namespace FubarDev.WebDavServer.Locking
         /// The timer callback which removes an expired item
         /// </summary>
         /// <param name="state">The (unused) state</param>
-        private async void TimerExpirationCallback(object state)
+        private async void TimerExpirationCallback(object? state)
         {
             bool removeResult;
             ActiveLockItem? lockItem;

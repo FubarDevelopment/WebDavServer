@@ -811,8 +811,9 @@ namespace FubarDev.WebDavServer.Utils
                 ext = fileName.Substring(ind + 1);
             }
 
-            if (_mimeTypeMap.Value.TryGetValue(ext, out mimeType))
+            if (_mimeTypeMap.Value.TryGetValue(ext, out var foundMimeType))
             {
+                mimeType = foundMimeType;
                 return true;
             }
 

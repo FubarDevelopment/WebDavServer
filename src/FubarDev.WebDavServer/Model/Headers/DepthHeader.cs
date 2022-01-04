@@ -183,13 +183,13 @@ namespace FubarDev.WebDavServer.Model.Headers
         }
 
         /// <inheritdoc />
-        public bool Equals(DepthHeader other)
+        public bool Equals(DepthHeader? other)
         {
             return DepthHeaderComparer.Default.Equals(this, other);
         }
 
         /// <inheritdoc />
-        public override bool Equals(object obj)
+        public override bool Equals(object? obj)
         {
             Debug.Assert(obj != null, "obj != null");
             return DepthHeaderComparer.Default.Equals(this, (DepthHeader)obj);
@@ -202,7 +202,7 @@ namespace FubarDev.WebDavServer.Model.Headers
         }
 
         /// <inheritdoc />
-        public int CompareTo(DepthHeader other)
+        public int CompareTo(DepthHeader? other)
         {
             return DepthHeaderComparer.Default.Compare(this, other);
         }

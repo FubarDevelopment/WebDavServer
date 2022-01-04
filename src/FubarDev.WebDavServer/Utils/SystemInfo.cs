@@ -34,7 +34,7 @@ namespace FubarDev.WebDavServer.Utils
         /// <returns>The home path of the user.</returns>
         public static string GetUserHomePath(IPrincipal principal, string? homePath = null, string? anonymousUserName = null)
         {
-            if (principal.Identity.IsAuthenticated && principal is ClaimsPrincipal homePathPrinciple)
+            if ((principal.Identity?.IsAuthenticated ?? false) && principal is ClaimsPrincipal homePathPrinciple)
             {
                 var homePathClaim = homePathPrinciple
                     .Claims
@@ -47,7 +47,7 @@ namespace FubarDev.WebDavServer.Utils
 
             var rootPathInfo = GetHomePath();
             var userName = !principal.Identity.IsAnonymous()
-                ? principal.Identity.Name
+                ? principal.Identity?.Name ?? GetAnonymousUserName(rootPathInfo.IsProbablyUnix)
                 : GetAnonymousUserName(rootPathInfo.IsProbablyUnix);
             var rootPath = Path.Combine(homePath ?? rootPathInfo.RootPath, userName);
             return rootPath;

@@ -87,7 +87,7 @@ namespace FubarDev.WebDavServer.AspNetCore.Filters
                 });
 
             var responseLogger = context.HttpContext.RequestServices.GetService<ILogger<WebDavIndirectResult>>();
-            var webDavContext = context.HttpContext.RequestServices.GetService<IWebDavContext>();
+            var webDavContext = context.HttpContext.RequestServices.GetRequiredService<IWebDavContext>();
             return new WebDavIndirectResult(webDavContext, result, responseLogger);
         }
     }

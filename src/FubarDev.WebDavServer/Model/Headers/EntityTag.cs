@@ -166,7 +166,7 @@ namespace FubarDev.WebDavServer.Model.Headers
         }
 
         /// <inheritdoc />
-        public override bool Equals(object obj)
+        public override bool Equals(object? obj)
         {
             return obj is EntityTag tag && Equals(tag);
         }

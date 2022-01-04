@@ -124,8 +124,8 @@ namespace FubarDev.WebDavServer.Handlers.Impl
                     sourceSelectionResult.TargetEntry.Path,
                     context.HrefUrl,
                     depth != DepthHeader.Zero,
-                    context.User.Identity.GetOwner(),
-                    context.User.Identity.GetOwnerHref(),
+                    context.User.Identity?.GetOwner(),
+                    context.User.Identity?.GetOwnerHref(),
                     LockAccessType.Write,
                     LockShareMode.Exclusive,
                     TimeoutHeader.Infinite);
@@ -220,8 +220,8 @@ namespace FubarDev.WebDavServer.Handlers.Impl
                         new Uri(destinationPath, UriKind.Relative),
                         destinationUrl,
                         isMove || depth != DepthHeader.Zero,
-                        context.User.Identity.GetOwner(),
-                        context.User.Identity.GetOwnerHref(),
+                        context.User.Identity?.GetOwner(),
+                        context.User.Identity?.GetOwnerHref(),
                         LockAccessType.Write,
                         LockShareMode.Exclusive,
                         TimeoutHeader.Infinite);
