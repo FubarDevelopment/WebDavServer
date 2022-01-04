@@ -14,6 +14,8 @@ using FubarDev.WebDavServer.Model;
 using FubarDev.WebDavServer.Model.Headers;
 using FubarDev.WebDavServer.Utils;
 
+using Microsoft.Extensions.Options;
+
 namespace FubarDev.WebDavServer.Handlers.Impl
 {
     /// <summary>
@@ -27,17 +29,22 @@ namespace FubarDev.WebDavServer.Handlers.Impl
 
         private readonly IImplicitLockFactory _implicitLockFactory;
 
+        private readonly bool _encodeHref;
+
         /// <summary>
         /// Initializes a new instance of the <see cref="DeleteHandler"/> class.
         /// </summary>
+        /// <param name="litmusCompatibilityOptions">The compatibility options for the litmus tests.</param>
         /// <param name="rootFileSystem">The root file system.</param>
         /// <param name="contextAccessor">The WebDAV context accessor.</param>
         /// <param name="implicitLockFactory">A factory to create implicit locks.</param>
         public DeleteHandler(
+            IOptions<LitmusCompatibilityOptions> litmusCompatibilityOptions,
             IFileSystem rootFileSystem,
             IWebDavContextAccessor contextAccessor,
             IImplicitLockFactory implicitLockFactory)
         {
+            _encodeHref = !litmusCompatibilityOptions.Value.DisableUrlEncodingOfResponseHref;
             _rootFileSystem = rootFileSystem;
             _contextAccessor = contextAccessor;
             _implicitLockFactory = implicitLockFactory;
@@ -131,8 +138,7 @@ namespace FubarDev.WebDavServer.Handlers.Impl
                     {
                         new response()
                         {
-                            href = context.PublicControllerUrl
-                                .Append((deleteResult.FailedEntry ?? targetEntry).Path).OriginalString,
+                            href = context.HrefUrl.EncodeHref(_encodeHref),
                             ItemsElementName = new[] { ItemsChoiceType2.status, },
                             Items = new object[]
                             {

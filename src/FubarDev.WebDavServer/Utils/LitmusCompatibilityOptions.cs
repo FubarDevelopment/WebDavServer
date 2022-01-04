@@ -19,5 +19,10 @@ namespace FubarDev.WebDavServer.Utils
         /// Gets or sets a value indicating whether overwriting a collection with a document should be forbidden.
         /// </summary>
         public bool ForbidOverwriteOfCollectionWithDocument { get; set; }
+
+        /// <summary>
+        /// Gets or sets a value indicating whether the URL encoding of the response HREF should be disabled.
+        /// </summary>
+        public bool DisableUrlEncodingOfResponseHref { get; set; }
     }
 }

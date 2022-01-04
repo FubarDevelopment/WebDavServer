@@ -2,8 +2,6 @@
 // Copyright (c) Fubar Development Junker. All rights reserved.
 // </copyright>
 
-#define USE_VARIANT_2
-
 using System;
 using System.Collections.Generic;
 using System.Diagnostics.Contracts;
@@ -14,8 +12,10 @@ using System.Threading.Tasks;
 using FubarDev.WebDavServer.FileSystem;
 using FubarDev.WebDavServer.Model;
 using FubarDev.WebDavServer.Model.Headers;
+using FubarDev.WebDavServer.Utils;
 
 using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Options;
 
 namespace FubarDev.WebDavServer.Locking
 {
@@ -38,15 +38,24 @@ namespace FubarDev.WebDavServer.Locking
 
         private readonly ILockTimeRounding _rounding;
 
+        private readonly bool _encodeHref;
+
         /// <summary>
         /// Initializes a new instance of the <see cref="LockManagerBase"/> class.
         /// </summary>
+        /// <param name="litmusCompatibilityOptions">The compatibility options for the litmus tests.</param>
         /// <param name="cleanupTask">The clean-up task for expired locks.</param>
         /// <param name="systemClock">The system clock interface.</param>
         /// <param name="logger">The logger.</param>
         /// <param name="options">The options of the lock manager.</param>
-        protected LockManagerBase(ILockCleanupTask cleanupTask, ISystemClock systemClock, ILogger logger, ILockManagerOptions? options = null)
+        protected LockManagerBase(
+            IOptions<LitmusCompatibilityOptions> litmusCompatibilityOptions,
+            ILockCleanupTask cleanupTask,
+            ISystemClock systemClock,
+            ILogger logger,
+            ILockManagerOptions? options = null)
         {
+            _encodeHref = !litmusCompatibilityOptions.Value.DisableUrlEncodingOfResponseHref;
             _rounding = options?.Rounding ?? new DefaultLockTimeRounding(DefaultLockTimeRoundingMode.OneSecond);
             _cleanupTask = cleanupTask;
             _systemClock = systemClock;
@@ -296,8 +305,12 @@ namespace FubarDev.WebDavServer.Locking
                 if (refreshedLocks.Count == 0)
                 {
                     var hrefs = failedHrefs.ToList();
-                    var href = hrefs.First().OriginalString;
-                    var hrefItems = hrefs.Skip(1).Select(x => x.OriginalString).Cast<object>().ToArray();
+                    var href = hrefs.First().EncodeHref(_encodeHref);
+                    var hrefItems = hrefs
+                        .Skip(1)
+                        .Select(x => x.EncodeHref(_encodeHref))
+                        .Cast<object>()
+                        .ToArray();
                     var hrefItemNames = hrefItems.Select(_ => ItemsChoiceType2.href).ToArray();
 
                     return new LockRefreshResult(
@@ -483,84 +496,6 @@ namespace FubarDev.WebDavServer.Locking
                 activeLock.StateToken);
         }
 
-#if USE_VARIANT_1
-        [ItemCanBeNull]
-        private async Task<IReadOnlyCollection<PathConditions>> FindMatchingIfConditionListAsync(
-            IFileSystem rootFileSystem,
-            IReadOnlyCollection<IfHeaderList> ifHeaderLists,
-            ILock lockRequirements,
-            CancellationToken cancellationToken)
-        {
-            var lockRequirementUrl = BuildUrl(lockRequirements.Path);
-
-            var supportedIfConditions = new List<IfHeaderList>();
-            var pathToInfo = new Dictionary<Uri, PathInfo>();
-            foreach (var ifHeaderList in ifHeaderLists)
-            {
-                var ifHeaderUrl = BuildUrl(ifHeaderList.Path.OriginalString);
-                var headerCompareResult = Compare(ifHeaderUrl, true, lockRequirementUrl, false);
-                if (headerCompareResult != LockCompareResult.LeftIsParent &&
-                    headerCompareResult != LockCompareResult.Reference)
-                    continue;
-
-                supportedIfConditions.Add(ifHeaderList);
-
-                PathInfo pathInfo;
-                if (!pathToInfo.TryGetValue(ifHeaderList.Path, out pathInfo))
-                {
-                    pathInfo = new PathInfo();
-                    pathToInfo.Add(ifHeaderList.Path, pathInfo);
-                }
-
-                if (pathInfo.EntityTag == null)
-                {
-                    if (ifHeaderList.RequiresEntityTag)
-                    {
-                        var selectionResult = await rootFileSystem
-                            .SelectAsync(ifHeaderList.Path.OriginalString, cancellationToken).ConfigureAwait(false);
-                        if (selectionResult.IsMissing)
-                        {
-                            // Probably locked entry not found
-                            continue;
-                        }
-
-                        pathInfo.EntityTag = await selectionResult
-                            .TargetEntry.GetEntityTagAsync(cancellationToken).ConfigureAwait(false);
-                    }
-                }
-            }
-
-            if (supportedIfConditions.Count == 0)
-                return null;
-
-            var successfulConditions = new List<PathConditions>();
-            lock (_syncRoot)
-            {
-                foreach (var ifHeaderList in supportedIfConditions)
-                {
-                    var pathInfo = pathToInfo[ifHeaderList.Path];
-
-                    if (pathInfo.ActiveLocks == null)
-                    {
-                        var destinationUrl = BuildUrl(ifHeaderList.Path.OriginalString);
-                        var entryLocks = Find(destinationUrl, false).GetLocks().ToList();
-                        pathInfo.ActiveLocks = entryLocks;
-                        pathInfo.TokenToLock = entryLocks.ToDictionary(x => new Uri(x.StateToken, UriKind.RelativeOrAbsolute));
-                        pathInfo.LockTokens = pathInfo.TokenToLock.Keys.ToList();
-                    }
-
-                    if (ifHeaderList.IsMatch(pathInfo.EntityTag, pathInfo.LockTokens))
-                    {
-                        successfulConditions.Add(new PathConditions(pathInfo, ifHeaderList));
-                    }
-                }
-            }
-
-            return successfulConditions;
-        }
-#endif
-
-#if USE_VARIANT_2
         private async Task<IReadOnlyCollection<PathConditions>?> FindMatchingIfConditionListAsync(
             IFileSystem rootFileSystem,
             IReadOnlyCollection<IfHeaderList> ifHeaderLists,
@@ -647,7 +582,6 @@ namespace FubarDev.WebDavServer.Locking
 
             return conditionResults;
         }
-#endif
 
         private LockStatus Find(IEnumerable<IActiveLock> locks, Uri parentUrl, bool withChildren, bool findParents)
         {

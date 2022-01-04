@@ -16,6 +16,8 @@ using FubarDev.WebDavServer.Model;
 using FubarDev.WebDavServer.Model.Headers;
 using FubarDev.WebDavServer.Utils;
 
+using Microsoft.Extensions.Options;
+
 namespace FubarDev.WebDavServer.Handlers.Impl
 {
     /// <summary>
@@ -29,15 +31,24 @@ namespace FubarDev.WebDavServer.Handlers.Impl
         private readonly IWebDavContextAccessor _contextAccessor;
         private readonly bool _useAbsoluteHref = false;
 
+        private readonly bool _encodeHref;
+
         /// <summary>
         /// Initializes a new instance of the <see cref="LockHandler"/> class.
         /// </summary>
+        /// <param name="litmusCompatibilityOptions">The compatibility options for the litmus tests.</param>
         /// <param name="contextAccessor">The WebDAV request context accessor.</param>
         /// <param name="rootFileSystem">The root file system.</param>
         /// <param name="lockManager">The lock manager.</param>
         /// <param name="timeoutPolicy">The timeout policy for the selection of the <see cref="TimeoutHeader"/> value.</param>
-        public LockHandler(IWebDavContextAccessor contextAccessor, IFileSystem rootFileSystem, ILockManager? lockManager = null, ITimeoutPolicy? timeoutPolicy = null)
+        public LockHandler(
+            IOptions<LitmusCompatibilityOptions> litmusCompatibilityOptions,
+            IWebDavContextAccessor contextAccessor,
+            IFileSystem rootFileSystem,
+            ILockManager? lockManager = null,
+            ITimeoutPolicy? timeoutPolicy = null)
         {
+            _encodeHref = !litmusCompatibilityOptions.Value.DisableUrlEncodingOfResponseHref;
             _contextAccessor = contextAccessor;
             _rootFileSystem = rootFileSystem;
             _lockManager = lockManager;
@@ -266,10 +277,10 @@ namespace FubarDev.WebDavServer.Handlers.Impl
             var href = context.PublicControllerUrl.Append(path, true);
             if (!_useAbsoluteHref)
             {
-                return "/" + context.PublicRootUrl.MakeRelativeUri(href).OriginalString;
+                return "/" + context.PublicRootUrl.MakeRelativeUri(href).EncodeHref(_encodeHref);
             }
 
-            return href.OriginalString;
+            return href.EncodeHref(_encodeHref);
         }
     }
 }

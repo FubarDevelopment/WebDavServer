@@ -192,5 +192,35 @@ namespace FubarDev.WebDavServer
         {
             return Uri.EscapeDataString(s);
         }
+
+        /// <summary>
+        /// Encodes a HREF URI.
+        /// </summary>
+        /// <param name="uri">The URI to encode.</param>
+        /// <param name="encode">A value indicating whether the URI should be encoded.</param>
+        /// <returns>The encoded URI.</returns>
+        internal static string EncodeHref(this Uri uri, bool encode = true)
+        {
+            if (!encode)
+            {
+                return uri.OriginalString;
+            }
+
+            if (!uri.IsAbsoluteUri)
+            {
+                uri = new Uri(new Uri("http://localhost/"), uri);
+            }
+
+            var result = uri.GetComponents(UriComponents.Path, UriFormat.UriEscaped);
+            if (!result.StartsWith("/"))
+            {
+                result = "/" + result;
+            }
+
+            // Litmus test specific... WUT?
+            result = result.Replace("_", "%5f");
+
+            return result;
+        }
     }
 }

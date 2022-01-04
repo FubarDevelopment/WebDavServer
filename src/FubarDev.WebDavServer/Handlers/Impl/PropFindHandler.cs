@@ -32,19 +32,24 @@ namespace FubarDev.WebDavServer.Handlers.Impl
 
         private readonly PropFindHandlerOptions _options;
 
+        private readonly bool _encodeHref;
+
         /// <summary>
         /// Initializes a new instance of the <see cref="PropFindHandler"/> class.
         /// </summary>
+        /// <param name="litmusCompatibilityOptions">The compatibility options for the litmus tests.</param>
         /// <param name="fileSystem">The root file system.</param>
         /// <param name="contextAccessor">The WebDAV request context accessor.</param>
         /// <param name="deadPropertyFactory">The factory for dead properties.</param>
         /// <param name="options">The options for this handler.</param>
         public PropFindHandler(
+            IOptions<LitmusCompatibilityOptions> litmusCompatibilityOptions,
             IFileSystem fileSystem,
             IWebDavContextAccessor contextAccessor,
             IDeadPropertyFactory deadPropertyFactory,
             IOptions<PropFindHandlerOptions> options)
         {
+            _encodeHref = !litmusCompatibilityOptions.Value.DisableUrlEncodingOfResponseHref;
             _options = options.Value;
             _contextAccessor = contextAccessor;
             _deadPropertyFactory = deadPropertyFactory;
@@ -166,7 +171,7 @@ namespace FubarDev.WebDavServer.Handlers.Impl
 
                 var response = new response()
                 {
-                    href = href.OriginalString,
+                    href = href.EncodeHref(_encodeHref),
                     ItemsElementName = propStats.Select(_ => ItemsChoiceType2.propstat).ToArray(),
                     Items = propStats.Cast<object>().ToArray(),
                 };
@@ -224,7 +229,7 @@ namespace FubarDev.WebDavServer.Handlers.Impl
 
                 var response = new response()
                 {
-                    href = href.OriginalString,
+                    href = href.EncodeHref(_encodeHref),
                     ItemsElementName = propStats.Select(_ => ItemsChoiceType2.propstat).ToArray(),
                     Items = propStats.Cast<object>().ToArray(),
                 };
@@ -260,7 +265,7 @@ namespace FubarDev.WebDavServer.Handlers.Impl
 
                 var response = new response()
                 {
-                    href = href.OriginalString,
+                    href = href.EncodeHref(_encodeHref),
                     ItemsElementName = propStats.Select(_ => ItemsChoiceType2.propstat).ToArray(),
                     Items = propStats.Cast<object>().ToArray(),
                 };

@@ -20,6 +20,8 @@ using FubarDev.WebDavServer.Props.Dead;
 using FubarDev.WebDavServer.Props.Live;
 using FubarDev.WebDavServer.Utils;
 
+using Microsoft.Extensions.Options;
+
 namespace FubarDev.WebDavServer.Handlers.Impl
 {
     /// <summary>
@@ -34,19 +36,24 @@ namespace FubarDev.WebDavServer.Handlers.Impl
         private readonly IImplicitLockFactory _implicitLockFactory;
         private readonly IDeadPropertyFactory _deadPropertyFactory;
 
+        private readonly bool _encodeHref;
+
         /// <summary>
         /// Initializes a new instance of the <see cref="PropPatchHandler"/> class.
         /// </summary>
+        /// <param name="litmusCompatibilityOptions">The compatibility options for the litmus tests.</param>
         /// <param name="fileSystem">The root file system.</param>
         /// <param name="contextAccessor">The WebDAV request context accessor.</param>
         /// <param name="implicitLockFactory">A factory to create implicit locks.</param>
         /// <param name="deadPropertyFactory">Factory for dead properties.</param>
         public PropPatchHandler(
+            IOptions<LitmusCompatibilityOptions> litmusCompatibilityOptions,
             IFileSystem fileSystem,
             IWebDavContextAccessor contextAccessor,
             IImplicitLockFactory implicitLockFactory,
             IDeadPropertyFactory deadPropertyFactory)
         {
+            _encodeHref = !litmusCompatibilityOptions.Value.DisableUrlEncodingOfResponseHref;
             _fileSystem = fileSystem;
             _contextAccessor = contextAccessor;
             _implicitLockFactory = implicitLockFactory;
@@ -176,7 +183,7 @@ namespace FubarDev.WebDavServer.Handlers.Impl
                     {
                         new response()
                         {
-                            href = context.PublicControllerUrl.Append(path, true).OriginalString,
+                            href = context.PublicControllerUrl.Append(path, true).EncodeHref(_encodeHref),
                             ItemsElementName = propStats.Select(_ => ItemsChoiceType2.propstat).ToArray(),
                             Items = propStats.Cast<object>().ToArray(),
                         },

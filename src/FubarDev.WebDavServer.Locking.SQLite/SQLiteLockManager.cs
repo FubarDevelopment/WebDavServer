@@ -11,6 +11,8 @@ using System.Threading;
 using System.Threading.Tasks;
 using System.Xml.Linq;
 
+using FubarDev.WebDavServer.Utils;
+
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 
@@ -35,15 +37,17 @@ namespace FubarDev.WebDavServer.Locking.SQLite
         /// Initializes a new instance of the <see cref="SQLiteLockManager"/> class.
         /// </summary>
         /// <param name="sqliteOptions">The SQLite options.</param>
+        /// <param name="litmusCompatibilityOptions">The compatibility options for the litmus tests.</param>
         /// <param name="cleanupTask">The clean-up task for expired locks.</param>
         /// <param name="systemClock">The system clock interface.</param>
         /// <param name="logger">The logger.</param>
         public SQLiteLockManager(
             IOptions<SQLiteLockManagerOptions> sqliteOptions,
+            IOptions<LitmusCompatibilityOptions> litmusCompatibilityOptions,
             ILockCleanupTask cleanupTask,
             ISystemClock systemClock,
             ILogger<SQLiteLockManager> logger)
-            : this(sqliteOptions.Value, cleanupTask, systemClock, logger)
+            : this(sqliteOptions.Value, litmusCompatibilityOptions, cleanupTask, systemClock, logger)
         {
         }
 
@@ -51,15 +55,17 @@ namespace FubarDev.WebDavServer.Locking.SQLite
         /// Initializes a new instance of the <see cref="SQLiteLockManager"/> class.
         /// </summary>
         /// <param name="sqliteOptions">The SQLite options.</param>
+        /// <param name="litmusCompatibilityOptions">The compatibility options for the litmus tests.</param>
         /// <param name="cleanupTask">The clean-up task for expired locks.</param>
         /// <param name="systemClock">The system clock interface.</param>
         /// <param name="logger">The logger.</param>
         public SQLiteLockManager(
             SQLiteLockManagerOptions sqliteOptions,
+            IOptions<LitmusCompatibilityOptions> litmusCompatibilityOptions,
             ILockCleanupTask cleanupTask,
             ISystemClock systemClock,
             ILogger<SQLiteLockManager> logger)
-            : base(cleanupTask, systemClock, logger, sqliteOptions)
+            : base(litmusCompatibilityOptions, cleanupTask, systemClock, logger, sqliteOptions)
         {
             if (string.IsNullOrEmpty(sqliteOptions.DatabaseFileName))
             {
