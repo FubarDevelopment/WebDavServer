@@ -58,6 +58,10 @@ namespace FubarDev.WebDavServer.AspNetCore
         /// <param name="options">The options for the <see cref="WebDavContext"/>.</param>
         public WebDavContext(HttpContext httpContext, IOptions<WebDavHostOptions> options)
         {
+            var rawPath = httpContext.GetRouteValue("path")?.ToString() ?? string.Empty;
+            var path = new PathString("/" + rawPath.TrimStart('/'))
+                .ToUriComponent()
+                .Substring(1);
             var opt = options.Value;
             _httpContext = httpContext;
             _serviceBaseUrl = BuildServiceBaseUrl(httpContext);
@@ -68,7 +72,7 @@ namespace FubarDev.WebDavServer.AspNetCore
             _serviceRelativeRequestUrl = ServiceRootUrl.MakeRelativeUri(_serviceAbsoluteRequestUrl);
             _publicAbsoluteRequestUrl = new Uri(_publicBaseUrl, _serviceBaseUrl.MakeRelativeUri(_serviceAbsoluteRequestUrl));
             HrefUrl = new Uri(_publicAbsoluteRequestUrl.AbsolutePath, UriKind.RelativeOrAbsolute);
-            _actionUrl = new Uri(Uri.EscapeUriString(httpContext.GetRouteValue("path")?.ToString() ?? string.Empty), UriKind.RelativeOrAbsolute);
+            _actionUrl = new Uri(path, UriKind.RelativeOrAbsolute);
             _publicRelativeRequestUrl = _publicRootUrl.MakeRelativeUri(_publicAbsoluteRequestUrl);
             _controllerRelativeUrl = GetControllerRelativeUrl(httpContext, _serviceBaseUrl, _serviceAbsoluteRequestUrl);
             _publicControllerUrl = new Uri(_publicBaseUrl, _controllerRelativeUrl);
@@ -147,8 +151,7 @@ namespace FubarDev.WebDavServer.AspNetCore
             }
 
             result.Append(request.Scheme).Append("://").Append(request.Host)
-                .Append(basePath)
-                .Append(Uri.EscapeUriString(path));
+                .Append(new PathString(basePath + path).ToUriComponent());
             if (request.RouteValues.TryGetValue("path", out var actionPath))
             {
                 // We have an action path...
