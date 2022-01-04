@@ -17,7 +17,6 @@ using FubarDev.WebDavServer.Props.Store.SQLite;
 
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
-using Microsoft.Extensions.Options;
 
 namespace FubarDev.WebDavServer.Tests.Support.ServiceBuilders
 {

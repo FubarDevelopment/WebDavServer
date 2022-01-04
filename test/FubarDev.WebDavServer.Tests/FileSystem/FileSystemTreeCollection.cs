@@ -15,6 +15,7 @@ using Microsoft.Extensions.DependencyInjection;
 
 using Xunit;
 
+// ReSharper disable ParameterOnlyUsedForPreconditionCheck.Local
 namespace FubarDev.WebDavServer.Tests.FileSystem
 {
     public abstract class FileSystemTreeCollection<T> : IClassFixture<T>

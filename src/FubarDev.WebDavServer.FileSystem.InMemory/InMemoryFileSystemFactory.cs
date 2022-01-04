@@ -3,6 +3,7 @@
 // </copyright>
 
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Security.Principal;
 
 using FubarDev.WebDavServer.Locking;
@@ -79,6 +80,10 @@ namespace FubarDev.WebDavServer.FileSystem.InMemory
         {
         }
 
+        [SuppressMessage(
+            "ReSharper",
+            "NotAccessedPositionalProperty.Local",
+            Justification = "Just used as dictionary key")]
         private record FileSystemKey(string UserName, string MountPoint);
     }
 }

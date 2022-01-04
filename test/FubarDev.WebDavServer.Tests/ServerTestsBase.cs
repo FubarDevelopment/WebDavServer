@@ -23,7 +23,6 @@ using FubarDev.WebDavServer.Locking.InMemory;
 using FubarDev.WebDavServer.Props.Dead;
 using FubarDev.WebDavServer.Props.Store;
 using FubarDev.WebDavServer.Props.Store.InMemory;
-using FubarDev.WebDavServer.Tests.Support;
 using FubarDev.WebDavServer.Tests.Support.Controllers;
 using FubarDev.WebDavServer.Utils;
 

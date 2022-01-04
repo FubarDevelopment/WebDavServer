@@ -16,6 +16,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Xunit;
 using Xunit.Abstractions;
 
+// ReSharper disable ParameterOnlyUsedForPreconditionCheck.Local
 namespace FubarDev.WebDavServer.Tests.Locking
 {
     public abstract class LockShareModeTests<T> : IClassFixture<T>, IDisposable

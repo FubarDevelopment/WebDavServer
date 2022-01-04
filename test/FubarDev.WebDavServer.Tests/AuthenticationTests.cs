@@ -13,7 +13,6 @@ using DecaTec.WebDav.Headers;
 using DecaTec.WebDav.Tools;
 using DecaTec.WebDav.WebDavArtifacts;
 
-using FubarDev.WebDavServer.FileSystem.InMemory;
 using FubarDev.WebDavServer.Tests.Support.Controllers;
 
 using idunno.Authentication.Basic;

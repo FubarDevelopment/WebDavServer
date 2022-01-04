@@ -684,22 +684,16 @@ namespace FubarDev.WebDavServer.Locking
             public PathConditions(bool isSuccess, PathInfo path, IfHeaderList conditions)
             {
                 IsSuccess = isSuccess;
-                EntityTag = path.EntityTag;
                 ActiveLocks = path.ActiveLocks;
                 TokenToLock = path.TokenToLock;
-                LockTokens = path.LockTokens;
                 Conditions = conditions;
             }
 
             public bool IsSuccess { get; }
 
-            public EntityTag? EntityTag { get; }
-
             public IReadOnlyCollection<IActiveLock> ActiveLocks { get; }
 
             public IReadOnlyDictionary<Uri, IActiveLock> TokenToLock { get; }
-
-            public IReadOnlyCollection<Uri> LockTokens { get; }
 
             public IfHeaderList Conditions { get; }
         }

@@ -6,6 +6,7 @@ using FubarDev.WebDavServer.Model.Headers;
 
 using Xunit;
 
+// ReSharper disable ParameterOnlyUsedForPreconditionCheck.Local
 namespace FubarDev.WebDavServer.Tests.ModelTests
 {
     public class RangeTests
