@@ -165,8 +165,11 @@ namespace FubarDev.WebDavServer.Handlers.Impl
                     href = new Uri("/" + context.PublicRootUrl.MakeRelativeUri(href).OriginalString, UriKind.Relative);
                 }
 
-                var collector = new PropertyCollector(_deadPropertyFactory, this, context, new ReadableFilter(), new PropFilter(prop));
-                var propStats = await collector.GetPropertiesAsync(entry, int.MaxValue, cancellationToken)
+                var filter = new AndFilter(
+                    new ReadableFilter(),
+                    new PropFilter(prop));
+                var collector = new PropertyCollector(_deadPropertyFactory, this, context, filter);
+                var propStats = await collector.GetPropertiesAsync(entry, cancellationToken)
                     .ConfigureAwait(false);
 
                 var response = new response()
@@ -224,8 +227,19 @@ namespace FubarDev.WebDavServer.Handlers.Impl
                     href = new Uri("/" + context.PublicRootUrl.MakeRelativeUri(href).OriginalString, UriKind.Relative);
                 }
 
-                var collector = new PropertyCollector(_deadPropertyFactory, this, context, new ReadableFilter(), new CostFilter(0));
-                var propStats = await collector.GetPropertiesAsync(entry, 0, cancellationToken).ConfigureAwait(false);
+                var filter = new AndFilter(
+                    new ReadableFilter(),
+                    new OrFilter(
+                        new IncludeFilter(include),
+                        new CostFilter(_options.MaxDefaultCost)));
+                var collector = new PropertyCollector(
+                    _deadPropertyFactory,
+                    this,
+                    context,
+                    filter);
+                var propStats = await collector
+                    .GetPropertiesAsync(entry, cancellationToken)
+                    .ConfigureAwait(false);
 
                 var response = new response()
                 {
@@ -260,7 +274,10 @@ namespace FubarDev.WebDavServer.Handlers.Impl
                     href = new Uri("/" + context.PublicRootUrl.MakeRelativeUri(href).OriginalString, UriKind.Relative);
                 }
 
-                var collector = new PropertyCollector(_deadPropertyFactory, this, context, new ReadableFilter(), new CostFilter(0));
+                var filter = new AndFilter(
+                    new ReadableFilter(),
+                    new CostFilter(_options.MaxDefaultCost));
+                var collector = new PropertyCollector(_deadPropertyFactory, this, context, filter);
                 var propStats = await collector.GetPropertyNamesAsync(entry, cancellationToken).ConfigureAwait(false);
 
                 var response = new response()
@@ -289,41 +306,33 @@ namespace FubarDev.WebDavServer.Handlers.Impl
 
             private readonly IWebDavContext _context;
 
-            private readonly IPropertyFilter[] _filters;
+            private readonly IPropertyFilter _filter;
 
             public PropertyCollector(
                 IDeadPropertyFactory deadPropertyFactory,
                 PropFindHandler handler,
                 IWebDavContext context,
-                params IPropertyFilter[] filters)
+                IPropertyFilter filter)
             {
                 _deadPropertyFactory = deadPropertyFactory;
                 _handler = handler;
                 _context = context;
-                _filters = filters;
+                _filter = filter;
             }
 
             public async Task<IReadOnlyCollection<propstat>> GetPropertiesAsync(
                 IEntry entry,
-                int maxCost,
                 CancellationToken cancellationToken)
             {
-                foreach (var filter in _filters)
-                {
-                    filter.Reset();
-                }
+                _filter.Reset();
 
                 var propElements = new List<XElement>();
                 var properties = entry.GetProperties(
                         _deadPropertyFactory,
-                        property => _filters.All(x => x.IsAllowed(property)))
-                    .Where(x => x.Cost <= maxCost);
+                        property => _filter.IsAllowed(property));
                 await foreach (var property in properties.WithCancellation(cancellationToken).ConfigureAwait(false))
                 {
-                    foreach (var filter in _filters)
-                    {
-                        filter.NotifyOfSelection(property);
-                    }
+                    _filter.NotifyOfSelection(property);
 
                     XElement element;
                     if (property is LockDiscoveryProperty lockDiscoveryProp)
@@ -355,8 +364,7 @@ namespace FubarDev.WebDavServer.Handlers.Impl
                         });
                 }
 
-                var missingProperties = _filters
-                    .SelectMany(x => x.GetMissingProperties())
+                var missingProperties = _filter.GetMissingProperties()
                     .GroupBy(x => x.StatusCode, x => x.Key)
                     .ToDictionary(x => x.Key, x => x.Distinct().ToList());
                 foreach (var item in missingProperties)
@@ -379,24 +387,18 @@ namespace FubarDev.WebDavServer.Handlers.Impl
                 IEntry entry,
                 CancellationToken cancellationToken)
             {
-                foreach (var filter in _filters)
-                {
-                    filter.Reset();
-                }
+                _filter.Reset();
 
                 var propElements = new List<XElement>();
                 var properties = entry.GetProperties(_deadPropertyFactory);
                 await foreach (var property in properties.WithCancellation(cancellationToken).ConfigureAwait(false))
                 {
-                    if (!_filters.All(x => x.IsAllowed(property)))
+                    if (!_filter.IsAllowed(property))
                     {
                         continue;
                     }
 
-                    foreach (var filter in _filters)
-                    {
-                        filter.NotifyOfSelection(property);
-                    }
+                    _filter.NotifyOfSelection(property);
 
                     var readableProp = property;
                     var element = new XElement(readableProp.Name);
@@ -417,8 +419,7 @@ namespace FubarDev.WebDavServer.Handlers.Impl
                         });
                 }
 
-                var missingProperties = _filters
-                    .SelectMany(x => x.GetMissingProperties())
+                var missingProperties = _filter.GetMissingProperties()
                     .GroupBy(x => x.StatusCode, x => x.Key)
                     .ToDictionary(x => x.Key, x => x.Distinct().ToList());
                 foreach (var item in missingProperties)

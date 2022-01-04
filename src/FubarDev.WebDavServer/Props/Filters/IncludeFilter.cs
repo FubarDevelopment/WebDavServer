@@ -1,4 +1,4 @@
-﻿// <copyright file="PropFilter.cs" company="Fubar Development Junker">
+// <copyright file="IncludeFilter.cs" company="Fubar Development Junker">
 // Copyright (c) Fubar Development Junker. All rights reserved.
 // </copyright>
 
@@ -12,19 +12,21 @@ using FubarDev.WebDavServer.Model;
 namespace FubarDev.WebDavServer.Props.Filters
 {
     /// <summary>
-    /// Filters the allowed properties by name.
+    /// Filter for properties to include.
     /// </summary>
-    public class PropFilter : TrackingFilter
+    public class IncludeFilter : TrackingFilter
     {
         private readonly ImmutableHashSet<XName> _requestedProperties;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="PropFilter"/> class.
+        /// Initializes a new instance of the <see cref="IncludeFilter"/> class.
         /// </summary>
-        /// <param name="prop">The <see cref="prop"/> element containing the property names.</param>
-        public PropFilter(prop prop)
+        /// <param name="include">The parameters to <c>include</c>.</param>
+        public IncludeFilter(include? include)
         {
-            _requestedProperties = prop.Any.Select(x => x.Name).ToImmutableHashSet();
+            _requestedProperties =
+                include?.Any.Select(x => x.Name).ToImmutableHashSet()
+                ?? ImmutableHashSet<XName>.Empty;
         }
 
         /// <inheritdoc />

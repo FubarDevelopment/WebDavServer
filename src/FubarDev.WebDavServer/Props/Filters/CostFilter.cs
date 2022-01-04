@@ -15,26 +15,13 @@ namespace FubarDev.WebDavServer.Props.Filters
     {
         private readonly int _maximumCost;
 
-        private readonly IPropertyFilter? _exceptionFilter;
-
         /// <summary>
         /// Initializes a new instance of the <see cref="CostFilter"/> class.
         /// </summary>
         /// <param name="maximumCost">The maximum allowed cost.</param>
         public CostFilter(int maximumCost)
-            : this(maximumCost, null)
-        {
-        }
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="CostFilter"/> class.
-        /// </summary>
-        /// <param name="maximumCost">The maximum allowed cost.</param>
-        /// <param name="exceptionFilter">A filter that allows an exception to this rule.</param>
-        public CostFilter(int maximumCost, IPropertyFilter? exceptionFilter)
         {
             _maximumCost = maximumCost;
-            _exceptionFilter = exceptionFilter;
         }
 
         /// <inheritdoc />
@@ -45,15 +32,9 @@ namespace FubarDev.WebDavServer.Props.Filters
         /// <inheritdoc />
         public bool IsAllowed(IProperty property)
         {
-            var readableProperty = property as IUntypedReadableProperty;
-            if (readableProperty == null)
+            if (property is not IUntypedReadableProperty readableProperty)
             {
                 throw new InvalidOperationException();
-            }
-
-            if (_exceptionFilter != null && _exceptionFilter.IsAllowed(property))
-            {
-                return true;
             }
 
             return readableProperty.Cost <= _maximumCost;
