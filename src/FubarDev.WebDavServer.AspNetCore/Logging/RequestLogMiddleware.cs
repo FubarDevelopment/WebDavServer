@@ -93,11 +93,10 @@ namespace FubarDev.WebDavServer.AspNetCore.Logging
 
                 var shouldTryReadingBody =
                     IsXmlContentType(context.Request)
-                    || (context.Request.Body != null
-                        && (IsMicrosoftWebDavClient(context.Request)
-                            || IsLoggableMethod(context.Request)));
+                    || IsMicrosoftWebDavClient(context.Request)
+                    || IsLoggableMethod(context.Request);
 
-                if (shouldTryReadingBody && context.Request.Body != null)
+                if (shouldTryReadingBody)
                 {
                     context.Request.EnableBuffering();
 
@@ -157,7 +156,7 @@ namespace FubarDev.WebDavServer.AspNetCore.Logging
                     }
                 }
 
-                _logger.LogInformation("Request information: {Information}", string.Join("\r\n", info));
+                _logger.LogDebug("Request information: {Information}", string.Join("\r\n", info));
             }
 
             await _next(context).ConfigureAwait(false);

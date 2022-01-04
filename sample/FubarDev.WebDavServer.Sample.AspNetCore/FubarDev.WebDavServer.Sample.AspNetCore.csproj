@@ -1,12 +1,12 @@
-﻿<Project Sdk="Microsoft.NET.Sdk.Web">
+<Project Sdk="Microsoft.NET.Sdk.Web">
   <PropertyGroup>
     <TargetFramework>netcoreapp3.1</TargetFramework>
-    <LangVersion>latest</LangVersion>
     <IsPackable>false</IsPackable>
     <NoWarn>NU1701;$(NoWarn)</NoWarn>
     <AppConfig>App.config</AppConfig>
     <AssemblyName>WebDavServer</AssemblyName>
   </PropertyGroup>
+  <Import Project="../../Global.props" />
   <ItemGroup>
     <Compile Remove="wwwroot\**" />
     <Content Remove="wwwroot\**" />

@@ -15,7 +15,7 @@ namespace FubarDev.WebDavServer.Sample.AspNetCore.Controllers
         public WebDavController(
             IWebDavContext context,
             IWebDavDispatcher dispatcher,
-            ILoggerFactory loggerFactory = null)
+            ILoggerFactory? loggerFactory = null)
             : base(context, dispatcher, loggerFactory)
         {
         }
