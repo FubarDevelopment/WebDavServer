@@ -38,6 +38,8 @@ namespace FubarDev.WebDavServer.Handlers.Impl
 
         private readonly bool _encodeHref;
 
+        private readonly bool _atomicOperations;
+
         /// <summary>
         /// Initializes a new instance of the <see cref="PropPatchHandler"/> class.
         /// </summary>
@@ -54,6 +56,7 @@ namespace FubarDev.WebDavServer.Handlers.Impl
             IDeadPropertyFactory deadPropertyFactory)
         {
             _encodeHref = !litmusCompatibilityOptions.Value.DisableUrlEncodingOfResponseHref;
+            _atomicOperations = litmusCompatibilityOptions.Value.UseAtomicPropSet;
             _fileSystem = fileSystem;
             _contextAccessor = contextAccessor;
             _implicitLockFactory = implicitLockFactory;
@@ -125,17 +128,36 @@ namespace FubarDev.WebDavServer.Handlers.Impl
                 var properties = propertiesList.ToDictionary(x => x.Name);
                 var changes =
                     await ApplyChangesAsync(targetEntry, properties, request, cancellationToken).ConfigureAwait(false);
-                var hasError = changes.Any(x => !x.IsSuccess);
-                if (hasError)
+
+                WebDavStatusCode statusCode;
+                bool updateEtags;
+                if (_atomicOperations)
                 {
-                    changes = await RevertChangesAsync(
-                            targetEntry,
-                            changes,
-                            properties,
-                            cancellationToken)
-                        .ConfigureAwait(false);
+                    var hasError = changes.Any(x => !x.IsSuccess);
+                    if (hasError)
+                    {
+                        changes = await RevertChangesAsync(
+                                targetEntry,
+                                changes,
+                                properties,
+                                cancellationToken)
+                            .ConfigureAwait(false);
+                        statusCode = WebDavStatusCode.Forbidden;
+                        updateEtags = false;
+                    }
+                    else
+                    {
+                        statusCode = WebDavStatusCode.MultiStatus;
+                        updateEtags = changes.Any(c => c.IsSuccess);
+                    }
                 }
                 else
+                {
+                    statusCode = WebDavStatusCode.MultiStatus;
+                    updateEtags = changes.Any(c => c.IsSuccess);
+                }
+
+                if (updateEtags)
                 {
                     var targetPropStore = targetEntry.FileSystem.PropertyStore;
                     if (targetPropStore != null)
@@ -157,7 +179,6 @@ namespace FubarDev.WebDavServer.Handlers.Impl
                     }
                 }
 
-                var statusCode = hasError ? WebDavStatusCode.Forbidden : WebDavStatusCode.MultiStatus;
                 var propStats = new List<propstat>();
 
                 var readOnlyProperties = changes.Where(x => x.Status == ChangeStatus.ReadOnlyProperty).ToList();
@@ -437,7 +458,7 @@ namespace FubarDev.WebDavServer.Handlers.Impl
                         }
                         catch (Exception ex)
                         {
-                            result.Add(ChangeItem.Failed(property, ex.Message));
+                            result.Add(ChangeItem.Failed(property, ex));
                             failed = true;
                         }
                     }
@@ -516,7 +537,7 @@ namespace FubarDev.WebDavServer.Handlers.Impl
                     }
                     catch (Exception ex)
                     {
-                        changeItem = ChangeItem.Failed(property, ex.Message);
+                        changeItem = ChangeItem.Failed(property, ex);
                     }
 
                     failed = !changeItem.IsSuccess;
@@ -576,7 +597,8 @@ namespace FubarDev.WebDavServer.Handlers.Impl
                 XElement? newValue,
                 XElement? oldValue,
                 XName key,
-                string? description)
+                string? description,
+                Exception? exception)
             {
                 Status = status;
                 Property = property;
@@ -584,6 +606,7 @@ namespace FubarDev.WebDavServer.Handlers.Impl
                 OldValue = oldValue;
                 Key = key;
                 Description = description;
+                Exception = exception;
             }
 
             public ChangeStatus Status { get; }
@@ -598,6 +621,8 @@ namespace FubarDev.WebDavServer.Handlers.Impl
 
             public string? Description { get; }
 
+            public Exception? Exception { get; }
+
             public bool IsSuccess => Status == ChangeStatus.Added || Status == ChangeStatus.Modified ||
                                      Status == ChangeStatus.Removed;
 
@@ -605,64 +630,63 @@ namespace FubarDev.WebDavServer.Handlers.Impl
                                      Status == ChangeStatus.InsufficientStorage ||
                                      Status == ChangeStatus.ReadOnlyProperty;
 
-            public WebDavStatusCode StatusCode
-            {
-                get
+            public WebDavStatusCode StatusCode =>
+                Status switch
                 {
-                    switch (Status)
-                    {
-                        case ChangeStatus.Added:
-                        case ChangeStatus.Modified:
-                        case ChangeStatus.Removed:
-                            return WebDavStatusCode.OK;
-                        case ChangeStatus.Conflict:
-                            return WebDavStatusCode.Conflict;
-                        case ChangeStatus.FailedDependency:
-                            return WebDavStatusCode.FailedDependency;
-                        case ChangeStatus.InsufficientStorage:
-                            return WebDavStatusCode.InsufficientStorage;
-                        case ChangeStatus.Failed:
-                        case ChangeStatus.ReadOnlyProperty:
-                            return WebDavStatusCode.Forbidden;
-                    }
+                    ChangeStatus.Added => WebDavStatusCode.OK,
+                    ChangeStatus.Modified => WebDavStatusCode.OK,
+                    ChangeStatus.Removed => WebDavStatusCode.OK,
+                    ChangeStatus.Conflict => WebDavStatusCode.Conflict,
+                    ChangeStatus.FailedDependency => WebDavStatusCode.FailedDependency,
+                    ChangeStatus.InsufficientStorage => WebDavStatusCode.InsufficientStorage,
 
-                    throw new NotSupportedException();
-                }
-            }
+                    // Returning "Conflict" is required, according to tolsen/litmus
+                    ChangeStatus.Failed =>
+                        Exception is ArgumentException
+                            ? WebDavStatusCode.Conflict
+                            : WebDavStatusCode.Forbidden,
+                    ChangeStatus.ReadOnlyProperty => WebDavStatusCode.Forbidden,
+                    _ => throw new NotSupportedException(),
+                };
 
             public static ChangeItem Added(IUntypedReadableProperty property, XElement newValue)
             {
-                return new ChangeItem(ChangeStatus.Added, property, newValue, null, property.Name, null);
+                return new ChangeItem(ChangeStatus.Added, property, newValue, null, property.Name, null, null);
             }
 
             public static ChangeItem Modified(IUntypedReadableProperty property, XElement newValue, XElement oldValue)
             {
-                return new ChangeItem(ChangeStatus.Modified, property, newValue, oldValue, property.Name, null);
+                return new ChangeItem(ChangeStatus.Modified, property, newValue, oldValue, property.Name, null, null);
             }
 
             public static ChangeItem Removed(IUntypedReadableProperty property, XElement oldValue)
             {
-                return new ChangeItem(ChangeStatus.Removed, property, null, oldValue, property.Name, null);
+                return new ChangeItem(ChangeStatus.Removed, property, null, oldValue, property.Name, null, null);
             }
 
             public static ChangeItem Removed(XName key)
             {
-                return new ChangeItem(ChangeStatus.Removed, null, null, null, key, null);
+                return new ChangeItem(ChangeStatus.Removed, null, null, null, key, null, null);
             }
 
             public static ChangeItem Failed(IUntypedReadableProperty property, string description)
             {
-                return new ChangeItem(ChangeStatus.Failed, property, null, null, property.Name, description);
+                return new ChangeItem(ChangeStatus.Failed, property, null, null, property.Name, description, null);
+            }
+
+            public static ChangeItem Failed(IUntypedReadableProperty property, Exception exception)
+            {
+                return new ChangeItem(ChangeStatus.Failed, property, null, null, property.Name, exception.Message, exception);
             }
 
             public static ChangeItem Conflict(IUntypedReadableProperty property, XElement oldValue, string description)
             {
-                return new ChangeItem(ChangeStatus.Conflict, property, null, oldValue, property.Name, description);
+                return new ChangeItem(ChangeStatus.Conflict, property, null, oldValue, property.Name, description, null);
             }
 
             public static ChangeItem FailedDependency(XName key, string description = "Failed dependency")
             {
-                return new ChangeItem(ChangeStatus.FailedDependency, null, null, null, key, description);
+                return new ChangeItem(ChangeStatus.FailedDependency, null, null, null, key, description, null);
             }
 
             public static ChangeItem InsufficientStorage(XElement newValue, string description)
@@ -673,7 +697,8 @@ namespace FubarDev.WebDavServer.Handlers.Impl
                     newValue,
                     null,
                     newValue.Name,
-                    description);
+                    description,
+                    null);
             }
 
             public static ChangeItem ReadOnly(IUntypedReadableProperty property, XElement newValue, string description)
@@ -684,7 +709,8 @@ namespace FubarDev.WebDavServer.Handlers.Impl
                     newValue,
                     null,
                     property.Name,
-                    description);
+                    description,
+                    null);
             }
         }
     }
