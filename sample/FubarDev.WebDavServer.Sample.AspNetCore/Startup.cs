@@ -30,12 +30,15 @@ using Microsoft.AspNetCore.Authentication.Negotiate;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpOverrides;
+using Microsoft.AspNetCore.Server.Kestrel.Core;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Options;
 
 using Npam.Interop;
+
+using Serilog;
 
 namespace FubarDev.WebDavServer.Sample.AspNetCore
 {
@@ -64,14 +67,33 @@ namespace FubarDev.WebDavServer.Sample.AspNetCore
         public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
+            DisableBasicAuth = configuration.GetValue<bool>("disable-basic-auth");
+            DisableLocking = configuration.GetValue<bool>("disable-locking");
+            UseNegotiate = configuration.GetValue<bool>("use-negotiate");
+            IsKestrel = configuration.GetValue<bool>("use-kestrel");
         }
+
+        public bool IsKestrel { get; }
+
+        public bool UseNegotiate { get; set; }
+
+        public bool DisableLocking { get; set; }
+
+        public bool DisableBasicAuth { get; set; }
 
         private IConfiguration Configuration { get; }
 
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            if (Program.UseNegotiate)
+            // Remove request body size limits
+            services
+                .Configure<KestrelServerOptions>(
+                    opt => opt.Limits.MaxRequestBodySize = null)
+                .Configure<IISServerOptions>(
+                    opt => opt.MaxRequestBodySize = null);
+
+            if (UseNegotiate)
             {
                 services.AddAuthentication(NegotiateDefaults.AuthenticationScheme).AddNegotiate();
             }
@@ -81,7 +103,7 @@ namespace FubarDev.WebDavServer.Sample.AspNetCore
                 services.AddAuthentication(
                         opt =>
                         {
-                            if (!Program.IsKestrel || !Program.DisableBasicAuth)
+                            if (!IsKestrel || !DisableBasicAuth)
                             {
                                 opt.DefaultScheme = BasicAuthenticationDefaults.AuthenticationScheme;
                             }
@@ -110,7 +132,7 @@ namespace FubarDev.WebDavServer.Sample.AspNetCore
             services
                 .AddMvcCore()
                 .AddAuthorization()
-                .AddWebDav(opt => opt.EnableClass2 = !Program.DisableLocking);
+                .AddWebDav(opt => opt.EnableClass2 = !DisableLocking);
 
             services
                 .AddSingleton<IGetCollectionHandler, GetCollectionHandler>();
@@ -164,7 +186,7 @@ namespace FubarDev.WebDavServer.Sample.AspNetCore
                     throw new NotSupportedException();
             }
 
-            if (!Program.DisableLocking)
+            if (!DisableLocking)
             {
                 switch (serverConfig.LockManager)
                 {
@@ -197,16 +219,18 @@ namespace FubarDev.WebDavServer.Sample.AspNetCore
                 ForwardedHeaders = ForwardedHeaders.XForwardedFor | ForwardedHeaders.XForwardedProto
             });
 
+            app.UseSerilogRequestLogging();
+
             app.UseMiddleware<RequestLogMiddleware>();
 
             app.UseRouting();
 
-            if (!Program.IsKestrel || !Program.DisableBasicAuth || Program.UseNegotiate)
+            if (!IsKestrel || !DisableBasicAuth || UseNegotiate)
             {
                 app.UseAuthentication();
             }
 
-            if (!Program.IsKestrel)
+            if (!IsKestrel)
             {
                 app.UseMiddleware<ImpersonationMiddleware>();
             }
