@@ -2,6 +2,8 @@
 // Copyright (c) Fubar Development Junker. All rights reserved.
 // </copyright>
 
+using System;
+using System.Text.RegularExpressions;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Xml.Linq;
@@ -22,6 +24,10 @@ namespace FubarDev.WebDavServer.Props.Dead
         /// The XML name of the property
         /// </summary>
         public static readonly XName PropertyName = WebDavXml.Dav + "getcontentlanguage";
+
+        private static readonly Regex _contentLanguage = new(
+            "^[a-zA-Z]{1-8}(-[a-zA-Z]{1-8})?$",
+            RegexOptions.Compiled);
 
         private readonly IEntry _entry;
 
@@ -82,6 +88,13 @@ namespace FubarDev.WebDavServer.Props.Dead
         /// <inheritdoc />
         public override async Task SetValueAsync(string value, CancellationToken ct)
         {
+            if (!_contentLanguage.IsMatch(value))
+            {
+                throw new ArgumentOutOfRangeException(
+                    nameof(value),
+                    @"The content language must be a valid language tag as defined in RFC 2616.");
+            }
+
             _value = value;
             var element = await GetXmlValueAsync(ct).ConfigureAwait(false);
             await _store.SetAsync(_entry, element, ct).ConfigureAwait(false);
