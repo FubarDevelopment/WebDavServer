@@ -26,7 +26,7 @@ namespace FubarDev.WebDavServer.Props.Dead
         public static readonly XName PropertyName = WebDavXml.Dav + "getcontentlanguage";
 
         private static readonly Regex _contentLanguage = new(
-            "^[a-zA-Z]{1-8}(-[a-zA-Z]{1-8})?$",
+            "^[a-zA-Z]{1,8}(-[a-zA-Z]{1,8})?$",
             RegexOptions.Compiled);
 
         private readonly IEntry _entry;
