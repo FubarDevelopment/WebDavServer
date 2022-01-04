@@ -6,8 +6,11 @@ using System;
 using System.Linq;
 using System.Security.Principal;
 using System.Text;
+
 using FubarDev.WebDavServer.Utils.UAParser;
+
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Http.Features;
 using Microsoft.AspNetCore.Routing;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Options;
@@ -69,11 +72,11 @@ namespace FubarDev.WebDavServer.AspNetCore
             _publicRootUrl = new Uri(PublicBaseUrl, "/");
             _serviceAbsoluteRequestUrl = BuildAbsoluteServiceUrl(httpContext);
             _serviceRootUrl = new Uri(_serviceAbsoluteRequestUrl, "/");
-            _serviceRelativeRequestUrl = ServiceRootUrl.MakeRelativeUri(_serviceAbsoluteRequestUrl);
-            _publicAbsoluteRequestUrl = new Uri(_publicBaseUrl, _serviceBaseUrl.MakeRelativeUri(_serviceAbsoluteRequestUrl));
-            HrefUrl = new Uri(_publicAbsoluteRequestUrl.AbsolutePath, UriKind.RelativeOrAbsolute);
+            _serviceRelativeRequestUrl = new Uri(_serviceAbsoluteRequestUrl.GetAbsolutePath(), UriKind.RelativeOrAbsolute);
+            _publicAbsoluteRequestUrl = new Uri(_publicBaseUrl, _serviceBaseUrl.GetRelativeUrl(_serviceAbsoluteRequestUrl));
+            HrefUrl = new Uri(_publicAbsoluteRequestUrl.GetAbsolutePath(), UriKind.RelativeOrAbsolute);
             _actionUrl = new Uri(path, UriKind.RelativeOrAbsolute);
-            _publicRelativeRequestUrl = _publicRootUrl.MakeRelativeUri(_publicAbsoluteRequestUrl);
+            _publicRelativeRequestUrl = _publicRootUrl.GetRelativeUrl(_publicAbsoluteRequestUrl);
             _controllerRelativeUrl = GetControllerRelativeUrl(httpContext, _serviceBaseUrl, _serviceAbsoluteRequestUrl);
             _publicControllerUrl = new Uri(_publicBaseUrl, _controllerRelativeUrl);
             _requestHeaders = new WebDavRequestHeaders(httpContext.Request.Headers, this);
@@ -142,31 +145,8 @@ namespace FubarDev.WebDavServer.AspNetCore
         private static Uri BuildAbsoluteServiceUrl(HttpContext httpContext)
         {
             var request = httpContext.Request;
-            var result = new StringBuilder();
-            var basePath = request.PathBase.Value ?? string.Empty;
-            var path = request.Path.Value ?? string.Empty;
-            if (!basePath.EndsWith("/") && !path.StartsWith("/"))
-            {
-                basePath += "/";
-            }
-
-            result.Append(request.Scheme).Append("://").Append(request.Host)
-                .Append(new PathString(basePath + path).ToUriComponent());
-            if (request.RouteValues.TryGetValue("path", out var actionPath))
-            {
-                // We have an action path...
-                if (string.IsNullOrEmpty(actionPath?.ToString())
-                    && !path.EndsWith("/"))
-                {
-                    // The path for the action is empty, which means that
-                    // the WebDAV client queried the root entry of the file
-                    // system.
-                    result.Append("/");
-                }
-            }
-
-            var resultUrl = new Uri(result.ToString());
-            return resultUrl;
+            var url = $"{request.Scheme}://{request.Host}{GetRawPath(httpContext)}";
+            return new Uri(url);
         }
 
         private static Uri BuildPublicBaseUrl(HttpContext httpContext, WebDavHostOptions options)
@@ -204,10 +184,25 @@ namespace FubarDev.WebDavServer.AspNetCore
             return new Uri(resultUrl);
         }
 
+        private static string GetRawPath(HttpContext httpContext)
+        {
+            var rawTarget = httpContext.Features.Get<IHttpRequestFeature>()?.RawTarget;
+            if (string.IsNullOrEmpty(rawTarget))
+                rawTarget = httpContext.Request.Path.ToString();
+            return rawTarget;
+        }
+
         private static IUAParserOutput DetectClient(HttpContext httpContext)
         {
             var userAgent = httpContext.Request.Headers["User-Agent"].FirstOrDefault();
             return Parser.GetDefault().Parse(userAgent ?? string.Empty);
+        }
+
+        private static string[] GetPathParts(string path)
+        {
+            return string.IsNullOrEmpty(path)
+                ? Array.Empty<string>()
+                : path.Split('/');
         }
 
         private static Uri GetControllerRelativeUrl(
@@ -216,20 +211,27 @@ namespace FubarDev.WebDavServer.AspNetCore
             Uri serviceAbsoluteRequestUrl)
         {
             var path = httpContext.GetRouteValue("path")?.ToString();
-            var input = Uri.UnescapeDataString(serviceAbsoluteRequestUrl.ToString());
-            string remaining = input;
-            if (path != null)
+            var inputPath = serviceAbsoluteRequestUrl.GetAbsolutePath().TrimStart('/');
+            if (string.IsNullOrEmpty(path))
             {
-                int pathIndex = input.LastIndexOf(path, StringComparison.Ordinal);
-                if (pathIndex != -1)
+                if (!inputPath.EndsWith("/"))
                 {
-                    remaining = input.Substring(0, pathIndex);
+                    inputPath += "/";
                 }
+
+                return new Uri(inputPath, UriKind.Relative);
             }
 
-            var serviceControllerAbsoluteUrl = new Uri(remaining);
-            var result = serviceBaseUrl.MakeRelativeUri(serviceControllerAbsoluteUrl);
-            return result;
+            var serviceBasePath = serviceBaseUrl.GetAbsolutePath().TrimStart('/');
+            var serviceBasePathParts = GetPathParts(serviceBasePath);
+            var pathParts = GetPathParts(path);
+            var inputParts = GetPathParts(inputPath);
+            var resultParts = inputParts
+                .Skip(serviceBasePathParts.Length)
+                .Take(inputParts.Length - pathParts.Length - serviceBasePathParts.Length);
+            return new Uri(
+                string.Join('/', resultParts) + "/",
+                UriKind.Relative);
         }
     }
 }

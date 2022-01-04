@@ -19,7 +19,7 @@ namespace FubarDev.WebDavServer.Tests.Issues.Issue53
 {
     public class IssueTests : ServerTestsBase, IAsyncLifetime
     {
-        private const string BasePath = "%5fdav/";
+        private const string BasePath = "_dav/";
         private const string NameTest1 = "test%201";
 
         public IssueTests()

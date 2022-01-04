@@ -1,8 +1,9 @@
-﻿// <copyright file="UriExtensions.cs" company="Fubar Development Junker">
+// <copyright file="UriExtensions.cs" company="Fubar Development Junker">
 // Copyright (c) Fubar Development Junker. All rights reserved.
 // </copyright>
 
 using System;
+using System.Linq;
 
 using FubarDev.WebDavServer.FileSystem;
 
@@ -194,6 +195,60 @@ namespace FubarDev.WebDavServer
         }
 
         /// <summary>
+        /// Creates a relative URL from the <paramref name="baseUri"/> to the <paramref name="targetUri"/>.
+        /// </summary>
+        /// <param name="baseUri">The base URI.</param>
+        /// <param name="targetUri">The target URI.</param>
+        /// <returns>The relative URI.</returns>
+        public static Uri GetRelativeUrl(
+            this Uri baseUri,
+            Uri targetUri)
+        {
+            var basePath = baseUri.GetAbsolutePath().TrimStart('/');
+            var basePathParts = GetPathParts(basePath);
+            var requestPath = targetUri.GetAbsolutePath().TrimStart('/');
+            var requestPathParts = GetPathParts(requestPath);
+            var resultParts = requestPathParts
+                .Skip(basePathParts.Length);
+            var result = string.Join("/", resultParts);
+            return new Uri(result, UriKind.Relative);
+        }
+
+        /// <summary>
+        /// Gets the absolute path of a given URL.
+        /// </summary>
+        /// <param name="url">The URL to get the path for.</param>
+        /// <returns>The absolute URL.</returns>
+        public static string GetAbsolutePath(this Uri url)
+        {
+            var schemaAndHost = url.GetComponents(UriComponents.SchemeAndServer, UriFormat.UriEscaped);
+            var originalUrl = url.OriginalString;
+            if (originalUrl.StartsWith(schemaAndHost))
+            {
+                return originalUrl.Substring(schemaAndHost.Length);
+            }
+
+            var schemaEndIndex = originalUrl.IndexOf("://", StringComparison.Ordinal);
+            if (schemaEndIndex == -1)
+            {
+                if (!url.IsAbsoluteUri)
+                {
+                    return url.AbsolutePath;
+                }
+
+                return originalUrl;
+            }
+
+            var pathStartIndex = originalUrl.IndexOf("/", schemaEndIndex + 3, StringComparison.Ordinal);
+            if (pathStartIndex == -1)
+            {
+                return "/";
+            }
+
+            return originalUrl.Substring(pathStartIndex);
+        }
+
+        /// <summary>
         /// Encodes a HREF URI.
         /// </summary>
         /// <param name="uri">The URI to encode.</param>
@@ -214,9 +269,6 @@ namespace FubarDev.WebDavServer
                 }
 
                 result = uri.GetComponents(UriComponents.Path, UriFormat.UriEscaped);
-
-                // Litmus test specific... WUT?
-                result = result.Replace("_", "%5f");
             }
 
             if (!result.StartsWith("/"))
@@ -225,6 +277,18 @@ namespace FubarDev.WebDavServer
             }
 
             return result;
+        }
+
+        /// <summary>
+        /// Gets the parts of a path, but an empty path returns an empty array.
+        /// </summary>
+        /// <param name="path">The path to get the parts for.</param>
+        /// <returns>The parts of the path.</returns>
+        private static string[] GetPathParts(string path)
+        {
+            return string.IsNullOrEmpty(path)
+                ? Array.Empty<string>()
+                : path.Split('/');
         }
     }
 }
