@@ -84,15 +84,15 @@ foo
 
                 // This should fail because the file is locked
                 (await secondClient.MoveAsync(
-                        new Uri("collX", UriKind.Relative),
-                        new Uri(secondClient.BaseAddress!, "collY"),
+                        new Uri("collY", UriKind.Relative),
+                        new Uri(secondClient.BaseAddress!, "collX"),
                         true))
                     .EnsureStatusCode(WebDavStatusCode.Locked);
 
                 // This should work
                 (await Client.MoveAsync(
-                        new Uri("collX", UriKind.Relative),
-                        new Uri(secondClient.BaseAddress!, "collY"),
+                        new Uri("collY", UriKind.Relative),
+                        new Uri(Client.BaseAddress!, "collX"),
                         true))
                     .EnsureSuccess();
 
@@ -114,6 +114,8 @@ foo
             var lockManager = Server.Services.GetRequiredService<ILockManager>();
             var locks = (await lockManager.GetLocksAsync()).ToList();
             Assert.Empty(locks);
+
+            (await Client.DeleteAsync("collX")).EnsureSuccess();
         }
 
         /// <inheritdoc />
