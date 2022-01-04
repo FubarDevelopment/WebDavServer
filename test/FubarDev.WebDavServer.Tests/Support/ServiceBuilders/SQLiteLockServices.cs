@@ -8,11 +8,9 @@ using System.IO;
 
 using FubarDev.WebDavServer.Locking;
 using FubarDev.WebDavServer.Locking.SQLite;
-using FubarDev.WebDavServer.Utils;
 
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
-using Microsoft.Extensions.Options;
 
 namespace FubarDev.WebDavServer.Tests.Support.ServiceBuilders
 {
@@ -46,8 +44,7 @@ namespace FubarDev.WebDavServer.Tests.Support.ServiceBuilders
                     var cleanupTask = sp.GetRequiredService<ILockCleanupTask>();
                     var systemClock = sp.GetRequiredService<ISystemClock>();
                     var logger = sp.GetRequiredService<ILogger<SQLiteLockManager>>();
-                    var litmusOptions = sp.GetRequiredService<IOptions<LitmusCompatibilityOptions>>();
-                    return new SQLiteLockManager(config, litmusOptions, cleanupTask, systemClock, logger);
+                    return new SQLiteLockManager(config, cleanupTask, systemClock, logger);
                 });
             ServiceProvider = serviceCollection.BuildServiceProvider();
         }

@@ -24,13 +24,13 @@ namespace FubarDev.WebDavServer.Utils
         public bool ForbidOverwriteOfCollectionWithDocument { get; set; }
 
         /// <summary>
-        /// Gets or sets a value indicating whether the URL encoding of the response HREF should be disabled.
-        /// </summary>
-        public bool DisableUrlEncodingOfResponseHref { get; set; }
-
-        /// <summary>
         /// Gets or sets a value indicating whether the server should enforce an atomic <c>propset</c>.
         /// </summary>
         public bool UseAtomicPropSet { get; set; }
+
+        /// <summary>
+        /// Gets or sets a value indicating whether the unescaped URIs should be used.
+        /// </summary>
+        public bool UseUnescapedUri { get; set; }
     }
 }

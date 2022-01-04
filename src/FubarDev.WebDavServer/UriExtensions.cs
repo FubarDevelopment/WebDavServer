@@ -203,7 +203,7 @@ namespace FubarDev.WebDavServer
             this Uri baseUri,
             Uri targetUri)
         {
-            var basePath = baseUri.GetAbsolutePath().TrimStart('/');
+            var basePath = baseUri.GetAbsolutePath().Trim('/');
             var basePathParts = GetPathParts(basePath);
             var requestPath = targetUri.GetAbsolutePath().TrimStart('/');
             var requestPathParts = GetPathParts(requestPath);
@@ -245,37 +245,6 @@ namespace FubarDev.WebDavServer
             }
 
             return originalUrl.Substring(pathStartIndex);
-        }
-
-        /// <summary>
-        /// Encodes a HREF URI.
-        /// </summary>
-        /// <param name="uri">The URI to encode.</param>
-        /// <param name="encode">A value indicating whether the URI should be encoded.</param>
-        /// <returns>The encoded URI.</returns>
-        internal static string EncodeHref(this Uri uri, bool encode = true)
-        {
-            string result;
-            if (!encode)
-            {
-                result = uri.OriginalString;
-            }
-            else
-            {
-                if (!uri.IsAbsoluteUri)
-                {
-                    uri = new Uri(new Uri("http://localhost/"), uri);
-                }
-
-                result = uri.GetComponents(UriComponents.Path, UriFormat.UriEscaped);
-            }
-
-            if (!result.StartsWith("/"))
-            {
-                result = "/" + result;
-            }
-
-            return result;
         }
 
         /// <summary>

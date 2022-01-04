@@ -49,7 +49,7 @@ namespace FubarDev.WebDavServer.Handlers.Impl
             {
                 var context = _contextAccessor.WebDavContext;
                 var href = new Uri(context.PublicControllerUrl, path);
-                href = new Uri("/" + context.PublicRootUrl.MakeRelativeUri(href).OriginalString);
+                href = new Uri("/" + context.PublicRootUrl.GetRelativeUrl(href).OriginalString);
                 return new WebDavResult<error>(
                     WebDavStatusCode.Conflict,
                     new error()

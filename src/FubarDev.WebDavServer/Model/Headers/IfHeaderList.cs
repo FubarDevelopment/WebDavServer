@@ -123,8 +123,12 @@ namespace FubarDev.WebDavServer.Model.Headers
                         nameof(source));
                 }
 
-                var relativeHref = context.PublicControllerUrl.IsBaseOf(resourceTag) ? AddRootSlashToUri(context.PublicControllerUrl.MakeRelativeUri(resourceTag)) : resourceTag;
-                var path = context.PublicControllerUrl.IsBaseOf(resourceTag) ? context.PublicControllerUrl.MakeRelativeUri(resourceTag) : resourceTag;
+                var relativeHref = context.PublicControllerUrl.IsBaseOf(resourceTag)
+                    ? AddRootSlashToUri(context.PublicControllerUrl.GetRelativeUrl(resourceTag))
+                    : resourceTag;
+                var path = context.PublicControllerUrl.IsBaseOf(resourceTag)
+                    ? context.PublicControllerUrl.GetRelativeUrl(resourceTag)
+                    : resourceTag;
                 yield return new IfHeaderList(resourceTag, relativeHref, path, conditions);
             }
         }

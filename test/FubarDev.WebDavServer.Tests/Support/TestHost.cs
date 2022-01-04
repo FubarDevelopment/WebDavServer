@@ -39,7 +39,7 @@ namespace FubarDev.WebDavServer.Tests.Support
             _hrefUrl = new Lazy<Uri>(() => new Uri(_absoluteRequestUrl.Value.AbsolutePath, UriKind.RelativeOrAbsolute));
             _relativeRequestUrl = new Lazy<Uri>(() =>
             {
-                var requestUrl = PublicRootUrl.MakeRelativeUri(baseUrl);
+                var requestUrl = PublicRootUrl.GetRelativeUrl(baseUrl);
                 if (!requestUrl.OriginalString.StartsWith("/"))
                     return new Uri("/" + requestUrl.OriginalString, UriKind.Relative);
                 return requestUrl;

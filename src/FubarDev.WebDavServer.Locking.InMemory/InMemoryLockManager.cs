@@ -8,8 +8,6 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 
-using FubarDev.WebDavServer.Utils;
-
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 
@@ -28,17 +26,15 @@ namespace FubarDev.WebDavServer.Locking.InMemory
         /// Initializes a new instance of the <see cref="InMemoryLockManager"/> class.
         /// </summary>
         /// <param name="options">The options of the lock manager.</param>
-        /// <param name="litmusCompatibilityOptions">The compatibility options for the litmus tests.</param>
         /// <param name="cleanupTask">The clean-up task for expired locks.</param>
         /// <param name="systemClock">The system clock interface.</param>
         /// <param name="logger">The logger.</param>
         public InMemoryLockManager(
             IOptions<InMemoryLockManagerOptions> options,
-            IOptions<LitmusCompatibilityOptions> litmusCompatibilityOptions,
             ILockCleanupTask cleanupTask,
             ISystemClock systemClock,
             ILogger<InMemoryLockManager> logger)
-            : base(litmusCompatibilityOptions, cleanupTask, systemClock, logger, options.Value)
+            : base(cleanupTask, systemClock, logger, options.Value)
         {
         }
 

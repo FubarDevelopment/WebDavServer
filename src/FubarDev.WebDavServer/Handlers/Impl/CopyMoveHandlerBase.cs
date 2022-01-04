@@ -174,7 +174,7 @@ namespace FubarDev.WebDavServer.Handlers.Impl
                     }
 
                     // For error reporting
-                    sourceUrl = context.PublicRootUrl.MakeRelativeUri(sourceUrl);
+                    sourceUrl = context.PublicRootUrl.GetRelativeUrl(sourceUrl);
 
                     var remoteTargetResult = await RemoteExecuteAsync(
                         remoteHandler,
@@ -190,15 +190,15 @@ namespace FubarDev.WebDavServer.Handlers.Impl
                 {
                     // Copy or move from one known file system to another
                     var destinationPath = context.PublicControllerUrl
-                        .MakeRelativeUri(destinationUrl)
+                        .GetRelativeUrl(destinationUrl)
                         .OriginalString;
 
                     // Unescape to get the real path
                     destinationPath = Uri.UnescapeDataString(destinationPath);
 
                     // For error reporting
-                    sourceUrl = context.PublicRootUrl.MakeRelativeUri(sourceUrl);
-                    destinationUrl = context.PublicRootUrl.MakeRelativeUri(destinationUrl);
+                    sourceUrl = context.PublicRootUrl.GetRelativeUrl(sourceUrl);
+                    destinationUrl = context.PublicRootUrl.GetRelativeUrl(destinationUrl);
 
                     var destinationSelectionResult =
                         await _rootFileSystem.SelectAsync(destinationPath, cancellationToken).ConfigureAwait(false);

@@ -36,8 +36,6 @@ namespace FubarDev.WebDavServer.Handlers.Impl
         private readonly IImplicitLockFactory _implicitLockFactory;
         private readonly IDeadPropertyFactory _deadPropertyFactory;
 
-        private readonly bool _encodeHref;
-
         private readonly bool _atomicOperations;
 
         /// <summary>
@@ -55,7 +53,6 @@ namespace FubarDev.WebDavServer.Handlers.Impl
             IImplicitLockFactory implicitLockFactory,
             IDeadPropertyFactory deadPropertyFactory)
         {
-            _encodeHref = !litmusCompatibilityOptions.Value.DisableUrlEncodingOfResponseHref;
             _atomicOperations = litmusCompatibilityOptions.Value.UseAtomicPropSet;
             _fileSystem = fileSystem;
             _contextAccessor = contextAccessor;
@@ -204,7 +201,7 @@ namespace FubarDev.WebDavServer.Handlers.Impl
                     {
                         new response()
                         {
-                            href = context.PublicControllerUrl.Append(path, true).EncodeHref(_encodeHref),
+                            href = context.PublicControllerUrl.Append(path, true).OriginalString,
                             ItemsElementName = propStats.Select(_ => ItemsChoiceType2.propstat).ToArray(),
                             Items = propStats.Cast<object>().ToArray(),
                         },

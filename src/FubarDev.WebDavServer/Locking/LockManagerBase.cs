@@ -12,10 +12,8 @@ using System.Threading.Tasks;
 using FubarDev.WebDavServer.FileSystem;
 using FubarDev.WebDavServer.Model;
 using FubarDev.WebDavServer.Model.Headers;
-using FubarDev.WebDavServer.Utils;
 
 using Microsoft.Extensions.Logging;
-using Microsoft.Extensions.Options;
 
 namespace FubarDev.WebDavServer.Locking
 {
@@ -38,24 +36,19 @@ namespace FubarDev.WebDavServer.Locking
 
         private readonly ILockTimeRounding _rounding;
 
-        private readonly bool _encodeHref;
-
         /// <summary>
         /// Initializes a new instance of the <see cref="LockManagerBase"/> class.
         /// </summary>
-        /// <param name="litmusCompatibilityOptions">The compatibility options for the litmus tests.</param>
         /// <param name="cleanupTask">The clean-up task for expired locks.</param>
         /// <param name="systemClock">The system clock interface.</param>
         /// <param name="logger">The logger.</param>
         /// <param name="options">The options of the lock manager.</param>
         protected LockManagerBase(
-            IOptions<LitmusCompatibilityOptions> litmusCompatibilityOptions,
             ILockCleanupTask cleanupTask,
             ISystemClock systemClock,
             ILogger logger,
             ILockManagerOptions? options = null)
         {
-            _encodeHref = !litmusCompatibilityOptions.Value.DisableUrlEncodingOfResponseHref;
             _rounding = options?.Rounding ?? new DefaultLockTimeRounding(DefaultLockTimeRoundingMode.OneSecond);
             _cleanupTask = cleanupTask;
             _systemClock = systemClock;
@@ -305,10 +298,10 @@ namespace FubarDev.WebDavServer.Locking
                 if (refreshedLocks.Count == 0)
                 {
                     var hrefs = failedHrefs.ToList();
-                    var href = hrefs.First().EncodeHref(_encodeHref);
+                    var href = hrefs.First().OriginalString;
                     var hrefItems = hrefs
                         .Skip(1)
-                        .Select(x => x.EncodeHref(_encodeHref))
+                        .Select(x => x.OriginalString)
                         .Cast<object>()
                         .ToArray();
                     var hrefItemNames = hrefItems.Select(_ => ItemsChoiceType2.href).ToArray();
