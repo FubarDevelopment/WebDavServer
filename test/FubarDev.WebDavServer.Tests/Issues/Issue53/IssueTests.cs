@@ -14,6 +14,7 @@ using FubarDev.WebDavServer.Tests.Support.Controllers;
 
 using Xunit;
 
+// ReSharper disable ParameterOnlyUsedForPreconditionCheck.Local
 namespace FubarDev.WebDavServer.Tests.Issues.Issue53
 {
     public class IssueTests : ServerTestsBase, IAsyncLifetime
@@ -69,13 +70,13 @@ namespace FubarDev.WebDavServer.Tests.Issues.Issue53
             Assert.Collection(
                 multiStatus.Response,
                 response => Assert.Equal("/" + BasePath, response.Href),
-                response => { Assert.Equal($"/{BasePath}{Uri.EscapeUriString(NameTest1)}/", response.Href); });
+                response => { Assert.Equal($"/{BasePath}{Uri.EscapeDataString(NameTest1)}/", response.Href); });
         }
 
         [Fact]
         public async Task CheckTest1()
         {
-            var propFindResponse = await Client.PropFindAsync(Uri.EscapeUriString(NameTest1), WebDavDepthHeaderValue.One);
+            var propFindResponse = await Client.PropFindAsync(Uri.EscapeDataString(NameTest1), WebDavDepthHeaderValue.One);
             Assert.Equal(WebDavStatusCode.MultiStatus, propFindResponse.StatusCode);
             var multiStatus = await WebDavResponseContentParser
                 .ParseMultistatusResponseContentAsync(propFindResponse.Content).ConfigureAwait(false);
@@ -83,7 +84,7 @@ namespace FubarDev.WebDavServer.Tests.Issues.Issue53
                 multiStatus.Response,
                 response =>
                 {
-                    Assert.Equal($"/{BasePath}{Uri.EscapeUriString(NameTest1)}/", response.Href);
+                    Assert.Equal($"/{BasePath}{Uri.EscapeDataString(NameTest1)}/", response.Href);
                 });
         }
     }
