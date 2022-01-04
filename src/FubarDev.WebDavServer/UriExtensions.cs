@@ -1,4 +1,4 @@
-// <copyright file="UriExtensions.cs" company="Fubar Development Junker">
+﻿// <copyright file="UriExtensions.cs" company="Fubar Development Junker">
 // Copyright (c) Fubar Development Junker. All rights reserved.
 // </copyright>
 
@@ -131,8 +131,7 @@ namespace FubarDev.WebDavServer
         /// <returns>The <paramref name="baseUri"/> with the <paramref name="entry"/> name appended.</returns>
         public static Uri Append(this Uri baseUri, IEntry entry)
         {
-            var doc = entry as IDocument;
-            if (doc != null)
+            if (entry is IDocument doc)
             {
                 return baseUri.Append(doc);
             }
