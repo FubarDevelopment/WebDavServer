@@ -201,24 +201,28 @@ namespace FubarDev.WebDavServer
         /// <returns>The encoded URI.</returns>
         internal static string EncodeHref(this Uri uri, bool encode = true)
         {
+            string result;
             if (!encode)
             {
-                return uri.OriginalString;
+                result = uri.OriginalString;
             }
-
-            if (!uri.IsAbsoluteUri)
+            else
             {
-                uri = new Uri(new Uri("http://localhost/"), uri);
+                if (!uri.IsAbsoluteUri)
+                {
+                    uri = new Uri(new Uri("http://localhost/"), uri);
+                }
+
+                result = uri.GetComponents(UriComponents.Path, UriFormat.UriEscaped);
+
+                // Litmus test specific... WUT?
+                result = result.Replace("_", "%5f");
             }
 
-            var result = uri.GetComponents(UriComponents.Path, UriFormat.UriEscaped);
             if (!result.StartsWith("/"))
             {
                 result = "/" + result;
             }
-
-            // Litmus test specific... WUT?
-            result = result.Replace("_", "%5f");
 
             return result;
         }

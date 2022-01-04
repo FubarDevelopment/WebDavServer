@@ -18,12 +18,13 @@ namespace FubarDev.WebDavServer.Tests.Issues.Issue53
 {
     public class IssueTests : ServerTestsBase, IAsyncLifetime
     {
+        private const string BasePath = "%5fdav/";
         private const string NameTest1 = "test%201";
 
         public IssueTests()
         {
             Assert.NotNull(Client.BaseAddress);
-            Client.BaseAddress = new Uri(Client.BaseAddress!, new Uri("_dav/", UriKind.Relative));
+            Client.BaseAddress = new Uri(Client.BaseAddress!, new Uri(BasePath, UriKind.Relative));
         }
 
         protected override IEnumerable<Type> ControllerTypes { get; } = new[]
@@ -55,7 +56,7 @@ namespace FubarDev.WebDavServer.Tests.Issues.Issue53
                 .ParseMultistatusResponseContentAsync(propFindResponse.Content).ConfigureAwait(false);
             Assert.Collection(
                 multiStatus.Response,
-                response => Assert.Equal("/_dav/", response.Href));
+                response => Assert.Equal("/" + BasePath, response.Href));
         }
 
         [Fact]
@@ -67,8 +68,8 @@ namespace FubarDev.WebDavServer.Tests.Issues.Issue53
                 .ParseMultistatusResponseContentAsync(propFindResponse.Content).ConfigureAwait(false);
             Assert.Collection(
                 multiStatus.Response,
-                response => Assert.Equal("/_dav/", response.Href),
-                response => { Assert.Equal(Uri.EscapeUriString($"/_dav/{NameTest1}/"), response.Href); });
+                response => Assert.Equal("/" + BasePath, response.Href),
+                response => { Assert.Equal($"/{BasePath}{Uri.EscapeUriString(NameTest1)}/", response.Href); });
         }
 
         [Fact]
@@ -80,7 +81,10 @@ namespace FubarDev.WebDavServer.Tests.Issues.Issue53
                 .ParseMultistatusResponseContentAsync(propFindResponse.Content).ConfigureAwait(false);
             Assert.Collection(
                 multiStatus.Response,
-                response => { Assert.Equal(Uri.EscapeUriString($"/_dav/{NameTest1}/"), response.Href); });
+                response =>
+                {
+                    Assert.Equal($"/{BasePath}{Uri.EscapeUriString(NameTest1)}/", response.Href);
+                });
         }
     }
 }

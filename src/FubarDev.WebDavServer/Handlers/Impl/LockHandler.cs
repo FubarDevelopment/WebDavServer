@@ -277,10 +277,10 @@ namespace FubarDev.WebDavServer.Handlers.Impl
             var href = context.PublicControllerUrl.Append(path, true);
             if (!_useAbsoluteHref)
             {
-                return "/" + context.PublicRootUrl.MakeRelativeUri(href).EncodeHref(_encodeHref);
+                return context.PublicRootUrl.MakeRelativeUri(href).EncodeHref(_encodeHref);
             }
 
-            return href.EncodeHref(_encodeHref);
+            return href.ToString();
         }
     }
 }
