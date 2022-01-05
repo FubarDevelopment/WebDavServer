@@ -183,7 +183,7 @@ namespace FubarDev.WebDavServer.Locking
                 ifHeaderLists,
                 lockRequirements,
                 cancellationToken).ConfigureAwait(false);
-            if (conditionResults == null)
+            if (conditionResults == null || conditionResults.Count == 0)
             {
                 // No if conditions found for the requested path
                 var newLock = await LockAsync(lockRequirements, cancellationToken).ConfigureAwait(false);
