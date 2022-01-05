@@ -511,19 +511,25 @@ namespace FubarDev.WebDavServer.Locking
             }
 
             // Get all If header lists together with all relevant active locks
-            var ifListLocks =
-                (from list in ifHeaderLists
-                 let listUrl = BuildUrl(list.Path.OriginalString)
-                 let compareResult = Compare(listUrl, true, lockRequirementUrl, lockRequirements.Recursive)
-                 where compareResult != LockCompareResult.NoMatch
-                 let findRecursive = compareResult == LockCompareResult.LeftIsParent
-                                     || (compareResult == LockCompareResult.Reference && lockRequirements.Recursive)
-                 let foundLocks = list.RequiresStateToken
-                     ? Find(affectingLocks, listUrl, findRecursive, true)
-                     : LockStatus.Empty
-                 let locksForIfConditions = foundLocks.GetLocks().ToList()
-                 select (IfHeaderList: list, ActiveLocks: locksForIfConditions))
-                .ToDictionary(x => x.IfHeaderList, x => x.ActiveLocks);
+            Dictionary<IfHeaderList, List<IActiveLock>> ifListLocks = new();
+            foreach (var list in ifHeaderLists)
+            {
+                var listUrl = BuildUrl(list.Path.OriginalString);
+                var compareResult = Compare(listUrl, true, lockRequirementUrl, lockRequirements.Recursive);
+                if (compareResult == LockCompareResult.NoMatch)
+                {
+                    continue;
+                }
+
+                var findRecursive =
+                    compareResult == LockCompareResult.LeftIsParent
+                    || (compareResult == LockCompareResult.Reference && lockRequirements.Recursive);
+                var foundLocks = list.RequiresStateToken
+                    ? Find(affectingLocks, listUrl, findRecursive, true)
+                    : LockStatus.Empty;
+                var locksForIfConditions = foundLocks.GetLocks().ToList();
+                ifListLocks.Add(list, locksForIfConditions);
+            }
 
             // List of matches between path info and if header lists
             var conditionResults = new List<PathConditions>();
