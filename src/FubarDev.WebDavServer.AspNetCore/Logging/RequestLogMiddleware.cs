@@ -175,8 +175,7 @@ namespace FubarDev.WebDavServer.AspNetCore.Logging
 
         private static bool IsXmlContentType(HttpRequest request)
         {
-            return request.Body != null
-                   && !string.IsNullOrEmpty(request.ContentType)
+            return !string.IsNullOrEmpty(request.ContentType)
                    && IsXml(request.ContentType);
         }
 

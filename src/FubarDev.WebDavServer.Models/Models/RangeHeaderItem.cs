@@ -2,10 +2,9 @@
 // Copyright (c) Fubar Development Junker. All rights reserved.
 // </copyright>
 
-using System;
 using System.Text.RegularExpressions;
 
-namespace FubarDev.WebDavServer.Model.Headers
+namespace FubarDev.WebDavServer.Models
 {
     /// <summary>
     /// Range for a HTTP request or response.

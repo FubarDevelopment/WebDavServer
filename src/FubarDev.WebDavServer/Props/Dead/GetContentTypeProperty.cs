@@ -7,7 +7,6 @@ using System.Threading.Tasks;
 using System.Xml.Linq;
 
 using FubarDev.WebDavServer.FileSystem;
-using FubarDev.WebDavServer.Model;
 using FubarDev.WebDavServer.Props.Converters;
 using FubarDev.WebDavServer.Props.Store;
 

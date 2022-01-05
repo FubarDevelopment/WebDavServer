@@ -13,7 +13,7 @@ using FubarDev.WebDavServer.Engines.Remote;
 using FubarDev.WebDavServer.FileSystem;
 using FubarDev.WebDavServer.Locking;
 using FubarDev.WebDavServer.Model;
-using FubarDev.WebDavServer.Model.Headers;
+using FubarDev.WebDavServer.Models;
 using FubarDev.WebDavServer.Utils;
 
 using Microsoft.Extensions.Logging;

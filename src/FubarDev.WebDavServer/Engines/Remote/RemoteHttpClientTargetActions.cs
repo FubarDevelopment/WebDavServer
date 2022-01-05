@@ -18,7 +18,7 @@ using System.Xml.Serialization;
 
 using FubarDev.WebDavServer.FileSystem;
 using FubarDev.WebDavServer.Model;
-using FubarDev.WebDavServer.Model.Headers;
+using FubarDev.WebDavServer.Models;
 using FubarDev.WebDavServer.Props;
 using FubarDev.WebDavServer.Props.Dead;
 
@@ -30,13 +30,13 @@ namespace FubarDev.WebDavServer.Engines.Remote
     public abstract class RemoteHttpClientTargetActions : IRemoteTargetActions
     {
         private static readonly Encoding _defaultEncoding = new UTF8Encoding(false);
-        private static readonly HttpMethod _propFindHttpMethod = new HttpMethod("PROPFIND");
-        private static readonly HttpMethod _propPatchHttpMethod = new HttpMethod("PROPPATCH");
-        private static readonly HttpMethod _mkColHttpMethod = new HttpMethod("MKCOL");
-        private static readonly XmlSerializer _errorSerializer = new XmlSerializer(typeof(error));
-        private static readonly XmlSerializer _multiStatusSerializer = new XmlSerializer(typeof(multistatus));
-        private static readonly XmlSerializer _propFindSerializer = new XmlSerializer(typeof(propfind));
-        private static readonly XmlSerializer _propertyUpdateSerializer = new XmlSerializer(typeof(propertyupdate));
+        private static readonly HttpMethod _propFindHttpMethod = new("PROPFIND");
+        private static readonly HttpMethod _propPatchHttpMethod = new("PROPPATCH");
+        private static readonly HttpMethod _mkColHttpMethod = new("MKCOL");
+        private static readonly XmlSerializer _errorSerializer = new(typeof(error));
+        private static readonly XmlSerializer _multiStatusSerializer = new(typeof(multistatus));
+        private static readonly XmlSerializer _propFindSerializer = new(typeof(propfind));
+        private static readonly XmlSerializer _propertyUpdateSerializer = new(typeof(propertyupdate));
 
         /// <summary>
         /// Initializes a new instance of the <see cref="RemoteHttpClientTargetActions"/> class.
@@ -395,11 +395,6 @@ namespace FubarDev.WebDavServer.Engines.Remote
         protected async Task<XDocument?> ReadResponseAsync(HttpResponseMessage responseMessage)
         {
             var content = responseMessage.Content;
-            if (content == null)
-            {
-                return null;
-            }
-
             Encoding? encoding = null;
             if (content.Headers.ContentType != null)
             {

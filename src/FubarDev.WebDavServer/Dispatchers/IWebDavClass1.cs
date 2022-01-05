@@ -7,7 +7,7 @@ using System.IO;
 using System.Threading;
 using System.Threading.Tasks;
 
-using FubarDev.WebDavServer.Model;
+using FubarDev.WebDavServer.Models;
 
 namespace FubarDev.WebDavServer.Dispatchers
 {
@@ -70,7 +70,7 @@ namespace FubarDev.WebDavServer.Dispatchers
         Task<IWebDavResult> PropFindAsync(string path, propfind? request, CancellationToken cancellationToken);
 
         /// <summary>
-        /// Patches (sets or removes) properties from the given. <paramref name="path"/>
+        /// Patches (sets or removes) properties from the given. <paramref name="path"/>.
         /// </summary>
         /// <param name="path">The path to patch the properties for.</param>
         /// <param name="request">The properties to patch.</param>

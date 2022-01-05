@@ -7,6 +7,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 
+using FubarDev.WebDavServer.Models;
 using FubarDev.WebDavServer.Properties;
 using FubarDev.WebDavServer.Utils;
 
@@ -91,7 +92,7 @@ namespace FubarDev.WebDavServer.Model.Headers
                 else if (source.Get() == '[')
                 {
                     // Entity-tag found
-                    etag = EntityTag.Parse(source).Single();
+                    etag = ParseEntityTag(source).Single();
                     if (!source.AdvanceIf("]"))
                     {
                         throw new ArgumentException(
@@ -106,6 +107,44 @@ namespace FubarDev.WebDavServer.Model.Headers
                 }
 
                 yield return new IfHeaderCondition(isNot, stateToken, etag, entityTagComparer);
+            }
+        }
+
+        internal static IEnumerable<EntityTag> ParseEntityTag(StringSource source)
+        {
+            while (!source.SkipWhiteSpace())
+            {
+                bool isWeak;
+                if (source.AdvanceIf("W/\"", StringComparison.OrdinalIgnoreCase))
+                {
+                    isWeak = true;
+                }
+                else if (!source.AdvanceIf("\""))
+                {
+                    break;
+                }
+                else
+                {
+                    isWeak = false;
+                }
+
+                var etagText = source.GetUntil('"');
+                if (etagText == null)
+                {
+                    throw new ArgumentException($@"{source.Remaining} is not a valid ETag", nameof(source));
+                }
+
+                yield return new EntityTag(isWeak, etagText);
+
+                if (source.Advance(1).SkipWhiteSpace())
+                {
+                    break;
+                }
+
+                if (!source.AdvanceIf(","))
+                {
+                    break;
+                }
             }
         }
     }

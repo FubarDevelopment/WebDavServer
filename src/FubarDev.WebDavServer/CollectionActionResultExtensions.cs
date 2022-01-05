@@ -9,6 +9,7 @@ using System.Linq;
 using FubarDev.WebDavServer.Engines;
 using FubarDev.WebDavServer.Engines.Local;
 using FubarDev.WebDavServer.Model;
+using FubarDev.WebDavServer.Models;
 
 namespace FubarDev.WebDavServer
 {

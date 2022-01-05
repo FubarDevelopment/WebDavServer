@@ -5,7 +5,7 @@
 using System.Threading;
 using System.Threading.Tasks;
 
-using FubarDev.WebDavServer.Model.Headers;
+using FubarDev.WebDavServer.Models;
 
 namespace FubarDev.WebDavServer.FileSystem
 {

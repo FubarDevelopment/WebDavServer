@@ -4,7 +4,7 @@
 
 using System.Collections.Generic;
 
-using FubarDev.WebDavServer.Model;
+using FubarDev.WebDavServer.Models;
 
 namespace FubarDev.WebDavServer.Locking
 {

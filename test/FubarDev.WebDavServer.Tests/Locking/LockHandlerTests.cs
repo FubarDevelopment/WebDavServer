@@ -13,8 +13,11 @@ using DecaTec.WebDav.Headers;
 using DecaTec.WebDav.WebDavArtifacts;
 
 using FubarDev.WebDavServer.Model.Headers;
+using FubarDev.WebDavServer.Models;
 
 using Xunit;
+
+using ItemsChoiceType = DecaTec.WebDav.WebDavArtifacts.ItemsChoiceType;
 
 namespace FubarDev.WebDavServer.Tests.Locking
 {
@@ -212,7 +215,7 @@ namespace FubarDev.WebDavServer.Tests.Locking
                         item =>
                         {
                             var propStat = Assert.IsType<Propstat>(item);
-                            var status = Model.Status.Parse(propStat.Status);
+                            var status = Status.Parse(propStat.Status);
                             Assert.Equal(200, status.StatusCode);
                             Assert.NotNull(propStat.Prop?.LockDiscovery?.ActiveLock);
                             Assert.Collection(

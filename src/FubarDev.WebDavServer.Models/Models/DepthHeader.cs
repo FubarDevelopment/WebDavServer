@@ -2,12 +2,11 @@
 // Copyright (c) Fubar Development Junker. All rights reserved.
 // </copyright>
 
-using System;
 using System.Diagnostics;
 
 using FubarDev.WebDavServer.Properties;
 
-namespace FubarDev.WebDavServer.Model.Headers
+namespace FubarDev.WebDavServer.Models
 {
     /// <summary>
     /// The representation of the <c>Depth</c> header.

@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 using System.Xml.Linq;
 
 using FubarDev.WebDavServer.Model;
-using FubarDev.WebDavServer.Model.Headers;
+using FubarDev.WebDavServer.Models;
 
 namespace FubarDev.WebDavServer.FileSystem.InMemory
 {

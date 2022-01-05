@@ -9,8 +9,6 @@ using System.Xml.Linq;
 using DecaTec.WebDav.Headers;
 using DecaTec.WebDav.WebDavArtifacts;
 
-using FubarDev.WebDavServer.Model;
-
 using Xunit;
 
 namespace FubarDev.WebDavServer.Tests.XmlLang

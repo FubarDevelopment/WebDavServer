@@ -13,17 +13,15 @@
 // 
 
 using System.Xml.Linq;
+using System.Xml.Serialization;
 
-namespace FubarDev.WebDavServer.Model {
-    using System.Xml.Serialization;
-    
-    
+namespace FubarDev.WebDavServer.Models {
     /// <remarks/>
     [System.CodeDom.Compiler.GeneratedCodeAttribute("xsd", "4.6.1055.0")]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
-    [System.Xml.Serialization.XmlTypeAttribute(AnonymousType=true, Namespace="DAV:")]
-    [System.Xml.Serialization.XmlRootAttribute(Namespace="DAV:", IsNullable=false)]
+    [XmlType(AnonymousType=true, Namespace="DAV:")]
+    [XmlRoot(Namespace="DAV:", IsNullable=false)]
     public partial class propfind {
         
         private object[] itemsField;
@@ -31,11 +29,11 @@ namespace FubarDev.WebDavServer.Model {
         private ItemsChoiceType1[] itemsElementNameField;
 
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute("allprop", typeof(object))]
-        [System.Xml.Serialization.XmlElementAttribute("include", typeof(include))]
-        [System.Xml.Serialization.XmlElementAttribute("prop", typeof(prop))]
-        [System.Xml.Serialization.XmlElementAttribute("propname", typeof(object))]
-        [System.Xml.Serialization.XmlChoiceIdentifierAttribute("ItemsElementName")]
+        [XmlElement("allprop", typeof(object))]
+        [XmlElement("include", typeof(include))]
+        [XmlElement("prop", typeof(prop))]
+        [XmlElement("propname", typeof(object))]
+        [XmlChoiceIdentifier("ItemsElementName")]
         public object[] Items {
             get {
                 return this.itemsField;
@@ -46,8 +44,8 @@ namespace FubarDev.WebDavServer.Model {
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute("ItemsElementName")]
-        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        [XmlElement("ItemsElementName")]
+        [XmlIgnore()]
         public ItemsChoiceType1[] ItemsElementName {
             get {
                 return this.itemsElementNameField;
@@ -62,13 +60,13 @@ namespace FubarDev.WebDavServer.Model {
     [System.CodeDom.Compiler.GeneratedCodeAttribute("xsd", "4.6.1055.0")]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
-    [System.Xml.Serialization.XmlTypeAttribute(Namespace="DAV:")]
+    [XmlType(Namespace="DAV:")]
     public partial class location {
         
         private string hrefField;
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(DataType="anyURI")]
+        [XmlElement(DataType="anyURI")]
         public string href {
             get {
                 return this.hrefField;
@@ -83,7 +81,7 @@ namespace FubarDev.WebDavServer.Model {
     [System.CodeDom.Compiler.GeneratedCodeAttribute("xsd", "4.6.1055.0")]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
-    [System.Xml.Serialization.XmlTypeAttribute(Namespace="DAV:")]
+    [XmlType(Namespace="DAV:")]
     public partial class propstat {
         
         private prop propField;
@@ -151,14 +149,14 @@ namespace FubarDev.WebDavServer.Model {
     [System.CodeDom.Compiler.GeneratedCodeAttribute("xsd", "4.6.1055.0")]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
-    [System.Xml.Serialization.XmlTypeAttribute(Namespace="DAV:")]
-    [System.Xml.Serialization.XmlRootAttribute(Namespace="DAV:", IsNullable=false)]
+    [XmlType(Namespace="DAV:")]
+    [XmlRoot(Namespace="DAV:", IsNullable=false)]
     public partial class prop {
         
         private XElement[] anyField;
 
         /// <remarks/>
-        [System.Xml.Serialization.XmlAnyElementAttribute()]
+        [XmlAnyElement()]
         public XElement[] Any {
             get {
                 return this.anyField;
@@ -173,8 +171,8 @@ namespace FubarDev.WebDavServer.Model {
     [System.CodeDom.Compiler.GeneratedCodeAttribute("xsd", "4.6.1055.0")]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
-    [System.Xml.Serialization.XmlTypeAttribute(AnonymousType=true, Namespace="DAV:")]
-    [System.Xml.Serialization.XmlRootAttribute(Namespace="DAV:", IsNullable=false)]
+    [XmlType(AnonymousType=true, Namespace="DAV:")]
+    [XmlRoot(Namespace="DAV:", IsNullable=false)]
     public partial class error {
         
         private object[] itemsField;
@@ -182,15 +180,15 @@ namespace FubarDev.WebDavServer.Model {
         private ItemsChoiceType[] itemsElementNameField;
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlAnyElementAttribute()]
-        [System.Xml.Serialization.XmlElementAttribute("cannot-modify-protected-property", typeof(object))]
-        [System.Xml.Serialization.XmlElementAttribute("lock-token-matches-request-uri", typeof(object))]
-        [System.Xml.Serialization.XmlElementAttribute("lock-token-submitted", typeof(errorLocktokensubmitted))]
-        [System.Xml.Serialization.XmlElementAttribute("no-conflicting-lock", typeof(errorNoconflictinglock))]
-        [System.Xml.Serialization.XmlElementAttribute("no-external-entities", typeof(object))]
-        [System.Xml.Serialization.XmlElementAttribute("preserved-live-properties", typeof(object))]
-        [System.Xml.Serialization.XmlElementAttribute("propfind-finite-depth", typeof(object))]
-        [System.Xml.Serialization.XmlChoiceIdentifierAttribute("ItemsElementName")]
+        [XmlAnyElement()]
+        [XmlElement("cannot-modify-protected-property", typeof(object))]
+        [XmlElement("lock-token-matches-request-uri", typeof(object))]
+        [XmlElement("lock-token-submitted", typeof(errorLocktokensubmitted))]
+        [XmlElement("no-conflicting-lock", typeof(errorNoconflictinglock))]
+        [XmlElement("no-external-entities", typeof(object))]
+        [XmlElement("preserved-live-properties", typeof(object))]
+        [XmlElement("propfind-finite-depth", typeof(object))]
+        [XmlChoiceIdentifier("ItemsElementName")]
         public object[] Items {
             get {
                 return this.itemsField;
@@ -201,8 +199,8 @@ namespace FubarDev.WebDavServer.Model {
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute("ItemsElementName")]
-        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        [XmlElement("ItemsElementName")]
+        [XmlIgnore()]
         public ItemsChoiceType[] ItemsElementName {
             get {
                 return this.itemsElementNameField;
@@ -217,13 +215,13 @@ namespace FubarDev.WebDavServer.Model {
     [System.CodeDom.Compiler.GeneratedCodeAttribute("xsd", "4.6.1055.0")]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
-    [System.Xml.Serialization.XmlTypeAttribute(AnonymousType=true, Namespace="DAV:")]
+    [XmlType(AnonymousType=true, Namespace="DAV:")]
     public partial class errorLocktokensubmitted {
         
         private string[] hrefField;
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute("href", DataType="anyURI")]
+        [XmlElement("href", DataType="anyURI")]
         public string[] href {
             get {
                 return this.hrefField;
@@ -238,13 +236,13 @@ namespace FubarDev.WebDavServer.Model {
     [System.CodeDom.Compiler.GeneratedCodeAttribute("xsd", "4.6.1055.0")]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
-    [System.Xml.Serialization.XmlTypeAttribute(AnonymousType=true, Namespace="DAV:")]
+    [XmlType(AnonymousType=true, Namespace="DAV:")]
     public partial class errorNoconflictinglock {
         
         private string[] hrefField;
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute("href", DataType="anyURI")]
+        [XmlElement("href", DataType="anyURI")]
         public string[] href {
             get {
                 return this.hrefField;
@@ -257,39 +255,39 @@ namespace FubarDev.WebDavServer.Model {
     
     /// <remarks/>
     [System.CodeDom.Compiler.GeneratedCodeAttribute("xsd", "4.6.1055.0")]
-    [System.Xml.Serialization.XmlTypeAttribute(Namespace="DAV:", IncludeInSchema=false)]
+    [XmlType(Namespace="DAV:", IncludeInSchema=false)]
     public enum ItemsChoiceType {
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlEnumAttribute("##any:")]
+        [XmlEnum("##any:")]
         Item,
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlEnumAttribute("cannot-modify-protected-property")]
+        [XmlEnum("cannot-modify-protected-property")]
         cannotmodifyprotectedproperty,
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlEnumAttribute("lock-token-matches-request-uri")]
+        [XmlEnum("lock-token-matches-request-uri")]
         locktokenmatchesrequesturi,
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlEnumAttribute("lock-token-submitted")]
+        [XmlEnum("lock-token-submitted")]
         locktokensubmitted,
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlEnumAttribute("no-conflicting-lock")]
+        [XmlEnum("no-conflicting-lock")]
         noconflictinglock,
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlEnumAttribute("no-external-entities")]
+        [XmlEnum("no-external-entities")]
         noexternalentities,
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlEnumAttribute("preserved-live-properties")]
+        [XmlEnum("preserved-live-properties")]
         preservedliveproperties,
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlEnumAttribute("propfind-finite-depth")]
+        [XmlEnum("propfind-finite-depth")]
         propfindfinitedepth,
     }
     
@@ -297,13 +295,13 @@ namespace FubarDev.WebDavServer.Model {
     [System.CodeDom.Compiler.GeneratedCodeAttribute("xsd", "4.6.1055.0")]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
-    [System.Xml.Serialization.XmlTypeAttribute(Namespace="DAV:")]
+    [XmlType(Namespace="DAV:")]
     public partial class include {
         
         private XElement[] anyField;
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlAnyElementAttribute()]
+        [XmlAnyElement()]
         public XElement[] Any {
             get {
                 return this.anyField;
@@ -318,7 +316,7 @@ namespace FubarDev.WebDavServer.Model {
     [System.CodeDom.Compiler.GeneratedCodeAttribute("xsd", "4.6.1055.0")]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
-    [System.Xml.Serialization.XmlTypeAttribute(Namespace="DAV:")]
+    [XmlType(Namespace="DAV:")]
     public partial class lockentry {
         
         private lockscope lockscopeField;
@@ -350,7 +348,7 @@ namespace FubarDev.WebDavServer.Model {
     [System.CodeDom.Compiler.GeneratedCodeAttribute("xsd", "4.6.1055.0")]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
-    [System.Xml.Serialization.XmlTypeAttribute(Namespace="DAV:")]
+    [XmlType(Namespace="DAV:")]
     public partial class lockscope {
         
         private object itemField;
@@ -358,9 +356,9 @@ namespace FubarDev.WebDavServer.Model {
         private ItemChoiceType itemElementNameField;
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute("exclusive", typeof(object))]
-        [System.Xml.Serialization.XmlElementAttribute("shared", typeof(object))]
-        [System.Xml.Serialization.XmlChoiceIdentifierAttribute("ItemElementName")]
+        [XmlElement("exclusive", typeof(object))]
+        [XmlElement("shared", typeof(object))]
+        [XmlChoiceIdentifier("ItemElementName")]
         public object Item {
             get {
                 return this.itemField;
@@ -371,7 +369,7 @@ namespace FubarDev.WebDavServer.Model {
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        [XmlIgnore()]
         public ItemChoiceType ItemElementName {
             get {
                 return this.itemElementNameField;
@@ -384,7 +382,7 @@ namespace FubarDev.WebDavServer.Model {
     
     /// <remarks/>
     [System.CodeDom.Compiler.GeneratedCodeAttribute("xsd", "4.6.1055.0")]
-    [System.Xml.Serialization.XmlTypeAttribute(Namespace="DAV:", IncludeInSchema=false)]
+    [XmlType(Namespace="DAV:", IncludeInSchema=false)]
     public enum ItemChoiceType {
         
         /// <remarks/>
@@ -398,13 +396,13 @@ namespace FubarDev.WebDavServer.Model {
     [System.CodeDom.Compiler.GeneratedCodeAttribute("xsd", "4.6.1055.0")]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
-    [System.Xml.Serialization.XmlTypeAttribute(Namespace="DAV:")]
+    [XmlType(Namespace="DAV:")]
     public partial class locktype {
         
         private object itemField;
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute("write")]
+        [XmlElement("write")]
         public object Item {
             get {
                 return this.itemField;
@@ -419,13 +417,13 @@ namespace FubarDev.WebDavServer.Model {
     [System.CodeDom.Compiler.GeneratedCodeAttribute("xsd", "4.6.1055.0")]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
-    [System.Xml.Serialization.XmlTypeAttribute(Namespace="DAV:")]
+    [XmlType(Namespace="DAV:")]
     public partial class lockroot {
         
         private string hrefField;
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(DataType="anyURI")]
+        [XmlElement(DataType="anyURI")]
         public string href {
             get {
                 return this.hrefField;
@@ -440,13 +438,13 @@ namespace FubarDev.WebDavServer.Model {
     [System.CodeDom.Compiler.GeneratedCodeAttribute("xsd", "4.6.1055.0")]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
-    [System.Xml.Serialization.XmlTypeAttribute(Namespace="DAV:")]
+    [XmlType(Namespace="DAV:")]
     public partial class locktoken {
         
         private string hrefField;
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(DataType="anyURI")]
+        [XmlElement(DataType="anyURI")]
         public string href {
             get {
                 return this.hrefField;
@@ -461,7 +459,7 @@ namespace FubarDev.WebDavServer.Model {
     [System.CodeDom.Compiler.GeneratedCodeAttribute("xsd", "4.6.1055.0")]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
-    [System.Xml.Serialization.XmlTypeAttribute(Namespace="DAV:")]
+    [XmlType(Namespace="DAV:")]
     public partial class activelock {
         
         private lockscope lockscopeField;
@@ -509,7 +507,7 @@ namespace FubarDev.WebDavServer.Model {
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlAnyElementAttribute(Name="owner", Namespace="DAV:")]
+        [XmlAnyElement(Name="owner", Namespace="DAV:")]
         public XElement owner {
             get {
                 return this.ownerField;
@@ -552,15 +550,15 @@ namespace FubarDev.WebDavServer.Model {
     
     /// <remarks/>
     [System.CodeDom.Compiler.GeneratedCodeAttribute("xsd", "4.6.1055.0")]
-    [System.Xml.Serialization.XmlTypeAttribute(AnonymousType=true, Namespace="DAV:")]
+    [XmlType(AnonymousType=true, Namespace="DAV:")]
     public enum activelockDepth {
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlEnumAttribute("0")]
+        [XmlEnum("0")]
         Item0,
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlEnumAttribute("1")]
+        [XmlEnum("1")]
         Item1,
         
         /// <remarks/>
@@ -571,7 +569,7 @@ namespace FubarDev.WebDavServer.Model {
     [System.CodeDom.Compiler.GeneratedCodeAttribute("xsd", "4.6.1055.0")]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
-    [System.Xml.Serialization.XmlTypeAttribute(TypeName="prop-set", Namespace="DAV:")]
+    [XmlType(TypeName="prop-set", Namespace="DAV:")]
     public partial class propset {
         
         private prop propField;
@@ -591,7 +589,7 @@ namespace FubarDev.WebDavServer.Model {
     [System.CodeDom.Compiler.GeneratedCodeAttribute("xsd", "4.6.1055.0")]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
-    [System.Xml.Serialization.XmlTypeAttribute(TypeName="prop-remove", Namespace="DAV:")]
+    [XmlType(TypeName="prop-remove", Namespace="DAV:")]
     public partial class propremove {
         
         private prop propField;
@@ -609,7 +607,7 @@ namespace FubarDev.WebDavServer.Model {
     
     /// <remarks/>
     [System.CodeDom.Compiler.GeneratedCodeAttribute("xsd", "4.6.1055.0")]
-    [System.Xml.Serialization.XmlTypeAttribute(Namespace="DAV:", IncludeInSchema=false)]
+    [XmlType(Namespace="DAV:", IncludeInSchema=false)]
     public enum ItemsChoiceType1 {
         
         /// <remarks/>
@@ -629,8 +627,8 @@ namespace FubarDev.WebDavServer.Model {
     [System.CodeDom.Compiler.GeneratedCodeAttribute("xsd", "4.6.1055.0")]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
-    [System.Xml.Serialization.XmlTypeAttribute(AnonymousType=true, Namespace="DAV:")]
-    [System.Xml.Serialization.XmlRootAttribute(Namespace="DAV:", IsNullable=false)]
+    [XmlType(AnonymousType=true, Namespace="DAV:")]
+    [XmlRoot(Namespace="DAV:", IsNullable=false)]
     public partial class multistatus {
         
         private response[] responseField;
@@ -638,7 +636,7 @@ namespace FubarDev.WebDavServer.Model {
         private string responsedescriptionField;
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute("response")]
+        [XmlElement("response")]
         public response[] response {
             get {
                 return this.responseField;
@@ -663,8 +661,8 @@ namespace FubarDev.WebDavServer.Model {
     [System.CodeDom.Compiler.GeneratedCodeAttribute("xsd", "4.6.1055.0")]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
-    [System.Xml.Serialization.XmlTypeAttribute(AnonymousType=true, Namespace="DAV:")]
-    [System.Xml.Serialization.XmlRootAttribute(Namespace="DAV:", IsNullable=false)]
+    [XmlType(AnonymousType=true, Namespace="DAV:")]
+    [XmlRoot(Namespace="DAV:", IsNullable=false)]
     public partial class response {
         
         private string hrefField;
@@ -678,7 +676,7 @@ namespace FubarDev.WebDavServer.Model {
         private string responsedescriptionField;
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(DataType="anyURI", Order=0)]
+        [XmlElement(DataType="anyURI", Order=0)]
         public string href {
             get {
                 return this.hrefField;
@@ -689,10 +687,10 @@ namespace FubarDev.WebDavServer.Model {
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute("href", typeof(string), DataType="anyURI", Order=1)]
-        [System.Xml.Serialization.XmlElementAttribute("propstat", typeof(propstat), Order=1)]
-        [System.Xml.Serialization.XmlElementAttribute("status", typeof(string), Order=1)]
-        [System.Xml.Serialization.XmlChoiceIdentifierAttribute("ItemsElementName")]
+        [XmlElement("href", typeof(string), DataType="anyURI", Order=1)]
+        [XmlElement("propstat", typeof(propstat), Order=1)]
+        [XmlElement("status", typeof(string), Order=1)]
+        [XmlChoiceIdentifier("ItemsElementName")]
         public object[] Items {
             get {
                 return this.itemsField;
@@ -703,8 +701,8 @@ namespace FubarDev.WebDavServer.Model {
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute("ItemsElementName", Order=2)]
-        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        [XmlElement("ItemsElementName", Order=2)]
+        [XmlIgnore()]
         public ItemsChoiceType2[] ItemsElementName {
             get {
                 return this.itemsElementNameField;
@@ -715,7 +713,7 @@ namespace FubarDev.WebDavServer.Model {
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Order=3)]
+        [XmlElement(Order=3)]
         public error error {
             get {
                 return this.errorField;
@@ -726,7 +724,7 @@ namespace FubarDev.WebDavServer.Model {
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Order=4)]
+        [XmlElement(Order=4)]
         public string responsedescription {
             get {
                 return this.responsedescriptionField;
@@ -739,7 +737,7 @@ namespace FubarDev.WebDavServer.Model {
     
     /// <remarks/>
     [System.CodeDom.Compiler.GeneratedCodeAttribute("xsd", "4.6.1055.0")]
-    [System.Xml.Serialization.XmlTypeAttribute(Namespace="DAV:", IncludeInSchema=false)]
+    [XmlType(Namespace="DAV:", IncludeInSchema=false)]
     public enum ItemsChoiceType2 {
         
         /// <remarks/>
@@ -756,15 +754,15 @@ namespace FubarDev.WebDavServer.Model {
     [System.CodeDom.Compiler.GeneratedCodeAttribute("xsd", "4.6.1055.0")]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
-    [System.Xml.Serialization.XmlTypeAttribute(AnonymousType=true, Namespace="DAV:")]
-    [System.Xml.Serialization.XmlRootAttribute(Namespace="DAV:", IsNullable=false)]
+    [XmlType(AnonymousType=true, Namespace="DAV:")]
+    [XmlRoot(Namespace="DAV:", IsNullable=false)]
     public partial class propertyupdate {
         
         private object[] itemsField;
 
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute("remove", typeof(propremove))]
-        [System.Xml.Serialization.XmlElementAttribute("set", typeof(propset))]
+        [XmlElement("remove", typeof(propremove))]
+        [XmlElement("set", typeof(propset))]
         public object[] Items {
             get {
                 return this.itemsField;
@@ -779,8 +777,8 @@ namespace FubarDev.WebDavServer.Model {
     [System.CodeDom.Compiler.GeneratedCodeAttribute("xsd", "4.6.1055.0")]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
-    [System.Xml.Serialization.XmlTypeAttribute(AnonymousType=true, Namespace="DAV:")]
-    [System.Xml.Serialization.XmlRootAttribute(Namespace="DAV:", IsNullable=false)]
+    [XmlType(AnonymousType=true, Namespace="DAV:")]
+    [XmlRoot(Namespace="DAV:", IsNullable=false)]
     public partial class lockinfo {
         
         private lockscope lockscopeField;
@@ -810,7 +808,7 @@ namespace FubarDev.WebDavServer.Model {
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlAnyElementAttribute(Name="owner", Namespace="DAV:")]
+        [XmlAnyElement(Name="owner", Namespace="DAV:")]
         public XElement owner {
             get {
                 return this.ownerField;
@@ -825,14 +823,14 @@ namespace FubarDev.WebDavServer.Model {
     [System.CodeDom.Compiler.GeneratedCodeAttribute("xsd", "4.6.1055.0")]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
-    [System.Xml.Serialization.XmlTypeAttribute(AnonymousType=true, Namespace="DAV:")]
-    [System.Xml.Serialization.XmlRootAttribute(Namespace="DAV:", IsNullable=false)]
+    [XmlType(AnonymousType=true, Namespace="DAV:")]
+    [XmlRoot(Namespace="DAV:", IsNullable=false)]
     public partial class supportedlock {
         
         private supportedlockLockentry[] lockentryField;
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute("lockentry")]
+        [XmlElement("lockentry")]
         public supportedlockLockentry[] lockentry {
             get {
                 return this.lockentryField;
@@ -847,7 +845,7 @@ namespace FubarDev.WebDavServer.Model {
     [System.CodeDom.Compiler.GeneratedCodeAttribute("xsd", "4.6.1055.0")]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
-    [System.Xml.Serialization.XmlTypeAttribute(AnonymousType=true, Namespace="DAV:")]
+    [XmlType(AnonymousType=true, Namespace="DAV:")]
     public partial class supportedlockLockentry {
         
         private lockscope lockscopeField;

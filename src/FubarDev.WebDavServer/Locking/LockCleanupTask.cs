@@ -8,7 +8,7 @@ using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Threading;
 
-using FubarDev.WebDavServer.Model.Headers;
+using FubarDev.WebDavServer.Models;
 
 using Microsoft.Extensions.Logging;
 

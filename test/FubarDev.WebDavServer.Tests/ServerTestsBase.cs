@@ -76,6 +76,7 @@ namespace FubarDev.WebDavServer.Tests
             Client = new WebDavClient(Server.CreateHandler())
             {
                 BaseAddress = Server.BaseAddress,
+                Timeout = TimeSpan.FromMinutes(100),
             };
 
             DeadPropertyFactory = Server.Services.GetRequiredService<IDeadPropertyFactory>();

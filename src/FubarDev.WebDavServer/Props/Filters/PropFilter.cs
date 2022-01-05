@@ -21,8 +21,8 @@ namespace FubarDev.WebDavServer.Props.Filters
         /// <summary>
         /// Initializes a new instance of the <see cref="PropFilter"/> class.
         /// </summary>
-        /// <param name="prop">The <see cref="prop"/> element containing the property names.</param>
-        public PropFilter(prop prop)
+        /// <param name="prop">The <see cref="Models.prop"/> element containing the property names.</param>
+        public PropFilter(Models.prop prop)
         {
             _requestedProperties = prop.Any.Select(x => x.Name).ToImmutableHashSet();
         }

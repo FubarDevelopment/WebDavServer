@@ -6,8 +6,6 @@ using System.Diagnostics.Contracts;
 using System.Security.Principal;
 using System.Xml.Linq;
 
-using FubarDev.WebDavServer.Model;
-
 namespace FubarDev.WebDavServer.Utils
 {
     /// <summary>

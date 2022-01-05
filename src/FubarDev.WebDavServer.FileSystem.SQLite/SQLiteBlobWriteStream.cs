@@ -6,7 +6,7 @@ using System;
 using System.IO;
 using System.Linq;
 
-using FubarDev.WebDavServer.Model.Headers;
+using FubarDev.WebDavServer.Models;
 
 using SQLite;
 

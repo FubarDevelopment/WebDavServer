@@ -16,7 +16,7 @@ namespace FubarDev.WebDavServer.Handlers.Impl
 
         /// <summary>
         /// Gets or sets a value indicating whether the destination of a move operation is overwriteable when
-        /// the client doesn't specify the <see cref="Model.Headers.OverwriteHeader"/>.
+        /// the client doesn't specify the <see cref="Models.OverwriteHeader"/>.
         /// </summary>
         public bool OverwriteAsDefault { get; set; } = true;
     }

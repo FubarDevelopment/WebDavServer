@@ -7,6 +7,8 @@ using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Linq;
 
+using FubarDev.WebDavServer.Models;
+
 using Microsoft.Extensions.Options;
 
 namespace FubarDev.WebDavServer.Locking
@@ -33,7 +35,7 @@ namespace FubarDev.WebDavServer.Locking
             var t = timeouts.ToImmutableList();
             if (_options.AllowInfiniteTimeout)
             {
-                t = t.Where(x => x != Model.Headers.TimeoutHeader.Infinite).ToImmutableList();
+                t = t.Where(x => x != TimeoutHeader.Infinite).ToImmutableList();
             }
 
             if (_options.MaxTimeout != null)
@@ -52,7 +54,7 @@ namespace FubarDev.WebDavServer.Locking
                 return t.Max();
             }
 
-            return Model.Headers.TimeoutHeader.Infinite;
+            return TimeoutHeader.Infinite;
         }
     }
 }

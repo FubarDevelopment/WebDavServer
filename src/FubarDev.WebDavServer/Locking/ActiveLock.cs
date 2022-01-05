@@ -5,7 +5,7 @@
 using System;
 using System.Xml.Linq;
 
-using FubarDev.WebDavServer.Model.Headers;
+using FubarDev.WebDavServer.Models;
 
 namespace FubarDev.WebDavServer.Locking
 {

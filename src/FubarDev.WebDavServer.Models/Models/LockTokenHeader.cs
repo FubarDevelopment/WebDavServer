@@ -2,11 +2,10 @@
 // Copyright (c) Fubar Development Junker. All rights reserved.
 // </copyright>
 
-using System;
-
+using FubarDev.WebDavServer.Parsing;
 using FubarDev.WebDavServer.Properties;
 
-namespace FubarDev.WebDavServer.Model.Headers
+namespace FubarDev.WebDavServer.Models
 {
     /// <summary>
     /// The <c>Lock-Token</c> header.
@@ -34,14 +33,20 @@ namespace FubarDev.WebDavServer.Model.Headers
         /// <returns>The new instance of the <see cref="LockTokenHeader"/> class.</returns>
         public static LockTokenHeader Parse(string s)
         {
-            if (!CodedUrlParser.TryParse(s, out var stateToken))
+            var lexer = new Lexer(s);
+            var parser = new Parser(lexer);
+            var result = parser.ParseCodedUrl();
+            if (result.IsOk)
             {
-                throw new ArgumentException(
-                    string.Format(Resources.InvalidLockTokenFormat, s),
-                    nameof(s));
+                if (lexer.IsEnd || lexer.Next().Kind == TokenType.End)
+                {
+                    return new LockTokenHeader(result.Ok.Value);
+                }
             }
 
-            return new LockTokenHeader(stateToken);
+            throw new ArgumentException(
+                string.Format(Resources.InvalidLockTokenFormat, s),
+                nameof(s));
         }
 
         /// <inheritdoc />

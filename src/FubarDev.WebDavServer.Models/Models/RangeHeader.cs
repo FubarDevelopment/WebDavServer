@@ -2,12 +2,9 @@
 // Copyright (c) Fubar Development Junker. All rights reserved.
 // </copyright>
 
-using System;
-using System.Collections.Generic;
 using System.Globalization;
-using System.Linq;
 
-namespace FubarDev.WebDavServer.Model.Headers
+namespace FubarDev.WebDavServer.Models
 {
     /// <summary>
     /// This class encapsulates a HTTP range.

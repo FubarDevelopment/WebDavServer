@@ -5,8 +5,9 @@
 using System.Threading;
 using System.Threading.Tasks;
 
-using FubarDev.WebDavServer.Model;
-using FubarDev.WebDavServer.Model.Headers;
+using FubarDev.WebDavServer.Models;
+
+using IfHeader = FubarDev.WebDavServer.Model.Headers.IfHeader;
 
 namespace FubarDev.WebDavServer.Handlers
 {

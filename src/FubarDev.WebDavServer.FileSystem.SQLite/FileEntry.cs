@@ -7,7 +7,7 @@
 
 using System;
 
-using FubarDev.WebDavServer.Model.Headers;
+using FubarDev.WebDavServer.Models;
 
 using SQLite;
 

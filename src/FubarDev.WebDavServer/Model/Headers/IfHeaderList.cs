@@ -8,6 +8,7 @@ using System.Linq;
 
 using FubarDev.WebDavServer.FileSystem;
 using FubarDev.WebDavServer.Locking;
+using FubarDev.WebDavServer.Models;
 using FubarDev.WebDavServer.Properties;
 using FubarDev.WebDavServer.Utils;
 

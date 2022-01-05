@@ -12,7 +12,7 @@ using System.Xml.Linq;
 
 using FubarDev.WebDavServer.FileSystem;
 using FubarDev.WebDavServer.Model;
-using FubarDev.WebDavServer.Model.Headers;
+using FubarDev.WebDavServer.Models;
 using FubarDev.WebDavServer.Props.Dead;
 using FubarDev.WebDavServer.Props.Filters;
 using FubarDev.WebDavServer.Props.Live;

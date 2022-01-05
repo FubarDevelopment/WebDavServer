@@ -13,8 +13,10 @@ using System.Xml.Linq;
 using FubarDev.WebDavServer.FileSystem;
 using FubarDev.WebDavServer.Locking;
 using FubarDev.WebDavServer.Model;
-using FubarDev.WebDavServer.Model.Headers;
+using FubarDev.WebDavServer.Models;
 using FubarDev.WebDavServer.Utils;
+
+using IfHeader = FubarDev.WebDavServer.Model.Headers.IfHeader;
 
 namespace FubarDev.WebDavServer.Handlers.Impl
 {
@@ -35,7 +37,7 @@ namespace FubarDev.WebDavServer.Handlers.Impl
         /// <param name="contextAccessor">The WebDAV request context accessor.</param>
         /// <param name="rootFileSystem">The root file system.</param>
         /// <param name="lockManager">The lock manager.</param>
-        /// <param name="timeoutPolicy">The timeout policy for the selection of the <see cref="TimeoutHeader"/> value.</param>
+        /// <param name="timeoutPolicy">The timeout policy for the selection of the <see cref="Models.TimeoutHeader"/> value.</param>
         public LockHandler(
             IWebDavContextAccessor contextAccessor,
             IFileSystem rootFileSystem,

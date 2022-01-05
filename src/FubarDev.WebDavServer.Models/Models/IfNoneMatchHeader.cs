@@ -2,16 +2,15 @@
 // Copyright (c) Fubar Development Junker. All rights reserved.
 // </copyright>
 
-using System.Collections.Generic;
-
-namespace FubarDev.WebDavServer.Model.Headers
+namespace FubarDev.WebDavServer.Models
 {
     /// <summary>
     /// Class that represents the HTTP <c>If-None-Match</c> header.
     /// </summary>
     public class IfNoneMatchHeader
     {
-        private readonly ISet<EntityTag>? _etags;
+        private readonly EntityTagComparer _etagComparer;
+        private readonly Dictionary<EntityTag, List<EntityTag>>? _etags;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="IfNoneMatchHeader"/> class.
@@ -20,11 +19,25 @@ namespace FubarDev.WebDavServer.Model.Headers
         /// <param name="etagComparer">The entity comparer to use.</param>
         private IfNoneMatchHeader(IEnumerable<EntityTag> etags, EntityTagComparer etagComparer)
         {
-            _etags = new HashSet<EntityTag>(etags, etagComparer);
+            _etagComparer = etagComparer;
+            _etags = new Dictionary<EntityTag, List<EntityTag>>(etagComparer);
+            foreach (var etag in etags)
+            {
+                var key = etag.AsWeak();
+                if (_etags.TryGetValue(key, out var found))
+                {
+                    found.Add(etag);
+                }
+                else
+                {
+                    _etags.Add(key, new List<EntityTag>() { etag });
+                }
+            }
         }
 
         private IfNoneMatchHeader()
         {
+            _etagComparer = EntityTagComparer.Strong;
             _etags = null;
         }
 
@@ -103,12 +116,17 @@ namespace FubarDev.WebDavServer.Model.Headers
                 return false;
             }
 
-            if (etag == null)
+            if (etag is not { } entityTag)
             {
                 return true;
             }
 
-            return !_etags.Contains(etag.Value);
+            if (!_etags.TryGetValue(entityTag.AsWeak(), out var found))
+            {
+                return true;
+            }
+
+            return !found.Any(item => _etagComparer.Equals(entityTag, item));
         }
     }
 }

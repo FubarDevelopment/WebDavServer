@@ -7,7 +7,6 @@ using System.Threading;
 using System.Threading.Tasks;
 using System.Xml.Linq;
 
-using FubarDev.WebDavServer.Model;
 using FubarDev.WebDavServer.Props.Generic;
 
 namespace FubarDev.WebDavServer.Props.Live

@@ -22,10 +22,6 @@
   <ItemGroup>
     <PackageReference Include="Fluid.Core" Version="2.2.8" />
     <PackageReference Include="idunno.Authentication.Basic" Version="2.2.2" />
-    <PackageReference Include="IsExternalInit" Version="1.0.2">
-      <PrivateAssets>all</PrivateAssets>
-      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
-    </PackageReference>
     <PackageReference Include="Microsoft.AspNetCore.Authentication.Negotiate" Version="3.1.21" />
     <PackageReference Include="Microsoft.Windows.Compatibility" Version="3.1.2" />
     <PackageReference Include="Mono.DllMap" Version="1.0.1" />

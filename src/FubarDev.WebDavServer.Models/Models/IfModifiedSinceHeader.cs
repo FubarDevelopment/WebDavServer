@@ -2,11 +2,7 @@
 // Copyright (c) Fubar Development Junker. All rights reserved.
 // </copyright>
 
-using System;
-
-using FubarDev.WebDavServer.Props.Converters;
-
-namespace FubarDev.WebDavServer.Model.Headers
+namespace FubarDev.WebDavServer.Models
 {
     /// <summary>
     /// Class that represents the HTTP <c>If-Modified-Since</c> header.
@@ -17,7 +13,7 @@ namespace FubarDev.WebDavServer.Model.Headers
         /// Initializes a new instance of the <see cref="IfModifiedSinceHeader"/> class.
         /// </summary>
         /// <param name="lastWriteTimeUtc">The last time the definition was changed.</param>
-        public IfModifiedSinceHeader(DateTime lastWriteTimeUtc)
+        public IfModifiedSinceHeader(DateTimeOffset lastWriteTimeUtc)
         {
             LastWriteTimeUtc = lastWriteTimeUtc;
         }
@@ -25,7 +21,7 @@ namespace FubarDev.WebDavServer.Model.Headers
         /// <summary>
         /// Gets the last time the definition was changed.
         /// </summary>
-        public DateTime LastWriteTimeUtc { get; }
+        public DateTimeOffset LastWriteTimeUtc { get; }
 
         /// <summary>
         /// Parses the header string to get a new instance of the <see cref="IfModifiedSinceHeader"/> class.
@@ -34,7 +30,7 @@ namespace FubarDev.WebDavServer.Model.Headers
         /// <returns>The new instance of the <see cref="IfModifiedSinceHeader"/> class.</returns>
         public static IfModifiedSinceHeader Parse(string s)
         {
-            return new IfModifiedSinceHeader(DateTimeRfc1123Converter.Parse(s));
+            return new IfModifiedSinceHeader(WebDavXml.ParseRfc1123(s));
         }
 
         /// <summary>

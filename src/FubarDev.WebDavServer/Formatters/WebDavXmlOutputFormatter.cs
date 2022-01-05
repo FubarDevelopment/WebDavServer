@@ -10,7 +10,6 @@ using System.Xml;
 using System.Xml.Linq;
 using System.Xml.Serialization;
 
-using FubarDev.WebDavServer.Model;
 using FubarDev.WebDavServer.Utils;
 
 using Microsoft.Extensions.Options;

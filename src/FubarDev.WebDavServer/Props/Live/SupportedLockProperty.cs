@@ -9,7 +9,7 @@ using System.Xml.Linq;
 
 using FubarDev.WebDavServer.FileSystem;
 using FubarDev.WebDavServer.Locking;
-using FubarDev.WebDavServer.Model;
+using FubarDev.WebDavServer.Models;
 using FubarDev.WebDavServer.Props.Converters;
 
 namespace FubarDev.WebDavServer.Props.Live
