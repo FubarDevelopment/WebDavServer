@@ -4,7 +4,7 @@
 
 using System.Net;
 
-namespace FubarDev.WebDavServer.Model
+namespace FubarDev.WebDavServer
 {
     /// <summary>
     /// The status codes used by the WebDAV server.

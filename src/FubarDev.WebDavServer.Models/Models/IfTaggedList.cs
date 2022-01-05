@@ -10,14 +10,14 @@ namespace FubarDev.WebDavServer.Models;
 /// <param name="ResourceTag">The resource tag.</param>
 /// <param name="Lists">The condition lists.</param>
 public sealed record IfTaggedList(
-        Uri ResourceTag,
-        IReadOnlyList<IReadOnlyList<IfCondition>> Lists)
+    Uri ResourceTag,
+    IReadOnlyList<IfList> Lists)
 {
     /// <inheritdoc />
     public override string ToString()
     {
         var listEntries = Lists
-            .Select(list => $"({string.Join(" ", list)})");
+            .Select(list => $"({list})");
         return $"<{ResourceTag.OriginalString}> ({string.Join(") (", listEntries)})";
     }
 }

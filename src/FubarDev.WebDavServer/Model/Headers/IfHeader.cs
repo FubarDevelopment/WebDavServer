@@ -14,6 +14,7 @@ namespace FubarDev.WebDavServer.Model.Headers
     /// <summary>
     /// Class that represents the HTTP <c>If</c> header.
     /// </summary>
+    [Obsolete]
     public class IfHeader
     {
         private IfHeader(IReadOnlyCollection<IfHeaderList> lists)
@@ -24,6 +25,7 @@ namespace FubarDev.WebDavServer.Model.Headers
         /// <summary>
         /// Gets all condition lists.
         /// </summary>
+        [Obsolete]
         public IReadOnlyCollection<IfHeaderList> Lists { get; }
 
         /// <summary>

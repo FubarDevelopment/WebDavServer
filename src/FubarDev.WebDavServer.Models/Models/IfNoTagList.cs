@@ -9,11 +9,11 @@ namespace FubarDev.WebDavServer.Models;
 /// </summary>
 /// <param name="List">The conditions.</param>
 public record IfNoTagList(
-        IReadOnlyList<IfCondition> List)
+    IfList List)
 {
     /// <inheritdoc />
     public override string ToString()
     {
-        return $"({string.Join(" ", List)})";
+        return $"({List})";
     }
 }

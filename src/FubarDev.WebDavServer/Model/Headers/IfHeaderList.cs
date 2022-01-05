@@ -17,6 +17,7 @@ namespace FubarDev.WebDavServer.Model.Headers
     /// <summary>
     /// Represents a list of <see cref="IfHeaderCondition"/>s.
     /// </summary>
+    [Obsolete]
     public class IfHeaderList
     {
         private IfHeaderList(
@@ -65,12 +66,12 @@ namespace FubarDev.WebDavServer.Model.Headers
         /// Gets a value indicating whether this condition list requires the <see cref="EntityTag"/> of an <see cref="IEntry"/> for
         /// the evaluation.
         /// </summary>
-        public bool RequiresEntityTag => Conditions.Any(x => x.ETag != null && !x.Not);
+        public bool RequiresEntityTag => Conditions.Any(x => x.ETag != null);
 
         /// <summary>
         /// Gets a value indicating whether this condition list requires the <see cref="IActiveLock.StateToken"/> for the evaluation.
         /// </summary>
-        public bool RequiresStateToken => Conditions.Any(x => x.StateToken != null && !x.Not);
+        public bool RequiresStateToken => Conditions.Any(x => x.StateToken != null);
 
         /// <summary>
         /// Validates if all conditions match the passed entity tag and/or state tokens.
@@ -78,6 +79,7 @@ namespace FubarDev.WebDavServer.Model.Headers
         /// <param name="etag">The entity tag.</param>
         /// <param name="stateTokens">The state tokens.</param>
         /// <returns><see langword="true"/> when this condition matches.</returns>
+        [Obsolete]
         public bool IsMatch(
             EntityTag? etag,
             IReadOnlyCollection<Uri> stateTokens)

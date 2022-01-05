@@ -16,6 +16,7 @@ namespace FubarDev.WebDavServer.Model.Headers
     /// <summary>
     /// Represents a single condition for an HTTP <c>If</c> header.
     /// </summary>
+    [Obsolete]
     public class IfHeaderCondition
     {
         private readonly EntityTagComparer _etagComparer;
@@ -49,6 +50,7 @@ namespace FubarDev.WebDavServer.Model.Headers
         /// <param name="etag">The entity tag.</param>
         /// <param name="stateTokens">The state tokens.</param>
         /// <returns><see langword="true"/> when this condition matches.</returns>
+        [Obsolete]
         public bool IsMatch(
             EntityTag? etag,
             IReadOnlyCollection<Uri> stateTokens)
@@ -110,7 +112,7 @@ namespace FubarDev.WebDavServer.Model.Headers
             }
         }
 
-        internal static IEnumerable<EntityTag> ParseEntityTag(StringSource source)
+        private static IEnumerable<EntityTag> ParseEntityTag(StringSource source)
         {
             while (!source.SkipWhiteSpace())
             {

@@ -85,17 +85,17 @@ public partial class Parser
 
     [Rule("condition_list: LeftParen condition+ RightParen")]
     [SuppressMessage("ReSharper", "UnusedParameter.Local", Justification = "Required for Yoakke")]
-    private static IReadOnlyList<IfCondition> MakeIfConditionList(
+    private static IfList MakeIfConditionList(
         IToken<TokenType> lparen,
         IReadOnlyList<IfCondition> conditions,
         IToken<TokenType> rparen)
     {
-        return conditions;
+        return new IfList(conditions);
     }
 
     [Rule("no_tag_list: condition_list")]
     private static IfNoTagList MakeNoTagList(
-        IReadOnlyList<IfCondition> conditions)
+        IfList conditions)
     {
         return new IfNoTagList(conditions);
     }
@@ -103,7 +103,7 @@ public partial class Parser
     [Rule("tagged_list: resource_tag condition_list+")]
     private static IfTaggedList MakeTaggedList(
         Uri resourceTag,
-        IReadOnlyList<IReadOnlyList<IfCondition>> conditions)
+        IReadOnlyList<IfList> conditions)
     {
         return new IfTaggedList(
             resourceTag,

@@ -3,10 +3,9 @@
 // </copyright>
 
 using System.Collections.Concurrent;
-using System.Collections.Generic;
 using System.Text;
 
-namespace FubarDev.WebDavServer.Model
+namespace FubarDev.WebDavServer
 {
     /// <summary>
     /// Extension methods for the <see cref="WebDavStatusCode"/>.
