@@ -198,7 +198,9 @@ namespace FubarDev.WebDavServer.Handlers.Impl
 
                     // For error reporting
                     sourceUrl = context.PublicRootUrl.GetRelativeUrl(sourceUrl);
-                    destinationUrl = context.PublicRootUrl.GetRelativeUrl(destinationUrl);
+                    destinationUrl = new Uri(
+                        "/" + context.PublicRootUrl.GetRelativeUrl(destinationUrl).OriginalString.TrimStart('/'),
+                        UriKind.RelativeOrAbsolute);
 
                     var destinationSelectionResult =
                         await _rootFileSystem.SelectAsync(destinationPath, cancellationToken).ConfigureAwait(false);
