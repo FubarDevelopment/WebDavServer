@@ -31,7 +31,7 @@ namespace FubarDev.WebDavServer
         /// <summary>
         /// Gets the <c>If</c> header.
         /// </summary>
-        IfHeader? If { get; }
+        IReadOnlyList<IfHeader>? If { get; }
 
         /// <summary>
         /// Gets the <c>If-Match</c> header.

@@ -3,6 +3,7 @@
 // </copyright>
 
 using System;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -238,16 +239,17 @@ namespace FubarDev.WebDavServer.AspNetCore
             if (lockinfo == null)
             {
                 // Refresh
-                var ifHeader = _context.RequestHeaders.If;
-                if (ifHeader == null || ifHeader.Lists.Count == 0)
+                var ifHeaders = _context.RequestHeaders.If;
+                if (ifHeaders is not { Count: 1 })
                 {
+                    // A header must be given and we only allow a single header!
                     return BadRequest();
                 }
 
                 var timeoutHeader = _context.RequestHeaders.Timeout;
                 result = await _dispatcher.Class2.RefreshLockAsync(
                     path ?? string.Empty,
-                    ifHeader,
+                    ifHeaders.Single(),
                     timeoutHeader,
                     cancellationToken).ConfigureAwait(false);
             }

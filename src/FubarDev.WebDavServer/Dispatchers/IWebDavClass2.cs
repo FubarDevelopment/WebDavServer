@@ -32,7 +32,11 @@ namespace FubarDev.WebDavServer.Dispatchers
         /// <param name="timeoutHeader">The new timeout values.</param>
         /// <param name="cancellationToken">The cancellation token.</param>
         /// <returns>The result of the operation.</returns>
-        Task<IWebDavResult> RefreshLockAsync(string path, IfHeader ifHeader, TimeoutHeader? timeoutHeader, CancellationToken cancellationToken);
+        Task<IWebDavResult> RefreshLockAsync(
+            string path,
+            IfHeader ifHeader,
+            TimeoutHeader? timeoutHeader,
+            CancellationToken cancellationToken);
 
         /// <summary>
         /// Removes a LOCK with the given <paramref name="stateToken"/> from the given <paramref name="path"/>.

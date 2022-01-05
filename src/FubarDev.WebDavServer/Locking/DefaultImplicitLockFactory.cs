@@ -44,7 +44,7 @@ namespace FubarDev.WebDavServer.Locking
 
             return _lockManager!.LockImplicitAsync(
                 _rootFileSystem,
-                _webDavContextAccessor.WebDavContext.RequestHeaders.If?.Lists,
+                _webDavContextAccessor.WebDavContext.RequestHeaders.If,
                 lockRequirements!,
                 cancellationToken);
         }

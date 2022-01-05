@@ -168,7 +168,7 @@ namespace FubarDev.WebDavServer.Locking
         /// <inheritdoc />
         public async Task<IImplicitLock> LockImplicitAsync(
             IFileSystem rootFileSystem,
-            IReadOnlyCollection<IfHeaderList>? ifHeaderLists,
+            IReadOnlyCollection<IfHeader>? ifHeaderLists,
             ILock lockRequirements,
             CancellationToken cancellationToken)
         {
@@ -491,7 +491,7 @@ namespace FubarDev.WebDavServer.Locking
 
         private async Task<IReadOnlyCollection<PathConditions>?> FindMatchingIfConditionListAsync(
             IFileSystem rootFileSystem,
-            IReadOnlyCollection<IfHeaderList> ifHeaderLists,
+            IReadOnlyCollection<IfHeader> ifHeaderLists,
             ILock lockRequirements,
             CancellationToken cancellationToken)
         {
@@ -512,23 +512,26 @@ namespace FubarDev.WebDavServer.Locking
 
             // Get all If header lists together with all relevant active locks
             Dictionary<IfHeaderList, List<IActiveLock>> ifListLocks = new();
-            foreach (var list in ifHeaderLists)
+            foreach (var ifHeader in ifHeaderLists)
             {
-                var listUrl = BuildUrl(list.Path.OriginalString);
-                var compareResult = Compare(listUrl, true, lockRequirementUrl, lockRequirements.Recursive);
-                if (compareResult == LockCompareResult.NoMatch)
+                foreach (var list in ifHeader.Lists)
                 {
-                    continue;
-                }
+                    var listUrl = BuildUrl(list.Path.OriginalString);
+                    var compareResult = Compare(listUrl, true, lockRequirementUrl, lockRequirements.Recursive);
+                    if (compareResult == LockCompareResult.NoMatch)
+                    {
+                        continue;
+                    }
 
-                var findRecursive =
-                    compareResult == LockCompareResult.LeftIsParent
-                    || (compareResult == LockCompareResult.Reference && lockRequirements.Recursive);
-                var foundLocks = list.RequiresStateToken
-                    ? Find(affectingLocks, listUrl, findRecursive, true)
-                    : LockStatus.Empty;
-                var locksForIfConditions = foundLocks.GetLocks().ToList();
-                ifListLocks.Add(list, locksForIfConditions);
+                    var findRecursive =
+                        compareResult == LockCompareResult.LeftIsParent
+                        || (compareResult == LockCompareResult.Reference && lockRequirements.Recursive);
+                    var foundLocks = list.RequiresStateToken
+                        ? Find(affectingLocks, listUrl, findRecursive, true)
+                        : LockStatus.Empty;
+                    var locksForIfConditions = foundLocks.GetLocks().ToList();
+                    ifListLocks.Add(list, locksForIfConditions);
+                }
             }
 
             // List of matches between path info and if header lists

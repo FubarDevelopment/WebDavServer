@@ -50,7 +50,7 @@ namespace FubarDev.WebDavServer.Locking
         /// <returns>Either the list of locks preventing issuing a lock or the active lock created or reused.</returns>
         Task<IImplicitLock> LockImplicitAsync(
             IFileSystem rootFileSystem,
-            IReadOnlyCollection<IfHeaderList>? ifHeaderLists,
+            IReadOnlyCollection<IfHeader>? ifHeaderLists,
             ILock lockRequirements,
             CancellationToken cancellationToken = default);
 
