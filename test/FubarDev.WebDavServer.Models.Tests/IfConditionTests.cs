@@ -16,10 +16,7 @@ public class IfConditionTests
     {
         var lexer = new Lexer(input);
         var parser = new Parser(lexer);
-        var parseResult = parser.ParseCondition();
-        Assert.True(
-            parseResult.IsOk,
-            parseResult.IsOk ? "OK" : parseResult.Error.GetFullMessage());
+        var parseResult = parser.ParseCondition().EnsureSuccess();
 
         if (!lexer.IsEnd)
         {
@@ -43,10 +40,7 @@ public class IfConditionTests
     {
         var lexer = new Lexer(input);
         var parser = new Parser(lexer);
-        var parseResult = parser.ParseCondition();
-        Assert.True(
-            parseResult.IsOk,
-            parseResult.IsOk ? "OK" : parseResult.Error.GetFullMessage());
+        var parseResult = parser.ParseCondition().EnsureSuccess();
 
         if (!lexer.IsEnd)
         {
