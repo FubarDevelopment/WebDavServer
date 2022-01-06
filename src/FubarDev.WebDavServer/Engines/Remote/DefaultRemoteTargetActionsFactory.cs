@@ -7,8 +7,6 @@ using System.Net.Http;
 using System.Threading;
 using System.Threading.Tasks;
 
-using FubarDev.WebDavServer.Model;
-
 namespace FubarDev.WebDavServer.Engines.Remote
 {
     /// <summary>

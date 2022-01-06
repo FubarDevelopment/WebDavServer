@@ -4,59 +4,125 @@
 
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
+using System.Runtime.CompilerServices;
+using System.Threading;
 
+using FubarDev.WebDavServer.FileSystem;
 using FubarDev.WebDavServer.Models;
 
 namespace FubarDev.WebDavServer.Utils;
 
+/// <summary>
+/// Finds matching If headers.
+/// </summary>
 public class IfHeaderMatcher
 {
-    private readonly IReadOnlyCollection<IfHeader> _ifHeaders;
     private readonly IWebDavContext _context;
+    private readonly IFileSystem _fileSystem;
+    private readonly string _targetPath;
+    private readonly string? _owner;
+    private readonly IReadOnlyCollection<IfHeader> _ifHeaders;
     private readonly IEqualityComparer<EntityTag> _entityTagComparer;
 
+    /// <summary>
+    /// Initializes a new instance of the <see cref="IfHeaderMatcher"/> class.
+    /// </summary>
+    /// <param name="context">The WebDAV context.</param>
+    /// <param name="fileSystem">The file system to get the ETags from.</param>
+    /// <param name="targetPath">The path of the target of the operation.</param>
+    /// <param name="ifHeaders">The <c>If</c> headers provided by the client.</param>
+    /// <param name="entityTagComparer">Comparer for entity tags.</param>
     public IfHeaderMatcher(
-        IReadOnlyCollection<IfHeader> ifHeaders,
         IWebDavContext context,
+        IFileSystem fileSystem,
+        string targetPath,
+        IReadOnlyCollection<IfHeader> ifHeaders,
         IEqualityComparer<EntityTag>? entityTagComparer = null)
     {
-        _ifHeaders = ifHeaders;
         _context = context;
+        _fileSystem = fileSystem;
+        _targetPath = targetPath;
+        _ifHeaders = ifHeaders;
         _entityTagComparer = entityTagComparer ?? EntityTagComparer.Strong;
     }
 
-    public IEnumerable<IfHeader> Find(
-        string path,
+    /// <summary>
+    /// Finds the <c>If</c> headers for the provided state tokens.
+    /// </summary>
+    /// <param name="stateTokens">The state tokens.</param>
+    /// <param name="cancellationToken">The <see cref="CancellationToken"/>.</param>
+    /// <returns>The matched <c>If</c> headers.</returns>
+    public IAsyncEnumerable<IfHeaderMatch> FindAsync(
         IReadOnlyCollection<Uri> stateTokens,
-        EntityTag? entityTag)
+        CancellationToken cancellationToken = default)
     {
-        var compareInformation = new CompareInformation(path, stateTokens, entityTag);
-        return _ifHeaders.Where(ifHeader => IsMatch(compareInformation, ifHeader));
+        return _ifHeaders
+            .ToAsyncEnumerable()
+            .SelectMany(ifHeader => FindAsync(stateTokens, ifHeader, cancellationToken));
     }
 
-    private bool IsMatch(
-        CompareInformation compareInformation,
-        IfHeader ifHeader)
+    private async IAsyncEnumerable<IfHeaderMatch> FindAsync(
+        IReadOnlyCollection<Uri> stateTokens,
+        IfHeader ifHeader,
+        [EnumeratorCancellation] CancellationToken cancellationToken = default)
     {
-        return ifHeader.IsTaggedList
-            ? IsMatch(compareInformation, ifHeader.TaggedLists)
-            : IsMatch(compareInformation, ifHeader.NoTagLists);
-    }
+        if (ifHeader.IsNoTagList)
+        {
+            EntityTag? entityTag = null;
+            var requiresEntityTag = ifHeader.NoTagLists
+                .Any(x => x.List.RequiresEntityTag);
+            if (requiresEntityTag)
+            {
+                var result = await _fileSystem.SelectAsync(_targetPath, cancellationToken);
+                if (!result.IsMissing)
+                {
+                    entityTag = await result.TargetEntry.GetEntityTagAsync(cancellationToken);
+                }
+            }
 
-    private bool IsMatch(
-        CompareInformation compareInformation,
-        IEnumerable<IfNoTagList> noTagLists)
-    {
-        return noTagLists.Any(noTagList => IsMatch(compareInformation, noTagList));
-    }
+            var compareInformation = new CompareInformation(stateTokens, entityTag);
+            foreach (var noTagList in ifHeader.NoTagLists)
+            {
+                if (IsMatch(compareInformation, noTagList))
+                {
+                    yield return new IfHeaderMatch(ifHeader, noTagList);
+                }
+            }
+        }
+        else
+        {
+            foreach (var taggedList in ifHeader.TaggedLists)
+            {
+                EntityTag? entityTag = null;
+                var requiresEntityTag = ifHeader.TaggedLists
+                    .Any(x => x.Lists.Any(l => l.RequiresEntityTag));
+                if (requiresEntityTag)
+                {
+                    if (_context.TryGetPathFor(taggedList, out var path))
+                    {
+                        var result = await _fileSystem.SelectAsync(path, cancellationToken);
+                        if (!result.IsMissing)
+                        {
+                            entityTag = await result.TargetEntry.GetEntityTagAsync(cancellationToken);
+                        }
+                    }
+                }
 
-    private bool IsMatch(
-        CompareInformation compareInformation,
-        IEnumerable<IfTaggedList> taggedLists)
-    {
-        return taggedLists.Any(taggedList => IsMatch(compareInformation, taggedList));
+                var compareInformation = new CompareInformation(
+                    stateTokens,
+                    entityTag);
+                foreach (var list in taggedList.Lists)
+                {
+                    if (IsMatch(compareInformation, list))
+                    {
+                        // Return only one result per <c>Tagged-list</c>
+                        yield return new IfHeaderMatch(ifHeader, taggedList, list);
+                        break;
+                    }
+                }
+            }
+        }
     }
 
     private bool IsMatch(
@@ -64,24 +130,6 @@ public class IfHeaderMatcher
         IfNoTagList noTagList)
     {
         return IsMatch(compareInformation, noTagList.List);
-    }
-
-    private bool IsMatch(
-        CompareInformation compareInformation,
-        IfTaggedList taggedList)
-    {
-        if (!taggedList.TryGetPath(_context, out var path))
-        {
-            return false;
-        }
-
-        if (!StringComparer.OrdinalIgnoreCase.Equals(path, compareInformation.Path))
-        {
-            return false;
-        }
-
-        return taggedList.Lists
-            .Any(list => IsMatch(compareInformation, list));
     }
 
     private bool IsMatch(
@@ -124,7 +172,6 @@ public class IfHeaderMatcher
     }
 
     private record CompareInformation(
-        string Path,
         IReadOnlyCollection<Uri> StateTokens,
         EntityTag? EntityTag);
 }

@@ -4,8 +4,6 @@
 
 using System.Collections.Generic;
 
-using FubarDev.WebDavServer.Model;
-
 namespace FubarDev.WebDavServer.FileSystem
 {
     /// <summary>

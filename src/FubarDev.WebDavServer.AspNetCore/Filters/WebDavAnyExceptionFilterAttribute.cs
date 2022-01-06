@@ -4,8 +4,6 @@
 
 using System.Threading.Tasks;
 
-using FubarDev.WebDavServer.Model;
-
 using Microsoft.AspNetCore.Mvc.Filters;
 
 namespace FubarDev.WebDavServer.AspNetCore.Filters

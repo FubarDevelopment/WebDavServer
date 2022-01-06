@@ -13,8 +13,6 @@ using FubarDev.WebDavServer.Models;
 
 using Microsoft.Extensions.Options;
 
-using IfHeader = FubarDev.WebDavServer.Model.Headers.IfHeader;
-
 namespace FubarDev.WebDavServer.Dispatchers
 {
     /// <summary>

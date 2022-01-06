@@ -7,8 +7,6 @@ using System.Threading.Tasks;
 
 using FubarDev.WebDavServer.Models;
 
-using IfHeader = FubarDev.WebDavServer.Model.Headers.IfHeader;
-
 namespace FubarDev.WebDavServer.Dispatchers
 {
     /// <summary>

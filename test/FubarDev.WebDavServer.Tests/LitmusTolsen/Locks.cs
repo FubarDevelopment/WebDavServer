@@ -8,7 +8,6 @@ using System.Linq;
 using System.Net.Http;
 using System.Threading.Tasks;
 
-using DecaTec.WebDav;
 using DecaTec.WebDav.Headers;
 using DecaTec.WebDav.Tools;
 using DecaTec.WebDav.WebDavArtifacts;
@@ -56,7 +55,7 @@ foo
                 var lockToken = await WebDavHelper.GetLockTokenFromWebDavResponseMessage(response);
                 Assert.NotNull(lockToken);
                 (await secondClient.PutAsync("collX/conflict.txt", new StringContent(FooContent)))
-                    .EnsureStatusCode(WebDavStatusCode.Created);
+                    .EnsureStatusCode(StatusCode.Created);
                 (await UnlockAsync(string.Empty, lockToken)).EnsureSuccess();
                 (await Client.DeleteAsync("collX/conflict.txt")).EnsureSuccess();
             }
@@ -67,9 +66,9 @@ foo
                 var lockToken = await WebDavHelper.GetLockTokenFromWebDavResponseMessage(response);
                 Assert.NotNull(lockToken);
                 (await secondClient.PutAsync("collX/conflict.txt", new StringContent(FooContent)))
-                    .EnsureStatusCode(WebDavStatusCode.Locked);
+                    .EnsureStatusCode(StatusCode.Locked);
                 (await Client.PutAsync("collX/conflict.txt", new StringContent(FooContent)))
-                    .EnsureStatusCode(WebDavStatusCode.Created);
+                    .EnsureStatusCode(StatusCode.Created);
                 (await UnlockAsync(string.Empty, lockToken)).EnsureSuccess();
                 (await Client.DeleteAsync("collX/conflict.txt")).EnsureSuccess();
             }
@@ -77,7 +76,7 @@ foo
             // Test moving a locked file
             {
                 (await Client.PutAsync("collX/conflict.txt", new StringContent(FooContent)))
-                    .EnsureStatusCode(WebDavStatusCode.Created);
+                    .EnsureStatusCode(StatusCode.Created);
                 var response = (await LockAsync("collX/conflict.txt", WebDavDepthHeaderValue.Infinity)).EnsureSuccess();
                 var lockToken = await WebDavHelper.GetLockTokenFromWebDavResponseMessage(response);
                 Assert.NotNull(lockToken);
@@ -87,7 +86,7 @@ foo
                         new Uri("collY", UriKind.Relative),
                         new Uri(secondClient.BaseAddress!, "collX"),
                         true))
-                    .EnsureStatusCode(WebDavStatusCode.Locked);
+                    .EnsureStatusCode(StatusCode.Locked);
 
                 // This should work
                 (await Client.MoveAsync(
@@ -107,7 +106,7 @@ foo
                                 LockDiscovery = new LockDiscovery(),
                             },
                         }))
-                    .EnsureStatusCode(WebDavStatusCode.NotFound);
+                    .EnsureStatusCode(StatusCode.NotFound);
             }
 
             // Test if the lock was removed during the MOVE

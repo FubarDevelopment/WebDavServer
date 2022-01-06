@@ -35,15 +35,17 @@ namespace FubarDev.WebDavServer.Locking.SQLite
         /// Initializes a new instance of the <see cref="SQLiteLockManager"/> class.
         /// </summary>
         /// <param name="sqliteOptions">The SQLite options.</param>
+        /// <param name="contextAccessor">The WebDAV context accessor.</param>
         /// <param name="cleanupTask">The clean-up task for expired locks.</param>
         /// <param name="systemClock">The system clock interface.</param>
         /// <param name="logger">The logger.</param>
         public SQLiteLockManager(
             IOptions<SQLiteLockManagerOptions> sqliteOptions,
+            IWebDavContextAccessor contextAccessor,
             ILockCleanupTask cleanupTask,
             ISystemClock systemClock,
             ILogger<SQLiteLockManager> logger)
-            : this(sqliteOptions.Value, cleanupTask, systemClock, logger)
+            : this(sqliteOptions.Value, contextAccessor, cleanupTask, systemClock, logger)
         {
         }
 
@@ -51,15 +53,17 @@ namespace FubarDev.WebDavServer.Locking.SQLite
         /// Initializes a new instance of the <see cref="SQLiteLockManager"/> class.
         /// </summary>
         /// <param name="sqliteOptions">The SQLite options.</param>
+        /// <param name="contextAccessor">The WebDAV context accessor.</param>
         /// <param name="cleanupTask">The clean-up task for expired locks.</param>
         /// <param name="systemClock">The system clock interface.</param>
         /// <param name="logger">The logger.</param>
         public SQLiteLockManager(
             SQLiteLockManagerOptions sqliteOptions,
+            IWebDavContextAccessor contextAccessor,
             ILockCleanupTask cleanupTask,
             ISystemClock systemClock,
             ILogger<SQLiteLockManager> logger)
-            : base(cleanupTask, systemClock, logger, sqliteOptions)
+            : base(contextAccessor,  cleanupTask, systemClock, logger, sqliteOptions)
         {
             if (string.IsNullOrEmpty(sqliteOptions.DatabaseFileName))
             {

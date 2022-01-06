@@ -9,7 +9,6 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 
-using FubarDev.WebDavServer.Model;
 using FubarDev.WebDavServer.Models;
 
 namespace FubarDev.WebDavServer.FileSystem.InMemory

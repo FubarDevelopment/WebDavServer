@@ -45,7 +45,7 @@ namespace FubarDev.WebDavServer.Tests.Support
                 return requestUrl;
             });
             _requestHeaders = new Lazy<WebDavRequestHeaders>(
-                () => new WebDavRequestHeaders(new HeaderDictionary(), this));
+                () => new WebDavRequestHeaders(new HeaderDictionary()));
             _dispatcher = new Lazy<IWebDavDispatcher>(serviceProvider.GetRequiredService<IWebDavDispatcher>);
         }
 
@@ -68,7 +68,7 @@ namespace FubarDev.WebDavServer.Tests.Support
             _requestHeaders = new Lazy<WebDavRequestHeaders>(() =>
             {
                 var request = httpContextAccessor.HttpContext!.Request;
-                return new WebDavRequestHeaders(request.Headers, this);
+                return new WebDavRequestHeaders(request.Headers);
             });
             _dispatcher = new Lazy<IWebDavDispatcher>(serviceProvider.GetRequiredService<IWebDavDispatcher>);
         }

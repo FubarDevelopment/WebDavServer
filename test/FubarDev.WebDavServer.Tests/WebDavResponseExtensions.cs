@@ -31,7 +31,7 @@ namespace FubarDev.WebDavServer.Tests
         /// <returns>The response message.</returns>
         public static WebDavResponseMessage EnsureStatusCode(
             this WebDavResponseMessage response,
-            WebDavStatusCode statusCode)
+            StatusCode statusCode)
         {
             Assert.Equal(statusCode, response.StatusCode);
             return response;

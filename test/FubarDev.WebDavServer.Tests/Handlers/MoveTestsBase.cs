@@ -8,7 +8,6 @@ using System.Threading;
 using System.Threading.Tasks;
 using System.Xml.Linq;
 
-using DecaTec.WebDav;
 using DecaTec.WebDav.Headers;
 
 using FubarDev.WebDavServer.FileSystem.InMemory;
@@ -417,7 +416,7 @@ namespace FubarDev.WebDavServer.Tests.Handlers
                 .EnsureSuccess();
 
             (await Client.PropFindAsync("collX/docX", WebDavDepthHeaderValue.One))
-                .EnsureStatusCode(WebDavStatusCode.NotFound);
+                .EnsureStatusCode(StatusCode.NotFound);
         }
     }
 }

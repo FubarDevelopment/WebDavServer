@@ -33,7 +33,9 @@ namespace FubarDev.WebDavServer.Locking
         }
 
         /// <inheritdoc />
-        public Task<IImplicitLock> CreateAsync(ILock? lockRequirements, CancellationToken cancellationToken)
+        public Task<IImplicitLock> CreateAsync(
+            ILock? lockRequirements,
+            CancellationToken cancellationToken)
         {
             var useFakeLock = _lockManager == null
                 || lockRequirements == null;

@@ -36,7 +36,7 @@ namespace FubarDev.WebDavServer.Tests
         public async Task CheckFailedAuthAsync()
         {
             (await Client.PropFindAsync(string.Empty))
-                .EnsureStatusCode(WebDavStatusCode.Unauthorized);
+                .EnsureStatusCode(StatusCode.Unauthorized);
         }
 
         [Fact]
@@ -44,7 +44,7 @@ namespace FubarDev.WebDavServer.Tests
         {
             Client.UseAuthentication("user-a", "password-a");
             (await Client.PropFindAsync(string.Empty))
-                .EnsureStatusCode(WebDavStatusCode.MultiStatus);
+                .EnsureStatusCode(StatusCode.MultiStatus);
         }
 
         [Fact]
@@ -78,7 +78,7 @@ namespace FubarDev.WebDavServer.Tests
 
             client2.UseAuthentication("user-b", "password-b");
             (await client2.DeleteAsync("coll/test.txt", ct))
-                .EnsureStatusCode(WebDavStatusCode.Locked);
+                .EnsureStatusCode(StatusCode.Locked);
         }
 
         [Fact]
@@ -112,7 +112,7 @@ namespace FubarDev.WebDavServer.Tests
 
             client2.UseAuthentication("user-b", "password-b");
             (await client2.DeleteAsync("coll/test.txt", lockToken, ct))
-                .EnsureStatusCode(WebDavStatusCode.Locked);
+                .EnsureStatusCode(StatusCode.Locked);
         }
 
         /// <inheritdoc />

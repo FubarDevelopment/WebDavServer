@@ -9,10 +9,9 @@ using System.Linq;
 using System.Xml;
 
 using FubarDev.WebDavServer.Models;
+using FubarDev.WebDavServer.Parsing;
 
 using Microsoft.AspNetCore.Http;
-
-using IfHeader = FubarDev.WebDavServer.Model.Headers.IfHeader;
 
 namespace FubarDev.WebDavServer;
 
@@ -27,8 +26,7 @@ public class WebDavRequestHeaders : IWebDavRequestHeaders
     /// Initializes a new instance of the <see cref="WebDavRequestHeaders"/> class.
     /// </summary>
     /// <param name="headers">The headers to parse.</param>
-    /// <param name="context">The WebDAV request context.</param>
-    public WebDavRequestHeaders(IHeaderDictionary headers, IWebDavContext context)
+    public WebDavRequestHeaders(IHeaderDictionary headers)
     {
         Headers = headers.ToDictionary(
             x => x.Key,
@@ -37,7 +35,7 @@ public class WebDavRequestHeaders : IWebDavRequestHeaders
         Depth = ParseHeader("Depth", args => DepthHeader.Parse(args.Single()));
         Overwrite = ParseValueHeader("Overwrite", args => OverwriteHeader.Parse(args.Single()));
         Range = ParseHeader("Range", RangeHeader.Parse);
-        If = ParseHeaders("If", arg => IfHeader.Parse(arg, EntityTagComparer.Strong, context));
+        If = ParseHeaders("If", ParseIfHeader);
         IfMatch = ParseHeader("If-Match", IfMatchHeader.Parse);
         IfNoneMatch = ParseHeader("If-None-Match", IfNoneMatchHeader.Parse);
         IfModifiedSince = ParseHeader("If-Modified-Since", args => IfModifiedSinceHeader.Parse(args.Single()));
@@ -91,6 +89,19 @@ public class WebDavRequestHeaders : IWebDavRequestHeaders
 
             return _empty;
         }
+    }
+
+    private static IfHeader ParseIfHeader(string s)
+    {
+        var lexer = new Lexer(s);
+        var parser = new Parser(lexer);
+        var parseResult = parser.ParseIfHeader();
+        if (parseResult.IsError || (!lexer.IsEnd && lexer.Next().Kind != TokenType.End))
+        {
+            throw new WebDavException(WebDavStatusCode.BadRequest, "Invalid If header");
+        }
+
+        return parseResult.Ok.Value;
     }
 
     private T? ParseValueHeader<T>(string name, Func<IReadOnlyCollection<string>, T?> createFunc, T? defaultValue = default)

@@ -2,8 +2,6 @@
 // Copyright (c) Fubar Development Junker. All rights reserved.
 // </copyright>
 
-using FubarDev.WebDavServer.Model;
-
 namespace FubarDev.WebDavServer.FileSystem
 {
     /// <summary>

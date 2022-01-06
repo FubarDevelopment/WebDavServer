@@ -12,11 +12,8 @@ using System.Xml.Linq;
 
 using FubarDev.WebDavServer.FileSystem;
 using FubarDev.WebDavServer.Locking;
-using FubarDev.WebDavServer.Model;
 using FubarDev.WebDavServer.Models;
 using FubarDev.WebDavServer.Utils;
-
-using IfHeader = FubarDev.WebDavServer.Model.Headers.IfHeader;
 
 namespace FubarDev.WebDavServer.Handlers.Impl
 {
@@ -26,6 +23,7 @@ namespace FubarDev.WebDavServer.Handlers.Impl
     public class LockHandler : ILockHandler
     {
         private readonly IFileSystem _rootFileSystem;
+        private readonly IUriComparer _uriComparer;
         private readonly ILockManager? _lockManager;
         private readonly ITimeoutPolicy? _timeoutPolicy;
         private readonly IWebDavContextAccessor _contextAccessor;
@@ -36,16 +34,19 @@ namespace FubarDev.WebDavServer.Handlers.Impl
         /// </summary>
         /// <param name="contextAccessor">The WebDAV request context accessor.</param>
         /// <param name="rootFileSystem">The root file system.</param>
+        /// <param name="uriComparer">Comparer for URLs.</param>
         /// <param name="lockManager">The lock manager.</param>
         /// <param name="timeoutPolicy">The timeout policy for the selection of the <see cref="Models.TimeoutHeader"/> value.</param>
         public LockHandler(
             IWebDavContextAccessor contextAccessor,
             IFileSystem rootFileSystem,
+            IUriComparer? uriComparer = null,
             ILockManager? lockManager = null,
             ITimeoutPolicy? timeoutPolicy = null)
         {
             _contextAccessor = contextAccessor;
             _rootFileSystem = rootFileSystem;
+            _uriComparer = uriComparer ?? new DefaultUriComparer(contextAccessor);
             _lockManager = lockManager;
             _timeoutPolicy = timeoutPolicy;
             HttpMethods = _lockManager == null ? Array.Empty<string>() : new[] { "LOCK" };
@@ -201,16 +202,31 @@ namespace FubarDev.WebDavServer.Handlers.Impl
                 throw new NotSupportedException();
             }
 
-            if (ifHeader.Lists.Any(x => x.Path.IsAbsoluteUri))
+            if (ifHeader.IsTaggedList)
             {
-                throw new InvalidOperationException("A Resource-Tag pointing to a different server or application isn't supported.");
+                if (ifHeader.TaggedLists.All(taggedList => _uriComparer.IsThisServer(taggedList.ResourceTag)))
+                {
+                    throw new InvalidOperationException("A Resource-Tag pointing to a different server or application isn't supported.");
+                }
             }
 
             var timeout = _timeoutPolicy?.SelectTimeout(
                               timeoutHeader?.Values ?? new[] { TimeoutHeader.Infinite })
                           ?? TimeoutHeader.Infinite;
 
-            var result = await _lockManager.RefreshLockAsync(_rootFileSystem, ifHeader, timeout, cancellationToken).ConfigureAwait(false);
+            var pathInfo = await _rootFileSystem.SelectAsync(path, cancellationToken).ConfigureAwait(false);
+            if (pathInfo.IsMissing)
+            {
+                return new WebDavResult(WebDavStatusCode.NotFound);
+            }
+
+            var result = await _lockManager.RefreshLockAsync(
+                    _rootFileSystem,
+                    path,
+                    ifHeader,
+                    timeout,
+                    cancellationToken)
+                .ConfigureAwait(false);
             if (result.ErrorResponse != null)
             {
                 return new WebDavResult<error>(WebDavStatusCode.PreconditionFailed, result.ErrorResponse.error);

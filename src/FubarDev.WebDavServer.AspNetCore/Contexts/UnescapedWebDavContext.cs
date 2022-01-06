@@ -52,7 +52,7 @@ internal sealed class UnescapedWebDavContext : IWebDavContext
         PublicRelativeRequestUrl = PublicRootUrl.MakeRelativeUri(PublicAbsoluteRequestUrl);
         ControllerRelativeUrl = GetControllerRelativeUrl(httpContext, ServiceBaseUrl, ServiceAbsoluteRequestUrl);
         PublicControllerUrl = new Uri(PublicBaseUrl, ControllerRelativeUrl);
-        _requestHeaders = new WebDavRequestHeaders(httpContext.Request.Headers, this);
+        _requestHeaders = new WebDavRequestHeaders(httpContext.Request.Headers);
         DetectedClient = DetectClient(httpContext);
         User = httpContext.User;
         _dispatcher = new Lazy<IWebDavDispatcher>(_httpContext.RequestServices.GetRequiredService<IWebDavDispatcher>);

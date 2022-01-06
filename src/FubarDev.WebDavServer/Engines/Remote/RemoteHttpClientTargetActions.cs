@@ -17,7 +17,6 @@ using System.Xml.Linq;
 using System.Xml.Serialization;
 
 using FubarDev.WebDavServer.FileSystem;
-using FubarDev.WebDavServer.Model;
 using FubarDev.WebDavServer.Models;
 using FubarDev.WebDavServer.Props;
 using FubarDev.WebDavServer.Props.Dead;

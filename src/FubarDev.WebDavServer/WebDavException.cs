@@ -4,8 +4,6 @@
 
 using System;
 
-using FubarDev.WebDavServer.Model;
-
 namespace FubarDev.WebDavServer
 {
     /// <summary>

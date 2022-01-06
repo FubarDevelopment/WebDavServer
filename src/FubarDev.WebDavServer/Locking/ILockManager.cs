@@ -8,7 +8,7 @@ using System.Threading;
 using System.Threading.Tasks;
 
 using FubarDev.WebDavServer.FileSystem;
-using FubarDev.WebDavServer.Model.Headers;
+using FubarDev.WebDavServer.Models;
 
 namespace FubarDev.WebDavServer.Locking
 {
@@ -58,12 +58,14 @@ namespace FubarDev.WebDavServer.Locking
         /// Tries to refresh a lock.
         /// </summary>
         /// <param name="rootFileSystem">The root file system.</param>
+        /// <param name="targetPath">The target path to refresh the lock token for.</param>
         /// <param name="ifHeader">The header that tries to identify the lock to refresh.</param>
         /// <param name="timeout">The header containing the new timeouts.</param>
         /// <param name="cancellationToken">The cancellation token.</param>
         /// <returns>Either the list of locks preventing refreshing a lock or the refreshed lock.</returns>
         Task<LockRefreshResult> RefreshLockAsync(
             IFileSystem rootFileSystem,
+            string targetPath,
             IfHeader ifHeader,
             TimeSpan timeout,
             CancellationToken cancellationToken = default);

@@ -25,6 +25,7 @@ namespace FubarDev.WebDavServer.Tests.Support.ServiceBuilders
                         .AddDebug()
                         .SetMinimumLevel(LogLevel.Trace);
                 });
+            serviceCollection.AddSingleton<IWebDavContextAccessor, TestWebDavContextAccessor>();
             serviceCollection.AddScoped<ISystemClock, TestSystemClock>();
             serviceCollection.Configure<InMemoryLockManagerOptions>(opt =>
             {

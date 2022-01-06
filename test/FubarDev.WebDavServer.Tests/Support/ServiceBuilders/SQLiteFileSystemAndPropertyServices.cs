@@ -65,23 +65,5 @@ namespace FubarDev.WebDavServer.Tests.Support.ServiceBuilders
                 Directory.Delete(tempDbRootPath, true);
             }
         }
-
-        private class TestWebDavContextAccessor : IWebDavContextAccessor, IDisposable
-        {
-            private readonly IServiceScope _serviceScope;
-
-            public TestWebDavContextAccessor(IServiceProvider serviceProvider)
-            {
-                _serviceScope = serviceProvider.CreateScope();
-                WebDavContext = new TestHost(_serviceScope.ServiceProvider, new Uri("http://localhost/"), (string?)null);
-            }
-
-            public IWebDavContext WebDavContext { get; }
-
-            public void Dispose()
-            {
-                _serviceScope.Dispose();
-            }
-        }
     }
 }

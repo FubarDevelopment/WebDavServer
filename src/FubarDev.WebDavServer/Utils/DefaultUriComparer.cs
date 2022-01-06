@@ -18,6 +18,7 @@ namespace FubarDev.WebDavServer.Utils
     {
         private static readonly char[] _slash = { '/' };
         private readonly IWebDavContextAccessor? _contextAccessor;
+        private readonly IWebDavContext? _context;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="DefaultUriComparer"/> class.
@@ -28,10 +29,34 @@ namespace FubarDev.WebDavServer.Utils
             _contextAccessor = contextAccessor;
         }
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="DefaultUriComparer"/> class.
+        /// </summary>
+        /// <param name="context">The WebDAV context.</param>
+        private DefaultUriComparer(IWebDavContext context)
+        {
+            _context = context;
+        }
+
+        /// <summary>
+        /// Gets the WebDAV context.
+        /// </summary>
+        private IWebDavContext? Context => _contextAccessor?.WebDavContext ?? _context;
+
+        /// <summary>
+        /// Workaround to create an instance of this class.
+        /// </summary>
+        /// <param name="context">The WebDAV context.</param>
+        /// <returns>The URI comparer.</returns>
+        public static IUriComparer Create(IWebDavContext context)
+        {
+            return new DefaultUriComparer(context);
+        }
+
         /// <inheritdoc />
         public UriComparisonResult Compare(Uri x, Uri y)
         {
-            var publicControllerUrl = _contextAccessor?.WebDavContext.PublicControllerUrl;
+            var publicControllerUrl = Context?.PublicControllerUrl;
             var infoX = new UriInfo(x, publicControllerUrl);
             var infoY = new UriInfo(y, publicControllerUrl);
             return Compare(infoX, infoY);
@@ -40,7 +65,7 @@ namespace FubarDev.WebDavServer.Utils
         /// <inheritdoc />
         public bool IsSameHost(Uri x, Uri y)
         {
-            var publicControllerUrl = _contextAccessor?.WebDavContext.PublicControllerUrl;
+            var publicControllerUrl = Context?.PublicControllerUrl;
             var infoX = new UriInfo(x, publicControllerUrl);
             var infoY = new UriInfo(y, publicControllerUrl);
             return CompareHosts(infoX, infoY) == UriComparisonResult.Equal;
@@ -49,7 +74,7 @@ namespace FubarDev.WebDavServer.Utils
         /// <inheritdoc />
         public bool IsThisServer(Uri uri)
         {
-            return IsThisServer(uri, _contextAccessor?.WebDavContext.PublicControllerUrl);
+            return IsThisServer(uri, Context?.PublicControllerUrl);
         }
 
         /// <inheritdoc />
@@ -269,7 +294,7 @@ namespace FubarDev.WebDavServer.Utils
 
         private bool IsThisServer(Uri uri, Uri? publicControllerUrl)
         {
-            if (_contextAccessor is null)
+            if (Context is null)
             {
                 // Always assume that the URL points to the same server, because we don't have a context
                 return true;

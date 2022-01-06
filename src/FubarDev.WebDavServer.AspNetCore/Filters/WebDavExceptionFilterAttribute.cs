@@ -4,7 +4,6 @@
 
 using System;
 
-using FubarDev.WebDavServer.Model;
 using FubarDev.WebDavServer.Models;
 
 using Microsoft.AspNetCore.Http;

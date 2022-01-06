@@ -10,9 +10,9 @@ using System.Xml.Linq;
 
 using DecaTec.WebDav;
 using DecaTec.WebDav.Headers;
+using DecaTec.WebDav.Tools;
 using DecaTec.WebDav.WebDavArtifacts;
 
-using FubarDev.WebDavServer.Model.Headers;
 using FubarDev.WebDavServer.Models;
 
 using Xunit;
@@ -35,8 +35,11 @@ namespace FubarDev.WebDavServer.Tests.Locking
                     LockScope = LockScope.CreateExclusiveLockScope(),
                     LockType = LockType.CreateWriteLockType(),
                 }).ConfigureAwait(false);
-            var prop = await WebDavResponseContentParser.ParsePropResponseContentAsync(response.EnsureSuccessStatusCode().Content).ConfigureAwait(false);
-            var lockToken = CodedUrlParser.Parse(response.Headers.GetValues(WebDavRequestHeader.LockToken).Single());
+            var prop = await WebDavResponseContentParser.ParsePropResponseContentAsync(
+                    response.EnsureSuccessStatusCode().Content)
+                .ConfigureAwait(false);
+            var lockToken = await WebDavHelper.GetLockTokenFromWebDavResponseMessage(response);
+            Assert.NotNull(lockToken);
             Assert.NotNull(prop.LockDiscovery);
             Assert.Collection(
                 prop.LockDiscovery.ActiveLock,
@@ -49,7 +52,7 @@ namespace FubarDev.WebDavServer.Tests.Locking
                     Assert.Equal(WebDavTimeoutHeaderValue.CreateInfiniteWebDavTimeout().ToString(), activeLock.Timeout, StringComparer.OrdinalIgnoreCase);
                     Assert.NotNull(activeLock.LockToken?.Href);
                     Assert.True(Uri.IsWellFormedUriString(activeLock.LockToken!.Href!, UriKind.RelativeOrAbsolute));
-                    Assert.Equal(lockToken.OriginalString, activeLock.LockToken.Href);
+                    Assert.Equal(lockToken.AbsoluteUri.ToString(), activeLock.LockToken.Href);
                 });
         }
 
@@ -200,7 +203,7 @@ namespace FubarDev.WebDavServer.Tests.Locking
                         LockDiscovery = new LockDiscovery(),
                     },
                 }).ConfigureAwait(false);
-            Assert.Equal(WebDavStatusCode.MultiStatus, propFindResponse.StatusCode);
+            Assert.Equal(StatusCode.MultiStatus, propFindResponse.StatusCode);
             var multiStatus = await WebDavResponseContentParser.ParseMultistatusResponseContentAsync(propFindResponse.Content).ConfigureAwait(false);
             Assert.Collection(
                 multiStatus.Response,
@@ -253,7 +256,7 @@ namespace FubarDev.WebDavServer.Tests.Locking
                 "/",
                 WebDavTimeoutHeaderValue.CreateInfiniteWebDavTimeout(),
                 new LockToken(lockTokenUri)).ConfigureAwait(false);
-            Assert.Equal(WebDavStatusCode.PreconditionFailed, refreshResult.StatusCode);
+            Assert.Equal(StatusCode.PreconditionFailed, refreshResult.StatusCode);
         }
 
         [Fact]

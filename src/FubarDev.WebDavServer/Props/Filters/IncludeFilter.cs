@@ -7,7 +7,6 @@ using System.Collections.Immutable;
 using System.Linq;
 using System.Xml.Linq;
 
-using FubarDev.WebDavServer.Model;
 using FubarDev.WebDavServer.Models;
 
 namespace FubarDev.WebDavServer.Props.Filters

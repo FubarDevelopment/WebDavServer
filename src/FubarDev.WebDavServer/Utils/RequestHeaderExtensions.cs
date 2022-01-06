@@ -7,7 +7,6 @@ using System.Threading;
 using System.Threading.Tasks;
 
 using FubarDev.WebDavServer.FileSystem;
-using FubarDev.WebDavServer.Model;
 using FubarDev.WebDavServer.Props.Live;
 
 namespace FubarDev.WebDavServer.Utils

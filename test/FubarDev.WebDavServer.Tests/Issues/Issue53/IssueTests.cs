@@ -52,7 +52,7 @@ namespace FubarDev.WebDavServer.Tests.Issues.Issue53
             Assert.NotNull(Client.BaseAddress);
             var requestUrl = new Uri(Client.BaseAddress!.OriginalString.TrimEnd('/'));
             var propFindResponse = await Client.PropFindAsync(requestUrl, WebDavDepthHeaderValue.Zero);
-            Assert.Equal(WebDavStatusCode.MultiStatus, propFindResponse.StatusCode);
+            Assert.Equal(StatusCode.MultiStatus, propFindResponse.StatusCode);
             var multiStatus = await WebDavResponseContentParser
                 .ParseMultistatusResponseContentAsync(propFindResponse.Content).ConfigureAwait(false);
             Assert.Collection(
@@ -64,7 +64,7 @@ namespace FubarDev.WebDavServer.Tests.Issues.Issue53
         public async Task CheckRoot()
         {
             var propFindResponse = await Client.PropFindAsync(string.Empty, WebDavDepthHeaderValue.One);
-            Assert.Equal(WebDavStatusCode.MultiStatus, propFindResponse.StatusCode);
+            Assert.Equal(StatusCode.MultiStatus, propFindResponse.StatusCode);
             var multiStatus = await WebDavResponseContentParser
                 .ParseMultistatusResponseContentAsync(propFindResponse.Content).ConfigureAwait(false);
             Assert.Collection(
@@ -77,7 +77,7 @@ namespace FubarDev.WebDavServer.Tests.Issues.Issue53
         public async Task CheckTest1()
         {
             var propFindResponse = await Client.PropFindAsync(Uri.EscapeDataString(NameTest1), WebDavDepthHeaderValue.One);
-            Assert.Equal(WebDavStatusCode.MultiStatus, propFindResponse.StatusCode);
+            Assert.Equal(StatusCode.MultiStatus, propFindResponse.StatusCode);
             var multiStatus = await WebDavResponseContentParser
                 .ParseMultistatusResponseContentAsync(propFindResponse.Content).ConfigureAwait(false);
             Assert.Collection(

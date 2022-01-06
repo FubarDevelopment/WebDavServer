@@ -9,8 +9,6 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 
-using FubarDev.WebDavServer.Model;
-
 namespace FubarDev.WebDavServer.FileSystem.SQLite
 {
     /// <summary>

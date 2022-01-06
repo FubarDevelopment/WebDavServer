@@ -9,7 +9,6 @@ using System.Threading.Tasks;
 
 using FubarDev.WebDavServer.AspNetCore.Filters;
 using FubarDev.WebDavServer.AspNetCore.Routing;
-using FubarDev.WebDavServer.Model;
 using FubarDev.WebDavServer.Models;
 
 using Microsoft.AspNetCore.Http;
@@ -243,7 +242,7 @@ namespace FubarDev.WebDavServer.AspNetCore
                 if (ifHeaders is not { Count: 1 })
                 {
                     // A header must be given and we only allow a single header!
-                    return BadRequest();
+                    return BadRequest("If header is missing or contains more than one header.");
                 }
 
                 var timeoutHeader = _context.RequestHeaders.Timeout;

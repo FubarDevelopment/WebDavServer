@@ -2,6 +2,7 @@
 // Copyright (c) Fubar Development Junker. All rights reserved.
 // </copyright>
 
+using System;
 using System.Diagnostics.Contracts;
 using System.Security.Principal;
 using System.Xml.Linq;
@@ -13,6 +14,32 @@ namespace FubarDev.WebDavServer.Utils
     /// </summary>
     public static class IdentityExtensions
     {
+        /// <summary>
+        /// Determines whether the identity matches the owner.
+        /// </summary>
+        /// <param name="identity">The identity to compare the owner to.</param>
+        /// <param name="owner">The lock owner to compare to.</param>
+        /// <returns><see langword="true"/> when the owners are the same.</returns>
+        [Pure]
+        public static bool IsSameOwner(
+            this IIdentity? identity,
+            string? owner)
+        {
+            var lockOwner = identity?.GetOwner();
+            if (lockOwner is null)
+            {
+                return true;
+            }
+
+            var otherOwner = owner;
+            if (otherOwner is null)
+            {
+                return true;
+            }
+
+            return string.Equals(lockOwner, otherOwner, StringComparison.OrdinalIgnoreCase);
+        }
+
         /// <summary>
         /// Returns a value that indicates whether the identity is for an anonymous user.
         /// </summary>

@@ -10,7 +10,6 @@ using System.Threading.Tasks;
 
 using FubarDev.WebDavServer.FileSystem;
 using FubarDev.WebDavServer.Locking;
-using FubarDev.WebDavServer.Model;
 using FubarDev.WebDavServer.Models;
 using FubarDev.WebDavServer.Utils;
 
@@ -68,7 +67,7 @@ namespace FubarDev.WebDavServer.Handlers.Impl
                 .ValidateAsync(selectionResult.TargetEntry, cancellationToken).ConfigureAwait(false);
 
             var lockRequirements = new Lock(
-                new Uri(path, UriKind.Relative),
+                selectionResult.TargetEntry.Path,
                 context.HrefUrl,
                 selectionResult.ResultType == SelectionResultType.FoundCollection,
                 context.User.Identity?.GetOwner(),
@@ -76,7 +75,10 @@ namespace FubarDev.WebDavServer.Handlers.Impl
                 LockAccessType.Write,
                 LockShareMode.Exclusive,
                 TimeoutHeader.Infinite);
-            var tempLock = await _implicitLockFactory.CreateAsync(lockRequirements, cancellationToken).ConfigureAwait(false);
+            var tempLock = await _implicitLockFactory.CreateAsync(
+                    lockRequirements,
+                    cancellationToken)
+                .ConfigureAwait(false);
             if (!tempLock.IsSuccessful)
             {
                 return tempLock.CreateErrorResponse();

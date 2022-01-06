@@ -23,6 +23,8 @@ namespace FubarDev.WebDavServer.Locking
         /// <param name="lockRequirements">The lock requirements.</param>
         /// <param name="cancellationToken">The cancellation token.</param>
         /// <returns>A new instance of the created implicit lock.</returns>
-        Task<IImplicitLock> CreateAsync(ILock? lockRequirements, CancellationToken cancellationToken);
+        Task<IImplicitLock> CreateAsync(
+            ILock? lockRequirements,
+            CancellationToken cancellationToken);
     }
 }

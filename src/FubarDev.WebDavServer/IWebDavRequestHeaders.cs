@@ -6,8 +6,6 @@ using System.Collections.Generic;
 
 using FubarDev.WebDavServer.Models;
 
-using IfHeader = FubarDev.WebDavServer.Model.Headers.IfHeader;
-
 namespace FubarDev.WebDavServer
 {
     /// <summary>

@@ -8,6 +8,7 @@ using System.IO;
 
 using FubarDev.WebDavServer.Locking;
 using FubarDev.WebDavServer.Locking.SQLite;
+using FubarDev.WebDavServer.Utils;
 
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
@@ -29,6 +30,7 @@ namespace FubarDev.WebDavServer.Tests.Support.ServiceBuilders
                         .AddDebug()
                         .SetMinimumLevel(LogLevel.Trace);
                 });
+            serviceCollection.AddSingleton<IWebDavContextAccessor, TestWebDavContextAccessor>();
             serviceCollection.AddScoped<ISystemClock, TestSystemClock>();
             serviceCollection.AddTransient<ILockCleanupTask, LockCleanupTask>();
             serviceCollection.AddTransient<ILockManager>(
@@ -44,7 +46,13 @@ namespace FubarDev.WebDavServer.Tests.Support.ServiceBuilders
                     var cleanupTask = sp.GetRequiredService<ILockCleanupTask>();
                     var systemClock = sp.GetRequiredService<ISystemClock>();
                     var logger = sp.GetRequiredService<ILogger<SQLiteLockManager>>();
-                    return new SQLiteLockManager(config, cleanupTask, systemClock, logger);
+                    var contextAccessor = sp.GetRequiredService<IWebDavContextAccessor>();
+                    return new SQLiteLockManager(
+                        config,
+                        contextAccessor,
+                        cleanupTask,
+                        systemClock,
+                        logger);
                 });
             ServiceProvider = serviceCollection.BuildServiceProvider();
         }

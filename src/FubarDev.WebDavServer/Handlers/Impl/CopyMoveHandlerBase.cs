@@ -12,7 +12,6 @@ using FubarDev.WebDavServer.Engines.Local;
 using FubarDev.WebDavServer.Engines.Remote;
 using FubarDev.WebDavServer.FileSystem;
 using FubarDev.WebDavServer.Locking;
-using FubarDev.WebDavServer.Model;
 using FubarDev.WebDavServer.Models;
 using FubarDev.WebDavServer.Utils;
 
@@ -135,7 +134,10 @@ namespace FubarDev.WebDavServer.Handlers.Impl
                 sourceLockRequirements = null;
             }
 
-            var sourceTempLock = await _implicitLockFactory.CreateAsync(sourceLockRequirements, cancellationToken).ConfigureAwait(false);
+            var sourceTempLock = await _implicitLockFactory.CreateAsync(
+                    sourceLockRequirements,
+                    cancellationToken)
+                .ConfigureAwait(false);
 
             if (!sourceTempLock.IsSuccessful)
             {
@@ -227,7 +229,10 @@ namespace FubarDev.WebDavServer.Handlers.Impl
                         LockAccessType.Write,
                         LockShareMode.Exclusive,
                         TimeoutHeader.Infinite);
-                    var destTempLock = await _implicitLockFactory.CreateAsync(destLockRequirements, cancellationToken).ConfigureAwait(false);
+                    var destTempLock = await _implicitLockFactory.CreateAsync(
+                            destLockRequirements,
+                            cancellationToken)
+                        .ConfigureAwait(false);
                     if (!destTempLock.IsSuccessful)
                     {
                         return destTempLock.CreateErrorResponse();
