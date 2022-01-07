@@ -14,9 +14,14 @@ namespace FubarDev.WebDavServer.Locking
     public interface IImplicitLock
     {
         /// <summary>
-        /// Gets the locks matched by the <c>If</c> header or implicit shared lock.
+        /// Gets the implicit exclusive lock.
         /// </summary>
-        IReadOnlyCollection<IActiveLock> OwnedLocks { get; }
+        IActiveLock AcquiredLock { get; }
+
+        /// <summary>
+        /// Gets the locks matched by the <c>If</c> header.
+        /// </summary>
+        IReadOnlyCollection<IActiveLock> MatchedLocks { get; }
 
         /// <summary>
         /// Gets the locks preventing the usage of an implicit lock.
@@ -26,7 +31,7 @@ namespace FubarDev.WebDavServer.Locking
         /// <summary>
         /// Gets a value indicating whether an implicit lock was created.
         /// </summary>
-        bool IsTemporaryLock { get; }
+        bool IsAcquiredLock { get; }
 
         /// <summary>
         /// Gets a value indicating whether the <c>If</c> header was evaluated successfully.

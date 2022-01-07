@@ -87,7 +87,7 @@ namespace FubarDev.WebDavServer.Handlers.Impl
 
             Debug.Assert(_lockManager != null, "_lockManager != null");
             var lockResult = await _lockManager.LockAsync(l, cancellationToken).ConfigureAwait(false);
-            if (lockResult.ConflictingLocks != null)
+            if (!lockResult.IsSuccess)
             {
                 // Lock cannot be acquired
                 if (lockResult.ConflictingLocks.ChildLocks.Count == 0)

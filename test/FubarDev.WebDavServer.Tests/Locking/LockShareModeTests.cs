@@ -3,7 +3,6 @@
 // </copyright>
 
 using System;
-using System.Diagnostics;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Xml.Linq;
@@ -111,10 +110,9 @@ namespace FubarDev.WebDavServer.Tests.Locking
             var result1 = await lockManager.LockAsync(testLock, ct).ConfigureAwait(false);
             var lock1 = ValidateLockResult(result1);
             var result2 = await lockManager.LockAsync(testLock, ct).ConfigureAwait(false);
-            Assert.Null(result2.Lock);
-            Assert.NotNull(result2.ConflictingLocks);
+            Assert.False(result2.IsSuccess);
             Assert.Collection(
-                result2.ConflictingLocks!.GetLocks(),
+                result2.ConflictingLocks.GetLocks(),
                 cl =>
                 {
                     Assert.Equal(lock1.StateToken, cl.StateToken);
@@ -190,10 +188,9 @@ namespace FubarDev.WebDavServer.Tests.Locking
                         TimeSpan.FromMinutes(1)),
                     ct)
                 .ConfigureAwait(false);
-            Assert.Null(result2.Lock);
-            Assert.NotNull(result2.ConflictingLocks);
+            Assert.False(result2.IsSuccess);
             Assert.Collection(
-                result2.ConflictingLocks!.GetLocks(),
+                result2.ConflictingLocks.GetLocks(),
                 cl =>
                 {
                     Assert.Equal(lock1.StateToken, cl.StateToken);
@@ -233,10 +230,9 @@ namespace FubarDev.WebDavServer.Tests.Locking
                         TimeSpan.FromMinutes(1)),
                     ct)
                 .ConfigureAwait(false);
-            Assert.Null(result2.Lock);
-            Assert.NotNull(result2.ConflictingLocks);
+            Assert.False(result2.IsSuccess);
             Assert.Collection(
-                result2.ConflictingLocks!.GetLocks(),
+                result2.ConflictingLocks.GetLocks(),
                 cl =>
                 {
                     Assert.Equal(lock1.StateToken, cl.StateToken);
@@ -348,7 +344,7 @@ namespace FubarDev.WebDavServer.Tests.Locking
                         TimeSpan.FromMinutes(1)),
                     ct)
                 .ConfigureAwait(false);
-            Assert.Null(result2.Lock);
+            Assert.False(result2.IsSuccess);
         }
 
         [Fact]
@@ -384,7 +380,7 @@ namespace FubarDev.WebDavServer.Tests.Locking
                         TimeSpan.FromMinutes(1)),
                     ct)
                 .ConfigureAwait(false);
-            Assert.Null(result2.Lock);
+            Assert.False(result2.IsSuccess);
         }
 
         [Fact]
@@ -406,9 +402,9 @@ namespace FubarDev.WebDavServer.Tests.Locking
                         TimeSpan.FromMinutes(1)),
                     ct)
                 .ConfigureAwait(false);
-            Assert.NotNull(result1.Lock);
+            Assert.True(result1.IsSuccess);
             ValidateLockResult(result1);
-            var resultRelease1 = await lockManager.ReleaseAsync(result1.Lock!.Path, new Uri(result1.Lock.StateToken), ct).ConfigureAwait(false);
+            var resultRelease1 = await lockManager.ReleaseAsync(result1.Lock.Path, new Uri(result1.Lock.StateToken), ct).ConfigureAwait(false);
             Assert.Equal(LockReleaseStatus.Success, resultRelease1);
             var result2 = await lockManager
                 .LockAsync(
@@ -428,10 +424,9 @@ namespace FubarDev.WebDavServer.Tests.Locking
 
         private IActiveLock ValidateLockResult(LockResult result)
         {
-            if (result.Lock != null)
+            if (result.IsSuccess)
                 return result.Lock;
 
-            Debug.Assert(result.ConflictingLocks != null, "result.ConflictingLocks != null");
             foreach (var activeLock in result.ConflictingLocks.GetLocks())
             {
                 _output.WriteLine(activeLock.ToString());

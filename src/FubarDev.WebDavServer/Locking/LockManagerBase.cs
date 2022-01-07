@@ -182,7 +182,9 @@ public abstract class LockManagerBase : ILockManager
         if (ifHeaderLists == null || ifHeaderLists.Count == 0)
         {
             var newLock = await LockAsync(lockRequirements, cancellationToken).ConfigureAwait(false);
-            return new ImplicitLock(this, newLock);
+            return newLock.IsSuccess
+                ? new ImplicitLock(this, newLock.Lock)
+                : new ImplicitLock(newLock.ConflictingLocks);
         }
 
         var unmatchedLocks = await FindUnmatchedLocksAsync(
@@ -193,19 +195,19 @@ public abstract class LockManagerBase : ILockManager
         if (unmatchedLocks.ConflictCount != 0)
         {
             return new ImplicitLock(
-                this,
-                new LockResult(
-                    new LockStatus(
-                        unmatchedLocks.ReferenceLocks,
-                        unmatchedLocks.ParentLocks,
-                        unmatchedLocks.ChildLocks)));
+                new LockStatus(
+                    unmatchedLocks.ReferenceLocks,
+                    unmatchedLocks.ParentLocks,
+                    unmatchedLocks.ChildLocks));
         }
 
         if (unmatchedLocks.MatchedLocks.Count == 0)
         {
             // No unmatched locks found
             var newLock = await LockAsync(lockRequirements, cancellationToken).ConfigureAwait(false);
-            return new ImplicitLock(this, newLock);
+            return newLock.IsSuccess
+                ? new ImplicitLock(this, newLock.Lock)
+                : new ImplicitLock(newLock.ConflictingLocks);
         }
 
         return new ImplicitLock(unmatchedLocks.MatchedLocks.Keys.ToList());

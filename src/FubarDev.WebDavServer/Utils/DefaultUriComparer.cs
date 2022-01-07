@@ -326,25 +326,25 @@ namespace FubarDev.WebDavServer.Utils
 
         private class UriInfo
         {
-            public UriInfo(Uri originalUri, Uri? publicBaseUri)
+            public UriInfo(Uri originalUri, Uri? publicControllerUri)
             {
-                Scheme = publicBaseUri?.Scheme ?? "http";
+                Scheme = publicControllerUri?.Scheme ?? "http";
 
                 var uri = originalUri;
                 if (!uri.IsAbsoluteUri)
                 {
-                    if (publicBaseUri != null)
+                    if (publicControllerUri != null)
                     {
-                        var basePath = publicBaseUri.OriginalString;
+                        var basePath = publicControllerUri.OriginalString;
                         if (!basePath.EndsWith("/"))
                         {
                             // Always ensure that the path ends in a slash
-                            publicBaseUri = new Uri(basePath + "/");
+                            publicControllerUri = new Uri(basePath + "/");
                         }
 
                         if (uri.OriginalString.StartsWith("///"))
                         {
-                            uri = new Uri(publicBaseUri, "/" + uri.OriginalString.TrimStart('/'));
+                            uri = new Uri(publicControllerUri, "/" + uri.OriginalString.TrimStart('/'));
                         }
                         else if (uri.OriginalString.StartsWith("//"))
                         {
@@ -352,7 +352,7 @@ namespace FubarDev.WebDavServer.Utils
                         }
                         else
                         {
-                            uri = new Uri(publicBaseUri, uri);
+                            uri = new Uri(publicControllerUri, uri);
                         }
                     }
                     else

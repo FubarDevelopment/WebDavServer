@@ -1,9 +1,11 @@
-﻿// <copyright file="CopyMoveHandlerBase.cs" company="Fubar Development Junker">
+// <copyright file="CopyMoveHandlerBase.cs" company="Fubar Development Junker">
 // Copyright (c) Fubar Development Junker. All rights reserved.
 // </copyright>
 
 using System;
+using System.Collections.Generic;
 using System.Diagnostics;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -106,7 +108,7 @@ namespace FubarDev.WebDavServer.Handlers.Impl
 
             var sourceUrl = context.PublicAbsoluteRequestUrl;
             var destinationUrl = new Uri(sourceUrl, destination);
-            var uriComparer = _uriComparer ?? new DefaultUriComparer(_contextAccessor);
+            var uriComparer = _uriComparer ?? DefaultUriComparer.Create(context);
 
             // Check if source and destination overlap
             if (uriComparer.Compare(sourceUrl, destinationUrl)
@@ -115,6 +117,7 @@ namespace FubarDev.WebDavServer.Handlers.Impl
                 throw new WebDavException(WebDavStatusCode.Forbidden);
             }
 
+            List<IActiveLock> locksToRemove = new();
             ILock? sourceLockRequirements;
 
             if (isMove)
@@ -148,6 +151,15 @@ namespace FubarDev.WebDavServer.Handlers.Impl
 
             try
             {
+                if (isMove && !sourceTempLock.IsAcquiredLock)
+                {
+                    locksToRemove.AddRange(
+                        from matchedLock in sourceTempLock.MatchedLocks
+                        let compareResult = uriComparer.Compare(context.HrefUrl, new Uri(matchedLock.Href))
+                        where compareResult is UriComparisonResult.Child or UriComparisonResult.Equal
+                        select matchedLock);
+                }
+
                 // Ignore different schemes
                 if (!uriComparer.IsThisServer(destinationUrl) || mode == RecursiveProcessingMode.PreferCrossServer)
                 {
@@ -274,11 +286,8 @@ namespace FubarDev.WebDavServer.Handlers.Impl
             }
 
             var lockManager = _rootFileSystem.LockManager;
-            if (isMove && lockManager != null)
+            if (lockManager != null && locksToRemove.Count != 0)
             {
-                var locksToRemove = await lockManager
-                    .GetAffectedLocksAsync(sourcePath, true, false, cancellationToken)
-                    .ConfigureAwait(false);
                 foreach (var activeLock in locksToRemove)
                 {
                     await lockManager.ReleaseAsync(

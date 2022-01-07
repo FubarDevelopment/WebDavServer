@@ -21,7 +21,6 @@ public class IfHeaderMatcher
     private readonly IWebDavContext _context;
     private readonly IFileSystem _fileSystem;
     private readonly string _targetPath;
-    private readonly string? _owner;
     private readonly IReadOnlyCollection<IfHeader> _ifHeaders;
     private readonly IEqualityComparer<EntityTag> _entityTagComparer;
 
