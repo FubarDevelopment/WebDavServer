@@ -331,7 +331,7 @@ namespace FubarDev.WebDavServer.Utils
                 Scheme = publicControllerUri?.Scheme ?? "http";
 
                 var uri = originalUri;
-                if (!uri.IsAbsoluteUri)
+                if (!uri.IsAbsoluteUri || (uri.IsFile && !uri.IsUnc))
                 {
                     if (publicControllerUri != null)
                     {
@@ -352,7 +352,7 @@ namespace FubarDev.WebDavServer.Utils
                         }
                         else
                         {
-                            uri = new Uri(publicControllerUri, uri);
+                            uri = new Uri(publicControllerUri, uri.OriginalString);
                         }
                     }
                     else

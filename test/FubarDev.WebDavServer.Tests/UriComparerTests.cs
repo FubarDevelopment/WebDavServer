@@ -14,6 +14,16 @@ namespace FubarDev.WebDavServer.Tests
 {
     public class UriComparerTests
     {
+        [Fact]
+        public void CompareRelativeToAbsoluteFile()
+        {
+            var comparer = new DefaultUriComparer(new TestWebDavContextAccessor(new Uri("http://localhost/")));
+            var compareResult = comparer.Compare(
+                new Uri("/test", UriKind.Relative),
+                new Uri("/test/a"));
+            Assert.Equal(UriComparisonResult.Parent, compareResult);
+        }
+
         [Theory]
         [InlineData("http://localhost/")]
         [InlineData("//localhost/")]
