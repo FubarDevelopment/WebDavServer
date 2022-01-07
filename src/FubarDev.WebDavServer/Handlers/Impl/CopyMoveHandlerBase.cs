@@ -1,4 +1,4 @@
-// <copyright file="CopyMoveHandlerBase.cs" company="Fubar Development Junker">
+﻿// <copyright file="CopyMoveHandlerBase.cs" company="Fubar Development Junker">
 // Copyright (c) Fubar Development Junker. All rights reserved.
 // </copyright>
 
@@ -155,8 +155,9 @@ namespace FubarDev.WebDavServer.Handlers.Impl
                 {
                     locksToRemove.AddRange(
                         from matchedLock in sourceTempLock.MatchedLocks
-                        let compareResult = uriComparer.Compare(context.HrefUrl, new Uri(matchedLock.Href))
-                        where compareResult is UriComparisonResult.Child or UriComparisonResult.Equal
+                        let lockHref = new Uri(matchedLock.Href, UriKind.Relative)
+                        let compareResult = uriComparer.Compare(context.HrefUrl, lockHref)
+                        where compareResult is UriComparisonResult.Parent or UriComparisonResult.Equal
                         select matchedLock);
                 }
 
@@ -252,6 +253,17 @@ namespace FubarDev.WebDavServer.Handlers.Impl
 
                     try
                     {
+                        if (!destTempLock.IsAcquiredLock && !destinationSelectionResult.IsMissing)
+                        {
+                            // Always remove locks if target was replaced.
+                            locksToRemove.AddRange(
+                                from matchedLock in destTempLock.MatchedLocks
+                                let lockHref = new Uri(matchedLock.Href, UriKind.Relative)
+                                let compareResult = uriComparer.Compare(destinationUrl, lockHref)
+                                where compareResult is UriComparisonResult.Parent or UriComparisonResult.Equal
+                                select matchedLock);
+                        }
+
                         var isSameFileSystem = ReferenceEquals(
                             sourceSelectionResult.TargetFileSystem,
                             destinationSelectionResult.TargetFileSystem);
