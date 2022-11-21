@@ -48,7 +48,7 @@ namespace FubarDev.WebDavServer.AspNetCore
         }
 
         /// <inheritdoc />
-        public Stream Body => _response.Body;
+        public virtual Stream Body => _response.Body;
 
         private class HeadersDictionary : IDictionary<string, string[]>
         {
