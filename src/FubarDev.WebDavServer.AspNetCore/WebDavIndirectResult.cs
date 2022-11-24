@@ -65,7 +65,7 @@ namespace FubarDev.WebDavServer.AspNetCore
 
             if (_logger?.IsEnabled(LogLevel.Debug) ?? false)
             {
-                var loggingResponse = new LoggingWebDavResponse(_context);
+                var loggingResponse = new LoggingWebDavResponse(_context, response);
                 await _result.ExecuteResultAsync(loggingResponse, context.HttpContext.RequestAborted).ConfigureAwait(false);
                 if (!string.IsNullOrEmpty(loggingResponse.ContentType))
                 {
@@ -81,6 +81,9 @@ namespace FubarDev.WebDavServer.AspNetCore
                         }
                     }
                 }
+
+                await loggingResponse.WriteBufferedOutPutToResponse(context.HttpContext.RequestAborted).ConfigureAwait(false);
+                return;
             }
 
             // Writes the XML response
